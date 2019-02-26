@@ -1,0 +1,39 @@
+@import "~src/styles/defaults.scss";
+
+.side-box {
+  overflow: auto;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  padding: 30px;
+  padding-top: 20px;
+  color: $side-box-color;
+  background-color: $side-box-bg;
+  border-bottom: 2px solid $gold;
+  border-radius: 0;
+
+  .round-icon-material {
+    height: 48px;
+    width: 48px;
+    border-radius: 48px;
+    background-color: #7596C8;
+    text-align: center;
+    display: inline-block;
+    padding-top: 12px;
+  }
+}
+
+// angular material overrides
+:host ::ng-deep .side-box {
+  * {
+    color: $side-box-color;
+  }
+
+  .btn {
+    background-color: $bg-dark;
+  }
+
+  .mat-card-header-text {
+    margin: 0;
+    padding-left: 10px;
+  }
+}

@@ -1,0 +1,117 @@
+<div [formGroup]="form">
+  <h2 class="step">STEP 2</h2>
+  <h1 class="mt-0">Register as an Evacuee</h1>
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit amet pulvinar.
+    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean efficitur et arcu
+    a fringilla.</p>
+
+  <h3 class="blue-header">ADDITIONAL INFORMATION</h3>
+  <section class="padded-section">
+    <p>Do you have any dietary requirements?</p>
+    <div class="form-group">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="hasDietaryRequirements">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="hasDietaryRequirements">
+        <label class="form-check-label">No</label>
+      </div>
+    </div>
+
+    <p>Do you (or anyone registering with you) take medication?</p>
+    <div class="form-group">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="isTakingMedication">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="isTakingMedication">
+        <label class="form-check-label">No</label>
+      </div>
+    </div>
+
+    <p>Do you have any pets with you?</p>
+    <div class="form-group">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="hasPets">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="hasPets">
+        <label class="form-check-label">No</label>
+      </div>
+    </div>
+  </section>
+
+  <h3 class="blue-header">NEXT STEPS</h3>
+  <section class="padded-section">
+    <p>Do you have insurance to cover your immediate needs?</p>
+    <div class="form-group">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="1" formControlName="hasPets">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="2" formControlName="hasPets">
+        <label class="form-check-label">Yes, but I'm not sure if I have coverage for this event</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="3" formControlName="hasPets">
+        <label class="form-check-label">No</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="4" formControlName="hasPets">
+        <label class="form-check-label">I don't know</label>
+      </div>
+    </div>
+
+    <p>While you are evacuated do you require supports?</p>
+    <div class="form-group">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="isSupportRequired">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="isSupportRequired">
+        <label class="form-check-label">No</label>
+      </div>
+    </div>
+    <div *ngIf="ui.showAvailableServices()" class="feature-block">
+      <p>Check the following that applies:</p>
+      <div class="support-services__list padded-section" formArrayName="requestedSupportServices">
+        <div class="support-services__item" *ngFor="let cb of requestedSupportServices.controls; index as i;">
+          <!-- TODO: Refactor into sub-component -->
+          <div class="row">
+            <div class="form-check col-md-6">
+              <input class="form-check-input" type="checkbox" [formControl]="cb">
+              <label class="form-check-label">{{servicesLookup[i].name}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="support-services__actions clearfix">
+        <p>Click Emergency info link to find your closest reception centre.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="mt-5 space-between">
+    <section>
+      <a [routerLink]="">
+        <i class="far fa-trash-alt" style="margin-right: 5px"></i>Cancel &amp; Close
+      </a>
+    </section>
+    <section>
+      <!-- <button class="btn btn-secondary" style="margin-right: 10px"
+      routerLink="/equipment-notification/source/{{equipmentId}}">BACK
+      TO STEP 4</button> -->
+      <button class="btn btn-primary" (click)="next()">NEXT</button>
+    </section>
+  </div>
+</div>
+
+<div class="mt-5">
+  <pre>{{ this.form.value | json }}</pre>
+</div>

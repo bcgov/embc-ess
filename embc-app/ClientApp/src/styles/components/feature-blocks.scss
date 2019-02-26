@@ -1,0 +1,19 @@
+@import '../defaults.scss';
+
+.feature-block {
+  background-color: $feature-block-bg;
+  color: $feature-block-color;
+  padding: 1em;
+
+  h3 {
+    margin-top: 0;
+  }
+
+  p {
+    font-weight: 400;
+  }
+
+  label {
+    font-weight: normal;
+  }
+}

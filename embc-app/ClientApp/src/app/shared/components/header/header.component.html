@@ -1,0 +1,31 @@
+<header class="app-header">
+  <div class="top-menu row" style="padding-left: 30px; padding-right: 30px;">
+    <section class="col-md-8 col-xs-12">
+      <a href="http://www2.gov.bc.ca/" tabindex="1">
+        <img class="header-logo" alt="B.C. Government Logo" src="assets/bc-logo.svg">
+      </a>
+      <span class="title" role="banner">
+        EMBC&nbsp;
+        <!-- <span class="label label-beta">Beta</span> -->
+      </span>
+    </section>
+    <section class="col-md-4 col-xs-12 sign-container">
+      <span class="sign" *ngIf="currentUser">
+        <span>{{currentUser.name}}</span>
+        &nbsp;
+        <span class="text-right signin">
+          <a href="logout">Sign Out</a>
+        </span>
+      </span>
+      <span class="sign" *ngIf="!currentUser">
+        <span class="text-right signin">
+          <p><span style="font-family:'myriad-pro';font-weight:400;">Hello,</span><span
+              style="font-family:'myriad-pro';font-weight:600;"> Andrea</span></p>
+          <!-- <a href="https://www.bceid.ca/register/" tabindex="1">Register</a>
+          or
+          <a href="login" tabindex="1">Log In</a> -->
+        </span>
+      </span>
+    </section>
+  </div>
+</header>
