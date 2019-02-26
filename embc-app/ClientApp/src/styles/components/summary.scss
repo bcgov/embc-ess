@@ -1,0 +1,59 @@
+@import '../defaults.scss';
+@import '../mixins.scss';
+
+.summary {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  background: $summary-bg;
+
+  > li {
+    @include clearfix();
+    background: $summary-row-bg;
+
+    &:nth-child(even) {
+      background: $summary-alt-row-bg;
+    }
+
+    + li {
+      margin-top: 5px;
+    }
+  }
+
+  span {
+    &.name {
+      float: left;
+      display: block;
+      padding: 5px;
+      margin-right: -5px;
+      border-right: 5px solid $summary-bg;
+      font-weight: 600;
+      width: 40%;
+    }
+
+    &.value {
+      float: left;
+      display: block;
+      padding: 5px;
+      border-left: 5px solid $summary-bg;
+      width: 59%;
+
+      ul {
+        margin: 0;
+        padding: 0;
+        overflow: visible;
+        list-style-type: none;
+
+        li {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
+        li:hover {
+            overflow: visible;
+        }
+      }
+    }
+  }
+}

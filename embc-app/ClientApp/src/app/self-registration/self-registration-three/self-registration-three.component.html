@@ -7,34 +7,155 @@
     a fringilla.</p>
 
   <section class="p-3">
-    <div>
-      <div class="dark-row form-row">
-        <div class="col-md-4">Restriction:</div>
-        <div class="col">Yes</div>
-      </div>
-    </div>
+    <ul class="summary">
+      <li>
+        <span class="name">Restriction:</span>
+        <span class="value">Yes</span>
+      </li>
+    </ul>
     <h2>Evacuee Information</h2>
-    <div>
-      <div class="dark-row form-row">
-        <div class="col-md-4">Last Name:</div>
-        <div class="col">Smith</div>
-      </div>
-      <div class="alt-row form-row">
-        <div class="col-md-4">First Name:</div>
-        <div class="col">Anne</div>
-      </div>
-    </div>
+    <ul class="summary">
+      <li>
+        <span class="name">Last Name:</span>
+        <span class="value">Smith</span>
+      </li>
+      <li>
+        <span class="name">First Name:</span>
+        <span class="value">Anne</span>
+      </li>
+    </ul>
 
     <h2>Evacuee Family Information</h2>
-    <div>
-      <div class="dark-row form-row">
-        <div class="col-md-4">Last Name:</div>
-        <div class="col">Smith</div>
-      </div>
-      <div class="alt-row form-row">
-        <div class="col-md-4">First Name:</div>
-        <div class="col">Anne</div>
+    <ul class="summary">
+      <li>
+        <span class="name">Last Name:</span>
+        <span class="value">Smith</span>
+      </li>
+      <li>
+        <span class="name">First Name:</span>
+        <span class="value">Anne</span>
+      </li>
+    </ul>
+
+    <h2>Primary Address &amp; Contact Details</h2>
+    <ul class="summary">
+      <li>
+        <span class="name">Apt /Suite/Building Number &amp; Street Address:</span>
+        <span class="value">25 Street Rd</span>
+      </li>
+      <li>
+        <span class="name">Community:</span>
+        <span class="value">Victoria</span>
+      </li>
+      <li>
+        <span class="name">Province:</span>
+        <span class="value">BC</span>
+      </li>
+      <li>
+        <span class="name">Postal code:</span>
+        <span class="value">V8S 3W4</span>
+      </li>
+      <li>
+        <span class="name">Country:</span>
+        <span class="value">Canada</span>
+      </li>
+      <li>
+        <span class="name">Telephone/Mobile:</span>
+        <span class="value">250 567 8796</span>
+      </li>
+      <li>
+        <span class="name">Alternate Telephone/Mobile:</span>
+        <span class="value">250 456 1234</span>
+      </li>
+      <li>
+        <span class="name">Email Address:</span>
+        <span class="value">anne@email.com</span>
+      </li>
+    </ul>
+
+    <h2>Mailing Address</h2>
+    <ul class="summary">
+      <li>
+        <span class="name">Apt /Suite/Building Number &amp; Street Address:</span>
+        <span class="value">25 Street Rd</span>
+      </li>
+      <li>
+        <span class="name">Community:</span>
+        <span class="value">Victoria</span>
+      </li>
+      <li>
+        <span class="name">Province:</span>
+        <span class="value">BC</span>
+      </li>
+      <li>
+        <span class="name">Postal code:</span>
+        <span class="value">V8S 3W4</span>
+      </li>
+      <li>
+        <span class="name">Country:</span>
+        <span class="value">Canada</span>
+      </li>
+    </ul>
+
+    <h2>Additional Information</h2>
+    <ul class="summary">
+      <li>
+        <span class="name">Dietary Requirements:</span>
+        <span class="value">No</span>
+      </li>
+      <li>
+        <span class="name">Medication:</span>
+        <span class="value">Yes</span>
+      </li>
+      <li>
+        <span class="name">Pets:</span>
+        <span class="value">No</span>
+      </li>
+    </ul>
+
+    <h2>Next Steps</h2>
+    <ul class="summary">
+      <li>
+        <span class="name">Insurance:</span>
+        <span class="value">No</span>
+      </li>
+      <li>
+        <span class="name">Supports:</span>
+        <span class="value">
+          <ul>
+            <li>Yes</li>
+            <li>Food</li>
+            <li>Accommodation</li>
+          </ul>
+        </span>
+      </li>
+    </ul>
+  </section>
+
+  <h3 class="blue-header">DECLARATIONS AND CONSENT</h3>
+  <section class="padded-section">
+    <div class="row">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox">
+        <label class="form-check-label">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis
+          porttitor
+          scelerisque. Proin blandit suscipit ultrices. Proin dictum libero eget justo rhoncus sollicitudin. Curabitur
+          velit lorem, malesuada sed tincidunt sed, semper non orci. Aliquam dapibus mi non tortor fermentum, in egestas
+          leo vestibulum.</label>
       </div>
     </div>
   </section>
+
+
+  <div class="mt-5 space-between">
+    <section>
+      <a [routerLink]="">
+        <i class="far fa-trash-alt" style="margin-right: 5px"></i>Cancel &amp; Close
+      </a>
+    </section>
+    <section>
+      <a [routerLink]="" style="margin-right: 10px" (click)="back()">Back</a>
+      <button class="btn btn-primary" (click)="next()">REGISTER</button>
+    </section>
+  </div>
 </div>

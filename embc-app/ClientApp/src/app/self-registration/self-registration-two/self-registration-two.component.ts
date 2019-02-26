@@ -107,4 +107,8 @@ export class SelfRegistrationTwoComponent implements OnInit {
     this.onSave();
     this.router.navigate(['../step-3'], { relativeTo: this.route });
   }
+
+  back() {
+    this.router.navigate(['../step-1'], { relativeTo: this.route });
+  }
 }

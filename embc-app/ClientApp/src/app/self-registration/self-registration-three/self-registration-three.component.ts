@@ -71,4 +71,8 @@ export class SelfRegistrationThreeComponent implements OnInit {
     this.onSave();
     this.router.navigate(['../step-4'], { relativeTo: this.route });
   }
+
+  back() {
+    this.router.navigate(['../step-2'], { relativeTo: this.route });
+  }
 }
