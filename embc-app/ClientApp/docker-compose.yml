@@ -1,0 +1,15 @@
+version: "3.6"
+services:
+  embc-app-frontend:
+    build: .
+    image: embc-app-frontend
+    container_name: embc-app-frontend
+    command: "npm start -- --poll=500"
+    ports:
+      - "4200:4200"
+      - "49153:49153"
+    volumes:
+      - ./:/usr/src/app/
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development

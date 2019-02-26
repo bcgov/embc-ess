@@ -1,0 +1,16 @@
+<mat-card class="side-box">
+  <mat-card-header>
+    <h2 mat-card-avatar class="round-icon-material">
+      <mat-icon class="icon" aria-label="description icon">{{icon}}</mat-icon>
+    </h2>
+    <mat-card-title>
+      <h2>{{title}}</h2>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-content></ng-content>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <ng-content select="app-side-box-actions"></ng-content>
+  </mat-card-actions>
+</mat-card>

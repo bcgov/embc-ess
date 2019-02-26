@@ -1,0 +1,197 @@
+<div [formGroup]="form">
+  <h2 class="step">STEP 1</h2>
+  <h1 class="mt-0">Register as an Evacuee</h1>
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit amet pulvinar.
+    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean efficitur et arcu
+    a fringilla.</p>
+
+  <div class="feature-block">
+    <h3>Restriction<span style="color:#CC0000;"> *</span></h3>
+    <p>Concerned family
+      and friends may inquire about you and your family because of the emergency. We would like to provide these
+      people with some information about you. May we disclose your location and the contact information for you
+      and your family members?</p>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" value="yes" formControlName="isRestricted">
+      <label class="form-check-label">Yes</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" value="no" formControlName="isRestricted">
+      <label class="form-check-label">No</label>
+    </div>
+  </div>
+
+  <h3 class="blue-header">FAMILY REPRESENTATIVE</h3>
+  <section class="padded-section" formGroupName="familyRepresentative">
+    <div class="row">
+      <app-form-field class="col-md-8" required="true">
+        <label>Last Name</label>
+        <input class="form-control" type="text" formControlName="lastName">
+      </app-form-field>
+    </div>
+    <div class="row">
+      <app-form-field class="col-md-8" required="true">
+        <label>First Name</label>
+        <input class="form-control" type="text" formControlName="firstName">
+      </app-form-field>
+    </div>
+    <div class="row">
+      <app-form-field class="col-md-3">
+        <label>Initial</label>
+        <input class="form-control" type="text" formControlName="initials">
+      </app-form-field>
+      <app-form-field class="col-md-5">
+        <label>Nickname</label>
+        <input class="form-control" type="text" formControlName="nickname">
+      </app-form-field>
+    </div>
+    <div class="row">
+      <app-form-field class="col-md-2" required="true">
+        <label>Gender</label>
+        <select class="form-control" formControlName="gender">
+          <option [ngValue]="null">Please select--</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </app-form-field>
+      <app-form-field class="col-md-3" required="true">
+        <label>Date of Birth</label>
+        <input class="form-control" type="date" formControlName="dob">
+      </app-form-field>
+    </div>
+  </section>
+
+  <h3 class="blue-header">EVACUEE FAMILY INFORMATION</h3>
+  <section class="padded-section">
+    <p>Are you registering immediate family members who live in the same household with you?</p>
+    <div class="form-group">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="1" formControlName="isRegisteringFamilyMembers">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="2" formControlName="isRegisteringFamilyMembers">
+        <label class="form-check-label">Yes, but I'd like to register them when I get to the
+          Reception Center</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" [value]="3" formControlName="isRegisteringFamilyMembers">
+        <label class="form-check-label">No</label>
+      </div>
+    </div>
+    <div *ngIf="ui.showFamilyMembers()" class="feature-block">
+      <div class="family-members__list" formArrayName="familyMembers">
+        <div class="family-members__item" *ngFor="let m of familyMembers.controls; index as i;" [formGroupName]="i">
+          <!-- TODO: Refactor into sub-component -->
+          <div class="row">
+            <app-form-field class="col-md-6" required="true">
+              <label>Last Name</label>
+              <input class="form-control" type="text" formControlName="lastName">
+            </app-form-field>
+            <div class="form-check col-md-6">
+              <input class="form-check-input" type="checkbox" formControlName="sameLastNameAsEvacuee" [value]="true">
+              <label class="form-check-label">Same as main applicant</label>
+            </div>
+          </div>
+          <div class="row">
+            <app-form-field class="col-md-6" required="true">
+              <label>First Name</label>
+              <input class="form-control" type="text" formControlName="firstName">
+            </app-form-field>
+            <app-form-field class="col-md-3">
+              <label>Initial</label>
+              <input class="form-control" type="text" formControlName="initials">
+            </app-form-field>
+          </div>
+          <div class="row">
+            <app-form-field class="col-md-6">
+              <label>Relationship</label>
+              <input class="form-control" type="text" formControlName="relationshipToEvacuee">
+            </app-form-field>
+            <app-form-field class="col-md-2" required="true">
+              <label>Gender</label>
+              <select class="form-control" formControlName="gender">
+                <option [ngValue]="null">Please select--</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </app-form-field>
+            <app-form-field class="col-md-3" required="true">
+              <label>Date of Birth</label>
+              <input class="form-control" type="date" formControlName="dob">
+            </app-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="family-members__actions clearfix">
+        <a [routerLink]="" class="float-right" (click)="addFamilyMember()">
+          <i class="fas fa-plus-circle" style="margin-right: 5px"></i>Add another contact
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <h3 class="blue-header">PRIMARY RESIDENCE & CONTACT DETAILS</h3>
+  <section class="padded-section">
+    <app-address-form-group [parent]="primaryResidence">
+    </app-address-form-group>
+    <section>
+      <div class="row">
+        <app-form-field class="col-md-6">
+          <label>Telephone / Mobile Number (10 digits)</label>
+          <input class="form-control" type="text">
+        </app-form-field>
+        <app-form-field class="col-md-6">
+          <label>Alternate Telephone / Mobile Number</label>
+          <input class="form-control" type="text">
+        </app-form-field>
+      </div>
+      <div class="row">
+        <app-form-field class="col-md-8" required="true">
+          <label>Email Address</label>
+          <input class="form-control" type="text">
+        </app-form-field>
+      </div>
+    </section>
+  </section>
+
+  <h3 class="blue-header">MAILING ADDRESS</h3>
+  <section class="padded-section">
+    <p>Is your mailing address different from your primary residence?</p>
+    <div class="form-group">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" formControlName="hasMailingAddress" [value]="true">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" formControlName="hasMailingAddress" [value]="false">
+        <label class="form-check-label">No</label>
+      </div>
+    </div>
+    <div *ngIf="ui.showMailingAddress()" class="feature-block">
+      <app-address-form-group [parent]="mailingAddress">
+      </app-address-form-group>
+    </div>
+  </section>
+
+  <div class="mt-5 space-between">
+    <section>
+      <a [routerLink]="">
+        <i class="far fa-trash-alt" style="margin-right: 5px"></i>Cancel &amp; Close
+      </a>
+    </section>
+    <section>
+      <!-- <button class="btn btn-secondary" style="margin-right: 10px"
+        routerLink="/equipment-notification/source/{{equipmentId}}">BACK
+        TO STEP 4</button> -->
+      <button class="btn btn-primary" (click)="next()">NEXT</button>
+    </section>
+  </div>
+</div>
+
+<div class="mt-5">
+  <pre>{{ this.form.value | json }}</pre>
+</div>

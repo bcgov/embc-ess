@@ -1,0 +1,28 @@
+<section [formGroup]="parent">
+  <div class="row">
+    <app-form-field class="col-md-8" required="true">
+      <label>Apt/Suite/Building Number &amp; Street Address</label>
+      <input class="form-control" type="text" formControlName="addressLine1">
+    </app-form-field>
+  </div>
+  <div class="row">
+    <app-form-field class="col-md-6">
+      <label>Community</label>
+      <input class="form-control" type="text" formControlName="community">
+    </app-form-field>
+    <app-form-field class="col-md-3" required="true">
+      <label>Province </label>
+      <input class="form-control" type="text" formControlName="province">
+    </app-form-field>
+    <app-form-field class="col-md-3" required="true">
+      <label>Postal Code</label>
+      <input class="form-control" type="text" formControlName="postalCode">
+    </app-form-field>
+  </div>
+  <div class="row">
+    <app-form-field class="col-md-3" required="true">
+      <label>Country</label>
+      <input class="form-control" type="text" formControlName="country">
+    </app-form-field>
+  </div>
+</section>

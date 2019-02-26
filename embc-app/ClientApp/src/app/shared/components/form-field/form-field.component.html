@@ -1,0 +1,19 @@
+<section class="form-field">
+  <div class="row">
+    <div class="form-group col">
+      <div [ngClass]="{ 'required': required }">
+        <ng-content select="label"></ng-content>
+      </div>
+      <ng-content></ng-content>
+    </div>
+    <!-- <div class="col-2">
+      <span *ngIf="!valid && showChevrons">
+        <i class="fas fa-chevron-left error-states" style="margin-left: 3px"></i>
+        <i class="fas fa-chevron-left error-states" style="margin-left: -5px"></i>
+      </span>
+    </div> -->
+  </div>
+  <div *ngIf="!valid" class="error-states error-container">
+    {{errorMessage}}
+  </div>
+</section>

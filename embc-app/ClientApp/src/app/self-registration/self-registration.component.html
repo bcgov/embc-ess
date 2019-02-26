@@ -1,0 +1,54 @@
+<div class="form-wrapper" style="position: relative;">
+  <div class="row">
+
+    <!-- Step forms go here... -->
+    <div class="col-md-8 col-sm-12">
+      <router-outlet></router-outlet>
+    </div>
+
+    <div class="col-md-3 col-sm-12">
+      <!-- TODO: Refactor into a common component Stepper -->
+      <section class="step" style="display: block; background-color: #F1F4FA">
+        <h3 class="blue-header">EVACUEE PROFILE</h3>
+        <section style="padding-top: 15px; padding-bottom: 20px;">
+          <mat-vertical-stepper [linear]="true" #stepper>
+            <ng-template matStepperIcon="edit">
+              <i class="fas fa-check"></i>
+            </ng-template>
+            <ng-template matStepperIcon="number">
+            </ng-template>
+            <mat-step label="STEP 1: Evacuee Information"></mat-step>
+            <mat-step label="STEP 2: Evacuee Contact Details"></mat-step>
+            <mat-step label="STEP 3: Summary"></mat-step>
+            <mat-step label="STEP 4: Confirmation"></mat-step>
+          </mat-vertical-stepper>
+        </section>
+      </section>
+
+      <app-side-box title="Important Notice for Evacuees">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis porttitor scelerisque. Proin blandit
+          suscipit ultrices. Proin dictum libero eget justo rhoncus sollicitudin.
+        </p>
+        <app-side-box-actions>
+          <button class="btn btn-primary" routerLink="/">Learn More</button>
+        </app-side-box-actions>
+      </app-side-box>
+
+      <app-side-box title="Useful Links & Information" icon="list">
+        <p>What you need to know about:</p>
+        <ul class="arrow">
+          <li><a
+              href="https://www2.gov.bc.ca/gov/content/employment-business/business/pill-press/pill-press-waiver-holder#ap"
+              target="blank">Link 1</a></li>
+          <li><a
+              href="https://www2.gov.bc.ca/gov/content/employment-business/business/pill-press/pill-press-controlled-equipment#enp"
+              target="blank">Link 2</a></li>
+          <li><a
+              href="https://www2.gov.bc.ca/gov/content/employment-business/business/pill-press/pill-press-authorized-owner#btl"
+              target="blank">Link 3</a></li>
+        </ul>
+      </app-side-box>
+    </div>
+  </div>
+</div>
