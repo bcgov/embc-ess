@@ -1,0 +1,18 @@
+.thank-you {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2rem;
+  padding: 2rem;
+
+  ul.arrow {
+    > li:before {
+      margin-right: 0.8rem;
+    }
+
+    .registration-number {
+      margin: 1rem 0;
+      padding-left: 2.48rem;
+      font-weight: 600;
+    }
+  }
+}
