@@ -9,6 +9,8 @@
 
   > li {
     @include clearfix();
+    display: flex;
+    flex-direction: row;
     background: $summary-row-bg;
 
     &:nth-child(even) {
@@ -22,18 +24,12 @@
 
   span {
     &.name {
-      float: left;
-      display: block;
       padding: 5px;
-      margin-right: -5px;
-      border-right: 5px solid $summary-bg;
       font-weight: 600;
       width: 40%;
     }
 
     &.value {
-      float: left;
-      display: block;
       padding: 5px;
       border-left: 5px solid $summary-bg;
       width: 59%;
