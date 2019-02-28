@@ -1,4 +1,4 @@
-import { registrationReducer } from "./registration.reducer";
+import { registrationReducer } from './registration.reducer';
 
 export const rootReducer = {
   registration: registrationReducer,

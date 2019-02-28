@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { throwError, Observable } from 'rxjs';
 import { map, catchError, retry } from 'rxjs/operators';
@@ -5,7 +6,9 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from 'src/app/store/app-state';
 import { httpGet } from './mock-api';  // FIXME: <-- this will GO AWAY when backend is built
+import { CoreModule } from '../core.module';
 
+@Injectable()
 export abstract class RestService {
 
   // FIXME: change this when API is live!
