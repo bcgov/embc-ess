@@ -83,16 +83,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\app\models\invoice.model.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\models\adoxio-legalentities.model.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Contexts\ODataClient.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ODataClient.tt</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\models\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

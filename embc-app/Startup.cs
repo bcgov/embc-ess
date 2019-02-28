@@ -1,6 +1,7 @@
 using Gov.Jag.Embc.Interfaces;
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Authorization;
+using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -129,6 +130,17 @@ namespace Gov.Jag.Embc.Public
             });
 
             services.AddSession();
+
+            // add a data interface
+
+            string connectionString = "embc.db";
+            if (! string.IsNullOrEmpty(Configuration["CONNECTION_STRING"]))
+            {
+                connectionString = Configuration["CONNECTION_STRING"];
+            }
+
+            services.AddSingleton<IDataInterface>(_ => new SqliteDataInterface(connectionString));
+
 
         }
 
