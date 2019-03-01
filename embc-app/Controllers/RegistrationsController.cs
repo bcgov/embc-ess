@@ -107,9 +107,10 @@ namespace Gov.Jag.Embc.Public.Controllers
         /// <param name="viewModel"></param>
         /// <returns></returns>
         [HttpPost()]
-        public async Task<IActionResult> Create([FromBody] ViewModels.Person item)
+        [AllowAnonymous]
+        public async Task<IActionResult> Create([FromBody] Registration item)
         {
-            return Json(null);
+            return Json(item);
         }
 
 
