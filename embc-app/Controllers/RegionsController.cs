@@ -1,6 +1,7 @@
 ﻿using Gov.Jag.Embc.Interfaces;
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Models;
+using Gov.Jag.Embc.Public.Sqlite.Models;
 using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -31,17 +33,63 @@ namespace Gov.Jag.Embc.Public.Controllers
             this._env = env;
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet()]
         public IActionResult Get(string id)
         {
+            List<Region> result = new List<Region>();
+            result.Add(new Region()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Region 1"
+            });
 
-            return Json(null);
+            result.Add(new Region()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Vancouver Island"
+            });
+
+            result.Add(new Region()
+            {
+                Id = Guid.NewGuid(),
+                Name = "South West"
+            });
+
+            result.Add(new Region()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Central"
+            });
+
+            result.Add(new Region()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Central"
+            });
+
+
+            result.Add(new Region()
+            {
+                Id = Guid.NewGuid(),
+                Name = "South East"
+            });
+
+
+            result.Add(new Region()
+            {
+                Id = Guid.NewGuid(),
+                Name = "North East"
+            });
+
+            result.Add(new Region()
+            {
+                Id = Guid.NewGuid(),
+                Name = "North West"
+            });
+
+
+            return Json(result);
+            
         }
 
 
