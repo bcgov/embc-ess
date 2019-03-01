@@ -14,5 +14,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         void CreatePerson(Person person);
 
+        List<Region> GetRegions();
     }
 }

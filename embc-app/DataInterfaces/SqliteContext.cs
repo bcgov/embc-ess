@@ -16,14 +16,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             Database?.SetCommandTimeout(180);
         }
 
+        /*
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=/tmp/test.db");
+            optionsBuilder.UseSqlite();
         }
+        */
 
         public DbSet<Address> Addresses { get; set; }
         public DbSet<BceidUser> BceidUser { get; set; }
         public DbSet<Community> Communities { get; set; }
+        public DbSet<Region> Regions { get; set; }
         public DbSet<FamilyMember> FamilyMembers { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Profile> Profiles { get; set; }

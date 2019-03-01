@@ -26,9 +26,9 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         public Guid Id { get; set; }
 
         /// <summary>
-        /// The name of the Community
+        /// The name of the Region
         /// </summary>
-        /// <value>The name of the Community</value>
+        /// <value>The name of the Region</value>
         [MaxLength(255)]        
         public string Name { get; set; }
         

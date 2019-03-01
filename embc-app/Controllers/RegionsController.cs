@@ -1,8 +1,10 @@
 ﻿using Gov.Jag.Embc.Interfaces;
 using Gov.Jag.Embc.Public.Authentication;
+using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models;
 using Gov.Jag.Embc.Public.Sqlite.Models;
 using Gov.Jag.Embc.Public.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,28 +22,28 @@ namespace Gov.Jag.Embc.Public.Controllers
     public class RegionsController : Controller
     {
         private readonly IConfiguration Configuration;
-
+        private readonly IDataInterface _dataInterface;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger _logger;
         private readonly IHostingEnvironment _env;
 
-        public RegionsController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory, IHostingEnvironment env)
+        public RegionsController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory, IHostingEnvironment env, IDataInterface dataInterface)
         {
             Configuration = configuration;
+            _dataInterface = dataInterface;
             _httpContextAccessor = httpContextAccessor;
             _logger = loggerFactory.CreateLogger(typeof(PeopleController));
             this._env = env;
         }
 
         [HttpGet()]
+        [AllowAnonymous]
         public IActionResult Get(string id)
         {
-            List<Region> result = new List<Region>();
-            result.Add(new Region()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Region 1"
-            });
+            List<ViewModels.Region> result = _dataInterface.GetRegions();
+
+            /*
+            
 
             result.Add(new Region()
             {
@@ -86,7 +88,7 @@ namespace Gov.Jag.Embc.Public.Controllers
                 Id = Guid.NewGuid(),
                 Name = "North West"
             });
-
+            */
 
             return Json(result);
             

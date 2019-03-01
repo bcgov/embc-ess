@@ -1,3 +1,4 @@
+using Gov.Embc.Public.Seeders;
 using Gov.Jag.Embc.Interfaces;
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Authorization;
@@ -133,7 +134,7 @@ namespace Gov.Jag.Embc.Public
 
             // add a data interface
 
-            string connectionString = "embc.db";
+            string connectionString = "DataSource=embc.db";
             if (! string.IsNullOrEmpty(Configuration["CONNECTION_STRING"]))
             {
                 connectionString = Configuration["CONNECTION_STRING"];
@@ -168,8 +169,6 @@ namespace Gov.Jag.Embc.Public
                 authenticationResult = task.Result;
             }
 
-            
-
 
             // add BCeID Web Services
 
@@ -186,6 +185,43 @@ namespace Gov.Jag.Embc.Public
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             var log = loggerFactory.CreateLogger("Startup");
+
+            // DATABASE SETUP
+
+            try
+            {
+                using (IServiceScope serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                {
+                    log.LogInformation("Fetching the application's database context ...");
+                    IDataInterface iDataInterface = serviceScope.ServiceProvider.GetService<IDataInterface>();
+
+                    SqliteContext context = ((SqliteDataInterface)iDataInterface).Db;
+
+                    log.LogInformation("Resetting database");
+                    context.Database.CloseConnection();
+                    context.Database.EnsureDeleted();
+                    context.Database.OpenConnection();
+                    context.Database.EnsureCreated();
+
+                    // run the database seeders
+                    log.LogInformation("Adding/Updating seed data ...");
+
+                    SeedFactory<SqliteContext> seederFactory = new SeedFactory<SqliteContext>(Configuration, env, loggerFactory);
+                    seederFactory.Seed((SqliteContext)context);
+                    log.LogInformation("Seeding operations are complete.");
+                }
+            }
+            catch (Exception e)
+            {
+                StringBuilder msg = new StringBuilder();
+                msg.AppendLine("The database setup failed!");
+                msg.AppendLine("The database may not be available and the application will not function as expected.");
+                msg.AppendLine("Please ensure a database is available and the connection string is correct.");
+                msg.AppendLine("If you are running in a development environment, ensure your test database and server configuration match the project's default connection string.");
+                msg.AppendLine("Error message is " + e.Message);
+                log.LogCritical(new EventId(-1, "Database Seeding Failed"), e, msg.ToString());
+            }
+
 
             string pathBase = Configuration["BASE_PATH"];
 

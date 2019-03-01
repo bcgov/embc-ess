@@ -9,7 +9,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public class SqliteDataInterface : IDataInterface
     {            
-        private SqliteContext db;
+        public SqliteContext Db;
 
         public SqliteDataInterface(string connectionString)
         {
@@ -19,10 +19,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             builder.UseSqlite(connectionString);
 
             // init the database.
-            db = new SqliteContext(builder.Options);
+            Db = new SqliteContext(builder.Options);
             
-            db.Database.OpenConnection();
-            db.Database.EnsureCreated();
+            Db.Database.OpenConnection();
+
+            
             
         }
         public Organisation GetOrganisationByBceidGuid(string bceidGuid)
@@ -40,6 +41,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public void CreatePerson(Person person)
         {
 
+        }
+
+        public List<Region> GetRegions()
+        {
+            List<Region> regions = new List<Region>();
+            var regionList = Db.Regions.ToList();
+            foreach (var region in regionList)
+            {
+                regions.Add(region.ToViewModel());
+            }
+            return regions;   
         }
 
     }
