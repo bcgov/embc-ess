@@ -1,6 +1,8 @@
+import { Region } from './';
+
 export interface RegionalDistrict {
-  id: number;
+  id: string | null;
   name: string;
   active?: boolean;
-  regionId?: number;
+  region: Region;
 }

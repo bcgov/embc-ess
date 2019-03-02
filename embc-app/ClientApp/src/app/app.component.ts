@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { forkJoin } from 'rxjs';
+import { combineLatest } from 'rxjs';
 
 import { User } from './core/models';
 import { detectIE10orLower } from './shared/utils/environmentUtils';
@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.isIE = detectIE10orLower();
+    this.initializeApp();
   }
 
   get versionInfo(): any {
@@ -40,13 +41,14 @@ export class AppComponent implements OnInit {
   initializeApp() {
     // TODO: Load current user (if authenticated)
 
-    // Get lookups.
-    return this.getLookups();
+    // Loaded once at init time, as they do not change very often, and
+    // certainly not within the app.
+    this.getLookups().subscribe();
   }
 
   getLookups() {
-    return forkJoin([
-      this.lookups.getAllSupportTypes(),
+    return combineLatest([
+      this.lookups.getAllCountries(),
       this.lookups.getAllRegions(),
       this.lookups.getAllRegionalDistricts(),
       this.lookups.getAllCommunities(),

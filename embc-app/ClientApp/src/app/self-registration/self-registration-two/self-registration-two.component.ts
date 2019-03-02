@@ -1,22 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { forkJoin } from 'rxjs';
-import { first } from "rxjs/operators";
+import { combineLatest } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
 
-import { AppState } from 'src/app/store/app-state';
+import { AppState } from 'src/app/store';
 import { Registration } from 'src/app/core/models';
-import { UpdateRegistration } from 'src/app/store/actions/registration.action';
+import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 
 @Component({
   selector: 'app-self-registration-two',
   templateUrl: './self-registration-two.component.html',
   styleUrls: ['./self-registration-two.component.scss']
 })
-export class SelfRegistrationTwoComponent implements OnInit {
+export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
   form: FormGroup;
-  registration: Registration;
+  registration: Registration | null;
+  componentActive = true;
 
   constructor(
     private store: Store<AppState>,
@@ -26,40 +27,55 @@ export class SelfRegistrationTwoComponent implements OnInit {
   ) { }
 
   // Shortcuts for this.form.get(...)
-  get isSupportRequired() { return this.form.get('isSupportRequired') }
-  get requestedSupportServices() { return this.form.get('requestedSupportServices') as FormArray; }
+  get isSupportRequired() { return this.form.get('isSupportRequired'); }
 
   // TODO: Form UI logic; i.e. show additional form fields when a checkbox is checked
   get ui() {
     return {
-      showAvailableServices: () => { return this.form.get('isSupportRequired').value === true; },
+      showAvailableServices: () => this.form.get('isSupportRequired').value === true,
     };
   }
 
   ngOnInit() {
+    this.initForm();
+    this.handleFormChanges();
+
+    // fetch data, then display form
     this.getInitialState()
-      .pipe(first())
-      .subscribe(registration => {
-        this.initForm(registration);
-        this.handleFormChanges();
+      .subscribe(([current, countries, communities, relationshipTypes]) => {
+        this.displayRegistration(current);
       });
   }
 
-  getInitialState() {
-    // return forkJoin([...]).pipe(...)
-    return this.store.select(state => state.registration);
+  ngOnDestroy(): void {
+    this.componentActive = false;
   }
 
-  initForm(state: Registration) {
-    this.registration = state;
+  getInitialState() {
+    return combineLatest(
+      this.store.select(state => state.registrations.currentRegistration),
+      this.store.select(state => state.lookups.countries),
+      this.store.select(state => state.lookups.communities),
+      this.store.select(state => state.lookups.relationshipTypes),
+    );
+    // .pipe(
+    //   takeWhile(() => this.componentActive)
+    // );
+  }
 
+  // Define the form group
+  initForm() {
     this.form = this.fb.group({
-      hasDietaryRequirements: [],
-      isTakingMedication: [],
-      hasPets: [],
-      hasInsurance: [],
-      isSupportRequired: [],
-      requestedSupportServices: this.buildSupportServices(),
+      hasDietaryNeeds: null,
+      isTakingMedication: null,
+      hasPets: null,
+      insuranceCode: null,
+      isSupportRequired: null,
+      requiresFood: null,
+      requiresClothing: null,
+      requiresAccommodation: null,
+      requiresIncidentals: null,
+      requiresTransportation: null,
     });
   }
 
@@ -72,29 +88,39 @@ export class SelfRegistrationTwoComponent implements OnInit {
     });
   }
 
-  // TODO: refactor form-array into sub-component <support-services [parent]="form" .../>
-  buildSupportServices(): FormArray {
-    // all checkboxes are unchecked by default...
-    // const arr = this.servicesLookup.map(x => this.fb.control(false));
-    // return this.fb.array(arr);
-    return this.fb.array([]);  // FIXME: Here!!!
+  displayRegistration(registration: Registration | null): void {
+    // Set the local registration property
+    this.registration = registration;
+
+    if (this.registration && this.form) {
+      // Reset the form back to pristine
+      this.form.reset();
+
+      // Update the data on the form
+      this.form.patchValue({
+        hasDietaryNeeds: this.registration.hasDietaryNeeds,
+        isTakingMedication: this.registration.isTakingMedication,
+        hasPets: this.registration.hasPets,
+        insuranceCode: this.registration.insuranceCode,
+        isSupportRequired: this.registration.isSupportRequired,
+        requiresFood: this.registration.requiresFood,
+        requiresClothing: this.registration.requiresClothing,
+        requiresAccommodation: this.registration.requiresAccommodation,
+        requiresIncidentals: this.registration.requiresIncidentals,
+        requiresTransportation: this.registration.requiresTransportation,
+      });
+    }
   }
 
   resetSupportServices(): void {
-    const checkboxes = this.requestedSupportServices.controls;
-    checkboxes.forEach(cb => cb.setValue(false));
+    // const checkboxes = this.requestedSupportServices.controls;
+    // checkboxes.forEach(cb => cb.setValue(false));
   }
 
   onSave() {
     const form = this.form.value;
-    const state = this.registration;
-
-    const newState: Registration = {
-      ...state,
-      ...{}
-    };
-
-    this.store.dispatch(new UpdateRegistration(newState));
+    const newState: Registration = { ...this.registration, ...this.form.value };
+    this.store.dispatch(new UpdateRegistration({ registration: newState }));
   }
 
   next() {

@@ -1,6 +1,8 @@
+import { RegionalDistrict } from './';
+
 export interface Community {
-  id: number;
+  id: string | null;
   name: string;
   active?: boolean;
-  regionalDistrictId?: number;
+  regionalDistrict: RegionalDistrict;
 }

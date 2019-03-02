@@ -146,16 +146,25 @@
     </div>
   </section>
 
-
   <div class="mt-5 space-between">
     <section>
-      <a [routerLink]="">
-        <i class="far fa-trash-alt" style="margin-right: 5px"></i>Cancel &amp; Close
-      </a>
+      <button class="btn btn-secondary" (click)="back()">BACK</button>
     </section>
     <section>
-      <a [routerLink]="" style="margin-right: 10px" (click)="back()">Back</a>
-      <button class="btn btn-primary" (click)="next()">REGISTER</button>
+      <a [routerLink]="">
+        <i class="fa fa-times" style="margin-right: 5px"></i>Cancel &amp; Close
+      </a>
+      <button class="btn btn-primary ml-4" (click)="next()">NEXT</button>
     </section>
   </div>
+</div>
+
+<div class="mt-5">
+  <h4>Form State</h4>
+  <pre>{{ this.form.value | json }}</pre>
+</div>
+
+<div class="mt-5">
+  <h4>Current Registration</h4>
+  <pre>{{ this.registration | json }}</pre>
 </div>

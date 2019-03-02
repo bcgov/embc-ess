@@ -4,8 +4,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // ngrx + configuration
-import { StoreModule } from "@ngrx/store";
-import { rootReducer } from "./store/reducers/root";
+import { StoreModule } from '@ngrx/store';
+import { rootReducer, metaReducers } from './store';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,7 +27,7 @@ import { HomeComponent } from './home/home.component';
     ReactiveFormsModule,
 
     // 3rd party
-    StoreModule.forRoot(rootReducer),
+    StoreModule.forRoot(rootReducer, { metaReducers }),
 
     // core & shared
     CoreModule,

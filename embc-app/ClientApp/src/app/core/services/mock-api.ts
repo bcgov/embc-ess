@@ -11,93 +11,90 @@ const routes = {
     },
   },
   // lookup tables
-  'api/lookup/supports': {
-    data: [
-      { id: 1, name: 'Food' },
-      { id: 2, name: 'Clothing' },
-      { id: 3, name: 'Accommodation' },
-      { id: 4, name: 'Incidentals' },
-      { id: 5, name: 'Transportation' },
-    ],
-  },
+  'api/countries': useEnvelope([
+    { id: '1', name: 'Canada', active: true },
+    { id: '2', name: 'United States', active: true },
+    { id: '3', name: 'Australia', active: true },
+    { id: '4', name: 'Bahamas, The', active: true },
+    { id: '5', name: 'Cote d\'Ivoire', active: true },
+    { id: '6', name: 'Japan', active: true },
+  ]),
 
-  'api/lookups/regions': {
-    data: [
-      { id: 1, name: 'Region 1' },
-      { id: 2, name: 'Region 2' },
-      { id: 3, name: 'Region 3' },
-      { id: 4, name: 'Region 4' },
-      { id: 5, name: 'Region 5' },
-    ]
-  },
+  'api/regions': useEnvelope([
+    { id: '1', name: 'Vancouver Island', active: true },
+    { id: '2', name: 'South West', active: true },
+    { id: '3', name: 'Central', active: true },
+    { id: '4', name: 'South East', active: true },
+    { id: '5', name: 'North East', active: true },
+    { id: '6', name: 'North West', active: true },
+  ]),
 
-  'api/lookups/regionaldistricts': {
-    data: [
-      { id: 1, name: 'CRD', regionId: 1 },
-      { id: 2, name: 'Alberni-Clayoquot (Regional District)', regionId: 2 },
-    ]
-  },
-
-  'api/lookups/communities': {
-    data: [
-      { id: 1, name: 'Victoria (City)', regionalDistrictId: 1 },
-      { id: 2, name: 'Armstrong (City)', regionalDistrictId: 2 },
-      { id: 3, name: 'Belcarra (Village)', regionalDistrictId: 2 },
-    ]
-  },
-
-  'api/lookups/familyrelationships': {
-    data: [
-      { id: 1, name: 'Spouse' },
-      { id: 2, name: 'Son' },
-      { id: 3, name: 'Daugther' },
-      { id: 4, name: 'Father' },
-      { id: 5, name: 'Mother' },
-    ]
-  },
-
-  'api/lookups/dietaryneeds': {
-    data: [
-      { id: 1, name: 'No nuts' },
-      { id: 2, name: 'No gluten' },
-      { id: 3, name: 'Vegetarian' },
-      { id: 4, name: 'Vegan' },
-      { id: 5, name: 'Pescatarian' },
-    ]
-  },
-
-  'api/lookups/referrals': {
-    data: [
-      { id: 1, name: 'Inquiry' },
-      { id: 2, name: 'Health Services' },
-      { id: 3, name: 'First Aid' },
-      { id: 4, name: 'Personal Services' },
-      { id: 5, name: 'Child Care' },
-      { id: 6, name: 'Pet Care' },
-    ]
-  },
-
-  'api/registrations': { data: [] },
-
-  // auth route
-  'api/me': { data: [] },
-
-  // admin routes (IDIR)
-  'api/incidenttasks': {
-    data: [
-      { id: 1, taskNumber: '123456', description: 'Some details about the incident here', communityId: 1, regionaDistrictId: null, regionId: null },
-      { id: 2, taskNumber: '999888', description: 'Some details about the incident here', communityId: null, regionaDistrictId: 2, regionId: null },
-      { id: 3, taskNumber: '789012', description: 'Some details about the incident here', communityId: null, regionaDistrictId: null, regionId: 2 },
-    ]
-  },
-
-  'api/organizations': { data: [] },
-  'api/organizations/1/users': { data: [] },
+  'api/relationshiptypes': useEnvelope([
+    { id: '1', name: 'Spouse', active: true },
+    { id: '2', name: 'Son', active: true },
+    { id: '3', name: 'Daughter', active: true },
+    { id: '4', name: 'Father', active: true },
+    { id: '5', name: 'Mother', active: true },
+  ]),
 };
+
+// add data relationships
+routes['api/regionaldistricts'] = useEnvelope([
+  { id: '1', name: 'Capital Region', active: true, region: byId('api/regions', '1') },
+  { id: '2', name: 'Alberni-Clayoquot (Regional District)', active: true, region: byId('api/regions', '2') },
+]);
+
+routes['api/communities'] = useEnvelope([
+  { id: '1', name: 'Victoria (City)', regionalDistrict: byId('api/regionaldistricts', '1') },
+  { id: '2', name: 'Armstrong (City)', regionalDistrict: byId('api/regionaldistricts', '2') },
+  { id: '3', name: 'Belcarra (Village)', regionalDistrict: byId('api/regionaldistricts', '2') },
+]);
+
+// admin routes (IDIR)
+routes['api/incidenttasks'] = useEnvelope([
+  { id: '1', taskNumber: '123456', description: 'Some details about the incident here', community: byId('api/communities', '1'), regionalDistrict: null, region: null },
+  { id: '2', taskNumber: '999888', description: 'Some details about the incident here', community: null, regionalDistrict: byId('api/regionaldistricts', '2'), region: null },
+  { id: '3', taskNumber: '789012', description: 'Some details about the incident here', community: null, regionalDistrict: null, region: byId('api/regions', '2') },
+]);
+
+// registrations
+routes['api/registrations'] = useEnvelope([]);
+
+// orgs
+routes['api/organizations'] = useEnvelope([]);
+routes['api/organizations/1/users'] = useEnvelope([]);
+
+// auth route
+routes['api/user/current'] = useEnvelope({
+  id: '1',
+  name: 'Doe, John',
+  firstname: 'John',
+  lastname: 'Doe',
+  email: 'jdoe@some-email.com',
+  isNewUser: false,
+});
 
 
 // mocking server-side API for now
 export function httpGet(url = 'api/not-found', options?) {
+  console.log(`fetching '${url}'`)
   const mockResponse = routes[url];
   return of(mockResponse);
+}
+
+// private
+function byId(url = 'api/not-found', id: string): any {
+  const payload: { data?: any[]; error?: any; } = routes[url];
+  const { data, error } = payload;
+  if (error) {
+    return null;
+  }
+  return (data || []).find(x => x.id == id);
+}
+
+function useEnvelope(response: any, skip = false) {
+  if (skip) {
+    return response;
+  }
+  return { data: response };
 }
