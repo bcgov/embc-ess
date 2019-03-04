@@ -50,7 +50,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             Person result = new Person();
             return result;
-        }        
+        }
+
+        public List<Country> GetCountries()
+        {
+            List<Country> countries = new List<Country>();
+            var countryList = Db.Countries.ToList();
+            foreach (var country in countryList)
+            {
+                countries.Add(country.ToViewModel());
+            }
+            return countries;
+        }
 
         public List<Region> GetRegions()
         {

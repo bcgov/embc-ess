@@ -18,6 +18,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         List<Community> GetCommunities();
 
+        List<Country> GetCountries();
+
         List<Region> GetRegions();
 
         List<Registration> GetRegistrations();
