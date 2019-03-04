@@ -42,54 +42,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             List<ViewModels.Region> result = _dataInterface.GetRegions();
 
-            /*
-            
-
-            result.Add(new Region()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Vancouver Island"
-            });
-
-            result.Add(new Region()
-            {
-                Id = Guid.NewGuid(),
-                Name = "South West"
-            });
-
-            result.Add(new Region()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Central"
-            });
-
-            result.Add(new Region()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Central"
-            });
-
-
-            result.Add(new Region()
-            {
-                Id = Guid.NewGuid(),
-                Name = "South East"
-            });
-
-
-            result.Add(new Region()
-            {
-                Id = Guid.NewGuid(),
-                Name = "North East"
-            });
-
-            result.Add(new Region()
-            {
-                Id = Guid.NewGuid(),
-                Name = "North West"
-            });
-            */
-
             return Json(result);
             
         }
@@ -104,7 +56,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] ViewModels.Person item, string id)
         {
-            if (id != null && item.id != null && id != item.id)
+            if (id != null && item.Id != null && id != item.Id)
             {
                 return BadRequest();
             }
