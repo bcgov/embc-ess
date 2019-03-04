@@ -52,8 +52,8 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
   // TODO: ????
 
         public bool? IsEvacuee { get; set; }
-        public bool IsVolunteer { get; set; }
-        public bool IsFamilyMember { get; set; }
+        public bool? IsVolunteer { get; set; }
+        public bool? IsFamilyMember { get; set; }
 
     }
 }

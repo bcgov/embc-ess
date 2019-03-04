@@ -1,0 +1,20 @@
+﻿[
+  {
+    "Name": "Victoria",
+    "Region": {
+      "Name": "Vancouver Island"
+    }
+  },
+  {
+    "Name": "Nanaimo",
+    "Region": {
+      "Name": "Vancouver Island"
+    }
+  },
+  {
+    "Name": "Port Hardy",
+    "Region": {
+      "Name": "Vancouver Island"
+    }
+  }
+]

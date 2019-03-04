@@ -55,7 +55,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] ViewModels.Person item, string id)
         {
-            if (id != null && item.id != null && id != item.id)
+            if (id != null && item.Id != null && id != item.Id)
             {
                 return BadRequest();
             }

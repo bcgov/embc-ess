@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
-    public class RegistrationsController : Controller
+    public class RegionalDistrictsController : Controller
     {
         private readonly IConfiguration Configuration;
         private readonly IDataInterface _dataInterface;
@@ -27,7 +27,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         private readonly ILogger _logger;
         private readonly IHostingEnvironment _env;
 
-        public RegistrationsController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory, IHostingEnvironment env, IDataInterface dataInterface)
+        public RegionalDistrictsController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory, IHostingEnvironment env, IDataInterface dataInterface)
         {
             Configuration = configuration;
             _dataInterface = dataInterface;
@@ -36,31 +36,14 @@ namespace Gov.Jag.Embc.Public.Controllers
             this._env = env;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpGet()]
         [AllowAnonymous]
         public IActionResult Get(string id)
         {
-            List < ViewModels.Registration > result = _dataInterface.GetRegistrations();
-  
+            List<ViewModels.RegionalDistrict> result = _dataInterface.GetRegionalDistricts();
+
             return Json(result);
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet("{id}")]
-        public IActionResult GetById(string id)
-        {
-
-            return Json(null);
+            
         }
 
 
@@ -71,14 +54,15 @@ namespace Gov.Jag.Embc.Public.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromBody] ViewModels.Registration item, string id)
+        public async Task<IActionResult> Update([FromBody] ViewModels.Person item, string id)
         {
             if (id != null && item.Id != null && id != item.Id)
             {
                 return BadRequest();
             }
 
-            
+            // get the contact
+            Guid contactId = Guid.Parse(id);
 
             return Json(null);
         }
@@ -89,11 +73,9 @@ namespace Gov.Jag.Embc.Public.Controllers
         /// <param name="viewModel"></param>
         /// <returns></returns>
         [HttpPost()]
-        [AllowAnonymous]
-        public async Task<IActionResult> Create([FromBody] ViewModels.Registration item)
+        public async Task<IActionResult> Create([FromBody] ViewModels.Person item)
         {
-            var result = _dataInterface.CreateRegistration(item);
-            return Json(result);
+            return Json(null);
         }
 
 

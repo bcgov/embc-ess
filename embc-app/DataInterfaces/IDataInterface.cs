@@ -12,8 +12,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Person GetPersonByBceidGuid(string bceidGuid);
 
-        void CreatePerson(Person person);
+        Person CreatePerson(Person person);
+
+        Registration CreateRegistration(Registration registration);
+
+        List<Community> GetCommunities();
 
         List<Region> GetRegions();
+
+        List<Registration> GetRegistrations();
+
+        List<RegionalDistrict> GetRegionalDistricts();
+        
     }
 }

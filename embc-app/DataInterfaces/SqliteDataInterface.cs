@@ -26,6 +26,20 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             
             
         }
+
+        public Person CreatePerson(Person person)
+        {
+            return person;
+        }
+
+        public Registration CreateRegistration(Registration registration)
+        {
+            var model = registration.ToModel();
+            Db.Registrations.Add(model);
+            Db.SaveChanges();
+            return model.ToViewModel();
+        }
+
         public Organisation GetOrganisationByBceidGuid(string bceidGuid)
         {
             Organisation result = new Organisation();
@@ -36,12 +50,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             Person result = new Person();
             return result;
-        }
-
-        public void CreatePerson(Person person)
-        {
-
-        }
+        }        
 
         public List<Region> GetRegions()
         {
@@ -52,6 +61,39 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 regions.Add(region.ToViewModel());
             }
             return regions;   
+        }
+
+        public List<Registration> GetRegistrations()
+        {
+            List<Registration> regions = new List<Registration>();
+            var registrationList = Db.Registrations.ToList();
+            foreach (var registration in registrationList)
+            {
+                regions.Add(registration.ToViewModel());
+            }
+            return regions;
+        }
+
+        public List<RegionalDistrict> GetRegionalDistricts()
+        {
+            List<RegionalDistrict> regions = new List<RegionalDistrict>();
+            var regionalDistrictList = Db.RegionalDistricts.ToList();
+            foreach (var regionalDistrict in regionalDistrictList)
+            {
+                regions.Add(regionalDistrict.ToViewModel());
+            }
+            return regions;
+        }
+
+        public List<Community> GetCommunities()
+        {
+            List<Community> regions = new List<Community>();
+            var communityList = Db.Communities.ToList();
+            foreach (var community in communityList)
+            {
+                regions.Add(community.ToViewModel());
+            }
+            return regions;
         }
 
     }

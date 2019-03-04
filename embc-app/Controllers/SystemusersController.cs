@@ -44,25 +44,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
 
-        /// <summary>
-        /// Update
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromBody] ViewModels.Person item, string id)
-        {
-            if (id != null && item.id != null && id != item.id)
-            {
-                return BadRequest();
-            }
-
-            // get the contact
-            Guid contactId = Guid.Parse(id);
-
-            return Json(null);
-        }
+        
 
         /// <summary>
         /// 

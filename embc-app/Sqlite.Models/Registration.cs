@@ -33,8 +33,8 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         public BceidUser Interviewer { get; set; }
         public string InterviewerFirstName { get; set; }
         public string InterviewerLastNameInitial { get; set; }
-        public string startDate { get; set; }
-        public string endDate { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
 
         //specialNeeds: {};
 

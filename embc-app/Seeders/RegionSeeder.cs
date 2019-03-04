@@ -9,11 +9,11 @@ using Gov.Jag.Embc.Public.Sqlite.Models;
 
 namespace Gov.Embc.Public.Seeders
 {
-    public class JurisdictionSeeder : Seeder<SqliteContext>
+    public class RegionSeeder : Seeder<SqliteContext>
     {
         private readonly string[] _profileTriggers = { AllProfiles };
 
-        public JurisdictionSeeder(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory  loggerFactory) 
+        public RegionSeeder(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory  loggerFactory) 
             : base(configuration, env, loggerFactory)
         { }
 
