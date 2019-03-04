@@ -26,6 +26,21 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
+        public static ViewModels.Country ToViewModel(this Sqlite.Models.Country item)
+        {
+            ViewModels.Country result = null;
+            if (item != null)
+            {
+                result = new ViewModels.Country()
+                {
+                    Id = item.Id.ToString(),
+                    Name = item.Name,
+                    Active = item.Active                    
+                };
+            }
+            return result;
+        }
+
         public static Sqlite.Models.Person ToModel(this ViewModels.Person item)
         {
             Sqlite.Models.Person result = null;
