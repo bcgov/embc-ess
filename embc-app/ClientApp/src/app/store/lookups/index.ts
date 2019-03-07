@@ -1,4 +1,4 @@
-import { combineReducers } from '@ngrx/store';
+import { combineReducers, ActionReducer, Action } from '@ngrx/store';
 
 import * as fromCountries from './country.reducer';
 import * as fromRegions from './region.reducer';
@@ -23,12 +23,16 @@ export const initialState: State = {
   relationshipTypes: fromRelationshipTypes.initialState,
 };
 
-// Loaded once at init time, as they do not change very often, and
-// certainly not within the app.
-export const reducer = combineReducers<State>({
+const combined = combineReducers<State>({
   countries: fromCountries.reducer,
   regions: fromRegions.reducer,
   regionalDistricts: fromRegionalDistricts.reducer,
   communities: fromCommunities.reducer,
   relationshipTypes: fromRelationshipTypes.reducer,
 });
+
+// Loaded once at init time, as they do not change very often, and
+// certainly not within the app.
+export function reducer(state: State, action: Action): State {
+  return combined(state, action);
+}
