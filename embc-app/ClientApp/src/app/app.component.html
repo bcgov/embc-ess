@@ -1,21 +1,27 @@
 <app-warning-banner [show]="isIE"></app-warning-banner>
+  <app-header [currentUser]="currentUser"></app-header>
+
+<div class="container">
 
 <div class="app-outer" *ngIf="isIE == false">
-  <app-header [currentUser]="currentUser"></app-header>
   <div *ngIf="isNewUser">
-    <main class="app-content">
+    <!-- <main class="app-content"> -->
       <!-- <app-bceid-confirmation *ngIf="currentUser && currentUser.isNewUser == true" (reloadUser)="reloadUser()" [currentUser]="currentUser"></app-bceid-confirmation> -->
-    </main>
+    <!-- </main> -->
   </div>
   <div *ngIf="isReturningUser || isAuthenticated == false">
     <!-- TODO: /NAVBAR START -->
     <!-- /NAVBAR END -->
-    <main class="app-content">
-      <div class="app-main">
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+    <!-- <main class="app-content"> -->
+      <!-- <div class="app-main"> -->
         <!-- <breadcrumb></breadcrumb> -->
-        <router-outlet></router-outlet>
-      </div>
-    </main>
+        <!-- <router-outlet></router-outlet> -->
+      <!-- </div> -->
+    <!-- </main> -->
   </div>
-  <app-footer [versionInfo]="versionInfo"></app-footer>
 </div>
+</div>
+<app-footer [versionInfo]="versionInfo"></app-footer>
