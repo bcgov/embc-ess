@@ -9,6 +9,7 @@ import {
   SelfRegistrationThreeComponent,
   SelfRegistrationFourComponent,
 } from './self-registration';
+import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
       },
     ]
   },
+  {
+    path: 'volunteer-login',
+    component: VolunteerLoginComponent
+  }
 ];
 
 @NgModule({
