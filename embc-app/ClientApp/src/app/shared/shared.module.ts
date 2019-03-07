@@ -8,7 +8,10 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SideBoxComponent, SideBoxActions } from './components/side-box/side-box.component';
 import { FormFieldComponent } from './components/form-field/form-field.component';
-import { AddressFormGroupComponent } from './components/address-form-group/address-form-group.component';
+import { AddressSelectorComponent } from './components/address-form/address-selector.component';
+import { BcAddressComponent } from './components/address-form/bc-address/bc-address.component';
+import { OtherAddressComponent } from './components/address-form/other-address/other-address.component';
+import { DisableControlDirective } from './directives/disable-control.directive';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { AddressFormGroupComponent } from './components/address-form-group/addre
     SideBoxComponent,
     SideBoxActions,
     FormFieldComponent,
-    AddressFormGroupComponent,
+    AddressSelectorComponent,
+    BcAddressComponent,
+    OtherAddressComponent,
+    DisableControlDirective,
   ],
   imports: [
     CommonModule,
@@ -40,7 +46,10 @@ import { AddressFormGroupComponent } from './components/address-form-group/addre
     SideBoxComponent,
     SideBoxActions,
     FormFieldComponent,
-    AddressFormGroupComponent,
+    AddressSelectorComponent,
+    BcAddressComponent,
+    OtherAddressComponent,
+    DisableControlDirective,
   ]
 })
 export class SharedModule { }

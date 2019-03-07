@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Registration } from 'src/app/core/models';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/app-state';
+import { AppState } from 'src/app/store';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UpdateRegistration } from 'src/app/store/actions/registration.action';
+import { LoadAllRegistrations } from 'src/app/store/registration/registration.actions';
 
 @Component({
   selector: 'app-self-registration-three',
@@ -39,7 +39,7 @@ export class SelfRegistrationThreeComponent implements OnInit {
   }
 
   getInitialState() {
-    return this.store.select(state => state.registration);
+    return this.store.select(state => state.registrations.currentRegistration);
   }
 
   initForm(state: Registration) {
@@ -64,7 +64,7 @@ export class SelfRegistrationThreeComponent implements OnInit {
       ...{}
     };
 
-    this.store.dispatch(new UpdateRegistration(newState));
+    // this.store.dispatch(new LoadAllRegistrations(newState));
   }
 
   next() {

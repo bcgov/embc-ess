@@ -4,15 +4,14 @@ import { throwError, Observable } from 'rxjs';
 import { map, catchError, retry } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import { AppState } from 'src/app/store/app-state';
+import { AppState } from 'src/app/store';
 import { httpGet } from './mock-api';  // FIXME: <-- this will GO AWAY when backend is built
-import { CoreModule } from '../core.module';
 
 @Injectable()
 export abstract class RestService {
 
   // FIXME: change this when API is live!
-  protected baseUrl: 'api';
+  protected baseUrl = 'api';
 
   constructor(
     protected http: HttpClient,
@@ -62,7 +61,7 @@ export abstract class RestService {
   }
 
   // Error handling
-  protected handleError(err) {
+  protected handleError(err): Observable<never> {
     let errorMessage = '';
     if (err.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

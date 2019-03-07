@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+
+import { AppState } from '../store';
+import * as RegistrationActions from 'src/app/store/registration/registration.actions';
 
 @Component({
   selector: 'app-home',
@@ -10,8 +15,16 @@ export class HomeComponent implements OnInit {
   window = window;
   busy: Subscription;
 
-  constructor() { }
+  constructor(
+    private store: Store<AppState>,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
+  }
+
+  newRegistration(): void {
+    this.store.dispatch(new RegistrationActions.InitializeCurrentRegistration());
+    this.router.navigate(['/self-registration']);
   }
 }
