@@ -13,11 +13,13 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { SelfRegistrationModule } from './self-registration';
 import { HomeComponent } from './home/home.component';
+import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    VolunteerLoginComponent,
   ],
   imports: [
     // angular
