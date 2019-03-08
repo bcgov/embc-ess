@@ -1,6 +1,7 @@
-import { Person } from '.';
+import { Evacuee } from './';
 
-export interface FamilyMember extends Person {
+export interface FamilyMember extends Evacuee {
+  personType: 'FMBR';
   relationshipToEvacuee: string;
   sameLastNameAsEvacuee: boolean;
 }
