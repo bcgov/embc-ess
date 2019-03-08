@@ -24,11 +24,26 @@
         <thead>
           <th scope="col">First Name</th>
           <th scope="col">Last Name</th>
+          <th scope="col">Task #</th>
+          <th scope="col">ESS File #</th>
+          <th scope="col">Evacuated From</th>
+          <th scope="col">Evacuated To</th>
+          <th scope="col">Referrals</th>
+          <th scope="col">Action</th>
+
+
+
         </thead>
         <tbody>
           <tr *ngFor="let evacuee of evacuees">
             <td>{{evacuee.firstName}}</td>
             <td>{{evacuee.lastName}}</td>
+            <td>12</td>
+            <td>12345</td>
+            <td>Grand Forks</td>
+            <td>Niagra</td>
+            <td>Yurp</td>
+            <td><a href="">Link</a></td>
           </tr>
         </tbody>
       </table>
