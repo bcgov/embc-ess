@@ -13,5 +13,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string Name { get; set; }
 
         public bool? Active { get; set; }
+
+        public Region Region { get; set; }
     }
 }

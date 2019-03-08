@@ -41,7 +41,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         [MaxLength(255)]
         public string Initials { get; set; }
 
-        [MaxLength(255)]
+        
         public Address PrimaryResidence { get; set; }
         
         public Address MailingAddress { get; set; }

@@ -35,7 +35,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         public string AddressLine3 { get; set; }
 
         [MaxLength(255)]
-        public string Community { get; set; }
+        public string CommunityOrCity { get; set; }
 
         [MaxLength(255)]
         public string Province { get; set; }

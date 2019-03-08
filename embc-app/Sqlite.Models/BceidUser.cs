@@ -11,10 +11,10 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// <summary>
     /// Role Database Model
     /// </summary>
-        public sealed partial class BceidUser
+        public sealed partial class Volunteer
     {
 
-        public BceidUser()
+        public Volunteer()
         { }
 
         /// <summary>
