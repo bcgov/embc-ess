@@ -8,7 +8,7 @@ const FAKEREGISTRATIONS: Registration[] = [
   {
     id: '123',
     restrictedAccess: false,
-    essFileNumber: 123,
+    essFileNumber:  1289734,
 
     dietaryNeeds: false,
     dietaryNeedsDetails: 'gluten intolerance',
