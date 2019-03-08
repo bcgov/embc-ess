@@ -25,25 +25,18 @@
 
 
   <div class="col-4">
-    <section class="step" style="display: block; background-color: #F1F4FA">
-        <h3 class="blue-header">EVACUEE PROFILE</h3>
-        <section style="padding-top: 15px; padding-bottom: 20px;">
-          <mat-vertical-stepper [linear]="true" #stepper>
-            <ng-template matStepperIcon="edit">
-              <i class="fas fa-check"></i>
-            </ng-template>
-            <ng-template matStepperIcon="number">
-            </ng-template>
-            <mat-step label="STEP 1: Evacuee Information"></mat-step>
-            <mat-step label="STEP 2: Evacuee Contact Details"></mat-step>
-            <mat-step label="STEP 3: Summary"></mat-step>
-            <mat-step label="STEP 4: Confirmation"></mat-step>
-          </mat-vertical-stepper>
-        </section>
-      </section>
-    <div class="card mt-3">
+    <app-side-box title="Add an evacuee">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis porttitor scelerisque. Proin blandit
+          suscipit ultrices. Proin dictum libero eget justo rhoncus sollicitudin.
+        </p>
+        <app-side-box-actions>
+          <button class="btn btn-primary" routerLink="/">Add</button>
+        </app-side-box-actions>
+    </app-side-box>
+    <!-- <div class="card mt-3">
       <div class="card-header">Add an Evacuee</div>
       <div class="card-body">Button goes here.</div>
-    </div>
+    </div> -->
   </div>
 </div>
