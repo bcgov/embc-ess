@@ -51,18 +51,18 @@ namespace Gov.Embc.Public.Seeders
 
         private List<Community> GetSeedCommunities()
         {
-            List<Community> jurisdictions = new List<Community>(GetDefaultCommunities());
+            List<Community> communities = new List<Community>(GetDefaultCommunities());
                 
             if (IsProductionEnvironment)
             {
-                jurisdictions.AddRange(GetProdCommunities());
+                communities.AddRange(GetProdCommunities());
             }
             else
             {
-                jurisdictions.AddRange(GetDevCommunities());
+                communities.AddRange(GetDevCommunities());
             }
 
-            return jurisdictions;
+            return communities;
         }
 
         /// <summary>

@@ -85,12 +85,15 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 return;
             }
 
+            var region = context.GetRegionByName(initialRegionalDistrict.Region.Name);
+
             RegionalDistrict = new RegionalDistrict
             ()
             {
                 Id = initialRegionalDistrict.Id,
                 Name = initialRegionalDistrict.Name,
-                Active = true
+                Active = true,
+                Region = region
             };
 
             context.AddRegionalDistrict(RegionalDistrict);
@@ -111,8 +114,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
             else
             {
+                var region = context.GetRegionByName(RegionalDistrictInfo.Region.Name);
+
                 RegionalDistrict.Name = RegionalDistrictInfo.Name;
                 RegionalDistrict.Active = RegionalDistrictInfo.Active;
+                RegionalDistrict.Region = region;
                 context.UpdateRegionalDistrict(RegionalDistrict);
             }
         }

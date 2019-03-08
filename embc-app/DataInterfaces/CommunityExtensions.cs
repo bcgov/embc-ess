@@ -87,7 +87,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             // get the region.
 
-            var region = context.GetRegionByName(initialCommunity.Region.Name);
+            var regionalDistrict = context.GetRegionalDistrictByName(initialCommunity.RegionalDistrict.Name);
 
 
             Community = new Community
@@ -96,7 +96,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 Id = initialCommunity.Id,
                 Name = initialCommunity.Name,
                 Active = true,
-                Region = region
+                RegionalDistrict = regionalDistrict
             };
 
             context.AddCommunity(Community);
@@ -119,7 +119,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 Community.Name = CommunityInfo.Name;
                 Community.Active = CommunityInfo.Active;
-                Community.Region = CommunityInfo.Region;
+                Community.RegionalDistrict = CommunityInfo.RegionalDistrict;
                 context.UpdateCommunity(Community);
             }
         }

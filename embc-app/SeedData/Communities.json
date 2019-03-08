@@ -1,20 +1,14 @@
 ﻿[
   {
     "Name": "Victoria",
-    "Region": {
-      "Name": "Vancouver Island"
+    "RegionalDistrict": {
+      "Name": "Capital Region"
     }
   },
   {
-    "Name": "Nanaimo",
-    "Region": {
-      "Name": "Vancouver Island"
-    }
-  },
-  {
-    "Name": "Port Hardy",
-    "Region": {
-      "Name": "Vancouver Island"
+    "Name": "Port McNeil",
+    "RegionalDistrict": {
+      "Name": "Mount Waddington"
     }
   }
 ]
