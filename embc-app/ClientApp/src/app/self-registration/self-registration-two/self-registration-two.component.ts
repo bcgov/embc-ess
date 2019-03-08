@@ -27,12 +27,12 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
   ) { }
 
   // Shortcuts for this.form.get(...)
-  get isSupportRequired() { return this.form.get('isSupportRequired'); }
+  get supportRequired() { return this.form.get('supportRequired'); }
 
   // TODO: Form UI logic; i.e. show additional form fields when a checkbox is checked
   get ui() {
     return {
-      showAvailableServices: () => this.form.get('isSupportRequired').value === true,
+      showAvailableServices: () => this.form.get('supportRequired').value === true,
     };
   }
 
@@ -70,7 +70,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
       isTakingMedication: null,
       hasPets: null,
       insuranceCode: null,
-      isSupportRequired: null,
+      supportRequired: null,
       requiresFood: null,
       requiresClothing: null,
       requiresAccommodation: null,
@@ -81,7 +81,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
 
   handleFormChanges() {
     // TODO: Register any value change listeners here...
-    this.isSupportRequired.valueChanges.subscribe((value: boolean) => {
+    this.supportRequired.valueChanges.subscribe((value: boolean) => {
       if (!value) {
         this.resetSupportServices();
       }
@@ -102,7 +102,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
         isTakingMedication: this.registration.isTakingMedication,
         hasPets: this.registration.hasPets,
         insuranceCode: this.registration.insuranceCode,
-        isSupportRequired: this.registration.isSupportRequired,
+        supportRequired: this.registration.supportRequired,
         requiresFood: this.registration.requiresFood,
         requiresClothing: this.registration.requiresClothing,
         requiresAccommodation: this.registration.requiresAccommodation,

@@ -30,7 +30,7 @@ const initialState: State = {
     hasThreeDaySupply: null,
     hasPets: null,
     insuranceCode: null,
-    isSupportRequired: null,
+    supportRequired: null,
     requiresFood: null,
     requiresClothing: null,
     requiresAccommodation: null,
