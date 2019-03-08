@@ -63,7 +63,7 @@
     </div>
   </section>
 
-  <h3 class="blue-header">EVACUEE FAMILY INFORMATION</h3>
+  <h3 class="blue-header">EVACUEE FAMILY INFORMATION<i class=" ml-3 text-white fas fa-info-circle"></i></h3>
   <section class="padded-section">
     <p>Are you registering immediate family members who live in the same household with you?</p>
     <div class="form-group">
@@ -142,41 +142,41 @@
     </div>
   </section>
 
-  <h3 class="blue-header">PRIMARY RESIDENCE & CONTACT DETAILS</h3>
+  <h3 class="blue-header">PRIMARY RESIDENCE & CONTACT DETAILS<i class=" ml-3 text-white fas fa-info-circle"></i></h3>
   <section class="padded-section">
     <div class="form-group d-flex flex-row">
-      <p class="m-0 mr-4">Is your primary residence within BC?</p>
+      <p class="m-0 mr-4">Is your primary residence within BC</p>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" formControlName="isPrimaryResidenceInBC" [value]="true">
+        <input class="form-check-input" type="radio" formControlName="primaryResidenceInBC" [value]="true">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" formControlName="isPrimaryResidenceInBC" [value]="false">
+        <input class="form-check-input" type="radio" formControlName="primaryResidenceInBC" [value]="false">
         <label class="form-check-label">No</label>
       </div>
     </div>
-    <ng-container *ngIf="isPrimaryResidenceInBC.value != null">
-      <app-address-selector [parent]="primaryResidence" [withinBC]="isPrimaryResidenceInBC.value">
+    <section *ngIf="ui.showPrimaryAddressSection()" class="feature-block">
+      <app-address-selector [parent]="primaryResidence" [withinBC]="primaryResidenceInBC.value">
       </app-address-selector>
       <section>
         <div class="row">
           <app-form-field class="col-md-6">
             <label>Telephone / Mobile Number (10 digits)</label>
-            <input class="form-control" type="text">
+            <input class="form-control" type="text" placeholder="xxx xxx xxxx" formControlName="phoneNumber">
           </app-form-field>
           <app-form-field class="col-md-6">
             <label>Alternate Telephone / Mobile Number</label>
-            <input class="form-control" type="text">
+            <input class="form-control" type="text" placeholder="xxx xxx xxxx" formControlName="phoneNumberAlt">
           </app-form-field>
         </div>
         <div class="row">
           <app-form-field class="col-md-8" required="true">
             <label>Email Address</label>
-            <input class="form-control" type="text">
+            <input class="form-control" type="text" formControlName="email">
           </app-form-field>
         </div>
       </section>
-    </ng-container>
+    </section>
   </section>
 
   <h3 class="blue-header">MAILING ADDRESS</h3>
@@ -192,21 +192,21 @@
         <label class="form-check-label">No</label>
       </div>
     </div>
-    <div *ngIf="ui.showMailingAddress()" class="feature-block">
+    <section *ngIf="ui.showMailingAddressSelector()" class="feature-block">
       <div class="form-group d-flex flex-row">
-        <p class="m-0 mr-4">Is your mailing address within BC?</p>
+        <p class="m-0 mr-4">Is your mailing address within BC</p>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" formControlName="isMailingAddressInBC" [value]="true">
+          <input class="form-check-input" type="radio" formControlName="mailingAddressInBC" [value]="true">
           <label class="form-check-label">Yes</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" formControlName="isMailingAddressInBC" [value]="false">
+          <input class="form-check-input" type="radio" formControlName="mailingAddressInBC" [value]="false">
           <label class="form-check-label">No</label>
         </div>
       </div>
-      <app-address-selector *ngIf="isMailingAddressInBC.value != null" [parent]="mailingAddress"
-        [withinBC]="isMailingAddressInBC.value"></app-address-selector>
-    </div>
+      <app-address-selector *ngIf="ui.showMailingAddressSection()" [parent]="mailingAddress"
+        [withinBC]="mailingAddressInBC.value"></app-address-selector>
+    </section>
   </section>
 
   <div class="mt-5 space-between">

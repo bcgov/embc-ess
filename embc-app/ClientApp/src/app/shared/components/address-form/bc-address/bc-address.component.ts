@@ -8,7 +8,7 @@ import { Community, Country } from 'src/app/core/models';
   template: `
     <section [formGroup]="parent">
       <div class="row">
-        <app-form-field class="col-md-8" required="true">
+        <app-form-field class="col-md-6" required="true">
           <label>Apt/Suite/Building Number &amp; Street Address</label>
           <input class="form-control" type="text" formControlName="addressLine1">
         </app-form-field>
@@ -31,7 +31,7 @@ import { Community, Country } from 'src/app/core/models';
         </app-form-field>
       </div>
       <div class="row">
-        <app-form-field class="col-md-3" required="true">
+        <app-form-field class="col-md-6" required="true">
           <label>Country</label>
           <input class="form-control" type="text" [readonly]="true" value="Canada">
           <input type="hidden" formControlName="country">
