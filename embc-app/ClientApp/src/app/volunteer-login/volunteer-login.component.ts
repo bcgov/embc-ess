@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-volunteer-login',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VolunteerLoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
+  continue(){
+    //this is a simple passthrough for redirecting from the dummy page.
+    alert("Routing home.");
+    this.router.navigateByUrl('/');
 
+  }
 }
