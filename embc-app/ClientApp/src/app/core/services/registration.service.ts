@@ -60,12 +60,20 @@ const FAKEREGISTRATIONS: Registration[] = [
     incidentTask: {
       id: 'aslkdfjh',
       taskNumber: '10293847',
-      details: '',
+      details: 'This is an incident task.',
       region: null,
       regionalDistrict: null,
-      community: null
+      community: {
+        id: 'zxoicuvz',
+        name: 'Grand Forks',
+        regionalDistrict: null
+      }
     },
-    hostCommunity: null,
+    hostCommunity: {
+      id: 'aslkdfjs',
+      name: 'Niagra',
+      regionalDistrict: null
+    },
     completedBy: null
   }
 ]
