@@ -30,11 +30,11 @@ const routes = {
   ]),
 
   'api/relationshiptypes': useEnvelope([
-    { id: '1', name: 'Spouse', active: true },
-    { id: '2', name: 'Son', active: true },
-    { id: '3', name: 'Daughter', active: true },
-    { id: '4', name: 'Father', active: true },
-    { id: '5', name: 'Mother', active: true },
+    { code: '1', description: 'Spouse', active: true },
+    { code: '2', description: 'Son', active: true },
+    { code: '3', description: 'Daughter', active: true },
+    { code: '4', description: 'Father', active: true },
+    { code: '5', description: 'Mother', active: true },
   ]),
 };
 

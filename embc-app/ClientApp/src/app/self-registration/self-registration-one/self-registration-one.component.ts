@@ -53,7 +53,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Create form controls
     this.initForm();
-    this.handleFormChanges();
+    this.onFormChanges();
 
     // Update form values based on the state
     this.currentRegistration$
@@ -74,7 +74,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         lastName: '',
         nickname: '',
         initials: '',
-        gender: '',
+        gender: null,
         dob: null,
       }),
       registeringFamilyMembers: null,
@@ -103,12 +103,18 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   }
 
   // Watch for value changes
-  private handleFormChanges(): void {
+  onFormChanges(): void {
     this.registeringFamilyMembers.valueChanges.subscribe((value: number) => {
       if (value === 1) {
         this.addFamilyMember();
       } else {
         this.clearFamilyMembers();
+      }
+    });
+
+    this.familyMembers.valueChanges.subscribe((arr: any[]) => {
+      if (arr.length == 0) {
+        this.isRegisteringFamilyMembers.setValue(3);
       }
     });
   }
@@ -163,6 +169,32 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     }
   }
 
+  addFamilyMember(): void {
+    this.familyMembers.push(this.fb.group({
+      relationshipToEvacuee: null,
+      sameLastNameAsEvacuee: true,
+      firstName: '',
+      lastName: '',
+      initials: '',
+      gender: null,
+      dob: null,
+    }));
+  }
+
+  removeFamilyMember(): void {
+    const last = this.familyMembers.length - 1;
+    this.familyMembers.removeAt(last);
+  }
+
+  clearFamilyMembers() {
+    this.clear(this.familyMembers);
+  }
+
+  next(): void {
+    this.onSave();
+    this.router.navigate(['../step-2'], { relativeTo: this.route });
+  }
+
   onSave(): void {
     const form = this.form.value;
     const newState: Registration = {
@@ -189,31 +221,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     this.store.dispatch(new UpdateRegistration({ registration: newState }));
   }
 
-  addFamilyMember(): void {
-    this.familyMembers.push(this.fb.group({
-      relationshipToEvacuee: [''],
-      sameLastNameAsEvacuee: [true],
-      firstName: [''],
-      lastName: [''],
-      initials: [''],
-      gender: [undefined],
-      dob: [undefined],
-    }));
-  }
-
-  clearFamilyMembers() {
-    this.clear(this.familyMembers);
-  }
-
   // TODO: Refactor into utils method
   private clear(formArray: FormArray): void {
     while (formArray.length !== 0) {
       formArray.removeAt(0);
     }
-  }
-
-  next(): void {
-    this.onSave();
-    this.router.navigate(['../step-2'], { relativeTo: this.route });
   }
 }

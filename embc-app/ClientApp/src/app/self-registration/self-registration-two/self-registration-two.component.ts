@@ -118,7 +118,6 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
   }
 
   onSave() {
-    const form = this.form.value;
     const newState: Registration = { ...this.registration, ...this.form.value };
     this.store.dispatch(new UpdateRegistration({ registration: newState }));
   }

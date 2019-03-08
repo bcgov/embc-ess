@@ -22,7 +22,7 @@
     </div>
   </div>
 
-  <h3 class="blue-header">FAMILY REPRESENTATIVE</h3>
+  <h3 class="blue-header">EVACUEE DETAILS</h3>
   <section class="padded-section" formGroupName="headOfHousehold">
     <div class="row">
       <app-form-field class="col-md-8" required="true">
@@ -108,7 +108,12 @@
           <div class="row">
             <app-form-field class="col-md-6">
               <label>Relationship</label>
-              <input class="form-control" type="text" formControlName="relationshipToEvacuee">
+              <!-- <input class="form-control" type="text" formControlName="relationshipToEvacuee"> -->
+              <select class="form-control" formControlName="relationshipToEvacuee">
+                <option [ngValue]="null">Please select--</option>
+                <option [value]="item.code" *ngFor="let item of relationshipTypes$ | async">{{item.description}}
+                </option>
+              </select>
             </app-form-field>
             <app-form-field class="col-md-2" required="true">
               <label>Gender</label>
@@ -127,6 +132,9 @@
         </div>
       </div>
       <div class="family-members__actions clearfix">
+        <a [routerLink]="" class="float-left" (click)="removeFamilyMember()">
+          <i class="fa fa-times" style="margin-right: 5px"></i>Remove
+        </a>
         <a [routerLink]="" class="float-right" (click)="addFamilyMember()">
           <i class="fas fa-plus-circle" style="margin-right: 5px"></i>Add another contact
         </a>
