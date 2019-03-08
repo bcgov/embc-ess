@@ -1,35 +1,43 @@
 import { HeadOfHousehold, FamilyMember, Community, IncidentTask, Volunteer } from './';
 
 export interface Registration {
+  // primary identifier
   id: string | null;
-  essFileNumber: number | null;
-  isRestrictedAccess: boolean;
-  isRegisteringFamilyMembers: number;
-  hasDietaryNeeds: boolean;
+  //misc
   dietaryNeedsDetails: string;
-  isTakingMedication: boolean;
-  hasThreeDaySupply: boolean;
-  hasPets: boolean;
-  insuranceCode: string;
-  isSupportRequired: boolean;
-  requiresFood: boolean;
-  requiresClothing: boolean;
-  requiresAccommodation: boolean;
-  requiresIncidentals: boolean;
-  requiresTransportation: boolean;
-  facility: string;
   disasterAffectDetails: string;
+  essFileNumber: number | null;
   externalReferralsDetails: string;
+  facility: string;
   familyRecoveryPlan: string;
   followUpDetails: string;
+  insuranceCode: string;
+  selfRegisteredDate: Date | null; // datetime
+  supportRequired: boolean;
+  registrationCompletionDate: Date | null; // datetime
+
+  //Registration state
+  isRegisteringFamilyMembers: number;
+  isRestrictedAccess: boolean;
+  isTakingMedication: boolean;
+
+  //Inventory
+  hasThreeDaySupply: boolean;
+  hasPets: boolean;
+  hasDietaryNeeds: boolean;
   hasInquiryReferral: boolean;
   hasHealthServicesReferral: boolean;
   hasFirstAidReferral: boolean;
-  hasPersonalServicesReferral: boolean;
   hasChildCareReferral: boolean;
+  hasPersonalServicesReferral: boolean;
   hasPetCareReferral: boolean;
-  selfRegisteredDate: Date | null; // datetime
-  registrationCompletionDate: Date | null; // datetime
+  
+  //requirements
+  requiresAccommodation: boolean;
+  requiresClothing: boolean;
+  requiresFood: boolean;
+  requiresIncidentals: boolean;
+  requiresTransportation: boolean;
 
   // related entities
   headOfHousehold: HeadOfHousehold;
