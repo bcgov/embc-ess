@@ -1,8 +1,14 @@
 ﻿[
   {
-    "Name": "Capital Region"
+    "Name": "Capital Region",
+    "Region": {
+      "Name": "Vancouver Island"
+    }
   },
   {
-    "Name": "Mount Waddington"
+    "Name": "Mount Waddington",
+    "Region": {
+      "Name": "Vancouver Island"
+    }
   }
 ]

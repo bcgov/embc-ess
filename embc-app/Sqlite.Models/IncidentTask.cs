@@ -9,12 +9,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Gov.Jag.Embc.Public.Sqlite.Models
 {
     /// <summary>
-    /// Role Database Model
+    /// Incident Task Database Model
     /// </summary>
-        public sealed partial class Community
+    public sealed partial class IncidentTask
     {
-      
-        public Community()
+
+        public IncidentTask()
         { }
 
         /// <summary>
@@ -25,18 +25,11 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         [Key]
         public Guid Id { get; set; }
 
-        /// <summary>
-        /// The name of the Community
-        /// </summary>
-        /// <value>The name of the Community</value>
-        [MaxLength(255)]        
-        public string Name { get; set; }
-        
-        /// <summary>
-        /// true if active
-        /// </summary>
-        public bool? Active { get; set; }
-
+        public string TaskNumber { get; set; }
+        public string Details { get; set; }
+        public Region Region { get; set; }
         public RegionalDistrict RegionalDistrict { get; set; }
+        public Community Community { get; set; }
+
     }
 }

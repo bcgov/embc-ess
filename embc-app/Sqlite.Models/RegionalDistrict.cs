@@ -37,5 +37,6 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         /// </summary>
         public bool? Active { get; set; }
 
+        public Region Region { get; set; }
     }
 }
