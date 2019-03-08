@@ -30,15 +30,12 @@
           <th scope="col">Evacuated To</th>
           <th scope="col">Referrals</th>
           <th scope="col">Action</th>
-
-
-
         </thead>
         <tbody>
-          <tr *ngFor="let evacuee of evacuees">
-            <td>{{evacuee.firstName}}</td>
-            <td>{{evacuee.lastName}}</td>
-            <td>12</td>
+          <tr *ngFor="let registration of registrations">
+            <td>{{registration.headOfHousehold.firstName}}</td>
+            <td>{{registration.headOfHousehold.lastName}}</td>
+            <td>{{registration.incidentTask.taskNumber}}</td>
             <td>12345</td>
             <td>Grand Forks</td>
             <td>Niagra</td>
@@ -72,6 +69,6 @@
       <div class="card-body">Button goes here.</div>
     </div> -->
   </div>    
-  {{evacueeList|json}}
+  {{registrations|json}}
 
 </div>

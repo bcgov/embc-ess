@@ -57,7 +57,14 @@ const FAKEREGISTRATIONS: Registration[] = [
         mailingAddress: null
       },
     familyMembers: [],
-    incidentTask: null,
+    incidentTask: {
+      id: 'aslkdfjh',
+      taskNumber: '10293847',
+      details: '',
+      region: null,
+      regionalDistrict: null,
+      community: null
+    },
     hostCommunity: null,
     completedBy: null
   }

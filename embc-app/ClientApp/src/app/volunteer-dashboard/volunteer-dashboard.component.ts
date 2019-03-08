@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-// import { Evacuee } from '../core/models';
+import { Registration, Evacuee } from '../core/models';
+import { RegistrationService } from '../core/services/registration.service';
 @Component({
   selector: 'app-volunteer-dashboard',
   templateUrl: './volunteer-dashboard.component.html',
@@ -7,13 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VolunteerDashboardComponent implements OnInit {
 
-  // evacuees: Evacuee[];
+  registrations: Registration[];
+
   constructor(
-    // private evacueeService: EvacueeService
+    private registrationService: RegistrationService
   ) { }
 
   ngOnInit() {
-    // this.evacueeService.getAllEvacuees().subscribe(evacuees=>this.evacuees=evacuees)
+    // go get the data
+    this.registrationService.getRegistries().subscribe(r=>this.registrations=r);
   }
 
 }
