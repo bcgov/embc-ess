@@ -3,7 +3,7 @@
     <div class="mb-4">
       <h1>Volunteer Dashboard</h1>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit amet pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean efficitur et arcu a fringilla.</p>
-      <h4 class="blue-bar">List of Evacuees</h4>
+      <h4 class="blue-header">List of Evacuees</h4>
 
       <div class="form-row">
         <div class="col-md-9">
@@ -22,7 +22,28 @@
       </p>
     </div>
   </div>
+
+
   <div class="col-4">
-    test
+    <section class="step" style="display: block; background-color: #F1F4FA">
+        <h3 class="blue-header">EVACUEE PROFILE</h3>
+        <section style="padding-top: 15px; padding-bottom: 20px;">
+          <mat-vertical-stepper [linear]="true" #stepper>
+            <ng-template matStepperIcon="edit">
+              <i class="fas fa-check"></i>
+            </ng-template>
+            <ng-template matStepperIcon="number">
+            </ng-template>
+            <mat-step label="STEP 1: Evacuee Information"></mat-step>
+            <mat-step label="STEP 2: Evacuee Contact Details"></mat-step>
+            <mat-step label="STEP 3: Summary"></mat-step>
+            <mat-step label="STEP 4: Confirmation"></mat-step>
+          </mat-vertical-stepper>
+        </section>
+      </section>
+    <div class="card mt-3">
+      <div class="card-header">Add an Evacuee</div>
+      <div class="card-body">Button goes here.</div>
+    </div>
   </div>
 </div>
