@@ -14,8 +14,7 @@ export class VolunteerLoginComponent implements OnInit {
   }
   continue(){
     //this is a simple passthrough for redirecting from the dummy page.
-    alert("Routing home.");
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('volunteer-dashboard');
 
   }
 }
