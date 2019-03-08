@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableModule } from '@angular/material';
 import { Evacuee } from '../core/models';
 import { EvacueeService } from '../core/services/evacuee.service';
 @Component({
@@ -9,13 +8,13 @@ import { EvacueeService } from '../core/services/evacuee.service';
 })
 export class VolunteerDashboardComponent implements OnInit {
 
-  evacueeList: Evacuee[];
+  evacuees: Evacuee[];
   constructor(
     private evacueeService: EvacueeService
   ) { }
 
   ngOnInit() {
-    this.evacueeService.getAllEvacuees().subscribe(evacuees=>this.evacueeList=evacuees)
+    this.evacueeService.getAllEvacuees().subscribe(evacuees=>this.evacuees=evacuees)
   }
 
 }

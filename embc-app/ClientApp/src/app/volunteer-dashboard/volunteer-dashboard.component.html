@@ -20,6 +20,24 @@
       <p>1 - 10 of 2000 active evacuees 
         <small class="ml-3">(<a href="">show deactivated</a>)</small>
       </p>
+      <table class="table">
+        <thead>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let evacuee of evacuees">
+            <td>{{evacuee.firstName}}</td>
+            <td>{{evacuee.lastName}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <table mat-table [dataSource]="evacuees">
+        <ng-container matColDef="firstName">
+          <th mat-header-cell *matHeaderCellDef>First Name</th>
+          <td mat-cell *matCellDef="let evacuee">{{evacuee.firstName}}</td>
+        </ng-container>
+      </table> -->
     </div>
   </div>
 
