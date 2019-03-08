@@ -26,7 +26,7 @@ const initialState: State = {
     registrationFamilyMemberCount: null,
     dietaryNeeds: null,
     dietaryNeedsDetails: null,
-    familyMemberTakesMedication: null,
+    medicationNeeds: null,
     hasThreeDayMedicationSupply: null,
     hasPets: null,
     insuranceCode: null,
