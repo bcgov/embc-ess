@@ -1,29 +1,27 @@
 import { HeadOfHousehold, FamilyMember, Community, IncidentTask, Volunteer } from './';
 
 export interface Registration {
-  // primary identifier
+  // Important 
   id: string | null;
-  //misc
+  restrictedAccess: boolean;
+  essFileNumber: number | null;
+  
+  //Registration Record  
+  dietaryNeeds: boolean;
   dietaryNeedsDetails: string;
   disasterAffectDetails: string;
-  essFileNumber: number | null;
   externalReferralsDetails: string;
   facility: string;
   familyRecoveryPlan: string;
   followUpDetails: string;
   insuranceCode: string;
+  medicationNeeds: boolean;
   selfRegisteredDate: Date | null; // datetime
-  supportRequired: boolean;
   registrationCompletionDate: Date | null; // datetime
-
-  //Registration state
-  isRegisteringFamilyMembers: number;
-  isRestrictedAccess: boolean;
-  isTakingMedication: boolean;
-
-  //Inventory
-  hasThreeDaySupply: boolean;
-  hasDietaryNeeds: boolean;
+  registrationFamilyMemberCount: number;
+  
+  //Family state flags
+  hasThreeDayMedicationSupply: boolean;
   hasInquiryReferral: boolean;
   hasHealthServicesReferral: boolean;
   hasFirstAidReferral: boolean;
@@ -31,13 +29,14 @@ export interface Registration {
   hasPersonalServicesReferral: boolean;
   hasPetCareReferral: boolean;
   hasPets: boolean;
-  
+
   //requirements
   requiresAccommodation: boolean;
   requiresClothing: boolean;
   requiresFood: boolean;
   requiresIncidentals: boolean;
   requiresTransportation: boolean;
+  requiresSupport: boolean;
 
   // related entities
   headOfHousehold: HeadOfHousehold;

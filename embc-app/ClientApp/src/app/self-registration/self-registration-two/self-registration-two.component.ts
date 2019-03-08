@@ -27,12 +27,12 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
   ) { }
 
   // Shortcuts for this.form.get(...)
-  get supportRequired() { return this.form.get('supportRequired'); }
+  get requiresSupport() { return this.form.get('requiresSupport'); }
 
   // TODO: Form UI logic; i.e. show additional form fields when a checkbox is checked
   get ui() {
     return {
-      showAvailableServices: () => this.form.get('supportRequired').value === true,
+      showAvailableServices: () => this.form.get('requiresSupport').value === true,
     };
   }
 
@@ -66,11 +66,11 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
   // Define the form group
   initForm() {
     this.form = this.fb.group({
-      hasDietaryNeeds: null,
-      isTakingMedication: null,
+      dietaryNeeds: null,
+      familyMemberTakesMedication: null,
       hasPets: null,
       insuranceCode: null,
-      supportRequired: null,
+      requiresSupport: null,
       requiresFood: null,
       requiresClothing: null,
       requiresAccommodation: null,
@@ -81,7 +81,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
 
   handleFormChanges() {
     // TODO: Register any value change listeners here...
-    this.supportRequired.valueChanges.subscribe((value: boolean) => {
+    this.requiresSupport.valueChanges.subscribe((value: boolean) => {
       if (!value) {
         this.resetSupportServices();
       }
@@ -98,11 +98,11 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
 
       // Update the data on the form
       this.form.patchValue({
-        hasDietaryNeeds: this.registration.hasDietaryNeeds,
-        isTakingMedication: this.registration.isTakingMedication,
+        dietaryNeeds: this.registration.dietaryNeeds,
+        familyMemberTakesMedication: this.registration.familyMemberTakesMedication,
         hasPets: this.registration.hasPets,
         insuranceCode: this.registration.insuranceCode,
-        supportRequired: this.registration.supportRequired,
+        requiresSupport: this.registration.requiresSupport,
         requiresFood: this.registration.requiresFood,
         requiresClothing: this.registration.requiresClothing,
         requiresAccommodation: this.registration.requiresAccommodation,
