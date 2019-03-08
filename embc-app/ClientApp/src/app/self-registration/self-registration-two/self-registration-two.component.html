@@ -11,11 +11,11 @@
     <p>Do you have any dietary requirements?</p>
     <div class="form-group">
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="true" formControlName="hasDietaryNeeds">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="dietaryNeeds">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="false" formControlName="hasDietaryNeeds">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="dietaryNeeds">
         <label class="form-check-label">No</label>
       </div>
     </div>
@@ -23,11 +23,11 @@
     <p>Do you (or anyone registering with you) take medication?</p>
     <div class="form-group">
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="true" formControlName="isTakingMedication">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="familyMemberTakesMedication">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="false" formControlName="isTakingMedication">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="familyMemberTakesMedication">
         <label class="form-check-label">No</label>
       </div>
     </div>
@@ -73,11 +73,11 @@
     <p>While you are evacuated do you require supports?</p>
     <div class="form-group">
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="true" formControlName="isSupportRequired">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="requiresSupport">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="false" formControlName="isSupportRequired">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="requiresSupport">
         <label class="form-check-label">No</label>
       </div>
     </div>

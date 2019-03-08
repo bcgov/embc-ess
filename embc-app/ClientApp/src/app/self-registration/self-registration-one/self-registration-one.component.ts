@@ -34,7 +34,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   ) { }
 
   // Shortcuts for this.form.get(...)
-  get isRegisteringFamilyMembers() { return this.form.get('isRegisteringFamilyMembers'); }
+  get registrationFamilyMemberCount() { return this.form.get('registrationFamilyMemberCount'); }
   get isPrimaryResidenceInBC() { return this.form.get('isPrimaryResidenceInBC'); }
   get isMailingAddressInBC() { return this.form.get('isMailingAddressInBC'); }
 
@@ -68,7 +68,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   // Define the form group
   initForm(): void {
     this.form = this.fb.group({
-      isRestrictedAccess: null,
+      restrictedAccess: null,
       headOfHousehold: this.fb.group({
         firstName: '',
         lastName: '',
@@ -77,7 +77,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         gender: '',
         dob: null,
       }),
-      isRegisteringFamilyMembers: null,
+      registrationFamilyMemberCount: null,
       familyMembers: this.fb.array([]),
       phoneNumber: '',
       phoneNumberAlt: '',
@@ -104,7 +104,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   // Watch for value changes
   private handleFormChanges(): void {
-    this.isRegisteringFamilyMembers.valueChanges.subscribe((value: number) => {
+    this.registrationFamilyMemberCount.valueChanges.subscribe((value: number) => {
       if (value === 1) {
         this.addFamilyMember();
       } else {
@@ -123,7 +123,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
       // Update the data on the form
       this.form.patchValue({
-        isRestrictedAccess: this.registration.isRestrictedAccess,
+        restrictedAccess: this.registration.restrictedAccess,
         headOfHousehold: {
           firstName: this.registration.headOfHousehold.firstName,
           lastName: this.registration.headOfHousehold.lastName,
@@ -132,7 +132,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
           gender: this.registration.headOfHousehold.gender,
           dob: this.registration.headOfHousehold.dob,
         },
-        isRegisteringFamilyMembers: this.registration.isRegisteringFamilyMembers,
+        registrationFamilyMemberCount: this.registration.registrationFamilyMemberCount,
         familyMembers: this.registration.familyMembers,
         phoneNumber: this.registration.headOfHousehold.phoneNumber,
         phoneNumberAlt: this.registration.headOfHousehold.phoneNumberAlt,
@@ -167,8 +167,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     const form = this.form.value;
     const newState: Registration = {
       ...this.registration,
-      isRestrictedAccess: form.isRestrictedAccess,
-      isRegisteringFamilyMembers: form.isRegisteringFamilyMembers,
+      restrictedAccess: form.restrictedAccess,
+      registrationFamilyMemberCount: form.registrationFamilyMemberCount,
       familyMembers: [...form.familyMembers],
       headOfHousehold: {
         ...this.registration.headOfHousehold,

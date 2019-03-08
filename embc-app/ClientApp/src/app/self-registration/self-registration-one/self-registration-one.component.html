@@ -13,11 +13,11 @@
       people with some information about you. May we disclose your location and the contact information for you
       and your family members?</p>
     <div class="form-check">
-      <input class="form-check-input" type="radio" value="true" formControlName="isRestrictedAccess">
+      <input class="form-check-input" type="radio" value="true" formControlName="restrictedAccess">
       <label class="form-check-label">Yes</label>
     </div>
     <div class="form-check">
-      <input class="form-check-input" type="radio" value="false" formControlName="isRestrictedAccess">
+      <input class="form-check-input" type="radio" value="false" formControlName="restrictedAccess">
       <label class="form-check-label">No</label>
     </div>
   </div>
@@ -68,16 +68,16 @@
     <p>Are you registering immediate family members who live in the same household with you?</p>
     <div class="form-group">
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="1" formControlName="isRegisteringFamilyMembers">
+        <input class="form-check-input" type="radio" [value]="1" formControlName="registrationFamilyMemberCount">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="2" formControlName="isRegisteringFamilyMembers">
+        <input class="form-check-input" type="radio" [value]="2" formControlName="registrationFamilyMemberCount">
         <label class="form-check-label">Yes, but I'd like to register them when I get to the
           Reception Center</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="3" formControlName="isRegisteringFamilyMembers">
+        <input class="form-check-input" type="radio" [value]="3" formControlName="registrationFamilyMemberCount">
         <label class="form-check-label">No</label>
       </div>
     </div>
