@@ -5,46 +5,61 @@ import { RestService } from './rest.service';
 import { of, Observable } from 'rxjs';
 
 const FAKEREGISTRATIONS: Registration[] = [
-  // {
-  //   id: '123',
-  //   essFileNumber: 123,
-  //   isRestrictedAccess: false,
-  //   isRegisteringFamilyMembers: 0,
-  //   hasDietaryNeeds: false,
-  //   isTakingMedication: false,
-  //   hasThreeDaySupply: true,
-  //   hasPets: false,
-  //   insuranceCode: "MANU120398",
-  //   supportRequired: true,
-  //   requiresFood: false,
-  //   requiresClothing: false,
-  //   requiresIncidentals: false,
-  //   requiresTransportation
+  {
+    id: '123',
+    dietaryNeedsDetails: 'gluten intolerance',
+    disasterAffectDetails: 'Freeform text',
+    essFileNumber: 123,
+    externalReferralsDetails: 'Freeform text',
+    facility: '',
+    familyRecoveryPlan: '',
+    followUpDetails: '',
+    insuranceCode: "MANU120398",
+    selfRegisteredDate: null,
+    supportRequired: true,
+    registrationCompletionDate: null,
 
-  // }
+    isRegisteringFamilyMembers: 0,
+    isRestrictedAccess: false,
+    isTakingMedication: false,
+    
+    hasThreeDaySupply: true,
+    hasDietaryNeeds: false,
+    hasInquiryReferral: false,
+    hasHealthServicesReferral: false,
+    hasFirstAidReferral: false,
+    hasChildCareReferral: false,
+    hasPersonalServicesReferral: false,
+    hasPetCareReferral: false,
+    hasPets: false,
+    requiresAccommodation: false,
+    requiresClothing: false,
+    requiresFood: false,
+    requiresIncidentals: false,
+    requiresTransportation: true,
+
+    headOfHousehold: 
+      {
+        id: 'qwertyuiop',
+        firstName: 'John',
+        lastName: 'Doe',
+        nickname: 'Johnny',
+        initials: 'JD',
+        gender: 'yes',
+        dob: null,
+        phoneNumber: '',
+        phoneNumberAlt: '',
+        personType: 'HOH',
+        email: 'person@address.org',
+        primaryResidence: null,
+        mailingAddress: null
+      },
+    familyMembers: [],
+    incidentTask: null,
+    hostCommunity: null,
+    completedBy: null
+  }
 ]
-// [
-//   {
-//     id: 'qwertyuiop',
-//     personType: 'VOLN',
-//     firstName: 'John',
-//     lastName: 'Doe',
-//     nickname: 'Johnny',
-//     initials: 'JD',
-//     gender: 'yes',
-//     dob: null
-//   },
-//   {
-//     id: 'qwertyuiop',
-//     personType: 'VOLN',
-//     firstName: 'Billy',
-//     lastName: 'Donner',
-//     nickname: 'BIDO',
-//     initials: 'BD',
-//     gender: 'yes',
-//     dob: null
-//   },
-// ] 
 
 @Injectable({
   providedIn: CoreModule

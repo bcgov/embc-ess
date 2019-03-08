@@ -23,7 +23,6 @@ export interface Registration {
 
   //Inventory
   hasThreeDaySupply: boolean;
-  hasPets: boolean;
   hasDietaryNeeds: boolean;
   hasInquiryReferral: boolean;
   hasHealthServicesReferral: boolean;
@@ -31,6 +30,7 @@ export interface Registration {
   hasChildCareReferral: boolean;
   hasPersonalServicesReferral: boolean;
   hasPetCareReferral: boolean;
+  hasPets: boolean;
   
   //requirements
   requiresAccommodation: boolean;
