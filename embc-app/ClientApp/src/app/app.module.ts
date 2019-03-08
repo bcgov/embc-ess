@@ -15,6 +15,7 @@ import { SelfRegistrationModule } from './self-registration';
 import { HomeComponent } from './home/home.component';
 import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.component';
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
+import { MatTableModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-das
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    MatTableModule,
 
     // 3rd party
     StoreModule.forRoot(rootReducer, { metaReducers }),
