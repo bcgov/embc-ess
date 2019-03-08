@@ -40,7 +40,10 @@
             <td>{{registration.incidentTask.community.name}}</td>
             <td>{{registration.hostCommunity.name}}</td>
             <td>Yes</td>
-            <td><a href="">Link</a></td>
+            <td>
+              <a *ngIf="registration.registrationCompletionDate===null" href="">Complete</a>
+              <a *ngIf="registration.registrationCompletionDate!==null" href="">View</a>
+            </td>
           </tr>
         </tbody>
       </table>
