@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material';
-import { RestService } from '../core/services/rest.service';
 import { Evacuee } from '../core/models';
+import { EvacueeService } from '../core/services/evacuee.service';
 @Component({
   selector: 'app-volunteer-dashboard',
   templateUrl: './volunteer-dashboard.component.html',
@@ -11,10 +11,11 @@ export class VolunteerDashboardComponent implements OnInit {
 
   evacueeList: Evacuee[];
   constructor(
-    private restService: RestService
+    private evacueeService: EvacueeService
   ) { }
 
   ngOnInit() {
+    this.evacueeService.getAllEvacuees().subscribe(evacuees=>this.evacueeList=evacuees)
   }
 
 }
