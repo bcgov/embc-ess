@@ -7,24 +7,24 @@ import { of, Observable } from 'rxjs';
 const FAKEREGISTRATIONS: Registration[] = [
   {
     id: '123',
+    restrictedAccess: false,
+    essFileNumber: 123,
+
+    dietaryNeeds: false,
     dietaryNeedsDetails: 'gluten intolerance',
     disasterAffectDetails: 'Freeform text',
-    essFileNumber: 123,
     externalReferralsDetails: 'Freeform text',
     facility: '',
     familyRecoveryPlan: '',
     followUpDetails: '',
-    insuranceCode: "MANU120398",
+    insuranceCode: 'MANU120398',
+    medicationNeeds: false,
     selfRegisteredDate: null,
-    requiresSupport: true,
     registrationCompletionDate: null,
-
-    registrationFamilyMemberCount: 0,
-    restrictedAccess: false,
-    familyMemberTakesMedication: false,
+    registrationFamilyMemberCount: 1,
+    
     
     hasThreeDayMedicationSupply: true,
-    dietaryNeeds: false,
     hasInquiryReferral: false,
     hasHealthServicesReferral: false,
     hasFirstAidReferral: false,
@@ -32,10 +32,12 @@ const FAKEREGISTRATIONS: Registration[] = [
     hasPersonalServicesReferral: false,
     hasPetCareReferral: false,
     hasPets: false,
+    
     requiresAccommodation: false,
     requiresClothing: false,
     requiresFood: false,
     requiresIncidentals: false,
+    requiresSupport: true,
     requiresTransportation: true,
 
     headOfHousehold: 
