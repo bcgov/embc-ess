@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { combineLatest, Observable } from 'rxjs';
-import { takeWhile, find, filter, map } from 'rxjs/operators';
+import { takeWhile } from 'rxjs/operators';
 
-import { Registration, Country, Community, RelationshipType } from 'src/app/core/models';
+import { Registration } from 'src/app/core/models';
 import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 
@@ -70,7 +69,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   initForm(): void {
     this.form = this.fb.group({
       isRestrictedAccess: null,
-      familyRepresentative: this.fb.group({
+      headOfHousehold: this.fb.group({
         firstName: '',
         lastName: '',
         nickname: '',
@@ -125,30 +124,30 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       // Update the data on the form
       this.form.patchValue({
         isRestrictedAccess: this.registration.isRestrictedAccess,
-        familyRepresentative: {
-          firstName: this.registration.familyRepresentative.firstName,
-          lastName: this.registration.familyRepresentative.lastName,
-          nickname: this.registration.familyRepresentative.nickname,
-          initials: this.registration.familyRepresentative.initials,
-          gender: this.registration.familyRepresentative.gender,
-          dob: this.registration.familyRepresentative.dob,
+        headOfHousehold: {
+          firstName: this.registration.headOfHousehold.firstName,
+          lastName: this.registration.headOfHousehold.lastName,
+          nickname: this.registration.headOfHousehold.nickname,
+          initials: this.registration.headOfHousehold.initials,
+          gender: this.registration.headOfHousehold.gender,
+          dob: this.registration.headOfHousehold.dob,
         },
         isRegisteringFamilyMembers: this.registration.isRegisteringFamilyMembers,
         familyMembers: this.registration.familyMembers,
-        phoneNumber: this.registration.familyRepresentative.profile.phoneNumber,
-        phoneNumberAlt: this.registration.familyRepresentative.profile.phoneNumberAlt,
-        email: this.registration.familyRepresentative.profile.email,
+        phoneNumber: this.registration.headOfHousehold.phoneNumber,
+        phoneNumberAlt: this.registration.headOfHousehold.phoneNumberAlt,
+        email: this.registration.headOfHousehold.email,
         primaryResidence: {
-          addressLine1: this.registration.familyRepresentative.profile.primaryResidence.addressLine1,
-          communityOrCity: this.registration.familyRepresentative.profile.primaryResidence.communityOrCity,
-          provinceOrState: this.registration.familyRepresentative.profile.primaryResidence.provinceOrState,
-          postalCodeOrZip: this.registration.familyRepresentative.profile.primaryResidence.postalCodeOrZip,
-          country: this.registration.familyRepresentative.profile.primaryResidence.country,
+          addressLine1: this.registration.headOfHousehold.primaryResidence.addressLine1,
+          communityOrCity: this.registration.headOfHousehold.primaryResidence.communityOrCity,
+          provinceOrState: this.registration.headOfHousehold.primaryResidence.provinceOrState,
+          postalCodeOrZip: this.registration.headOfHousehold.primaryResidence.postalCodeOrZip,
+          country: this.registration.headOfHousehold.primaryResidence.country,
         },
         hasMailingAddress: null,
       });
 
-      const mailingAddress = this.registration.familyRepresentative.profile.mailingAddress;
+      const mailingAddress = this.registration.headOfHousehold.mailingAddress;
       if (mailingAddress != null) {
         this.form.patchValue({
           hasMailingAddress: true,
@@ -171,24 +170,19 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       isRestrictedAccess: form.isRestrictedAccess,
       isRegisteringFamilyMembers: form.isRegisteringFamilyMembers,
       familyMembers: [...form.familyMembers],
-      familyRepresentative: {
-        ...this.registration.familyRepresentative,
-        firstName: form.familyRepresentative.firstName,
-        lastName: form.familyRepresentative.lastName,
-        nickname: form.familyRepresentative.nickname,
-        initials: form.familyRepresentative.initials,
-        gender: form.familyRepresentative.gender,
-        dob: form.familyRepresentative.dob,
-        profile: {
-          phoneNumber: form.phoneNumber,
-          phoneNumberAlt: form.phoneNumberAlt,
-          email: form.email,
-          primaryResidence: { ...form.primaryResidence },
-          mailingAddress: form.hasMailingAddress ? { ...form.mailingAddress } : undefined,
-        },
-        isEvacuee: true,
-        isVolunteer: false,
-        isFamilyMember: false,
+      headOfHousehold: {
+        ...this.registration.headOfHousehold,
+        firstName: form.headOfHousehold.firstName,
+        lastName: form.headOfHousehold.lastName,
+        nickname: form.headOfHousehold.nickname,
+        initials: form.headOfHousehold.initials,
+        gender: form.headOfHousehold.gender,
+        dob: form.headOfHousehold.dob,
+        phoneNumber: form.phoneNumber,
+        phoneNumberAlt: form.phoneNumberAlt,
+        email: form.email,
+        primaryResidence: { ...form.primaryResidence },
+        mailingAddress: form.hasMailingAddress ? { ...form.mailingAddress } : undefined,
       }
     };
 
