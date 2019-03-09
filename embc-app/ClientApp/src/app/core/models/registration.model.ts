@@ -1,35 +1,42 @@
 import { HeadOfHousehold, FamilyMember, Community, IncidentTask, Volunteer } from './';
 
 export interface Registration {
+  // Important 
   id: string | null;
+  restrictedAccess: boolean;
   essFileNumber: number | null;
-  isRestrictedAccess: boolean;
-  isRegisteringFamilyMembers: number;
-  hasDietaryNeeds: boolean;
+  
+  //Registration Record  
+  dietaryNeeds: boolean;
   dietaryNeedsDetails: string;
-  isTakingMedication: boolean;
-  hasThreeDaySupply: boolean;
-  hasPets: boolean;
-  insuranceCode: string;
-  isSupportRequired: boolean;
-  requiresFood: boolean;
-  requiresClothing: boolean;
-  requiresAccommodation: boolean;
-  requiresIncidentals: boolean;
-  requiresTransportation: boolean;
-  facility: string;
   disasterAffectDetails: string;
   externalReferralsDetails: string;
+  facility: string;
   familyRecoveryPlan: string;
   followUpDetails: string;
+  insuranceCode: string;
+  medicationNeeds: boolean;
+  selfRegisteredDate: Date | null; // datetime
+  registrationCompletionDate: Date | null; // datetime
+  registeringFamilyMembers: number;
+  
+  //Family state flags
+  hasThreeDayMedicationSupply: boolean;
   hasInquiryReferral: boolean;
   hasHealthServicesReferral: boolean;
   hasFirstAidReferral: boolean;
-  hasPersonalServicesReferral: boolean;
   hasChildCareReferral: boolean;
+  hasPersonalServicesReferral: boolean;
   hasPetCareReferral: boolean;
-  selfRegisteredDate: Date | null; // datetime
-  registrationCompletionDate: Date | null; // datetime
+  hasPets: boolean;
+
+  //requirements
+  requiresAccommodation: boolean;
+  requiresClothing: boolean;
+  requiresFood: boolean;
+  requiresIncidentals: boolean;
+  requiresTransportation: boolean;
+  requiresSupport: boolean;
 
   // related entities
   headOfHousehold: HeadOfHousehold;
