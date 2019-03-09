@@ -23,7 +23,7 @@ const initialState: State = {
     id: null,
     essFileNumber: null,
     restrictedAccess: null,
-    registrationFamilyMemberCount: null,
+    registeringFamilyMembers: null,
     dietaryNeeds: null,
     dietaryNeedsDetails: null,
     medicationNeeds: null,

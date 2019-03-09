@@ -21,8 +21,7 @@ const FAKEREGISTRATIONS: Registration[] = [
     medicationNeeds: false,
     selfRegisteredDate: null,
     registrationCompletionDate: null,
-    registrationFamilyMemberCount: 1,
-    
+    registeringFamilyMembers: 'yes',
     
     hasThreeDayMedicationSupply: true,
     hasInquiryReferral: false,

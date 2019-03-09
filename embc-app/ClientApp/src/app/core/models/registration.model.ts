@@ -18,7 +18,7 @@ export interface Registration {
   medicationNeeds: boolean;
   selfRegisteredDate: Date | null; // datetime
   registrationCompletionDate: Date | null; // datetime
-  registrationFamilyMemberCount: number;
+  registeringFamilyMembers: string;
   
   //Family state flags
   hasThreeDayMedicationSupply: boolean;
