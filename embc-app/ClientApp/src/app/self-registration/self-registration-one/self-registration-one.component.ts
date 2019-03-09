@@ -34,7 +34,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   ) { }
 
   // Shortcuts for this.form.get(...)
-  get registeringFamilyMembers() { return this.form.get('registeringFamilyMembers'); }
+  get registrationFamilyMemberCount() { return this.form.get('registrationFamilyMemberCount'); }
   get isPrimaryResidenceInBC() { return this.form.get('isPrimaryResidenceInBC'); }
   get isMailingAddressInBC() { return this.form.get('isMailingAddressInBC'); }
 
@@ -77,7 +77,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         gender: '',
         dob: null,
       }),
-      registeringFamilyMembers: null,
+      registrationFamilyMemberCount: null,
       familyMembers: this.fb.array([]),
       phoneNumber: '',
       phoneNumberAlt: '',
@@ -104,7 +104,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   // Watch for value changes
   private handleFormChanges(): void {
-    this.registeringFamilyMembers.valueChanges.subscribe((value: number) => {
+    this.registrationFamilyMemberCount.valueChanges.subscribe((value: number) => {
       if (value === 1) {
         this.addFamilyMember();
       } else {
@@ -132,7 +132,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
           gender: this.registration.headOfHousehold.gender,
           dob: this.registration.headOfHousehold.dob,
         },
-        registeringFamilyMembers: this.registration.registeringFamilyMembers,
+        registrationFamilyMemberCount: this.registration.registrationFamilyMemberCount,
         familyMembers: this.registration.familyMembers,
         phoneNumber: this.registration.headOfHousehold.phoneNumber,
         phoneNumberAlt: this.registration.headOfHousehold.phoneNumberAlt,
@@ -168,7 +168,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     const newState: Registration = {
       ...this.registration,
       restrictedAccess: form.restrictedAccess,
-      registeringFamilyMembers: form.registeringFamilyMembers,
+      registrationFamilyMemberCount: form.registrationFamilyMemberCount,
       familyMembers: [...form.familyMembers],
       headOfHousehold: {
         ...this.registration.headOfHousehold,
