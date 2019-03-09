@@ -15,15 +15,20 @@ import { UpdateRegistration } from 'src/app/store/registration/registration.acti
   styleUrls: ['./self-registration-two.component.scss']
 })
 export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
+
+  // state needed by this FORM
+  currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
+
   form: FormGroup;
-  registration: Registration | null;
   componentActive = true;
+
+  registration: Registration | null;
 
   constructor(
     private store: Store<AppState>,
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) { }
 
   // Shortcuts for this.form.get(...)
