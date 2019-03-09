@@ -99,7 +99,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
       // Update the data on the form
       this.form.patchValue({
         dietaryNeeds: this.registration.dietaryNeeds,
-        familyMemberTakesMedication: this.registration.familyMemberTakesMedication,
+        familyMemberTakesMedication: this.registration.medicationNeeds,
         hasPets: this.registration.hasPets,
         insuranceCode: this.registration.insuranceCode,
         requiresSupport: this.registration.requiresSupport,
