@@ -142,7 +142,7 @@
     </div>
   </section>
 
-  <h3 class="blue-header">PRIMARY RESIDENCE & CONTACT DETAILS<i class=" ml-3 text-white fas fa-info-circle"></i></h3>
+  <h3 class="blue-header">PRIMARY RESIDENCE & CONTACT DETAILS<i class="ml-3 text-white fas fa-info-circle"></i></h3>
   <section class="padded-section">
     <div class="form-group d-flex flex-row">
       <p class="m-0 mr-4">Is your primary residence within BC</p>
@@ -156,6 +156,11 @@
       </div>
     </div>
     <section *ngIf="ui.showPrimaryAddressSection()" class="feature-block">
+      <section class="blurb" *ngIf="ui.showStrandedTravellerBlurb()">
+        <h4 class="text-danger">Stranded Traveller</h4>
+        <p class="text-danger">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit
+          amet pulvinar. Vestibulum ante ipsum primis in faucibus orci.</p>
+      </section>
       <app-address-selector [parent]="primaryResidence" [withinBC]="primaryResidenceInBC.value">
       </app-address-selector>
       <section>

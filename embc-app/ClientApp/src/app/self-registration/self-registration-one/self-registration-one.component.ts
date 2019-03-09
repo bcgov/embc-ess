@@ -38,8 +38,9 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     return {
       showFamilyMembers: () => this.familyMembers.length > 0,
       showPrimaryAddressSection: () => this.primaryResidenceInBC.value !== null,
-      showMailingAddressSelector: () => this.form.get('hasMailingAddress').value === true,
+      showMailingAddressSelector: () => this.control('hasMailingAddress').value === true,
       showMailingAddressSection: () => this.mailingAddressInBC.value !== null,
+      showStrandedTravellerBlurb: () => this.primaryResidenceInBC.value === false,
     };
   }
 
