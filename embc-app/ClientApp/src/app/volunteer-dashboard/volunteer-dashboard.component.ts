@@ -8,7 +8,7 @@ import { RegistrationService } from '../core/services/registration.service';
 })
 export class VolunteerDashboardComponent implements OnInit {
 
-  registrations: Registration[];
+  registrations;
 
   constructor(
     private registrationService: RegistrationService
@@ -16,7 +16,11 @@ export class VolunteerDashboardComponent implements OnInit {
 
   ngOnInit() {
     // go get the data
-    this.registrationService.getRegistries().subscribe(r=>this.registrations=r);
+    this.registrationService.getRegistries()
+      .subscribe(r=>{
+        //
+        this.registrations=r;
+      });
   }
 
 }

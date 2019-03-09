@@ -22,6 +22,7 @@
       </p>
       <table class="table">
         <thead>
+          <th scope="col"></th>
           <th scope="col">First Name</th>
           <th scope="col">Last Name</th>
           <th scope="col">Task #</th>
@@ -33,6 +34,11 @@
         </thead>
         <tbody>
           <tr *ngFor="let registration of registrations">
+            <th>
+              <span *ngIf="true">
+                HOH/Lock
+              </span>
+            </th>
             <td>{{registration.headOfHousehold.firstName}}</td>
             <td>{{registration.headOfHousehold.lastName}}</td>
             <td>{{registration.incidentTask.taskNumber}}</td>
