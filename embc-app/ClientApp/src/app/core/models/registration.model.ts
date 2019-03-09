@@ -1,12 +1,12 @@
 import { HeadOfHousehold, FamilyMember, Community, IncidentTask, Volunteer } from './';
 
 export interface Registration {
-  // Important 
+  // Important
   id: string | null;
   restrictedAccess: boolean;
   essFileNumber: number | null;
-  
-  //Registration Record  
+
+  //Registration Record
   dietaryNeeds: boolean;
   dietaryNeedsDetails: string;
   disasterAffectDetails: string;
@@ -14,12 +14,12 @@ export interface Registration {
   facility: string;
   familyRecoveryPlan: string;
   followUpDetails: string;
-  insuranceCode: string;
+  insuranceCode: string;  // one of ['yes', 'yes-unsure', 'no', 'unsure']
   medicationNeeds: boolean;
   selfRegisteredDate: Date | null; // datetime
   registrationCompletionDate: Date | null; // datetime
-  registeringFamilyMembers: number;
-  
+  registeringFamilyMembers: string;  // one of ['yes', 'yes-later', 'no']
+
   //Family state flags
   hasThreeDayMedicationSupply: boolean;
   hasInquiryReferral: boolean;

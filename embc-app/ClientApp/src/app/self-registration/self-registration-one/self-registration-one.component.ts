@@ -130,8 +130,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // show/hide family members section based on the "family info" radio button
     this.registeringFamilyMembers.valueChanges
       .pipe(skipWhile(() => this.registeringFamilyMembers.pristine))
-      .subscribe((value: number) => {
-        if (value === 1) {
+      .subscribe((value: string) => {
+        if (value === 'yes') {
           this.addFamilyMember();
         } else {
           this.clearFamilyMembers();
@@ -143,8 +143,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       .pipe(skipWhile(() => this.registeringFamilyMembers.pristine))
       .subscribe((family: any[]) => {
         const radio = this.registeringFamilyMembers;
-        if (radio.value === 1 && family.length === 0) {
-          radio.setValue(3);
+        if (radio.value === 'yes' && family.length === 0) {
+          radio.setValue('no');
         }
       });
   }
@@ -232,19 +232,14 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   onSave(): void {
     const form = this.form.value;
-    const newState: Registration = {
+    const registration: Registration = {
       ...this.registration,
       restrictedAccess: form.restrictedAccess,
       registeringFamilyMembers: form.registeringFamilyMembers,
       familyMembers: [...form.familyMembers],
       headOfHousehold: {
         ...this.registration.headOfHousehold,
-        firstName: form.headOfHousehold.firstName,
-        lastName: form.headOfHousehold.lastName,
-        nickname: form.headOfHousehold.nickname,
-        initials: form.headOfHousehold.initials,
-        gender: form.headOfHousehold.gender,
-        dob: form.headOfHousehold.dob,
+        ...form.headOfHousehold,
         phoneNumber: form.phoneNumber,
         phoneNumberAlt: form.phoneNumberAlt,
         email: form.email,
@@ -253,7 +248,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       }
     };
 
-    this.store.dispatch(new UpdateRegistration({ registration: newState }));
+    this.store.dispatch(new UpdateRegistration({ registration }));
   }
 
   // TODO: Refactor into utils method

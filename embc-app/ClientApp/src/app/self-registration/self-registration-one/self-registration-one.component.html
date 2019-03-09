@@ -68,16 +68,16 @@
     <p>Are you registering immediate family members who live in the same household with you?</p>
     <div class="form-group">
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="1" formControlName="registeringFamilyMembers">
+        <input class="form-check-input" type="radio" value="yes" formControlName="registeringFamilyMembers">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="2" formControlName="registeringFamilyMembers">
+        <input class="form-check-input" type="radio" value="yes-later" formControlName="registeringFamilyMembers">
         <label class="form-check-label">Yes, but I'd like to register them when I get to the
           Reception Center</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="3" formControlName="registeringFamilyMembers">
+        <input class="form-check-input" type="radio" value="no" formControlName="registeringFamilyMembers">
         <label class="form-check-label">No</label>
       </div>
     </div>
