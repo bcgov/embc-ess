@@ -63,7 +63,9 @@
     </div>
   </section>
 
-  <h3 class="blue-header">EVACUEE FAMILY INFORMATION<i class=" ml-3 text-white fas fa-info-circle"></i></h3>
+  <h3 class="blue-header">EVACUEE FAMILY INFORMATION
+    <app-font-awesome-icon icon="info-circle" className="ml-3 text-white"></app-font-awesome-icon>
+  </h3>
   <section class="padded-section">
     <p>Are you registering immediate family members who live in the same household with you?</p>
     <div class="form-group">
@@ -133,16 +135,19 @@
       </div>
       <div class="family-members__actions clearfix">
         <a [routerLink]="" class="float-left" (click)="removeFamilyMember()">
-          <i class="fa fa-times" style="margin-right: 5px"></i>Remove
+          <app-font-awesome-icon icon="times"></app-font-awesome-icon><span class="ml-2">Remove</span>
         </a>
         <a [routerLink]="" class="float-right" (click)="addFamilyMember()">
-          <i class="fas fa-plus-circle" style="margin-right: 5px"></i>Add another contact
+          <app-font-awesome-icon icon="plus-circle"></app-font-awesome-icon>
+          <span class="ml-2">Add another contact</span>
         </a>
       </div>
     </div>
   </section>
 
-  <h3 class="blue-header">PRIMARY RESIDENCE & CONTACT DETAILS<i class="ml-3 text-white fas fa-info-circle"></i></h3>
+  <h3 class="blue-header">PRIMARY RESIDENCE &amp; CONTACT DETAILS
+    <app-font-awesome-icon icon="info-circle" className="ml-3 text-white"></app-font-awesome-icon>
+  </h3>
   <section class="padded-section">
     <div class="form-group d-flex flex-row">
       <p class="m-0 mr-4">Is your primary residence within BC</p>
@@ -217,7 +222,8 @@
   <div class="mt-5 space-between">
     <section>
       <a [routerLink]="">
-        <i class="fa fa-times" style="margin-right: 5px"></i>Cancel &amp; Close
+        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+        <span class="ml-2">Cancel &amp; Close</span>
       </a>
     </section>
     <section>
