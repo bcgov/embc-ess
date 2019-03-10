@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 
 import { AppState } from 'src/app/store';
@@ -15,61 +14,60 @@ import { UpdateRegistration } from 'src/app/store/registration/registration.acti
   styleUrls: ['./self-registration-two.component.scss']
 })
 export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
+
+  // state needed by this FORM
+  currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
+
   form: FormGroup;
-  registration: Registration | null;
   componentActive = true;
+
+  registration: Registration | null;
 
   constructor(
     private store: Store<AppState>,
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) { }
-
-  // Shortcuts for this.form.get(...)
-  get requiresSupport() { return this.form.get('requiresSupport'); }
 
   // TODO: Form UI logic; i.e. show additional form fields when a checkbox is checked
   get ui() {
     return {
-      showAvailableServices: () => this.form.get('requiresSupport').value === true,
+      showAvailableServices: () => this.control('requiresSupport').value === true,
     };
   }
 
-  ngOnInit() {
-    this.initForm();
-    this.handleFormChanges();
+  control(name: string) {
+    return this.form.get(name);
+  }
 
-    // fetch data, then display form
-    this.getInitialState()
-      .subscribe(([current, countries, communities, relationshipTypes]) => {
-        this.displayRegistration(current);
-      });
+  // Shortcuts for this.form.get(...)
+  get requiresSupport() {
+    return this.control('requiresSupport');
+  }
+
+  ngOnInit() {
+    // Create form controls
+    this.initForm();
+    this.onFormChanges();
+
+    // Update form values based on the state
+    this.currentRegistration$
+      .pipe(takeWhile(() => this.componentActive))
+      .subscribe(value => this.displayRegistration(value));
   }
 
   ngOnDestroy(): void {
     this.componentActive = false;
   }
 
-  getInitialState() {
-    return combineLatest(
-      this.store.select(state => state.registrations.currentRegistration),
-      this.store.select(state => state.lookups.countries),
-      this.store.select(state => state.lookups.communities),
-      this.store.select(state => state.lookups.relationshipTypes),
-    );
-    // .pipe(
-    //   takeWhile(() => this.componentActive)
-    // );
-  }
-
   // Define the form group
-  initForm() {
+  initForm(): void {
     this.form = this.fb.group({
       dietaryNeeds: null,
       familyMemberTakesMedication: null,
       hasPets: null,
-      insuranceCode: null,
+      insuranceCode: null,  // one of ['yes', 'yes-unsure', 'no', 'unsure']
       requiresSupport: null,
       requiresFood: null,
       requiresClothing: null,
@@ -79,11 +77,12 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
     });
   }
 
-  handleFormChanges() {
-    // TODO: Register any value change listeners here...
+  // Watch for value changes
+  onFormChanges() {
+    // clear any previous supports section selections based on the "require supports" radio button
     this.requiresSupport.valueChanges.subscribe((value: boolean) => {
-      if (!value) {
-        this.resetSupportServices();
+      if (value === false) {
+        this.resetSupports();
       }
     });
   }
@@ -112,15 +111,14 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
     }
   }
 
-  resetSupportServices(): void {
-    // const checkboxes = this.requestedSupportServices.controls;
-    // checkboxes.forEach(cb => cb.setValue(false));
-  }
-
-  onSave() {
-    const form = this.form.value;
-    const newState: Registration = { ...this.registration, ...this.form.value };
-    this.store.dispatch(new UpdateRegistration({ registration: newState }));
+  resetSupports(): void {
+    this.form.patchValue({
+      requiresFood: null,
+      requiresClothing: null,
+      requiresAccommodation: null,
+      requiresIncidentals: null,
+      requiresTransportation: null,
+    });
   }
 
   next() {
@@ -130,5 +128,13 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
 
   back() {
     this.router.navigate(['../step-1'], { relativeTo: this.route });
+  }
+
+  onSave() {
+    const registration: Registration = {
+      ...this.registration,
+      ...this.form.value
+    };
+    this.store.dispatch(new UpdateRegistration({ registration }));
   }
 }

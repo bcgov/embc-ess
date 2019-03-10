@@ -22,7 +22,7 @@
     </div>
   </div>
 
-  <h3 class="blue-header">FAMILY REPRESENTATIVE</h3>
+  <h3 class="blue-header">EVACUEE DETAILS</h3>
   <section class="padded-section" formGroupName="headOfHousehold">
     <div class="row">
       <app-form-field class="col-md-8" required="true">
@@ -63,21 +63,23 @@
     </div>
   </section>
 
-  <h3 class="blue-header">EVACUEE FAMILY INFORMATION</h3>
+  <h3 class="blue-header">EVACUEE FAMILY INFORMATION
+    <app-font-awesome-icon icon="info-circle" className="ml-3 text-white"></app-font-awesome-icon>
+  </h3>
   <section class="padded-section">
     <p>Are you registering immediate family members who live in the same household with you?</p>
     <div class="form-group">
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="1" formControlName="registeringFamilyMembers">
+        <input class="form-check-input" type="radio" value="yes" formControlName="registeringFamilyMembers">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="2" formControlName="registeringFamilyMembers">
+        <input class="form-check-input" type="radio" value="yes-later" formControlName="registeringFamilyMembers">
         <label class="form-check-label">Yes, but I'd like to register them when I get to the
           Reception Center</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="3" formControlName="registeringFamilyMembers">
+        <input class="form-check-input" type="radio" value="no" formControlName="registeringFamilyMembers">
         <label class="form-check-label">No</label>
       </div>
     </div>
@@ -108,7 +110,12 @@
           <div class="row">
             <app-form-field class="col-md-6">
               <label>Relationship</label>
-              <input class="form-control" type="text" formControlName="relationshipToEvacuee">
+              <!-- <input class="form-control" type="text" formControlName="relationshipToEvacuee"> -->
+              <select class="form-control" formControlName="relationshipToEvacuee">
+                <option [ngValue]="null">Please select--</option>
+                <option [value]="item.code" *ngFor="let item of relationshipTypes$ | async">{{item.description}}
+                </option>
+              </select>
             </app-form-field>
             <app-form-field class="col-md-2" required="true">
               <label>Gender</label>
@@ -127,48 +134,59 @@
         </div>
       </div>
       <div class="family-members__actions clearfix">
+        <a [routerLink]="" class="float-left" (click)="removeFamilyMember()">
+          <app-font-awesome-icon icon="times"></app-font-awesome-icon><span class="ml-2">Remove</span>
+        </a>
         <a [routerLink]="" class="float-right" (click)="addFamilyMember()">
-          <i class="fas fa-plus-circle" style="margin-right: 5px"></i>Add another contact
+          <app-font-awesome-icon icon="plus-circle"></app-font-awesome-icon>
+          <span class="ml-2">Add another contact</span>
         </a>
       </div>
     </div>
   </section>
 
-  <h3 class="blue-header">PRIMARY RESIDENCE & CONTACT DETAILS</h3>
+  <h3 class="blue-header">PRIMARY RESIDENCE &amp; CONTACT DETAILS
+    <app-font-awesome-icon icon="info-circle" className="ml-3 text-white"></app-font-awesome-icon>
+  </h3>
   <section class="padded-section">
     <div class="form-group d-flex flex-row">
-      <p class="m-0 mr-4">Is your primary residence within BC?</p>
+      <p class="m-0 mr-4">Is your primary residence within BC</p>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" formControlName="isPrimaryResidenceInBC" [value]="true">
+        <input class="form-check-input" type="radio" formControlName="primaryResidenceInBC" [value]="true">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" formControlName="isPrimaryResidenceInBC" [value]="false">
+        <input class="form-check-input" type="radio" formControlName="primaryResidenceInBC" [value]="false">
         <label class="form-check-label">No</label>
       </div>
     </div>
-    <ng-container *ngIf="isPrimaryResidenceInBC.value != null">
-      <app-address-selector [parent]="primaryResidence" [withinBC]="isPrimaryResidenceInBC.value">
+    <section *ngIf="ui.showPrimaryAddressSection()" class="feature-block">
+      <section class="blurb" *ngIf="ui.showStrandedTravellerBlurb()">
+        <h4 class="text-danger">Stranded Traveller</h4>
+        <p class="text-danger">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit
+          amet pulvinar. Vestibulum ante ipsum primis in faucibus orci.</p>
+      </section>
+      <app-address-selector [parent]="primaryResidence" [withinBC]="primaryResidenceInBC.value">
       </app-address-selector>
       <section>
         <div class="row">
           <app-form-field class="col-md-6">
             <label>Telephone / Mobile Number (10 digits)</label>
-            <input class="form-control" type="text">
+            <input class="form-control" type="text" placeholder="xxx xxx xxxx" formControlName="phoneNumber">
           </app-form-field>
           <app-form-field class="col-md-6">
             <label>Alternate Telephone / Mobile Number</label>
-            <input class="form-control" type="text">
+            <input class="form-control" type="text" placeholder="xxx xxx xxxx" formControlName="phoneNumberAlt">
           </app-form-field>
         </div>
         <div class="row">
           <app-form-field class="col-md-8" required="true">
             <label>Email Address</label>
-            <input class="form-control" type="text">
+            <input class="form-control" type="text" formControlName="email">
           </app-form-field>
         </div>
       </section>
-    </ng-container>
+    </section>
   </section>
 
   <h3 class="blue-header">MAILING ADDRESS</h3>
@@ -184,27 +202,28 @@
         <label class="form-check-label">No</label>
       </div>
     </div>
-    <div *ngIf="ui.showMailingAddress()" class="feature-block">
+    <section *ngIf="ui.showMailingAddressSelector()" class="feature-block">
       <div class="form-group d-flex flex-row">
-        <p class="m-0 mr-4">Is your mailing address within BC?</p>
+        <p class="m-0 mr-4">Is your mailing address within BC</p>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" formControlName="isMailingAddressInBC" [value]="true">
+          <input class="form-check-input" type="radio" formControlName="mailingAddressInBC" [value]="true">
           <label class="form-check-label">Yes</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" formControlName="isMailingAddressInBC" [value]="false">
+          <input class="form-check-input" type="radio" formControlName="mailingAddressInBC" [value]="false">
           <label class="form-check-label">No</label>
         </div>
       </div>
-      <app-address-selector *ngIf="isMailingAddressInBC.value != null" [parent]="mailingAddress"
-        [withinBC]="isMailingAddressInBC.value"></app-address-selector>
-    </div>
+      <app-address-selector *ngIf="ui.showMailingAddressSection()" [parent]="mailingAddress"
+        [withinBC]="mailingAddressInBC.value"></app-address-selector>
+    </section>
   </section>
 
   <div class="mt-5 space-between">
     <section>
       <a [routerLink]="">
-        <i class="fa fa-times" style="margin-right: 5px"></i>Cancel &amp; Close
+        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+        <span class="ml-2">Cancel &amp; Close</span>
       </a>
     </section>
     <section>

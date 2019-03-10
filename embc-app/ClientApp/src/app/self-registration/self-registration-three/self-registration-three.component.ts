@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { Registration } from 'src/app/core/models';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { takeWhile } from 'rxjs/operators';
+
+import { Registration } from 'src/app/core/models';
 import { AppState } from 'src/app/store';
-import { Router, ActivatedRoute } from '@angular/router';
-import { LoadAllRegistrations } from 'src/app/store/registration/registration.actions';
+import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
+
 
 @Component({
   selector: 'app-self-registration-three',
@@ -12,8 +15,14 @@ import { LoadAllRegistrations } from 'src/app/store/registration/registration.ac
   styleUrls: ['./self-registration-three.component.scss']
 })
 export class SelfRegistrationThreeComponent implements OnInit {
+
+  // state needed by this FORM
+  currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
+
   form: FormGroup;
-  registration: Registration;
+  componentActive = true;
+
+  registration: Registration | null;
 
   constructor(
     private store: Store<AppState>,
@@ -22,49 +31,54 @@ export class SelfRegistrationThreeComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
-  // Shortcuts for this.form.get(...)
-  // get mailingAddress() { return this.form.get('mailingAddress') as FormGroup; }
-
-  // TODO: Form UI logic; i.e. show additional form fields when a checkbox is checked
-  get ui() {
-    return {};
-  }
-
   ngOnInit() {
-    this.getInitialState()
-      .subscribe(registration => {
-        this.initForm(registration);
-        this.handleFormChanges();
-      });
+    // Create form controls
+    this.initForm();
+    this.onFormChanges();
+
+    // Update form values based on the state
+    this.currentRegistration$
+      .pipe(takeWhile(() => this.componentActive))
+      .subscribe(value => this.displayRegistration(value));
   }
 
   getInitialState() {
     return this.store.select(state => state.registrations.currentRegistration);
   }
 
-  initForm(state: Registration) {
-    this.registration = state;
-
+  // Define the form group
+  initForm() {
     this.form = this.fb.group({
-
+      declarationAndConsent: [null, Validators.required],
     });
   }
 
-  handleFormChanges() {
+  onFormChanges() {
     // TODO: Register any value change listeners here...
     // this.form.get('someField').valueChanges.subscribe(...)
   }
 
+  displayRegistration(registration: Registration | null): void {
+    // Set the local registration property
+    this.registration = registration;
+
+    if (this.registration && this.form) {
+      // Reset the form back to pristine
+      this.form.reset();
+
+      // Update the data on the form
+      this.form.patchValue({
+        declarationAndConsent: null,
+      });
+    }
+  }
+
   onSave() {
-    const form = this.form.value;
-    const state = this.registration;
-
-    const newState: Registration = {
-      ...state,
-      ...{}
+    const registration: Registration = {
+      ...this.registration,
+      ...this.form.value
     };
-
-    // this.store.dispatch(new LoadAllRegistrations(newState));
+    this.store.dispatch(new UpdateRegistration({ registration }));
   }
 
   next() {

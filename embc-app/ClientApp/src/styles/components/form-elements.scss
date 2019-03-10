@@ -1,18 +1,18 @@
-@import '../defaults.scss';
+@import "../defaults.scss";
 
 .form {
-	&-control {
-		min-height: 40px;
-		border-color: $fc-border-color;
+  &-control {
+    min-height: 40px;
+    border-color: $fc-border-color;
     background-color: $fc-bg;
 
-		&:focus {
-			border-color: $fc-focus-border-color;
-		}
-	}
+    &:focus {
+      border-color: $fc-focus-border-color;
+    }
+  }
 
-	&-check {
-		input {
+  &-check {
+    input {
       margin: 0;
       margin-left: -1.25rem;
       vertical-align: middle;
@@ -21,21 +21,45 @@
       padding-left: 5px;
       font-weight: 400;
     }
-	}
+  }
 
-	&-text {
-		color: #333;
-		font-size: 0.85rem;
-	}
+  &-text {
+    color: #333;
+    font-size: 0.85rem;
+  }
 
-	&-group {
-		label {
-			margin-bottom: 0.25rem;
+  &-group {
+    label {
+      margin-bottom: 0.25rem;
 
-			em {
-				color: #999;
-				font-weight: 400;
-			}
-		}
-	}
+      em {
+        color: #999;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+// VALIDATION
+
+// required field indicators
+.required {
+  &::after {
+    content: " *";
+    color: $fc-invalid-color;
+    font-weight: 700;
+  }
+}
+
+.error-states {
+  color: $fc-invalid-color;
+}
+
+.error-summary {
+  background-color: $fc-invalid-bg;
+  border: solid 1px transparent;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  color: $fc-invalid-color;
 }

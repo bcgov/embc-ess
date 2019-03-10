@@ -1,13 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 
+// Theme defaults
+@import "styles/defaults.scss";
+@import "styles/mixins.scss";
+
 // Components
-@import 'styles/components/cards.scss';
-@import 'styles/components/feature-blocks.scss';
-@import 'styles/components/form-elements.scss';
-@import 'styles/components/summary.scss';
+@import "styles/components/cards.scss";
+@import "styles/components/feature-blocks.scss";
+@import "styles/components/form-elements.scss";
+@import "styles/components/summary.scss";
 
 // Angular Material - define custom theme
-@import '~@angular/material/theming';
+@import "~@angular/material/theming";
 @import "~mygovbc-bootstrap-theme/dist/mygovbc-bootstrap-theme.min.css";
 @include mat-core();
 $primary: mat-palette($mat-grey, 400);
@@ -18,7 +22,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
 // Angular Material - define custom typography (i.e. no Roboto font)
 $custom-typography: mat-typography-config(
-  $font-family: 'Myriad-Pro, Calibri, Arial, sans-serif'
+  $font-family: "Myriad-Pro, Calibri, Arial, sans-serif"
 );
 @include angular-material-typography($custom-typography);
 
@@ -99,7 +103,7 @@ a {
 }
 
 .btn-secondary:hover {
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
 }
 
 .btn-secondary:focus {
@@ -124,7 +128,7 @@ a {
 }
 
 .ctx-home {
-  background: #f2f2f2
+  background: #f2f2f2;
 }
 
 .panel-footer {
@@ -159,12 +163,14 @@ select.form-control:not([size]):not([multiple]) {
 
 .round-icon-wrapper {
   height: 48px;
-  line-height: 55px;
   width: 48px;
+  min-width: 48px;
+  min-height: 48px;
   border-radius: 48px;
-  background-color: #7596C8;
+  background-color: #7596c8;
   text-align: center;
   display: inline-block;
+  padding-top: 12px;
 }
 
 .summary-table table {
@@ -189,7 +195,7 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 .blue-header {
-  background-color: #38598A;
+  background-color: #38598a;
   color: #fff;
   padding: 10px 7px 7px 15px;
   font-size: 16px;
@@ -203,19 +209,6 @@ hr {
   border-top: 1px solid #ccc;
   margin: 1em 0;
   padding: 0;
-}
-
-.error-states {
-  color: #d8292f
-}
-
-.error-summary {
-  background-color: #F2F2F2;
-  border: solid 1px transparent;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
-  color: #d8292f
 }
 
 .space-between {
@@ -236,7 +229,7 @@ hr {
 }
 
 .red-snackbar {
-  background: #F44336;
+  background: #f44336;
 }
 
 .green-snackbar {
@@ -244,7 +237,7 @@ hr {
 }
 
 .step {
-  border-bottom: 2px solid #FCBA19;
+  border-bottom: 2px solid #fcba19;
   display: inline-block;
 }
 
@@ -253,7 +246,7 @@ hr {
 }
 
 .notes {
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
   border: solid 1px transparent;
   border-radius: 5px;
   padding: 10px;
@@ -283,8 +276,8 @@ hr {
 }
 
 .submit-container {
-  background-color: #38598A;
-  border-bottom: solid 4px #FFCC00;
+  background-color: #38598a;
+  border-bottom: solid 4px #ffcc00;
   color: #fff;
   margin-bottom: 20px;
   padding: 30px;

@@ -2,8 +2,25 @@ import { Component, OnInit, Input, Directive } from '@angular/core';
 
 @Component({
   selector: 'app-side-box',
-  templateUrl: './side-box.component.html',
-  styleUrls: ['./side-box.component.scss']
+  styleUrls: ['./side-box.component.scss'],
+  template: `
+    <mat-card class="side-box">
+      <mat-card-header>
+        <h2 mat-card-avatar class="round-icon-material">
+          <mat-icon class="icon" aria-label="description icon">{{icon}}</mat-icon>
+        </h2>
+        <mat-card-title>
+          <h2>{{title}}</h2>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ng-content select="section[role=content]"></ng-content>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <ng-content select="section[role=footer]"></ng-content>
+      </mat-card-actions>
+    </mat-card>
+  `,
 })
 export class SideBoxComponent implements OnInit {
   @Input() title = 'Sample Title';
@@ -14,12 +31,3 @@ export class SideBoxComponent implements OnInit {
   ngOnInit() {
   }
 }
-
-/**
- * Action section of the card, needed as it's used as a selector in the API.
- * @docs-private
- */
-@Directive({
-  selector: 'app-side-box-actions',
-})
-export class SideBoxActions { }
