@@ -1,0 +1,9 @@
+@import "../defaults.scss";
+
+.restricted {
+  background: $bg-restricted !important;
+
+  &-bright {
+    background: $bg-restricted-bright !important;
+  }
+}

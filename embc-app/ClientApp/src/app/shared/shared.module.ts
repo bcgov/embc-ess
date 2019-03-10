@@ -14,6 +14,7 @@ import { BcAddressComponent } from './components/address-form/bc-address/bc-addr
 import { OtherAddressComponent } from './components/address-form/other-address/other-address.component';
 import { DisableControlDirective } from './directives/disable-control.directive';
 import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
+import { YesNoPipe } from './pipes/yes-no.pipe';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-aw
     OtherAddressComponent,
     DisableControlDirective,
     FontAwesomeIconComponent,
+    YesNoPipe,
   ],
   imports: [
     CommonModule,
@@ -54,6 +56,7 @@ import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-aw
     OtherAddressComponent,
     DisableControlDirective,
     FontAwesomeIconComponent,
+    YesNoPipe,
   ]
 })
 export class SharedModule { }

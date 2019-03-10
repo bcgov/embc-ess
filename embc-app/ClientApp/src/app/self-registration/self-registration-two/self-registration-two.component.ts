@@ -65,7 +65,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
   initForm(): void {
     this.form = this.fb.group({
       dietaryNeeds: null,
-      familyMemberTakesMedication: null,
+      medicationNeeds: null,
       hasPets: null,
       insuranceCode: null,  // one of ['yes', 'yes-unsure', 'no', 'unsure']
       requiresSupport: null,
@@ -98,7 +98,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
       // Update the data on the form
       this.form.patchValue({
         dietaryNeeds: this.registration.dietaryNeeds,
-        familyMemberTakesMedication: this.registration.medicationNeeds,
+        medicationNeeds: this.registration.medicationNeeds,
         hasPets: this.registration.hasPets,
         insuranceCode: this.registration.insuranceCode,
         requiresSupport: this.registration.requiresSupport,
@@ -127,6 +127,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
   }
 
   back() {
+    this.onSave();
     this.router.navigate(['../step-1'], { relativeTo: this.route });
   }
 

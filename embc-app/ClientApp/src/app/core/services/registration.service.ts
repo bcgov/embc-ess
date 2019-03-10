@@ -10,7 +10,7 @@ const FAKEREGISTRATIONS: Registration[] = [
     id: '123',
     restrictedAccess: false,
     essFileNumber:  1289734,
-
+    declarationAndConsent: false,
     dietaryNeeds: false,
     dietaryNeedsDetails: 'gluten intolerance',
     disasterAffectDetails: 'Freeform text',

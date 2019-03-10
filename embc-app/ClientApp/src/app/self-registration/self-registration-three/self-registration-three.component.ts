@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -14,7 +14,7 @@ import { UpdateRegistration } from 'src/app/store/registration/registration.acti
   templateUrl: './self-registration-three.component.html',
   styleUrls: ['./self-registration-three.component.scss']
 })
-export class SelfRegistrationThreeComponent implements OnInit {
+export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
 
   // state needed by this FORM
   currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
@@ -42,20 +42,23 @@ export class SelfRegistrationThreeComponent implements OnInit {
       .subscribe(value => this.displayRegistration(value));
   }
 
-  getInitialState() {
-    return this.store.select(state => state.registrations.currentRegistration);
+  ngOnDestroy(): void {
+    this.componentActive = false;
+  }
+
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.form.controls;
   }
 
   // Define the form group
   initForm() {
     this.form = this.fb.group({
-      declarationAndConsent: [null, Validators.required],
+      declarationAndConsent: [null, Validators.requiredTrue],
     });
   }
 
   onFormChanges() {
-    // TODO: Register any value change listeners here...
-    // this.form.get('someField').valueChanges.subscribe(...)
   }
 
   displayRegistration(registration: Registration | null): void {
@@ -68,17 +71,9 @@ export class SelfRegistrationThreeComponent implements OnInit {
 
       // Update the data on the form
       this.form.patchValue({
-        declarationAndConsent: null,
+        declarationAndConsent: this.registration.declarationAndConsent,
       });
     }
-  }
-
-  onSave() {
-    const registration: Registration = {
-      ...this.registration,
-      ...this.form.value
-    };
-    this.store.dispatch(new UpdateRegistration({ registration }));
   }
 
   next() {
@@ -87,6 +82,21 @@ export class SelfRegistrationThreeComponent implements OnInit {
   }
 
   back() {
+    // clear the consent checkbox if we go back to edit the information provided so far
+    this.reset();
+    this.onSave();
     this.router.navigate(['../step-2'], { relativeTo: this.route });
+  }
+
+  reset() {
+    this.f.declarationAndConsent.reset();
+  }
+
+  onSave() {
+    const registration: Registration = {
+      ...this.registration,
+      ...this.form.value
+    };
+    this.store.dispatch(new UpdateRegistration({ registration }));
   }
 }

@@ -4,6 +4,7 @@ export interface Registration {
   // Important
   id: string | null;
   restrictedAccess: boolean;
+  declarationAndConsent: boolean;
   essFileNumber: number | null;
 
   // Registration Record
