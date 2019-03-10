@@ -35,7 +35,7 @@ export class FontAwesomeIconComponent implements OnInit {
   @Input() size: IconSizes = null;
 
   get classes() {
-    const classList = {
+    const cssClasses = {
       'fa-border': this.border,
       'fa-fw': this.fixedWidth,
       'fa-inverse': this.inverse,
@@ -43,7 +43,7 @@ export class FontAwesomeIconComponent implements OnInit {
       [`fa-${this.size}`]: this.size !== null,
       [this.className]: this.className !== null,  // extra classes (if provided)
     };
-    return classList;
+    return cssClasses;
   }
 
   ngOnInit() {
