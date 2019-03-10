@@ -14,8 +14,10 @@
   .round-icon-material {
     height: 48px;
     width: 48px;
+    min-width: 48px;
+    min-height: 48px;
     border-radius: 48px;
-    background-color: #7596C8;
+    background-color: #7596c8;
     text-align: center;
     display: inline-block;
     padding-top: 12px;
