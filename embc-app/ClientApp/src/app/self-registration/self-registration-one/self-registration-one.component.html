@@ -7,7 +7,7 @@
     a fringilla.</p>
 
   <div class="feature-block">
-    <h3>Restriction<span style="color:#CC0000;"> *</span></h3>
+    <h3 class="required">Restriction</h3>
     <p>Concerned family
       and friends may inquire about you and your family because of the emergency. We would like to provide these
       people with some information about you. May we disclose your location and the contact information for you
@@ -25,29 +25,29 @@
   <h3 class="blue-header">EVACUEE DETAILS</h3>
   <section class="padded-section" formGroupName="headOfHousehold">
     <div class="row">
-      <app-form-field class="col-md-8" required="true">
+      <app-form-field class="col-md-9" required="true">
         <label>Last Name</label>
         <input class="form-control" type="text" formControlName="lastName">
       </app-form-field>
     </div>
     <div class="row">
-      <app-form-field class="col-md-8" required="true">
+      <app-form-field class="col-md-9" required="true">
         <label>First Name</label>
         <input class="form-control" type="text" formControlName="firstName">
       </app-form-field>
     </div>
     <div class="row">
-      <app-form-field class="col-md-3">
+      <app-form-field class="col-md-2">
         <label>Initial</label>
         <input class="form-control" type="text" formControlName="initials">
       </app-form-field>
-      <app-form-field class="col-md-5">
+      <app-form-field class="col-md-7">
         <label>Nickname</label>
         <input class="form-control" type="text" formControlName="nickname">
       </app-form-field>
     </div>
     <div class="row">
-      <app-form-field class="col-md-2" required="true">
+      <app-form-field class="col-md-4" required="true">
         <label>Gender</label>
         <select class="form-control" formControlName="gender">
           <option [ngValue]="null">Please select--</option>
@@ -56,7 +56,7 @@
           <option value="other">Other</option>
         </select>
       </app-form-field>
-      <app-form-field class="col-md-3" required="true">
+      <app-form-field class="col-md-4" required="true">
         <label>Date of Birth</label>
         <input class="form-control" type="date" formControlName="dob">
       </app-form-field>
@@ -88,27 +88,27 @@
         <div class="family-members__item" *ngFor="let m of familyMembers.controls; index as i;" [formGroupName]="i">
           <!-- TODO: Refactor into sub-component -->
           <div class="row">
-            <app-form-field class="col-md-6" required="true">
+            <app-form-field class="col-md-5" required="true">
               <label>Last Name</label>
               <input class="form-control" type="text" formControlName="lastName">
             </app-form-field>
-            <div class="form-check col-md-6">
+            <div class="form-check col-md-5">
               <input class="form-check-input" type="checkbox" formControlName="sameLastNameAsEvacuee" [value]="true">
               <label class="form-check-label">Same as main applicant</label>
             </div>
           </div>
           <div class="row">
-            <app-form-field class="col-md-6" required="true">
+            <app-form-field class="col-md-5" required="true">
               <label>First Name</label>
               <input class="form-control" type="text" formControlName="firstName">
             </app-form-field>
-            <app-form-field class="col-md-3">
+            <app-form-field class="col-md-2">
               <label>Initial</label>
               <input class="form-control" type="text" formControlName="initials">
             </app-form-field>
           </div>
           <div class="row">
-            <app-form-field class="col-md-6">
+            <app-form-field class="col-md-5" required="true">
               <label>Relationship</label>
               <!-- <input class="form-control" type="text" formControlName="relationshipToEvacuee"> -->
               <select class="form-control" formControlName="relationshipToEvacuee">
@@ -117,7 +117,7 @@
                 </option>
               </select>
             </app-form-field>
-            <app-form-field class="col-md-2" required="true">
+            <app-form-field class="col-md-3" required="true">
               <label>Gender</label>
               <select class="form-control" formControlName="gender">
                 <option [ngValue]="null">Please select--</option>
@@ -126,7 +126,7 @@
                 <option value="other">Other</option>
               </select>
             </app-form-field>
-            <app-form-field class="col-md-3" required="true">
+            <app-form-field class="col-md-4" required="true">
               <label>Date of Birth</label>
               <input class="form-control" type="date" formControlName="dob">
             </app-form-field>
@@ -150,7 +150,7 @@
   </h3>
   <section class="padded-section">
     <div class="form-group d-flex flex-row">
-      <p class="m-0 mr-4">Is your primary residence within BC</p>
+      <p class="m-0 mr-4 required">Is your primary residence within BC</p>
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" formControlName="primaryResidenceInBC" [value]="true">
         <label class="form-check-label">Yes</label>
@@ -180,7 +180,7 @@
           </app-form-field>
         </div>
         <div class="row">
-          <app-form-field class="col-md-8" required="true">
+          <app-form-field class="col-md-8">
             <label>Email Address</label>
             <input class="form-control" type="text" formControlName="email">
           </app-form-field>
@@ -191,7 +191,7 @@
 
   <h3 class="blue-header">MAILING ADDRESS</h3>
   <section class="padded-section">
-    <p>Is your mailing address different from your primary residence?</p>
+    <p class="required">Is your mailing address different from your primary residence?</p>
     <div class="form-group">
       <div class="form-check">
         <input class="form-check-input" type="radio" formControlName="hasMailingAddress" [value]="true">
@@ -204,7 +204,7 @@
     </div>
     <section *ngIf="ui.showMailingAddressSelector()" class="feature-block">
       <div class="form-group d-flex flex-row">
-        <p class="m-0 mr-4">Is your mailing address within BC</p>
+        <p class="m-0 mr-4 required">Is your mailing address within BC</p>
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="radio" formControlName="mailingAddressInBC" [value]="true">
           <label class="form-check-label">Yes</label>

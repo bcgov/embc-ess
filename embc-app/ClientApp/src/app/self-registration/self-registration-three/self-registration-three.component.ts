@@ -4,10 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { takeWhile } from 'rxjs/operators';
 
-import { Registration } from 'src/app/core/models';
+import { Registration, Country, Community, RelationshipType } from 'src/app/core/models';
 import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
-
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-self-registration-three',
@@ -18,11 +18,24 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
 
   // state needed by this FORM
   currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
+  countries$ = this.store.select(state => state.lookups.countries.countries);
+  communities$ = this.store.select(state => state.lookups.communities.communities);
+  relationshipTypes$ = this.store.select(state => state.lookups.relationshipTypes.relationshipTypes);
 
   form: FormGroup;
   componentActive = true;
 
   registration: Registration | null;
+
+  countriesLookup: { [key: string]: Country; };
+  communitiesLookup: { [key: string]: Community; };
+  relationshipTypesLookup: { [key: string]: RelationshipType; };
+  insuranceLookup = {
+    'yes': 'Yes',
+    'yes-unsure': `Yes, but I'm not sure if I have coverage for this event`,
+    'no': 'No',
+    'unsure': `I don't know`,
+  };
 
   constructor(
     private store: Store<AppState>,
@@ -37,9 +50,11 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     this.onFormChanges();
 
     // Update form values based on the state
-    this.currentRegistration$
+    combineLatest(this.currentRegistration$, this.countries$, this.communities$, this.relationshipTypes$)
       .pipe(takeWhile(() => this.componentActive))
-      .subscribe(value => this.displayRegistration(value));
+      .subscribe(([registration, countries, communities, relationshipTypes]) => {
+        this.displayRegistration({ registration, countries, communities, relationshipTypes });
+      });
   }
 
   ngOnDestroy(): void {
@@ -61,9 +76,17 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
   onFormChanges() {
   }
 
-  displayRegistration(registration: Registration | null): void {
+  displayRegistration(props: {
+    registration: Registration | null;
+    countries: Country[];
+    communities: Community[];
+    relationshipTypes: RelationshipType[];
+  }): void {
     // Set the local registration property
-    this.registration = registration;
+    this.registration = props.registration;
+    this.countriesLookup = this.normalize(props.countries);
+    this.communitiesLookup = this.normalize(props.communities);
+    this.relationshipTypesLookup = this.normalize(props.relationshipTypes);
 
     if (this.registration && this.form) {
       // Reset the form back to pristine
@@ -98,5 +121,9 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
       ...this.form.value
     };
     this.store.dispatch(new UpdateRegistration({ registration }));
+  }
+
+  private normalize(subjects: any[]) {
+    return subjects.reduce((hash, s) => (hash[s.id] = s, hash), {});
   }
 }
