@@ -13,6 +13,8 @@ interface Stub{
   personType: string; // HOH || FMBR || VOLN
   evacuatedFrom: string; // community name
   evacuatedTo: string; // community name
+  registrationCompletionDate: Date;
+
 }
 @Component({
   selector: 'app-volunteer-dashboard',
@@ -22,6 +24,7 @@ interface Stub{
 export class VolunteerDashboardComponent implements OnInit {
 
   registrations: Stub[];
+  raw;
 
   constructor(
     private registrationService: RegistrationService
@@ -31,6 +34,7 @@ export class VolunteerDashboardComponent implements OnInit {
     // go get the data
     this.registrationService.getRegistries()
       .subscribe((registrations: Registration[]) => {
+        this.raw = registrations;
         // save the registrations into the local data blob
         this.registrations = this.unreduceRegistrationToStubs(registrations);
     });
@@ -40,7 +44,7 @@ export class VolunteerDashboardComponent implements OnInit {
     // loop through registrations and get each family member
     for (const registration of registrations){
       // push the head of household as a stub
-      let hoh: Stub = {
+      const hoh: Stub = {
         id: registration.id, // the guid to link them to their file
         restrictedAccess: registration.restrictedAccess, // should this file be shown or not?
         essFileNumber: registration.essFileNumber, // what is the ESS file number
@@ -51,12 +55,13 @@ export class VolunteerDashboardComponent implements OnInit {
         personType: 'HOH', // HOH || FMBR || VOLN
         evacuatedFrom: registration.incidentTask.community.name, // community name
         evacuatedTo: registration.hostCommunity.name, // community name
+        registrationCompletionDate: registration.registrationCompletionDate
       };
       stubCollector.push(hoh);
 
       // push the family members of the HOH as stubs
       for (const familyMember of registration.familyMembers){
-        let fmbr = {
+        const fmbr = {
           id: registration.id, // the guid to link them to their file
           restrictedAccess: registration.restrictedAccess, // should this file be shown or not?
           essFileNumber:  registration.essFileNumber, // what is the ESS file number
@@ -67,6 +72,8 @@ export class VolunteerDashboardComponent implements OnInit {
           personType: familyMember.personType, // HOH || FMBR || VOLN
           evacuatedFrom: registration.incidentTask.community.name, // community name
           evacuatedTo: registration.hostCommunity.name, // community name
+          registrationCompletionDate: registration.registrationCompletionDate
+
         };
         stubCollector.push(fmbr);
       }

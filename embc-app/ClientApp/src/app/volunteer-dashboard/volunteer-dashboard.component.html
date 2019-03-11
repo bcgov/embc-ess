@@ -38,32 +38,24 @@
               <span *ngIf="stub.personType==='HOH'">
                 HOH
               </span>
+              <span *ngIf="stub.restrictedAccess">
+                Lock
+              </span>
             </th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{stub.firstName}}</td>
+            <td>{{stub.lastName}}</td>
+            <td>{{stub.incidentTaskNumber}}</td>
+            <td>{{stub.essFileNumber}}</td>
+            <td>{{stub.evacuatedFrom}}</td>
+            <td>{{stub.evacuatedTo}}</td>
             <td>Yes</td>
             <td>
-              <a *ngIf="registration.registrationCompletionDate===null" href="">Complete</a>
-              <a *ngIf="registration.registrationCompletionDate!==null" href="">View</a>
+              <a *ngIf="stub.registrationCompletionDate===null" href="">Complete</a>
+              <a *ngIf="stub.registrationCompletionDate!==null" href="">View</a>
             </td>
           </tr>
         </tbody>
       </table>
-      <p *ngFor="let stub of registrations">
-        {{stub|json}}
-      </p>
-      <!-- <table mat-table [dataSource]="evacuees">
-        <ng-container matColDef="firstName">
-          <th mat-header-cell *matHeaderCellDef>First Name</th>
-          <td mat-cell *matCellDef="let evacuee">{{evacuee.firstName}}</td>
-        </ng-container>
-      </table> -->  
-      <p>{{registrations|json}}</p>
-
     </div>
   </div>
 

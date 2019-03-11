@@ -21,7 +21,7 @@ const FAKEREGISTRATIONS: Registration[] = [
     insuranceCode: 'MANU120398',
     medicationNeeds: false,
     selfRegisteredDate: null,
-    registrationCompletionDate: new Date(),
+    registrationCompletionDate: new Date('2019-03-11T20:48:31.246Z'),
     registeringFamilyMembers: 'yes',
     
     hasThreeDayMedicationSupply: true,
@@ -40,7 +40,7 @@ const FAKEREGISTRATIONS: Registration[] = [
     requiresSupport: true,
     requiresTransportation: true,
 
-    headOfHousehold: 
+    headOfHousehold:
       {
         id: 'qwertyuiop',
         firstName: 'John',
@@ -91,7 +91,7 @@ const FAKEREGISTRATIONS: Registration[] = [
   },
   {
     id: '123',
-    restrictedAccess: false,
+    restrictedAccess: true,
     essFileNumber:  1289734,
 
     dietaryNeeds: false,
@@ -126,11 +126,11 @@ const FAKEREGISTRATIONS: Registration[] = [
     headOfHousehold:
     {
       id: 'qwertyuiop',
-      firstName: 'John',
-      lastName: 'Doe',
-      nickname: 'Johnny',
-      initials: 'JD',
-      gender: 'yes',
+      firstName: 'Barry',
+      lastName: 'Placebo',
+      nickname: 'Bipo',
+      initials: 'BP',
+      gender: 'Female',
       dob: null,
       phoneNumber: '',
       phoneNumberAlt: '',
@@ -148,13 +148,13 @@ const FAKEREGISTRATIONS: Registration[] = [
       regionalDistrict: null,
       community: {
         id: 'zxoicuvz',
-        name: 'Grand Forks',
+        name: 'Hope',
         regionalDistrict: null
       }
     },
     hostCommunity: {
       id: 'aslkdfjs',
-      name: 'Niagra',
+      name: 'Townland',
       regionalDistrict: null
     },
     completedBy: null
