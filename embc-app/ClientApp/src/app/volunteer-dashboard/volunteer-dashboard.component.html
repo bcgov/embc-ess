@@ -33,7 +33,8 @@
           <th scope="col">Action</th>
         </thead>
         <tbody>
-          <tr *ngFor="let stub of registrations">
+          <!-- <tr class="table-danger">...</tr> -->
+          <tr *ngFor="let stub of registrations" [class.table-danger]="stub.restrictedAccess">
             <th>
               <span *ngIf="stub.personType==='HOH'">
                 HOH
@@ -44,7 +45,7 @@
             </th>
             <td>{{stub.firstName}}</td>
             <td>{{stub.lastName}}</td>
-            <td>{{stub.incidentTaskNumber}}</td>
+            <td>{{stub.incidentTaskTaskNumber}}</td>
             <td>{{stub.essFileNumber}}</td>
             <td>{{stub.evacuatedFrom}}</td>
             <td>{{stub.evacuatedTo}}</td>
