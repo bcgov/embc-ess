@@ -23,7 +23,6 @@ const FAKEREGISTRATIONS: Registration[] = [
     registrationCompletionDate: new Date(),
     registeringFamilyMembers: 1,
     
-    
     hasThreeDayMedicationSupply: true,
     hasInquiryReferral: false,
     hasHealthServicesReferral: false,

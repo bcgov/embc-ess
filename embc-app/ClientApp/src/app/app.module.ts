@@ -14,12 +14,14 @@ import { SharedModule } from './shared/shared.module';
 import { SelfRegistrationModule } from './self-registration';
 import { HomeComponent } from './home/home.component';
 import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.component';
+import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     VolunteerLoginComponent,
+    VolunteerDashboardComponent,
   ],
   imports: [
     // angular
