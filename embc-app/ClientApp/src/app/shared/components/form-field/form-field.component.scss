@@ -1,16 +1,11 @@
+@import "~src/styles/_defaults.scss";
+
 $invalid-color: #d8292f;
 
 .error-states {
-  color: $invalid-color;
+  color: $fc-invalid-color;
 }
 
 .error-container {
   margin-top: 5px;
-}
-
-// display required field indicators
-.required::after {
-  content: ' *';
-  color: $invalid-color;
-  font-weight: 700;
 }

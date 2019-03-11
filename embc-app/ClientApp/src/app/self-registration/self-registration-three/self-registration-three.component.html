@@ -137,11 +137,11 @@
     <div class="row">
       <div class="form-check">
         <input class="form-check-input" type="checkbox">
-        <label class="form-check-label">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis
-          porttitor
-          scelerisque. Proin blandit suscipit ultrices. Proin dictum libero eget justo rhoncus sollicitudin. Curabitur
-          velit lorem, malesuada sed tincidunt sed, semper non orci. Aliquam dapibus mi non tortor fermentum, in egestas
-          leo vestibulum.</label>
+        <label class="form-check-label required">Personal information is collected under the authority of the Emergency
+          Program Act and may be shared with other organizations to enable the provision of emergency services.
+          Questions regarding the collection, use or disclosure of this information should be directed to: ESS Office,
+          Provisional Emergency Program, Ministry of Public Safety and Solicitor General, P.O. Box 9201 STN PROV GOVT,
+          Victoria, B.C. V8W 9J1.</label>
       </div>
     </div>
   </section>
@@ -152,16 +152,12 @@
     </section>
     <section>
       <a [routerLink]="">
-        <i class="fa fa-times" style="margin-right: 5px"></i>Cancel &amp; Close
+        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+        <span class="ml-2">Cancel &amp; Close</span>
       </a>
       <button class="btn btn-primary ml-4" (click)="next()">NEXT</button>
     </section>
   </div>
-</div>
-
-<div class="mt-5">
-  <h4>Form State</h4>
-  <pre>{{ this.form.value | json }}</pre>
 </div>
 
 <div class="mt-5">

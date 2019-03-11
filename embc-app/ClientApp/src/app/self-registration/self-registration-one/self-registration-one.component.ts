@@ -1,12 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { takeWhile } from 'rxjs/operators';
+import { skipWhile, takeWhile } from 'rxjs/operators';
 
 import { Registration } from 'src/app/core/models';
 import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
+
 
 @Component({
   selector: 'app-self-registration-one',
@@ -33,27 +34,50 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) { }
 
-  // Shortcuts for this.form.get(...)
-  get registeringFamilyMembers() { return this.form.get('registeringFamilyMembers'); }
-  get isPrimaryResidenceInBC() { return this.form.get('isPrimaryResidenceInBC'); }
-  get isMailingAddressInBC() { return this.form.get('isMailingAddressInBC'); }
-
-  get familyMembers() { return this.form.get('familyMembers') as FormArray; }
-  get primaryResidence() { return this.form.get('primaryResidence') as FormGroup; }
-  get mailingAddress() { return this.form.get('mailingAddress') as FormGroup; }
-
   // Form UI logic; i.e. show additional form fields when a checkbox is checked
   get ui() {
     return {
-      showMailingAddress: () => this.form.get('hasMailingAddress').value === true,
       showFamilyMembers: () => this.familyMembers.length > 0,
+      showPrimaryAddressSection: () => this.primaryResidenceInBC.value !== null,
+      showMailingAddressSelector: () => this.control('hasMailingAddress').value === true,
+      showMailingAddressSection: () => this.mailingAddressInBC.value !== null,
+      showStrandedTravellerBlurb: () => this.primaryResidenceInBC.value === false,
     };
+  }
+
+  control(name: string) {
+    return this.form.get(name);
+  }
+
+  // Shortcuts for this.form.get(...)
+  get registeringFamilyMembers() {
+    return this.control('registeringFamilyMembers');
+  }
+
+  get primaryResidenceInBC() {
+    return this.control('primaryResidenceInBC');
+  }
+
+  get mailingAddressInBC() {
+    return this.control('mailingAddressInBC');
+  }
+
+  get familyMembers() {
+    return this.control('familyMembers') as FormArray;
+  }
+
+  get primaryResidence() {
+    return this.control('primaryResidence') as FormGroup;
+  }
+
+  get mailingAddress() {
+    return this.control('mailingAddress') as FormGroup;
   }
 
   ngOnInit() {
     // Create form controls
     this.initForm();
-    this.handleFormChanges();
+    this.onFormChanges();
 
     // Update form values based on the state
     this.currentRegistration$
@@ -74,7 +98,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         lastName: '',
         nickname: '',
         initials: '',
-        gender: '',
+        gender: null,
         dob: null,
       }),
       registeringFamilyMembers: null,
@@ -82,7 +106,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       phoneNumber: '',
       phoneNumberAlt: '',
       email: '',
-      isPrimaryResidenceInBC: null,
+      primaryResidenceInBC: null,
       primaryResidence: this.fb.group({
         addressLine1: '',
         communityOrCity: '',
@@ -91,7 +115,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         country: '',
       }),
       hasMailingAddress: null,
-      isMailingAddressInBC: null,
+      mailingAddressInBC: null,
       mailingAddress: this.fb.group({
         addressLine1: '',
         communityOrCity: '',
@@ -103,14 +127,27 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   }
 
   // Watch for value changes
-  private handleFormChanges(): void {
-    this.registeringFamilyMembers.valueChanges.subscribe((value: number) => {
-      if (value === 1) {
-        this.addFamilyMember();
-      } else {
-        this.clearFamilyMembers();
-      }
-    });
+  onFormChanges(): void {
+    // show/hide family members section based on the "family info" radio button
+    this.registeringFamilyMembers.valueChanges
+      .pipe(skipWhile(() => this.registeringFamilyMembers.pristine))
+      .subscribe((value: string) => {
+        if (value === 'yes') {
+          this.addFamilyMember();
+        } else {
+          this.clearFamilyMembers();
+        }
+      });
+
+    // set "family info" radio to "No family" when all members have been removed from the form
+    this.familyMembers.valueChanges
+      .pipe(skipWhile(() => this.registeringFamilyMembers.pristine))
+      .subscribe((family: any[]) => {
+        const radio = this.registeringFamilyMembers;
+        if (radio.value === 'yes' && family.length === 0) {
+          radio.setValue('no');
+        }
+      });
   }
 
   displayRegistration(registration: Registration | null): void {
@@ -163,21 +200,47 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     }
   }
 
+  newFamilyMember(): FormGroup {
+    return this.fb.group({
+      relationshipToEvacuee: null,
+      sameLastNameAsEvacuee: true,
+      firstName: '',
+      lastName: '',
+      initials: '',
+      gender: null,
+      dob: null,
+    });
+  }
+
+  addFamilyMember(): void {
+    const newOne = this.newFamilyMember();
+    this.familyMembers.push(newOne);
+  }
+
+  removeFamilyMember(): void {
+    const last = this.familyMembers.length - 1;
+    this.familyMembers.removeAt(last);
+  }
+
+  clearFamilyMembers() {
+    this.clear(this.familyMembers);
+  }
+
+  next(): void {
+    this.onSave();
+    this.router.navigate(['../step-2'], { relativeTo: this.route });
+  }
+
   onSave(): void {
     const form = this.form.value;
-    const newState: Registration = {
+    const registration: Registration = {
       ...this.registration,
       restrictedAccess: form.restrictedAccess,
       registeringFamilyMembers: form.registeringFamilyMembers,
       familyMembers: [...form.familyMembers],
       headOfHousehold: {
         ...this.registration.headOfHousehold,
-        firstName: form.headOfHousehold.firstName,
-        lastName: form.headOfHousehold.lastName,
-        nickname: form.headOfHousehold.nickname,
-        initials: form.headOfHousehold.initials,
-        gender: form.headOfHousehold.gender,
-        dob: form.headOfHousehold.dob,
+        ...form.headOfHousehold,
         phoneNumber: form.phoneNumber,
         phoneNumberAlt: form.phoneNumberAlt,
         email: form.email,
@@ -186,34 +249,13 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       }
     };
 
-    this.store.dispatch(new UpdateRegistration({ registration: newState }));
-  }
-
-  addFamilyMember(): void {
-    this.familyMembers.push(this.fb.group({
-      relationshipToEvacuee: [''],
-      sameLastNameAsEvacuee: [true],
-      firstName: [''],
-      lastName: [''],
-      initials: [''],
-      gender: [undefined],
-      dob: [undefined],
-    }));
-  }
-
-  clearFamilyMembers() {
-    this.clear(this.familyMembers);
+    this.store.dispatch(new UpdateRegistration({ registration }));
   }
 
   // TODO: Refactor into utils method
   private clear(formArray: FormArray): void {
-    while (formArray.length !== 0) {
+    while (formArray && formArray.length !== 0) {
       formArray.removeAt(0);
     }
-  }
-
-  next(): void {
-    this.onSave();
-    this.router.navigate(['../step-2'], { relativeTo: this.route });
   }
 }

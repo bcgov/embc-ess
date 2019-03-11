@@ -13,7 +13,7 @@
         <section style="padding-top: 15px; padding-bottom: 20px;">
           <mat-vertical-stepper [linear]="true" #stepper>
             <ng-template matStepperIcon="edit">
-              <i class="fas fa-check"></i>
+              <app-font-awesome-icon icon="check"></app-font-awesome-icon>
             </ng-template>
             <ng-template matStepperIcon="number">
             </ng-template>
@@ -26,28 +26,33 @@
       </section>
 
       <app-side-box title="Important Notice for Evacuees">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis porttitor scelerisque. Proin blandit
-          suscipit ultrices. Proin dictum libero eget justo rhoncus sollicitudin.
-        </p>
-        <app-side-box-actions>
+        <section role="content">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis porttitor scelerisque. Proin
+            blandit
+            suscipit ultrices. Proin dictum libero eget justo rhoncus sollicitudin.
+          </p>
+        </section>
+        <section role="footer">
           <button class="btn btn-primary" routerLink="/">Learn More</button>
-        </app-side-box-actions>
+        </section>
       </app-side-box>
 
       <app-side-box title="Useful Links & Information" icon="list">
-        <p>What you need to know about:</p>
-        <ul class="arrow">
-          <li><a
-              href="https://www2.gov.bc.ca/gov/content/employment-business/business/pill-press/pill-press-waiver-holder#ap"
-              target="blank">Link 1</a></li>
-          <li><a
-              href="https://www2.gov.bc.ca/gov/content/employment-business/business/pill-press/pill-press-controlled-equipment#enp"
-              target="blank">Link 2</a></li>
-          <li><a
-              href="https://www2.gov.bc.ca/gov/content/employment-business/business/pill-press/pill-press-authorized-owner#btl"
-              target="blank">Link 3</a></li>
-        </ul>
+        <section role="content">
+          <p>What you need to know about:</p>
+          <ul class="arrow">
+            <li><a
+                href="https://www2.gov.bc.ca/gov/content/employment-business/business/pill-press/pill-press-waiver-holder#ap"
+                target="blank">Link 1</a></li>
+            <li><a
+                href="https://www2.gov.bc.ca/gov/content/employment-business/business/pill-press/pill-press-controlled-equipment#enp"
+                target="blank">Link 2</a></li>
+            <li><a
+                href="https://www2.gov.bc.ca/gov/content/employment-business/business/pill-press/pill-press-authorized-owner#btl"
+                target="blank">Link 3</a></li>
+          </ul>
+        </section>
       </app-side-box>
     </div>
   </div>
