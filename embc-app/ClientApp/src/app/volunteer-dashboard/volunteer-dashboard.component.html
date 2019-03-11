@@ -37,10 +37,10 @@
           <tr *ngFor="let stub of registrations" [class.table-danger]="stub.restrictedAccess">
             <th>
               <span *ngIf="stub.personType==='HOH'">
-                HOH
+               <i class="fas fa-user mr-1"></i>
               </span>
               <span *ngIf="stub.restrictedAccess">
-                Lock
+                <i class="fas fa-lock"></i>
               </span>
             </th>
             <td>{{stub.firstName}}</td>
@@ -62,12 +62,13 @@
 
 
   <div class="col-4">
-    <app-side-box title="Important Notice for Evacuees">
+    <app-side-box title="Useful Information">
       <section role="content">
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis porttitor scelerisque. Proin
-          blandit
-          suscipit ultrices. Proin dictum libero eget justo rhoncus sollicitudin.
+          Evacuees listed here that do not have a task number are self-registered and have not yet received Emergency Social Services.
+        </p>
+        <p>
+          Use the “Action” column to “view” evacuee registrations as well as “finalize” evacuee self-registrations.
         </p>
       </section>
       <section role="footer">
