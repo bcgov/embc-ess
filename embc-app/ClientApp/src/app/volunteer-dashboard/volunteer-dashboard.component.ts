@@ -17,9 +17,9 @@ export class VolunteerDashboardComponent implements OnInit {
   ngOnInit() {
     // go get the data
     this.registrationService.getRegistries()
-      .subscribe(r=>{
-        //
-        this.registrations=r;
+      .subscribe(r => {
+        // save the registrations into the local data blob
+        this.registrations = r;
       });
   }
 

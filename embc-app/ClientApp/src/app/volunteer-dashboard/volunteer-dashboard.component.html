@@ -58,7 +58,9 @@
           <th mat-header-cell *matHeaderCellDef>First Name</th>
           <td mat-cell *matCellDef="let evacuee">{{evacuee.firstName}}</td>
         </ng-container>
-      </table> -->
+      </table> -->  
+      Registrations: {{registrations|json}}
+
     </div>
   </div>
 
@@ -77,6 +79,5 @@
       </section>
     </app-side-box>
   </div>    
-  {{registrations|json}}
 
 </div>
