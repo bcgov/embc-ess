@@ -17,7 +17,7 @@
     </div>
     <div>
       <!-- The start of the table stuff. -->
-      <!-- <p>1 - 10 of 2000 active evacuees 
+      <p>1 - 10 of 2000 active evacuees 
         <small class="ml-3">(<a href="">show deactivated</a>)</small>
       </p>
       <table class="table">
@@ -33,18 +33,18 @@
           <th scope="col">Action</th>
         </thead>
         <tbody>
-          <tr *ngFor="let registration of registrations">
+          <tr *ngFor="let stub of registrations">
             <th>
-              <span *ngIf="true">
-                HOH/Lock
+              <span *ngIf="stub.personType==='HOH'">
+                HOH
               </span>
             </th>
-            <td>{{registration.headOfHousehold.firstName}}</td>
-            <td>{{registration.headOfHousehold.lastName}}</td>
-            <td>{{registration.incidentTask.taskNumber}}</td>
-            <td>{{registration.essFileNumber}}</td>
-            <td>{{registration.incidentTask.community.name}}</td>
-            <td>{{registration.hostCommunity.name}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td>Yes</td>
             <td>
               <a *ngIf="registration.registrationCompletionDate===null" href="">Complete</a>
@@ -52,14 +52,17 @@
             </td>
           </tr>
         </tbody>
-      </table> -->
+      </table>
+      <p *ngFor="let stub of registrations">
+        {{stub|json}}
+      </p>
       <!-- <table mat-table [dataSource]="evacuees">
         <ng-container matColDef="firstName">
           <th mat-header-cell *matHeaderCellDef>First Name</th>
           <td mat-cell *matCellDef="let evacuee">{{evacuee.firstName}}</td>
         </ng-container>
       </table> -->  
-      Registrations: {{registrations|json}}
+      <p>{{registrations|json}}</p>
 
     </div>
   </div>
