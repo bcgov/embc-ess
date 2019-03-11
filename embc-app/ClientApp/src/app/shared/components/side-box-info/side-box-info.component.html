@@ -1,5 +1,16 @@
 
-<p>{{title}}</p>
-<p>{{content}}</p>
-<p>{{button}}</p>
-<p>{{route}}</p>
+<!-- TODO: Refactor into a common component Stepper -->
+<section class="step shadow" style="display: block; background-color: #F1F4FA">
+  <h3 class="blue-header">ADD AN EVACUEE</h3>
+  <section class="content-styling" role="content">
+    <p>
+      Before starting a new registration, use the search tool on your dashboard to confirm that the evacuee hasn’t already registered.
+    </p>
+    <p>{{title}}</p>
+    <p>{{content}}</p>
+    <span class="float-right">
+      <button class="btn btn-primary" (click)="continue()">{{button}}</button>
+    </span>
+  </section>
+
+</section>

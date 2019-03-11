@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class SideBoxInfoComponent implements OnInit {
   @Input() title = 'TITLE';
-  @Input() content = 'Sample content';
+  @Input() content = 'Content can be added using the content input.';
   @Input() button = 'Ok';
   @Input() route = '/'; //home by default
 
