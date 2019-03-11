@@ -64,19 +64,18 @@
 
 
   <div class="col-4">
-    <app-side-box title="Add an evacuee">
+    <app-side-box title="Important Notice for Evacuees">
+      <section role="content">
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis porttitor scelerisque. Proin blandit
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis porttitor scelerisque. Proin
+          blandit
           suscipit ultrices. Proin dictum libero eget justo rhoncus sollicitudin.
         </p>
-        <app-side-box-actions>
-          <button class="btn btn-primary" routerLink="/">Add</button>
-        </app-side-box-actions>
+      </section>
+      <section role="footer">
+        <button class="btn btn-primary" routerLink="/">Learn More</button>
+      </section>
     </app-side-box>
-    <!-- <div class="card mt-3">
-      <div class="card-header">Add an Evacuee</div>
-      <div class="card-body">Button goes here.</div>
-    </div> -->
   </div>    
   {{registrations|json}}
 
