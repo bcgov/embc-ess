@@ -47,7 +47,7 @@ const FAKEREGISTRATIONS: Registration[] = [
         lastName: 'Doe',
         nickname: 'Johnny',
         initials: 'JD',
-        gender: 'yes',
+        gender: 'male',
         dob: null,
         phoneNumber: '',
         phoneNumberAlt: '',
@@ -56,7 +56,20 @@ const FAKEREGISTRATIONS: Registration[] = [
         primaryResidence: null,
         mailingAddress: null
       },
-    familyMembers: [],
+    familyMembers: [
+      {
+        id: 'qwertyuiop',
+        firstName: 'Jen',
+        lastName: 'Borgnine',
+        nickname: 'Iron Jen',
+        initials: 'JB',
+        gender: 'female',
+        dob: null,
+        personType: 'FMBR',
+        relationshipToEvacuee: 'spouse',
+        sameLastNameAsEvacuee: false
+      }
+    ],
     incidentTask: {
       id: 'aslkdfjh',
       taskNumber: '10293847',
