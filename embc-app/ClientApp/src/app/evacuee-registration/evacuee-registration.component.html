@@ -8,7 +8,6 @@
       </small>
     </div>
     <div [formGroup]="form">
-
       <div class="mb-4">
         <h3 class="blue-header">
           TASK NUMBER & PLACE OF REGISTRATION
@@ -26,17 +25,44 @@
           <input class="form-control" type="text" formControlName="facility">
         </app-form-field>
         <app-form-field required="true">
-            <label>Host Community</label>
-            <select class="form-control" formControlName="hostCommunity">
-              <option [ngValue]="null">-- Select task number</option>
-              <!-- Todo. Populate the community values from the data sources -->
-              <option value="Grand Forks">Grand Forks</option>
-            </select>
-          </app-form-field>
+          <label>Host Community</label>
+          <select class="form-control" formControlName="hostCommunity">
+            <option [ngValue]="null">-- Select task number</option>
+            <!-- Todo. Populate the community values from the data sources -->
+            <option value="Grand Forks">Grand Forks</option>
+          </select>
+        </app-form-field>
+      </div>
+      <div class="mb-4">
+        <h3 class="blue-header">
+          RESTRICTED
+        </h3>
+        <p class="required">
+          Concerned family and friends may inquire about you and your family because of the emergency. We would like to provide these people with some information about you. May we disclose your location and the contact information for you and your family members?
+        </p>
+        <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" value="true" formControlName="restrictedAccess">
+            <label class="form-check-label">Yes</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" value="false" formControlName="restrictedAccess">
+            <label class="form-check-label">No</label>
+          </div>
+        </div>
       </div>
     </div>
   </div>
   <div class="col-12 col-lg-4">
-    something here
+    <app-side-box title="Useful Information" icon="description">
+      <section role="content">
+        <p>
+        If the task number you're looking for is not listed, please contact your supervisor or the Emergency Coordination Centre.
+        </p>
+        <section role="footer">
+          <a class="btn btn-primary" href="tel:1-800-663-3456">1-800-663-3456</a>
+        </section>
+      </section>
+    </app-side-box>
   </div>
 </div>
