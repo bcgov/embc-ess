@@ -70,17 +70,17 @@
           <input class="form-control" type="text" formControlName="firstName">
         </app-form-field>
         <div class="form-row">
-          <app-form-field class="col" required="false">
+          <app-form-field class="col">
             <label>Initial</label>
             <input class="form-control" type="text" formControlName="initials">
           </app-form-field>
-          <app-form-field class="col" required="false">
+          <app-form-field class="col">
             <label>Nickname</label>
             <input class="form-control" type="text" formControlName="nickname">
           </app-form-field>
         </div>
         <div class="form-row">
-          <app-form-field class="col" requried="true">
+          <app-form-field class="col" required="true">
             <label>Gender</label>
             <select  class="form-control" formControlName="gender">
               <option [ngValue]="null">Please select--</option>
@@ -95,8 +95,6 @@
           </app-form-field>
         </div>
       </div>
-      <!--
-
       <div class="mb-4">
         <h3 class="blue-header">
           EVACUEE FAMILY INFORMATION
@@ -106,14 +104,15 @@
         </p>
         <div class="form-group">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" value="true" formControlName="registeringFamily">
+            <input class="form-check-input" type="radio" value="true" formControlName="registeringFamilyMembers">
             <label class="form-check-label">Yes</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" value="false" formControlName="registeringFamily">
+            <input class="form-check-input" type="radio" value="false" formControlName="registeringFamilyMembers">
             <label class="form-check-label">No</label>
           </div>
         </div>
+        <!--
         <div class="card">
           <div class="card-body">
             <div class="row mb-2">
@@ -143,7 +142,7 @@
               </div>
             </div>
             <div class="row mb-2">
-                <div class="col-6">
+              <div class="col-6">
                   <label required="true">Relationship</label>
                   <input type="text" class="form-control">
                 </div>
@@ -163,23 +162,25 @@
                   <input type="date" class="form-control">
                 </div>
               </div>
-          </div>
-          <div class="card-footer">
-            <div class="float-left">
-              <i class="fas fa-minus-square"></i>
-              <a href="">
-                Remove
-              </a>
             </div>
-            <div class="float-right">
-              <i class="fas fa-plus-circle"></i>
-              <a href="">
-                Add another
-              </a>
+            <div class="card-footer">
+              <div class="float-left">
+                <i class="fas fa-minus-square"></i>
+                <a href="">
+                  Remove
+                </a>
+              </div>
+              <div class="float-right">
+                <i class="fas fa-plus-circle"></i>
+                <a href="">
+                  Add another
+                </a>
+              </div>
             </div>
-          </div>
         </div>
+        -->
       </div>
+      <!--
       <div class="mb-4">
         <h3 class="blue-header">
           PRIMARY RESIDENCE & CONTACT DETAILS
