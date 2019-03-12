@@ -15,6 +15,7 @@ import { SelfRegistrationModule } from './self-registration';
 import { HomeComponent } from './home/home.component';
 import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.component';
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
+import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-das
     HomeComponent,
     VolunteerLoginComponent,
     VolunteerDashboardComponent,
+    EvacueeRegistrationComponent,
   ],
   imports: [
     // angular

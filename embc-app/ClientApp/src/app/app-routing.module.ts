@@ -11,6 +11,7 @@ import {
 } from './self-registration';
 import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.component';
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
+import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 
 const routes: Routes = [
   {
@@ -51,6 +52,10 @@ const routes: Routes = [
   {
     path: 'volunteer-dashboard',
     component: VolunteerDashboardComponent
+  },
+  {
+    path: 'register-evacuee',
+    component: EvacueeRegistrationComponent
   }
 ];
 
