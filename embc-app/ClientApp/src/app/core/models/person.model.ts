@@ -1,5 +1,3 @@
-import { Address } from './';
-
 export interface Person {
   id: string | null;
   active?: boolean; //no deletions from DB this is a soft delete.

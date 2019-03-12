@@ -1,0 +1,9 @@
+@import "../defaults.scss";
+
+.restricted {
+  background: $bg-restricted !important;
+
+  &-accent {
+    background: $bg-restricted-accent !important;
+  }
+}

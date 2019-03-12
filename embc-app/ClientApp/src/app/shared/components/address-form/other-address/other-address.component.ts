@@ -14,7 +14,7 @@ import { Country } from 'src/app/core/models';
         </app-form-field>
       </div>
       <div class="row">
-        <app-form-field class="col-md-6">
+        <app-form-field class="col-md-6" required="true">
           <label>City</label>
           <input class="form-control" type="text" formControlName="communityOrCity">
         </app-form-field>
@@ -28,7 +28,7 @@ import { Country } from 'src/app/core/models';
         </app-form-field>
       </div>
       <div class="row">
-        <app-form-field class="col-md-6">
+        <app-form-field class="col-md-6" required="true">
           <label>Country/Region</label>
           <select class="form-control" formControlName="country">
             <option [ngValue]="null">-- Select Country</option>

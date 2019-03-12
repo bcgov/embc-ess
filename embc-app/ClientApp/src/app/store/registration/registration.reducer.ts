@@ -3,6 +3,7 @@ import * as RegistrationActions from './registration.actions';
 import { Loadable } from '..';
 
 const initialAddress: Address = {
+  addressSubtypeCode: null,
   addressLine1: null,
   addressLine2: null,
   addressLine3: null,
@@ -23,6 +24,7 @@ const initialState: State = {
     id: null,
     essFileNumber: null,
     restrictedAccess: null,
+    declarationAndConsent: null,
     registeringFamilyMembers: null,
     dietaryNeeds: null,
     dietaryNeedsDetails: null,

@@ -8,7 +8,7 @@
 
   <h3 class="blue-header">ADDITIONAL INFORMATION</h3>
   <section class="padded-section">
-    <p>Do you have any dietary requirements?</p>
+    <p class="required">Do you have any dietary requirements?</p>
     <div class="form-group">
       <div class="form-check">
         <input class="form-check-input" type="radio" [value]="true" formControlName="dietaryNeeds">
@@ -20,14 +20,14 @@
       </div>
     </div>
 
-    <p>Do you (or anyone registering with you) take medication?</p>
+    <p class="required">Do you (or anyone registering with you) take medication?</p>
     <div class="form-group">
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="true" formControlName="familyMemberTakesMedication">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="medicationNeeds">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" [value]="false" formControlName="familyMemberTakesMedication">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="medicationNeeds">
         <label class="form-check-label">No</label>
       </div>
     </div>
@@ -47,7 +47,7 @@
 
   <h3 class="blue-header">INSURANCE</h3>
   <section class="padded-section">
-    <p>Do you have insurance to cover your immediate needs?</p>
+    <p class="required">Do you have insurance to cover your immediate needs?</p>
     <div class="form-group">
       <div class="form-check">
         <input class="form-check-input" type="radio" value="yes" formControlName="insuranceCode">
@@ -70,7 +70,7 @@
 
   <h3 class="blue-header">NEXT STEPS</h3>
   <section class="padded-section">
-    <p>While you are evacuated do you require supports?</p>
+    <p class="required">While you are evacuated do you require supports?</p>
     <div class="form-group">
       <div class="form-check">
         <input class="form-check-input" type="radio" [value]="true" formControlName="requiresSupport">

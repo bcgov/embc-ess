@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { takeWhile } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map, takeWhile } from 'rxjs/operators';
 
+import { INSURANCE_OPTIONS, GENDER_OPTIONS } from 'src/app/constants/lookups';
 import { Registration } from 'src/app/core/models';
+import { normalize } from 'src/app/shared/utils/stateUtils';
 import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 
@@ -14,10 +17,22 @@ import { UpdateRegistration } from 'src/app/store/registration/registration.acti
   templateUrl: './self-registration-three.component.html',
   styleUrls: ['./self-registration-three.component.scss']
 })
-export class SelfRegistrationThreeComponent implements OnInit {
+export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
 
   // state needed by this FORM
   currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
+
+  countries$ = this.store
+    .select(state => state.lookups.countries.countries)
+    .pipe(map(arr => normalize(arr)));
+
+  communities$ = this.store
+    .select(state => state.lookups.communities.communities)
+    .pipe(map(arr => normalize(arr)));
+
+  relationshipTypes$ = this.store
+    .select(state => state.lookups.relationshipTypes.relationshipTypes)
+    .pipe(map(arr => normalize(arr, 'code')));
 
   form: FormGroup;
   componentActive = true;
@@ -37,30 +52,53 @@ export class SelfRegistrationThreeComponent implements OnInit {
     this.onFormChanges();
 
     // Update form values based on the state
-    this.currentRegistration$
+    combineLatest(this.currentRegistration$, this.countries$, this.communities$, this.relationshipTypes$)
       .pipe(takeWhile(() => this.componentActive))
-      .subscribe(value => this.displayRegistration(value));
+      .subscribe(([registration, countries, communities, relationshipTypes]) => {
+        this.displayRegistration({ registration, countries, communities, relationshipTypes });
+      });
   }
 
-  getInitialState() {
-    return this.store.select(state => state.registrations.currentRegistration);
+  ngOnDestroy(): void {
+    this.componentActive = false;
+  }
+
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.form.controls;
+  }
+
+  insuranceOption(key: string) {
+    const option = INSURANCE_OPTIONS.find(item => item.key === key);
+    return option ? option.value : null;
+  }
+
+  genderOption(key: string) {
+    const option = GENDER_OPTIONS.find(item => item.key === key);
+    return option ? option.value : null;
   }
 
   // Define the form group
   initForm() {
     this.form = this.fb.group({
-      declarationAndConsent: [null, Validators.required],
+      declarationAndConsent: [null, Validators.requiredTrue],
     });
   }
 
   onFormChanges() {
-    // TODO: Register any value change listeners here...
-    // this.form.get('someField').valueChanges.subscribe(...)
   }
 
-  displayRegistration(registration: Registration | null): void {
+  displayRegistration(props: {
+    registration: Registration | null;
+    countries: any;
+    communities: any;
+    relationshipTypes: any;
+  }): void {
     // Set the local registration property
-    this.registration = registration;
+    this.registration = props.registration;
+    // this.countriesLookup = this.normalize(props.countries);
+    // this.communitiesLookup = this.normalize(props.communities);
+    // this.relationshipTypesLookup = this.normalize(props.relationshipTypes);
 
     if (this.registration && this.form) {
       // Reset the form back to pristine
@@ -68,17 +106,9 @@ export class SelfRegistrationThreeComponent implements OnInit {
 
       // Update the data on the form
       this.form.patchValue({
-        declarationAndConsent: null,
+        declarationAndConsent: this.registration.declarationAndConsent,
       });
     }
-  }
-
-  onSave() {
-    const registration: Registration = {
-      ...this.registration,
-      ...this.form.value
-    };
-    this.store.dispatch(new UpdateRegistration({ registration }));
   }
 
   next() {
@@ -87,6 +117,21 @@ export class SelfRegistrationThreeComponent implements OnInit {
   }
 
   back() {
+    // clear the consent checkbox if we go back to edit the information provided so far
+    this.reset();
+    this.onSave();
     this.router.navigate(['../step-2'], { relativeTo: this.route });
+  }
+
+  reset() {
+    this.f.declarationAndConsent.reset();
+  }
+
+  onSave() {
+    const registration: Registration = {
+      ...this.registration,
+      ...this.form.value
+    };
+    this.store.dispatch(new UpdateRegistration({ registration }));
   }
 }

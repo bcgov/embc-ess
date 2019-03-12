@@ -2,7 +2,6 @@ export * from './address.model';
 export * from './community.model';
 export * from './country.model';
 export * from './evacuee.model';
-export * from './family-member.model';
 export * from './incident-task.model';
 export * from './organization.model';
 export * from './person.model';

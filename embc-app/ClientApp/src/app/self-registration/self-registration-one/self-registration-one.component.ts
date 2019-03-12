@@ -38,40 +38,29 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   get ui() {
     return {
       showFamilyMembers: () => this.familyMembers.length > 0,
-      showPrimaryAddressSection: () => this.primaryResidenceInBC.value !== null,
-      showMailingAddressSelector: () => this.control('hasMailingAddress').value === true,
-      showMailingAddressSection: () => this.mailingAddressInBC.value !== null,
-      showStrandedTravellerBlurb: () => this.primaryResidenceInBC.value === false,
+      showPrimaryAddressSection: () => this.f.primaryResidenceInBC.value !== null,
+      showMailingAddressSelector: () => this.f.hasMailingAddress.value === true,
+      showMailingAddressSection: () => this.f.mailingAddressInBC.value !== null,
+      showStrandedTravellerBlurb: () => this.f.primaryResidenceInBC.value === false,
     };
   }
 
-  control(name: string) {
-    return this.form.get(name);
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.form.controls;
   }
 
   // Shortcuts for this.form.get(...)
-  get registeringFamilyMembers() {
-    return this.control('registeringFamilyMembers');
-  }
-
-  get primaryResidenceInBC() {
-    return this.control('primaryResidenceInBC');
-  }
-
-  get mailingAddressInBC() {
-    return this.control('mailingAddressInBC');
-  }
-
   get familyMembers() {
-    return this.control('familyMembers') as FormArray;
+    return this.f.familyMembers as FormArray;
   }
 
   get primaryResidence() {
-    return this.control('primaryResidence') as FormGroup;
+    return this.f.primaryResidence as FormGroup;
   }
 
   get mailingAddress() {
-    return this.control('mailingAddress') as FormGroup;
+    return this.f.mailingAddress as FormGroup;
   }
 
   ngOnInit() {
@@ -129,8 +118,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   // Watch for value changes
   onFormChanges(): void {
     // show/hide family members section based on the "family info" radio button
-    this.registeringFamilyMembers.valueChanges
-      .pipe(skipWhile(() => this.registeringFamilyMembers.pristine))
+    this.f.registeringFamilyMembers.valueChanges
+      .pipe(skipWhile(() => this.f.registeringFamilyMembers.pristine))
       .subscribe((value: string) => {
         if (value === 'yes') {
           this.addFamilyMember();
@@ -141,9 +130,9 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
     // set "family info" radio to "No family" when all members have been removed from the form
     this.familyMembers.valueChanges
-      .pipe(skipWhile(() => this.registeringFamilyMembers.pristine))
+      .pipe(skipWhile(() => this.f.registeringFamilyMembers.pristine))
       .subscribe((family: any[]) => {
-        const radio = this.registeringFamilyMembers;
+        const radio = this.f.registeringFamilyMembers;
         if (radio.value === 'yes' && family.length === 0) {
           radio.setValue('no');
         }
