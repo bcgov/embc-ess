@@ -55,6 +55,15 @@ namespace Gov.Jag.Embc.Public
             // Add a memory cache
             services.AddMemoryCache();
 
+            // Add CORS policy
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAnyOrigin",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
+
             // for security reasons, the following headers are set.
             services.AddMvc(opts =>
             {
@@ -266,6 +275,11 @@ namespace Gov.Jag.Embc.Public
             // IMPORTANT: This session call MUST go before UseMvc()
             app.UseSession();
             app.UseAuthentication();
+
+            // global policy - assign here or on each controller
+            // IMPORTANT: Make sure UseCors() is called BEFORE UseMvc()
+            app.UseCors("AllowAnyOrigin");
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
