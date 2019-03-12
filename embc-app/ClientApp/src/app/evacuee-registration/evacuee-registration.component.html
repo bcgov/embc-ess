@@ -286,7 +286,6 @@
         </p>
         <textarea class="form-control" formControlName="disasterAffectDetails" placeholder="Please specify" rows="4"></textarea>
       </div>
-      <!--
       <div class="mb-4">
         <h3 class="blue-header">
           INSURANCE
@@ -296,19 +295,24 @@
         </p>
         <div class="form-group">
           <div class="form-check">
-            <input class="form-check-input" type="radio" value="true" formControlName="insurance">
+            <input class="form-check-input" type="radio" value="yes" formControlName="insuranceCode">
             <label class="form-check-label">Yes</label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" value="false" formControlName="insurance">
+            <input class="form-check-input" type="radio" value="yes-unsure" formControlName="insuranceCode">
+            <label class="form-check-label">Yes, but I'm not sure if I have coverage for this event.</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" value="no" formControlName="insuranceCode">
             <label class="form-check-label">No</label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" value="false" formControlName="insurance">
+            <input class="form-check-input" type="radio" value="unsure" formControlName="insuranceCode">
             <label class="form-check-label">I don't know</label>
           </div>
         </div>
-      </div>
+      </div>                                            
+      <!--
       <div class="mb-4">
         <h3 class="blue-header">
           ADDITIONAL INFORMATION
