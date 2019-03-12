@@ -51,6 +51,29 @@
           </div>
         </div>
       </div>
+      <div class="mb-4">
+        <h3 class="blue-header">
+          EVACUEE DETAILS
+        </h3>
+        <app-form-field required="true">
+          <label>Last Name</label>
+          <input class="form-control" type="text" formControlName="lastName">
+        </app-form-field>
+        <app-form-field required="true">
+          <label>First Name</label>
+          <input class="form-control" type="text" formControlName="firstName">
+        </app-form-field>
+        <div class="form-row">
+          <app-form-field class="col" required="false">
+            <label>Initial</label>
+            <input class="form-control" type="text" formControlName="middleInitial">
+          </app-form-field>
+          <app-form-field class="col" required="false">
+            <label>Nickname</label>
+            <input class="form-control" type="text" formControlName="nickname">
+          </app-form-field>
+        </div>
+      </div>
     </div>
   </div>
   <div class="col-12 col-lg-4">
