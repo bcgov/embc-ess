@@ -13,6 +13,26 @@
         <h3 class="blue-header">
           TASK NUMBER & PLACE OF REGISTRATION
         </h3>
+        <app-form-field required="false">
+          <label>Task Number</label>
+          <select class="form-control" formControlName="incidentTaskNumber">
+            <option [ngValue]="null">-- Select task number</option>
+            <!-- Todo. Populate the task number values from the data sources -->
+            <option value="23465345">23465345</option>
+          </select>
+        </app-form-field>
+        <app-form-field required="true">
+          <label>Facility Name / Registration Location</label>
+          <input class="form-control" type="text" formControlName="facility">
+        </app-form-field>
+        <app-form-field required="true">
+            <label>Host Community</label>
+            <select class="form-control" formControlName="hostCommunity">
+              <option [ngValue]="null">-- Select task number</option>
+              <!-- Todo. Populate the community values from the data sources -->
+              <option value="Grand Forks">Grand Forks</option>
+            </select>
+          </app-form-field>
       </div>
     </div>
   </div>
