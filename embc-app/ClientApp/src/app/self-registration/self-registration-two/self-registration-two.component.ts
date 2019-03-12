@@ -33,19 +33,16 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
   // TODO: Form UI logic; i.e. show additional form fields when a checkbox is checked
   get ui() {
     return {
-      showAvailableServices: () => this.control('requiresSupport').value === true,
+      showAvailableServices: () => this.f.requiresSupport.value === true,
     };
   }
 
-  control(name: string) {
-    return this.form.get(name);
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.form.controls;
   }
 
   // Shortcuts for this.form.get(...)
-  get requiresSupport() {
-    return this.control('requiresSupport');
-  }
-
   ngOnInit() {
     // Create form controls
     this.initForm();
@@ -80,7 +77,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
   // Watch for value changes
   onFormChanges() {
     // clear any previous supports section selections based on the "require supports" radio button
-    this.requiresSupport.valueChanges.subscribe((value: boolean) => {
+    this.f.requiresSupport.valueChanges.subscribe((value: boolean) => {
       if (value === false) {
         this.resetSupports();
       }

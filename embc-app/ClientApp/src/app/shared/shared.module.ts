@@ -15,6 +15,8 @@ import { OtherAddressComponent } from './components/address-form/other-address/o
 import { DisableControlDirective } from './directives/disable-control.directive';
 import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
 import { YesNoPipe } from './pipes/yes-no.pipe';
+import { ByIdPipe } from './pipes/by-id.pipe';
+import { PluckPipe } from './pipes/pluck.pipe';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     DisableControlDirective,
     FontAwesomeIconComponent,
     YesNoPipe,
+    ByIdPipe,
+    PluckPipe,
   ],
   imports: [
     CommonModule,
@@ -57,6 +61,8 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     DisableControlDirective,
     FontAwesomeIconComponent,
     YesNoPipe,
+    ByIdPipe,
+    PluckPipe,
   ]
 })
 export class SharedModule { }

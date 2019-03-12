@@ -1,13 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { takeWhile } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map, takeWhile } from 'rxjs/operators';
 
-import { Registration, Country, Community, RelationshipType } from 'src/app/core/models';
+import { INSURANCE_OPTIONS, GENDER_OPTIONS } from 'src/app/constants/lookups';
+import { Registration } from 'src/app/core/models';
+import { normalize } from 'src/app/shared/utils/stateUtils';
 import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
-import { combineLatest } from 'rxjs';
+
 
 @Component({
   selector: 'app-self-registration-three',
@@ -18,24 +21,23 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
 
   // state needed by this FORM
   currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
-  countries$ = this.store.select(state => state.lookups.countries.countries);
-  communities$ = this.store.select(state => state.lookups.communities.communities);
-  relationshipTypes$ = this.store.select(state => state.lookups.relationshipTypes.relationshipTypes);
+
+  countries$ = this.store
+    .select(state => state.lookups.countries.countries)
+    .pipe(map(arr => normalize(arr)));
+
+  communities$ = this.store
+    .select(state => state.lookups.communities.communities)
+    .pipe(map(arr => normalize(arr)));
+
+  relationshipTypes$ = this.store
+    .select(state => state.lookups.relationshipTypes.relationshipTypes)
+    .pipe(map(arr => normalize(arr, 'code')));
 
   form: FormGroup;
   componentActive = true;
 
   registration: Registration | null;
-
-  countriesLookup: { [key: string]: Country; };
-  communitiesLookup: { [key: string]: Community; };
-  relationshipTypesLookup: { [key: string]: RelationshipType; };
-  insuranceLookup = {
-    'yes': 'Yes',
-    'yes-unsure': `Yes, but I'm not sure if I have coverage for this event`,
-    'no': 'No',
-    'unsure': `I don't know`,
-  };
 
   constructor(
     private store: Store<AppState>,
@@ -66,6 +68,16 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     return this.form.controls;
   }
 
+  insuranceOption(key: string) {
+    const option = INSURANCE_OPTIONS.find(item => item.key === key);
+    return option ? option.value : null;
+  }
+
+  genderOption(key: string) {
+    const option = GENDER_OPTIONS.find(item => item.key === key);
+    return option ? option.value : null;
+  }
+
   // Define the form group
   initForm() {
     this.form = this.fb.group({
@@ -78,15 +90,15 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
 
   displayRegistration(props: {
     registration: Registration | null;
-    countries: Country[];
-    communities: Community[];
-    relationshipTypes: RelationshipType[];
+    countries: any;
+    communities: any;
+    relationshipTypes: any;
   }): void {
     // Set the local registration property
     this.registration = props.registration;
-    this.countriesLookup = this.normalize(props.countries);
-    this.communitiesLookup = this.normalize(props.communities);
-    this.relationshipTypesLookup = this.normalize(props.relationshipTypes);
+    // this.countriesLookup = this.normalize(props.countries);
+    // this.communitiesLookup = this.normalize(props.communities);
+    // this.relationshipTypesLookup = this.normalize(props.relationshipTypes);
 
     if (this.registration && this.form) {
       // Reset the form back to pristine
@@ -121,9 +133,5 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
       ...this.form.value
     };
     this.store.dispatch(new UpdateRegistration({ registration }));
-  }
-
-  private normalize(subjects: any[]) {
-    return subjects.reduce((hash, s) => (hash[s.id] = s, hash), {});
   }
 }

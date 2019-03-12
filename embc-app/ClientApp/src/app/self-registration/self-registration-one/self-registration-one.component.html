@@ -166,7 +166,7 @@
         <p class="text-danger">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit
           amet pulvinar. Vestibulum ante ipsum primis in faucibus orci.</p>
       </section>
-      <app-address-selector [parent]="primaryResidence" [withinBC]="primaryResidenceInBC.value">
+      <app-address-selector [parent]="primaryResidence" [withinBC]="f['primaryResidenceInBC'].value">
       </app-address-selector>
       <section>
         <div class="row">
@@ -215,7 +215,7 @@
         </div>
       </div>
       <app-address-selector *ngIf="ui.showMailingAddressSection()" [parent]="mailingAddress"
-        [withinBC]="mailingAddressInBC.value"></app-address-selector>
+        [withinBC]="f['mailingAddressInBC'].value"></app-address-selector>
     </section>
   </section>
 

@@ -37,7 +37,7 @@
       </li>
       <li>
         <span class="name">Gender:</span>
-        <span class="value">{{registration?.headOfHousehold?.gender}}</span>
+        <span class="value">{{genderOption(registration?.headOfHousehold?.gender)}}</span>
       </li>
       <li>
         <span class="name">Date of Birth:</span>
@@ -60,12 +60,13 @@
         <span class="value">{{fm?.initials}}</span>
       </li>
       <li>
-        <span class="name">Nickname:</span>
-        <span class="value">{{fm?.nickname}}</span>
+        <span class="name">Relationship:</span>
+        <span
+          class="value">{{relationshipTypes$ | async | byId : fm?.relationshipToEvacuee | pluck: 'description'}}</span>
       </li>
       <li>
         <span class="name">Gender:</span>
-        <span class="value">{{fm?.gender}}</span>
+        <span class="value">{{genderOption(fm?.gender)}}</span>
       </li>
       <li>
         <span class="name">Date of Birth:</span>
@@ -93,7 +94,8 @@
       </li>
       <li>
         <span class="name">Country:</span>
-        <span class="value">{{countriesLookup[registration?.headOfHousehold?.primaryResidence?.country].name}}</span>
+        <span
+          class="value">{{countries$ | async | byId : registration?.headOfHousehold?.primaryResidence?.country | pluck : 'name' }}</span>
       </li>
       <li>
         <span class="name">Telephone/Mobile:</span>
@@ -129,7 +131,8 @@
       </li>
       <li>
         <span class="name">Country:</span>
-        <span class="value">{{countriesLookup[registration?.headOfHousehold?.mailingAddress?.country].name}}</span>
+        <span
+          class="value">{{countries$ | async | byId : registration?.headOfHousehold?.mailingAddress?.country | pluck : 'name' }}</span>
       </li>
     </ul>
 
@@ -153,7 +156,7 @@
     <ul class="summary">
       <li>
         <span class="name">Insurance:</span>
-        <span class="value">{{insuranceLookup[registration?.insuranceCode]}}</span>
+        <span class="value">{{insuranceOption(registration?.insuranceCode)}}</span>
       </li>
       <li>
         <span class="name">Supports:</span>
