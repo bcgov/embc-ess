@@ -7,7 +7,12 @@
         All required fields are marked with an asterisk *
       </small>
     </div>
-    <div [formGroup]="form">
+    <label>
+      Name
+      <input type="text" [formControl]="name">
+    </label>
+    {{name.value}}
+    <!-- <div>
       <div class="mb-4">
         <h3 class="blue-header">
           TASK NUMBER & PLACE OF REGISTRATION
@@ -16,7 +21,6 @@
           <label>Task Number</label>
           <select class="form-control" formControlName="incidentTaskNumber">
             <option [ngValue]="null">-- Select task number</option>
-            <!-- Todo. Populate the task number values from the data sources -->
             <option value="23465345">23465345</option>
           </select>
         </app-form-field>
@@ -28,7 +32,6 @@
           <label>Host Community</label>
           <select class="form-control" formControlName="hostCommunity">
             <option [ngValue]="null">-- Select task number</option>
-            <!-- Todo. Populate the community values from the data sources -->
             <option value="Grand Forks">Grand Forks</option>
           </select>
         </app-form-field>
@@ -410,7 +413,7 @@
         </h3>
         <textarea class="form-control" placeholder="Details" rows="4"></textarea>
       </div>
-    </div>
+    </div> -->
   </div>
 
   <div class="col-12 col-lg-4">
@@ -426,7 +429,7 @@
     </app-side-box>
   </div>
 
-  <div class="col mb-6 mt-6">
+  <!-- <div class="col mb-6 mt-6">
     <h3>TODO: Delete this spacer that unhides the content form under the footer.</h3>
-  </div>
+  </div> -->
 </div>

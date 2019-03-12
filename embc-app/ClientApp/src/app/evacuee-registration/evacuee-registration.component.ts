@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Form } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store';
 import { Registration } from '../core/models';
@@ -10,17 +10,14 @@ import { Registration } from '../core/models';
   styleUrls: ['./evacuee-registration.component.scss']
 })
 export class EvacueeRegistrationComponent implements OnInit {
+  name = new FormControl('');
 
-  // form variables
-  form: FormGroup;
-  componentActive = true;
 
   // The model for the form data collected
-  registration: Registration | null;
+  // registration: Registration | null;
 
   constructor(
-    private store: Store<AppState>, // ngrx app state
-    private fb: FormBuilder, // reactive forms
+    // private store: Store<AppState>, // ngrx app state
   ) { }
 
   ngOnInit() {
