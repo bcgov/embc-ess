@@ -6,7 +6,7 @@ export interface Registration {
   restrictedAccess: boolean;
   essFileNumber: number | null;
 
-  //Registration Record
+  // Registration Record
   dietaryNeeds: boolean;
   dietaryNeedsDetails: string;
   disasterAffectDetails: string;
@@ -20,7 +20,7 @@ export interface Registration {
   registrationCompletionDate: Date | null; // datetime
   registeringFamilyMembers: string;  // one of ['yes', 'yes-later', 'no']
 
-  //Family state flags
+  // Family state flags
   hasThreeDayMedicationSupply: boolean;
   hasInquiryReferral: boolean;
   hasHealthServicesReferral: boolean;
@@ -30,7 +30,7 @@ export interface Registration {
   hasPetCareReferral: boolean;
   hasPets: boolean;
 
-  //requirements
+  // requirements
   requiresAccommodation: boolean;
   requiresClothing: boolean;
   requiresFood: boolean;

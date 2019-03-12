@@ -9,7 +9,90 @@ const FAKEREGISTRATIONS: Registration[] = [
   {
     id: '123',
     restrictedAccess: false,
-    essFileNumber: 123,
+    essFileNumber:  1289734,
+
+    dietaryNeeds: false,
+    dietaryNeedsDetails: 'gluten intolerance',
+    disasterAffectDetails: 'Freeform text',
+    externalReferralsDetails: 'Freeform text',
+    facility: '',
+    familyRecoveryPlan: '',
+    followUpDetails: '',
+    insuranceCode: 'MANU120398',
+    medicationNeeds: false,
+    selfRegisteredDate: null,
+    registrationCompletionDate: new Date('2019-03-11T20:48:31.246Z'),
+    registeringFamilyMembers: 'yes',
+    
+    hasThreeDayMedicationSupply: true,
+    hasInquiryReferral: false,
+    hasHealthServicesReferral: false,
+    hasFirstAidReferral: false,
+    hasChildCareReferral: false,
+    hasPersonalServicesReferral: false,
+    hasPetCareReferral: false,
+    hasPets: false,
+    
+    requiresAccommodation: false,
+    requiresClothing: false,
+    requiresFood: false,
+    requiresIncidentals: false,
+    requiresSupport: true,
+    requiresTransportation: true,
+
+    headOfHousehold:
+      {
+        id: 'qwertyuiop',
+        firstName: 'John',
+        lastName: 'Doe',
+        nickname: 'Johnny',
+        initials: 'JD',
+        gender: 'male',
+        dob: null,
+        phoneNumber: '',
+        phoneNumberAlt: '',
+        personType: 'HOH',
+        email: 'person@address.org',
+        primaryResidence: null,
+        mailingAddress: null
+      },
+    familyMembers: [
+      {
+        id: 'qwertyuiop',
+        firstName: 'Jen',
+        lastName: 'Borgnine',
+        nickname: 'Iron Jen',
+        initials: 'JB',
+        gender: 'female',
+        dob: null,
+        personType: 'FMBR',
+        relationshipToEvacuee: 'spouse',
+        sameLastNameAsEvacuee: false
+      }
+    ],
+    incidentTask: {
+      id: 'aslkdfjh',
+      taskNumber: '10293847',
+      details: 'This is an incident task.',
+      region: null,
+      regionalDistrict: null,
+      community: {
+        id: 'zxoicuvz',
+        name: 'Grand Forks',
+        regionalDistrict: null
+      }
+    },
+    hostCommunity: {
+      id: 'aslkdfjs',
+      name: 'Niagra',
+      regionalDistrict: null
+    },
+    completedBy: null
+  },
+  {
+    id: '123',
+    restrictedAccess: true,
+    essFileNumber:  1289734,
 
     dietaryNeeds: false,
     dietaryNeedsDetails: 'gluten intolerance',
@@ -23,8 +106,7 @@ const FAKEREGISTRATIONS: Registration[] = [
     selfRegisteredDate: null,
     registrationCompletionDate: null,
     registeringFamilyMembers: 'yes',
-
-
+    
     hasThreeDayMedicationSupply: true,
     hasInquiryReferral: false,
     hasHealthServicesReferral: false,
@@ -44,11 +126,11 @@ const FAKEREGISTRATIONS: Registration[] = [
     headOfHousehold:
     {
       id: 'qwertyuiop',
-      firstName: 'John',
-      lastName: 'Doe',
-      nickname: 'Johnny',
-      initials: 'JD',
-      gender: 'yes',
+      firstName: 'Barry',
+      lastName: 'Placebo',
+      nickname: 'Bipo',
+      initials: 'BP',
+      gender: 'Female',
       dob: null,
       phoneNumber: '',
       phoneNumberAlt: '',
@@ -58,8 +140,23 @@ const FAKEREGISTRATIONS: Registration[] = [
       mailingAddress: null
     },
     familyMembers: [],
-    incidentTask: null,
-    hostCommunity: null,
+    incidentTask: {
+      id: 'aslkdfjh',
+      taskNumber: '10293847',
+      details: 'This is an incident task.',
+      region: null,
+      regionalDistrict: null,
+      community: {
+        id: 'zxoicuvz',
+        name: 'Hope',
+        regionalDistrict: null
+      }
+    },
+    hostCommunity: {
+      id: 'aslkdfjs',
+      name: 'Townland',
+      regionalDistrict: null
+    },
     completedBy: null
   }
 ];
