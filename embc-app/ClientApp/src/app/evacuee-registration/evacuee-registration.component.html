@@ -57,8 +57,7 @@
           </div>
         </div>
       </div>
-      <!--
-      <div class="mb-4">
+      <div class="mb-4" formGroupName="headOfHousehold">
         <h3 class="blue-header">
           EVACUEE DETAILS
         </h3>
@@ -73,7 +72,7 @@
         <div class="form-row">
           <app-form-field class="col" required="false">
             <label>Initial</label>
-            <input class="form-control" type="text" formControlName="middleInitial">
+            <input class="form-control" type="text" formControlName="initials">
           </app-form-field>
           <app-form-field class="col" required="false">
             <label>Nickname</label>
@@ -83,7 +82,7 @@
         <div class="form-row">
           <app-form-field class="col" requried="true">
             <label>Gender</label>
-            <select  class="form-control" formControlName="incidentTaskNumber">
+            <select  class="form-control" formControlName="gender">
               <option [ngValue]="null">Please select--</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
@@ -96,6 +95,8 @@
           </app-form-field>
         </div>
       </div>
+      <!--
+
       <div class="mb-4">
         <h3 class="blue-header">
           EVACUEE FAMILY INFORMATION
