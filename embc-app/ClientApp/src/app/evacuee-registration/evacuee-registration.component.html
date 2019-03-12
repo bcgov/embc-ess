@@ -12,6 +12,11 @@
       <input type="text" [formControl]="name">
     </label>
     {{name.value}}
+    
+    <div class="mt-5">
+      <h4>Form State</h4>
+      <pre>{{ this.form.value | json }}</pre>
+    </div>
     <!-- <div>
       <div class="mb-4">
         <h3 class="blue-header">
