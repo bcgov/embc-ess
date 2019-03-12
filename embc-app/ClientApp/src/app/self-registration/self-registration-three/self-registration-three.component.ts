@@ -10,6 +10,7 @@ import { Registration } from 'src/app/core/models';
 import { normalize } from 'src/app/shared/utils/stateUtils';
 import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
+import { RegistrationService } from 'src/app/core/services/registration.service';
 
 
 @Component({
@@ -43,7 +44,8 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private service: RegistrationService,
   ) { }
 
   ngOnInit() {
@@ -112,14 +114,38 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
   }
 
   next() {
-    this.onSave();
-    this.router.navigate(['../step-4'], { relativeTo: this.route });
+    const registration: Registration = {
+      ...this.registration,
+      ...this.form.value
+    };
+
+    // update client-side state
+    this.onSave(registration);
+
+    // TODO: POST to server, then go the "thank you" OR "error"
+    this.service.createRegistration(registration).subscribe(
+      data => {
+        console.log('NEW REGISTRATION ==>')
+        console.log(data);
+        this.router.navigate(['../step-4'], { relativeTo: this.route });
+      },
+      err => {
+        this.router.navigate(['../error'], { relativeTo: this.route });
+      }
+    );
+
+
   }
 
   back() {
     // clear the consent checkbox if we go back to edit the information provided so far
     this.reset();
-    this.onSave();
+
+    const registration: Registration = {
+      ...this.registration,
+      ...this.form.value
+    };
+    this.onSave(registration);
     this.router.navigate(['../step-2'], { relativeTo: this.route });
   }
 
@@ -127,11 +153,7 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     this.f.declarationAndConsent.reset();
   }
 
-  onSave() {
-    const registration: Registration = {
-      ...this.registration,
-      ...this.form.value
-    };
+  onSave(registration: Registration) {
     this.store.dispatch(new UpdateRegistration({ registration }));
   }
 }

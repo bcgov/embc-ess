@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError, Observable } from 'rxjs';
 import { map, catchError, retry } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -7,11 +7,15 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store';
 import { httpGet } from './mock-api';  // FIXME: <-- this will GO AWAY when backend is built
 
+const headers = new HttpHeaders({
+  'Content-Type': 'application/json'
+});
+
 @Injectable()
 export abstract class RestService {
 
   // FIXME: change this when API is live!
-  protected baseUrl = 'api';
+  protected baseUrl = 'https://embcess-dev.pathfinder.gov.bc.ca/embcess/api';
 
   constructor(
     protected http: HttpClient,
@@ -30,8 +34,11 @@ export abstract class RestService {
   }
 
   protected post(relativeUrl: string = '/', body: any | null, options?): Observable<any> {
-    // TODO: Implement
-    return throwError('Method not implemented');
+    return this.http.post(`${this.baseUrl}${relativeUrl}`, body, { ...options, headers })
+      .pipe(
+        map(this.extractData),
+        catchError(this.handleError)
+      );
   }
 
   protected put(relativeUrl: string = '/', body: any | null, options?): Observable<any> {
