@@ -9,31 +9,68 @@
   <section class="p-3">
     <ul class="summary">
       <li>
+        <span class="name">ESS File #:</span>
+        <span class="value">{{registration?.essFileNumber}}</span>
+      </li>
+      <li [class.restricted]="registration.restrictedAccess">
         <span class="name">Restriction:</span>
-        <span class="value">Yes</span>
+        <span class="value">{{registration?.restrictedAccess | yesNo}}</span>
       </li>
     </ul>
     <h2>Evacuee Information</h2>
     <ul class="summary">
       <li>
         <span class="name">Last Name:</span>
-        <span class="value">Smith</span>
+        <span class="value">{{registration?.headOfHousehold?.lastName}}</span>
       </li>
       <li>
         <span class="name">First Name:</span>
-        <span class="value">Anne</span>
+        <span class="value">{{registration?.headOfHousehold?.firstName}}</span>
+      </li>
+      <li>
+        <span class="name">Initial:</span>
+        <span class="value">{{registration?.headOfHousehold?.initials}}</span>
+      </li>
+      <li>
+        <span class="name">Nickname:</span>
+        <span class="value">{{registration?.headOfHousehold?.nickname}}</span>
+      </li>
+      <li>
+        <span class="name">Gender:</span>
+        <span class="value">{{genderOption(registration?.headOfHousehold?.gender)}}</span>
+      </li>
+      <li>
+        <span class="name">Date of Birth:</span>
+        <span class="value">{{registration?.headOfHousehold?.dob | date : 'MM/dd/yyyy'}}</span>
       </li>
     </ul>
 
     <h2>Evacuee Family Information</h2>
-    <ul class="summary">
+    <ul class="summary" *ngFor="let fm of registration.familyMembers">
       <li>
         <span class="name">Last Name:</span>
-        <span class="value">Smith</span>
+        <span class="value">{{fm?.lastName}}</span>
       </li>
       <li>
         <span class="name">First Name:</span>
-        <span class="value">Anne</span>
+        <span class="value">{{fm?.firstName}}</span>
+      </li>
+      <li>
+        <span class="name">Initial:</span>
+        <span class="value">{{fm?.initials}}</span>
+      </li>
+      <li>
+        <span class="name">Relationship:</span>
+        <span
+          class="value">{{relationshipTypes$ | async | byId : fm?.relationshipToEvacuee | pluck: 'description'}}</span>
+      </li>
+      <li>
+        <span class="name">Gender:</span>
+        <span class="value">{{genderOption(fm?.gender)}}</span>
+      </li>
+      <li>
+        <span class="name">Date of Birth:</span>
+        <span class="value">{{fm?.dob | date : 'MM/dd/yyyy'}}</span>
       </li>
     </ul>
 
@@ -41,35 +78,36 @@
     <ul class="summary">
       <li>
         <span class="name">Apt /Suite/Building Number &amp; Street Address:</span>
-        <span class="value">25 Street Rd</span>
+        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.addressLine1}}</span>
       </li>
       <li>
         <span class="name">Community:</span>
-        <span class="value">Victoria</span>
+        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.communityOrCity}}</span>
       </li>
       <li>
         <span class="name">Province:</span>
-        <span class="value">BC</span>
+        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.provinceOrState}}</span>
       </li>
       <li>
         <span class="name">Postal code:</span>
-        <span class="value">V8S 3W4</span>
+        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.postalCodeOrZip}}</span>
       </li>
       <li>
         <span class="name">Country:</span>
-        <span class="value">Canada</span>
+        <span
+          class="value">{{countries$ | async | byId : registration?.headOfHousehold?.primaryResidence?.country | pluck : 'name' }}</span>
       </li>
       <li>
         <span class="name">Telephone/Mobile:</span>
-        <span class="value">250 567 8796</span>
+        <span class="value">{{registration?.headOfHousehold?.phoneNumber}}</span>
       </li>
       <li>
         <span class="name">Alternate Telephone/Mobile:</span>
-        <span class="value">250 456 1234</span>
+        <span class="value">{{registration?.headOfHousehold?.phoneNumber}}</span>
       </li>
       <li>
         <span class="name">Email Address:</span>
-        <span class="value">anne@email.com</span>
+        <span class="value">{{registration?.headOfHousehold?.email}}</span>
       </li>
     </ul>
 
@@ -77,23 +115,24 @@
     <ul class="summary">
       <li>
         <span class="name">Apt /Suite/Building Number &amp; Street Address:</span>
-        <span class="value">25 Street Rd</span>
+        <span class="value">{{registration?.headOfHousehold?.mailingAddress?.addressLine1}}</span>
       </li>
       <li>
         <span class="name">Community:</span>
-        <span class="value">Victoria</span>
+        <span class="value">{{registration?.headOfHousehold?.mailingAddress?.communityOrCity}}</span>
       </li>
       <li>
         <span class="name">Province:</span>
-        <span class="value">BC</span>
+        <span class="value">{{registration?.headOfHousehold?.mailingAddress?.provinceOrState}}</span>
       </li>
       <li>
         <span class="name">Postal code:</span>
-        <span class="value">V8S 3W4</span>
+        <span class="value">{{registration?.headOfHousehold?.mailingAddress?.postalCodeOrZip}}</span>
       </li>
       <li>
         <span class="name">Country:</span>
-        <span class="value">Canada</span>
+        <span
+          class="value">{{countries$ | async | byId : registration?.headOfHousehold?.mailingAddress?.country | pluck : 'name' }}</span>
       </li>
     </ul>
 
@@ -101,15 +140,15 @@
     <ul class="summary">
       <li>
         <span class="name">Dietary Requirements:</span>
-        <span class="value">No</span>
+        <span class="value">{{registration?.dietaryNeeds | yesNo}}</span>
       </li>
       <li>
         <span class="name">Medication:</span>
-        <span class="value">Yes</span>
+        <span class="value">{{registration?.medicationNeeds | yesNo}}</span>
       </li>
       <li>
         <span class="name">Pets:</span>
-        <span class="value">No</span>
+        <span class="value">{{registration?.hasPets | yesNo}}</span>
       </li>
     </ul>
 
@@ -117,16 +156,31 @@
     <ul class="summary">
       <li>
         <span class="name">Insurance:</span>
-        <span class="value">No</span>
+        <span class="value">{{insuranceOption(registration?.insuranceCode)}}</span>
       </li>
       <li>
         <span class="name">Supports:</span>
         <span class="value">
-          <ul>
-            <li>Yes</li>
-            <li>Food</li>
-            <li>Accommodation</li>
-          </ul>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresFood">
+            <label class="form-check-label">Food</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresClothing">
+            <label class="form-check-label">Clothing</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresAccommodation">
+            <label class="form-check-label">Accommodation</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresIncidentals">
+            <label class="form-check-label">Incidentals</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresTransportation">
+            <label class="form-check-label">Transportation</label>
+          </div>
         </span>
       </li>
     </ul>
@@ -136,7 +190,7 @@
   <section class="padded-section">
     <div class="row">
       <div class="form-check">
-        <input class="form-check-input" type="checkbox">
+        <input class="form-check-input" type="checkbox" formControlName="declarationAndConsent">
         <label class="form-check-label required">Personal information is collected under the authority of the Emergency
           Program Act and may be shared with other organizations to enable the provision of emergency services.
           Questions regarding the collection, use or disclosure of this information should be directed to: ESS Office,
@@ -155,7 +209,7 @@
         <app-font-awesome-icon icon="times"></app-font-awesome-icon>
         <span class="ml-2">Cancel &amp; Close</span>
       </a>
-      <button class="btn btn-primary ml-4" (click)="next()">NEXT</button>
+      <button class="btn btn-primary ml-4" [disabled]="form.invalid" (click)="next()">NEXT</button>
     </section>
   </div>
 </div>

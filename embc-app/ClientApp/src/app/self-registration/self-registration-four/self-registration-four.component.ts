@@ -23,6 +23,6 @@ export class SelfRegistrationFourComponent implements OnInit {
 
   // TODO: Get this from backend server
   fetchRegistration() {
-    return of({ ...mockResponse });
+    return of(mockResponse);
   }
 }
