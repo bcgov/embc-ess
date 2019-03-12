@@ -9,7 +9,7 @@ const FAKEREGISTRATIONS: Registration[] = [
   {
     id: '123',
     restrictedAccess: false,
-    essFileNumber:  1289734,
+    essFileNumber: 1289734,
     declarationAndConsent: false,
     dietaryNeeds: false,
     dietaryNeedsDetails: 'gluten intolerance',
@@ -23,7 +23,7 @@ const FAKEREGISTRATIONS: Registration[] = [
     selfRegisteredDate: null,
     registrationCompletionDate: new Date('2019-03-11T20:48:31.246Z'),
     registeringFamilyMembers: 'yes',
-    
+
     hasThreeDayMedicationSupply: true,
     hasInquiryReferral: false,
     hasHealthServicesReferral: false,
@@ -32,7 +32,7 @@ const FAKEREGISTRATIONS: Registration[] = [
     hasPersonalServicesReferral: false,
     hasPetCareReferral: false,
     hasPets: false,
-    
+
     requiresAccommodation: false,
     requiresClothing: false,
     requiresFood: false,
@@ -41,21 +41,21 @@ const FAKEREGISTRATIONS: Registration[] = [
     requiresTransportation: true,
 
     headOfHousehold:
-      {
-        id: 'qwertyuiop',
-        firstName: 'John',
-        lastName: 'Doe',
-        nickname: 'Johnny',
-        initials: 'JD',
-        gender: 'male',
-        dob: null,
-        phoneNumber: '',
-        phoneNumberAlt: '',
-        personType: 'HOH',
-        email: 'person@address.org',
-        primaryResidence: null,
-        mailingAddress: null
-      },
+    {
+      id: 'qwertyuiop',
+      firstName: 'John',
+      lastName: 'Doe',
+      nickname: 'Johnny',
+      initials: 'JD',
+      gender: 'male',
+      dob: null,
+      phoneNumber: '',
+      phoneNumberAlt: '',
+      personType: 'HOH',
+      email: 'person@address.org',
+      primaryResidence: null,
+      mailingAddress: null
+    },
     familyMembers: [
       {
         id: 'qwertyuiop',
@@ -92,7 +92,8 @@ const FAKEREGISTRATIONS: Registration[] = [
   {
     id: '123',
     restrictedAccess: true,
-    essFileNumber:  1289734,
+    essFileNumber: 1289734,
+    declarationAndConsent: false,
 
     dietaryNeeds: false,
     dietaryNeedsDetails: 'gluten intolerance',
@@ -106,7 +107,7 @@ const FAKEREGISTRATIONS: Registration[] = [
     selfRegisteredDate: null,
     registrationCompletionDate: null,
     registeringFamilyMembers: 'yes',
-    
+
     hasThreeDayMedicationSupply: true,
     hasInquiryReferral: false,
     hasHealthServicesReferral: false,
