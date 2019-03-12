@@ -73,6 +73,21 @@
             <input class="form-control" type="text" formControlName="nickname">
           </app-form-field>
         </div>
+        <div class="form-row">
+          <app-form-field class="col" requried="true">
+            <label>Gender</label>
+            <select  class="form-control" formControlName="incidentTaskNumber">
+              <option [ngValue]="null">Please select--</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </app-form-field>
+          <app-form-field class="col" required="true">
+            <label>Date of Birth</label>
+            <input class="form-control" type="date" formControlName="dob">
+          </app-form-field>
+        </div>
       </div>
     </div>
   </div>
