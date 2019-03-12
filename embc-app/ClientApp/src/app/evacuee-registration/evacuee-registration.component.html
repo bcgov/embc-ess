@@ -259,7 +259,6 @@
         </div> -->
       </div>
       
-      <!--
       <div class="mb-4">
         <h3 class="blue-header">
           MAILING ADDRESS
@@ -269,11 +268,11 @@
         </p>
         <div class="form-group">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" value="true" formControlName="differentMailingAddress">
+            <input class="form-check-input" type="radio" value="true" formControlName="mailingAddressInBC">
             <label class="form-check-label">Yes</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" value="false" formControlName="differentMailingAddress">
+            <input class="form-check-input" type="radio" value="false" formControlName="mailingAddressInBC">
             <label class="form-check-label">No</label>
           </div>
         </div>
@@ -285,8 +284,9 @@
         <p class="required">
           Please do not include any personal/medical information pertaining to the evacuee and their family.
         </p>
-        <textarea class="form-control" placeholder="Please specify" rows="4"></textarea>
+        <textarea class="form-control" formControlName="disasterAffectDetails" placeholder="Please specify" rows="4"></textarea>
       </div>
+      <!--
       <div class="mb-4">
         <h3 class="blue-header">
           INSURANCE
