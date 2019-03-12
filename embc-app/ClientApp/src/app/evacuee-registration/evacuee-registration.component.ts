@@ -10,7 +10,7 @@ import { Registration } from '../core/models';
 export class EvacueeRegistrationComponent implements OnInit {
   
   // TODO: Delete this demo version of reactive forms.
-  name = new FormControl('');
+  // name = new FormControl('');
 
   // The model for the form data collected
   form: FormGroup;

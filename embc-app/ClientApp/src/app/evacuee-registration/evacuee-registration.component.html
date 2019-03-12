@@ -7,18 +7,15 @@
         All required fields are marked with an asterisk *
       </small>
     </div>
-    <label>
+    <!-- <label>
       Name
       <input type="text" [formControl]="name">
     </label>
-    {{name.value}}
+    {{name.value}} -->
     
-    <div class="mt-5">
-      <h4>Form State</h4>
-      <pre>{{ this.form.value | json }}</pre>
-    </div>
-    <!-- <div>
-      <div class="mb-4">
+
+    <div [formGroup]="form">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           TASK NUMBER & PLACE OF REGISTRATION
         </h3>
@@ -40,7 +37,8 @@
             <option value="Grand Forks">Grand Forks</option>
           </select>
         </app-form-field>
-      </div>
+      </div>-->
+      
       <div class="mb-4">
         <h3 class="blue-header">
           RESTRICTED
@@ -59,6 +57,7 @@
           </div>
         </div>
       </div>
+      <!--
       <div class="mb-4">
         <h3 class="blue-header">
           EVACUEE DETAILS
@@ -417,8 +416,12 @@
           FOLLOW-UP REQUIRED
         </h3>
         <textarea class="form-control" placeholder="Details" rows="4"></textarea>
-      </div>
-    </div> -->
+      </div>-->
+    </div>
+    <div class="mt-5">
+      <h4>Form State</h4>
+      <pre>{{ this.form.value | json }}</pre>
+    </div>
   </div>
 
   <div class="col-12 col-lg-4">
