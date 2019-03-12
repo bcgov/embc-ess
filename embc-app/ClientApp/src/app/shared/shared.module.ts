@@ -7,6 +7,7 @@ import { WarningBannerComponent } from './components/warning-banner/warning-bann
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SideBoxComponent } from './components/side-box/side-box.component';
+import { SideBoxInfoComponent } from './components/side-box-info/side-box-info.component';
 import { FormFieldComponent } from './components/form-field/form-field.component';
 import { AddressSelectorComponent } from './components/address-form/address-selector.component';
 import { BcAddressComponent } from './components/address-form/bc-address/bc-address.component';
@@ -20,6 +21,7 @@ import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-aw
     HeaderComponent,
     FooterComponent,
     SideBoxComponent,
+    SideBoxInfoComponent,
     FormFieldComponent,
     AddressSelectorComponent,
     BcAddressComponent,
@@ -45,6 +47,7 @@ import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-aw
     HeaderComponent,
     FooterComponent,
     SideBoxComponent,
+    SideBoxInfoComponent,
     FormFieldComponent,
     AddressSelectorComponent,
     BcAddressComponent,
