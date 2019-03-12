@@ -8,6 +8,7 @@ import {
   SelfRegistrationTwoComponent,
   SelfRegistrationThreeComponent,
   SelfRegistrationFourComponent,
+  SelfRegistrationErrorComponent,
 } from './self-registration';
 import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.component';
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
@@ -42,6 +43,10 @@ const routes: Routes = [
       {
         path: 'step-4',
         component: SelfRegistrationFourComponent
+      },
+      {
+        path: 'error',
+        component: SelfRegistrationErrorComponent
       },
     ]
   },

@@ -8,6 +8,7 @@ import { SelfRegistrationOneComponent } from './self-registration-one/self-regis
 import { SelfRegistrationTwoComponent } from './self-registration-two/self-registration-two.component';
 import { SelfRegistrationThreeComponent } from './self-registration-three/self-registration-three.component';
 import { SelfRegistrationFourComponent } from './self-registration-four/self-registration-four.component';
+import { SelfRegistrationErrorComponent } from './self-registration-error/self-registration-error.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { SelfRegistrationFourComponent } from './self-registration-four/self-reg
     SelfRegistrationTwoComponent,
     SelfRegistrationThreeComponent,
     SelfRegistrationFourComponent,
+    SelfRegistrationErrorComponent,
   ],
   imports: [
     CommonModule,
