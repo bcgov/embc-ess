@@ -42,6 +42,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       insuranceCode: '',
       dietaryNeeds: null,
       medicationNeeds: null,
+      requiresSupport: null,
       disasterAffectDetails: null,
       registeringFamilyMembers: null,
       familyMembers: this.formBuilder.array([]),
