@@ -93,6 +93,19 @@
         <h3 class="blue-header">
           EVACUEE FAMILY INFORMATION
         </h3>
+        <p>
+          Are you registering immediate family members who live in the same household with you?
+        </p>
+        <div class="form-group">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" value="true" formControlName="registeringFamily">
+            <label class="form-check-label">Yes</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" value="false" formControlName="registeringFamily">
+            <label class="form-check-label">No</label>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -107,5 +120,8 @@
         </section>
       </section>
     </app-side-box>
+  </div>
+  <div class="col mb-6 mt-6">
+    <h3>TODO: Delete this spacer that unhides the content form under the footer.</h3>
   </div>
 </div>
