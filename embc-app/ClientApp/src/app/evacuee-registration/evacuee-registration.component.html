@@ -200,7 +200,7 @@
           Is your primary residence within BC.
         </p>
 
-        <div *ngIf="form.value.primaryResidenceInBC==='false'"class="alert alert-danger" role="alert">
+        <div *ngIf="form.value.primaryResidenceInBC===false"class="alert alert-danger" role="alert">
           <h4 class="alert-heading">
             This Evacuee is a Stranded Traveller.
           </h4>
@@ -375,11 +375,11 @@
           </div>
         </div>
       </div>
-      <div class="mb-4" *ngIf="form.value.medicationNeeds=='true'" >
+      <div class="mb-4" *ngIf="form.value.medicationNeeds===true" >
         <p class="required">
           Do you have adequate medication for the next three days?
         </p>
-        <div *ngIf="form.value.hasThreeDayMedicationSupply==='false'"class="alert alert-warning" role="alert">
+        <div *ngIf="form.value.hasThreeDayMedicationSupply===false"class="alert alert-warning" role="alert">
         <h4 class="alert-heading">
           The evacuee may be at increased risk from the medical condition.
         </h4>
@@ -436,20 +436,8 @@
         </div>
       </div>
 
-      <!-- Family recovery planning -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          FAMILY RECOVERY PLANS (IMMEDIATE & LONG TERM)
-        </h3>
-        <p class="required">
-          ESS (Emergency Support Services) provides short term assistance to give you and your family a chance to recover.<br>
-          Have you thought about what you will do after that time?
-        </p>
-        <textarea class="form-control" placeholder="Details" rows="4"></textarea>
-      </div>
-
       <!-- Referrals -->
-      <div class="mb-4">
+      <div class="mb-4" *ngIf="form.value.requiresSupport===true">
         <h3 class="blue-header">
           REFERRALS MADE WITHIN RECEPTION CENTER
         </h3>
@@ -493,7 +481,17 @@
           </label>
         </div>
       </div>
-
+      <!-- Family recovery planning -->
+      <div class="mb-4">
+          <h3 class="blue-header">
+            FAMILY RECOVERY PLANS (IMMEDIATE & LONG TERM)
+          </h3>
+          <p class="required">
+            ESS (Emergency Support Services) provides short term assistance to give you and your family a chance to recover.<br>
+            Have you thought about what you will do after that time?
+          </p>
+          <textarea class="form-control" placeholder="Details" rows="4" formControlName="familyRecoveryPlan"></textarea>
+        </div>
       <!-- Follow up -->
       <!--
       <div class="mb-4">
