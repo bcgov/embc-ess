@@ -124,7 +124,7 @@
         
         <!-- {{form.value.familyMembers|json}} -->
         <div formArrayName="familyMembers">
-          <div class="card" *ngFor="let m of form.get('familyMembers').controls; index as i;" [formGroupName]="i" >
+          <div class="card mb-2" *ngFor="let m of form.get('familyMembers').controls; index as i;" [formGroupName]="i" >
             <div class="card-body">
               <div class="row mb-2">
                 <div class="col">
@@ -174,20 +174,20 @@
                   </div>
                 </div>
               </div> -->
-            <!-- <div class="card-footer">
+            <div class="card-footer">
               <div class="float-left">
                 <i class="fas fa-minus-square"></i>
-                <a href="">
+                <span class="link" (click)="removeFamilyMember(i)">
                   Remove
-                </a>
+                </span>
               </div>
               <div class="float-right">
                 <i class="fas fa-plus-circle"></i>
-                <a href="">
+                <span class="link" (click)="addFamilyMember()">
                   Add another
-                </a>
+                </span>
               </div>
-            </div> -->
+            </div>
           </div> 
         </div>
       </div>

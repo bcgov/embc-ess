@@ -32,6 +32,10 @@ export class EvacueeRegistrationComponent implements OnInit {
     familyMembers.push(this.createFamilyMember());
     this.form.setValue(familyMembers)
   }
+  removeFamilyMember(i: number): void {
+    // TODO: remove the family member at the index
+    alert('This feature is not yet built. ' + i);
+  }
   createFamilyMember(): FormGroup {
     // make a new family member blank and return it.
     return this.formBuilder.group({
