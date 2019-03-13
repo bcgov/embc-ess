@@ -43,6 +43,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       lastName: '',
       nickname: '',
       initials: '',
+      relationshipToHoh: '',
       gender: null,
       dob: null,
     });
@@ -75,7 +76,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       requiresSupport: null,
       disasterAffectDetails: null,
       registeringFamilyMembers: null,
-      familyMembers: this.formBuilder.array([this.createFamilyMember()]),
+      familyMembers: this.formBuilder.array([]),
       phoneNumber: '',
       phoneNumberAlt: '',
       email: '',
