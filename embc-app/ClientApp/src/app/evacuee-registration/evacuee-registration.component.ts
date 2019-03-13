@@ -71,7 +71,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       requiresSupport: null,
       disasterAffectDetails: null,
       registeringFamilyMembers: null,
-      familyMembers: this.formBuilder.array([]),
+      familyMembers: this.formBuilder.array([this.createFamilyMember()]),
       phoneNumber: '',
       phoneNumberAlt: '',
       email: '',
