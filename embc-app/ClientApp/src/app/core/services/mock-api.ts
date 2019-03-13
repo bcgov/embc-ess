@@ -75,13 +75,17 @@ routes['api/user/current'] = useEnvelope({
 // mocking server-side API for now
 export function httpGet(url = 'api/not-found', options?) {
   console.log(`fetching '${url}'`)
-  const mockResponse = routes[url];
+  const mockResponse = routes[matchRoute(url)];
   return of(mockResponse);
 }
 
 // private
+function matchRoute(url = 'api/not-found'): any {
+  return Object.keys(routes).find(path => url.endsWith(path))
+}
+
 function byId(url = 'api/not-found', id: string): any {
-  const payload: { data?: any[]; error?: any; } = routes[url];
+  const payload: { data?: any[]; error?: any; } = routes[matchRoute(url)];
   const { data, error } = payload;
   if (error) {
     return null;
