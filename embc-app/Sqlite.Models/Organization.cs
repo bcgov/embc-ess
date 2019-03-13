@@ -5,14 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Gov.Jag.Embc.Public.Sqlite.Models
 {
     /// <summary>
-    /// Role Database Model
+    /// Organization Database Model
     /// </summary>
-    public sealed partial class Community
+    public sealed partial class Organization
     {
-
-        public Community()
-        { }
-
         /// <summary>
         /// A system-generated unique identifier
         /// </summary>
@@ -21,18 +17,12 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         [Key]
         public Guid Id { get; set; }
 
-        /// <summary>
-        /// The name of the Community
-        /// </summary>
-        /// <value>The name of the Community</value>
+        public bool? Active { get; set; }  // no deletions from DB this is a soft delete.
+
         [MaxLength(255)]
         public string Name { get; set; }
 
-        /// <summary>
-        /// true if active
-        /// </summary>
-        public bool? Active { get; set; }
-
-        public RegionalDistrict RegionalDistrict { get; set; }
+        [MaxLength(255)]
+        public string BceidAccountNumber { get; set; }
     }
 }

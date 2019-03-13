@@ -1,14 +1,11 @@
-﻿using Gov.Jag.Embc.Public.ViewModels;
-using System;
+using Gov.Jag.Embc.Public.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public interface IDataInterface
     {
-        Organisation GetOrganisationByBceidGuid(string bceidGuid);
+        Organization GetOrganizationByBceidGuid(string bceidGuid);
 
         Person GetPersonByBceidGuid(string bceidGuid);
 
@@ -25,6 +22,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         List<Registration> GetRegistrations();
 
         List<RegionalDistrict> GetRegionalDistricts();
-        
+
     }
 }
