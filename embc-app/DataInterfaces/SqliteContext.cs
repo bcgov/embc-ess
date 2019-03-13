@@ -1,10 +1,5 @@
-﻿
-using System;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Gov.Jag.Embc.Public.Sqlite.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -32,9 +27,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<HeadOfHousehold> HeadOfHouseholds { get; set; }
         public DbSet<IncidentTask> IncidentTasks { get; set; }
         public DbSet<Person> People { get; set; }
-        public DbSet<Profile> Profiles { get; set; }
         public DbSet<RegionalDistrict> RegionalDistricts { get; set; }
         public DbSet<Registration> Registrations { get; set; }
-        public DbSet<SupportType> SupportTypes { get; set; }
     }
 }

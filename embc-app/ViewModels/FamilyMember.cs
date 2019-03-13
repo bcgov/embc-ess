@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Gov.Jag.Embc.Public.ViewModels
 {
-
-    
-
-    public class FamilyMember: Person
+    public class FamilyMember : Evacuee
     {
         public string RelationshipToEvacuee { get; set; }
-
         public bool SameLastNameAsEvacuee { get; set; }
 
+        public FamilyMember()
+        {
+            PersonType = "FMBR";
+        }
     }
 }
