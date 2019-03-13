@@ -15,6 +15,7 @@
     
 
     <div [formGroup]="form">
+      <!-- Task numer and registration information populated -->
       <!-- <div class="mb-4">
         <h3 class="blue-header">
           TASK NUMBER & PLACE OF REGISTRATION
@@ -39,11 +40,12 @@
         </app-form-field>
       </div>-->
       
+      <!-- REstricted access to this file? -->
       <div class="mb-4">
         <h3 class="blue-header">
           RESTRICTED
         </h3>
-        <p >
+        <p>
           Concerned family and friends may inquire about you and your family because of the emergency. We would like to provide these people with some information about you.</p>
           <p class="required">May we disclose your location and the contact information for you and your family members?
         </p>
@@ -58,6 +60,8 @@
           </div>
         </div>
       </div>
+
+      <!-- Primary contact information -->
       <div class="mb-4" formGroupName="headOfHousehold">
         <h3 class="blue-header">
           EVACUEE DETAILS
@@ -96,6 +100,8 @@
           </app-form-field>
         </div>
       </div>
+
+      <!-- Family information section -->
       <div class="mb-4">
         <h3 class="blue-header">
           EVACUEE FAMILY INFORMATION
