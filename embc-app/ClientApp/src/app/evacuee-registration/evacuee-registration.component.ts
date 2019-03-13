@@ -27,6 +27,11 @@ export class EvacueeRegistrationComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  addFamilyMember(){
+    alert("family member add")
+  }
+
   getBoolean(booleanString: string): boolean {
     // convert boolean strings into actual boolean values
     if (booleanString === 'false') {
@@ -82,6 +87,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       hasChildCareReferral: null,
       hasPersonalServicesReferral: null,
       hasPetCareReferral: null,
+      hasPets: null,
     });
   }
 }
