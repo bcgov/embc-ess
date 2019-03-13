@@ -1,13 +1,11 @@
 namespace Gov.Jag.Embc.Public.ViewModels
 {
-
-    public class Community
+    public class Organization
     {
-        public string Id { get; set; }
+        public string Id { get; set; } // Guid
         public bool? Active { get; set; }  // no deletions from DB this is a soft delete.
         public string Name { get; set; }
-
-        // related entities
-        public RegionalDistrict RegionalDistrict { get; set; }
+        public string BceidAccountNumber { get; set; }
+        //public Person PrimaryContact { get; set; }
     }
 }

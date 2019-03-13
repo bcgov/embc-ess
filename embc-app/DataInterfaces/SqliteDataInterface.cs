@@ -1,35 +1,36 @@
-﻿using Gov.Jag.Embc.Public.ViewModels;
+using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public class SqliteDataInterface : IDataInterface
-    {            
+    {
         public SqliteContext Db;
 
         public SqliteDataInterface(string connectionString)
         {
 
             DbContextOptionsBuilder<SqliteContext> builder = new DbContextOptionsBuilder<SqliteContext>();
-            
+
             builder.UseSqlite(connectionString);
 
             // init the database.
             Db = new SqliteContext(builder.Options);
-            
+
             Db.Database.OpenConnection();
 
-            
-            
+
+
         }
 
         public Person CreatePerson(Person person)
         {
-            return person;
+            // TODO: Implement
+            throw new NotImplementedException();
+            //return person;
         }
 
         public Registration CreateRegistration(Registration registration)
@@ -40,16 +41,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return model.ToViewModel();
         }
 
-        public Organisation GetOrganisationByBceidGuid(string bceidGuid)
+        public Organization GetOrganizationByBceidGuid(string bceidGuid)
         {
-            Organisation result = new Organisation();
+            // TODO: Implement
+            Organization result = new Organization();
             return result;
         }
 
         public Person GetPersonByBceidGuid(string bceidGuid)
         {
-            Person result = new Person();
-            return result;
+            // TODO: Implement
+            throw new NotImplementedException();
+            //Person result = new Person();
+            //return result;
         }
 
         public List<Country> GetCountries()
@@ -71,7 +75,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 regions.Add(region.ToViewModel());
             }
-            return regions;   
+            return regions;
         }
 
         public List<Registration> GetRegistrations()

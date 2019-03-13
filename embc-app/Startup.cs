@@ -41,7 +41,7 @@ namespace Gov.Jag.Embc.Public
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
+        {
 
             // add singleton to allow Controllers to query the Request object
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -108,7 +108,7 @@ namespace Gov.Jag.Embc.Public
 
             // setup authorization
             services.AddAuthorization(options =>
-            {    
+            {
                 options.AddPolicy("Business-User", policy =>
                                   policy.RequireClaim(User.UserTypeClaim, "Business"));
             });
@@ -119,7 +119,7 @@ namespace Gov.Jag.Embc.Public
             {
                 services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(Configuration["KEY_RING_DIRECTORY"]));
             }
-            
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -131,12 +131,12 @@ namespace Gov.Jag.Embc.Public
             {
                 options.MultipartBodyLengthLimit = 1073741824; // 1 GB
             });
-            
+
             // health checks
             services.AddHealthChecks(checks =>
             {
                 checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
-                                
+
             });
 
             services.AddSession();
