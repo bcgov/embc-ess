@@ -344,6 +344,21 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
+      </div>
+      <div *ngIf="form.value.medicationNeeds=='true'" class="mb-4">
+        <p class="required">
+          Do you have adequate medication for the next three days?
+        </p>
+        <div class="form-group">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" value="true" formControlName="hasThreeDayMedicationSupply" default>
+            <label class="form-check-label">Yes</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" value="false" formControlName="hasThreeDayMedicationSupply">
+            <label class="form-check-label">No</label>
+          </div>
+        </div>
       </div>                              
       <div class="mb-4">
         <h3 class="blue-header">
@@ -364,7 +379,6 @@
           </div>
         </div>
       </div>
-    <!--
       <div class="mb-4">
         <h3 class="blue-header">
           FAMILY RECOVERY PLANS (IMMEDIATE & LONG TERM)
@@ -383,42 +397,43 @@
           Please check the boxes below where you have made referrals within the Reception Centre.
         </p>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="">
+          <input class="form-check-input" type="checkbox" formControlName="hasInquiryReferral">
           <label class="form-check-label" for="inquiry">
             Inquiry
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="">
+          <input class="form-check-input" type="checkbox" value="" formControlName="hasHealthServicesReferral">
           <label class="form-check-label" for="healthServices">
             Health Services
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="">
+          <input class="form-check-input" type="checkbox" value="" formControlName="hasFirstAidReferral">
           <label class="form-check-label" for="firstAid">
             First Aid
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="">
+          <input class="form-check-input" type="checkbox" value="" formControlName="hasPersonalServicesReferral">
           <label class="form-check-label" for="personalServices">
             Personal Services
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="">
+          <input class="form-check-input" type="checkbox" value="" formControlName="hasChildCareReferral">
           <label class="form-check-label" for="childCare">
             Child Care
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="">
+          <input class="form-check-input" type="checkbox" value="" formControlName="hasPetCareReferral">
           <label class="form-check-label" for="petCare">
             Pet Care
           </label>
         </div>
       </div>
+      <!--
       <div class="mb-4">
         <h3 class="blue-header">
           FOLLOW-UP REQUIRED

@@ -66,6 +66,13 @@ export class EvacueeRegistrationComponent implements OnInit {
         postalCodeOrZip: '',
         country: '',
       }),
+      hasThreeDayMedicationSupply: null,
+      hasInquiryReferral: null,
+      hasHealthServicesReferral: null,
+      hasFirstAidReferral: null,
+      hasChildCareReferral: null,
+      hasPersonalServicesReferral: null,
+      hasPetCareReferral: null,
     });
   }
 }
