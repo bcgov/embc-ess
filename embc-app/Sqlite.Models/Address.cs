@@ -9,6 +9,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// </summary>
     public abstract partial class Address
     {
+        // Factory method
         public static Address Create(string subType)
         {
             if (subType == "BCAD")
@@ -30,7 +31,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         [Key]
         public Guid Id { get; set; }
 
-        public string AddressSubtypeCode { get; set; }  // one of ['BCAD', 'OTAD'] for BC vs non-BC addresses
+        public string AddressSubtype { get; set; }  // one of ['BCAD', 'OTAD'] for BC vs non-BC addresses
 
         [MaxLength(255)]
         public string AddressLine1 { get; set; }
@@ -42,31 +43,33 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         public string AddressLine3 { get; set; }
 
         [MaxLength(255)]
-        public string CommunityOrCity { get; set; }
-
-        [MaxLength(255)]
-        public string Province { get; set; }
-
-        [MaxLength(255)]
         public string PostalCode { get; set; }
-
-        [MaxLength(255)]
-        public string Country { get; set; }
     }
 
     public sealed partial class BcAddress : Address
     {
+        public Community Community { get; set; }
+
         public BcAddress()
         {
-            AddressSubtypeCode = "BCAD";
+            AddressSubtype = "BCAD";
         }
     }
 
     public sealed partial class OtherAddress : Address
     {
+        [MaxLength(255)]
+        public string City { get; set; }
+
+        [MaxLength(255)]
+        public string Province { get; set; }
+
+        [MaxLength(255)]
+        public Country Country { get; set; }
+
         public OtherAddress()
         {
-            AddressSubtypeCode = "OTAD";
+            AddressSubtype = "OTAD";
         }
     }
 }

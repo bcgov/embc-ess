@@ -1,7 +1,8 @@
+using System.Collections.Generic;
+
 namespace Gov.Jag.Embc.Public.Sqlite.Models
 {
-
-    public class Evacuee : Person
+    public abstract class Evacuee : Person
     {
         public string BcServicesNumber { get; set; }
     }
@@ -16,6 +17,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         // related entities
         public Address PrimaryResidence { get; set; }
         public Address MailingAddress { get; set; }
+        public List<FamilyMember> FamilyMembers { get; set; }
 
         public HeadOfHousehold()
         {

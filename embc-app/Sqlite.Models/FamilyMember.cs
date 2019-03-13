@@ -5,11 +5,13 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// <summary>
     /// Person Database Model
     /// </summary>
-    public sealed partial class FamilyMember : Person
+    public sealed partial class FamilyMember : Evacuee
     {
-        [MaxLength(255)]
-        public string RelationshipToEvacuee { get; set; }
         public bool SameLastNameAsEvacuee { get; set; }
+
+        // related entities
+        public FamilyRelationshipType RelationshipToEvacuee { get; set; }
+
 
         public FamilyMember()
         {

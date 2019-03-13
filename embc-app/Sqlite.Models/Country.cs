@@ -9,10 +9,6 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// </summary>
     public sealed partial class Country
     {
-
-        public Country()
-        { }
-
         /// <summary>
         /// A system-generated unique identifier
         /// </summary>
@@ -33,5 +29,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         /// </summary>
         public bool? Active { get; set; }
 
+        public Country()
+        { }
     }
 }
