@@ -31,17 +31,17 @@ Developer Prerequisites
 DevOps Process
 -------------
 
-###Jenkins
+### Jenkins
 
 If any pipeline steps do not start, a common root cause is issues with Jenkins.  Restart the Jenkins service by scaling it down to 0 pods, then back up to 1 pod.
 
-###DEV builds
+### DEV builds
 Dev builds are triggered by source code being committed to the repository.  This process triggers a webhook which initiates the DEV build pipeline.
 
-##Promotion to TEST
+## Promotion to TEST
 Login to the OpenShift Web Console and navigate to the Tools project for the system.  Go to Builds->Pipelines.  Click  Start Pipeline on the Test Pipeline.
 
-##Promotion to PROD
+## Promotion to PROD
 Login to the OpenShift Web Console and navigate to the Tools project for the system.  Go to Builds->Pipelines.  Click  Start Pipeline on the Prod Pipeline.
 
 
