@@ -121,137 +121,74 @@
         </div>
         <!-- Card for family members -->          
         <button (click)="addFamilyMember()">Add blank family member</button>
+        
         <div formArrayName="familyMembers">
-          <div *ngFor="let member of familyMembers" class="card">
-            <div class="card-body">
-              <div class="row mb-2">
-                <div class="col">
-                  <label required="true">Last Name</label>
-                  <input type="text" class="form-control">
-                </div>
-                <div class="col">
-                  <label for="sameLastName">
-                    Same last name as main applicant?
-                  </label>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="">
-                  </div>
-                </div>
-              </div>
-              <div class="row mb-2">
-                <div class="col">
-                  <label required="true">First Name</label>
-                  <input type="text" class="form-control">
-                </div>
-                <div class="col">
-                  <div class="form-check">
-                    <label required="true">Middle Initial</label>
-                    <input type="text" class="form-control">
-                  </div>
-                </div>
-              </div>
-              <div class="row mb-2">
-                <div class="col-6">
-                    <label required="true">Relationship</label>
+          Members: {{familyMembers|json}}
+          <!-- <div *ngFor="let member of familyMembers" class="card">
+              <div class="card-body">
+                <div class="row mb-2">
+                  <div class="col">
+                    <label required="true">Last Name</label>
                     <input type="text" class="form-control">
                   </div>
                   <div class="col">
-                    <app-form-field requried="true">
-                      <label>Gender</label>
-                      <select  class="form-control" formControlName="incidentTaskNumber">
-                        <option [ngValue]="null">Please select--</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                      </select>
-                    </app-form-field>
+                    <label for="sameLastName">
+                      Same last name as main applicant?
+                    </label>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="">
+                    </div>
                   </div>
+                </div>
+                <div class="row mb-2">
                   <div class="col">
-                    <label required="true">Date of Birth</label>
-                    <input type="date" class="form-control">
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer">
-                <div class="float-left">
-                  <i class="fas fa-minus-square"></i>
-                  <a href="">
-                    Remove
-                  </a>
-                </div>
-                <div class="float-right">
-                  <i class="fas fa-plus-circle"></i>
-                  <a href="">
-                    Add another
-                  </a>
-                </div>
-              </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <div class="row mb-2">
-                <div class="col">
-                  <label required="true">Last Name</label>
-                  <input type="text" class="form-control">
-                </div>
-                <div class="col">
-                  <label for="sameLastName">
-                    Same last name as main applicant?
-                  </label>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="">
-                  </div>
-                </div>
-              </div>
-              <div class="row mb-2">
-                <div class="col">
-                  <label required="true">First Name</label>
-                  <input type="text" class="form-control">
-                </div>
-                <div class="col">
-                  <div class="form-check">
-                    <label required="true">Middle Initial</label>
-                    <input type="text" class="form-control">
-                  </div>
-                </div>
-              </div>
-              <div class="row mb-2">
-                <div class="col-6">
-                    <label required="true">Relationship</label>
+                    <label required="true">First Name</label>
                     <input type="text" class="form-control">
                   </div>
                   <div class="col">
-                    <app-form-field requried="true">
-                      <label>Gender</label>
-                      <select  class="form-control" formControlName="incidentTaskNumber">
-                        <option [ngValue]="null">Please select--</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                      </select>
-                    </app-form-field>
-                  </div>
-                  <div class="col">
-                    <label required="true">Date of Birth</label>
-                    <input type="date" class="form-control">
+                    <div class="form-check">
+                      <label required="true">Middle Initial</label>
+                      <input type="text" class="form-control">
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="card-footer">
-                <div class="float-left">
-                  <i class="fas fa-minus-square"></i>
-                  <a href="">
-                    Remove
-                  </a>
+                <div class="row mb-2">
+                  <div class="col-6">
+                      <label required="true">Relationship</label>
+                      <input type="text" class="form-control">
+                    </div>
+                    <div class="col">
+                      <app-form-field requried="true">
+                        <label>Gender</label>
+                        <select  class="form-control" formControlName="incidentTaskNumber">
+                          <option [ngValue]="null">Please select--</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="other">Other</option>
+                        </select>
+                      </app-form-field>
+                    </div>
+                    <div class="col">
+                      <label required="true">Date of Birth</label>
+                      <input type="date" class="form-control">
+                    </div>
+                  </div>
                 </div>
-                <div class="float-right">
-                  <i class="fas fa-plus-circle"></i>
-                  <a href="">
-                    Add another
-                  </a>
+                <div class="card-footer">
+                  <div class="float-left">
+                    <i class="fas fa-minus-square"></i>
+                    <a href="">
+                      Remove
+                    </a>
+                  </div>
+                  <div class="float-right">
+                    <i class="fas fa-plus-circle"></i>
+                    <a href="">
+                      Add another
+                    </a>
+                  </div>
                 </div>
-              </div>
-          </div>
+            </div> -->
         </div>
       </div>
 

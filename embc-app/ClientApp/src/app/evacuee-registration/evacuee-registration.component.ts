@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { Registration } from '../core/models';
 
 @Component({
@@ -14,7 +14,6 @@ export class EvacueeRegistrationComponent implements OnInit {
 
   // The model for the form data collected
   form: FormGroup;
-
   // registration: Registration | null;
 
   constructor(
@@ -28,8 +27,21 @@ export class EvacueeRegistrationComponent implements OnInit {
   ngOnInit() {
   }
 
-  addFamilyMember(){
-    alert("family member add")
+  addFamilyMember(): void {
+    const familyMembers = this.form.get('familyMembers') as FormArray;
+    familyMembers.push(this.createFamilyMember());
+    this.form.setValue(familyMembers)
+  }
+  createFamilyMember(): FormGroup {
+    // make a new family member blank and return it.
+    return this.formBuilder.group({
+      firstName: '',
+      lastName: '',
+      nickname: '',
+      initials: '',
+      gender: null,
+      dob: null,
+    });
   }
 
   getBoolean(booleanString: string): boolean {
