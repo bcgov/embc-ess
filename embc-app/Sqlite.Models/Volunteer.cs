@@ -13,8 +13,8 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         [MaxLength(255)]
         public string Email { get; set; }
 
-        public bool? IsNewUser { get; set; }
         public string BceidAccountNumber { get; set; }
+        public bool? IsNewUser { get; set; }
         public bool? IsAdministrator { get; set; }
         public bool? IsPrimaryContact { get; set; }
         public bool? CanAccessRestrictedFiles { get; set; }

@@ -47,7 +47,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
         // related entities
         public HeadOfHousehold HeadOfHousehold { get; set; }
-        public List<FamilyMember> FamilyMembers { get; set; }
         public IncidentTask IncidentTask { get; set; }
         public Community HostCommunity { get; set; }
 
