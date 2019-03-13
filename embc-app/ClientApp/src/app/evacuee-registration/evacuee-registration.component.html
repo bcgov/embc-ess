@@ -197,16 +197,8 @@
           PRIMARY RESIDENCE & CONTACT DETAILS
         </h3>
         <p class="required">
-          Is your primary residence within BC.
+          Is your primary residence within BC?
         </p>
-
-        <div *ngIf="form.value.primaryResidenceInBC===false"class="alert alert-danger" role="alert">
-          <h4 class="alert-heading">
-            This Evacuee is a Stranded Traveller.
-          </h4>
-          <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
-        </div>
-
         <div class="form-group">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" [value]="true" formControlName="primaryResidenceInBC">
@@ -217,13 +209,20 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-        
-        <!-- <div class="card">
+        <div *ngIf="form.value.primaryResidenceInBC===false"class="alert alert-danger" role="alert">
+          <h4 class="alert-heading">
+            This Evacuee is a Stranded Traveller.
+          </h4>
+          <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
+        </div>
+      </div>
+      <div class="mb-4">
+        <div class="card">
           <div class="card-body">
             <div class="row mb-2">
               <div class="col">
                 <label required="true">Apt/Suite/Building Number & Street Address</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" formControlName="addressLine1">
               </div>
             </div>
             <div class="row mb-2">
@@ -256,7 +255,7 @@
             <div class="row mb-2">
               <div class="col-6">
                 <label required="true">Country</label>
-                <input type="text" class="form-control" value="Canada" disabled>
+                <input type="text" class="form-control" value="Canada">
               </div>
             </div>
             <div class="row mb-2">
@@ -276,7 +275,7 @@
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
       </div>
       
       <!-- Mailing information -->
@@ -289,15 +288,76 @@
         </p>
         <div class="form-group">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="mailingAddressInBC">
+            <input class="form-check-input" type="radio" [value]="true" formControlName="distinctMailingAddress">
             <label class="form-check-label">Yes</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="mailingAddressInBC">
+            <input class="form-check-input" type="radio" [value]="false" formControlName="distinctMailingAddress">
             <label class="form-check-label">No</label>
           </div>
         </div>
+        <div>
 
+        </div>
+        <div class="card" *ngIf="form.value.distinctMailingAddress">
+          <div class="card-body">
+            <div class="row mb-2">
+              <div class="col">
+                <label required="true">Apt/Suite/Building Number & Street Address</label>
+                <input type="text" class="form-control" formControlName="addressLine1">
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col">
+                <div requried="true">
+                  <label>Community</label>
+                  <select  class="form-control" formControlName="community">
+                    <option [ngValue]="null">Please select--</option>
+                    <option value="victoria">Victoria</option>
+                    <option value="grandForks">Grand Forks</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-3">
+                <div requried="true">
+                  <label>Province</label>
+                  <select  class="form-control" formControlName="province">
+                    <option [ngValue]="null">Please select--</option>
+                    <option value="BC">BC</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="form-check">
+                  <label required="true">Postal Code</label>
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-6">
+                <label required="true">Country</label>
+                <input type="text" class="form-control" value="Canada">
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col">
+                <label>Telephone / Mobile Number (10 digits)</label>
+                <input type="text" class="form-control">
+              </div>
+              <div class="col">
+                <label>Alternate Telephone / Mobile Number</label>
+                <input type="text" class="form-control">
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col">
+                <label>Email Address</label>
+                <input type="email" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Disaster affect information -->
