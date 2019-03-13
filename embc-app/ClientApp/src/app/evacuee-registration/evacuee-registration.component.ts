@@ -27,7 +27,16 @@ export class EvacueeRegistrationComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  getBoolean(booleanString: string): boolean {
+    // convert boolean strings into actual boolean values
+    if (booleanString === 'false') {
+      return false;
+    } else if (booleanString === 'true' ) {
+      return true;
+    } else {
+      return null;
+    }
+  }
   initForm(): void {
     this.form = this.formBuilder.group({
       restrictedAccess: null,

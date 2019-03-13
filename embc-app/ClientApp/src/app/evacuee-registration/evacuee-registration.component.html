@@ -43,16 +43,17 @@
         <h3 class="blue-header">
           RESTRICTED
         </h3>
-        <p class="required">
-          Concerned family and friends may inquire about you and your family because of the emergency. We would like to provide these people with some information about you. May we disclose your location and the contact information for you and your family members?
+        <p >
+          Concerned family and friends may inquire about you and your family because of the emergency. We would like to provide these people with some information about you.</p>
+          <p class="required">May we disclose your location and the contact information for you and your family members?
         </p>
         <div class="form-group">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" value="true" formControlName="restrictedAccess">
+            <input class="form-check-input" type="radio" value='true' formControlName="restrictedAccess">
             <label class="form-check-label">Yes</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" value="false" formControlName="restrictedAccess">
+            <input class="form-check-input" type="radio" value='false' formControlName="restrictedAccess">
             <label class="form-check-label">No</label>
           </div>
         </div>
@@ -187,6 +188,14 @@
         <p class="required">
           Is your primary residence within BC.
         </p>
+
+        <div *ngIf="form.value.primaryResidenceInBC==='false'"class="alert alert-danger" role="alert">
+          <h4 class="alert-heading">
+            This Evacuee is a Stranded Traveller.
+          </h4>
+          <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
+        </div>
+
         <div class="form-group">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" value="true" formControlName="primaryResidenceInBC">
@@ -276,6 +285,7 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
+
       </div>
       <div class="mb-4">
         <h3 class="blue-header">
@@ -349,6 +359,13 @@
         <p class="required">
           Do you have adequate medication for the next three days?
         </p>
+        <div *ngIf="form.value.hasThreeDayMedicationSupply==='false'"class="alert alert-warning" role="alert">
+          <h4 class="alert-heading">
+            The evacuee may be at increased risk from the medical condition.
+          </h4>
+          <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
+        </div>
+        
         <div class="form-group">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" value="true" formControlName="hasThreeDayMedicationSupply" default>
@@ -384,7 +401,7 @@
           FAMILY RECOVERY PLANS (IMMEDIATE & LONG TERM)
         </h3>
         <p class="required">
-          ESS provides short term assisstance to give you and your family a chance to recover.<br>
+          ESS (Emergency Support Services) provides short term assistance to give you and your family a chance to recover.<br>
           Have you thought about what you will do after that time?
         </p>
         <textarea class="form-control" placeholder="Details" rows="4"></textarea>
