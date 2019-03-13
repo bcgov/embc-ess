@@ -110,19 +110,16 @@
           Are you registering immediate family members who live in the same household with you?
         </p>
         <div class="form-group">
-          <div class="form-check form-check-inline">
+          <div class="form-check form-check-inline" (click)="addFamilyMember()">
             <input class="form-check-input" type="radio" [value]="true" formControlName="registeringFamilyMembers">
             <label class="form-check-label">Yes</label>
           </div>
-          <div class="form-check form-check-inline">
+          <div class="form-check form-check-inline" (click)="clearFamilyMembers()">
             <input class="form-check-input" type="radio" [value]="false" formControlName="registeringFamilyMembers">
             <label class="form-check-label">No</label>
           </div>
         </div>
-        <!-- Card for family members -->          
-        <button (click)="addFamilyMember()">Add blank family member</button>
-        
-        <!-- {{form.value.familyMembers|json}} -->
+        <!-- Card for family members -->
         <div formArrayName="familyMembers">
           <div class="card mb-2" *ngFor="let m of form.get('familyMembers').controls; index as i;" [formGroupName]="i" >
             <div class="card-body">

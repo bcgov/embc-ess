@@ -28,9 +28,12 @@ export class EvacueeRegistrationComponent implements OnInit {
   }
 
   addFamilyMember(): void {
+    // get the existing family members
     const familyMembers = this.form.get('familyMembers') as FormArray;
+    // push the new family member into the array
     familyMembers.push(this.createFamilyMember());
-    this.form.setValue(familyMembers)
+    // set the value for familymembers
+    this.form.setValue(familyMembers);
   }
   removeFamilyMember(i: number): void {
     // TODO: remove the family member at the index
@@ -47,6 +50,10 @@ export class EvacueeRegistrationComponent implements OnInit {
       gender: null,
       dob: null,
     });
+  }
+  clearFamilyMembers(): void {
+    // reset the list of family members
+    this.form.controls.familyMembers = this.formBuilder.array([]);
   }
 
   getBoolean(booleanString: string): boolean {
