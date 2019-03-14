@@ -32,6 +32,10 @@ export class VolunteerDashboardComponent implements OnInit {
 
   ngOnInit() {
     // go get the data
+    this.refreshRegistrations();
+  }
+  refreshRegistrations() {
+    // go get a fresh list of registrations from the service
     this.registrationService.getRegistries()
       .subscribe((registrations: Registration[]) => {
         this.raw = registrations;
