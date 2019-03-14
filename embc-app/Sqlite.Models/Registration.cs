@@ -57,12 +57,13 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
 
         // related entities
         public HeadOfHousehold HeadOfHousehold { get; set; }
-        public List<FamilyMember> FamilyMembers { get; set; }
         public IncidentTask IncidentTask { get; set; }
         public Community HostCommunity { get; set; }
 
         // TODO: Should we link to the full User record for an interviewer or just capture basic info (name + last name initial)?
-        public Volunteer CompletedBy { get; set; }
+
+        // FIXME: Enable volunteers after DEMO - right now all records are PUBLIC
+        // ==> public Volunteer CompletedBy { get; set; }
 
         public Registration()
         { }

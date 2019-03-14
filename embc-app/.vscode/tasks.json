@@ -7,17 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/cllc-public-app.csproj"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "build",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "build",
-                "${workspaceFolder}/cllc-public-app.csproj"
+                "${workspaceFolder}/embc-app.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

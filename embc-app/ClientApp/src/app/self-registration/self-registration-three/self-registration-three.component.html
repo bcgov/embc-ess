@@ -82,7 +82,8 @@
       </li>
       <li>
         <span class="name">Community:</span>
-        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.communityOrCity}}</span>
+        <span
+          class="value">{{communities$ | async | byId : registration?.headOfHousehold?.primaryResidence?.communityOrCity | pluck : 'name'}}</span>
       </li>
       <li>
         <span class="name">Province:</span>

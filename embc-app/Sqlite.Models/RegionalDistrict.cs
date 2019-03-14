@@ -11,14 +11,14 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// <summary>
     /// Role Database Model
     /// </summary>
-        public sealed partial class RegionalDistrict
+    public sealed partial class RegionalDistrict
     {
 
         public RegionalDistrict()
         { }
 
         /// <summary>
-        /// A system-generated unique identifier 
+        /// A system-generated unique identifier
         /// </summary>
         /// <value>A system-generated unique identifier for a Role</value>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -29,9 +29,9 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         /// The name of the Community
         /// </summary>
         /// <value>The name of the Community</value>
-        [MaxLength(255)]        
+        [MaxLength(255)]
         public string Name { get; set; }
-        
+
         /// <summary>
         /// true if active
         /// </summary>
