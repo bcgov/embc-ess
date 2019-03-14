@@ -147,7 +147,8 @@ node('master') {
 		try {
 		  // hold on to a copy of the last stable DEV environment (in case the upcoming deployment fails...)
 		  tagLatestStable(environment, stableTag, IMAGESTREAM_NAME)
-		  deployAndVerify(test, environment, "embcess")
+		  IMAGE_HASH = getLatestHash(IMAGESTREAM_NAME)
+		  deployAndVerify(IMAGE_HASH, environment, "embcess")
 		  // all is good!
 		  notifyGood(
 			"New ${APP_NAME} in ${environment} :)",
