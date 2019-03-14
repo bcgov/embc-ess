@@ -111,5 +111,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return regions;
         }
 
+        public List<FamilyRelationshipType> GetFamilyRelationshipTypes()
+        {
+            var all = Db.FamilyRelationshipTypes.Select(x => x.ToViewModel()).ToList();
+            return all;
+        }
+
     }
 }
