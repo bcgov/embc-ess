@@ -321,16 +321,20 @@ const FAKEREGISTRATIONS: Registration[] = [
   providedIn: CoreModule
 })
 export class RegistrationService extends RestService {
+  // in memory registrations
+  registrations: Registration[] = FAKEREGISTRATIONS;
 
   getRegistries(page?: number, recordLimit?: number): Observable<Registration[]> {
     // records and page are set limits on the query number
     if (!recordLimit) { recordLimit = 100; }
     if (!page) { page = 1; }
 
-    return of(FAKEREGISTRATIONS);
+    // return of(FAKEREGISTRATIONS);
+    return of(this.registrations); // return in memory copy instead of static
   }
 
-  createRegistration(data: Registration) {
+  createRegistration(data: Registration): Observable<Registration> {
+    // make a 
     return this.post('/registrations', data);
   }
 }
