@@ -27,6 +27,11 @@ export class EvacueeRegistrationComponent implements OnInit {
   ngOnInit() {
   }
 
+  get familyMembers() {
+    // this is a way to grab the familymembers in a typed way
+    return this.form.controls.familyMembers as FormArray;
+  }
+
   addFamilyMember(): void {
     // get the existing family members
     const familyMembers = this.form.get('familyMembers') as FormArray;
