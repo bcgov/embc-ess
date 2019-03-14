@@ -216,7 +216,7 @@
           <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
         </div>
       </div>
-      <div class="mb-4">
+      <div class="mb-4" formGroupName="primaryResidence">
         <div class="card">
           <div class="card-body">
             <div class="row mb-2">
@@ -229,7 +229,7 @@
               <div class="col">
                 <div requried="true">
                   <label>Community</label>
-                  <select  class="form-control" formControlName="community">
+                  <select  class="form-control" formControlName="communityOrCity">
                     <option [ngValue]="null">Please select--</option>
                     <option value="victoria">Victoria</option>
                     <option value="grandForks">Grand Forks</option>
@@ -239,7 +239,7 @@
               <div class="col-3">
                 <div requried="true">
                   <label>Province</label>
-                  <select  class="form-control" formControlName="province">
+                  <select  class="form-control" formControlName="provinceOrState">
                     <option [ngValue]="null">Please select--</option>
                     <option value="BC">BC</option>
                   </select>
@@ -248,7 +248,7 @@
               <div class="col-3">
                 <div class="form-check">
                   <label required="true">Postal Code</label>
-                  <input type="text" class="form-control">
+                  <input type="text" class="form-control" formControlName="postalCodeOrZip">
                 </div>
               </div>
             </div>
@@ -299,7 +299,7 @@
         <div>
 
         </div>
-        <div class="card" *ngIf="form.value.distinctMailingAddress">
+        <div class="card" *ngIf="form.value.distinctMailingAddress" formGroupName="mailingAddress">
           <div class="card-body">
             <div class="row mb-2">
               <div class="col">
@@ -311,7 +311,7 @@
               <div class="col">
                 <div requried="true">
                   <label>Community</label>
-                  <select  class="form-control" formControlName="community">
+                  <select  class="form-control" formControlName="communityOrCity">
                     <option [ngValue]="null">Please select--</option>
                     <option value="victoria">Victoria</option>
                     <option value="grandForks">Grand Forks</option>
@@ -321,7 +321,7 @@
               <div class="col-3">
                 <div requried="true">
                   <label>Province</label>
-                  <select  class="form-control" formControlName="province">
+                  <select  class="form-control" formControlName="provinceOrState">
                     <option [ngValue]="null">Please select--</option>
                     <option value="BC">BC</option>
                   </select>
@@ -330,7 +330,7 @@
               <div class="col-3">
                 <div class="form-check">
                   <label required="true">Postal Code</label>
-                  <input type="text" class="form-control">
+                  <input type="text" class="form-control" formControlName="postalCodeOrZip">
                 </div>
               </div>
             </div>
