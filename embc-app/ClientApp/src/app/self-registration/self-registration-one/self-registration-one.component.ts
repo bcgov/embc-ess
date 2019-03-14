@@ -159,7 +159,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
           dob: this.registration.headOfHousehold.dob,
         },
         registeringFamilyMembers: this.registration.registeringFamilyMembers,
-        familyMembers: this.registration.familyMembers,
+        familyMembers: this.registration.headOfHousehold.familyMembers,
         phoneNumber: this.registration.headOfHousehold.phoneNumber,
         phoneNumberAlt: this.registration.headOfHousehold.phoneNumberAlt,
         email: this.registration.headOfHousehold.email,
@@ -226,13 +226,13 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       ...this.registration,
       restrictedAccess: form.restrictedAccess,
       registeringFamilyMembers: form.registeringFamilyMembers,
-      familyMembers: [...form.familyMembers],
       headOfHousehold: {
         ...this.registration.headOfHousehold,
         ...form.headOfHousehold,
         phoneNumber: form.phoneNumber,
         phoneNumberAlt: form.phoneNumberAlt,
         email: form.email,
+        familyMembers: [...form.familyMembers],
         primaryResidence: { ...form.primaryResidence },
         mailingAddress: form.hasMailingAddress ? { ...form.mailingAddress } : undefined,
       }

@@ -46,7 +46,7 @@
     </ul>
 
     <h2>Evacuee Family Information</h2>
-    <ul class="summary" *ngFor="let fm of registration.familyMembers">
+    <ul class="summary" *ngFor="let fm of registration.headOfHousehold.familyMembers">
       <li>
         <span class="name">Last Name:</span>
         <span class="value">{{fm?.lastName}}</span>

@@ -1,4 +1,4 @@
-import { Person, Address } from './';
+import { Person, Address, RelationshipType } from './';
 
 export interface Evacuee extends Person {
   bcServicesNumber?: string;
@@ -13,10 +13,11 @@ export interface HeadOfHousehold extends Evacuee {
   // related entities
   primaryResidence: Address;
   mailingAddress: Address | null;
+  familyMembers: FamilyMember[];
 }
 
 export interface FamilyMember extends Evacuee {
   personType: 'FMBR';
-  relationshipToEvacuee: string;
   sameLastNameAsEvacuee: boolean;
+  relationshipToEvacuee: RelationshipType;
 }
