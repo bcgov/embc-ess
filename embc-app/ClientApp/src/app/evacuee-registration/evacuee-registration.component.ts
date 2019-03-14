@@ -3,6 +3,7 @@ import { FormControl, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { Registration, Country } from '../core/models';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store';
+import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-evacuee-registration',
@@ -16,6 +17,10 @@ export class EvacueeRegistrationComponent implements OnInit {
 
   // state needed by this FORM
   countries$ = this.store.select(state => state.lookups.countries.countries);
+  regionalDistrics$ = this.store.select(state => state.lookups.regionalDistricts);
+  regions$ = this.store.select(state => state.lookups.regions);
+  relationshipTypes$ = this.store.select(state => state.lookups.relationshipTypes);
+
 
   // The model for the form data collected
   form: FormGroup;

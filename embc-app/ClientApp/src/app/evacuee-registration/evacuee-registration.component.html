@@ -14,6 +14,10 @@
     </label>
     {{name.value}} -->
 
+    <p>countries$: {{countries$ | async | json}}</p>
+    <p>regions$: {{regions$ | async | json}}</p>
+    <p>regionalDistricts$: {{regionalDistricts$ | async | json}}</p>
+    <p>relationshipTypes$: {{relationshipTypes$ | async | json}}</p>
 
     <div [formGroup]="form">
       <!-- Task numer and registration information populated -->
@@ -334,6 +338,14 @@
                   <select  class="form-control" formControlName="provinceOrState">
                     <option [ngValue]="null">Please select--</option>
                     <option value="BC">BC</option>
+                  </select>
+
+                  <!-- Province selector pulls from application state -->
+                  <select class="form-control" formControlName="provinceOrState">
+                    <option [ngValue]="null">-- Please Select</option>
+                    <option [value]="item.id" *ngFor="let item of countries$ | async">
+                      {{item.name}}
+                    </option>
                   </select>
                 </div>
               </div>
