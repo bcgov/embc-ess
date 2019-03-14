@@ -178,7 +178,7 @@ const FAKEREGISTRATIONS: Registration[] = [
   //   selfRegisteredDate: null,
   //   registrationCompletionDate: new Date('2019-03-11T20:48:31.246Z'),
   //   registeringFamilyMembers: 'yes',
-    
+
   //   hasThreeDayMedicationSupply: true,
   //   hasInquiryReferral: false,
   //   hasHealthServicesReferral: false,
@@ -187,7 +187,7 @@ const FAKEREGISTRATIONS: Registration[] = [
   //   hasPersonalServicesReferral: false,
   //   hasPetCareReferral: false,
   //   hasPets: false,
-    
+
   //   requiresAccommodation: false,
   //   requiresClothing: false,
   //   requiresFood: false,
@@ -262,7 +262,7 @@ const FAKEREGISTRATIONS: Registration[] = [
   //   selfRegisteredDate: null,
   //   registrationCompletionDate: null,
   //   registeringFamilyMembers: 'yes',
-    
+
   //   hasThreeDayMedicationSupply: true,
   //   hasInquiryReferral: false,
   //   hasHealthServicesReferral: false,
@@ -336,20 +336,12 @@ export class RegistrationService extends RestService {
 
   createRegistration(data: Registration): Observable<Registration[]> {
     // make an in memory return
-    if (!data.id){ 
+    if (!data.id) {
       data.id = this.idCounter.toString();
       this.idCounter++;
     }
     this.registrations.push(data);
     return of(this.registrations);
     // return this.post('/registrations', data);
-  }
-
-  createRegistration(data: Registration) {
-    return this.post('/registrations', data);
-  }
-
-  createRegistration(data: Registration) {
-    return this.post('/registrations', data);
   }
 }
