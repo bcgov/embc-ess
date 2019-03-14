@@ -13,10 +13,8 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         /// A system-generated unique identifier
         /// </summary>
         /// <value>The short character string, such as an acronym or abbreviation, which identifies the instance.</value>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
-        public Guid Id { get; set; }
-
         public string Code { get; set; }
 
         /// <summary>

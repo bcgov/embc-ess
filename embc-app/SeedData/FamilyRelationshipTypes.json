@@ -1,10 +1,12 @@
 ﻿[
     {
         "Code": "IMMF",
-        "Description": "Immediate Family"
+        "Description": "Immediate Family",
+        "Active": true
     },
     {
         "Code": "EXTF",
-        "Description": "Extended Family"
+        "Description": "Extended Family",
+        "Active": true
     }
 ]
