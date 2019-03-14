@@ -4,16 +4,16 @@ import { RegistrationService } from '../core/services/registration.service';
 
 interface Stub{
   id?: string; // the guid to link them to their file
-  restrictedAccess?: boolean; // should this file be shown or not?
-  essFileNumber?: number; // what is the ESS file number
-  firstName?: string;
-  lastName?: string;
-  incidentTaskTaskNumber?: string;
-  requiresIncidentals?: boolean; // do they need vouchers
-  personType?: string; // HOH || FMBR || VOLN
-  evacuatedFrom?: string; // community name
-  evacuatedTo?: string; // community name
-  registrationCompletionDate?: Date;
+  restrictedAccess: boolean; // should this file be shown or not?
+  essFileNumber: number; // what is the ESS file number
+  firstName: string;
+  lastName: string;
+  incidentTaskTaskNumber: string;
+  requiresIncidentals: boolean; // do they need vouchers
+  personType: string; // HOH || FMBR || VOLN
+  evacuatedFrom: string; // community name
+  evacuatedTo: string; // community name
+  registrationCompletionDate: Date;
 
 }
 @Component({
@@ -236,11 +236,11 @@ export class VolunteerDashboardComponent implements OnInit {
           essFileNumber:  registration.essFileNumber, // what is the ESS file number
           firstName: familyMember.firstName,
           lastName: familyMember.lastName,
-          incidentTaskTaskNumber: registration.incidentTask.taskNumber,
+          incidentTaskTaskNumber: null,
           requiresIncidentals: registration.requiresIncidentals, // do they need vouchers
           personType: familyMember.personType, // HOH || FMBR || VOLN
-          evacuatedFrom: registration.incidentTask.community.name, // community name
-          evacuatedTo: registration.hostCommunity.name, // community name
+          evacuatedFrom: null, // community name
+          evacuatedTo: null, // community name
           registrationCompletionDate: registration.registrationCompletionDate
         };
         
