@@ -4,16 +4,18 @@ namespace Gov.Jag.Embc.Public.ViewModels
 {
     public abstract class Address
     {
+        // Factory method
         static public Address Create(string subType)
         {
             if (subType == "BCAD")
             {
                 return new BcAddress();
             }
-            else
+            else if (subType == "OTAD")
             {
                 return new OtherAddress();
             }
+            return null;
         }
 
         public string Id { get; set; }
@@ -25,13 +27,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         [MaxLength(255)]
         public string AddressLine3 { get; set; }
         [MaxLength(255)]
-        public string PostalCodeOrZip { get; set; }
-        [MaxLength(255)]
-        public string CommunityOrCity { get; set; }
-        [MaxLength(255)]
-        public string ProvinceOrState { get; set; }
-        [MaxLength(255)]
-        public string Country { get; set; }
+        public string PostalCode { get; set; }
     }
 
     public class BcAddress : Address
@@ -47,6 +43,16 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
     public class OtherAddress : Address
     {
+
+        [MaxLength(255)]
+        public string City { get; set; }
+
+        [MaxLength(255)]
+        public string Province { get; set; }
+
+        [MaxLength(255)]
+        public Country Country { get; set; }
+
         public OtherAddress()
         {
             AddressSubtypeCode = "OTAD";
