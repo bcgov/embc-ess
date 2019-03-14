@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { Registration } from '../core/models';
+import { Registration, Country } from '../core/models';
+import { Store } from '@ngrx/store';
+import { AppState } from '../store';
 
 @Component({
   selector: 'app-evacuee-registration',
@@ -12,13 +14,16 @@ export class EvacueeRegistrationComponent implements OnInit {
   // TODO: Delete this demo version of reactive forms.
   // name = new FormControl('');
 
+  // state needed by this FORM
+  countries$ = this.store.select(state => state.lookups.countries.countries);
+
   // The model for the form data collected
   form: FormGroup;
   // registration: Registration | null;
 
   constructor(
     private formBuilder: FormBuilder,
-    // private store: Store<AppState>, // ngrx app state
+    private store: Store<AppState>, // ngrx app state
   ) {
     // build the form with formbuilder
     this.initForm();

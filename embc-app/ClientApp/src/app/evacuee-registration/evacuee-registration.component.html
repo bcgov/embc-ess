@@ -258,8 +258,14 @@
             </div>
             <div class="row mb-2">
               <div class="col-6">
-                <label required="true">Country</label>
-                <input type="text" class="form-control" value="Canada">
+                <!-- Country selector pulls from application state -->
+                <label required="true">Country/Region</label>
+                <select class="form-control" formControlName="country">
+                  <option [ngValue]="null">-- Select Country</option>
+                  <option [value]="item.id" *ngFor="let item of countries$ | async">
+                    {{item.name}}
+                  </option>
+                </select>
               </div>
             </div>
             <div class="row mb-2">
@@ -340,8 +346,14 @@
             </div>
             <div class="row mb-2">
               <div class="col-6">
-                <label required="true">Country</label>
-                <input type="text" class="form-control" value="Canada">
+                <!-- Country selector pulls from application state -->
+                <label required="true">Country/Region</label>
+                <select class="form-control" formControlName="country">
+                  <option [ngValue]="null">-- Select Country</option>
+                  <option [value]="item.id" *ngFor="let item of countries$ | async">
+                    {{item.name}}
+                  </option>
+                </select>
               </div>
             </div>
             <div class="row mb-2">
