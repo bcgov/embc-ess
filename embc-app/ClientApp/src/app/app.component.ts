@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
     const fakeReg: Registration = {
       id: '',
       restrictedAccess: false,
-      essFileNumber:  1289734,
+      essFileNumber:  null,
       declarationAndConsent: false,
   
       dietaryNeeds: false,
@@ -83,18 +83,7 @@ export class AppComponent implements OnInit {
         mailingAddress: null
       },
       familyMembers: [],
-      incidentTask: {
-        id: 'aslkdfjh',
-        taskNumber: '23452',
-        details: 'This is an incident task.',
-        region: null,
-        regionalDistrict: null,
-        community: {
-          id: 'zxoicuvz',
-          name: 'Hope',
-          regionalDistrict: null
-        }
-      },
+      incidentTask: null,
       hostCommunity: {
         id: 'aslkdfjs',
         name: 'Townland',

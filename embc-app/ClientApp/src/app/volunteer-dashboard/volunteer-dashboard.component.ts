@@ -24,7 +24,7 @@ interface Stub{
 export class VolunteerDashboardComponent implements OnInit {
 
   registrations: Stub[];
-  raw;
+  raw: Registration[];
 
   constructor(
     private registrationService: RegistrationService
@@ -33,6 +33,8 @@ export class VolunteerDashboardComponent implements OnInit {
   ngOnInit() {
     // go get the data
     this.refreshRegistrations();
+    
+
   }
   refreshRegistrations() {
     // go get a fresh list of registrations from the service
@@ -47,6 +49,7 @@ export class VolunteerDashboardComponent implements OnInit {
     const stubCollector: Stub[] = [];
     // loop through registrations and get each family member
     for (const registration of registrations){
+      if(!registration.incidentTask.taskNumber){console.log(registration)}
       // push the head of household as a stub
       const hoh: Stub = {
         id: registration.id, // the guid to link them to their file
