@@ -348,4 +348,8 @@ export class RegistrationService extends RestService {
   createRegistration(data: Registration) {
     return this.post('/registrations', data);
   }
+
+  createRegistration(data: Registration) {
+    return this.post('/registrations', data);
+  }
 }
