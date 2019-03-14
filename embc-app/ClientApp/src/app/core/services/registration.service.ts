@@ -344,4 +344,8 @@ export class RegistrationService extends RestService {
     return of(this.registrations);
     // return this.post('/registrations', data);
   }
+
+  createRegistration(data: Registration) {
+    return this.post('/registrations', data);
+  }
 }

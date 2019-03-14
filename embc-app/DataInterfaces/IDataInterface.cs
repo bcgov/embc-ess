@@ -1,5 +1,6 @@
 using Gov.Jag.Embc.Public.ViewModels;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -11,7 +12,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Person CreatePerson(Person person);
 
-        Registration CreateRegistration(Registration registration);
+        // Registrations
+        Task<List<Registration>> GetRegistrations();
+        Task<Registration> GetRegistration(string id);
+        Task<Registration> CreateRegistration(Registration registration);
 
         List<Community> GetCommunities();
 
@@ -19,9 +23,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         List<Region> GetRegions();
 
-        List<Registration> GetRegistrations();
 
         List<RegionalDistrict> GetRegionalDistricts();
 
+        List<FamilyRelationshipType> GetFamilyRelationshipTypes();
     }
 }

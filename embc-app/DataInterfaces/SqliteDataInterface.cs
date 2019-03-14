@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -33,12 +34,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             //return person;
         }
 
-        public Registration CreateRegistration(Registration registration)
+        public Task<Registration> CreateRegistration(Registration registration)
         {
             var model = registration.ToModel();
             Db.Registrations.Add(model);
             Db.SaveChanges();
-            return model.ToViewModel();
+            return Task.FromResult(model.ToViewModel());
         }
 
         public Organization GetOrganizationByBceidGuid(string bceidGuid)
@@ -78,7 +79,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return regions;
         }
 
-        public List<Registration> GetRegistrations()
+        public Task<List<Registration>> GetRegistrations()
         {
             List<Registration> regions = new List<Registration>();
             var registrationList = Db.Registrations.ToList();
@@ -86,7 +87,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 regions.Add(registration.ToViewModel());
             }
-            return regions;
+
+            return Task.FromResult(regions);
         }
 
         public List<RegionalDistrict> GetRegionalDistricts()
@@ -111,5 +113,20 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return regions;
         }
 
+        public List<FamilyRelationshipType> GetFamilyRelationshipTypes()
+        {
+            var all = Db.FamilyRelationshipTypes.Select(x => x.ToViewModel()).ToList();
+            return all;
+        }
+
+        public Task<Registration> GetRegistration(string id)
+        {
+            if (Guid.TryParse(id, out var guid))
+            {
+                var entity = Db.Registrations.FirstOrDefault(reg => reg.Id == guid);
+                return Task.FromResult(entity?.ToViewModel());
+            }
+            return Task.FromResult<Registration>(null);
+        }
     }
 }
