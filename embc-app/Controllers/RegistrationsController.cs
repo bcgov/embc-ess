@@ -36,11 +36,11 @@ namespace Gov.Jag.Embc.Public.Controllers
         /// <returns></returns>
         [HttpGet()]
         [AllowAnonymous]
-        public IActionResult Get(string id)
+        public async Task<IActionResult> GetAll()
         {
             try
             {
-                List<ViewModels.Registration> result = _dataInterface.GetRegistrations();
+                List<ViewModels.Registration> result = await _dataInterface.GetRegistrations();
                 return Json(result);
             }
             catch (RestException error)
@@ -58,10 +58,14 @@ namespace Gov.Jag.Embc.Public.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public IActionResult GetById(string id)
+        public async Task<IActionResult> GetOne(string id)
         {
-
-            return Json(null);
+            var result = await _dataInterface.GetRegistration(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Json(result);
         }
 
 
@@ -79,8 +83,6 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest();
             }
-
-
 
             return Json(null);
         }
@@ -103,7 +105,7 @@ namespace Gov.Jag.Embc.Public.Controllers
 
             try
             {
-                var result = _dataInterface.CreateRegistration(item);
+                var result = await _dataInterface.CreateRegistration(item);
                 return Json(result);
             }
             catch (RestException error)

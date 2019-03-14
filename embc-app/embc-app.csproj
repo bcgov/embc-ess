@@ -20,9 +20,9 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
-    
+
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.1.1" />
-    
+
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="Microsoft.NETCore.TestHost" Version="2.0.8" />
@@ -33,7 +33,7 @@
     <PackageReference Include="xunit.runner.console" Version="2.4.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>    
+    </PackageReference>
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -52,7 +52,7 @@
     <Content Remove="Test\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
-  
+
 
   <ItemGroup>
     <EmbeddedResource Remove="Migrations\**" />
@@ -61,11 +61,6 @@
     <None Remove="Migrations\**" />
 
     <None Remove="Test\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="ClientApp\src\app\bcsvcs-confirmation\bcsvcs-confirmation.component.html" />
-    <None Remove="ClientApp\src\app\models\invoice.model.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -105,6 +100,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="SeedData\Regions.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="SeedData\FamilyRelationshipTypes.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

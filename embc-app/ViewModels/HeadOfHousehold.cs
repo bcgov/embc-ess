@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Gov.Jag.Embc.Public.ViewModels
 {
     public class Evacuee : Person
@@ -15,6 +17,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         // related entities
         public Address PrimaryResidence { get; set; }
         public Address MailingAddress { get; set; }
+        public List<FamilyMember> FamilyMembers { get; set; }
 
         public HeadOfHousehold()
         {

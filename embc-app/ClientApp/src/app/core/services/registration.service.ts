@@ -329,4 +329,8 @@ export class RegistrationService extends RestService {
 
     return of(FAKEREGISTRATIONS);
   }
+
+  createRegistration(data: Registration) {
+    return this.post('/registrations', data);
+  }
 }

@@ -1,6 +1,5 @@
 namespace Gov.Jag.Embc.Public.ViewModels
 {
-
     public class Country
     {
         public string Id { get; set; }
