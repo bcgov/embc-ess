@@ -115,7 +115,7 @@ namespace Gov.Jag.Embc.Public
             services.RegisterPermissionHandler();
 
             // setup key ring to persist in storage.
-            if (! string.IsNullOrEmpty(Configuration["KEY_RING_DIRECTORY"]))
+            if (!string.IsNullOrEmpty(Configuration["KEY_RING_DIRECTORY"]))
             {
                 services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(Configuration["KEY_RING_DIRECTORY"]));
             }
@@ -143,8 +143,8 @@ namespace Gov.Jag.Embc.Public
 
             // add a data interface
 
-            string connectionString = "DataSource=embc.db";
-            if (! string.IsNullOrEmpty(Configuration["CONNECTION_STRING"]))
+            string connectionString = "Data Source=embc.db";
+            if (!string.IsNullOrEmpty(Configuration["CONNECTION_STRING"]))
             {
                 connectionString = Configuration["CONNECTION_STRING"];
             }

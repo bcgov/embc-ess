@@ -29,7 +29,7 @@ const routes = {
     { id: '6', name: 'North West', active: true },
   ]),
 
-  'api/relationshiptypes': useEnvelope([
+  'api/familyrelationships': useEnvelope([
     { code: '1', description: 'Immediate Family', active: true },
     { code: '2', description: 'Extended Family', active: true },
   ]),

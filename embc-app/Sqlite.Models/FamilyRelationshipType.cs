@@ -5,31 +5,30 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Gov.Jag.Embc.Public.Sqlite.Models
 {
     /// <summary>
-    /// Role Database Model
+    /// Database Model
     /// </summary>
-    public sealed partial class Country
+    public sealed partial class FamilyRelationshipType
     {
         /// <summary>
         /// A system-generated unique identifier
         /// </summary>
-        /// <value>A system-generated unique identifier for a Role</value>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        /// <value>The short character string, such as an acronym or abbreviation, which identifies the instance.</value>
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
-        public Guid Id { get; set; }
+        public string Code { get; set; }
 
         /// <summary>
-        /// The name of the Region
+        /// The word or phrase that identifies the instance. e.g. "Immediate Family"
         /// </summary>
-        /// <value>The name of the Region</value>
         [MaxLength(255)]
-        public string Name { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// true if active
         /// </summary>
         public bool? Active { get; set; }
 
-        public Country()
+        public FamilyRelationshipType()
         { }
     }
 }
