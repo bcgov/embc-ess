@@ -8,6 +8,7 @@ import { Registration } from '../core/models';
   styleUrls: ['./evacuee-registration.component.scss']
 })
 export class EvacueeRegistrationComponent implements OnInit {
+
   // TODO: Delete this demo version of reactive forms.
   // name = new FormControl('');
 
