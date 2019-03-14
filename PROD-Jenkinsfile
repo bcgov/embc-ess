@@ -86,10 +86,10 @@ def tagLatestStable(environment, backupTag, imageStream) {
 
 def deployAndVerify(srcHash, environment, imageStream) {
   echo "Deploying ${APP_NAME} to ${environment}"
-  tagImage(srcHash, environment, "pill-press-prod")
+  tagImage(srcHash, environment, "embcess")
   // verify deployment to an environment; e.g. [your-project-name]-dev
   openshiftVerifyDeployment(
-    deploymentConfig: "pill-press",
+    deploymentConfig: "embcess",
     namespace: "${PROJECT_NAMESPACE}-${environment}",
     waitTime: '900000'
   )
