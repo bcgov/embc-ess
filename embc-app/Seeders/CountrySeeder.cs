@@ -9,11 +9,11 @@ using Gov.Jag.Embc.Public.Sqlite.Models;
 
 namespace Gov.Embc.Public.Seeders
 {
-    public class Countrieseeder : Seeder<SqliteContext>
+    public class CountrySeeder : Seeder<SqliteContext>
     {
         private readonly string[] _profileTriggers = { AllProfiles };
 
-        public Countrieseeder(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory  loggerFactory) 
+        public CountrySeeder(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory)
             : base(configuration, env, loggerFactory)
         { }
 
@@ -21,7 +21,7 @@ namespace Gov.Embc.Public.Seeders
 
         protected override void Invoke(SqliteContext context)
         {
-            UpdateCountries(context);            
+            UpdateCountries(context);
         }
 
         private void UpdateCountries(SqliteContext context)
@@ -30,10 +30,10 @@ namespace Gov.Embc.Public.Seeders
 
             foreach (Country Country in seedCountries)
             {
-                context.UpdateSeedCountryInfo(Country);                
+                context.UpdateSeedCountryInfo(Country);
             }
 
-            AddInitialCountries(context);            
+            AddInitialCountries(context);
         }
 
         private void AddInitialCountries(SqliteContext context)
@@ -42,7 +42,7 @@ namespace Gov.Embc.Public.Seeders
             if (string.IsNullOrEmpty(CountryInitializationFilename))
             {
                 // default to sample data, which is stored in the "SeedData" directory.
-                CountryInitializationFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedData" + Path.DirectorySeparatorChar + "Countries.json"); 
+                CountryInitializationFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedData" + Path.DirectorySeparatorChar + "Countries.json");
             }
             context.AddInitialCountriesFromFile(CountryInitializationFilename);
         }
@@ -50,7 +50,7 @@ namespace Gov.Embc.Public.Seeders
         private List<Country> GetSeedCountries()
         {
             List<Country> jurisdictions = new List<Country>(GetDefaultCountries());
-                
+
             if (IsProductionEnvironment)
             {
                 jurisdictions.AddRange(GetProdCountries());
@@ -76,7 +76,7 @@ namespace Gov.Embc.Public.Seeders
         /// </summary>
         private List<Country> GetDevCountries()
         {
-            return new List<Country>();            
+            return new List<Country>();
         }
 
         /// <summary>
