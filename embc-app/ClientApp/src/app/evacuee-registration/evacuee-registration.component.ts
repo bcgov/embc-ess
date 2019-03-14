@@ -12,9 +12,6 @@ import { state } from '@angular/animations';
 })
 export class EvacueeRegistrationComponent implements OnInit {
 
-  // TODO: Delete this demo version of reactive forms.
-  // name = new FormControl('');
-
   // state needed by this FORM
   countries$ = this.store.select(state => state.lookups.countries.countries);
   regionalDistrics$ = this.store.select(state => state.lookups.regionalDistricts);
