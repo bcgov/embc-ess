@@ -8,7 +8,7 @@ import { Registration } from '../core/models';
   styleUrls: ['./evacuee-registration.component.scss']
 })
 export class EvacueeRegistrationComponent implements OnInit {
-  
+
   // TODO: Delete this demo version of reactive forms.
   // name = new FormControl('');
 
@@ -24,12 +24,22 @@ export class EvacueeRegistrationComponent implements OnInit {
     this.initForm();
   }
 
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.form.controls;
+  }
+
+  // Shortcuts for this.form.get(...)
+  get familyMembers() {
+    return this.f.familyMembers as FormArray;
+  }
+
   ngOnInit() {
   }
 
   addFamilyMember(): void {
     // get the existing family members
-    const familyMembers = this.form.get('familyMembers') as FormArray;
+    const familyMembers = this.familyMembers;
     // push the new family member into the array
     familyMembers.push(this.createFamilyMember());
     // set the value for familymembers
@@ -37,7 +47,7 @@ export class EvacueeRegistrationComponent implements OnInit {
   }
   removeFamilyMember(i: number): void {
     // get the existing family members
-    const familyMembers = this.form.get('familyMembers') as FormArray;
+    const familyMembers = this.familyMembers;
     familyMembers.removeAt(i);
     this.form.setValue(familyMembers);
   }
@@ -55,14 +65,21 @@ export class EvacueeRegistrationComponent implements OnInit {
   }
   clearFamilyMembers(): void {
     // reset the list of family members
-    this.form.controls.familyMembers = this.formBuilder.array([]);
+    this.clear(this.familyMembers);
+  }
+
+  // TODO: Refactor into utils method
+  private clear(formArray: FormArray): void {
+    while (formArray && formArray.length !== 0) {
+      formArray.removeAt(0);
+    }
   }
 
   getBoolean(booleanString: string): boolean {
     // convert boolean strings into actual boolean values
     if (booleanString === 'false') {
       return false;
-    } else if (booleanString === 'true' ) {
+    } else if (booleanString === 'true') {
       return true;
     } else {
       return null;

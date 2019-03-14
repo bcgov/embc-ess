@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
-    public class CountriesController : Controller
+    public class FamilyRelationshipsController : Controller
     {
         private readonly IConfiguration Configuration;
         private readonly IDataInterface _dataInterface;
@@ -27,12 +27,12 @@ namespace Gov.Jag.Embc.Public.Controllers
         private readonly ILogger _logger;
         private readonly IHostingEnvironment _env;
 
-        public CountriesController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory, IHostingEnvironment env, IDataInterface dataInterface)
+        public FamilyRelationshipsController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory, IHostingEnvironment env, IDataInterface dataInterface)
         {
             Configuration = configuration;
             _dataInterface = dataInterface;
             _httpContextAccessor = httpContextAccessor;
-            _logger = loggerFactory.CreateLogger(typeof(CountriesController));
+            _logger = loggerFactory.CreateLogger(typeof(FamilyRelationshipsController));
             this._env = env;
         }
 
@@ -40,7 +40,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [AllowAnonymous]
         public IActionResult GetAll()
         {
-            var result = _dataInterface.GetCountries();
+            var result = _dataInterface.GetFamilyRelationshipTypes();
             return Json(result);
         }
     }

@@ -23,5 +23,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         List<RegionalDistrict> GetRegionalDistricts();
 
+        List<FamilyRelationshipType> GetFamilyRelationshipTypes();
     }
 }

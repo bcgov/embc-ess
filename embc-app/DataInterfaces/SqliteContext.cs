@@ -34,6 +34,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<FamilyRelationshipType>().HasKey(k => k.Code);
+
             // Address hierarchy
             modelBuilder.Entity<BcAddress>().HasBaseType<Address>();
             modelBuilder.Entity<OtherAddress>().HasBaseType<Address>();
