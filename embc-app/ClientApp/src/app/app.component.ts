@@ -16,6 +16,8 @@ export class AppComponent implements OnInit {
   isIE = false;
   currentUser: User;
 
+  registrations: Registration[]; // TODO: Delete this testing var
+
   constructor(
     private lookups: ControlledListService,
     private registrationService: RegistrationService, // TODO: Delete this. It is for testing only
@@ -24,6 +26,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.isIE = detectIE10orLower();
     this.initializeApp();
+    this.registrationService.getRegistries().subscribe(r => this.registrations = r );
   }
 
   submitARegistrationTest() {
@@ -99,7 +102,7 @@ export class AppComponent implements OnInit {
       },
       completedBy: null
     }
-    this.registrationService.createRegistration(fakeReg).subscribe(r => alert("Returned from service! "+ JSON.stringify(r)));
+    this.registrationService.createRegistration(fakeReg).subscribe(r => this.registrations = r);
   }
 
 
