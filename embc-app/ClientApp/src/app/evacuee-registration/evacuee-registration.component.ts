@@ -8,7 +8,6 @@ import { Registration } from '../core/models';
   styleUrls: ['./evacuee-registration.component.scss']
 })
 export class EvacueeRegistrationComponent implements OnInit {
-
   // TODO: Delete this demo version of reactive forms.
   // name = new FormControl('');
 
@@ -35,6 +34,11 @@ export class EvacueeRegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  get familyMembers() {
+    // this is a way to grab the familymembers in a typed way
+    return this.form.controls.familyMembers as FormArray;
   }
 
   addFamilyMember(): void {
