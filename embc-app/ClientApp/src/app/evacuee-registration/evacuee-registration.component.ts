@@ -17,7 +17,7 @@ export class EvacueeRegistrationComponent implements OnInit {
   regionalDistrics$ = this.store.select(state => state.lookups.regionalDistricts);
   regions$ = this.store.select(state => state.lookups.regions);
   relationshipTypes$ = this.store.select(state => state.lookups.relationshipTypes);
-
+  // IncidentTask$ = this.store.select(state => state.)
 
   // The model for the form data collected
   form: FormGroup;
