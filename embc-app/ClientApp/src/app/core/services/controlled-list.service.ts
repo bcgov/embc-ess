@@ -21,7 +21,7 @@ export class ControlledListService extends RestService {
 
   getAllCountries() {
     this.store.dispatch(new CountryActions.LoadCountries());
-    return this.get('/countries')
+    return this.http.get<Country[]>('api/countries', { headers: this.headers })
       .pipe(
         map((countries: Country[]) => {
           // everything went OK
@@ -30,65 +30,64 @@ export class ControlledListService extends RestService {
         catchError(error => {
           // dispatch a fail action if there were errors
           this.store.dispatch(new CountryActions.LoadCountriesFail(error));
-          throw error;
+          return this.handleError(error);
         }),
       );
   }
 
   getAllRegions() {
     this.store.dispatch(new RegionActions.LoadRegions());
-    return this.get('/regions')
+    return this.http.get<Region[]>('api/regions', { headers: this.headers })
       .pipe(
         map((regions: Region[]) => {
           this.store.dispatch(new RegionActions.LoadRegionsSuccess({ regions }));
         }),
         catchError(error => {
           this.store.dispatch(new RegionActions.LoadRegionsFail(error));
-          throw error;
+          return this.handleError(error);
         }),
       );
   }
 
   getAllRegionalDistricts() {
     this.store.dispatch(new RegionalDistrictActions.LoadRegionalDistricts());
-    return this.get('/regionaldistricts')
+    return this.http.get<RegionalDistrict[]>('api/regionaldistricts', { headers: this.headers })
       .pipe(
         map((regionalDistricts: RegionalDistrict[]) => {
           this.store.dispatch(new RegionalDistrictActions.LoadRegionalDistrictsSuccess({ regionalDistricts }));
         }),
         catchError(error => {
           this.store.dispatch(new RegionalDistrictActions.LoadRegionalDistrictsFail(error));
-          throw error;
+          return this.handleError(error);
         }),
       );
   }
 
   getAllCommunities() {
     this.store.dispatch(new CommunityActions.LoadCommunities());
-    return this.get('/communities')
+    return this.http.get<Community[]>('api/communities', { headers: this.headers })
       .pipe(
         map((communities: Community[]) => {
           this.store.dispatch(new CommunityActions.LoadCommunitiesSuccess({ communities }));
         }),
         catchError(error => {
           this.store.dispatch(new CommunityActions.LoadCommunitiesFail(error));
-          throw error;
+          return this.handleError(error);
         }),
       );
   }
 
   getAllFamilyRelationshipTypes() {
     this.store.dispatch(new RelationshipTypeActions.LoadRelationshipTypes());
-    return this.get('/familyRelationships')
+    return this.http.get<RelationshipType[]>('api/familyRelationships', { headers: this.headers })
       .pipe(
         map((relationshipTypes: RelationshipType[]) => {
           this.store.dispatch(new RelationshipTypeActions.LoadRelationshipTypesSuccess({ relationshipTypes }));
         }),
         catchError(error => {
           this.store.dispatch(new RelationshipTypeActions.LoadRelationshipTypesFail(error));
-          throw error;
+          return this.handleError(error);
         }),
       );
   }
-
 }
