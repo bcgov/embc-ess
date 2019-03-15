@@ -1,10 +1,6 @@
 <div [formGroup]="form">
-  <h2 class="step">STEP 2</h2>
-  <h1 class="mt-0">Register as an Evacuee</h1>
-
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit amet pulvinar.
-    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean efficitur et arcu
-    a fringilla.</p>
+  <h2 class="step">STEP 2 of 4</h2>
+  <h1 class="mt-3">Register as an Evacuee</h1>
 
   <h3 class="blue-header">ADDITIONAL INFORMATION</h3>
   <section class="padded-section">
@@ -82,7 +78,7 @@
       </div>
     </div>
     <div *ngIf="ui.showAvailableServices()" class="feature-block">
-      <p>Check the following that applies:</p>
+      <p>Check all that apply:</p>
       <div class="support-services__list padded-section">
         <div class="support-services__item">
           <div class="row">
@@ -134,12 +130,5 @@
   </div>
 </div>
 
-<div class="mt-5">
-  <h4>Form State</h4>
-  <pre>{{ this.form.value | json }}</pre>
-</div>
-
-<div class="mt-5">
-  <h4>Current Registration</h4>
-  <pre>{{ this.registration | json }}</pre>
+<div style="margin-top: 80px">
 </div>

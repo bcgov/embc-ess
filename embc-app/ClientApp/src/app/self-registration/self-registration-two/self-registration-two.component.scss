@@ -1,5 +1,7 @@
 .support-services {
-  &__actions {
-    margin-top: 10px;
+  &__item {
+    .row {
+      margin-top: 1rem;
+    }
   }
 }
