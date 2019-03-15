@@ -33,16 +33,12 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
 
         public string AddressSubtype { get; set; }  // one of ['BCAD', 'OTAD'] for BC vs non-BC addresses
 
-        [MaxLength(255)]
         public string AddressLine1 { get; set; }
 
-        [MaxLength(255)]
         public string AddressLine2 { get; set; }
 
-        [MaxLength(255)]
         public string AddressLine3 { get; set; }
 
-        [MaxLength(255)]
         public string PostalCode { get; set; }
     }
 
@@ -58,13 +54,10 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
 
     public sealed partial class OtherAddress : Address
     {
-        [MaxLength(255)]
         public string City { get; set; }
 
-        [MaxLength(255)]
         public string Province { get; set; }
 
-        [MaxLength(255)]
         public Country Country { get; set; }
 
         public OtherAddress()
