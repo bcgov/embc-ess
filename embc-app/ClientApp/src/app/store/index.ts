@@ -2,6 +2,7 @@ import { ActionReducerMap, ActionReducer, MetaReducer } from '@ngrx/store';
 
 import * as fromRegistration from './registration/registration.reducer';
 import * as fromLookups from './lookups';
+import * as fromIncidentTasks from './incident-tasks/incident-tasks.reducer';
 
 export interface Loadable {
   loading: boolean;
@@ -20,6 +21,7 @@ export interface AppState {
   // models: any;
   registrations: fromRegistration.State;
   lookups: fromLookups.State;
+  incidentTasks: fromIncidentTasks.State;
 }
 
 /**
@@ -30,6 +32,7 @@ export interface AppState {
 export const rootReducer: ActionReducerMap<AppState> = {
   registrations: fromRegistration.reducer,
   lookups: fromLookups.reducer,
+  incidentTasks: fromIncidentTasks.reducer,
 };
 
 // TODO: Discard this when done developing/debugging
@@ -42,7 +45,7 @@ export function logger(reducer: ActionReducer<AppState>): ActionReducer<AppState
     console.log('action', action);
     console.log('next state', result);
     console.groupEnd();
-    
+
     return result;
   };
 }
