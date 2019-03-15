@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { IncidentTask } from '../models';
 
 const INCIDENTTASKS: IncidentTask[] = [
@@ -35,8 +35,14 @@ const INCIDENTTASKS: IncidentTask[] = [
 export class IncidentTaskService {
 
   constructor() { }
-  getIncidentTasks() {
+
+  getIncidentTasks(): Observable<IncidentTask[]> {
     // return a list of all incident task numbers for use in the application
     return of(INCIDENTTASKS);
+  }
+
+  getIncident(id: string): Observable<IncidentTask> {
+    // return a single matching incident
+    return of(INCIDENTTASKS[0]);
   }
 }
