@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
 import { IncidentTask } from '../models';
+import { CoreModule } from '../core.module';
 
 const INCIDENTTASKS: IncidentTask[] = [
   {
@@ -30,7 +31,7 @@ const INCIDENTTASKS: IncidentTask[] = [
 ];
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: CoreModule
 })
 export class IncidentTaskService {
 

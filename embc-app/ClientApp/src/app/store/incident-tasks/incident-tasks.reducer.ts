@@ -2,14 +2,14 @@ import { IncidentTask } from 'src/app/core/models';
 import * as IncidentTaskActions from './incident-tasks.actions';
 import { Loadable } from '..';
 
-const initalIncidentTask: IncidentTask = {
-  id: null,
-  taskNumber: null,
-  details: null,
-  region: null,
-  regionalDistrict: null,
-  community: null
-};
+// const initalIncidentTask: IncidentTask = {
+//   id: null,
+//   taskNumber: null,
+//   details: null,
+//   region: null,
+//   regionalDistrict: null,
+//   community: null
+// };
 
 export interface State extends Loadable {
   incidentTasks: IncidentTask[];
