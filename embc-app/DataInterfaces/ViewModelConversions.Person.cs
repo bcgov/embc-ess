@@ -90,7 +90,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     resultHoh.Email = sourceHoh.Email;
                     // related entities
                     resultHoh.PrimaryResidence = sourceHoh.PrimaryResidence.ToModel();
-                    resultHoh.MailingAddress = sourceHoh.MailingAddress?.ToModel();
+                    // resultHoh.MailingAddress = sourceHoh.MailingAddress?.ToModel();
                     if (sourceHoh.FamilyMembers != null)
                     {
                         resultHoh.FamilyMembers = new List<Sqlite.Models.FamilyMember>();

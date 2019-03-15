@@ -1,59 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError, Observable } from 'rxjs';
-import { map, catchError, retry } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from 'src/app/store';
-import { httpGet } from './mock-api';  // FIXME: <-- this will GO AWAY when backend is built
 
-const headers = new HttpHeaders({
-  'Content-Type': 'application/json'
-});
 
 @Injectable()
 export abstract class RestService {
-
-  // FIXME: change this when API is live!
-  protected baseUrl = 'https://embcess-dev.pathfinder.gov.bc.ca/embcess/api';
 
   constructor(
     protected http: HttpClient,
     protected store: Store<AppState>,
   ) { }
 
-  protected get(relativeUrl: string = '/', options?): Observable<any> {
-    // TODO: Something like this...
-    // return this.http.get(this.baseUrl + relativeUrl, new RequestOptions({headers: this.headers})).map(res => res.json());
-    return httpGet(`${this.baseUrl}${relativeUrl}`, options)
-      .pipe(
-        retry(1),
-        map(this.extractData),
-        catchError(this.handleError)
-      );
-  }
-
-  protected post(relativeUrl: string = '/', body: any | null, options?): Observable<any> {
-    return this.http.post(`${this.baseUrl}${relativeUrl}`, body, { ...options, headers })
-      .pipe(
-        map(this.extractData),
-        catchError(this.handleError)
-      );
-  }
-
-  protected put(relativeUrl: string = '/', body: any | null, options?): Observable<any> {
-    // TODO: Implement
-    return throwError('Method not implemented');
-  }
-
-  protected patch(relativeUrl: string = '/', body: any | null, options?): Observable<any> {
-    // TODO: Implement
-    return throwError('Method not implemented');
-  }
-
-  protected delete(relativeUrl: string = '/', options?): Observable<any> {
-    // TODO: Implement
-    return throwError('Method not implemented');
+  get headers(): HttpHeaders {
+    return new HttpHeaders({ 'Content-Type': 'application/json' });
   }
 
   // Process backend responses

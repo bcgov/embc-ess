@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Registration } from '../core/models';
 import { RegistrationService } from '../core/services/registration.service';
 
-interface Stub{
+interface Stub {
   id?: string; // the guid to link them to their file
   restrictedAccess: boolean; // should this file be shown or not?
   essFileNumber: number; // what is the ESS file number
@@ -33,151 +33,154 @@ export class VolunteerDashboardComponent implements OnInit {
   ngOnInit() {
     // go get the data
     this.refreshRegistrations();
-    this.unreduceRegistrationToStubs([
-      {
-        id: '123',
-        restrictedAccess: false,
-        essFileNumber: 1289734,
-        declarationAndConsent: false,
-        dietaryNeeds: false,
-        dietaryNeedsDetails: 'gluten intolerance',
-        disasterAffectDetails: 'Freeform text',
-        externalReferralsDetails: 'Freeform text',
-        facility: '',
-        familyRecoveryPlan: '',
-        followUpDetails: '',
-        insuranceCode: 'MANU120398',
-        medicationNeeds: false,
-        selfRegisteredDate: null,
-        registrationCompletionDate: new Date('2019-03-11T20:48:31.246Z'),
-        registeringFamilyMembers: 'yes',
+    // this.unreduceRegistrationToStubs([
+    //   {
+    //     id: '123',
+    //     restrictedAccess: false,
+    //     essFileNumber: 1289734,
+    //     declarationAndConsent: false,
+    //     dietaryNeeds: false,
+    //     dietaryNeedsDetails: 'gluten intolerance',
+    //     disasterAffectDetails: 'Freeform text',
+    //     externalReferralsDetails: 'Freeform text',
+    //     facility: '',
+    //     familyRecoveryPlan: '',
+    //     followUpDetails: '',
+    //     insuranceCode: 'MANU120398',
+    //     medicationNeeds: false,
+    //     selfRegisteredDate: null,
+    //     registrationCompletionDate: new Date('2019-03-11T20:48:31.246Z'),
+    //     registeringFamilyMembers: 'yes',
 
-        hasThreeDayMedicationSupply: true,
-        hasInquiryReferral: false,
-        hasHealthServicesReferral: false,
-        hasFirstAidReferral: false,
-        hasChildCareReferral: false,
-        hasPersonalServicesReferral: false,
-        hasPetCareReferral: false,
-        hasPets: false,
+    //     hasThreeDayMedicationSupply: true,
+    //     hasInquiryReferral: false,
+    //     hasHealthServicesReferral: false,
+    //     hasFirstAidReferral: false,
+    //     hasChildCareReferral: false,
+    //     hasPersonalServicesReferral: false,
+    //     hasPetCareReferral: false,
+    //     hasPets: false,
 
-        requiresAccommodation: false,
-        requiresClothing: false,
-        requiresFood: false,
-        requiresIncidentals: false,
-        requiresSupport: true,
-        requiresTransportation: true,
+    //     requiresAccommodation: false,
+    //     requiresClothing: false,
+    //     requiresFood: false,
+    //     requiresIncidentals: false,
+    //     requiresSupport: true,
+    //     requiresTransportation: true,
 
-        headOfHousehold:
-        {
-          id: 'qwertyuiop',
-          firstName: 'John',
-          lastName: 'Doe',
-          nickname: 'Johnny',
-          initials: 'JD',
-          gender: 'male',
-          dob: null,
-          phoneNumber: '',
-          phoneNumberAlt: '',
-          personType: 'HOH',
-          email: 'person@address.org',
-          primaryResidence: null,
-          mailingAddress: null
-        },
-        familyMembers: [
-          {
-            id: 'qwertyuiop',
-            firstName: 'Jen',
-            lastName: 'Borgnine',
-            nickname: 'Iron Jen',
-            initials: 'JB',
-            gender: 'female',
-            dob: null,
-            personType: 'FMBR',
-            relationshipToEvacuee: 'spouse',
-            sameLastNameAsEvacuee: false
-          }
-        ],
-        incidentTask: {
-          id: 'aslkdfjh',
-          taskNumber: '10293847',
-          details: 'This is an incident task.',
-          region: null,
-          regionalDistrict: null,
-          community: {
-            id: 'zxoicuvz',
-            name: 'Grand Forks',
-            regionalDistrict: null
-          }
-        },
-        hostCommunity: {
-          id: 'aslkdfjs',
-          name: 'Niagra',
-          regionalDistrict: null
-        },
-        completedBy: null
-      },
-      {
-        id: '123',
-        restrictedAccess: true,
-        essFileNumber: 1289734,
-        declarationAndConsent: false,
+    //     headOfHousehold:
+    //     {
+    //       id: 'qwertyuiop',
+    //       firstName: 'John',
+    //       lastName: 'Doe',
+    //       nickname: 'Johnny',
+    //       initials: 'JD',
+    //       gender: 'male',
+    //       dob: null,
+    //       phoneNumber: '',
+    //       phoneNumberAlt: '',
+    //       personType: 'HOH' as 'HOH',
+    //       email: 'person@address.org',
+    //       primaryResidence: null,
+    //       mailingAddress: null,
+    //       familyMembers: [
+    //         {
+    //           id: 'qwertyuiop',
+    //           firstName: 'Jen',
+    //           lastName: 'Borgnine',
+    //           nickname: 'Iron Jen',
+    //           initials: 'JB',
+    //           gender: 'female',
+    //           dob: null,
+    //           personType: 'FMBR' as 'FMBR',
+    //           relationshipToEvacuee: {
+    //             code: 'IMMF',
+    //             description: 'Immed'
+    //           },
+    //           sameLastNameAsEvacuee: false
+    //         }
+    //       ],
+    //       },
+    //     incidentTask: {
+    //       id: 'aslkdfjh',
+    //       taskNumber: '10293847',
+    //       details: 'This is an incident task.',
+    //       region: null,
+    //       regionalDistrict: null,
+    //       community: {
+    //         id: 'zxoicuvz',
+    //         name: 'Grand Forks',
+    //         regionalDistrict: null
+    //       }
+    //     },
+    //     hostCommunity: {
+    //       id: 'aslkdfjs',
+    //       name: 'Niagra',
+    //       regionalDistrict: null
+    //     },
+    //     completedBy: null
+    //   },
+    //   {
+    //     id: '123',
+    //     restrictedAccess: true,
+    //     essFileNumber: 1289734,
+    //     declarationAndConsent: false,
 
-        dietaryNeeds: false,
-        dietaryNeedsDetails: 'gluten intolerance',
-        disasterAffectDetails: 'Freeform text',
-        externalReferralsDetails: 'Freeform text',
-        facility: '',
-        familyRecoveryPlan: '',
-        followUpDetails: '',
-        insuranceCode: 'MANU120398',
-        medicationNeeds: false,
-        selfRegisteredDate: null,
-        registrationCompletionDate: null,
-        registeringFamilyMembers: 'yes',
+    //     dietaryNeeds: false,
+    //     dietaryNeedsDetails: 'gluten intolerance',
+    //     disasterAffectDetails: 'Freeform text',
+    //     externalReferralsDetails: 'Freeform text',
+    //     facility: '',
+    //     familyRecoveryPlan: '',
+    //     followUpDetails: '',
+    //     insuranceCode: 'MANU120398',
+    //     medicationNeeds: false,
+    //     selfRegisteredDate: null,
+    //     registrationCompletionDate: null,
+    //     registeringFamilyMembers: 'yes',
 
-        hasThreeDayMedicationSupply: true,
-        hasInquiryReferral: false,
-        hasHealthServicesReferral: false,
-        hasFirstAidReferral: false,
-        hasChildCareReferral: false,
-        hasPersonalServicesReferral: false,
-        hasPetCareReferral: false,
-        hasPets: false,
+    //     hasThreeDayMedicationSupply: true,
+    //     hasInquiryReferral: false,
+    //     hasHealthServicesReferral: false,
+    //     hasFirstAidReferral: false,
+    //     hasChildCareReferral: false,
+    //     hasPersonalServicesReferral: false,
+    //     hasPetCareReferral: false,
+    //     hasPets: false,
 
-        requiresAccommodation: false,
-        requiresClothing: false,
-        requiresFood: false,
-        requiresIncidentals: false,
-        requiresSupport: true,
-        requiresTransportation: true,
+    //     requiresAccommodation: false,
+    //     requiresClothing: false,
+    //     requiresFood: false,
+    //     requiresIncidentals: false,
+    //     requiresSupport: true,
+    //     requiresTransportation: true,
 
-        headOfHousehold:
-        {
-          id: 'qwertyuiop',
-          firstName: 'Barry',
-          lastName: 'Placebo',
-          nickname: 'Bipo',
-          initials: 'BP',
-          gender: 'Female',
-          dob: null,
-          phoneNumber: '',
-          phoneNumberAlt: '',
-          personType: 'HOH',
-          email: 'person@address.org',
-          primaryResidence: null,
-          mailingAddress: null
-        },
-        familyMembers: [],
-        incidentTask: null,
-        hostCommunity: {
-          id: 'aslkdfjs',
-          name: 'Townland',
-          regionalDistrict: null
-        },
-        completedBy: null
-      },
-    ]);
+    //     headOfHousehold:
+    //     {
+    //       id: 'qwertyuiop',
+    //       firstName: 'Barry',
+    //       lastName: 'Placebo',
+    //       nickname: 'Bipo',
+    //       initials: 'BP',
+    //       gender: 'Female',
+    //       dob: null,
+    //       phoneNumber: '',
+    //       phoneNumberAlt: '',
+    //       personType: 'HOH',
+    //       email: 'person@address.org',
+    //       primaryResidence: null,
+    //       mailingAddress: null
+    //     },
+    //     familyMembers: [],
+    //     incidentTask: null,
+    //     hostCommunity: {
+    //       id: 'aslkdfjs',
+    //       name: 'Townland',
+    //       regionalDistrict: null
+    //     },
+    //     completedBy: null
+    //   },
+    // ]);
 
   }
   refreshRegistrations() {
@@ -187,12 +190,12 @@ export class VolunteerDashboardComponent implements OnInit {
         this.raw = registrations;
         // save the registrations into the local data blob
         this.registrations = this.unreduceRegistrationToStubs(registrations);
-    });
+      });
   }
-  unreduceRegistrationToStubs(registrations: Registration[]): Stub[]{
+  unreduceRegistrationToStubs(registrations: Registration[]): Stub[] {
     const stubCollector: Stub[] = [];
     // loop through registrations and get each family member
-    for (const registration of registrations){
+    for (const registration of registrations) {
       // push the head of household as a stub
       const hoh: Stub = {
         id: registration.id, // the guid to link them to their file
@@ -208,13 +211,13 @@ export class VolunteerDashboardComponent implements OnInit {
         registrationCompletionDate: registration.registrationCompletionDate
       };
 
-      if (registration.incidentTask && registration.incidentTask.taskNumber){
+      if (registration.incidentTask && registration.incidentTask.taskNumber) {
         // check for nulls
         hoh.incidentTaskTaskNumber = registration.incidentTask.taskNumber;
       } else {
         hoh.incidentTaskTaskNumber = '';
       }
-      if (registration.incidentTask && registration.incidentTask.community && registration.incidentTask.community.name){
+      if (registration.incidentTask && registration.incidentTask.community && registration.incidentTask.community.name) {
         // check for nulls
         hoh.evacuatedFrom = registration.incidentTask.community.name;
       } else {
@@ -229,11 +232,11 @@ export class VolunteerDashboardComponent implements OnInit {
       stubCollector.push(hoh);
 
       // push the family members of the HOH as stubs
-      for (const familyMember of registration.familyMembers){
+      for (const familyMember of registration.headOfHousehold.familyMembers) {
         const fmbr = {
           id: registration.id, // the guid to link them to their file
           restrictedAccess: registration.restrictedAccess, // should this file be shown or not?
-          essFileNumber:  registration.essFileNumber, // what is the ESS file number
+          essFileNumber: registration.essFileNumber, // what is the ESS file number
           firstName: familyMember.firstName,
           lastName: familyMember.lastName,
           incidentTaskTaskNumber: null,
@@ -243,14 +246,14 @@ export class VolunteerDashboardComponent implements OnInit {
           evacuatedTo: null, // community name
           registrationCompletionDate: registration.registrationCompletionDate
         };
-        
-        if (registration.incidentTask && registration.incidentTask.taskNumber){
+
+        if (registration.incidentTask && registration.incidentTask.taskNumber) {
           // check for nulls
           fmbr.incidentTaskTaskNumber = registration.incidentTask.taskNumber;
         } else {
           fmbr.incidentTaskTaskNumber = '';
         }
-        if (registration.incidentTask && registration.incidentTask.community && registration.incidentTask.community.name){
+        if (registration.incidentTask && registration.incidentTask.community && registration.incidentTask.community.name) {
           // check for nulls
           fmbr.evacuatedFrom = registration.incidentTask.community.name;
         } else {
