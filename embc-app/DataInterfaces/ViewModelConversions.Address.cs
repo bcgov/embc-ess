@@ -10,7 +10,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             ViewModels.Address result = null;
             if (source != null)
             {
-                result = ViewModels.Address.Create(source.AddressSubtype);
+                result = new ViewModels.Address();
                 result.Id = source.Id.ToString();
                 result.AddressLine1 = source.AddressLine1;
                 result.AddressLine2 = source.AddressLine2;
@@ -19,15 +19,15 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
                 if (source is Sqlite.Models.BcAddress sourceBc)
                 {
-                    var resultBc = result as ViewModels.BcAddress;
-                    resultBc.Community = sourceBc.Community.ToViewModel();
+                    // var resultBc = result as ViewModels.BcAddress;
+                    result.Community = sourceBc.Community.ToViewModel();
                 }
                 if (source is Sqlite.Models.OtherAddress sourceOther)
                 {
-                    var resultOther = result as ViewModels.OtherAddress;
-                    resultOther.City = sourceOther.City;
-                    resultOther.Province = sourceOther.Province;
-                    resultOther.Country = sourceOther.Country.ToViewModel();
+                    // var resultOther = result as ViewModels.OtherAddress;
+                    result.City = sourceOther.City;
+                    result.Province = sourceOther.Province;
+                    result.Country = sourceOther.Country.ToViewModel();
                 }
             }
             return result;
@@ -38,7 +38,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             Sqlite.Models.Address result = null;
             if (source != null)
             {
-                result = Sqlite.Models.Address.Create(source.AddressSubtypeCode);
+                result = Sqlite.Models.Address.Create(source.AddressSubtype);
                 result.AddressLine1 = source.AddressLine1;
                 result.AddressLine2 = source.AddressLine2;
                 result.AddressLine3 = source.AddressLine3;
@@ -47,17 +47,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 {
                     result.Id = Guid.Parse(source.Id);
                 }
-                if (source is ViewModels.BcAddress sourceBc)
+                if (source.isBcAddress)
                 {
                     var resultBc = result as Sqlite.Models.BcAddress;
-                    resultBc.Community = sourceBc.Community.ToModel();
+                    resultBc.Community = source.Community.ToModel();
                 }
-                if (source is ViewModels.OtherAddress sourceOther)
+                if (source.isOtherAddress)
                 {
                     var resultOther = result as Sqlite.Models.OtherAddress;
-                    resultOther.City = sourceOther.City;
-                    resultOther.Province = sourceOther.Province;
-                    resultOther.Country = sourceOther.Country.ToModel();
+                    resultOther.City = source.City;
+                    resultOther.Province = source.Province;
+                    resultOther.Country = source.Country.ToModel();
                 }
             }
             return result;

@@ -96,15 +96,13 @@ namespace Gov.Jag.Embc.Public.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] ViewModels.Registration item)
         {
-            // validate inputs
-            if (item?.Id != null)
+            if (!ModelState.IsValid)
             {
-                // we don't accept IDs when creating new entities
-                return BadRequest();
+                return BadRequest(ModelState);
             }
-
             try
             {
+                item.Id = null;
                 var result = await _dataInterface.CreateRegistration(item);
                 return Json(result);
             }
@@ -113,6 +111,5 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest(error);
             }
         }
-
     }
 }
