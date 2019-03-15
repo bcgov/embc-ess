@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { combineLatest } from 'rxjs';
+import { concat } from 'rxjs';
 
 import { User, Registration } from './core/models'; // TODO: remove registration
 import { detectIE10orLower } from './shared/utils/environmentUtils';
@@ -120,13 +120,13 @@ export class AppComponent implements OnInit {
   }
 
   getLookups() {
-    return combineLatest([
+    return concat(
       this.lookups.getAllCountries(),
       this.lookups.getAllRegions(),
       this.lookups.getAllRegionalDistricts(),
       this.lookups.getAllCommunities(),
       this.lookups.getAllFamilyRelationshipTypes(),
       // ...add more
-    ]);
+    );
   }
 }

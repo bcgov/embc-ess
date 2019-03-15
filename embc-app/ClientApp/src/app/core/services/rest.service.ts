@@ -15,7 +15,7 @@ const headers = new HttpHeaders({
 export abstract class RestService {
 
   // FIXME: change this when API is live!
-  protected baseUrl = 'https://embcess-dev.pathfinder.gov.bc.ca/embcess/api';
+  protected baseUrl = 'api';
 
   constructor(
     protected http: HttpClient,
@@ -25,10 +25,10 @@ export abstract class RestService {
   protected get(relativeUrl: string = '/', options?): Observable<any> {
     // TODO: Something like this...
     // return this.http.get(this.baseUrl + relativeUrl, new RequestOptions({headers: this.headers})).map(res => res.json());
-    return httpGet(`${this.baseUrl}${relativeUrl}`, options)
+    return this.http.get(`${this.baseUrl}${relativeUrl}`, options)
       .pipe(
-        retry(1),
-        map(this.extractData),
+        retry(5),
+        // TODO: ENABLE this after demo (requires backend changes...) --> map(this.extractData),
         catchError(this.handleError)
       );
   }

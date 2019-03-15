@@ -6,7 +6,7 @@ import { combineLatest } from 'rxjs';
 import { map, takeWhile } from 'rxjs/operators';
 
 import { INSURANCE_OPTIONS, GENDER_OPTIONS } from 'src/app/constants/lookups';
-import { Registration } from 'src/app/core/models';
+import { Registration, isBcAddress, Address } from 'src/app/core/models';
 import { normalize } from 'src/app/shared/utils/stateUtils';
 import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
@@ -54,10 +54,10 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     this.onFormChanges();
 
     // Update form values based on the state
-    combineLatest(this.currentRegistration$, this.countries$, this.communities$, this.relationshipTypes$)
+    this.currentRegistration$
       .pipe(takeWhile(() => this.componentActive))
-      .subscribe(([registration, countries, communities, relationshipTypes]) => {
-        this.displayRegistration({ registration, countries, communities, relationshipTypes });
+      .subscribe(registration => {
+        this.displayRegistration({ registration });
       });
   }
 
@@ -80,6 +80,10 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     return option ? option.value : null;
   }
 
+  isBcAddress(address: Address): boolean {
+    return isBcAddress(address);
+  }
+
   // Define the form group
   initForm() {
     this.form = this.fb.group({
@@ -90,17 +94,9 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
   onFormChanges() {
   }
 
-  displayRegistration(props: {
-    registration: Registration | null;
-    countries: any;
-    communities: any;
-    relationshipTypes: any;
-  }): void {
+  displayRegistration(props: { registration: Registration | null }): void {
     // Set the local registration property
     this.registration = props.registration;
-    // this.countriesLookup = this.normalize(props.countries);
-    // this.communitiesLookup = this.normalize(props.communities);
-    // this.relationshipTypesLookup = this.normalize(props.relationshipTypes);
 
     if (this.registration && this.form) {
       // Reset the form back to pristine

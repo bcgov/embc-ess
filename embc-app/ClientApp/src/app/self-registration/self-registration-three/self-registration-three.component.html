@@ -61,8 +61,7 @@
       </li>
       <li>
         <span class="name">Relationship:</span>
-        <span
-          class="value">{{relationshipTypes$ | async | byId : fm?.relationshipToEvacuee | pluck: 'description'}}</span>
+        <span class="value">{{fm?.relationshipToEvacuee.description}}</span>
       </li>
       <li>
         <span class="name">Gender:</span>
@@ -76,28 +75,55 @@
 
     <h2>Primary Address &amp; Contact Details</h2>
     <ul class="summary">
-      <li>
-        <span class="name">Apt /Suite/Building Number &amp; Street Address:</span>
-        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.addressLine1}}</span>
-      </li>
-      <li>
-        <span class="name">Community:</span>
-        <span
-          class="value">{{communities$ | async | byId : registration?.headOfHousehold?.primaryResidence?.communityOrCity | pluck : 'name'}}</span>
-      </li>
-      <li>
-        <span class="name">Province:</span>
-        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.provinceOrState}}</span>
-      </li>
-      <li>
-        <span class="name">Postal code:</span>
-        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.postalCodeOrZip}}</span>
-      </li>
-      <li>
-        <span class="name">Country:</span>
-        <span
-          class="value">{{countries$ | async | byId : registration?.headOfHousehold?.primaryResidence?.country | pluck : 'name' }}</span>
-      </li>
+      <ng-container
+        *ngIf="isBcAddress(registration?.headOfHousehold?.primaryResidence); then content else other_content">
+      </ng-container>
+      <!-- BC Addresses -->
+      <ng-template #content>
+        <li>
+          <span class="name">Apt /Suite/Building Number &amp; Street Address:</span>
+          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.addressLine1}}</span>
+        </li>
+        <li>
+          <span class="name">Community:</span>
+          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.community?.name}}</span>
+        </li>
+        <li>
+          <span class="name">Province:</span>
+          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.province}}</span>
+        </li>
+        <li>
+          <span class="name">Postal Code:</span>
+          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.postalCode}}</span>
+        </li>
+        <li>
+          <span class="name">Country:</span>
+          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.country?.name }}</span>
+        </li>
+      </ng-template>
+      <!-- Non-BC Addresses -->
+      <ng-template #other_content>
+        <li>
+          <span class="name">Apt /Suite/Building Number &amp; Street Address:</span>
+          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.addressLine1}}</span>
+        </li>
+        <li>
+          <span class="name">City:</span>
+          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.city}}</span>
+        </li>
+        <li>
+          <span class="name">Region/Province/State:</span>
+          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.province}}</span>
+        </li>
+        <li>
+          <span class="name">Postal /ZIP Code:</span>
+          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.postalCode}}</span>
+        </li>
+        <li>
+          <span class="name">Country/Region:</span>
+          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.country?.name }}</span>
+        </li>
+      </ng-template>
       <li>
         <span class="name">Telephone/Mobile:</span>
         <span class="value">{{registration?.headOfHousehold?.phoneNumber}}</span>
@@ -112,30 +138,60 @@
       </li>
     </ul>
 
-    <h2>Mailing Address</h2>
-    <ul class="summary">
-      <li>
-        <span class="name">Apt /Suite/Building Number &amp; Street Address:</span>
-        <span class="value">{{registration?.headOfHousehold?.mailingAddress?.addressLine1}}</span>
-      </li>
-      <li>
-        <span class="name">Community:</span>
-        <span class="value">{{registration?.headOfHousehold?.mailingAddress?.communityOrCity}}</span>
-      </li>
-      <li>
-        <span class="name">Province:</span>
-        <span class="value">{{registration?.headOfHousehold?.mailingAddress?.provinceOrState}}</span>
-      </li>
-      <li>
-        <span class="name">Postal code:</span>
-        <span class="value">{{registration?.headOfHousehold?.mailingAddress?.postalCodeOrZip}}</span>
-      </li>
-      <li>
-        <span class="name">Country:</span>
-        <span
-          class="value">{{countries$ | async | byId : registration?.headOfHousehold?.mailingAddress?.country | pluck : 'name' }}</span>
-      </li>
-    </ul>
+    <ng-container *ngIf="registration?.headOfHousehold?.mailingAddress">
+      <h2>Mailing Address</h2>
+      <ul class="summary">
+        <ng-container
+          *ngIf="isBcAddress(registration?.headOfHousehold?.mailingAddress); then content else other_content">
+        </ng-container>
+        <!-- BC Addresses -->
+        <ng-template #content>
+          <li>
+            <span class="name">Apt /Suite/Building Number &amp; Street Address:</span>
+            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.addressLine1}}</span>
+          </li>
+          <li>
+            <span class="name">Community:</span>
+            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.community?.name}}</span>
+          </li>
+          <li>
+            <span class="name">Province:</span>
+            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.province}}</span>
+          </li>
+          <li>
+            <span class="name">Postal Code:</span>
+            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.postalCode}}</span>
+          </li>
+          <li>
+            <span class="name">Country:</span>
+            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.country?.name }}</span>
+          </li>
+        </ng-template>
+        <!-- Non-BC Addresses -->
+        <ng-template #other_content>
+          <li>
+            <span class="name">Apt /Suite/Building Number &amp; Street Address:</span>
+            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.addressLine1}}</span>
+          </li>
+          <li>
+            <span class="name">City:</span>
+            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.city}}</span>
+          </li>
+          <li>
+            <span class="name">Region/Province/State:</span>
+            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.province}}</span>
+          </li>
+          <li>
+            <span class="name">Postal /ZIP Code:</span>
+            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.postalCode}}</span>
+          </li>
+          <li>
+            <span class="name">Country/Region:</span>
+            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.country?.name }}</span>
+          </li>
+        </ng-template>
+      </ul>
+    </ng-container>
 
     <h2>Additional Information</h2>
     <ul class="summary">
