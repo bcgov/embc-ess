@@ -1,10 +1,8 @@
 <div [formGroup]="form">
-  <h2 class="step">STEP 3</h2>
-  <h1 class="mt-0">Self Registration Summary</h1>
+  <h2 class="step">STEP 3 of 4</h2>
+  <h1 class="mt-3">Review Details</h1>
 
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit amet pulvinar.
-    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean efficitur et arcu
-    a fringilla.</p>
+  <p>Please confirm that all details you entered are correct by reading through the summary below.</p>
 
   <section class="p-3">
     <ul class="summary">
@@ -13,11 +11,11 @@
         <span class="value">{{registration?.essFileNumber}}</span>
       </li>
       <li [class.restricted]="registration.restrictedAccess">
-        <span class="name">Restriction:</span>
+        <span class="name">Restricted File:</span>
         <span class="value">{{registration?.restrictedAccess | yesNo}}</span>
       </li>
     </ul>
-    <h2>Evacuee Information</h2>
+    <h3>Evacuee Information</h3>
     <ul class="summary">
       <li>
         <span class="name">Last Name:</span>
@@ -45,7 +43,7 @@
       </li>
     </ul>
 
-    <h2>Evacuee Family Information</h2>
+    <h3>Evacuee Family Information</h3>
     <ul class="summary" *ngFor="let fm of registration.headOfHousehold.familyMembers">
       <li>
         <span class="name">Last Name:</span>
@@ -61,7 +59,7 @@
       </li>
       <li>
         <span class="name">Relationship:</span>
-        <span class="value">{{fm?.relationshipToEvacuee.description}}</span>
+        <span class="value">{{fm?.relationshipToEvacuee?.description}}</span>
       </li>
       <li>
         <span class="name">Gender:</span>
@@ -73,7 +71,7 @@
       </li>
     </ul>
 
-    <h2>Primary Address &amp; Contact Details</h2>
+    <h3>Primary Address &amp; Contact Details</h3>
     <ul class="summary">
       <ng-container
         *ngIf="isBcAddress(registration?.headOfHousehold?.primaryResidence); then content else other_content">
@@ -139,7 +137,7 @@
     </ul>
 
     <ng-container *ngIf="registration?.headOfHousehold?.mailingAddress">
-      <h2>Mailing Address</h2>
+      <h3>Mailing Address</h3>
       <ul class="summary">
         <ng-container
           *ngIf="isBcAddress(registration?.headOfHousehold?.mailingAddress); then content else other_content">
@@ -193,7 +191,7 @@
       </ul>
     </ng-container>
 
-    <h2>Additional Information</h2>
+    <h3>Additional Information</h3>
     <ul class="summary">
       <li>
         <span class="name">Dietary Requirements:</span>
@@ -209,32 +207,35 @@
       </li>
     </ul>
 
-    <h2>Next Steps</h2>
+    <h3>Insurance</h3>
     <ul class="summary">
       <li>
         <span class="name">Insurance:</span>
         <span class="value">{{insuranceOption(registration?.insuranceCode)}}</span>
       </li>
+    </ul>
+    <h3>Next Steps</h3>
+    <ul class="summary">
       <li>
         <span class="name">Supports:</span>
         <span class="value">
-          <div class="form-check">
+          <div class="form-check mt-2">
             <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresFood">
             <label class="form-check-label">Food</label>
           </div>
-          <div class="form-check">
+          <div class="form-check mt-2">
             <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresClothing">
             <label class="form-check-label">Clothing</label>
           </div>
-          <div class="form-check">
+          <div class="form-check mt-2">
             <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresAccommodation">
             <label class="form-check-label">Accommodation</label>
           </div>
-          <div class="form-check">
+          <div class="form-check mt-2">
             <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresIncidentals">
             <label class="form-check-label">Incidentals</label>
           </div>
-          <div class="form-check">
+          <div class="form-check mt-2">
             <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresTransportation">
             <label class="form-check-label">Transportation</label>
           </div>
@@ -248,11 +249,13 @@
     <div class="row">
       <div class="form-check">
         <input class="form-check-input" type="checkbox" formControlName="declarationAndConsent">
-        <label class="form-check-label required">Personal information is collected under the authority of the Emergency
-          Program Act and may be shared with other organizations to enable the provision of emergency services.
-          Questions regarding the collection, use or disclosure of this information should be directed to: ESS Office,
-          Provisional Emergency Program, Ministry of Public Safety and Solicitor General, P.O. Box 9201 STN PROV GOVT,
-          Victoria, B.C. V8W 9J1.</label>
+        <label class="form-check-label required">The Emergency Management BC (EMBC) will collect your personal
+          information for the purpose of providing you with emergency services in accordance with sections 26(a) and (c)
+          of the Freedom of Information and Protection of Privacy Act (FoIPPA) and the Emergency Management Act. EMBC
+          will also collect the information as per section 26(e) of FoIPPA in order to evaluate the ESS program. Should
+          you have any questions about the collection, use, or disclosure of personal information, please contact the
+          ESS Call Centre Manager at PO Box 9201, STN PROV GOVT, Victoria, BC, V8W9J1 or by phone toll free at
+          1800-585-9559.</label>
       </div>
     </div>
   </section>
