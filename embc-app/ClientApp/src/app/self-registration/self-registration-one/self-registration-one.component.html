@@ -110,10 +110,9 @@
           <div class="row">
             <app-form-field class="col-md-5" required="true">
               <label>Relationship</label>
-              <!-- <input class="form-control" type="text" formControlName="relationshipToEvacuee"> -->
               <select class="form-control" formControlName="relationshipToEvacuee">
                 <option [ngValue]="null">Please select--</option>
-                <option [value]="item.code" *ngFor="let item of relationshipTypes$ | async">{{item.description}}
+                <option [ngValue]="item" *ngFor="let item of relationshipTypes$ | async">{{item.description}}
                 </option>
               </select>
             </app-form-field>

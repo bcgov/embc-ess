@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Registration } from '../core/models';
 import { RegistrationService } from '../core/services/registration.service';
 
-interface Stub{
+interface Stub {
   id?: string; // the guid to link them to their file
   restrictedAccess: boolean; // should this file be shown or not?
   essFileNumber: number; // what is the ESS file number
@@ -187,12 +187,12 @@ export class VolunteerDashboardComponent implements OnInit {
         this.raw = registrations;
         // save the registrations into the local data blob
         this.registrations = this.unreduceRegistrationToStubs(registrations);
-    });
+      });
   }
-  unreduceRegistrationToStubs(registrations: Registration[]): Stub[]{
+  unreduceRegistrationToStubs(registrations: Registration[]): Stub[] {
     const stubCollector: Stub[] = [];
     // loop through registrations and get each family member
-    for (const registration of registrations){
+    for (const registration of registrations) {
       // push the head of household as a stub
       const hoh: Stub = {
         id: registration.id, // the guid to link them to their file
@@ -229,11 +229,11 @@ export class VolunteerDashboardComponent implements OnInit {
       stubCollector.push(hoh);
 
       // push the family members of the HOH as stubs
-      for (const familyMember of registration.familyMembers){
+      for (const familyMember of registration.headOfHousehold.familyMembers) {
         const fmbr = {
           id: registration.id, // the guid to link them to their file
           restrictedAccess: registration.restrictedAccess, // should this file be shown or not?
-          essFileNumber:  registration.essFileNumber, // what is the ESS file number
+          essFileNumber: registration.essFileNumber, // what is the ESS file number
           firstName: familyMember.firstName,
           lastName: familyMember.lastName,
           incidentTaskTaskNumber: null,

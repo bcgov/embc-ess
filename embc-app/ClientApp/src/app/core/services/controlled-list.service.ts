@@ -79,7 +79,7 @@ export class ControlledListService extends RestService {
 
   getAllFamilyRelationshipTypes() {
     this.store.dispatch(new RelationshipTypeActions.LoadRelationshipTypes());
-    return this.get('/relationshiptypes')
+    return this.get('/familyRelationships')
       .pipe(
         map((relationshipTypes: RelationshipType[]) => {
           this.store.dispatch(new RelationshipTypeActions.LoadRelationshipTypesSuccess({ relationshipTypes }));

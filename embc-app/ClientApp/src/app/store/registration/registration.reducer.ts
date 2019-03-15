@@ -3,13 +3,15 @@ import * as RegistrationActions from './registration.actions';
 import { Loadable } from '..';
 
 const initialAddress: Address = {
-  addressSubtypeCode: null,
+  id: null,
+  addressSubtype: null,
   addressLine1: null,
   addressLine2: null,
   addressLine3: null,
-  communityOrCity: null,
-  provinceOrState: null,
-  postalCodeOrZip: null,
+  postalCode: null,
+  community: null,
+  city: null,
+  province: null,
   country: null,
 };
 
@@ -63,10 +65,10 @@ const initialState: State = {
       phoneNumber: null,
       phoneNumberAlt: null,
       email: null,
-      primaryResidence: { ...initialAddress },
+      familyMembers: [],
+      primaryResidence: null,
       mailingAddress: null,
     },
-    familyMembers: [],
     incidentTask: null,
     hostCommunity: null,
     completedBy: null,

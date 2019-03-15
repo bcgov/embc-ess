@@ -2,12 +2,15 @@
   <div class="col col-lg-8">
     <div class="mb-4">
       <h1>Volunteer Dashboard</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit amet pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean efficitur et arcu a fringilla.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit amet pulvinar.
+        Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean efficitur et arcu
+        a fringilla.</p>
       <h3 class="blue-header">LIST OF EVACUEES</h3>
 
       <div class="form-row">
         <div class="col-md-9">
-          <input type="search" class="form-control mb-2" id="searchBox" placeholder="Search by task number / last name / registration number / community / ...">
+          <input type="search" class="form-control mb-2" id="searchBox"
+            placeholder="Search by task number / last name / registration number / community / ...">
           <!-- <a class="small" href="">advanced Search</a> -->
         </div>
         <div class="col-3">
@@ -17,7 +20,7 @@
     </div>
     <div>
       <!-- The start of the table stuff. -->
-      <p>1 - 10 of 2000 active evacuees 
+      <p>1 - 10 of 2000 active evacuees
         <small class="ml-3">(<a href="">show deactivated</a>)</small>
       </p>
       <table class="table">
@@ -37,7 +40,7 @@
           <tr *ngFor="let stub of registrations" [class.table-danger]="stub.restrictedAccess">
             <th>
               <span *ngIf="stub.personType==='HOH'">
-               <i class="fas fa-user mr-1"></i>
+                <i class="fas fa-user mr-1"></i>
               </span>
               <span *ngIf="stub.restrictedAccess">
                 <i class="fas fa-lock"></i>
@@ -63,12 +66,15 @@
 
 
   <div class="col-12 col-lg-4">
-    <app-side-box-info title="ADD AN EVACUEE" content="Before starting a new registration, use the search tool on your dashboard to confirm that the evacuee hasn’t already registered." button="Add An Evacuee" route="register-evacuee"></app-side-box-info>
+    <app-side-box-info title="ADD AN EVACUEE"
+      content="Before starting a new registration, use the search tool on your dashboard to confirm that the evacuee hasn’t already registered."
+      button="Add An Evacuee" route="register-evacuee"></app-side-box-info>
 
     <app-side-box title="Useful Information">
       <section role="content">
         <p>
-          Evacuees listed here that do not have a task number are self-registered and have not yet received Emergency Social Services.
+          Evacuees listed here that do not have a task number are self-registered and have not yet received Emergency
+          Social Services.
         </p>
         <p>
           Use the “Action” column to “view” evacuee registrations as well as “finalize” evacuee self-registrations.
@@ -78,6 +84,6 @@
         <button class="btn btn-primary" routerLink="/">Learn More</button>
       </section>
     </app-side-box>
-  </div>    
+  </div>
 
 </div>

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { skipWhile, takeWhile } from 'rxjs/operators';
 
-import { Registration } from 'src/app/core/models';
+import { Registration, FamilyMember, isBcAddress } from 'src/app/core/models';
 import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 
@@ -97,19 +97,23 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       email: '',
       primaryResidenceInBC: null,
       primaryResidence: this.fb.group({
+        addressSubtype: '',
         addressLine1: '',
-        communityOrCity: '',
-        provinceOrState: '',
-        postalCodeOrZip: '',
+        postalCode: '',
+        community: '',
+        city: '',
+        province: '',
         country: '',
       }),
       hasMailingAddress: null,
       mailingAddressInBC: null,
       mailingAddress: this.fb.group({
+        addressSubtype: '',
         addressLine1: '',
-        communityOrCity: '',
-        provinceOrState: '',
-        postalCodeOrZip: '',
+        postalCode: '',
+        community: '',
+        city: '',
+        province: '',
         country: '',
       }),
     });
@@ -147,41 +151,55 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       // Reset the form back to pristine
       this.form.reset();
 
+      const hoh = this.registration.headOfHousehold;
+      const primaryResidence = hoh.primaryResidence;
+      const mailingAddress = hoh.mailingAddress;
+
       // Update the data on the form
       this.form.patchValue({
         restrictedAccess: this.registration.restrictedAccess,
         headOfHousehold: {
-          firstName: this.registration.headOfHousehold.firstName,
-          lastName: this.registration.headOfHousehold.lastName,
-          nickname: this.registration.headOfHousehold.nickname,
-          initials: this.registration.headOfHousehold.initials,
-          gender: this.registration.headOfHousehold.gender,
-          dob: this.registration.headOfHousehold.dob,
+          firstName: hoh.firstName,
+          lastName: hoh.lastName,
+          nickname: hoh.nickname,
+          initials: hoh.initials,
+          gender: hoh.gender,
+          dob: hoh.dob,
         },
         registeringFamilyMembers: this.registration.registeringFamilyMembers,
-        familyMembers: this.registration.familyMembers,
-        phoneNumber: this.registration.headOfHousehold.phoneNumber,
-        phoneNumberAlt: this.registration.headOfHousehold.phoneNumberAlt,
-        email: this.registration.headOfHousehold.email,
-        primaryResidence: {
-          addressLine1: this.registration.headOfHousehold.primaryResidence.addressLine1,
-          communityOrCity: this.registration.headOfHousehold.primaryResidence.communityOrCity,
-          provinceOrState: this.registration.headOfHousehold.primaryResidence.provinceOrState,
-          postalCodeOrZip: this.registration.headOfHousehold.primaryResidence.postalCodeOrZip,
-          country: this.registration.headOfHousehold.primaryResidence.country,
-        },
+        familyMembers: hoh.familyMembers,
+        phoneNumber: hoh.phoneNumber,
+        phoneNumberAlt: hoh.phoneNumberAlt,
+        email: hoh.email,
         hasMailingAddress: null,
       });
 
-      const mailingAddress = this.registration.headOfHousehold.mailingAddress;
+      if (primaryResidence != null) {
+        this.form.patchValue({
+          primaryResidenceInBC: isBcAddress(primaryResidence),
+          primaryResidence: {
+            addressSubtype: primaryResidence.addressSubtype,
+            addressLine1: primaryResidence.addressLine1,
+            postalCode: primaryResidence.postalCode,
+            community: primaryResidence.community,
+            city: primaryResidence.city,
+            province: primaryResidence.province,
+            country: primaryResidence.country,
+          },
+        });
+      }
+
       if (mailingAddress != null) {
         this.form.patchValue({
           hasMailingAddress: true,
+          mailingAddressInBC: isBcAddress(mailingAddress),
           mailingAddress: {
+            addressSubtype: mailingAddress.addressSubtype,
             addressLine1: mailingAddress.addressLine1,
-            communityOrCity: mailingAddress.communityOrCity,
-            provinceOrState: mailingAddress.provinceOrState,
-            postalCodeOrZip: mailingAddress.postalCodeOrZip,
+            postalCode: mailingAddress.postalCode,
+            community: mailingAddress.community,
+            city: mailingAddress.city,
+            province: mailingAddress.province,
             country: mailingAddress.country,
           },
         });
@@ -222,19 +240,26 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   onSave(): void {
     const form = this.form.value;
+
+    // ensure proper sub-types are assigned
+    const personType: 'FMBR' = 'FMBR';
+    const familyMembers: FamilyMember[] = (form.familyMembers as FamilyMember[]).map(fmr => ({ ...fmr, personType }));
+
+    // Use form values to create evacuee registration
     const registration: Registration = {
       ...this.registration,
       restrictedAccess: form.restrictedAccess,
       registeringFamilyMembers: form.registeringFamilyMembers,
-      familyMembers: [...form.familyMembers],
       headOfHousehold: {
         ...this.registration.headOfHousehold,
         ...form.headOfHousehold,
+        personType: 'HOH',
         phoneNumber: form.phoneNumber,
         phoneNumberAlt: form.phoneNumberAlt,
         email: form.email,
+        familyMembers,
         primaryResidence: { ...form.primaryResidence },
-        mailingAddress: form.hasMailingAddress ? { ...form.mailingAddress } : undefined,
+        mailingAddress: form.hasMailingAddress ? { ...form.mailingAddress } : null,
       }
     };
 
