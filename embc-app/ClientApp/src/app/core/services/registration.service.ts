@@ -331,7 +331,8 @@ export class RegistrationService extends RestService {
     if (!page) { page = 1; }
 
     // return of(FAKEREGISTRATIONS);
-    return of(this.registrations); // return in memory copy instead of static
+    // return of(this.registrations); // return in memory copy instead of static
+    return this.get('/registrations');
   }
 
   createRegistration(data: Registration): Observable<Registration[]> {
