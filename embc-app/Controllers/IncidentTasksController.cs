@@ -40,6 +40,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             _httpContextAccessor = httpContextAccessor;
             _logger = loggerFactory.CreateLogger(typeof(IncidentTasksController));
             this._env = env;
+            _dataInterface = dataInterface;
         }
 
         /// <summary>
