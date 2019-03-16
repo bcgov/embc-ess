@@ -105,5 +105,29 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
         }
 
+        /// <summary>
+        /// Update
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Update([FromBody] ViewModels.IncidentTask item, string id)
+        {
+            if (id != null && item.Id != null && id == item.Id)
+            {
+                try
+                {
+                    var result = await _dataInterface.UpdateIncidentTask(item);
+                    return Json(result);
+                }
+                catch (RestException error)
+                {
+                    return BadRequest(error);
+                }
+            }
+            return BadRequest();
+        }
     }
 }

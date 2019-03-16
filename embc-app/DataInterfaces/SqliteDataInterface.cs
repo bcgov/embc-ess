@@ -148,15 +148,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public Task<IncidentTask> CreateIncidentTask(IncidentTask task)
         {
-            var model = task.ToModel();
-            Db.IncidentTasks.Add(model);
+            var entity = task.ToModel();
+            Db.IncidentTasks.Add(entity);
             Db.SaveChanges();
-            return Task.FromResult(model.ToViewModel());
+            return Task.FromResult(entity.ToViewModel());
         }
 
         public Task<IncidentTask> UpdateIncidentTask(IncidentTask task)
         {
-            return Task.FromException<IncidentTask>(new NotImplementedException("Not implemented yet"));
+            var entity = Db.IncidentTasks.FirstOrDefault(item => item.Id == new Guid(task.Id));
+            entity.PatchValues(task);
+            Db.IncidentTasks.Update(entity);
+            Db.SaveChanges();
+            return Task.FromResult(entity.ToViewModel());
         }
     }
 }
