@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -49,18 +49,18 @@ namespace Gov.Embc.Public.Seeders
 
         private List<Region> GetSeedRegions()
         {
-            List<Region> jurisdictions = new List<Region>(GetDefaultRegions());
+            List<Region> regions = new List<Region>(GetDefaultRegions());
 
             if (IsProductionEnvironment)
             {
-                jurisdictions.AddRange(GetProdRegions());
+                regions.AddRange(GetProdRegions());
             }
             else
             {
-                jurisdictions.AddRange(GetDevRegions());
+                regions.AddRange(GetDevRegions());
             }
 
-            return jurisdictions;
+            return regions;
         }
 
         /// <summary>
