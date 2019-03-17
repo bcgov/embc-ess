@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { combineLatest } from 'rxjs';
+import { concat } from 'rxjs';
 
-import { User } from './core/models';
+import { User, Registration } from './core/models'; // TODO: remove registration
 import { detectIE10orLower } from './shared/utils/environmentUtils';
 import { ControlledListService } from './core/services/controlled-list.service';
+import { RegistrationService } from './core/services/registration.service';
 
 @Component({
   selector: 'app-root',
@@ -15,11 +16,17 @@ export class AppComponent implements OnInit {
   isIE = false;
   currentUser: User;
 
-  constructor(private lookups: ControlledListService) { }
+  registrations: Registration[]; // TODO: Delete this testing var
+
+  constructor(
+    private lookups: ControlledListService,
+    private registrationService: RegistrationService, // TODO: Delete this. It is for testing only
+  ) { }
 
   ngOnInit() {
     this.isIE = detectIE10orLower();
     this.initializeApp();
+    this.registrationService.getRegistries().subscribe(r => this.registrations = r);
   }
 
   get versionInfo(): any {
@@ -47,13 +54,13 @@ export class AppComponent implements OnInit {
   }
 
   getLookups() {
-    return combineLatest([
+    return concat(
       this.lookups.getAllCountries(),
       this.lookups.getAllRegions(),
       this.lookups.getAllRegionalDistricts(),
       this.lookups.getAllCommunities(),
       this.lookups.getAllFamilyRelationshipTypes(),
       // ...add more
-    ]);
+    );
   }
 }

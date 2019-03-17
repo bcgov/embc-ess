@@ -31,6 +31,7 @@ export class EvacueeRegistrationComponent implements OnInit {
 
   // Shortcuts for this.form.get(...)
   get familyMembers() {
+    // this is a way to grab the familymembers in a typed way
     return this.f.familyMembers as FormArray;
   }
 

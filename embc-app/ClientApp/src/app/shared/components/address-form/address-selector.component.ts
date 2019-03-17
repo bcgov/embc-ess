@@ -37,8 +37,8 @@ export class AddressSelectorComponent implements OnInit, OnChanges {
 
   private toggleAddressForm(form: FormGroup, withinBC: boolean, homeCountry: Country) {
     const values = withinBC
-      ? { provinceOrState: 'British Columbia', country: homeCountry.id }
-      : { provinceOrState: null, country: null };
+      ? { province: 'British Columbia', country: homeCountry }
+      : { province: null, country: null };
     form.reset();
     form.enable();
     form.patchValue(values);

@@ -9,11 +9,11 @@ using Gov.Jag.Embc.Public.Sqlite.Models;
 
 namespace Gov.Embc.Public.Seeders
 {
-    public class Communitieseeder : Seeder<SqliteContext>
+    public class CommunitySeeder : Seeder<SqliteContext>
     {
         private readonly string[] _profileTriggers = { AllProfiles };
 
-        public Communitieseeder(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory  loggerFactory) 
+        public CommunitySeeder(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory)
             : base(configuration, env, loggerFactory)
         { }
 
@@ -21,10 +21,10 @@ namespace Gov.Embc.Public.Seeders
 
         protected override void Invoke(SqliteContext context)
         {
-            UpdateCommunities(context);            
+            UpdateCommunities(context);
         }
 
-        public override Type InvokeAfter => typeof(RegionSeeder);
+        public override Type InvokeAfter => typeof(RegionalDistrictSeeder);
 
         private void UpdateCommunities(SqliteContext context)
         {
@@ -32,10 +32,10 @@ namespace Gov.Embc.Public.Seeders
 
             foreach (Community Community in seedCommunities)
             {
-                context.UpdateSeedCommunityInfo(Community);                
+                context.UpdateSeedCommunityInfo(Community);
             }
 
-            AddInitialCommunities(context);            
+            AddInitialCommunities(context);
         }
 
         private void AddInitialCommunities(SqliteContext context)
@@ -44,7 +44,7 @@ namespace Gov.Embc.Public.Seeders
             if (string.IsNullOrEmpty(CommunityInitializationFilename))
             {
                 // default to sample data, which is stored in the "SeedData" directory.
-                CommunityInitializationFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedData" + Path.DirectorySeparatorChar + "Communities.json"); 
+                CommunityInitializationFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedData" + Path.DirectorySeparatorChar + "Communities.json");
             }
             context.AddInitialCommunitiesFromFile(CommunityInitializationFilename);
         }
@@ -52,7 +52,7 @@ namespace Gov.Embc.Public.Seeders
         private List<Community> GetSeedCommunities()
         {
             List<Community> communities = new List<Community>(GetDefaultCommunities());
-                
+
             if (IsProductionEnvironment)
             {
                 communities.AddRange(GetProdCommunities());
@@ -78,7 +78,7 @@ namespace Gov.Embc.Public.Seeders
         /// </summary>
         private List<Community> GetDevCommunities()
         {
-            return new List<Community>();            
+            return new List<Community>();
         }
 
         /// <summary>

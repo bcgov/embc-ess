@@ -1,5 +1,5 @@
-@import '../defaults.scss';
-@import '../mixins.scss';
+@import "../defaults.scss";
+@import "../mixins.scss";
 
 .summary {
   margin: 0;
@@ -25,7 +25,7 @@
   span {
     &.name {
       padding: 5px;
-      font-weight: 600;
+      font-weight: 400;
       width: 40%;
     }
 
@@ -47,7 +47,7 @@
         }
 
         li:hover {
-            overflow: visible;
+          overflow: visible;
         }
       }
     }

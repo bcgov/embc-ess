@@ -20,7 +20,13 @@ namespace Gov.Jag.Embc.Public.Controllers
         private readonly ILogger _logger;
         private readonly IHostingEnvironment _env;
 
-        public RegistrationsController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory, IHostingEnvironment env, IDataInterface dataInterface)
+        public RegistrationsController(
+            IConfiguration configuration,
+            IHttpContextAccessor httpContextAccessor,
+            ILoggerFactory loggerFactory,
+            IHostingEnvironment env,
+            IDataInterface dataInterface
+        )
         {
             Configuration = configuration;
             _dataInterface = dataInterface;
@@ -32,7 +38,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         /// <summary>
         ///
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet()]
         [AllowAnonymous]
@@ -46,7 +51,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             catch (RestException error)
             {
                 // TODO: Remove error payload when live in PROD
-                return NotFound(error);
+                return BadRequest(error);
             }
         }
 
@@ -96,15 +101,13 @@ namespace Gov.Jag.Embc.Public.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] ViewModels.Registration item)
         {
-            // validate inputs
-            if (item?.Id != null)
+            if (!ModelState.IsValid)
             {
-                // we don't accept IDs when creating new entities
-                return BadRequest();
+                return BadRequest(ModelState);
             }
-
             try
             {
+                item.Id = null;
                 var result = await _dataInterface.CreateRegistration(item);
                 return Json(result);
             }
@@ -113,6 +116,5 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest(error);
             }
         }
-
     }
 }

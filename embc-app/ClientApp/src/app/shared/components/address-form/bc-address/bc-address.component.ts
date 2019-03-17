@@ -16,18 +16,18 @@ import { Community, Country } from 'src/app/core/models';
       <div class="row">
         <app-form-field class="col-md-6" required="true">
           <label>Community</label>
-          <select class="form-control" formControlName="communityOrCity">
+          <select class="form-control" formControlName="community">
             <option [ngValue]="null">-- Select community</option>
-            <option [value]="item.id" *ngFor="let item of communities">{{item.name}}</option>
+            <option [ngValue]="item" *ngFor="let item of communities">{{item.name}}</option>
           </select>
         </app-form-field>
         <app-form-field class="col-md-3" required="true">
           <label>Province</label>
-          <input class="form-control" type="text" [readonly]="true" formControlName="provinceOrState">
+          <input class="form-control" type="text" [readonly]="true" formControlName="province">
         </app-form-field>
         <app-form-field class="col-md-3">
           <label>Postal Code</label>
-          <input class="form-control" type="text" formControlName="postalCodeOrZip">
+          <input class="form-control" type="text" formControlName="postalCode">
         </app-form-field>
       </div>
       <div class="row">
@@ -46,6 +46,7 @@ export class BcAddressComponent implements OnInit {
   @Input() communities: Community[] = [];
 
   ngOnInit() {
+    this.parent.controls.addressSubtype.setValue('BCAD');
   }
 
   get invalid() {

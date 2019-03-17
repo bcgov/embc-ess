@@ -16,15 +16,15 @@ import { Country } from 'src/app/core/models';
       <div class="row">
         <app-form-field class="col-md-6" required="true">
           <label>City</label>
-          <input class="form-control" type="text" formControlName="communityOrCity">
+          <input class="form-control" type="text" formControlName="city">
         </app-form-field>
         <app-form-field class="col-md-3">
           <label>Region/Province/State</label>
-          <input class="form-control" type="text" formControlName="provinceOrState">
+          <input class="form-control" type="text" formControlName="province">
         </app-form-field>
         <app-form-field class="col-md-3">
           <label>Postal /ZIP Code</label>
-          <input class="form-control" type="text" formControlName="postalCodeOrZip">
+          <input class="form-control" type="text" formControlName="postalCode">
         </app-form-field>
       </div>
       <div class="row">
@@ -32,7 +32,7 @@ import { Country } from 'src/app/core/models';
           <label>Country/Region</label>
           <select class="form-control" formControlName="country">
             <option [ngValue]="null">-- Select Country</option>
-            <option [value]="item.id" *ngFor="let item of countries">{{item.name}}</option>
+            <option [ngValue]="item" *ngFor="let item of countries">{{item.name}}</option>
           </select>
         </app-form-field>
       </div>
@@ -46,6 +46,7 @@ export class OtherAddressComponent implements OnInit {
   @Input() countries: Country[] = [];
 
   ngOnInit() {
+    this.parent.controls.addressSubtype.setValue('OTAD');
   }
 
   get invalid() {

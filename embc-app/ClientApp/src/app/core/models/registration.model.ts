@@ -41,7 +41,6 @@ export interface Registration {
 
   // related entities
   headOfHousehold: HeadOfHousehold;
-  familyMembers: FamilyMember[];
   incidentTask: IncidentTask | null;
   hostCommunity: Community | null;
   // TODO: Should we link to the full User record for an interviewer or just capture basic info (name + last name initial)?

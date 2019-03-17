@@ -13,7 +13,7 @@ namespace Gov.Embc.Public.Seeders
     {
         private readonly string[] _profileTriggers = { AllProfiles };
 
-        public RegionSeeder(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory  loggerFactory) 
+        public RegionSeeder(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory)
             : base(configuration, env, loggerFactory)
         { }
 
@@ -21,7 +21,7 @@ namespace Gov.Embc.Public.Seeders
 
         protected override void Invoke(SqliteContext context)
         {
-            UpdateRegions(context);            
+            UpdateRegions(context);
         }
 
         private void UpdateRegions(SqliteContext context)
@@ -30,10 +30,10 @@ namespace Gov.Embc.Public.Seeders
 
             foreach (Region region in seedRegions)
             {
-                context.UpdateSeedRegionInfo(region);                
+                context.UpdateSeedRegionInfo(region);
             }
 
-            AddInitialRegions(context);            
+            AddInitialRegions(context);
         }
 
         private void AddInitialRegions(SqliteContext context)
@@ -42,7 +42,7 @@ namespace Gov.Embc.Public.Seeders
             if (string.IsNullOrEmpty(regionInitializationFilename))
             {
                 // default to sample data, which is stored in the "SeedData" directory.
-                regionInitializationFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedData" + Path.DirectorySeparatorChar + "Regions.json"); 
+                regionInitializationFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedData" + Path.DirectorySeparatorChar + "Regions.json");
             }
             context.AddInitialRegionsFromFile(regionInitializationFilename);
         }
@@ -50,7 +50,7 @@ namespace Gov.Embc.Public.Seeders
         private List<Region> GetSeedRegions()
         {
             List<Region> jurisdictions = new List<Region>(GetDefaultRegions());
-                
+
             if (IsProductionEnvironment)
             {
                 jurisdictions.AddRange(GetProdRegions());
@@ -76,7 +76,7 @@ namespace Gov.Embc.Public.Seeders
         /// </summary>
         private List<Region> GetDevRegions()
         {
-            return new List<Region>();            
+            return new List<Region>();
         }
 
         /// <summary>
