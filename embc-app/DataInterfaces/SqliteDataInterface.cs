@@ -129,7 +129,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return Task.FromResult<Registration>(null);
         }
 
+        //
         // Incident Tasks
+        //
+
         public Task<List<IncidentTask>> GetIncidentTasks()
         {
             var all = Db.IncidentTasks.Select(task => task.ToViewModel()).ToListAsync();
