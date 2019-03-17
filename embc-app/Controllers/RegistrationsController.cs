@@ -1,4 +1,5 @@
 using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Rest;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -41,11 +43,11 @@ namespace Gov.Jag.Embc.Public.Controllers
         /// <returns></returns>
         [HttpGet()]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters queryParameters)
         {
             try
             {
-                List<ViewModels.Registration> result = await _dataInterface.GetRegistrations();
+                IQueryable<ViewModels.Registration> result = await _dataInterface.GetRegistrations(queryParameters);
                 return Json(result);
             }
             catch (RestException error)
@@ -54,7 +56,6 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest(error);
             }
         }
-
 
         /// <summary>
         ///

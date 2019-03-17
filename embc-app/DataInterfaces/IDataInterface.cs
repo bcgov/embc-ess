@@ -1,5 +1,7 @@
+using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
@@ -15,7 +17,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Person CreatePerson(Person person);
 
         // Registrations
-        Task<List<Registration>> GetRegistrations();
+        Task<IQueryable<Registration>> GetRegistrations(SearchQueryParameters queryParameters);
         Task<Registration> GetRegistration(string id);
         Task<Registration> CreateRegistration(Registration registration);
 

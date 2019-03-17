@@ -1,3 +1,4 @@
+using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -114,7 +115,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return regions;
         }
 
-        public Task<List<Registration>> GetRegistrations()
+        public Task<IQueryable<Registration>> GetRegistrations(SearchQueryParameters queryParameters)
         {
             List<Registration> regions = new List<Registration>();
             var registrationList = Db.Registrations.ToList();
@@ -123,7 +124,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 regions.Add(registration.ToViewModel());
             }
 
-            return Task.FromResult(regions);
+            return Task.FromResult(regions as IQueryable<Registration>);
         }
 
         public List<RegionalDistrict> GetRegionalDistricts()
