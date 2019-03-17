@@ -123,7 +123,7 @@
         </div>
         <!-- Card for family members -->
         <div formArrayName="familyMembers">
-          <div class="card mb-2" *ngFor="let m of familyMembers.controls; index as i;" [formGroupName]="i" >
+          <div class="card mb-2" *ngFor="let m of familyMembers.controls; index as i;" [formGroupName]="i">
 
             <div class="card-body">
               <div class="row mb-2">
@@ -233,7 +233,7 @@
               <div class="col">
                 <div requried="true">
                   <label>Community</label>
-                  <select  class="form-control" formControlName="communityOrCity">
+                  <select class="form-control" formControlName="communityOrCity">
                     <option [ngValue]="null">Please select--</option>
                     <option value="victoria">Victoria</option>
                     <option value="grandForks">Grand Forks</option>
@@ -243,7 +243,7 @@
               <div class="col-3">
                 <div requried="true">
                   <label>Province</label>
-                  <select  class="form-control" formControlName="provinceOrState">
+                  <select class="form-control" formControlName="provinceOrState">
                     <option [ngValue]="null">Please select--</option>
                     <option value="BC">BC</option>
                   </select>
@@ -315,7 +315,7 @@
               <div class="col">
                 <div requried="true">
                   <label>Community</label>
-                  <select  class="form-control" formControlName="communityOrCity">
+                  <select class="form-control" formControlName="communityOrCity">
                     <option [ngValue]="null">Please select--</option>
                     <option value="victoria">Victoria</option>
                     <option value="grandForks">Grand Forks</option>
@@ -325,7 +325,7 @@
               <div class="col-3">
                 <div requried="true">
                   <label>Province</label>
-                  <select  class="form-control" formControlName="provinceOrState">
+                  <select class="form-control" formControlName="provinceOrState">
                     <option [ngValue]="null">Please select--</option>
                     <option value="BC">BC</option>
                   </select>
