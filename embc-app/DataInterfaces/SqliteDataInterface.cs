@@ -128,5 +128,42 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
             return Task.FromResult<Registration>(null);
         }
+
+        //
+        // Incident Tasks
+        //
+
+        public Task<List<IncidentTask>> GetIncidentTasks()
+        {
+            var all = Db.IncidentTasks.Select(task => task.ToViewModel()).ToListAsync();
+            return all;
+        }
+
+        public Task<IncidentTask> GetIncidentTask(string id)
+        {
+            if (Guid.TryParse(id, out var guid))
+            {
+                var entity = Db.IncidentTasks.FirstOrDefault(task => task.Id == guid);
+                return Task.FromResult(entity?.ToViewModel());
+            }
+            return Task.FromResult<IncidentTask>(null);
+        }
+
+        public Task<IncidentTask> CreateIncidentTask(IncidentTask task)
+        {
+            var entity = task.ToModel();
+            Db.IncidentTasks.Add(entity);
+            Db.SaveChanges();
+            return Task.FromResult(entity.ToViewModel());
+        }
+
+        public Task<IncidentTask> UpdateIncidentTask(IncidentTask task)
+        {
+            var entity = Db.IncidentTasks.FirstOrDefault(item => item.Id == new Guid(task.Id));
+            entity.PatchValues(task);
+            Db.IncidentTasks.Update(entity);
+            Db.SaveChanges();
+            return Task.FromResult(entity.ToViewModel());
+        }
     }
 }
