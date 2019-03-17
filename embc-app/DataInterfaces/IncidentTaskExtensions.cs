@@ -10,9 +10,31 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static class IncidentTaskExtensions
     {
+        public static void PatchValues(this Sqlite.Models.IncidentTask self, ViewModels.IncidentTask values)
+        {
+            self.TaskNumber = values.TaskNumber;
+            self.Details = values.Details;
+            self.Active = values.Active;
+
+            self.Region = values.Region != null ? values.Region.ToModel() : null;
+            self.RegionalDistrict = values.RegionalDistrict != null ? values.RegionalDistrict.ToModel() : null;
+            self.Community = values.Community != null ? values.Community.ToModel() : null;
+        }
+
+        public static void PatchValues(this Sqlite.Models.IncidentTask self, Sqlite.Models.IncidentTask values)
+        {
+            self.TaskNumber = values.TaskNumber;
+            self.Details = values.Details;
+            self.Active = values.Active;
+
+            self.Region = values.Region;
+            self.RegionalDistrict = values.RegionalDistrict;
+            self.Community = values.Community;
+        }
+
         public static void AddIncidentTask(this SqliteContext context, IncidentTask IncidentTask)
         {
-            // create a new IncidentTask.           
+            // create a new IncidentTask.
             context.IncidentTasks.Add(IncidentTask);
             context.SaveChanges();
         }
@@ -20,7 +42,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public static void UpdateIncidentTask(this SqliteContext context, IncidentTask IncidentTask)
         {
             IncidentTask _IncidentTask = context.IncidentTasks.FirstOrDefault<IncidentTask>(x => x.Id == IncidentTask.Id);
-            _IncidentTask.Details = IncidentTask.Details;
+            _IncidentTask.PatchValues(IncidentTask);
             context.IncidentTasks.Update(_IncidentTask);
             context.SaveChanges();
         }
@@ -35,15 +57,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <summary>
         /// Returns a specific IncidentTask
         /// </summary>
-        /// <param name="details">The details of the IncidentTask</param>
+        /// <param name="taskNumber">The task number of the IncidentTask</param>
         /// <returns>The IncidentTask, or null if it does not exist.</returns>
-        public static IncidentTask GetIncidentTaskByDetails(this SqliteContext context, string details)
+        public static IncidentTask GetIncidentTaskByTaskNumber(this SqliteContext context, string taskNumber)
         {
-            IncidentTask IncidentTask = context.IncidentTasks.FirstOrDefault(x => x.Details == details);
+            IncidentTask IncidentTask = context.IncidentTasks.FirstOrDefault(x => x.TaskNumber == taskNumber);
             return IncidentTask;
         }
-
-
 
         /// <summary>
         /// Create IncidentTasks from a (json) file
@@ -79,7 +99,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         private static void AddInitialIncidentTask(this SqliteContext context, IncidentTask initialIncidentTask)
         {
-            IncidentTask IncidentTask = context.GetIncidentTaskByDetails(initialIncidentTask.Details);
+            IncidentTask IncidentTask = context.GetIncidentTaskByTaskNumber(initialIncidentTask.Details);
             if (IncidentTask != null)
             {
                 return;
@@ -108,7 +128,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             IncidentTask = new IncidentTask
             ()
-            {                
+            {
                 Details = initialIncidentTask.Details,
                 Active = true,
                 Region = region,
@@ -120,7 +140,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             context.AddIncidentTask(IncidentTask);
         }
 
-
         /// <summary>
         /// Update IncidentTask
         /// </summary>
@@ -128,7 +147,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <param name="IncidentTaskInfo"></param>
         public static void UpdateSeedIncidentTaskInfo(this SqliteContext context, IncidentTask IncidentTaskInfo)
         {
-            IncidentTask IncidentTask = context.GetIncidentTaskByDetails(IncidentTaskInfo.Details);
+            IncidentTask IncidentTask = context.GetIncidentTaskByTaskNumber(IncidentTaskInfo.TaskNumber);
             if (IncidentTask == null)
             {
                 context.AddIncidentTask(IncidentTaskInfo);
