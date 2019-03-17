@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -23,6 +23,8 @@ namespace Gov.Embc.Public.Seeders
         {
             UpdateCountries(context);
         }
+
+        public override int InvokeOrder => 6;
 
         private void UpdateCountries(SqliteContext context)
         {
@@ -49,18 +51,18 @@ namespace Gov.Embc.Public.Seeders
 
         private List<Country> GetSeedCountries()
         {
-            List<Country> jurisdictions = new List<Country>(GetDefaultCountries());
+            List<Country> countries = new List<Country>(GetDefaultCountries());
 
             if (IsProductionEnvironment)
             {
-                jurisdictions.AddRange(GetProdCountries());
+                countries.AddRange(GetProdCountries());
             }
             else
             {
-                jurisdictions.AddRange(GetDevCountries());
+                countries.AddRange(GetDevCountries());
             }
 
-            return jurisdictions;
+            return countries;
         }
 
         /// <summary>

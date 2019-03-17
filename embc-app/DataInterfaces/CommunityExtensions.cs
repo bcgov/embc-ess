@@ -1,4 +1,4 @@
-﻿using Gov.Jag.Embc.Public.Sqlite.Models;
+using Gov.Jag.Embc.Public.Sqlite.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -87,17 +87,22 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             // get the region.
 
-            var regionalDistrict = context.GetRegionalDistrictByName(initialCommunity.RegionalDistrict.Name);
+            RegionalDistrict regionalDistrict = null;
+
+            if (initialCommunity.RegionalDistrict != null)
+            {
+                regionalDistrict = context.GetRegionalDistrictByName(initialCommunity.RegionalDistrict.Name);
+            }
 
 
             Community = new Community
             ()
             {
-                Id = initialCommunity.Id,
+                //Id = initialCommunity.Id,
                 Name = initialCommunity.Name,
                 Active = true,
                 RegionalDistrict = regionalDistrict
-            };
+            };            
 
             context.AddCommunity(Community);
         }

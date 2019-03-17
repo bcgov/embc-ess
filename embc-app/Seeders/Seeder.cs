@@ -1,4 +1,4 @@
-﻿
+
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +39,7 @@ namespace Gov.Embc.Public.Seeders
 
         protected IConfiguration Configuration { get; set; }
 
-        public virtual Type InvokeAfter => null;
+        public virtual int InvokeOrder => 0;
 
         protected abstract IEnumerable<string> TriggerProfiles { get; }
 

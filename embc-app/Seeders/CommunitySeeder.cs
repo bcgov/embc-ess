@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace Gov.Embc.Public.Seeders
             UpdateCommunities(context);
         }
 
-        public override Type InvokeAfter => typeof(RegionalDistrictSeeder);
+        public override int InvokeOrder => 2;
 
         private void UpdateCommunities(SqliteContext context)
         {
