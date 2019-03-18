@@ -47,7 +47,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       // TODO: go get the evacuee from db eventually
       this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
         .subscribe(r => {
-          //get first registration for now
+          // get first registration for now
           this.registration = r[0];
         });
     }
