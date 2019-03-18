@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RegistrationService } from '../core/services/registration.service';
-import { Registration, FamilyMember, isBcAddress } from 'src/app/core/models';
+import { Registration, FamilyMember, isBcAddress, Community, Country, RelationshipType } from 'src/app/core/models';
 
 
 @Component({
@@ -75,7 +75,9 @@ export class EvacueeRegistrationComponent implements OnInit {
       lastName: '',
       nickname: '',
       initials: '',
-      relationshipToHoh: '',
+      relationshipToEvacuee: '',
+      sameLastNameAsEvacuee: null,
+      personType: 'FMBR',
       gender: null,
       dob: null,
     });
@@ -102,9 +104,10 @@ export class EvacueeRegistrationComponent implements OnInit {
       return null;
     }
   }
+
   initForm(): void {
     this.form = this.formBuilder.group({
-      restrictedAccess: null,
+      restrictedAccess: true,
       headOfHousehold: this.formBuilder.group({
         firstName: '',
         lastName: '',
@@ -156,57 +159,74 @@ export class EvacueeRegistrationComponent implements OnInit {
     // Set the local registration property
     this.registration = registration;
 
-
     const hoh = this.registration.headOfHousehold;
     const primaryResidence = hoh.primaryResidence;
     const mailingAddress = hoh.mailingAddress;
+    const familyMembers = hoh.familyMembers;
+
+    // If the evacuee is here now then the defer to later of the registration of family members is now currently yes.
+    if (registration.registeringFamilyMembers === 'yes-unsure') {
+      registration.registeringFamilyMembers = 'yes';
+    }
 
     // Update the data on the form
     this.form.patchValue({
-      restrictedAccess: this.registration.restrictedAccess,
+      restrictedAccess: registration.restrictedAccess as boolean,
       headOfHousehold: {
-        firstName: hoh.firstName,
-        lastName: hoh.lastName,
-        nickname: hoh.nickname,
-        initials: hoh.initials,
-        gender: hoh.gender,
-        dob: hoh.dob,
+        firstName: hoh.firstName as string,
+        lastName: hoh.lastName as string,
+        nickname: hoh.nickname as string,
+        initials: hoh.initials as string,
+        gender: hoh.gender as string,
+        dob: hoh.dob as Date,
       },
-      registeringFamilyMembers: this.registration.registeringFamilyMembers,
-      familyMembers: hoh.familyMembers,
-      phoneNumber: hoh.phoneNumber,
-      phoneNumberAlt: hoh.phoneNumberAlt,
-      email: hoh.email,
-      hasMailingAddress: null,
+      registeringFamilyMembers: registration.registeringFamilyMembers as string,
+      familyMembers: null,
+      phoneNumber: hoh.phoneNumber as string,
+      phoneNumberAlt: hoh.phoneNumberAlt as string,
+      email: hoh.email as string,
+      hasMailingAddress: null as boolean,
     });
 
-    if (primaryResidence != null) {
+    // iterate over the array and collect each family member as a formgroup and put them into a form array
+    if (familyMembers != null) {
+      // collect all family members to form groups
+      const familyMembersFG: FormGroup[] = registration.headOfHousehold.familyMembers.map((m: FamilyMember) => this.formBuilder.group(m));
+      // collect all family members form groups in a formArray
+      // set the control in the form
       this.form.patchValue({
-        primaryResidenceInBC: isBcAddress(primaryResidence),
-        primaryResidence: {
-          addressSubtype: primaryResidence.addressSubtype,
-          addressLine1: primaryResidence.addressLine1,
-          postalCode: primaryResidence.postalCode,
-          community: primaryResidence.community,
-          city: primaryResidence.city,
-          province: primaryResidence.province,
-          country: primaryResidence.country,
-        },
+        familyMembers: this.formBuilder.array(familyMembersFG) as FormArray,
       });
     }
 
+    // add the primary residence back into the form
+    if (primaryResidence != null) {
+      this.form.patchValue({
+        primaryResidenceInBC: isBcAddress(primaryResidence) as boolean,
+        primaryResidence: {
+          addressSubtype: primaryResidence.addressSubtype as string,
+          addressLine1: primaryResidence.addressLine1 as string,
+          postalCode: primaryResidence.postalCode as string,
+          community: primaryResidence.community as Community,
+          city: primaryResidence.city as string,
+          province: primaryResidence.province as string,
+          country: primaryResidence.country as Country,
+        },
+      });
+    }
+    // add the mailing address back into the form
     if (mailingAddress != null) {
       this.form.patchValue({
         hasMailingAddress: true,
-        mailingAddressInBC: isBcAddress(mailingAddress),
+        mailingAddressInBC: isBcAddress(mailingAddress) as boolean,
         mailingAddress: {
-          addressSubtype: mailingAddress.addressSubtype,
-          addressLine1: mailingAddress.addressLine1,
-          postalCode: mailingAddress.postalCode,
-          community: mailingAddress.community,
-          city: mailingAddress.city,
-          province: mailingAddress.province,
-          country: mailingAddress.country,
+          addressSubtype: mailingAddress.addressSubtype as string,
+          addressLine1: mailingAddress.addressLine1 as string,
+          postalCode: mailingAddress.postalCode as string,
+          community: mailingAddress.community as Community,
+          city: mailingAddress.city as string,
+          province: mailingAddress.province as string,
+          country: mailingAddress.country as Country,
         },
       });
     }

@@ -1,4 +1,4 @@
-import { HeadOfHousehold, FamilyMember, Community, IncidentTask, Volunteer } from './';
+import { HeadOfHousehold, Community, IncidentTask, Volunteer } from './';
 
 export interface Registration {
   // Important
