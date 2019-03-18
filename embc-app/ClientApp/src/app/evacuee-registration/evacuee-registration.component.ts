@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { Registration } from '../core/models';
 import { ActivatedRoute } from '@angular/router';
 import { RegistrationService } from '../core/services/registration.service';
+import { Registration, FamilyMember, isBcAddress } from 'src/app/core/models';
+
 
 @Component({
   selector: 'app-evacuee-registration',
@@ -48,7 +49,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
         .subscribe(r => {
           // get first registration for now
-          this.registration = r[0];
+          this.displayRegistration(r[0]);
         });
     }
   }
@@ -149,5 +150,65 @@ export class EvacueeRegistrationComponent implements OnInit {
       hasPetCareReferral: null,
       hasPets: null,
     });
+  }
+
+  displayRegistration(registration: Registration | null): void {
+    // Set the local registration property
+    this.registration = registration;
+
+
+    const hoh = this.registration.headOfHousehold;
+    const primaryResidence = hoh.primaryResidence;
+    const mailingAddress = hoh.mailingAddress;
+
+    // Update the data on the form
+    this.form.patchValue({
+      restrictedAccess: this.registration.restrictedAccess,
+      headOfHousehold: {
+        firstName: hoh.firstName,
+        lastName: hoh.lastName,
+        nickname: hoh.nickname,
+        initials: hoh.initials,
+        gender: hoh.gender,
+        dob: hoh.dob,
+      },
+      registeringFamilyMembers: this.registration.registeringFamilyMembers,
+      familyMembers: hoh.familyMembers,
+      phoneNumber: hoh.phoneNumber,
+      phoneNumberAlt: hoh.phoneNumberAlt,
+      email: hoh.email,
+      hasMailingAddress: null,
+    });
+
+    if (primaryResidence != null) {
+      this.form.patchValue({
+        primaryResidenceInBC: isBcAddress(primaryResidence),
+        primaryResidence: {
+          addressSubtype: primaryResidence.addressSubtype,
+          addressLine1: primaryResidence.addressLine1,
+          postalCode: primaryResidence.postalCode,
+          community: primaryResidence.community,
+          city: primaryResidence.city,
+          province: primaryResidence.province,
+          country: primaryResidence.country,
+        },
+      });
+    }
+
+    if (mailingAddress != null) {
+      this.form.patchValue({
+        hasMailingAddress: true,
+        mailingAddressInBC: isBcAddress(mailingAddress),
+        mailingAddress: {
+          addressSubtype: mailingAddress.addressSubtype,
+          addressLine1: mailingAddress.addressLine1,
+          postalCode: mailingAddress.postalCode,
+          community: mailingAddress.community,
+          city: mailingAddress.city,
+          province: mailingAddress.province,
+          country: mailingAddress.country,
+        },
+      });
+    }
   }
 }
