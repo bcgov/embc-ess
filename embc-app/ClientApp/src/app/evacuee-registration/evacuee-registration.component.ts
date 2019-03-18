@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { Registration } from '../core/models';
 import { ActivatedRoute } from '@angular/router';
+import { RegistrationService } from '../core/services/registration.service';
 
 @Component({
   selector: 'app-evacuee-registration',
@@ -15,13 +16,14 @@ export class EvacueeRegistrationComponent implements OnInit {
 
   // The model for the form data collected
   form: FormGroup;
-  // registration: Registration | null;
+  registration: Registration | null;
   // the ess file number on its own is useful for looking up information from the DB
-  essFileNumber: string;
+  // essFileNumber: string;
 
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private registrationService: RegistrationService
     // private store: Store<AppState>, // ngrx app state
   ) {
     // build the form with formbuilder
@@ -43,7 +45,11 @@ export class EvacueeRegistrationComponent implements OnInit {
     // if there are route params we should grab them
     if (this.route.snapshot.params.essFileNumber) {
       // TODO: go get the evacuee from db eventually
-      this.essFileNumber = this.route.snapshot.params.essFileNumber;
+      this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
+        .subscribe(r => {
+          //get first registration for now
+          this.registration = r[0];
+        });
     }
   }
 

@@ -27,9 +27,9 @@ export class RegistrationService extends RestService {
         catchError(this.handleError)
       );
   }
-  getRegistrationByEssFileNumber(essFileNumber: string): Observable<Registration> {
+  getRegistrationByEssFileNumber(essFileNumber: string): Observable<Registration[]> {
     // TODO: dummy always returns first registry
-    return of(this.getRegistries()[0]);
+    return this.http.get<Registration[]>('api/registrations', { headers: this.headers });
     // return this.http.get<Registration>('api/registrations/' + essFileNumber);
   }
 }
