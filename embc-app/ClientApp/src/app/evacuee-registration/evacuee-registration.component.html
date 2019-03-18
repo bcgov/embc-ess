@@ -205,17 +205,18 @@
         <p class="required">
           Is your primary residence within BC?
         </p>
-        <div class="form-group">
+        <div class="form-group" formGroupName="primaryResidence">
+          {{form.value.primaryResidence|json}}
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="primaryResidenceInBC">
+            <input class="form-check-input" type="radio" value="true" formControlName="isBcAddress">
             <label class="form-check-label">Yes</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="primaryResidenceInBC">
+            <input class="form-check-input" type="radio" value="false" formControlName="isBcAddress">
             <label class="form-check-label">No</label>
           </div>
         </div>
-        <div *ngIf="form.value.primaryResidenceInBC===false" class="alert alert-danger" role="alert">
+        <div *ngIf="form.value.isBcAddress===false" class="alert alert-danger" role="alert">
           <h4 class="alert-heading">
             This Evacuee is a Stranded Traveller.
           </h4>
@@ -294,18 +295,18 @@
         </p>
         <div class="form-group">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="distinctMailingAddress">
+            <input class="form-check-input" type="radio" [value]="true" formControlName="hasMailingAddress">
             <label class="form-check-label">Yes</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="distinctMailingAddress">
+            <input class="form-check-input" type="radio" [value]="false" formControlName="hasMailingAddress">
             <label class="form-check-label">No</label>
           </div>
         </div>
         <div>
 
         </div>
-        <div class="card" *ngIf="form.value.distinctMailingAddress" formGroupName="mailingAddress">
+        <div class="card" *ngIf="form.value.hasMailingAddress" formGroupName="mailingAddress">
           <div class="card-body">
             <div class="row mb-2">
               <div class="col">
@@ -359,7 +360,7 @@
             <div class="row mb-2">
               <div class="col">
                 <label>Email Address</label>
-                <input type="email" class="form-control">
+                <input type="email" class="form-control" formControlName="email">
               </div>
             </div>
           </div>

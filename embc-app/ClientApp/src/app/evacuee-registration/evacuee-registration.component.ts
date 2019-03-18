@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RegistrationService } from '../core/services/registration.service';
-import { Registration, FamilyMember, isBcAddress, Community, Country, RelationshipType } from 'src/app/core/models';
+import { Registration, FamilyMember, isBcAddress, Community, Country, RelationshipType, HeadOfHousehold, Address } from 'src/app/core/models';
 
 
 @Component({
@@ -147,13 +147,13 @@ export class EvacueeRegistrationComponent implements OnInit {
       phoneNumber: '',
       phoneNumberAlt: '',
       email: '',
-      primaryResidenceInBC: null,
       primaryResidence: this.formBuilder.group({
         addressLine1: '',
         communityOrCity: '',
         provinceOrState: '',
         postalCodeOrZip: '',
         country: '',
+        isBcAddress: null,
       }),
       hasMailingAddress: null,
       distinctMailingAddress: null,
@@ -181,10 +181,12 @@ export class EvacueeRegistrationComponent implements OnInit {
     this.registration = registration;
 
     // TODO: Why does this stop working if there is no this in front?
-    const hoh = registration.headOfHousehold;
-    const primaryResidence = hoh.primaryResidence;
-    const mailingAddress = hoh.mailingAddress;
-    const familyMembers = hoh.familyMembers;
+    const familyMembers: FamilyMember[] = registration.headOfHousehold.familyMembers;
+    const primaryResidence: Address = registration.headOfHousehold.primaryResidence;
+    const mailingAddress: Address = registration.headOfHousehold.mailingAddress;
+
+    if (primaryResidence == null) { alert("Primary residence is null"); }
+    if (mailingAddress == null) { alert("Mailing address is null."); }
 
     // If the evacuee is here now then the defer to later of the registration of family members is now currently yes.
     if (registration.registeringFamilyMembers === 'yes-unsure') {
@@ -195,17 +197,17 @@ export class EvacueeRegistrationComponent implements OnInit {
     this.form.patchValue({
       restrictedAccess: registration.restrictedAccess as boolean,
       headOfHousehold: {
-        firstName: hoh.firstName as string,
-        lastName: hoh.lastName as string,
-        nickname: hoh.nickname as string,
-        initials: hoh.initials as string,
-        gender: hoh.gender as string,
-        dob: hoh.dob as Date,
+        firstName: registration.headOfHousehold.firstName as string,
+        lastName: registration.headOfHousehold.lastName as string,
+        nickname: registration.headOfHousehold.nickname as string,
+        initials: registration.headOfHousehold.initials as string,
+        gender: registration.headOfHousehold.gender as string,
+        dob: registration.headOfHousehold.dob as Date,
       },
       registeringFamilyMembers: registration.registeringFamilyMembers as string,
-      phoneNumber: hoh.phoneNumber as string,
-      phoneNumberAlt: hoh.phoneNumberAlt as string,
-      email: hoh.email as string,
+      phoneNumber: registration.headOfHousehold.phoneNumber as string,
+      phoneNumberAlt: registration.headOfHousehold.phoneNumberAlt as string,
+      email: registration.headOfHousehold.email as string,
     });
 
     // iterate over the array and collect each family member as a formgroup and put them into a form array
@@ -217,8 +219,9 @@ export class EvacueeRegistrationComponent implements OnInit {
 
     // add the primary residence back into the form
     if (primaryResidence != null) {
+      alert("Primary not null!")
       this.form.patchValue({
-        primaryResidenceInBC: isBcAddress(primaryResidence) as boolean,
+        // primaryResidenceInBC: isBcAddress(primaryResidence) as boolean,
         primaryResidence: {
           addressSubtype: primaryResidence.addressSubtype as string,
           addressLine1: primaryResidence.addressLine1 as string,
@@ -227,14 +230,15 @@ export class EvacueeRegistrationComponent implements OnInit {
           city: primaryResidence.city as string,
           province: primaryResidence.province as string,
           country: primaryResidence.country as Country,
+          isBcAddress: isBcAddress(primaryResidence) as boolean,
         },
       });
     }
     // add the mailing address back into the form
     if (mailingAddress != null) {
+      alert("Mailing not null!")
       this.form.patchValue({
         hasMailingAddress: true,
-        mailingAddressInBC: isBcAddress(mailingAddress) as boolean,
         mailingAddress: {
           addressSubtype: mailingAddress.addressSubtype as string,
           addressLine1: mailingAddress.addressLine1 as string,
@@ -243,6 +247,7 @@ export class EvacueeRegistrationComponent implements OnInit {
           city: mailingAddress.city as string,
           province: mailingAddress.province as string,
           country: mailingAddress.country as Country,
+          isBcAddress: isBcAddress(mailingAddress) as boolean,
         },
       });
     }
