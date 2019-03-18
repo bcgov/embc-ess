@@ -17,6 +17,7 @@ export class EvacueeRegistrationComponent implements OnInit {
 
   // The model for the form data collected
   form: FormGroup;
+
   registration: Registration | null;
   // the ess file number on its own is useful for looking up information from the DB
   // essFileNumber: string;
@@ -48,19 +49,26 @@ export class EvacueeRegistrationComponent implements OnInit {
       // TODO: go get the evacuee from db eventually
       this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
         .subscribe(r => {
-          // get first registration for now
+          // TODO: get first registration for now
           this.displayRegistration(r[0]);
         });
     }
   }
 
-  addFamilyMember(): void {
+  addFamilyMember(fmbr?: FamilyMember): void {
     // get the existing family members
     const familyMembers = this.familyMembers;
-    // push the new family member into the array
-    familyMembers.push(this.createFamilyMember());
-    // set the value for familymembers
-    this.form.setValue(familyMembers);
+    if (fmbr) {
+      // push the new family member into the array
+      familyMembers.push(this.createFamilyMember(fmbr));
+      // set the value for familymembers
+      this.form.setValue(familyMembers);
+    } else {
+      // push the new family member into the array
+      familyMembers.push(this.createFamilyMember());
+      // set the value for familymembers
+      this.form.setValue(familyMembers);
+    }
   }
   removeFamilyMember(i: number): void {
     // get the existing family members
@@ -68,25 +76,38 @@ export class EvacueeRegistrationComponent implements OnInit {
     familyMembers.removeAt(i);
     this.form.setValue(familyMembers);
   }
-  createFamilyMember(): FormGroup {
-    // make a new family member blank and return it.
-    return this.formBuilder.group({
-      firstName: '',
-      lastName: '',
-      nickname: '',
-      initials: '',
-      relationshipToEvacuee: '',
-      sameLastNameAsEvacuee: null,
-      personType: 'FMBR',
-      gender: null,
-      dob: null,
-    });
+  createFamilyMember(fmbr?: FamilyMember): FormGroup {
+    if (fmbr) {
+      return this.formBuilder.group({
+        firstName: fmbr.firstName as string,
+        lastName: fmbr.lastName as string,
+        nickname: fmbr.nickname as string,
+        initials: fmbr.initials as string,
+        relationshipToEvacuee: fmbr.relationshipToEvacuee as RelationshipType,
+        sameLastNameAsEvacuee: fmbr.sameLastNameAsEvacuee as boolean,
+        personType: 'FMBR',
+        gender: fmbr.gender as string,
+        dob: fmbr.dob as Date,
+      });
+    } else {
+      // make a new family member blank and return it.
+      return this.formBuilder.group({
+        firstName: '',
+        lastName: '',
+        nickname: '',
+        initials: '',
+        relationshipToEvacuee: '',
+        sameLastNameAsEvacuee: null,
+        personType: 'FMBR',
+        gender: null,
+        dob: null,
+      });
+    }
   }
   clearFamilyMembers(): void {
     // reset the list of family members
     this.clear(this.familyMembers);
   }
-
   // TODO: Refactor into utils method
   private clear(formArray: FormArray): void {
     while (formArray && formArray.length !== 0) {
@@ -123,7 +144,6 @@ export class EvacueeRegistrationComponent implements OnInit {
       disasterAffectDetails: null,
       registeringFamilyMembers: null,
       familyRecoveryPlan: '',
-      familyMembers: this.formBuilder.array([]),
       phoneNumber: '',
       phoneNumberAlt: '',
       email: '',
@@ -152,6 +172,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       hasPersonalServicesReferral: null,
       hasPetCareReferral: null,
       hasPets: null,
+      familyMembers: this.formBuilder.array([]), // array of formGroups
     });
   }
 
@@ -159,7 +180,8 @@ export class EvacueeRegistrationComponent implements OnInit {
     // Set the local registration property
     this.registration = registration;
 
-    const hoh = this.registration.headOfHousehold;
+    // TODO: Why does this stop working if there is no this in front?
+    const hoh = registration.headOfHousehold;
     const primaryResidence = hoh.primaryResidence;
     const mailingAddress = hoh.mailingAddress;
     const familyMembers = hoh.familyMembers;
@@ -181,21 +203,15 @@ export class EvacueeRegistrationComponent implements OnInit {
         dob: hoh.dob as Date,
       },
       registeringFamilyMembers: registration.registeringFamilyMembers as string,
-      familyMembers: null,
       phoneNumber: hoh.phoneNumber as string,
       phoneNumberAlt: hoh.phoneNumberAlt as string,
       email: hoh.email as string,
-      hasMailingAddress: null as boolean,
     });
 
     // iterate over the array and collect each family member as a formgroup and put them into a form array
     if (familyMembers != null) {
-      // collect all family members to form groups
-      const familyMembersFG: FormGroup[] = registration.headOfHousehold.familyMembers.map((m: FamilyMember) => this.formBuilder.group(m));
-      // collect all family members form groups in a formArray
-      // set the control in the form
-      this.form.patchValue({
-        familyMembers: this.formBuilder.array(familyMembersFG) as FormArray,
+      familyMembers.forEach((m: FamilyMember) => {
+        this.addFamilyMember(m);
       });
     }
 
