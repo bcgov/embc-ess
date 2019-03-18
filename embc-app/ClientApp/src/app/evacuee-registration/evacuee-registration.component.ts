@@ -208,6 +208,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       phoneNumber: registration.headOfHousehold.phoneNumber as string,
       phoneNumberAlt: registration.headOfHousehold.phoneNumberAlt as string,
       email: registration.headOfHousehold.email as string,
+      primaryResidence: registration.headOfHousehold.primaryResidence as Address
     });
 
     // iterate over the array and collect each family member as a formgroup and put them into a form array
