@@ -236,7 +236,7 @@ export class EvacueeRegistrationComponent implements OnInit {
 
     // add the primary residence back into the form
     if (primaryResidence != null) {
-      alert('Primary not null!');
+      // alert('Primary not null!');
       this.form.patchValue({
         // primaryResidenceInBC: isBcAddress(primaryResidence) as boolean,
         primaryResidence: {

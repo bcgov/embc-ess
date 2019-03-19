@@ -27,6 +27,13 @@ export class RegistrationService extends RestService {
         catchError(this.handleError)
       );
   }
+  putRegistration(data: Registration): Observable<Registration> {
+    return this.http.put<Registration>('api/registrations', data, { headers: this.headers })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   getRegistrationByEssFileNumber(essFileNumber: string): Observable<Registration[]> {
     // TODO: this needs to become its own api
     return this.http.get<Registration[]>('api/registrations');
