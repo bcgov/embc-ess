@@ -206,13 +206,12 @@
           Is your primary residence within BC?
         </p>
         <div class="form-group" formGroupName="primaryResidence">
-          {{form.value.primaryResidence|json}}
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" value="true" formControlName="isBcAddress">
+            <input class="form-check-input" type="radio" [value]="true" formControlName="isBcAddress">
             <label class="form-check-label">Yes</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" value="false" formControlName="isBcAddress">
+            <input class="form-check-input" type="radio" [value]="false" formControlName="isBcAddress">
             <label class="form-check-label">No</label>
           </div>
         </div>
@@ -223,7 +222,7 @@
           <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
         </div>
       </div>
-      <div class="mb-4" formGroupName="primaryResidence">
+      <div class="mb-4">
         <div class="card">
           <div class="card-body">
             <div class="row mb-2">
@@ -232,7 +231,7 @@
                 <input type="text" class="form-control" formControlName="addressLine1">
               </div>
             </div>
-            <div class="row mb-2">
+            <div class="row mb-2" formGroupName="primaryResidence">
               <div class="col">
                 <div requried="true">
                   <label>Community</label>
@@ -243,7 +242,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-3" formGroupName="primaryResidence">
                 <div requried="true">
                   <label>Province</label>
                   <select class="form-control" formControlName="provinceOrState">
@@ -252,30 +251,30 @@
                   </select>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-3" formGroupName="primaryResidence">
                 <div class="form-check">
                   <label required="true">Postal Code</label>
                   <input type="text" class="form-control" formControlName="postalCodeOrZip">
                 </div>
               </div>
             </div>
-            <div class="row mb-2">
+            <div class="row mb-2" formGroupName="primaryResidence">
               <div class="col-6">
                 <label required="true">Country</label>
                 <input type="text" class="form-control" value="Canada">
               </div>
             </div>
-            <div class="row mb-2">
+            <div class="row mb-2" formGroupName="headOfHousehold">
               <div class="col">
                 <label>Telephone / Mobile Number (10 digits)</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" formControlName="phoneNumber">
               </div>
               <div class="col">
                 <label>Alternate Telephone / Mobile Number</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" formControlName="phoneNumberAlt">
               </div>
             </div>
-            <div class="row mb-2">
+            <div class="row mb-2" formGroupName="headOfHousehold">
               <div class="col">
                 <label>Email Address</label>
                 <input type="email" class="form-control">

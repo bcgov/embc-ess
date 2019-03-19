@@ -136,6 +136,9 @@ export class EvacueeRegistrationComponent implements OnInit {
         initials: '',
         gender: null,
         dob: null,
+        phoneNumber: '',
+        phoneNumberAlt: '',
+        email: '',
       }),
       insuranceCode: '',
       dietaryNeeds: null,
@@ -144,9 +147,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       disasterAffectDetails: null,
       registeringFamilyMembers: null,
       familyRecoveryPlan: '',
-      phoneNumber: '',
-      phoneNumberAlt: '',
-      email: '',
+
       primaryResidence: this.formBuilder.group({
         addressLine1: '',
         communityOrCity: '',
@@ -185,9 +186,6 @@ export class EvacueeRegistrationComponent implements OnInit {
     const primaryResidence: Address = registration.headOfHousehold.primaryResidence;
     const mailingAddress: Address = registration.headOfHousehold.mailingAddress;
 
-    if (primaryResidence == null) { alert("Primary residence is null"); }
-    if (mailingAddress == null) { alert("Mailing address is null."); }
-
     // If the evacuee is here now then the defer to later of the registration of family members is now currently yes.
     if (registration.registeringFamilyMembers === 'yes-unsure') {
       registration.registeringFamilyMembers = 'yes';
@@ -203,11 +201,12 @@ export class EvacueeRegistrationComponent implements OnInit {
         initials: registration.headOfHousehold.initials as string,
         gender: registration.headOfHousehold.gender as string,
         dob: registration.headOfHousehold.dob as Date,
+        phoneNumber: registration.headOfHousehold.phoneNumber as string,
+        phoneNumberAlt: registration.headOfHousehold.phoneNumberAlt as string,
+        email: registration.headOfHousehold.email as string,
+
       },
       registeringFamilyMembers: registration.registeringFamilyMembers as string,
-      phoneNumber: registration.headOfHousehold.phoneNumber as string,
-      phoneNumberAlt: registration.headOfHousehold.phoneNumberAlt as string,
-      email: registration.headOfHousehold.email as string,
       primaryResidence: registration.headOfHousehold.primaryResidence as Address
     });
 
