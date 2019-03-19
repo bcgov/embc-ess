@@ -87,7 +87,7 @@ export class EvacueeRegistrationComponent implements OnInit {
         sameLastNameAsEvacuee: fmbr.sameLastNameAsEvacuee as boolean,
         personType: 'FMBR',
         gender: fmbr.gender as string,
-        dob: fmbr.dob as Date,
+        dob: new Date(fmbr.dob) as Date,
       });
     } else {
       // make a new family member blank and return it.
@@ -200,7 +200,7 @@ export class EvacueeRegistrationComponent implements OnInit {
         nickname: registration.headOfHousehold.nickname as string,
         initials: registration.headOfHousehold.initials as string,
         gender: registration.headOfHousehold.gender as string,
-        dob: registration.headOfHousehold.dob as Date,
+        dob: new Date(registration.headOfHousehold.dob) as Date,
         phoneNumber: registration.headOfHousehold.phoneNumber as string,
         phoneNumberAlt: registration.headOfHousehold.phoneNumberAlt as string,
         email: registration.headOfHousehold.email as string,
