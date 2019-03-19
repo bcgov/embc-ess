@@ -5,7 +5,10 @@ import { AppState } from '../store';
 import { state } from '@angular/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RegistrationService } from '../core/services/registration.service';
-import { Registration, FamilyMember, isBcAddress, Community, Country, RelationshipType, HeadOfHousehold, Address } from 'src/app/core/models';
+import {
+  Registration, FamilyMember, isBcAddress, Community, Country,
+  RelationshipType, HeadOfHousehold, Address
+} from 'src/app/core/models';
 
 
 @Component({
@@ -58,6 +61,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
         .subscribe(r => {
           // TODO: get first registration for now
+          // alert(JSON.stringify(r));
           this.displayRegistration(r[0]);
         });
     }
@@ -149,13 +153,13 @@ export class EvacueeRegistrationComponent implements OnInit {
         email: '',
       }),
       insuranceCode: '',
+      dietaryNeedsDetails: '',
       dietaryNeeds: null,
       medicationNeeds: null,
       requiresSupport: null,
       disasterAffectDetails: null,
       registeringFamilyMembers: null,
       familyRecoveryPlan: '',
-
       primaryResidence: this.formBuilder.group({
         addressLine1: '',
         communityOrCity: '',
@@ -163,9 +167,9 @@ export class EvacueeRegistrationComponent implements OnInit {
         postalCodeOrZip: '',
         country: '',
         isBcAddress: null,
+        isOtherAddress: null,
       }),
       hasMailingAddress: null,
-      distinctMailingAddress: null,
       mailingAddress: this.formBuilder.group({
         addressLine1: '',
         communityOrCity: '',
@@ -181,7 +185,10 @@ export class EvacueeRegistrationComponent implements OnInit {
       hasPersonalServicesReferral: null,
       hasPetCareReferral: null,
       hasPets: null,
+      referralOther: '',
+
       familyMembers: this.formBuilder.array([]), // array of formGroups
+      followUpDetails: '',
     });
   }
 
@@ -213,9 +220,11 @@ export class EvacueeRegistrationComponent implements OnInit {
         phoneNumberAlt: registration.headOfHousehold.phoneNumberAlt as string,
         email: registration.headOfHousehold.email as string,
 
-      },
+      } as HeadOfHousehold,
       registeringFamilyMembers: registration.registeringFamilyMembers as string,
-      primaryResidence: registration.headOfHousehold.primaryResidence as Address
+      primaryResidence: registration.headOfHousehold.primaryResidence as Address,
+      followUpDetails: registration.followUpDetails as string,
+      referralOther: registration.referralOther as string,
     });
 
     // iterate over the array and collect each family member as a formgroup and put them into a form array
@@ -227,7 +236,7 @@ export class EvacueeRegistrationComponent implements OnInit {
 
     // add the primary residence back into the form
     if (primaryResidence != null) {
-      alert("Primary not null!")
+      alert('Primary not null!');
       this.form.patchValue({
         // primaryResidenceInBC: isBcAddress(primaryResidence) as boolean,
         primaryResidence: {
@@ -239,12 +248,14 @@ export class EvacueeRegistrationComponent implements OnInit {
           province: primaryResidence.province as string,
           country: primaryResidence.country as Country,
           isBcAddress: isBcAddress(primaryResidence) as boolean,
+          // this line should call itself but unfortunately it calls itself infinitely.
+          // isOtherAddress: isOtherAddress(primaryResidence) as boolean,
         },
       });
     }
     // add the mailing address back into the form
     if (mailingAddress != null) {
-      alert("Mailing not null!")
+      alert('Mailing not null!');
       this.form.patchValue({
         hasMailingAddress: true,
         mailingAddress: {
