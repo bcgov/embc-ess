@@ -177,6 +177,8 @@ export class EvacueeRegistrationComponent implements OnInit {
       hasPersonalServicesReferral: null,
       hasPetCareReferral: null,
       hasPets: null,
+      referralOther: '',
+
       familyMembers: this.formBuilder.array([]), // array of formGroups
       followUpDetails: '',
     });
@@ -214,6 +216,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       registeringFamilyMembers: registration.registeringFamilyMembers as string,
       primaryResidence: registration.headOfHousehold.primaryResidence as Address,
       followUpDetails: registration.followUpDetails as string,
+      referralOther: registration.referralOther as string,
     });
 
     // iterate over the array and collect each family member as a formgroup and put them into a form array

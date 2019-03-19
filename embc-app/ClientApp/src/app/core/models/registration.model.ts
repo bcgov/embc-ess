@@ -17,9 +17,9 @@ export interface Registration {
   followUpDetails: string;
   insuranceCode: string;  // one of ['yes', 'yes-unsure', 'no', 'unsure']
   medicationNeeds: boolean;
-  selfRegisteredDate: Date | null; // datetime
   registrationCompletionDate: Date | null; // datetime
   registeringFamilyMembers: string;  // one of ['yes', 'yes-later', 'no']
+  selfRegisteredDate: Date | null; // datetime
 
   // Family state flags
   hasThreeDayMedicationSupply: boolean;
@@ -38,6 +38,7 @@ export interface Registration {
   requiresIncidentals: boolean;
   requiresTransportation: boolean;
   requiresSupport: boolean;
+  referralOther: string;
 
   // related entities
   headOfHousehold: HeadOfHousehold;
