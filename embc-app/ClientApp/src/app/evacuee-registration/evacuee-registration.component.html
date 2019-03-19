@@ -452,7 +452,7 @@
       </div>
       <div class="mb-4" *ngIf="form.value.medicationNeeds===true">
         <p class="required">
-          Do you have adequate medication for the next three days?
+          Do you have sufficient supply for the next 72 hours?
         </p>
         <div *ngIf="form.value.hasThreeDayMedicationSupply===false" class="alert alert-warning" role="alert">
           <h4 class="alert-heading">
@@ -510,6 +510,13 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
+      </div>
+      <!-- Follow up -->
+      <div class="mb-4">
+        <h3 class="blue-header">
+          FOLLOW-UP REQUIRED
+        </h3>
+        <textarea class="form-control" placeholder="Details" rows="4" formControlName="followUpDetails"></textarea>
       </div>
 
       <!-- Referrals -->
@@ -569,16 +576,6 @@
         </p>
         <textarea class="form-control" placeholder="Details" rows="4" formControlName="familyRecoveryPlan"></textarea>
       </div>
-      <!-- Follow up -->
-      <!--
-      <div class="mb-4">
-        <h3 class="blue-header">
-          FOLLOW-UP REQUIRED
-        </h3>
-        <textarea class="form-control" placeholder="Details" rows="4"></textarea>
-      </div>
-      -->
-
     </div>
 
     <!-- Form content for testing -->
