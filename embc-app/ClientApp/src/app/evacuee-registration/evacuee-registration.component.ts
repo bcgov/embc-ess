@@ -10,118 +10,6 @@ import {
   RelationshipType, HeadOfHousehold, Address
 } from 'src/app/core/models';
 
-const TESTER = {
-  id: '3dd31180-8d58-4f6c-95c2-102186b936e3',
-  restrictedAccess: false,
-  declarationAndConsent: true,
-  essFileNumber: 12356143,
-  dietaryNeeds: true,
-  dietaryNeedsDetails: 'Gluten free',
-  disasterAffectDetails: 'It was horrible...',
-  externalReferralsDetails: 'Some things were referred',
-  facility: 'Facility name',
-  familyRecoveryPlan: 'Do our best...',
-  followUpDetails: 'Some thing to follow up...',
-  insuranceCode: 'yes',
-  medicationNeeds: true,
-  selfRegisteredDate: null,
-  registrationCompletionDate: null,
-  registeringFamilyMembers: 'yes-later',
-  hasThreeDayMedicationSupply: true,
-  hasInquiryReferral: true,
-  hasHealthServicesReferral: true,
-  hasFirstAidReferral: true,
-  hasChildCareReferral: true,
-  hasPersonalServicesReferral: true,
-  hasPetCareReferral: true,
-  hasPets: true,
-  requiresAccommodation: true,
-  requiresClothing: true,
-  requiresFood: true,
-  requiresIncidentals: true,
-  requiresTransportation: true,
-  requiresSupport: true,
-  headOfHousehold: {
-    phoneNumber: '1234',
-    phoneNumberAlt: '1234143',
-    email: 'Curtis.laycarft@quartech.com',
-    primaryResidence: {
-      id: 'd3b03f54-bb3b-4daa-a6f7-c79c7dceaf1d',
-      addressSubtype: null,
-      addressLine1: 'asldkjfhlaksjfh',
-      addressLine2: null,
-      addressLine3: null,
-      postalCode: 'V8V8V8',
-      community: {
-        id: '747652f4-f4b3-424b-aa6d-cd5366e3f13a',
-        active: true,
-        name: 'Victoria',
-        regionalDistrict: {
-          id: '4c05ee84-1c3f-4e1c-9c1c-6c09fd765aa0',
-          active: true,
-          name: 'Capital Region',
-          region: {
-            id: 'd4f12809-1fe1-4b7a-9b06-6d865fe279fb',
-            active: true,
-            name: 'Vancouver Island'
-          }
-        }
-      },
-      city: 'Victoria',
-      province: 'BC',
-      country: 'Canada',
-      isBcAddress: false,
-      isOtherAddress: false
-    },
-    mailingAddress: {
-      id: 'd3b03f54-bb3b-4daa-a6f7-c79c7dceaf1d',
-      addressSubtype: null,
-      addressLine1: 'asldkjfhlaksjfh',
-      addressLine2: null,
-      addressLine3: null,
-      postalCode: 'V8V8V8',
-      community: {
-        id: '747652f4-f4b3-424b-aa6d-cd5366e3f13a',
-        active: true,
-        name: 'Victoria',
-        regionalDistrict: {
-          id: '4c05ee84-1c3f-4e1c-9c1c-6c09fd765aa0',
-          active: true,
-          name: 'Capital Region',
-          region: {
-            id: 'd4f12809-1fe1-4b7a-9b06-6d865fe279fb',
-            active: true,
-            name: 'Vancouver Island'
-          }
-        }
-      },
-    familyMembers: [
-        {
-            firstName: 'June',
-            lastName: '',
-            nickname: 'Baby',
-            initials: 'G',
-            relationshipToEvacuee: 'Extended',
-            sameLastNameAsEvacuee: true,
-            personType: 'FMBR',
-            gender: 'other',
-            dob: '2019-03-31',
-        }
-    ],
-    bcServicesNumber: null,
-    id: 'c7f5b285-3276-4a1e-8d1e-2f821a74987d',
-    active: null,
-    personType: 'HOH',
-    firstName: 'Curtis',
-    lastName: 'LayCraft',
-    nickname: 'Curty',
-    initials: 'J',
-    gender: 'male',
-    dob: '2019-03-28T00:00:00-07:00',
-    }
-    }
-}
-
 @Component({
   selector: 'app-evacuee-registration',
   templateUrl: './evacuee-registration.component.html',
@@ -139,8 +27,7 @@ export class EvacueeRegistrationComponent implements OnInit {
   // The model for the form data collected
   form: FormGroup;
 
-  // registration: Registration | null;
-  registration = TESTER;
+  registration: Registration | null;
   submission: any;
   // the ess file number on its own is useful for looking up information from the DB
   // essFileNumber: string;
@@ -156,28 +43,26 @@ export class EvacueeRegistrationComponent implements OnInit {
     this.initForm();
   }
 
+  ngOnInit() {
+    // if there are route params we should grab them
+    if (this.route.snapshot.params.essFileNumber) {
+      // TODO: go get the evacuee from db eventually
+      this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
+        .subscribe(r => {
+          // TODO: get first registration for now
+          this.displayRegistration(r[0]);
+        });
+    }
+  }
+
   // convenience getter for easy access to form fields
   get f() {
     return this.form.controls;
   }
-
   // Shortcuts for this.form.get(...)
   get familyMembers() {
     // this is a way to grab the familymembers in a typed way
     return this.f.familyMembers as FormArray;
-  }
-
-  ngOnInit() {
-    // if there are route params we should grab them
-    // if (this.route.snapshot.params.essFileNumber) {
-    //   // TODO: go get the evacuee from db eventually
-    //   this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
-    //     .subscribe(r => {
-    //       // TODO: get first registration for now
-    //       // alert(JSON.stringify(r));
-    //       this.displayRegistration(r[0]);
-    //     });
-    // }
   }
 
   addFamilyMember(fmbr?: FamilyMember): void {
