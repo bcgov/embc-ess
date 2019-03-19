@@ -1,5 +1,5 @@
 <div class="row">
-  <p>Registration: {{registration|json}}</p>
+  <!-- <p>Registration: {{registration|json}}</p> -->
   <!-- <p>Form: {{form.value | json}}</p> -->
 
   <div class="col col-lg-8">
@@ -17,10 +17,6 @@
     </label>
     {{name.value}} -->
 
-    <div class="mt-5">
-      <h4>Form State</h4>
-      <pre>{{ this.form.value | json }}</pre>
-    </div>
     <div [formGroup]="form">
       <!-- Task numer and registration information populated -->
       <!-- <div class="mb-4">
@@ -582,7 +578,8 @@
       <h3 class="blue-header">
         OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE
       </h3>
-      <textarea class="form-control" placeholder="Details" rows="4" formControlName="referralOther"></textarea>
+      <textarea class="form-control" placeholder="Details (TODO: Not working)" rows="4"
+        formControlName="referralOther"></textarea>
     </div>
     <!-- Form content for testing -->
     <div class="mt-5">
