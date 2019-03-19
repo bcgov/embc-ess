@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RegistrationService } from '../core/services/registration.service';
-import { Registration, FamilyMember, isBcAddress, Community, Country, RelationshipType, HeadOfHousehold, Address } from 'src/app/core/models';
+import {
+  Registration, FamilyMember, isBcAddress, Community, Country,
+  RelationshipType, HeadOfHousehold, Address
+} from 'src/app/core/models';
 
 
 @Component({
@@ -50,6 +53,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
         .subscribe(r => {
           // TODO: get first registration for now
+          alert(JSON.stringify(r));
           this.displayRegistration(r[0]);
         });
     }
@@ -205,7 +209,7 @@ export class EvacueeRegistrationComponent implements OnInit {
         phoneNumberAlt: registration.headOfHousehold.phoneNumberAlt as string,
         email: registration.headOfHousehold.email as string,
 
-      },
+      } as HeadOfHousehold,
       registeringFamilyMembers: registration.registeringFamilyMembers as string,
       primaryResidence: registration.headOfHousehold.primaryResidence as Address
     });
@@ -219,7 +223,7 @@ export class EvacueeRegistrationComponent implements OnInit {
 
     // add the primary residence back into the form
     if (primaryResidence != null) {
-      alert("Primary not null!")
+      alert('Primary not null!');
       this.form.patchValue({
         // primaryResidenceInBC: isBcAddress(primaryResidence) as boolean,
         primaryResidence: {
@@ -236,7 +240,7 @@ export class EvacueeRegistrationComponent implements OnInit {
     }
     // add the mailing address back into the form
     if (mailingAddress != null) {
-      alert("Mailing not null!")
+      alert('Mailing not null!');
       this.form.patchValue({
         hasMailingAddress: true,
         mailingAddress: {

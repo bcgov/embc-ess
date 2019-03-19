@@ -29,7 +29,7 @@ export class RegistrationService extends RestService {
   }
   getRegistrationByEssFileNumber(essFileNumber: string): Observable<Registration[]> {
     // TODO: this needs to become its own api
-    return this.http.get<Registration[]>('api/registrations', { headers: this.headers });
+    return this.http.get<Registration[]>('api/registrations');
     // return this.http.get<Registration>('api/registrations/' + essFileNumber);
   }
 }
