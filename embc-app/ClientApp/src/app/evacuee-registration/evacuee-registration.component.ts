@@ -161,7 +161,6 @@ export class EvacueeRegistrationComponent implements OnInit {
         isBcAddress: null,
       }),
       hasMailingAddress: null,
-      distinctMailingAddress: null,
       mailingAddress: this.formBuilder.group({
         addressLine1: '',
         communityOrCity: '',
