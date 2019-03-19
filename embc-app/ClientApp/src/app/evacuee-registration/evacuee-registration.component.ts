@@ -140,7 +140,7 @@ export class EvacueeRegistrationComponent implements OnInit {
 
   initForm(): void {
     this.form = this.formBuilder.group({
-      restrictedAccess: true,
+      restrictedAccess: null,
       headOfHousehold: this.formBuilder.group({
         firstName: '',
         lastName: '',
@@ -185,7 +185,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       hasPersonalServicesReferral: null,
       hasPetCareReferral: null,
       hasPets: null,
-      referralOther: '',
+      externalReferralsDetails: '',
 
       familyMembers: this.formBuilder.array([]), // array of formGroups
       followUpDetails: '',
@@ -224,7 +224,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       registeringFamilyMembers: registration.registeringFamilyMembers as string,
       primaryResidence: registration.headOfHousehold.primaryResidence as Address,
       followUpDetails: registration.followUpDetails as string,
-      referralOther: registration.referralOther as string,
+      externalReferralsDetails: registration.externalReferralsDetails as string,
     });
 
     // iterate over the array and collect each family member as a formgroup and put them into a form array

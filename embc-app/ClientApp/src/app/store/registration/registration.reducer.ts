@@ -51,7 +51,6 @@ const initialState: State = {
     hasPersonalServicesReferral: null,
     hasChildCareReferral: null,
     hasPetCareReferral: null,
-    referralOther: null,
     selfRegisteredDate: null,
     registrationCompletionDate: null,
     headOfHousehold: {

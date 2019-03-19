@@ -38,7 +38,6 @@ export interface Registration {
   requiresIncidentals: boolean;
   requiresTransportation: boolean;
   requiresSupport: boolean;
-  referralOther: string;
 
   // related entities
   headOfHousehold: HeadOfHousehold;
