@@ -271,4 +271,22 @@ export class EvacueeRegistrationComponent implements OnInit {
       });
     }
   }
+
+  formCleanup(registration: Registration) {
+    // TODO: make sure this is sent back to the api in a well formed way.
+    return registration;
+  }
+
+  submit() {
+    // assume that the registration data is dirty or unformatted
+    const reg = this.formCleanup(this.registration);
+    // Submit the registration
+    if (this.registration.id) {
+      // update
+      this.registrationService.putRegistration(this.registration).subscribe();
+    } else {
+      // post new
+      this.registrationService.createRegistration(this.registration).subscribe();
+    }
+  }
 }
