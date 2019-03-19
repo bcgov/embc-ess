@@ -29,6 +29,7 @@ export class EvacueeRegistrationComponent implements OnInit {
   form: FormGroup;
 
   registration: Registration | null;
+  submission: any;
   // the ess file number on its own is useful for looking up information from the DB
   // essFileNumber: string;
 
@@ -157,6 +158,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       dietaryNeeds: null,
       medicationNeeds: null,
       requiresSupport: null,
+      requiresAccomodation: null,
       disasterAffectDetails: null,
       registeringFamilyMembers: null,
       familyRecoveryPlan: '',
@@ -272,21 +274,57 @@ export class EvacueeRegistrationComponent implements OnInit {
     }
   }
 
-  formCleanup(registration: Registration) {
+  formCleanup(r) {
     // TODO: make sure this is sent back to the api in a well formed way.
-    return registration;
+    let reg: Registration = {
+      id: r.id,
+      restrictedAccess: r.restrictedAccess,
+      declarationAndConsent: r.declarationAndConsent,
+      essFileNumber: r.essFileNumber,
+      dietaryNeeds: r.dietaryNeeds,
+      dietaryNeedsDetails: r.dietaryNeedsDetails,
+      disasterAffectDetails: r.disasterAffectDetails,
+      externalReferralsDetails: r.externalReferralsDetails,
+      facility: r.facility,
+      familyRecoveryPlan: r.familyRecoveryPlan,
+      followUpDetails: r.followUpDetails,
+      insuranceCode: r.insuranceCode,
+      medicationNeeds: r.medicationNeeds,
+      selfRegisteredDate: r.selfRegisteredDate,
+      registrationCompletionDate: r.registrationCompletionDate,
+      registeringFamilyMembers: r.registeringFamilyMembers,
+      hasThreeDayMedicationSupply: r.hasThreeDayMedicationSupply,
+      hasInquiryReferral: r.hasInquiryReferral,
+      hasHealthServicesReferral: r.hasHealthServicesReferral,
+      hasFirstAidReferral: r.hasFirstAidReferral,
+      hasChildCareReferral: r.hasChildCareReferral,
+      hasPersonalServicesReferral: r.hasPersonalServicesReferral,
+      hasPetCareReferral: r.hasPetCareReferral,
+      hasPets: r.hasPets,
+      requiresAccomodation: r.requiresAccomodation,
+      requiresSupport: r.requiresSupport,
+      headOfHousehold: r.headOfHousehold,
+
+
+
+
+    };
+
+    return reg;
   }
 
   submit() {
     // assume that the registration data is dirty or unformatted
-    const reg = this.formCleanup(this.registration);
+    const reg = this.formCleanup(this.form.value);
     // Submit the registration
-    if (this.registration.id) {
+    if (this.registration) {
       // update
-      this.registrationService.putRegistration(this.registration).subscribe();
+      this.submission = reg;
+      // this.registrationService.putRegistration(this.registration).subscribe(r => { alert(JSON.stringify(r)); });
     } else {
       // post new
-      this.registrationService.createRegistration(this.registration).subscribe();
+      this.submission = reg;
+      // this.registrationService.createRegistration(this.registration).subscribe(r => { alert(JSON.stringify(r)); });
     }
   }
 }

@@ -22,12 +22,14 @@ export class RegistrationService extends RestService {
   }
 
   createRegistration(data: Registration): Observable<Registration> {
+    alert("createRegistration service");
     return this.http.post<Registration>('api/registrations', data, { headers: this.headers })
       .pipe(
         catchError(this.handleError)
       );
   }
   putRegistration(data: Registration): Observable<Registration> {
+    alert("putRegistration service");
     return this.http.put<Registration>('api/registrations', data, { headers: this.headers })
       .pipe(
         catchError(this.handleError)

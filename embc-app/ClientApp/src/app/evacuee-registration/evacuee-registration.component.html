@@ -1,7 +1,20 @@
 <div class="row">
-  <p>Registration: {{registration|json}}</p>
-  <!-- <p>Form: {{form.value | json}}</p> -->
+  <div class="col" (click)="submit()">
+    <h4>Input State</h4>
+    <pre>{{registration|json}}</pre>
+  </div>
+  <div class="col">
+    <h4>Submission State</h4>
+    <pre>{{submission|json}}</pre>
 
+  </div>
+  <!-- Form content for testing -->
+  <div class="col">
+    <h4>Form State</h4>
+    <pre>{{ this.form.value | json }}</pre>
+  </div>
+</div>
+<div class="row">
   <div class="col col-lg-8">
     <div class="mb-4">
       <h1>Add an Evacuee</h1>
@@ -601,11 +614,10 @@
       <textarea class="form-control" placeholder="Details (TODO: Not working)" rows="4"
         formControlName="externalReferralsDetails"></textarea>
     </div>
-    <!-- Form content for testing -->
-    <div class="mt-5">
-      <h4>Form State</h4>
-      <pre>{{ this.form.value | json }}</pre>
+    <div class="mb-4">
+      <button class="btn btn-primary" (click)="submit()">Submit</button>
     </div>
+
   </div>
 
   <!-- Information side bar -->
