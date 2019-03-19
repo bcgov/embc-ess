@@ -1,6 +1,6 @@
 <div class="row">
   <p>Registration: {{registration|json}}</p>
-  <p>Form: {{form.value | json}}</p>
+  <!-- <p>Form: {{form.value | json}}</p> -->
 
   <div class="col col-lg-8">
     <div class="mb-4">
@@ -17,7 +17,10 @@
     </label>
     {{name.value}} -->
 
-
+    <div class="mt-5">
+      <h4>Form State</h4>
+      <pre>{{ this.form.value | json }}</pre>
+    </div>
     <div [formGroup]="form">
       <!-- Task numer and registration information populated -->
       <!-- <div class="mb-4">
@@ -391,10 +394,10 @@
             <input class="form-check-input" type="radio" value="yes" formControlName="insuranceCode">
             <label class="form-check-label">Yes</label>
           </div>
-          <div class="form-check">
+          <!-- <div class="form-check">
             <input class="form-check-input" type="radio" value="yes-unsure" formControlName="insuranceCode">
             <label class="form-check-label">Yes, but I'm not sure if I have coverage for this event.</label>
-          </div>
+          </div> -->
           <div class="form-check">
             <input class="form-check-input" type="radio" value="no" formControlName="insuranceCode">
             <label class="form-check-label">No</label>
@@ -423,6 +426,11 @@
             <input class="form-check-input" type="radio" [value]="false" formControlName="dietaryNeeds">
             <label class="form-check-label">No</label>
           </div>
+        </div>
+        <!-- dietary needs details collection -->
+        <div *ngIf="form.value.dietaryNeeds">
+          <label>Please specify</label>
+          <input class="form-control" type="text" formControlName="dietaryNeedsDetails">
         </div>
       </div>
 
@@ -574,10 +582,10 @@
     </div>
 
     <!-- Form content for testing -->
-    <div class="mt-5">
+    <!-- <div class="mt-5">
       <h4>Form State</h4>
       <pre>{{ this.form.value | json }}</pre>
-    </div>
+    </div> -->
   </div>
 
   <!-- Information side bar -->

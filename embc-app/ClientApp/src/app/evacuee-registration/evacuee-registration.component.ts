@@ -53,7 +53,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
         .subscribe(r => {
           // TODO: get first registration for now
-          alert(JSON.stringify(r));
+          // alert(JSON.stringify(r));
           this.displayRegistration(r[0]);
         });
     }
@@ -145,13 +145,13 @@ export class EvacueeRegistrationComponent implements OnInit {
         email: '',
       }),
       insuranceCode: '',
+      dietaryNeedsDetails: '',
       dietaryNeeds: null,
       medicationNeeds: null,
       requiresSupport: null,
       disasterAffectDetails: null,
       registeringFamilyMembers: null,
       familyRecoveryPlan: '',
-
       primaryResidence: this.formBuilder.group({
         addressLine1: '',
         communityOrCity: '',
@@ -159,6 +159,7 @@ export class EvacueeRegistrationComponent implements OnInit {
         postalCodeOrZip: '',
         country: '',
         isBcAddress: null,
+        isOtherAddress: null,
       }),
       hasMailingAddress: null,
       mailingAddress: this.formBuilder.group({
@@ -234,6 +235,8 @@ export class EvacueeRegistrationComponent implements OnInit {
           province: primaryResidence.province as string,
           country: primaryResidence.country as Country,
           isBcAddress: isBcAddress(primaryResidence) as boolean,
+          // this line should call itself but unfortunately it calls itself infinitely.
+          // isOtherAddress: isOtherAddress(primaryResidence) as boolean,
         },
       });
     }
