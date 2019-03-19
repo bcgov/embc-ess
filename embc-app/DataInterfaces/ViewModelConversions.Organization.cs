@@ -15,7 +15,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     Id = source.Id.ToString(),
                     Name = source.Name,
                     BceidAccountNumber = source.BceidAccountNumber,
-                    Active = source.Active
+                    Active = source.Active,
+                    Externaluseridentifier = source.Externaluseridentifier
                 };
             }
             return result;
@@ -30,7 +31,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 {
                     Name = source.Name,
                     BceidAccountNumber = source.BceidAccountNumber,
-                    Active = source.Active
+                    Active = source.Active,
+                    Externaluseridentifier = source.Externaluseridentifier
                 };
                 if (source.Id != null)
                 {

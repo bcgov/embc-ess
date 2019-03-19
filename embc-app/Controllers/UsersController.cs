@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -18,13 +18,13 @@ using Newtonsoft.Json;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
-    public class UserController : Controller
+    public class UsersController : Controller
     {
         private readonly IConfiguration Configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public UserController (IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public UsersController (IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             Configuration = configuration;
             _httpContextAccessor = httpContextAccessor;

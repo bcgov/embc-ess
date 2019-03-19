@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Gov.Jag.Embc.Public.Models;
 using Gov.Jag.Embc.Interfaces;
 using Gov.Jag.Embc.Public.Utils;
+using Gov.Jag.Embc.Public.DataInterfaces;
 
 namespace Gov.Jag.Embc.Public.Authentication
 {
@@ -219,7 +220,7 @@ namespace Gov.Jag.Embc.Public.Authentication
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             ClaimsPrincipal principal = new ClaimsPrincipal();
-            /*
+            
             // get siteminder headers
             _logger.LogDebug("Parsing the HTTP headers for SiteMinder authentication credential");
 
@@ -230,7 +231,9 @@ namespace Gov.Jag.Embc.Public.Authentication
             {
                 
                 HttpContext context = Request.HttpContext;
-                
+
+                IDataInterface _dataInterface = (IDataInterface)context.RequestServices.GetService(typeof(IDataInterface));
+
                 IHostingEnvironment hostingEnv = (IHostingEnvironment)context.RequestServices.GetService(typeof(IHostingEnvironment));
 
                 UserSettings userSettings = new UserSettings();
@@ -392,7 +395,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                         userSettings.UserDisplayName = userId + " BCeIDContactType";
 
                         // search for a matching user.
-                        var existingContact = _dynamicsClient.GetContactByName(userId, "BCeIDContactType");
+                        var existingContact = _dataInterface.GetVolunteerByName(userId, "BCeIDContactType");
 
                         if (existingContact != null)
                         {
@@ -403,10 +406,10 @@ namespace Gov.Jag.Embc.Public.Authentication
                             siteMinderGuid = GuidUtility.CreateIdForDynamics("contact", userSettings.UserDisplayName).ToString();
                         }
 
-                        var existingBusiness = await _dynamicsClient.GetAccountByLegalName(userSettings.BusinessLegalName);
+                        var existingBusiness = _dataInterface.GetOrganizationByLegalName(userSettings.BusinessLegalName);
                         if (existingBusiness != null)
                         {
-                            siteMinderBusinessGuid = existingBusiness.BcgovBceid;
+                            siteMinderBusinessGuid = existingBusiness.Externaluseridentifier;
                         }
                         {
                             siteMinderBusinessGuid = GuidUtility.CreateIdForDynamics("account", userSettings.BusinessLegalName).ToString();
@@ -428,9 +431,9 @@ namespace Gov.Jag.Embc.Public.Authentication
                 // so we just do a Dynamics lookup on the siteMinderGuid.
 
                 _logger.LogDebug("Loading user external id = " + siteMinderGuid);
-                if (_dynamicsClient != null)
+                if (_dataInterface != null)
                 {
-                    userSettings.AuthenticatedUser = await _dynamicsClient.LoadUser(siteMinderGuid, context.Request.Headers, _logger);
+                    userSettings.AuthenticatedUser = await _dataInterface.LoadUser(siteMinderGuid, context.Request.Headers, _logger);
                 }
                 
                 _logger.LogDebug("After getting authenticated user = " + userSettings.GetJson());
@@ -490,11 +493,11 @@ namespace Gov.Jag.Embc.Public.Authentication
 
                     if (siteMinderBusinessGuid != null) // BCeID user
                     {
-                        var account = await _dynamicsClient.GetAccountBySiteminderBusinessGuid(siteMinderBusinessGuid);
-                        if (account != null && account.Accountid != null)
+                        var account = _dataInterface.GetOrganizationByExternalId(siteMinderBusinessGuid);
+                        if (account != null && account.Id != null)
                         {
-                            userSettings.AccountId = account.Accountid;
-                            userSettings.AuthenticatedUser.AccountId = Guid.Parse(account.Accountid);
+                            userSettings.AccountId = account.Id;
+                            userSettings.AuthenticatedUser.AccountId = Guid.Parse(account.Id);
                         }
                     }
                 }
@@ -562,12 +565,12 @@ namespace Gov.Jag.Embc.Public.Authentication
                 }
 
 
-                // add the worker settings if it is a new user.
-                if (userSettings.IsNewUserRegistration && userSettings.NewContact == null)
-                {
-                    userSettings.NewContact = new ViewModels.Contact();
-                    userSettings.NewContact.CopyHeaderValues(context.Request.Headers);
-                }
+                // add the worker settings if it is a new user.  EMBC ESS does not currently support a service card login.
+                //if (userSettings.IsNewUserRegistration && userSettings.NewContact == null)
+                //{
+                //    userSettings.NewContact = ViewModels.Person.Create("VOLN");
+                //    userSettings.NewContact.CopyHeaderValues(context.Request.Headers);
+                //}
 
                 // **************************************************
                 // Update user settings
@@ -584,8 +587,8 @@ namespace Gov.Jag.Embc.Public.Authentication
                 Console.WriteLine(exception);
                 throw;
             }
-            */
-            return AuthenticateResult.Success(new AuthenticationTicket(principal, null, Options.Scheme));
+            
+            
         }
 
         

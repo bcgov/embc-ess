@@ -57,6 +57,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             //return result;
         }
 
+        public Volunteer GetVolunteerByName(string firstName, string lastName)
+        {
+            Volunteer result = null;
+            var item = Db.Volunteers.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
+            if (item != null)
+            {
+                result = item.ToViewModel();
+            }
+            return result;
+        }
+
+
+
         public List<Country> GetCountries()
         {
             List<Country> countries = new List<Country>();
@@ -66,6 +79,28 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 countries.Add(country.ToViewModel());
             }
             return countries;
+        }
+
+        public Organization GetOrganizationByLegalName(string name)
+        {
+            Organization result = null;
+            var item = Db.Organizations.FirstOrDefault(x => x.Name == name);
+            if (item != null)
+            {
+                result = item.ToViewModel();
+            }
+            return result;
+        }
+
+        public Organization GetOrganizationByExternalId(string externalId)
+        {
+            Organization result = null;
+            var item = Db.Organizations.FirstOrDefault(x => x.Externaluseridentifier == externalId);
+            if (item != null)
+            {
+                result = item.ToViewModel();
+            }
+            return result;
         }
 
         public List<Region> GetRegions()
@@ -164,6 +199,29 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             Db.IncidentTasks.Update(entity);
             Db.SaveChanges();
             return Task.FromResult(entity.ToViewModel());
+        }
+
+        public Volunteer GetVolunteerByExternalId(string externalId)
+        {
+            Volunteer result = null;
+            var item = Db.Volunteers.FirstOrDefault(x => x.Externaluseridentifier == externalId);
+            if (item != null)
+            {
+                result = item.ToViewModel();
+            }
+            return result;
+        }
+
+        public Volunteer GetVolunteerById(string id)
+        {
+            Volunteer result = null;
+            Guid guid = new Guid(id);
+            var item = Db.Volunteers.FirstOrDefault(x => x.Id == guid);
+            if (item != null)
+            {
+                result = item.ToViewModel();
+            }
+            return result;
         }
     }
 }

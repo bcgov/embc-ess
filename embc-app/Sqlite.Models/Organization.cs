@@ -24,5 +24,8 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
 
         [MaxLength(255)]
         public string BceidAccountNumber { get; set; }
+
+        // siteminder guid
+        public string Externaluseridentifier { get; set; }
     }
 }
