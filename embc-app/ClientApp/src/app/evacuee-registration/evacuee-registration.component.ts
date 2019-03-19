@@ -10,6 +10,117 @@ import {
   RelationshipType, HeadOfHousehold, Address
 } from 'src/app/core/models';
 
+const TESTER = {
+  id: '3dd31180-8d58-4f6c-95c2-102186b936e3',
+  restrictedAccess: false,
+  declarationAndConsent: true,
+  essFileNumber: 12356143,
+  dietaryNeeds: true,
+  dietaryNeedsDetails: 'Gluten free',
+  disasterAffectDetails: 'It was horrible...',
+  externalReferralsDetails: 'Some things were referred',
+  facility: 'Facility name',
+  familyRecoveryPlan: 'Do our best...',
+  followUpDetails: 'Some thing to follow up...',
+  insuranceCode: 'yes',
+  medicationNeeds: true,
+  selfRegisteredDate: null,
+  registrationCompletionDate: null,
+  registeringFamilyMembers: 'yes-later',
+  hasThreeDayMedicationSupply: true,
+  hasInquiryReferral: true,
+  hasHealthServicesReferral: true,
+  hasFirstAidReferral: true,
+  hasChildCareReferral: true,
+  hasPersonalServicesReferral: true,
+  hasPetCareReferral: true,
+  hasPets: true,
+  requiresAccommodation: true,
+  requiresClothing: true,
+  requiresFood: true,
+  requiresIncidentals: true,
+  requiresTransportation: true,
+  requiresSupport: true,
+  headOfHousehold: {
+    phoneNumber: '1234',
+    phoneNumberAlt: '1234143',
+    email: 'Curtis.laycarft@quartech.com',
+    primaryResidence: {
+      id: 'd3b03f54-bb3b-4daa-a6f7-c79c7dceaf1d',
+      addressSubtype: null,
+      addressLine1: 'asldkjfhlaksjfh',
+      addressLine2: null,
+      addressLine3: null,
+      postalCode: 'V8V8V8',
+      community: {
+        id: '747652f4-f4b3-424b-aa6d-cd5366e3f13a',
+        active: true,
+        name: 'Victoria',
+        regionalDistrict: {
+          id: '4c05ee84-1c3f-4e1c-9c1c-6c09fd765aa0',
+          active: true,
+          name: 'Capital Region',
+          region: {
+            id: 'd4f12809-1fe1-4b7a-9b06-6d865fe279fb',
+            active: true,
+            name: 'Vancouver Island'
+          }
+        }
+      },
+      city: 'Victoria',
+      province: 'BC',
+      country: 'Canada',
+      isBcAddress: false,
+      isOtherAddress: false
+    },
+    mailingAddress: {
+      id: 'd3b03f54-bb3b-4daa-a6f7-c79c7dceaf1d',
+      addressSubtype: null,
+      addressLine1: 'asldkjfhlaksjfh',
+      addressLine2: null,
+      addressLine3: null,
+      postalCode: 'V8V8V8',
+      community: {
+        id: '747652f4-f4b3-424b-aa6d-cd5366e3f13a',
+        active: true,
+        name: 'Victoria',
+        regionalDistrict: {
+          id: '4c05ee84-1c3f-4e1c-9c1c-6c09fd765aa0',
+          active: true,
+          name: 'Capital Region',
+          region: {
+            id: 'd4f12809-1fe1-4b7a-9b06-6d865fe279fb',
+            active: true,
+            name: 'Vancouver Island'
+          }
+        }
+      },
+    familyMembers: [
+        {
+            firstName: 'June',
+            lastName: '',
+            nickname: 'Baby',
+            initials: 'G',
+            relationshipToEvacuee: 'Extended',
+            sameLastNameAsEvacuee: true,
+            personType: 'FMBR',
+            gender: 'other',
+            dob: '2019-03-31',
+        }
+    ],
+    bcServicesNumber: null,
+    id: 'c7f5b285-3276-4a1e-8d1e-2f821a74987d',
+    active: null,
+    personType: 'HOH',
+    firstName: 'Curtis',
+    lastName: 'LayCraft',
+    nickname: 'Curty',
+    initials: 'J',
+    gender: 'male',
+    dob: '2019-03-28T00:00:00-07:00',
+    }
+    }
+}
 
 @Component({
   selector: 'app-evacuee-registration',
@@ -28,7 +139,8 @@ export class EvacueeRegistrationComponent implements OnInit {
   // The model for the form data collected
   form: FormGroup;
 
-  registration: Registration | null;
+  // registration: Registration | null;
+  registration = TESTER;
   submission: any;
   // the ess file number on its own is useful for looking up information from the DB
   // essFileNumber: string;
@@ -57,15 +169,15 @@ export class EvacueeRegistrationComponent implements OnInit {
 
   ngOnInit() {
     // if there are route params we should grab them
-    if (this.route.snapshot.params.essFileNumber) {
-      // TODO: go get the evacuee from db eventually
-      this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
-        .subscribe(r => {
-          // TODO: get first registration for now
-          // alert(JSON.stringify(r));
-          this.displayRegistration(r[0]);
-        });
-    }
+    // if (this.route.snapshot.params.essFileNumber) {
+    //   // TODO: go get the evacuee from db eventually
+    //   this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
+    //     .subscribe(r => {
+    //       // TODO: get first registration for now
+    //       // alert(JSON.stringify(r));
+    //       this.displayRegistration(r[0]);
+    //     });
+    // }
   }
 
   addFamilyMember(fmbr?: FamilyMember): void {
@@ -189,44 +301,50 @@ export class EvacueeRegistrationComponent implements OnInit {
       hasPets: null,
       externalReferralsDetails: '',
 
+      hostCommunity: this.formBuilder.group({}), // which community is hosting
+      incidentTask: this.formBuilder.group({}), // which task is this from
+      // primaryResidenceCommunity: this.formBuilder.group({}), //easier to grab this outside of the headOfHousehold
+
       familyMembers: this.formBuilder.array([]), // array of formGroups
       followUpDetails: '',
     });
   }
 
-  displayRegistration(registration: Registration | null): void {
+  displayRegistration(r: Registration | null): void {
     // Set the local registration property
-    this.registration = registration;
+    this.registration = r;
 
     // TODO: Why does this stop working if there is no this in front?
-    const familyMembers: FamilyMember[] = registration.headOfHousehold.familyMembers;
-    const primaryResidence: Address = registration.headOfHousehold.primaryResidence;
-    const mailingAddress: Address = registration.headOfHousehold.mailingAddress;
+    const familyMembers: FamilyMember[] = r.headOfHousehold.familyMembers;
+    const primaryResidence: Address = r.headOfHousehold.primaryResidence;
+    const mailingAddress: Address = r.headOfHousehold.mailingAddress;
 
     // If the evacuee is here now then the defer to later of the registration of family members is now currently yes.
-    if (registration.registeringFamilyMembers === 'yes-unsure') {
-      registration.registeringFamilyMembers = 'yes';
+    if (r.registeringFamilyMembers === 'yes-unsure') {
+      r.registeringFamilyMembers = 'yes';
     }
 
     // Update the data on the form
     this.form.patchValue({
-      restrictedAccess: registration.restrictedAccess as boolean,
+      restrictedAccess: r.restrictedAccess as boolean,
       headOfHousehold: {
-        firstName: registration.headOfHousehold.firstName as string,
-        lastName: registration.headOfHousehold.lastName as string,
-        nickname: registration.headOfHousehold.nickname as string,
-        initials: registration.headOfHousehold.initials as string,
-        gender: registration.headOfHousehold.gender as string,
-        dob: new Date(registration.headOfHousehold.dob) as Date,
-        phoneNumber: registration.headOfHousehold.phoneNumber as string,
-        phoneNumberAlt: registration.headOfHousehold.phoneNumberAlt as string,
-        email: registration.headOfHousehold.email as string,
+        firstName: r.headOfHousehold.firstName as string,
+        lastName: r.headOfHousehold.lastName as string,
+        nickname: r.headOfHousehold.nickname as string,
+        initials: r.headOfHousehold.initials as string,
+        gender: r.headOfHousehold.gender as string,
+        dob: new Date(r.headOfHousehold.dob) as Date,
+        phoneNumber: r.headOfHousehold.phoneNumber as string,
+        phoneNumberAlt: r.headOfHousehold.phoneNumberAlt as string,
+        email: r.headOfHousehold.email as string,
+        // community: regis
 
       } as HeadOfHousehold,
-      registeringFamilyMembers: registration.registeringFamilyMembers as string,
-      primaryResidence: registration.headOfHousehold.primaryResidence as Address,
-      followUpDetails: registration.followUpDetails as string,
-      externalReferralsDetails: registration.externalReferralsDetails as string,
+      registeringFamilyMembers: r.registeringFamilyMembers as string,
+      primaryResidence: r.headOfHousehold.primaryResidence as Address,
+      followUpDetails: r.followUpDetails as string,
+      externalReferralsDetails: r.externalReferralsDetails as string,
+      hostCommunity: r.hostCommunity as Community,
     });
 
     // iterate over the array and collect each family member as a formgroup and put them into a form array
@@ -274,48 +392,56 @@ export class EvacueeRegistrationComponent implements OnInit {
     }
   }
 
-  formCleanup(r) {
+  formCleanup() {
     // TODO: make sure this is sent back to the api in a well formed way.
-    let reg: Registration = {
-      id: r.id,
-      restrictedAccess: r.restrictedAccess,
-      declarationAndConsent: r.declarationAndConsent,
-      essFileNumber: r.essFileNumber,
-      dietaryNeeds: r.dietaryNeeds,
-      dietaryNeedsDetails: r.dietaryNeedsDetails,
-      disasterAffectDetails: r.disasterAffectDetails,
-      externalReferralsDetails: r.externalReferralsDetails,
-      facility: r.facility,
-      familyRecoveryPlan: r.familyRecoveryPlan,
-      followUpDetails: r.followUpDetails,
-      insuranceCode: r.insuranceCode,
-      medicationNeeds: r.medicationNeeds,
-      selfRegisteredDate: r.selfRegisteredDate,
-      registrationCompletionDate: r.registrationCompletionDate,
-      registeringFamilyMembers: r.registeringFamilyMembers,
-      hasThreeDayMedicationSupply: r.hasThreeDayMedicationSupply,
-      hasInquiryReferral: r.hasInquiryReferral,
-      hasHealthServicesReferral: r.hasHealthServicesReferral,
-      hasFirstAidReferral: r.hasFirstAidReferral,
-      hasChildCareReferral: r.hasChildCareReferral,
-      hasPersonalServicesReferral: r.hasPersonalServicesReferral,
-      hasPetCareReferral: r.hasPetCareReferral,
-      hasPets: r.hasPets,
-      requiresAccomodation: r.requiresAccomodation,
-      requiresSupport: r.requiresSupport,
-      headOfHousehold: r.headOfHousehold,
+    const r = this.form.value;
+    const reg: any = {
+      id: r.id as string,
+      restrictedAccess: r.restrictedAccess as boolean,
+      declarationAndConsent: r.declarationAndConsent as boolean,
+      essFileNumber: r.essFileNumber as number,
 
+      dietaryNeeds: r.dietaryNeeds as boolean,
+      dietaryNeedsDetails: r.dietaryNeedsDetails as string,
+      disasterAffectDetails: r.disasterAffectDetails as string,
+      externalReferralsDetails: r.externalReferralsDetails as string,
+      facility: r.facility as string,
+      familyRecoveryPlan: r.familyRecoveryPlan as string,
+      followUpDetails: r.followUpDetails as string,
+      insuranceCode: r.insuranceCode as string,
+      medicationNeeds: r.medicationNeeds as boolean,
+      registrationCompletionDate: new Date() as Date, // this stamps whenever the data is cleaned up
+      registeringFamilyMembers: r.registeringFamilyMembers as string, // 'yes'or'no'
+      selfRegisteredDate: r.selfRegisteredDate as Date,
 
+      hasThreeDayMedicationSupply: r.hasThreeDayMedicationSupply as boolean,
+      hasInquiryReferral: r.hasInquiryReferral as boolean,
+      hasHealthServicesReferral: r.hasHealthServicesReferral as boolean,
+      hasFirstAidReferral: r.hasFirstAidReferral as boolean,
+      hasChildCareReferral: r.hasChildCareReferral as boolean,
+      hasPersonalServicesReferral: r.hasPersonalServicesReferral as boolean,
+      hasPetCareReferral: r.hasPetCareReferral as boolean,
+      hasPets: r.hasPets as boolean,
 
-
+      requiresAccomodation: r.requiresAccomodation as boolean,
+      requiresClothing: r.requiresClothing as boolean,
+      requiresFood: r.requiresFood as boolean,
+      requiresIncidentals: r.requiresIncidentals as boolean,
+      requiresTransportation: r.requiresTransportation as boolean,
+      requiresSupport: r.requiresSupport as boolean,
+      headOfHousehold: null,
     };
+    // the ones that are other entities
+    reg.headOfHousehold = r.headOfHousehold;
+    reg.incidentTask = r.incidentTask;
+    reg.hostCommunity = r.hostCommunity;
 
     return reg;
   }
 
   submit() {
     // assume that the registration data is dirty or unformatted
-    const reg = this.formCleanup(this.form.value);
+    const reg = this.formCleanup();
     // Submit the registration
     if (this.registration) {
       // update

@@ -1,15 +1,14 @@
 <div class="row">
-  <div class="col" (click)="submit()">
+  <div class="col-4" (click)="submit()">
     <h4>Input State</h4>
     <pre>{{registration|json}}</pre>
   </div>
-  <div class="col">
+  <div class="col-4">
     <h4>Submission State</h4>
     <pre>{{submission|json}}</pre>
-
   </div>
   <!-- Form content for testing -->
-  <div class="col">
+  <div class="col-3">
     <h4>Form State</h4>
     <pre>{{ this.form.value | json }}</pre>
   </div>
@@ -614,6 +613,8 @@
       <textarea class="form-control" placeholder="Details (TODO: Not working)" rows="4"
         formControlName="externalReferralsDetails"></textarea>
     </div>
+
+    <!-- Submit button! -->
     <div class="mb-4">
       <button class="btn btn-primary" (click)="submit()">Submit</button>
     </div>
@@ -637,6 +638,8 @@
 
   <!-- TODO: Delete this spacer hack -->
   <div class="col mb-6 mt-6">
-    <h3>TODO: Delete this spacer that unhides the content form under the footer.</h3>
+    <h3>
+      TODO: Delete this spacer that unhides the content form under the footer.
+    </h3>
   </div>
 </div>

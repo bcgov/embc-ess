@@ -3,7 +3,7 @@ import { HeadOfHousehold, Community, IncidentTask, Volunteer } from './';
 export interface Registration {
   // Important
   id: string | null;
-  restrictedAccess: boolean | true;
+  restrictedAccess: boolean;
   declarationAndConsent: boolean;
   essFileNumber: number | null;
 
