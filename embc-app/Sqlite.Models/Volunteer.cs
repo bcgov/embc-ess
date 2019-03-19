@@ -19,8 +19,12 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         public bool? IsPrimaryContact { get; set; }
         public bool? CanAccessRestrictedFiles { get; set; }
 
+        // siteminder guid
+        public string Externaluseridentifier { get; set; }
+
         // related entities
         public Organization Organization { get; set; }
+
 
         public Volunteer()
         {

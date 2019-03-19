@@ -10,6 +10,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Person GetPersonByBceidGuid(string bceidGuid);
 
+        Volunteer GetVolunteerByName(string firstName, string lastName);
+
         Person CreatePerson(Person person);
 
         // Registrations
@@ -32,5 +34,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         List<RegionalDistrict> GetRegionalDistricts();
 
         List<FamilyRelationshipType> GetFamilyRelationshipTypes();
+
+        Organization GetOrganizationByLegalName(string name);
+        Organization GetOrganizationByExternalId(string externalId);
+
+        Volunteer GetVolunteerByExternalId(string externalId);
+        Volunteer GetVolunteerById(string Id);
+
     }
 }

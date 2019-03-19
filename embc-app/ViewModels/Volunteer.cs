@@ -12,6 +12,9 @@ namespace Gov.Jag.Embc.Public.ViewModels
         // related entities
         public Organization Organization { get; set; }
 
+        // siteminder guid
+        public string Externaluseridentifier { get; set; }
+
         public Volunteer()
         {
             PersonType = "VOLN";
