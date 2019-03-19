@@ -1,5 +1,6 @@
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Utils;
+using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -21,13 +22,15 @@ namespace Gov.Jag.Embc.Public.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger _logger;
         private readonly IHostingEnvironment _env;
+        private readonly IUrlHelper urlHelper;
 
         public RegistrationsController(
             IConfiguration configuration,
             IHttpContextAccessor httpContextAccessor,
             ILoggerFactory loggerFactory,
             IHostingEnvironment env,
-            IDataInterface dataInterface
+            IDataInterface dataInterface,
+            IUrlHelper urlHelper
         )
         {
             Configuration = configuration;
@@ -35,20 +38,37 @@ namespace Gov.Jag.Embc.Public.Controllers
             _httpContextAccessor = httpContextAccessor;
             _logger = loggerFactory.CreateLogger(typeof(PeopleController));
             this._env = env;
+            this.urlHelper = urlHelper;
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        [HttpGet()]
+        [HttpGet(Name = nameof(GetAll))]
         [AllowAnonymous]
         public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters queryParameters)
         {
             try
             {
-                IQueryable<ViewModels.Registration> result = await _dataInterface.GetRegistrations(queryParameters);
-                return Json(result);
+                var results = await _dataInterface.GetRegistrations(queryParameters);
+
+                var toReturn = await PaginatedList<ViewModels.Registration>.CreateAsync(results, queryParameters.Offset, queryParameters.Limit);
+
+                // TODO: provide values for pagination metadata...
+                var paginationMetadata = new PaginationMetadata()
+                {
+                    CurrentPage = toReturn.GetCurrentPage(),
+                    PageSize = toReturn.Limit,
+                    TotalCount = toReturn.TotalItemCount,
+                    TotalPages = toReturn.GetTotalPages()
+                };
+
+                return Json(new
+                {
+                    data = toReturn,
+                    metadata = paginationMetadata
+                });
             }
             catch (RestException error)
             {
