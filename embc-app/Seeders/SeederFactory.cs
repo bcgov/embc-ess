@@ -1,9 +1,10 @@
-﻿
+
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -21,9 +22,7 @@ namespace Gov.Embc.Public.Seeders
         private readonly ILogger _logger;
         private readonly IConfiguration _configuration;
 
-
         private readonly List<Seeder<T>> _seederInstances = new List<Seeder<T>>();
-        
 
         /// <summary>
         /// SeedFactory Constructor
@@ -31,14 +30,14 @@ namespace Gov.Embc.Public.Seeders
         /// <param name="configuration"></param>
         /// <param name="env"></param>
         /// <param name="loggerFactory"></param>
-        public SeedFactory(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory)        {
+        public SeedFactory(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
             _env = env;
             _loggerFactory = loggerFactory;
             _logger = _loggerFactory.CreateLogger(typeof(SeedFactory<T>));
             _configuration = configuration;
 
             LoadSeeders();
-            _seederInstances.Sort(new SeederComparer<T>());
         }
 
         private void LoadSeeders()
@@ -47,6 +46,7 @@ namespace Gov.Embc.Public.Seeders
 
             Assembly assembly = typeof(SeedFactory<T>).GetTypeInfo().Assembly;
             List<Type> types = assembly.GetTypes().Where(t => t.GetTypeInfo().IsSubclassOf(typeof(Seeder<T>))).ToList();
+
             foreach (Type type in types)
             {
                 _logger.LogDebug($"\tCreating instance of {type.Name}...");
@@ -62,42 +62,38 @@ namespace Gov.Embc.Public.Seeders
         /// <param name="context"></param>
         public void Seed(T context)
         {
-            _seederInstances.ForEach(seeder =>
+            _seederInstances.Sort(new SeederComparer<T>());
+            foreach (var item in _seederInstances)
             {
-                seeder.Seed(context);
-            });
+                item.Seed(context);
+            }
         }
 
         private class SeederComparer<TY> : Comparer<Seeder<TY>> where TY : SqliteContext
-        {            
+        {
+
             public override int Compare(Seeder<TY> x, Seeder<TY> y)
             {
+
                 // < 0 x is less than y
                 // = 0 same
                 // > 0 x greater than y
                 int rtnValue = 0;
-                if (y != null && x != null && (x.InvokeAfter == y.InvokeAfter))
+                if (y != null && x != null && (x.InvokeOrder == y.InvokeOrder))
                 {
                     rtnValue = 0;
                 }
-
-                if (x != null &&  y != null && (x.InvokeAfter == null && y.InvokeAfter != null))
+                else if (x != null && y != null && (x.InvokeOrder < y.InvokeOrder))
                 {
                     rtnValue = -1;
                 }
-
-                if (y != null && x != null && (x.GetType() == y.InvokeAfter))
-                {
-                    rtnValue = -1;
-                }
-
-                if (y != null && x != null && (x.InvokeAfter == y.GetType()))
+                else
                 {
                     rtnValue = 1;
                 }
 
                 return rtnValue;
-            }            
+            }
         }
     }
 }

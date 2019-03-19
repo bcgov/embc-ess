@@ -86,10 +86,10 @@ def tagLatestStable(environment, backupTag, imageStream) {
 
 def deployAndVerify(srcHash, environment, imageStream) {
   echo "Deploying ${APP_NAME} to ${environment}"
-  tagImage(srcHash, environment, "pill-press-prod")
+  tagImage(srcHash, environment, "embcess")
   // verify deployment to an environment; e.g. [your-project-name]-dev
   openshiftVerifyDeployment(
-    deploymentConfig: "pill-press",
+    deploymentConfig: "embcess",
     namespace: "${PROJECT_NAMESPACE}-${environment}",
     waitTime: '900000'
   )
@@ -147,7 +147,8 @@ node('master') {
 		try {
 		  // hold on to a copy of the last stable DEV environment (in case the upcoming deployment fails...)
 		  tagLatestStable(environment, stableTag, IMAGESTREAM_NAME)
-		  deployAndVerify(test, environment, "embcess")
+		  IMAGE_HASH = getLatestHash(IMAGESTREAM_NAME)
+		  deployAndVerify(IMAGE_HASH, environment, "embcess")
 		  // all is good!
 		  notifyGood(
 			"New ${APP_NAME} in ${environment} :)",

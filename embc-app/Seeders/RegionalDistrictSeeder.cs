@@ -13,7 +13,7 @@ namespace Gov.Embc.Public.Seeders
     {
         private readonly string[] _profileTriggers = { AllProfiles };
 
-        public RegionalDistrictSeeder(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory  loggerFactory) 
+        public RegionalDistrictSeeder(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory)
             : base(configuration, env, loggerFactory)
         { }
 
@@ -21,8 +21,10 @@ namespace Gov.Embc.Public.Seeders
 
         protected override void Invoke(SqliteContext context)
         {
-            UpdateRegionalDistricts(context);            
+            UpdateRegionalDistricts(context);
         }
+
+        public override int InvokeOrder => 1;
 
         private void UpdateRegionalDistricts(SqliteContext context)
         {
@@ -30,10 +32,10 @@ namespace Gov.Embc.Public.Seeders
 
             foreach (RegionalDistrict RegionalDistrict in seedRegionalDistricts)
             {
-                context.UpdateSeedRegionalDistrictInfo(RegionalDistrict);                
+                context.UpdateSeedRegionalDistrictInfo(RegionalDistrict);
             }
 
-            AddInitialRegionalDistricts(context);            
+            AddInitialRegionalDistricts(context);
         }
 
         private void AddInitialRegionalDistricts(SqliteContext context)
@@ -42,25 +44,25 @@ namespace Gov.Embc.Public.Seeders
             if (string.IsNullOrEmpty(RegionalDistrictInitializationFilename))
             {
                 // default to sample data, which is stored in the "SeedData" directory.
-                RegionalDistrictInitializationFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedData" + Path.DirectorySeparatorChar + "RegionalDistricts.json"); 
+                RegionalDistrictInitializationFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SeedData" + Path.DirectorySeparatorChar + "RegionalDistricts.json");
             }
             context.AddInitialRegionalDistrictsFromFile(RegionalDistrictInitializationFilename);
         }
 
         private List<RegionalDistrict> GetSeedRegionalDistricts()
         {
-            List<RegionalDistrict> jurisdictions = new List<RegionalDistrict>(GetDefaultRegionalDistricts());
-                
+            List<RegionalDistrict> regionalDistricts = new List<RegionalDistrict>(GetDefaultRegionalDistricts());
+
             if (IsProductionEnvironment)
             {
-                jurisdictions.AddRange(GetProdRegionalDistricts());
+                regionalDistricts.AddRange(GetProdRegionalDistricts());
             }
             else
             {
-                jurisdictions.AddRange(GetDevRegionalDistricts());
+                regionalDistricts.AddRange(GetDevRegionalDistricts());
             }
 
-            return jurisdictions;
+            return regionalDistricts;
         }
 
         /// <summary>
@@ -76,7 +78,7 @@ namespace Gov.Embc.Public.Seeders
         /// </summary>
         private List<RegionalDistrict> GetDevRegionalDistricts()
         {
-            return new List<RegionalDistrict>();            
+            return new List<RegionalDistrict>();
         }
 
         /// <summary>

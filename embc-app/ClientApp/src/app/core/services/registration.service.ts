@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { CoreModule } from '../core.module';
@@ -26,5 +26,10 @@ export class RegistrationService extends RestService {
       .pipe(
         catchError(this.handleError)
       );
+  }
+  getRegistrationByEssFileNumber(essFileNumber: string): Observable<Registration[]> {
+    // TODO: this needs to become its own api
+    return this.http.get<Registration[]>('api/registrations', { headers: this.headers });
+    // return this.http.get<Registration>('api/registrations/' + essFileNumber);
   }
 }

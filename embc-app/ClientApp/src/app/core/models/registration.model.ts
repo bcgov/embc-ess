@@ -1,9 +1,9 @@
-import { HeadOfHousehold, FamilyMember, Community, IncidentTask, Volunteer } from './';
+import { HeadOfHousehold, Community, IncidentTask, Volunteer } from './';
 
 export interface Registration {
   // Important
   id: string | null;
-  restrictedAccess: boolean;
+  restrictedAccess: boolean | true;
   declarationAndConsent: boolean;
   essFileNumber: number | null;
 

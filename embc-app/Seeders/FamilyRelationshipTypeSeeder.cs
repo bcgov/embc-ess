@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -23,6 +23,8 @@ namespace Gov.Embc.Public.Seeders
         {
             UpdateEntities(context);
         }
+
+        public override int InvokeOrder => 5;
 
         private void UpdateEntities(SqliteContext context)
         {
