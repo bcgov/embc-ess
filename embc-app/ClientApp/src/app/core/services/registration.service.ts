@@ -94,7 +94,7 @@ const TEST: Registration[] = [
           }
         },
         city: 'Calgary',
-        province: 'AB',
+        province: 'BC',
         country: {
           id: 'alksjfh',
           name: 'Canada'

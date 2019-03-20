@@ -233,6 +233,8 @@ export class EvacueeRegistrationComponent implements OnInit {
       incidentTask: null, // which task is this from
       hostCommunity: null, // which community is hosting
       completedBy: null,
+      primaryResidenceInBc: null,
+      mailingAddressInBc: null,
     });
   }
 
@@ -247,6 +249,9 @@ export class EvacueeRegistrationComponent implements OnInit {
       if (r.registeringFamilyMembers === 'yes-later') {
         r.registeringFamilyMembers = 'yes';
       }
+
+      const primaryResidenceInBc: boolean = this.isBcAddress(primaryResidence);
+      const mailingAddressInBc: boolean = this.isBcAddress(mailingAddress);
 
       // Update the data on the form from the data included from the API
       this.form.patchValue({
@@ -299,7 +304,8 @@ export class EvacueeRegistrationComponent implements OnInit {
         completedBy: r.completedBy as Volunteer,
         hostCommunity: hostCommunity as Community,
         incidentTask: incidentTask as IncidentTask,
-
+        primaryResidenceInBc: primaryResidenceInBc as boolean,
+        mailingAddressInBc: mailingAddressInBc as boolean,
       });
       // alert(JSON.stringify(primaryResidence.province));
 
@@ -323,7 +329,6 @@ export class EvacueeRegistrationComponent implements OnInit {
       if (primaryResidence != null) {
         // alert('Primary not null!');
         this.form.patchValue({
-          primaryResidenceInBC: isBcAddress(primaryResidence) as boolean,
           hohPrimaryResidence: {
             addressSubtype: r.headOfHousehold.primaryResidence.addressSubtype as string,
             addressLine1: r.headOfHousehold.primaryResidence.addressLine1 as string,
@@ -333,6 +338,7 @@ export class EvacueeRegistrationComponent implements OnInit {
             // TODO: why not submitting community information?
             community: r.headOfHousehold.primaryResidence.community as Community,
             country: r.headOfHousehold.primaryResidence.country as Country,
+            isBcAddress: primaryResidenceInBc as boolean,
             // this line should call itself but unfortunately it calls itself infinitely.
             // isOtherAddress: isOtherAddress(primaryResidence) as boolean,
           },
@@ -349,6 +355,7 @@ export class EvacueeRegistrationComponent implements OnInit {
             city: mailingAddress.city as string,
             province: mailingAddress.province as string,
             country: mailingAddress.country as Country,
+            isBcAddress: mailingAddressInBc as boolean,
           },
         });
       }
