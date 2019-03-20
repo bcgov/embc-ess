@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col" (click)="submit()">
     <h4>Input State</h4>
-    <pre>{{registration|json}}</pre>
+    <pre>{{registration | json}}</pre>
   </div>
   <!-- <div class="col">
     <h4>Submission State</h4>
@@ -10,7 +10,7 @@
   <!-- Form content for testing -->
   <div class="col">
     <h4>Form State</h4>
-    <pre>{{ this.form.value|json}}</pre>
+    <pre>{{ this.form.value | json}}</pre>
   </div>
 </div>
 <div class="row">
@@ -312,7 +312,7 @@
       <!-- CONFIRM MAILING ADDRESS FLOW
         TODO: community dropdown
       -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           MAILING ADDRESS
         </h3>
@@ -389,7 +389,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Disaster affect information -->
       <!-- CONFIRMED WORKING -->
@@ -512,7 +512,7 @@
 
       <!-- Next steps -->
       <!-- CONFIRM -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           NEXT STEPS
         </h3>
@@ -530,7 +530,40 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-      </div> -->
+      </div>
+
+      <div class="mb-4" *ngIf="form.value.requiresSupport===true">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" formControlName="requiresFood">
+          <label class="form-check-label">
+            Food
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" formControlName="requiresClothing">
+          <label class="form-check-label">
+            Clothing
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" formControlName="requiresAccommodation">
+          <label class="form-check-label">
+            Accommodation
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" formControlName="requiresIncidentals">
+          <label class="form-check-label">
+            Incidentals
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" formControlName="requiresTransportation">
+          <label class="form-check-label">
+            Transportation
+          </label>
+        </div>
+      </div>
 
       <!-- Follow up -->
       <!-- CONFIRMED -->
@@ -543,7 +576,7 @@
 
       <!-- Referrals -->
       <!-- CONFIRMED -->
-      <div class="mb-4" *ngIf="form.value.requiresSupport===true">
+      <div class="mb-4">
         <h3 class="blue-header">
           REFERRALS MADE WITHIN RECEPTION CENTER
         </h3>
@@ -589,6 +622,7 @@
       </div>
 
       <!-- Family recovery planning -->
+      <!-- CONFIRMED -->
       <!-- <div class="mb-4">
         <h3 class="blue-header">
           FAMILY RECOVERY PLANS (IMMEDIATE & LONG TERM)

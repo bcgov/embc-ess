@@ -285,20 +285,25 @@ export class EvacueeRegistrationComponent implements OnInit {
         selfRegisteredDate: r.selfRegisteredDate as Date,
         registrationCompletionDate: r.registrationCompletionDate as Date,
         registeringFamilyMembers: r.registeringFamilyMembers as string,
+
         hasThreeDayMedicationSupply: r.hasThreeDayMedicationSupply as boolean,
+
         hasInquiryReferral: r.hasInquiryReferral as boolean,
         hasHealthServicesReferral: r.hasHealthServicesReferral as boolean,
         hasFirstAidReferral: r.hasFirstAidReferral as boolean,
         hasChildCareReferral: r.hasChildCareReferral as boolean,
         hasPersonalServicesReferral: r.hasPersonalServicesReferral as boolean,
         hasPetCareReferral: r.hasPetCareReferral as boolean,
+
         hasPets: r.hasPets as boolean,
+
         requiresAccommodation: r.requiresAccommodation as boolean,
         requiresClothing: r.requiresClothing as boolean,
         requiresFood: r.requiresFood as boolean,
         requiresIncidentals: r.requiresIncidentals as boolean,
         requiresTransportation: r.requiresTransportation as boolean,
         requiresSupport: r.requiresSupport as boolean,
+
         headOfHousehold: {
           id: r.headOfHousehold.id as string,
           active: r.headOfHousehold.active as boolean,
