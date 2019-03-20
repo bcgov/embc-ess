@@ -1,21 +1,21 @@
-using System;
-using System.Security.Claims;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.Models;
+using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Gov.Jag.Embc.Public.Models;
-using Gov.Jag.Embc.Interfaces;
-using Gov.Jag.Embc.Public.Utils;
-using Gov.Jag.Embc.Public.DataInterfaces;
+using System;
+using System.Security.Claims;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Authentication
 {
     #region SiteMinder Authentication Options
+
     /// <summary>
     /// Options required for setting up SiteMinder Authentication
     /// </summary>
@@ -33,6 +33,7 @@ namespace Gov.Jag.Embc.Public.Authentication
 
         //BCeId Values
         private const string ConstSiteMinderBusinessGuidKey = "smgov_businessguid";
+
         private const string ConstSiteMinderBusinessLegalNameKey = "smgov_businesslegalname";
 
         //BC Services Card
@@ -174,7 +175,10 @@ namespace Gov.Jag.Embc.Public.Authentication
         /// </summary>
         public string DevDefaultUserId { get; set; }
     }
-    #endregion    
+
+    #endregion SiteMinder Authentication Options
+
+
 
     /// <summary>
     /// Setup Siteminder Authentication Handler
@@ -220,7 +224,7 @@ namespace Gov.Jag.Embc.Public.Authentication
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             ClaimsPrincipal principal = new ClaimsPrincipal();
-            
+
             // get siteminder headers
             _logger.LogDebug("Parsing the HTTP headers for SiteMinder authentication credential");
 
@@ -229,7 +233,6 @@ namespace Gov.Jag.Embc.Public.Authentication
             bool isBCSCDeveloperLogin = false;
             try
             {
-                
                 HttpContext context = Request.HttpContext;
 
                 IDataInterface _dataInterface = (IDataInterface)context.RequestServices.GetService(typeof(IDataInterface));
@@ -259,52 +262,52 @@ namespace Gov.Jag.Embc.Public.Authentication
                 // **************************************************
                 //if (!hostingEnv.IsProduction())
                 //{
-                    // check for a fake BCeID login in dev mode
-                    string temp = context.Request.Cookies[options.DevAuthenticationTokenKey];
+                // check for a fake BCeID login in dev mode
+                string temp = context.Request.Cookies[options.DevAuthenticationTokenKey];
+
+                if (string.IsNullOrEmpty(temp)) // could be an automated test user.
+                {
+                    temp = context.Request.Headers["DEV-USER"];
+                }
+
+                if (!string.IsNullOrEmpty(temp))
+                {
+                    if (temp.Contains("::"))
+                    {
+                        var temp2 = temp.Split("::");
+                        userId = temp2[0];
+                        if (temp2.Length >= 2)
+                            devCompanyId = temp2[1];
+                        else
+                            devCompanyId = temp2[0];
+                    }
+                    else
+                    {
+                        userId = temp;
+                        devCompanyId = temp;
+                    }
+                    isDeveloperLogin = true;
+
+                    _logger.LogDebug("Got user from dev cookie = " + userId + ", company = " + devCompanyId);
+                }
+                else
+                {
+                    // same set of tests for a BC Services Card dev login
+                    temp = context.Request.Cookies[options.DevBCSCAuthenticationTokenKey];
 
                     if (string.IsNullOrEmpty(temp)) // could be an automated test user.
                     {
-                        temp = context.Request.Headers["DEV-USER"];
+                        temp = context.Request.Headers["DEV-BCSC-USER"];
                     }
 
                     if (!string.IsNullOrEmpty(temp))
                     {
-                        if (temp.Contains("::"))
-                        {
-                            var temp2 = temp.Split("::");
-                            userId = temp2[0];
-                            if (temp2.Length >= 2)
-                                devCompanyId = temp2[1];
-                            else
-                                devCompanyId = temp2[0];
-                        }
-                        else
-                        {
-                            userId = temp;
-                            devCompanyId = temp;
-                        }
-                        isDeveloperLogin = true;
+                        userId = temp;
+                        isBCSCDeveloperLogin = true;
 
-                        _logger.LogDebug("Got user from dev cookie = " + userId + ", company = " + devCompanyId);
+                        _logger.LogDebug("Got user from dev cookie = " + userId);
                     }
-                    else
-                    {
-                        // same set of tests for a BC Services Card dev login
-                        temp = context.Request.Cookies[options.DevBCSCAuthenticationTokenKey];
-
-                        if (string.IsNullOrEmpty(temp)) // could be an automated test user.
-                        {
-                            temp = context.Request.Headers["DEV-BCSC-USER"];
-                        }
-
-                        if (!string.IsNullOrEmpty(temp))
-                        {
-                            userId = temp;
-                            isBCSCDeveloperLogin = true;
-
-                            _logger.LogDebug("Got user from dev cookie = " + userId);
-                        }
-                    }
+                }
                 //}
 
                 // **************************************************
@@ -365,7 +368,6 @@ namespace Gov.Jag.Embc.Public.Authentication
                     siteMinderBusinessGuid = context.Request.Headers[options.SiteMinderBusinessGuidKey];
                     siteMinderUserType = context.Request.Headers[options.SiteMinderUserTypeKey];
 
-
                     // **************************************************
                     // Validate credentials
                     // **************************************************
@@ -388,14 +390,14 @@ namespace Gov.Jag.Embc.Public.Authentication
                 }
                 else // DEV user, setup a fake session and SiteMinder headers.
                 {
-                    if (isDeveloperLogin )
+                    if (isDeveloperLogin)
                     {
                         _logger.LogError("Generating a Development user");
                         userSettings.BusinessLegalName = devCompanyId + " BusinessProfileName";
                         userSettings.UserDisplayName = userId + " BCeIDContactType";
 
                         // search for a matching user.
-                        var existingContact = _dataInterface.GetVolunteerByName(userId, "BCeIDContactType");
+                        var existingContact = await _dataInterface.GetVolunteerByNameAsync(userId, "BCeIDContactType");
 
                         if (existingContact != null)
                         {
@@ -435,9 +437,8 @@ namespace Gov.Jag.Embc.Public.Authentication
                 {
                     userSettings.AuthenticatedUser = await _dataInterface.LoadUser(siteMinderGuid, context.Request.Headers, _logger);
                 }
-                
-                _logger.LogDebug("After getting authenticated user = " + userSettings.GetJson());
 
+                _logger.LogDebug("After getting authenticated user = " + userSettings.GetJson());
 
                 // check that the potential new user is 19.
                 if (userSettings.AuthenticatedUser != null && userSettings.AuthenticatedUser.ContactId == null)
@@ -457,7 +458,6 @@ namespace Gov.Jag.Embc.Public.Authentication
 
                 if (userSettings.AuthenticatedUser != null && !userSettings.AuthenticatedUser.Active)
                 {
-
                     _logger.LogError(options.InactivegDbUserIdError + " (" + userId + ")");
                     return AuthenticateResult.Fail(options.InactivegDbUserIdError);
                 }
@@ -570,7 +570,6 @@ namespace Gov.Jag.Embc.Public.Authentication
                     }
                 }
 
-
                 // add the worker settings if it is a new user.  EMBC ESS does not currently support a service card login.
                 //if (userSettings.IsNewUserRegistration && userSettings.NewContact == null)
                 //{
@@ -580,7 +579,7 @@ namespace Gov.Jag.Embc.Public.Authentication
 
                 // **************************************************
                 // Update user settings
-                // **************************************************                
+                // **************************************************
                 UserSettings.SaveUserSettings(userSettings, context);
 
                 // done!
@@ -592,7 +591,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                 _logger.LogError(exception.Message);
                 Console.WriteLine(exception);
                 throw;
-            }                        
-        }        
+            }
+        }
     }
 }

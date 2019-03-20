@@ -3,9 +3,10 @@ using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -15,7 +16,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public SqliteDataInterface(string connectionString)
         {
-
             DbContextOptionsBuilder<SqliteContext> builder = new DbContextOptionsBuilder<SqliteContext>();
 
             builder.UseSqlite(connectionString);
@@ -24,16 +24,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             Db = new SqliteContext(builder.Options);
 
             Db.Database.OpenConnection();
-
-
-
-        }
-
-        public Person CreatePerson(Person person)
-        {
-            // TODO: Implement
-            throw new NotImplementedException();
-            //return person;
         }
 
         public Task<Registration> CreateRegistration(Registration registration)
@@ -63,27 +53,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             Organization result = new Organization();
             return result;
         }
-
-        public Person GetPersonByBceidGuid(string bceidGuid)
-        {
-            // TODO: Implement
-            throw new NotImplementedException();
-            //Person result = new Person();
-            //return result;
-        }
-
-        public Volunteer GetVolunteerByName(string firstName, string lastName)
-        {
-            Volunteer result = null;
-            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
-            if (item != null)
-            {
-                result = item.ToViewModel();
-            }
-            return result;
-        }
-
-
 
         public List<Country> GetCountries()
         {
@@ -258,10 +227,20 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return Task.FromResult(entity.ToViewModel());
         }
 
-        public Volunteer GetVolunteerByExternalId(string externalId)
+        #region People
+
+        public Task<Person> GetPersonByBceidGuidAsync(string bceidGuid)
+        {
+            // TODO: Implement
+            throw new NotImplementedException();
+            //Person result = new Person();
+            //return result;
+        }
+
+        public async Task<Volunteer> GetVolunteerByNameAsync(string firstName, string lastName)
         {
             Volunteer result = null;
-            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).Externaluseridentifier == externalId);
+            var item = (Sqlite.Models.Volunteer)await Db.People.FirstOrDefaultAsync(x => x.FirstName == firstName && x.LastName == lastName);
             if (item != null)
             {
                 result = item.ToViewModel();
@@ -269,16 +248,60 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public Volunteer GetVolunteerById(string id)
+        public async Task<Volunteer> GetVolunteerByExternalIdAsync(string externalId)
         {
             Volunteer result = null;
-            Guid guid = new Guid(id);
-            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => x.Id == guid);
+            var item = (Sqlite.Models.Volunteer)await Db.People.FirstOrDefaultAsync(x => ((Sqlite.Models.Volunteer)x).Externaluseridentifier == externalId);
             if (item != null)
             {
                 result = item.ToViewModel();
             }
             return result;
         }
+
+        public async Task<Volunteer> GetVolunteerByIdAsync(string id)
+        {
+            Volunteer result = null;
+            Guid guid = new Guid(id);
+            var item = (Sqlite.Models.Volunteer)await Db.People.FirstOrDefaultAsync(x => x.Id == guid);
+            if (item != null)
+            {
+                result = item.ToViewModel();
+            }
+            return result;
+        }
+
+        public async Task<Person> CreatePersonAsync(Person person)
+        {
+            using (var tx = new TransactionScope())
+            {
+                await Db.AddAsync(person.ToModel());
+                return person;
+            }
+        }
+
+        public async Task<bool> DeactivatePersonAsync(string id)
+        {
+            using (var tx = new TransactionScope())
+            {
+                var person = await Db.People.FirstOrDefaultAsync();
+                if (person == null) return true;
+                person.Active = false;
+                Db.Update(person);
+                return true;
+            }
+        }
+
+        public async Task<IEnumerable<Volunteer>> GetAllVolunteersAsync()
+        {
+            return await GetAllPeopleAsync("VOLN").Cast<Sqlite.Models.Volunteer>().Select(p => p.ToViewModel()).ToArrayAsync();
+        }
+
+        private IQueryable<Sqlite.Models.Person> GetAllPeopleAsync(string type)
+        {
+            return Db.People.Where(p => p.PersonType == type);
+        }
+
+        #endregion People
     }
 }

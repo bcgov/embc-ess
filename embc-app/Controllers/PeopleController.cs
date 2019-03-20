@@ -1,15 +1,10 @@
-﻿using Gov.Jag.Embc.Interfaces;
-
-using Gov.Jag.Embc.Public.Authentication;
-using Gov.Jag.Embc.Public.Models;
-using Gov.Jag.Embc.Public.Utils;
+using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
@@ -18,65 +13,105 @@ namespace Gov.Jag.Embc.Public.Controllers
     [Route("api/[controller]")]
     public class PeopleController : Controller
     {
-        private readonly IConfiguration Configuration;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ILogger _logger;
-        private readonly IHostingEnvironment _env;
+        private readonly IConfiguration configuration;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly ILogger logger;
+        private readonly IHostingEnvironment env;
+        private readonly IDataInterface dataInterface;
 
-        public PeopleController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory, IHostingEnvironment env)
+        public PeopleController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory, IHostingEnvironment env, IDataInterface dataInterface)
         {
-            Configuration = configuration;
+            this.dataInterface = dataInterface;
+            this.configuration = configuration;
 
-            _httpContextAccessor = httpContextAccessor;
-            _logger = loggerFactory.CreateLogger(typeof(PeopleController));
-            this._env = env;
+            this.httpContextAccessor = httpContextAccessor;
+            logger = loggerFactory.CreateLogger(typeof(PeopleController));
+            this.env = env;
         }
 
+        [HttpGet()]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                return Json(await dataInterface.GetAllVolunteersAsync());
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e.ToString());
+                return BadRequest(e);
+            }
+        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpGet("{id}")]
-        public IActionResult Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
-
-            return Json(null);
+            try
+            {
+                return Json(await dataInterface.GetVolunteerByIdAsync(id));
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e.ToString());
+                return BadRequest(e);
+            }
         }
 
-
-        /// <summary>
-        /// Update
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromBody] ViewModels.Person item, string id)
+        public async Task<IActionResult> Update([FromBody] Person item, string id)
         {
-            if (id != null && item.Id != null && id != item.Id)
+            if (string.IsNullOrWhiteSpace(id) || id != item.Id)
             {
                 return BadRequest();
             }
+            try
+            {
+                Guid bcId;
+                if (!Guid.TryParse(id, out bcId)) return BadRequest();
 
-            // get the contact
-            Guid contactId = Guid.Parse(id);
-
-            return Json(null);
+                return Json(await dataInterface.GetPersonByBceidGuidAsync(bcId.ToString("d")));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="viewModel"></param>
-        /// <returns></returns>
-        [HttpPost()]
-        public async Task<IActionResult> Create([FromBody] ViewModels.Person item)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] Person item)
         {
-            return Json(null);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                item.Id = null;
+                var result = await dataInterface.CreatePersonAsync(item);
+                return Json(result);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e.ToString());
+                return BadRequest(e);
+            }
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return BadRequest();
 
+            try
+            {
+                var result = await dataInterface.DeactivatePersonAsync(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e.ToString());
+                return BadRequest(e);
+            }
+        }
     }
 }
