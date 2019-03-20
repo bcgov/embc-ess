@@ -93,19 +93,19 @@ export class EvacueeRegistrationComponent implements OnInit {
       // push the new family member into the array
       familyMembers.push(this.createFamilyMember(fmbr));
       // set the value for familymembers
-      this.form.setValue(familyMembers);
+      // this.form.setValue(familyMembers);
     } else {
       // push the new family member into the array
       familyMembers.push(this.createFamilyMember());
       // set the value for familymembers
-      this.form.setValue(familyMembers);
+      // this.form.setValue(familyMembers);
     }
   }
   removeFamilyMember(i: number): void {
     // get the existing family members
     const familyMembers = this.familyMembers;
     familyMembers.removeAt(i);
-    this.form.setValue(familyMembers);
+    // this.form.setValue(familyMembers);
   }
   createFamilyMember(fmbr?: FamilyMember): FormGroup {
     if (fmbr) {
