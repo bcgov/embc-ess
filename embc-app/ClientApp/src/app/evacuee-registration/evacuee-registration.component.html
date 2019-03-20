@@ -322,7 +322,8 @@
             <label class="form-check-label">Yes</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="hasMailingAddress">
+            <input class="form-check-input" type="radio" [value]="false" formControlName="hasMailingAddress"
+              (click)="clearMailingAddress()">
             <label class="form-check-label">No</label>
           </div>
         </div>
