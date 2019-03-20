@@ -2,11 +2,11 @@
   <!-- <div class="col" (click)="submit()">
     <h4>Input State</h4>
     <pre>{{registration | json}}</pre>
-  </div>
+  </div>-->
   <div class="col">
     <h4>Submission State</h4>
     <pre>{{submission | json}}</pre>
-  </div> -->
+  </div>
   <!-- Form content for testing -->
   <div class="col">
     <h4>Form State</h4>
@@ -28,11 +28,11 @@
     <!-- <p>countries$: {{countries$ | async | json}}</p> -->
     <!-- <p>regions$: {{regions$ | async | json}}</p> -->
     <!-- <p>regionalDistricts$: {{regionalDistricts$ | async | json}}</p> -->
-    <p>relationshipTypes$: {{relationshipTypes$ | async | json}}</p>
+    <!-- <p>relationshipTypes$: {{relationshipTypes$ | async | json}}</p> -->
 
     <form [formGroup]="form" (ngSubmit)="submit()">
 
-      <!-- Task numer and registration information populated -->
+      <!-- TODO: These need to have the task number and host community populated -->
       <!-- <div class="mb-4">
         <h3 class="blue-header">
           TASK NUMBER & PLACE OF REGISTRATION
@@ -57,8 +57,9 @@
         </app-form-field>
       </div> -->
 
-      <!-- REstricted access to this file? -->
-      <!-- <div class="mb-4">
+      <!-- Restricted access to this file? -->
+      <!-- CONFIRMED -->
+      <div class="mb-4">
         <h3 class="blue-header">
           RESTRICTION
         </h3>
@@ -77,7 +78,7 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-      </div> -->
+      </div>
 
       <!-- Primary contact information -->
       <!-- <div class="mb-4" formGroupName="headOfHousehold">
