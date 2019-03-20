@@ -1,16 +1,16 @@
 <div class="row">
-  <!-- <div class="col" (click)="submit()">
+  <div class="col" (click)="submit()">
     <h4>Input State</h4>
-    <pre>{{registration | json}}</pre>
-  </div>-->
-  <div class="col">
+    <pre>{{registration.headOfHousehold.primaryResidence | json}}</pre>
+  </div>
+  <!-- <div class="col">
     <h4>Submission State</h4>
     <pre>{{submission | json}}</pre>
-  </div>
+  </div> -->
   <!-- Form content for testing -->
   <div class="col">
     <h4>Form State</h4>
-    <pre>{{ this.form.value | json }}</pre>
+    <pre>{{ this.form.value.hohPrimaryResidence | json }}</pre>
   </div>
 </div>
 <div class="row">
@@ -218,6 +218,7 @@
       </div> -->
 
       <!-- Residence information -->
+      <!-- CONFIRMED -->
       <div class="mb-4">
         <h3 class="blue-header">
           PRIMARY RESIDENCE & CONTACT DETAILS
@@ -242,7 +243,7 @@
           <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
         </div>
       </div>
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <div class="card">
           <div class="card-body">
             <div class="row mb-2" formGroupName="hohPrimaryResidence">
@@ -307,7 +308,7 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
 
       <!-- Mailing information -->
       <!-- <div class="mb-4">

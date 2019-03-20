@@ -189,6 +189,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       requiresSupport: null,
 
       hohPrimaryResidence: this.formBuilder.group({
+        id: '',
         addressSubtype: null,
         addressLine1: '',
         addressLine2: null,
@@ -200,6 +201,7 @@ export class EvacueeRegistrationComponent implements OnInit {
           id: '',
           name: ''
         }),
+        community: null
       }),
       hohMailingAddress: this.formBuilder.group({
         id: null,
@@ -330,6 +332,7 @@ export class EvacueeRegistrationComponent implements OnInit {
         // alert('Primary not null!');
         this.form.patchValue({
           hohPrimaryResidence: {
+            id: r.headOfHousehold.primaryResidence.id as string,
             addressSubtype: r.headOfHousehold.primaryResidence.addressSubtype as string,
             addressLine1: r.headOfHousehold.primaryResidence.addressLine1 as string,
             postalCode: r.headOfHousehold.primaryResidence.postalCode as string,
