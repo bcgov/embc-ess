@@ -44,6 +44,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return Task.FromResult(model.ToViewModel());
         }
 
+        public Task<Registration> UpdateRegistration(Registration registration)
+        {
+            var existing = Db.Registrations.FirstOrDefault(item => item.Id == new Guid(registration.Id));
+            if (existing != null)
+            {
+                existing.PatchValues(registration);
+                Db.Registrations.Update(existing);
+                Db.SaveChanges();
+                return Task.FromResult(existing.ToViewModel());
+            }
+            return Task.FromResult<Registration>(null);
+        }
+
         public Organization GetOrganizationByBceidGuid(string bceidGuid)
         {
             // TODO: Implement
@@ -62,7 +75,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public Volunteer GetVolunteerByName(string firstName, string lastName)
         {
             Volunteer result = null;
-            var item = (Sqlite.Models.Volunteer) Db.People.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
+            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
             if (item != null)
             {
                 result = item.ToViewModel();
@@ -248,7 +261,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public Volunteer GetVolunteerByExternalId(string externalId)
         {
             Volunteer result = null;
-            var item = (Sqlite.Models.Volunteer) Db.People.FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).Externaluseridentifier == externalId);
+            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).Externaluseridentifier == externalId);
             if (item != null)
             {
                 result = item.ToViewModel();
@@ -260,7 +273,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             Volunteer result = null;
             Guid guid = new Guid(id);
-            var item = (Sqlite.Models.Volunteer) Db.People.FirstOrDefault(x => x.Id == guid);
+            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => x.Id == guid);
             if (item != null)
             {
                 result = item.ToViewModel();
