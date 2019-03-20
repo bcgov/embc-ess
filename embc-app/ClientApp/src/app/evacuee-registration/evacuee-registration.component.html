@@ -255,7 +255,7 @@
               <div class="col">
                 <div requried="true">
                   <label>Community</label>
-                  <select class="form-control" formControlName="communityOrCity">
+                  <select class="form-control" formControlName="community">
                     <option [ngValue]="null">Please select--</option>
                     <option value="victoria">Victoria</option>
                     <option value="grandForks">Grand Forks</option>
@@ -274,7 +274,7 @@
               <div class="col-3" formGroupName="hohPrimaryResidence">
                 <div class="form-check">
                   <label required="true">Postal Code</label>
-                  <input type="text" class="form-control" formControlName="postalCodeOrZip">
+                  <input type="text" class="form-control" formControlName="postalCode">
                 </div>
               </div>
             </div>
@@ -343,7 +343,7 @@
               <div class="col">
                 <div requried="true">
                   <label>Community</label>
-                  <select class="form-control" formControlName="communityOrCity">
+                  <select class="form-control" formControlName="community">
                     <option [ngValue]="null">Please select--</option>
                     <option value="victoria">Victoria</option>
                     <option value="grandForks">Grand Forks</option>
@@ -353,13 +353,13 @@
               <div class="col-3">
                 <div requried="true">
                   <label>Province</label>
-                  <select class="form-control" formControlName="provinceOrState">
+                  <select class="form-control" formControlName="province">
                     <option [ngValue]="null">Please select--</option>
                     <option value="BC">BC</option>
                   </select>
 
                   <!-- Province selector pulls from application state -->
-                  <select class="form-control" formControlName="provinceOrState">
+                  <select class="form-control" formControlName="province">
                     <option [ngValue]="null">-- Please Select</option>
                     <option [value]="item.id" *ngFor="let item of countries$ | async">
                       {{item.name}}
@@ -367,10 +367,10 @@
                   </select>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-3" formGroupName="hohPrimaryResidence">
                 <div class="form-check">
                   <label required="true">Postal Code</label>
-                  <input type="text" class="form-control" formControlName="postalCodeOrZip">
+                  <input type="text" class="form-control" formControlName="postalCode">
                 </div>
               </div>
             </div>
