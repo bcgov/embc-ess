@@ -313,6 +313,7 @@ export class EvacueeRegistrationComponent implements OnInit {
             postalCode: r.headOfHousehold.primaryResidence.postalCode as string,
             city: r.headOfHousehold.primaryResidence.city as string,
             province: r.headOfHousehold.primaryResidence.province as string,
+            // TODO: why not submitting community information?
             community: r.headOfHousehold.primaryResidence.community as Community,
             country: r.headOfHousehold.primaryResidence.country as Country,
             // isBcAddress: isBcAddress(primaryResidence) as boolean,
@@ -378,12 +379,28 @@ export class EvacueeRegistrationComponent implements OnInit {
       requiresIncidentals: r.requiresIncidentals as boolean,
       requiresTransportation: r.requiresTransportation as boolean,
       requiresSupport: r.requiresSupport as boolean,
-      headOfHousehold: null,
+      headOfHousehold: {
+        phoneNumber: r.headOfHousehold.phoneNumber as string,
+        phoneNumberAlt: r.headOfHousehold.phoneNumberAlt as string,
+        email: r.headOfHousehold.email as string,
+        bcServicesNumber: r.headOfHousehold.bcServicesNumber as string,
+        id: r.headOfHousehold.id as string,
+        active: r.headOfHousehold.active as boolean,
+        personType: r.headOfHousehold.personType as string,
+        firstName: r.headOfHousehold.firstName as string,
+        lastName: r.headOfHousehold.lastName as string,
+        nickname: r.headOfHousehold.nickname as string,
+        initials: r.headOfHousehold.initials as string,
+        gender: r.headOfHousehold.gender as string,
+        dob: r.headOfHousehold.dob as Date,
+        primaryResidence: r.hohPrimaryResidence as Address,
+        mailingAddress: r.hohMailingAddress as Address,
+        familyMembers: r.familyMembers as FamilyMember[],
+      },
+      incidentTask: r.incidentTask as IncidentTask,
+      hostCommunity: r.hostCommunity as Community,
     };
-    // the ones that are other entities
-    reg.headOfHousehold = r.headOfHousehold;
-    reg.incidentTask = r.incidentTask;
-    reg.hostCommunity = r.hostCommunity;
+
 
     return reg as Registration;
   }
