@@ -21,8 +21,8 @@ const TEST: Registration[] = [
     followUpDetails: 'Granny needs a new hip.',
     insuranceCode: 'yes',
     medicationNeeds: true,
-    selfRegisteredDate: null,
-    registrationCompletionDate: null,
+    selfRegisteredDate: new Date(),
+    registrationCompletionDate: new Date(),
     registeringFamilyMembers: 'yes-later',
     hasThreeDayMedicationSupply: false,
     hasInquiryReferral: false,
@@ -112,8 +112,47 @@ const TEST: Registration[] = [
       gender: 'male',
       dob: new Date()
     },
-    incidentTask: null,
-    hostCommunity: null,
+    incidentTask: {
+      id: 'wert',
+      taskNumber: '56789',
+      details: 'House fire',
+      region: {
+        id: 'lkasdjfh',
+        name: 'South BC'
+      },
+      regionalDistrict: {
+        id: 'frustrated',
+        name: 'CRD',
+        region: {
+          id: 'lkasdjfh',
+          name: 'South BC'
+        },
+      },
+      community: {
+        id: 'asdasd',
+        name: 'Victoria',
+        regionalDistrict: {
+          id: 'frustrated',
+          name: 'CRD',
+          region: {
+            id: 'lkasdjfh',
+            name: 'South BC'
+          },
+        }
+      },
+    },
+    hostCommunity: {
+      id: 'asdasd',
+      name: 'Victoria',
+      regionalDistrict: {
+        id: 'frustrated',
+        name: 'CRD',
+        region: {
+          id: 'lkasdjfh',
+          name: 'South BC'
+        },
+      }
+    },
     completedBy: null
 
   }
