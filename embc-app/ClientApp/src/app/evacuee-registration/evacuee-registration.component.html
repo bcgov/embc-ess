@@ -219,7 +219,7 @@
 
       <!-- Residence information -->
       <!-- CONFIRMED -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           PRIMARY RESIDENCE & CONTACT DETAILS
         </h3>
@@ -242,7 +242,7 @@
           </h4>
           <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
         </div>
-      </div>
+      </div> -->
       <div class="mb-4">
         <div class="card">
           <div class="card-body">
@@ -266,10 +266,7 @@
               <div class="col-3" formGroupName="hohPrimaryResidence">
                 <div requried="true">
                   <label>Province</label>
-                  <select class="form-control" formControlName="provinceOrState">
-                    <option [ngValue]="null">Please select--</option>
-                    <option value="BC">BC</option>
-                  </select>
+                  <input type="text" class="form-control" formControlName="province">
                 </div>
               </div>
               <div class="col-3" formGroupName="hohPrimaryResidence">

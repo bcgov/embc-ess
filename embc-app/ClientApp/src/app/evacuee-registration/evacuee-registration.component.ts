@@ -23,6 +23,7 @@ export class EvacueeRegistrationComponent implements OnInit {
   regions$ = this.store.select(s => s.lookups.regions);
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
   incidentTask$ = this.store.select(s => s.incidentTasks.incidentTasks); // TODO: make it go.
+
   // communities$
 
   // The model for the form data collected
