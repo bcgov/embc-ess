@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col" (click)="submit()">
     <h4>Input State</h4>
-    <pre>{{registration.insuranceCode}}</pre>
+    <pre>{{registration.medicationNeeds}}</pre>
   </div>
   <!-- <div class="col">
     <h4>Submission State</h4>
@@ -10,7 +10,7 @@
   <!-- Form content for testing -->
   <div class="col">
     <h4>Form State</h4>
-    <pre>{{ this.form.value.insuranceCode }}</pre>
+    <pre>{{ this.form.value.medicationNeeds }}</pre>
   </div>
 </div>
 <div class="row">
@@ -454,7 +454,8 @@
       </div> -->
 
       <!-- Medication information -->
-      <!-- <div class="mb-4">
+      <!-- CONFIRMED -->
+      <div class="mb-4">
         <p class="required">
           Do you (or anyone registering with you) take medication?
         </p>
@@ -468,7 +469,7 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-      </div> -->
+      </div>
       <!-- <div class="mb-4" *ngIf="form.value.medicationNeeds===true">
         <p class="required">
           Do you have sufficient supply for the next 72 hours?
