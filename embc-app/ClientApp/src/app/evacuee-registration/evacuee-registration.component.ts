@@ -216,9 +216,10 @@ export class EvacueeRegistrationComponent implements OnInit {
         addressLine1: '',
         addressLine2: null,
         addressLine3: null,
+        postalCode: '',
+        community: null,
         city: '',
         province: '',
-        postalCode: '',
         country: this.formBuilder.group({
           id: '',
           name: ''
@@ -364,8 +365,11 @@ export class EvacueeRegistrationComponent implements OnInit {
       if (mailingAddress != null) {
         this.form.patchValue({
           hohMailingAddress: {
+            id: mailingAddress.id as string,
             addressSubtype: mailingAddress.addressSubtype as string,
             addressLine1: mailingAddress.addressLine1 as string,
+            addressLine2: mailingAddress.addressLine2 as string,
+            addressLine3: mailingAddress.addressLine3 as string,
             postalCode: mailingAddress.postalCode as string,
             community: mailingAddress.community as Community,
             city: mailingAddress.city as string,
