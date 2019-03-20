@@ -57,7 +57,13 @@ export class EvacueeRegistrationComponent implements OnInit {
     // this is a way to grab the familymembers in a typed way
     return this.f.familyMembers as FormArray;
   }
-
+  isBcAddress(a: Address): boolean {
+    if (a.province === 'BC') {
+      return true;
+    } else {
+      return false;
+    }
+  }
   ngOnInit() {
     // if there are route params we should grab them
     if (this.route.snapshot.params.essFileNumber) {
@@ -227,9 +233,6 @@ export class EvacueeRegistrationComponent implements OnInit {
       incidentTask: null, // which task is this from
       hostCommunity: null, // which community is hosting
       completedBy: null,
-
-      // special cases
-      isBcAddress: null
     });
   }
 
@@ -290,15 +293,15 @@ export class EvacueeRegistrationComponent implements OnInit {
           gender: r.headOfHousehold.gender as string,
           dob: r.headOfHousehold.dob as Date,
           bcServicesNumber: r.headOfHousehold.bcServicesNumber as string,
-        } as HeadOfHousehold,
+        },
         hohPrimaryResidence: r.headOfHousehold.primaryResidence as Address,
         hohMailingAddress: r.headOfHousehold.mailingAddress as Address,
         completedBy: r.completedBy as Volunteer,
         hostCommunity: hostCommunity as Community,
         incidentTask: incidentTask as IncidentTask,
-        isBcAddress: isBcAddress(r.headOfHousehold.primaryResidence) as boolean,
 
       });
+      // alert(JSON.stringify(primaryResidence.province));
 
       // iterate over the array and collect each family member as a formgroup and put them into a form array
       if (familyMembers != null) {
@@ -315,11 +318,12 @@ export class EvacueeRegistrationComponent implements OnInit {
       if (hostCommunity != null) {
         alert('host community set');
       }
+
       // add the primary residence back into the form
       if (primaryResidence != null) {
         // alert('Primary not null!');
         this.form.patchValue({
-          // primaryResidenceInBC: isBcAddress(primaryResidence) as boolean,
+          primaryResidenceInBC: isBcAddress(primaryResidence) as boolean,
           hohPrimaryResidence: {
             addressSubtype: r.headOfHousehold.primaryResidence.addressSubtype as string,
             addressLine1: r.headOfHousehold.primaryResidence.addressLine1 as string,
@@ -329,7 +333,6 @@ export class EvacueeRegistrationComponent implements OnInit {
             // TODO: why not submitting community information?
             community: r.headOfHousehold.primaryResidence.community as Community,
             country: r.headOfHousehold.primaryResidence.country as Country,
-            // isBcAddress: isBcAddress(primaryResidence) as boolean,
             // this line should call itself but unfortunately it calls itself infinitely.
             // isOtherAddress: isOtherAddress(primaryResidence) as boolean,
           },
@@ -338,7 +341,6 @@ export class EvacueeRegistrationComponent implements OnInit {
       // add the mailing address back into the form
       if (mailingAddress != null) {
         this.form.patchValue({
-          hasMailingAddress: true,
           hohMailingAddress: {
             addressSubtype: mailingAddress.addressSubtype as string,
             addressLine1: mailingAddress.addressLine1 as string,
@@ -347,7 +349,6 @@ export class EvacueeRegistrationComponent implements OnInit {
             city: mailingAddress.city as string,
             province: mailingAddress.province as string,
             country: mailingAddress.country as Country,
-            isBcAddress: isBcAddress(mailingAddress) as boolean,
           },
         });
       }
@@ -432,5 +433,4 @@ export class EvacueeRegistrationComponent implements OnInit {
       // this.registrationService.createRegistration(this.registration).subscribe(r => { alert(JSON.stringify(r)); });
     }
   }
-  convert
 }
