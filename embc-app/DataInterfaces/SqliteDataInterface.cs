@@ -153,10 +153,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         private bool SimpleSearch(Sqlite.Models.Registration item, string q)
         {
-            var byLastName = item.HeadOfHousehold.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase);
-            var byTaskNumber = item.IncidentTask.TaskNumber.Contains(q, StringComparison.InvariantCultureIgnoreCase);
-            var byEssFileNumber = item.EssFileNumber.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase);
-            var byCommunity = (item.HeadOfHousehold.PrimaryResidence as Sqlite.Models.BcAddress)?.Community?.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
+            var byLastName = item.HeadOfHousehold?.LastName?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
+            var byTaskNumber = item.IncidentTask?.TaskNumber?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
+            var byEssFileNumber = item.EssFileNumber?.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
+            var byCommunity = (item.HeadOfHousehold?.PrimaryResidence as Sqlite.Models.BcAddress)?.Community?.Name?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
 
             // TODO: Add more of these...
 

@@ -39,15 +39,18 @@ namespace Gov.Jag.Embc.Public.Utils
 
         private static string AdjustDirection(string item)
         {
-            if (!item.StartsWith("+") && !item.StartsWith("-"))
-            {
-                return item; // no direction specified
-            }
+            // no direction specified (assume ascending order)
+            var direction = "+";
+            var field = item;
 
             // parse direction and field from provided sort-item
-            // e.g. "+name" ==> direction: ASC, field: name
-            var direction = item.Substring(0, 1);
-            var field = item.Substring(1);
+            // e.g. "name" ==> direction: ASC, field: name
+            // e.g. "-name" ==> direction: DESC, field: name
+            if (item.StartsWith("-"))
+            {
+                direction = "-";
+                field = item.Substring(1);
+            }
 
             switch (direction)
             {
