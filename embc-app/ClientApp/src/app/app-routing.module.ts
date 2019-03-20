@@ -61,6 +61,10 @@ const routes: Routes = [
   {
     path: 'register-evacuee',
     component: EvacueeRegistrationComponent
+  },
+  {
+    path: 'register-evacuee/:essFileNumber',
+    component: EvacueeRegistrationComponent
   }
 ];
 

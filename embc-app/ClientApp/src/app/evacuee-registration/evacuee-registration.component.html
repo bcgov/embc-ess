@@ -1,4 +1,19 @@
 <div class="row">
+  <!-- <div class="col" (click)="submit()">
+    <h4>Input State</h4>
+    <pre>{{registration | json}}</pre>
+  </div>
+  <div class="col">
+    <h4>Submission State</h4>
+    <pre>{{submission | json}}</pre>
+  </div> -->
+  <!-- Form content for testing -->
+  <div class="col">
+    <h4>Form State</h4>
+    <pre>{{ this.form.value | json }}</pre>
+  </div>
+</div>
+<div class="row">
   <div class="col col-lg-8">
     <div class="mb-4">
       <h1>Add an Evacuee</h1>
@@ -8,22 +23,22 @@
         All required fields are marked with an asterisk *
       </small>
     </div>
-    <!-- <label>
-      Name
-      <input type="text" [formControl]="name">
-    </label>
-    {{name.value}} -->
 
+    <!-- <p>incidentTask$: {{incidentTask$|async|json}}</p> -->
+    <!-- <p>countries$: {{countries$ | async | json}}</p> -->
+    <!-- <p>regions$: {{regions$ | async | json}}</p> -->
+    <!-- <p>regionalDistricts$: {{regionalDistricts$ | async | json}}</p> -->
+    <p>relationshipTypes$: {{relationshipTypes$ | async | json}}</p>
 
     <div [formGroup]="form">
       <!-- Task numer and registration information populated -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           TASK NUMBER & PLACE OF REGISTRATION
         </h3>
         <app-form-field required="false">
           <label>Task Number</label>
-          <select class="form-control" formControlName="incidentTaskNumber">
+          <select class="form-control">
             <option [ngValue]="null">-- Select task number</option>
             <option value="23465345">23465345</option>
           </select>
@@ -34,17 +49,17 @@
         </app-form-field>
         <app-form-field required="true">
           <label>Host Community</label>
-          <select class="form-control" formControlName="hostCommunity">
+          <select class="form-control">
             <option [ngValue]="null">-- Select task number</option>
             <option value="Grand Forks">Grand Forks</option>
           </select>
         </app-form-field>
-      </div>-->
+      </div>
 
       <!-- REstricted access to this file? -->
       <div class="mb-4">
         <h3 class="blue-header">
-          RESTRICTED
+          RESTRICTION
         </h3>
         <p>
           Concerned family and friends may inquire about you and your family because of the emergency. We would like to
@@ -113,18 +128,17 @@
         </p>
         <div class="form-group">
           <div class="form-check form-check-inline" (click)="addFamilyMember()">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="registeringFamilyMembers">
+            <input class="form-check-input" type="radio" value="yes" formControlName="registeringFamilyMembers">
             <label class="form-check-label">Yes</label>
           </div>
           <div class="form-check form-check-inline" (click)="clearFamilyMembers()">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="registeringFamilyMembers">
+            <input class="form-check-input" type="radio" value="no" formControlName="registeringFamilyMembers">
             <label class="form-check-label">No</label>
           </div>
         </div>
         <!-- Card for family members -->
         <div formArrayName="familyMembers">
           <div class="card mb-2" *ngFor="let m of familyMembers.controls; index as i;" [formGroupName]="i">
-
             <div class="card-body">
               <div class="row mb-2">
                 <div class="col">
@@ -133,7 +147,7 @@
                 </div>
                 <div class="col">
                   <label for="sameLastName">
-                    Same last name as main applicant?
+                    Same as main applicant.
                   </label>
                   <div class="form-check">
                     <!-- TODO: Make this work -->
@@ -156,8 +170,16 @@
               </div>
               <div class="row mb-2">
                 <div class="col-6">
-                  <label required="true">Relationship to evacuee</label>
-                  <input type="text" class="form-control" formControlName="relationshipToHoh">
+                  <app-form-field requried="true">
+                    <label>Relationship to evacuee</label>
+                    <select class="form-control" formControlName="relationshipToEvacuee">
+                      <option [ngValue]="null">Please select--</option>
+                      <option *ngFor="let item of relationshipTypes$ | async" value="item.code">
+                        {{item}}
+                        <!-- TODO: this won't work because the relationship types returns an object with one element with a property of relationshipType -->
+                      </option>
+                    </select>
+                  </app-form-field>
                 </div>
                 <div class="col">
                   <app-form-field requried="true">
@@ -203,44 +225,44 @@
         <p class="required">
           Is your primary residence within BC?
         </p>
-        <div class="form-group">
+        <div class="form-group" formGroupName="hohPrimaryResidence">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="primaryResidenceInBC">
+            <input class="form-check-input" type="radio" [value]="true" formControlName="isBcAddress">
             <label class="form-check-label">Yes</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="primaryResidenceInBC">
+            <input class="form-check-input" type="radio" [value]="false" formControlName="isBcAddress">
             <label class="form-check-label">No</label>
           </div>
         </div>
-        <div *ngIf="form.value.primaryResidenceInBC===false" class="alert alert-danger" role="alert">
+        <div *ngIf="form.value.isBcAddress===false" class="alert alert-danger" role="alert">
           <h4 class="alert-heading">
             This Evacuee is a Stranded Traveller.
           </h4>
           <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
         </div>
       </div>
-      <div class="mb-4" formGroupName="primaryResidence">
+      <div class="mb-4">
         <div class="card">
           <div class="card-body">
-            <div class="row mb-2">
+            <div class="row mb-2" formGroupName="hohPrimaryResidence">
               <div class="col">
                 <label required="true">Apt/Suite/Building Number & Street Address</label>
                 <input type="text" class="form-control" formControlName="addressLine1">
               </div>
             </div>
-            <div class="row mb-2">
+            <div class="row mb-2" formGroupName="hohPrimaryResidence">
               <div class="col">
                 <div requried="true">
                   <label>Community</label>
-                  <select class="form-control" formControlName="communityOrCity">
+                  <select class="form-control" formControlName="community">
                     <option [ngValue]="null">Please select--</option>
                     <option value="victoria">Victoria</option>
                     <option value="grandForks">Grand Forks</option>
                   </select>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-3" formGroupName="hohPrimaryResidence">
                 <div requried="true">
                   <label>Province</label>
                   <select class="form-control" formControlName="provinceOrState">
@@ -249,33 +271,39 @@
                   </select>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-3" formGroupName="hohPrimaryResidence">
                 <div class="form-check">
                   <label required="true">Postal Code</label>
-                  <input type="text" class="form-control" formControlName="postalCodeOrZip">
+                  <input type="text" class="form-control" formControlName="postalCode">
                 </div>
               </div>
             </div>
-            <div class="row mb-2">
+            <div class="row mb-2" formGroupName="hohPrimaryResidence">
               <div class="col-6">
-                <label required="true">Country</label>
-                <input type="text" class="form-control" value="Canada">
+                <!-- Country selector pulls from application state -->
+                <label required="true">Country/Region</label>
+                <select class="form-control" formControlName="country">
+                  <option [ngValue]="null">-- Select Country</option>
+                  <option [value]="item.id" *ngFor="let item of countries$ | async">
+                    {{item.name}}
+                  </option>
+                </select>
               </div>
             </div>
-            <div class="row mb-2">
+            <div class="row mb-2" formGroupName="headOfHousehold">
               <div class="col">
                 <label>Telephone / Mobile Number (10 digits)</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" formControlName="phoneNumber">
               </div>
               <div class="col">
                 <label>Alternate Telephone / Mobile Number</label>
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" formControlName="phoneNumberAlt">
               </div>
             </div>
-            <div class="row mb-2">
+            <div class="row mb-2" formGroupName="headOfHousehold">
               <div class="col">
                 <label>Email Address</label>
-                <input type="email" class="form-control">
+                <input type="email" class="form-control" formControlName="email">
               </div>
             </div>
           </div>
@@ -292,18 +320,18 @@
         </p>
         <div class="form-group">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="distinctMailingAddress">
+            <input class="form-check-input" type="radio" [value]="true" formControlName="hasMailingAddress">
             <label class="form-check-label">Yes</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="distinctMailingAddress">
+            <input class="form-check-input" type="radio" [value]="false" formControlName="hasMailingAddress">
             <label class="form-check-label">No</label>
           </div>
         </div>
         <div>
 
         </div>
-        <div class="card" *ngIf="form.value.distinctMailingAddress" formGroupName="mailingAddress">
+        <div class="card" *ngIf="form.value.hasMailingAddress" formGroupName="hohMailingAddress">
           <div class="card-body">
             <div class="row mb-2">
               <div class="col">
@@ -315,7 +343,7 @@
               <div class="col">
                 <div requried="true">
                   <label>Community</label>
-                  <select class="form-control" formControlName="communityOrCity">
+                  <select class="form-control" formControlName="community">
                     <option [ngValue]="null">Please select--</option>
                     <option value="victoria">Victoria</option>
                     <option value="grandForks">Grand Forks</option>
@@ -325,23 +353,37 @@
               <div class="col-3">
                 <div requried="true">
                   <label>Province</label>
-                  <select class="form-control" formControlName="provinceOrState">
+                  <select class="form-control" formControlName="province">
                     <option [ngValue]="null">Please select--</option>
                     <option value="BC">BC</option>
                   </select>
+
+                  <!-- Province selector pulls from application state -->
+                  <select class="form-control" formControlName="province">
+                    <option [ngValue]="null">-- Please Select</option>
+                    <option [value]="item.id" *ngFor="let item of countries$ | async">
+                      {{item.name}}
+                    </option>
+                  </select>
                 </div>
               </div>
-              <div class="col-3">
+              <div class="col-3" formGroupName="hohPrimaryResidence">
                 <div class="form-check">
                   <label required="true">Postal Code</label>
-                  <input type="text" class="form-control" formControlName="postalCodeOrZip">
+                  <input type="text" class="form-control" formControlName="postalCode">
                 </div>
               </div>
             </div>
             <div class="row mb-2">
               <div class="col-6">
-                <label required="true">Country</label>
-                <input type="text" class="form-control" value="Canada">
+                <!-- Country selector pulls from application state -->
+                <label required="true">Country/Region</label>
+                <select class="form-control" formControlName="country">
+                  <option [ngValue]="null">-- Select Country</option>
+                  <option [value]="item.id" *ngFor="let item of countries$ | async">
+                    {{item.name}}
+                  </option>
+                </select>
               </div>
             </div>
             <div class="row mb-2">
@@ -357,7 +399,7 @@
             <div class="row mb-2">
               <div class="col">
                 <label>Email Address</label>
-                <input type="email" class="form-control">
+                <input type="email" class="form-control" formControlName="email">
               </div>
             </div>
           </div>
@@ -389,10 +431,10 @@
             <input class="form-check-input" type="radio" value="yes" formControlName="insuranceCode">
             <label class="form-check-label">Yes</label>
           </div>
-          <div class="form-check">
+          <!-- <div class="form-check">
             <input class="form-check-input" type="radio" value="yes-unsure" formControlName="insuranceCode">
             <label class="form-check-label">Yes, but I'm not sure if I have coverage for this event.</label>
-          </div>
+          </div> -->
           <div class="form-check">
             <input class="form-check-input" type="radio" value="no" formControlName="insuranceCode">
             <label class="form-check-label">No</label>
@@ -422,6 +464,11 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
+        <!-- dietary needs details collection -->
+        <div *ngIf="form.value.dietaryNeeds">
+          <label>Please specify</label>
+          <input class="form-control" type="text" formControlName="dietaryNeedsDetails">
+        </div>
       </div>
 
       <!-- Medication information -->
@@ -442,15 +489,8 @@
       </div>
       <div class="mb-4" *ngIf="form.value.medicationNeeds===true">
         <p class="required">
-          Do you have adequate medication for the next three days?
+          Do you have sufficient supply for the next 72 hours?
         </p>
-        <div *ngIf="form.value.hasThreeDayMedicationSupply===false" class="alert alert-warning" role="alert">
-          <h4 class="alert-heading">
-            The evacuee may be at increased risk from the medical condition.
-          </h4>
-          <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
-        </div>
-
         <div class="form-group">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" [value]="true" formControlName="hasThreeDayMedicationSupply"
@@ -461,6 +501,12 @@
             <input class="form-check-input" type="radio" [value]="false" formControlName="hasThreeDayMedicationSupply">
             <label class="form-check-label">No</label>
           </div>
+        </div>
+        <div *ngIf="form.value.hasThreeDayMedicationSupply===false" class="alert alert-warning" role="alert">
+          <h4 class="alert-heading">
+            Refer the evacuee to Health Services at the Reception Centre where available.
+          </h4>
+          <!-- <p>Relevant procedure and lorem ipsum dolor sit amet...</p> -->
         </div>
       </div>
 
@@ -500,6 +546,14 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
+      </div>
+
+      <!-- Follow up -->
+      <div class="mb-4">
+        <h3 class="blue-header">
+          FOLLOW-UP REQUIRED
+        </h3>
+        <textarea class="form-control" placeholder="Details" rows="4" formControlName="followUpDetails"></textarea>
       </div>
 
       <!-- Referrals -->
@@ -559,23 +613,21 @@
         </p>
         <textarea class="form-control" placeholder="Details" rows="4" formControlName="familyRecoveryPlan"></textarea>
       </div>
-      <!-- Follow up -->
-      <!--
-      <div class="mb-4">
-        <h3 class="blue-header">
-          FOLLOW-UP REQUIRED
-        </h3>
-        <textarea class="form-control" placeholder="Details" rows="4"></textarea>
-      </div>
-      -->
-
+    </div>
+    <!-- Follow up -->
+    <div class="mb-4">
+      <h3 class="blue-header">
+        OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE
+      </h3>
+      <textarea class="form-control" placeholder="Details (TODO: Not working)" rows="4"
+        formControlName="externalReferralsDetails"></textarea>
     </div>
 
-    <!-- Form content for testing -->
-    <div class="mt-5">
-      <h4>Form State</h4>
-      <pre>{{ this.form.value | json }}</pre>
+    <!-- Submit button! -->
+    <div class="mb-4">
+      <button class="btn btn-primary" (click)="submit()">Submit</button>
     </div>
+
   </div>
 
   <!-- Information side bar -->
@@ -595,6 +647,8 @@
 
   <!-- TODO: Delete this spacer hack -->
   <div class="col mb-6 mt-6">
-    <h3>TODO: Delete this spacer that unhides the content form under the footer.</h3>
+    <h3>
+      TODO: Delete this spacer that unhides the content form under the footer.
+    </h3>
   </div>
 </div>
