@@ -1,12 +1,12 @@
 <div class="row">
-  <div class="col" (click)="submit()">
+  <!-- <div class="col" (click)="submit()">
     <h4>Input State</h4>
     <pre>{{registration | json}}</pre>
-  </div>
-  <!-- <div class="col">
+  </div> -->
+  <div class="col">
     <h4>Submission State</h4>
     <pre>{{submission | json}}</pre>
-  </div> -->
+  </div>
   <!-- Form content for testing -->
   <div class="col">
     <h4>Form State</h4>
@@ -33,7 +33,7 @@
     <form [formGroup]="form" (ngSubmit)="submit()">
 
       <!-- TODO: These need to have the task number and host community populated -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           TASK NUMBER & PLACE OF REGISTRATION
         </h3>
@@ -55,11 +55,11 @@
             <option value="Grand Forks">Grand Forks</option>
           </select>
         </app-form-field>
-      </div> -->
+      </div>
 
       <!-- Restricted access to this file? -->
       <!-- CONFIRMED -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           RESTRICTION
         </h3>
@@ -78,11 +78,11 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-      </div> -->
+      </div>
 
       <!-- Primary contact information -->
       <!-- CONFIRMED TODO: Date -->
-      <!-- <div class="mb-4" formGroupName="headOfHousehold">
+      <div class="mb-4" formGroupName="headOfHousehold">
         <h3 class="blue-header">
           EVACUEE DETAILS
         </h3>
@@ -119,11 +119,11 @@
             <input class="form-control" type="date" formControlName="dob">
           </app-form-field>
         </div>
-      </div> -->
+      </div>
 
       <!-- Family information section -->
       <!-- CONFIRMED TODO: Date -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           EVACUEE FAMILY INFORMATION
         </h3>
@@ -215,11 +215,11 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
 
       <!-- Residence information -->
       <!-- CONFIRMED -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           PRIMARY RESIDENCE & CONTACT DETAILS
         </h3>
@@ -242,11 +242,11 @@
           </h4>
           <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
         </div>
-      </div> -->
+      </div>
       <!-- CONFIRMED WORKING
         TODO: community needs to be fixed
       -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <div class="card">
           <div class="card-body">
             <div class="row mb-2" formGroupName="hohPrimaryResidence">
@@ -306,13 +306,13 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
 
       <!-- Mailing information -->
       <!-- CONFIRM MAILING ADDRESS FLOW
         TODO: community dropdown
       -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           MAILING ADDRESS
         </h3>
@@ -389,11 +389,11 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
 
       <!-- Disaster affect information -->
       <!-- CONFIRMED WORKING -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           BRIEF STATEMENT OF HOW THE PERSON/FAMILY WERE AFFECTED BY THE DISASTER
         </h3>
@@ -402,11 +402,11 @@
         </p>
         <textarea class="form-control" formControlName="disasterAffectDetails" placeholder="Please specify"
           rows="4"></textarea>
-      </div> -->
+      </div>
 
       <!-- Insurance information -->
       <!-- CONFIRMATION -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           INSURANCE
         </h3>
@@ -427,10 +427,10 @@
             <label class="form-check-label">I don't know</label>
           </div>
         </div>
-      </div> -->
+      </div>
 
       <!-- Additional family information -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           ADDITIONAL INFORMATION
         </h3>
@@ -451,11 +451,11 @@
           <label>Please specify</label>
           <input class="form-control" type="text" formControlName="dietaryNeedsDetails">
         </div>
-      </div> -->
+      </div>
 
       <!-- Medication information -->
       <!-- CONFIRMED -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <p class="required">
           Do you (or anyone registering with you) take medication?
         </p>
@@ -490,11 +490,11 @@
             Refer the evacuee to Health Services at the Reception Centre where available.
           </h4>
         </div>
-      </div> -->
+      </div>
 
       <!-- Pet information -->
       <!-- CONFIRMED -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <p class="required">
           Do you have pets with you?
         </p>
@@ -508,7 +508,7 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-      </div> -->
+      </div>
 
       <!-- Next steps -->
       <!-- CONFIRM -->
@@ -567,12 +567,12 @@
 
       <!-- Follow up -->
       <!-- CONFIRMED -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           FOLLOW-UP REQUIRED
         </h3>
         <textarea class="form-control" placeholder="Details" rows="4" formControlName="followUpDetails"></textarea>
-      </div> -->
+      </div>
 
       <!-- Referrals -->
       <!-- CONFIRMED -->
@@ -623,7 +623,7 @@
 
       <!-- Family recovery planning -->
       <!-- CONFIRMED -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           FAMILY RECOVERY PLANS (IMMEDIATE & LONG TERM)
         </h3>
@@ -633,24 +633,24 @@
           Have you thought about what you will do after that time?
         </p>
         <textarea class="form-control" placeholder="Details" rows="4" formControlName="familyRecoveryPlan"></textarea>
-      </div> -->
+      </div>
 
       <!-- Follow up -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE
         </h3>
         <textarea class="form-control" placeholder="Details (TODO: Not working)" rows="4"
           formControlName="externalReferralsDetails"></textarea>
-      </div> -->
+      </div>
       <!-- Follow up -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE
         </h3>
         <textarea class="form-control" placeholder="Details (TODO: Not working)" rows="4"
           formControlName="externalReferralsDetails"></textarea>
-      </div> -->
+      </div>
 
       <!-- Submit button! -->
       <div class="mb-4">

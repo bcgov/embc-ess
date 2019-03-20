@@ -148,7 +148,8 @@ export class EvacueeRegistrationComponent implements OnInit {
   clearMailingAddress() {
     // completely remove stored values for this area of the form
     // no persistent mailing address
-    this.form.reset('hohMailingAddress');
+    // this.form.reset('hohMailingAddress');
+    // todo: clear the hohMailingAddress to null so it can be null again instead of adding bad data to the DB
   }
 
   getBoolean(booleanString: string): boolean {
