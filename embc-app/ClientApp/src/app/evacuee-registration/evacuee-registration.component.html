@@ -1,14 +1,14 @@
 <div class="row">
-  <div class="col-4" (click)="submit()">
+  <div class="col" (click)="submit()">
     <h4>Input State</h4>
-    <pre>{{registration|json}}</pre>
+    <pre>{{registration | json}}</pre>
   </div>
-  <div class="col-4">
+  <!-- <div class="col-4">
     <h4>Submission State</h4>
     <pre>{{submission|json}}</pre>
-  </div>
+  </div> -->
   <!-- Form content for testing -->
-  <div class="col-3">
+  <div class="col">
     <h4>Form State</h4>
     <pre>{{ this.form.value | json }}</pre>
   </div>

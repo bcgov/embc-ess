@@ -100,7 +100,24 @@ const TEST: Registration[] = [
           name: 'Canada'
         },
       },
-      familyMembers: [],
+      familyMembers: [
+        {
+          id: 'qwpeory',
+          firstName: 'Baby',
+          lastName: 'McGee',
+          initials: 'J',
+          nickname: 'Beebs',
+          sameLastNameAsEvacuee: false,
+          relationshipToEvacuee: {
+            code: 'EXFMBR',
+            description: 'Could be a cousin or something.'
+          },
+          personType: 'FMBR',
+          gender: 'Female',
+          dob: new Date()
+
+        }
+      ],
       bcServicesNumber: '1092838740912834709875',
       id: 'c7f5b285-3276-4a1e-8d1e-2f821a74987d',
       active: true,
@@ -109,7 +126,7 @@ const TEST: Registration[] = [
       lastName: 'LayCraft',
       nickname: 'Curty',
       initials: 'J',
-      gender: 'male',
+      gender: 'Male',
       dob: new Date()
     },
     incidentTask: {
@@ -153,10 +170,26 @@ const TEST: Registration[] = [
         },
       }
     },
-    completedBy: null
-
+    completedBy: {
+      id: 'askldfjhaskljdfh',
+      nickname: 'Betsy',
+      firstName: 'Beebs',
+      lastName: 'Racklette',
+      initials: 'BRB',
+      personType: 'VOLN',
+      gender: 'Other',
+      dob: new Date(),
+      organization: {
+        name: 'Quartech',
+        bceidAccountNumber: 'askljdfhlkasjhfdlk',
+        id: 'klasdjfhlkasjdfhlkasdjhf',
+      },
+      bceidAccountNumber: 'klsadjfhdlkasjfh',
+      canAccessRestrictedFiles: true,
+      isAdministrator: true,
+      isPrimaryContact: true,
+    }
   }
-
 ];
 
 @Injectable({
