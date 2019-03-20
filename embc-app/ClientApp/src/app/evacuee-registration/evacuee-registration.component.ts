@@ -460,11 +460,17 @@ export class EvacueeRegistrationComponent implements OnInit {
     if (this.registration) {
       // update
       this.submission = reg;
-      // this.registrationService.putRegistration(this.registration).subscribe(r => { alert(JSON.stringify(r)); });
+      this.registrationService.putRegistration(reg)
+        .subscribe(r => {
+          alert(JSON.stringify(r));
+        });
     } else {
       // post new
       this.submission = reg;
-      // this.registrationService.createRegistration(this.registration).subscribe(r => { alert(JSON.stringify(r)); });
+      this.registrationService.createRegistration(reg)
+        .subscribe(r => {
+          alert(JSON.stringify(r));
+        });
     }
   }
 }

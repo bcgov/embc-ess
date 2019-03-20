@@ -1,19 +1,4 @@
 <div class="row">
-  <!-- <div class="col" (click)="submit()">
-    <h4>Input State</h4>
-    <pre>{{registration | json}}</pre>
-  </div> -->
-  <div class="col">
-    <h4>Submission State</h4>
-    <pre>{{submission | json}}</pre>
-  </div>
-  <!-- Form content for testing -->
-  <div class="col">
-    <h4>Form State</h4>
-    <pre>{{ this.form.value | json}}</pre>
-  </div>
-</div>
-<div class="row">
   <div class="col col-lg-8">
     <div class="mb-4">
       <h1>Add an Evacuee</h1>
@@ -675,9 +660,24 @@
   </div>
 
   <!-- TODO: Delete this spacer hack -->
-  <div class="col mb-6 mt-6">
+  <!-- <div class="col mb-6 mt-6">
     <h3>
       TODO: Delete this spacer that unhides the content form under the footer.
     </h3>
-  </div>
+  </div> -->
 </div>
+<!-- Only for debugging. Three boxes with the three data representations. -->
+<!-- <div class="row">
+    <div class="col" (click)="submit()">
+      <h4>Input State</h4>
+      <pre>{{registration | json}}</pre>
+    </div>
+    <div class="col">
+      <h4>Submission State</h4>
+      <pre>{{submission | json}}</pre>
+    </div>
+    <div class="col">
+      <h4>Form State</h4>
+      <pre>{{ this.form.value | json}}</pre>
+    </div>
+  </div> -->
