@@ -30,9 +30,10 @@
     <!-- <p>regionalDistricts$: {{regionalDistricts$ | async | json}}</p> -->
     <p>relationshipTypes$: {{relationshipTypes$ | async | json}}</p>
 
-    <div [formGroup]="form">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
       <!-- Task numer and registration information populated -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           TASK NUMBER & PLACE OF REGISTRATION
         </h3>
@@ -54,10 +55,10 @@
             <option value="Grand Forks">Grand Forks</option>
           </select>
         </app-form-field>
-      </div>
+      </div> -->
 
       <!-- REstricted access to this file? -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           RESTRICTION
         </h3>
@@ -76,10 +77,10 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Primary contact information -->
-      <div class="mb-4" formGroupName="headOfHousehold">
+      <!-- <div class="mb-4" formGroupName="headOfHousehold">
         <h3 class="blue-header">
           EVACUEE DETAILS
         </h3>
@@ -116,10 +117,10 @@
             <input class="form-control" type="date" formControlName="dob">
           </app-form-field>
         </div>
-      </div>
+      </div> -->
 
       <!-- Family information section -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           EVACUEE FAMILY INFORMATION
         </h3>
@@ -136,7 +137,6 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-        <!-- Card for family members -->
         <div formArrayName="familyMembers">
           <div class="card mb-2" *ngFor="let m of familyMembers.controls; index as i;" [formGroupName]="i">
             <div class="card-body">
@@ -150,7 +150,6 @@
                     Same as main applicant.
                   </label>
                   <div class="form-check">
-                    <!-- TODO: Make this work -->
                     <input class="form-check-input" type="checkbox" value="true"
                       formControlName="sameLastNameAsEvacuee">
                   </div>
@@ -176,7 +175,6 @@
                       <option [ngValue]="null">Please select--</option>
                       <option *ngFor="let item of relationshipTypes$ | async" value="item.code">
                         {{item}}
-                        <!-- TODO: this won't work because the relationship types returns an object with one element with a property of relationshipType -->
                       </option>
                     </select>
                   </app-form-field>
@@ -214,11 +212,10 @@
             </div>
           </div>
         </div>
-      </div>
-
+      </div> -->
 
       <!-- Residence information -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           PRIMARY RESIDENCE & CONTACT DETAILS
         </h3>
@@ -241,8 +238,8 @@
           </h4>
           <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
         </div>
-      </div>
-      <div class="mb-4">
+      </div> -->
+      <!-- <div class="mb-4">
         <div class="card">
           <div class="card-body">
             <div class="row mb-2" formGroupName="hohPrimaryResidence">
@@ -280,7 +277,6 @@
             </div>
             <div class="row mb-2" formGroupName="hohPrimaryResidence">
               <div class="col-6">
-                <!-- Country selector pulls from application state -->
                 <label required="true">Country/Region</label>
                 <select class="form-control" formControlName="country">
                   <option [ngValue]="null">-- Select Country</option>
@@ -308,10 +304,10 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Mailing information -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           MAILING ADDRESS
         </h3>
@@ -358,7 +354,6 @@
                     <option value="BC">BC</option>
                   </select>
 
-                  <!-- Province selector pulls from application state -->
                   <select class="form-control" formControlName="province">
                     <option [ngValue]="null">-- Please Select</option>
                     <option [value]="item.id" *ngFor="let item of countries$ | async">
@@ -376,7 +371,6 @@
             </div>
             <div class="row mb-2">
               <div class="col-6">
-                <!-- Country selector pulls from application state -->
                 <label required="true">Country/Region</label>
                 <select class="form-control" formControlName="country">
                   <option [ngValue]="null">-- Select Country</option>
@@ -404,10 +398,10 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Disaster affect information -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           BRIEF STATEMENT OF HOW THE PERSON/FAMILY WERE AFFECTED BY THE DISASTER
         </h3>
@@ -416,10 +410,10 @@
         </p>
         <textarea class="form-control" formControlName="disasterAffectDetails" placeholder="Please specify"
           rows="4"></textarea>
-      </div>
+      </div> -->
 
       <!-- Insurance information -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           INSURANCE
         </h3>
@@ -431,10 +425,6 @@
             <input class="form-check-input" type="radio" value="yes" formControlName="insuranceCode">
             <label class="form-check-label">Yes</label>
           </div>
-          <!-- <div class="form-check">
-            <input class="form-check-input" type="radio" value="yes-unsure" formControlName="insuranceCode">
-            <label class="form-check-label">Yes, but I'm not sure if I have coverage for this event.</label>
-          </div> -->
           <div class="form-check">
             <input class="form-check-input" type="radio" value="no" formControlName="insuranceCode">
             <label class="form-check-label">No</label>
@@ -444,10 +434,10 @@
             <label class="form-check-label">I don't know</label>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Additional family information -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           ADDITIONAL INFORMATION
         </h3>
@@ -464,15 +454,14 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-        <!-- dietary needs details collection -->
         <div *ngIf="form.value.dietaryNeeds">
           <label>Please specify</label>
           <input class="form-control" type="text" formControlName="dietaryNeedsDetails">
         </div>
-      </div>
+      </div> -->
 
       <!-- Medication information -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <p class="required">
           Do you (or anyone registering with you) take medication?
         </p>
@@ -486,8 +475,8 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-      </div>
-      <div class="mb-4" *ngIf="form.value.medicationNeeds===true">
+      </div> -->
+      <!-- <div class="mb-4" *ngIf="form.value.medicationNeeds===true">
         <p class="required">
           Do you have sufficient supply for the next 72 hours?
         </p>
@@ -506,12 +495,11 @@
           <h4 class="alert-heading">
             Refer the evacuee to Health Services at the Reception Centre where available.
           </h4>
-          <!-- <p>Relevant procedure and lorem ipsum dolor sit amet...</p> -->
         </div>
-      </div>
+      </div> -->
 
       <!-- Pet information -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <p class="required">
           Do you have pets with you?
         </p>
@@ -525,10 +513,10 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Next steps -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           NEXT STEPS
         </h3>
@@ -546,18 +534,18 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Follow up -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           FOLLOW-UP REQUIRED
         </h3>
         <textarea class="form-control" placeholder="Details" rows="4" formControlName="followUpDetails"></textarea>
-      </div>
+      </div> -->
 
       <!-- Referrals -->
-      <div class="mb-4" *ngIf="form.value.requiresSupport===true">
+      <!-- <div class="mb-4" *ngIf="form.value.requiresSupport===true">
         <h3 class="blue-header">
           REFERRALS MADE WITHIN RECEPTION CENTER
         </h3>
@@ -600,9 +588,10 @@
             Pet Care
           </label>
         </div>
-      </div>
+      </div> -->
+
       <!-- Family recovery planning -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           FAMILY RECOVERY PLANS (IMMEDIATE & LONG TERM)
         </h3>
@@ -612,22 +601,30 @@
           Have you thought about what you will do after that time?
         </p>
         <textarea class="form-control" placeholder="Details" rows="4" formControlName="familyRecoveryPlan"></textarea>
+      </div> -->
+
+      <!-- Follow up -->
+      <!-- <div class="mb-4">
+        <h3 class="blue-header">
+          OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE
+        </h3>
+        <textarea class="form-control" placeholder="Details (TODO: Not working)" rows="4"
+          formControlName="externalReferralsDetails"></textarea>
+      </div> -->
+      <!-- Follow up -->
+      <!-- <div class="mb-4">
+        <h3 class="blue-header">
+          OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE
+        </h3>
+        <textarea class="form-control" placeholder="Details (TODO: Not working)" rows="4"
+          formControlName="externalReferralsDetails"></textarea>
+      </div> -->
+
+      <!-- Submit button! -->
+      <div class="mb-4">
+        <button class="btn btn-primary" type="submit">Submit</button>
       </div>
-    </div>
-    <!-- Follow up -->
-    <div class="mb-4">
-      <h3 class="blue-header">
-        OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE
-      </h3>
-      <textarea class="form-control" placeholder="Details (TODO: Not working)" rows="4"
-        formControlName="externalReferralsDetails"></textarea>
-    </div>
-
-    <!-- Submit button! -->
-    <div class="mb-4">
-      <button class="btn btn-primary" (click)="submit()">Submit</button>
-    </div>
-
+    </form>
   </div>
 
   <!-- Information side bar -->

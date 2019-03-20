@@ -18,11 +18,11 @@ import {
 export class EvacueeRegistrationComponent implements OnInit {
 
   // state needed by this FORM
-  countries$ = this.store.select(state => state.lookups.countries.countries);
-  regionalDistrics$ = this.store.select(state => state.lookups.regionalDistricts);
-  regions$ = this.store.select(state => state.lookups.regions);
-  relationshipTypes$ = this.store.select(state => state.lookups.relationshipTypes);
-  incidentTask$ = this.store.select(state => state.incidentTasks.incidentTasks); // TODO: make it go.
+  countries$ = this.store.select(s => s.lookups.countries.countries);
+  regionalDistrics$ = this.store.select(s => s.lookups.regionalDistricts);
+  regions$ = this.store.select(s => s.lookups.regions);
+  relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
+  incidentTask$ = this.store.select(s => s.incidentTasks.incidentTasks); // TODO: make it go.
   // communities$
 
   // The model for the form data collected
