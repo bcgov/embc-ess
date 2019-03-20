@@ -1,17 +1,17 @@
 <div class="row">
-  <div class="col" (click)="submit()">
+  <!-- <div class="col" (click)="submit()">
     <h4>Input State</h4>
     <pre>{{registration | json}}</pre>
   </div>
   <div class="col">
     <h4>Submission State</h4>
     <pre>{{submission | json}}</pre>
-  </div>
+  </div> -->
   <!-- Form content for testing -->
-  <!-- <div class="col">
+  <div class="col">
     <h4>Form State</h4>
     <pre>{{ this.form.value | json }}</pre>
-  </div> -->
+  </div>
 </div>
 <div class="row">
   <div class="col col-lg-8">
@@ -24,10 +24,11 @@
       </small>
     </div>
 
-    <!-- <p>countries$: {{countries$ | async | json}}</p>
-    <p>regions$: {{regions$ | async | json}}</p>
-    <p>regionalDistricts$: {{regionalDistricts$ | async | json}}</p>
-    <p>relationshipTypes$: {{relationshipTypes$ | async | json}}</p> -->
+    <!-- <p>incidentTask$: {{incidentTask$|async|json}}</p> -->
+    <!-- <p>countries$: {{countries$ | async | json}}</p> -->
+    <!-- <p>regions$: {{regions$ | async | json}}</p> -->
+    <!-- <p>regionalDistricts$: {{regionalDistricts$ | async | json}}</p> -->
+    <!-- <p>relationshipTypes$: {{relationshipTypes$ | async | json}}</p>  -->
 
     <div [formGroup]="form">
       <!-- Task numer and registration information populated -->
@@ -44,7 +45,7 @@
         </app-form-field>
         <app-form-field required="true">
           <label>Facility Name / Registration Location</label>
-          <input class="form-control" type="text">
+          <input class="form-control" type="text" formControlName="facility">
         </app-form-field>
         <app-form-field required="true">
           <label>Host Community</label>

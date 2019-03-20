@@ -27,6 +27,9 @@ export class EvacueeRegistrationComponent implements OnInit {
   // The model for the form data collected
   form: FormGroup;
 
+  // EditMode
+  editMode: boolean = false;
+
   registration: Registration;
   submission: any;
   // the ess file number on its own is useful for looking up information from the DB
@@ -63,10 +66,14 @@ export class EvacueeRegistrationComponent implements OnInit {
           // TODO: get first registration for now
           // alert(JSON.stringify(r));
           this.registration = r;
+          // this is a form with data flowing in.
+          this.editMode = true;
           // alert(JSON.stringify(r));
           this.displayRegistration(r);
         });
     } else {
+      // this is a fresh form
+      this.editMode = false;
       this.displayRegistration();
     }
   }
