@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col" (click)="submit()">
     <h4>Input State</h4>
-    <pre>{{registration.hasThreeDayMedicationSupply}}</pre>
+    <pre>{{registration.hasPets}}</pre>
   </div>
   <!-- <div class="col">
     <h4>Submission State</h4>
@@ -10,7 +10,7 @@
   <!-- Form content for testing -->
   <div class="col">
     <h4>Form State</h4>
-    <pre>{{ this.form.value.hasThreeDayMedicationSupply }}</pre>
+    <pre>{{ this.form.value.hasPets }}</pre>
   </div>
 </div>
 <div class="row">
@@ -493,7 +493,8 @@
       </div> -->
 
       <!-- Pet information -->
-      <!-- <div class="mb-4">
+      <!-- CONFIRMED -->
+      <div class="mb-4">
         <p class="required">
           Do you have pets with you?
         </p>
@@ -507,7 +508,7 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-      </div> -->
+      </div>
 
       <!-- Next steps -->
       <!-- <div class="mb-4">
