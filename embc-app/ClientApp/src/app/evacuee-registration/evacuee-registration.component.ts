@@ -226,7 +226,10 @@ export class EvacueeRegistrationComponent implements OnInit {
       familyMembers: this.formBuilder.array([]), // array of formGroups
       incidentTask: null, // which task is this from
       hostCommunity: null, // which community is hosting
-      completedBy: null
+      completedBy: null,
+
+      // special cases
+      isBcAddress: null
     });
   }
 
@@ -293,6 +296,8 @@ export class EvacueeRegistrationComponent implements OnInit {
         completedBy: r.completedBy as Volunteer,
         hostCommunity: hostCommunity as Community,
         incidentTask: incidentTask as IncidentTask,
+        isBcAddress: isBcAddress(r.headOfHousehold.primaryResidence) as boolean,
+
       });
 
       // iterate over the array and collect each family member as a formgroup and put them into a form array

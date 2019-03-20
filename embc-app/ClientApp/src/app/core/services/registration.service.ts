@@ -46,8 +46,8 @@ const TEST: Registration[] = [
         id: 'd3b03f54-bb3b-4daa-a6f7-c79c7dceaf1d',
         addressSubtype: null,
         addressLine1: 'asldkjfhlaksjfh',
-        addressLine2: null,
-        addressLine3: null,
+        addressLine2: 'Nothing',
+        addressLine3: 'Nothing',
         postalCode: 'V8V8V8',
         community: {
           id: '747652f4-f4b3-424b-aa6d-cd5366e3f13a',

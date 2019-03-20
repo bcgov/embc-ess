@@ -225,7 +225,7 @@
         <p class="required">
           Is your primary residence within BC?
         </p>
-        <div class="form-group" formGroupName="primaryResidence">
+        <div class="form-group" formGroupName="hohPrimaryResidence">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" [value]="true" formControlName="isBcAddress">
             <label class="form-check-label">Yes</label>
@@ -245,13 +245,13 @@
       <div class="mb-4">
         <div class="card">
           <div class="card-body">
-            <div class="row mb-2">
+            <div class="row mb-2" formGroupName="hohPrimaryResidence">
               <div class="col">
                 <label required="true">Apt/Suite/Building Number & Street Address</label>
                 <input type="text" class="form-control" formControlName="addressLine1">
               </div>
             </div>
-            <div class="row mb-2" formGroupName="primaryResidence">
+            <div class="row mb-2" formGroupName="hohPrimaryResidence">
               <div class="col">
                 <div requried="true">
                   <label>Community</label>
@@ -262,7 +262,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-3" formGroupName="primaryResidence">
+              <div class="col-3" formGroupName="hohPrimaryResidence">
                 <div requried="true">
                   <label>Province</label>
                   <select class="form-control" formControlName="provinceOrState">
@@ -271,14 +271,14 @@
                   </select>
                 </div>
               </div>
-              <div class="col-3" formGroupName="primaryResidence">
+              <div class="col-3" formGroupName="hohPrimaryResidence">
                 <div class="form-check">
                   <label required="true">Postal Code</label>
                   <input type="text" class="form-control" formControlName="postalCodeOrZip">
                 </div>
               </div>
             </div>
-            <div class="row mb-2" formGroupName="primaryResidence">
+            <div class="row mb-2" formGroupName="hohPrimaryResidence">
               <div class="col-6">
                 <!-- Country selector pulls from application state -->
                 <label required="true">Country/Region</label>
@@ -331,7 +331,7 @@
         <div>
 
         </div>
-        <div class="card" *ngIf="form.value.hasMailingAddress" formGroupName="mailingAddress">
+        <div class="card" *ngIf="form.value.hasMailingAddress" formGroupName="hohMailingAddress">
           <div class="card-body">
             <div class="row mb-2">
               <div class="col">
