@@ -28,7 +28,7 @@
     <!-- <p>countries$: {{countries$ | async | json}}</p> -->
     <!-- <p>regions$: {{regions$ | async | json}}</p> -->
     <!-- <p>regionalDistricts$: {{regionalDistricts$ | async | json}}</p> -->
-    <!-- <p>relationshipTypes$: {{relationshipTypes$ | async | json}}</p>  -->
+    <p>relationshipTypes$: {{relationshipTypes$ | async | json}}</p>
 
     <div [formGroup]="form">
       <!-- Task numer and registration information populated -->
@@ -170,8 +170,16 @@
               </div>
               <div class="row mb-2">
                 <div class="col-6">
-                  <label required="true">Relationship to evacuee</label>
-                  <input type="text" class="form-control" formControlName="relationshipToEvacuee">
+                  <app-form-field requried="true">
+                    <label>Relationship to evacuee</label>
+                    <select class="form-control" formControlName="relationshipToEvacuee">
+                      <option [ngValue]="null">Please select--</option>
+                      <option *ngFor="let item of relationshipTypes$ | async" value="item.code">
+                        {{item}}
+                        <!-- TODO: this won't work because the relationship types returns an object with one element with a property of relationshipType -->
+                      </option>
+                    </select>
+                  </app-form-field>
                 </div>
                 <div class="col">
                   <app-form-field requried="true">
