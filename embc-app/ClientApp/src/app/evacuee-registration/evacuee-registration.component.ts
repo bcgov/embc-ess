@@ -238,7 +238,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       const incidentTask: IncidentTask = r.incidentTask;
       const hostCommunity: Community = r.hostCommunity;
       // If the evacuee is here now then the defer to later of the registration of family members is now currently yes.
-      if (r.registeringFamilyMembers === 'yes-unsure') {
+      if (r.registeringFamilyMembers === 'yes-later') {
         r.registeringFamilyMembers = 'yes';
       }
 
