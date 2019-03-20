@@ -113,7 +113,7 @@ const TEST: Registration[] = [
             description: 'Could be a cousin or something.'
           },
           personType: 'FMBR',
-          gender: 'Female',
+          gender: 'female',
           dob: new Date()
 
         }
@@ -126,7 +126,7 @@ const TEST: Registration[] = [
       lastName: 'LayCraft',
       nickname: 'Curty',
       initials: 'J',
-      gender: 'Male',
+      gender: 'male',
       dob: new Date()
     },
     incidentTask: {
@@ -177,7 +177,7 @@ const TEST: Registration[] = [
       lastName: 'Racklette',
       initials: 'BRB',
       personType: 'VOLN',
-      gender: 'Other',
+      gender: 'other',
       dob: new Date(),
       organization: {
         name: 'Quartech',
