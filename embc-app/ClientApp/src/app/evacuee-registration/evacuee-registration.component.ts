@@ -432,4 +432,5 @@ export class EvacueeRegistrationComponent implements OnInit {
       // this.registrationService.createRegistration(this.registration).subscribe(r => { alert(JSON.stringify(r)); });
     }
   }
+  convert
 }

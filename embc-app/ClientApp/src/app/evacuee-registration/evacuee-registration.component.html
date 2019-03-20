@@ -59,7 +59,7 @@
 
       <!-- Restricted access to this file? -->
       <!-- CONFIRMED -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           RESTRICTION
         </h3>
@@ -78,9 +78,10 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Primary contact information -->
+      <!-- CONFIRMED TODO: Date -->
       <!-- <div class="mb-4" formGroupName="headOfHousehold">
         <h3 class="blue-header">
           EVACUEE DETAILS
@@ -121,6 +122,7 @@
       </div> -->
 
       <!-- Family information section -->
+      <!-- CONFIRMED TODO: Date -->
       <!-- <div class="mb-4">
         <h3 class="blue-header">
           EVACUEE FAMILY INFORMATION
@@ -174,8 +176,8 @@
                     <label>Relationship to evacuee</label>
                     <select class="form-control" formControlName="relationshipToEvacuee">
                       <option [ngValue]="null">Please select--</option>
-                      <option *ngFor="let item of relationshipTypes$ | async" value="item.code">
-                        {{item}}
+                      <option *ngFor="let item of relationshipTypes$ | async" [value]="item">
+                        {{item.description}}
                       </option>
                     </select>
                   </app-form-field>

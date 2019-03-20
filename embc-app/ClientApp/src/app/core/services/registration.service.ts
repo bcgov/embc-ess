@@ -109,12 +109,12 @@ const TEST: Registration[] = [
           nickname: 'Beebs',
           sameLastNameAsEvacuee: false,
           relationshipToEvacuee: {
-            code: 'EXFMBR',
+            code: 'IMMF',
             description: 'Could be a cousin or something.'
           },
           personType: 'FMBR',
           gender: 'female',
-          dob: new Date()
+          dob: new Date('2019-03-06T00:00:00-08:00')
 
         }
       ],
@@ -127,7 +127,7 @@ const TEST: Registration[] = [
       nickname: 'Curty',
       initials: 'J',
       gender: 'male',
-      dob: new Date()
+      dob: new Date('1984-03-06T00:00:00-08:00')
     },
     incidentTask: {
       id: 'wert',
@@ -209,14 +209,14 @@ export class RegistrationService extends RestService {
   }
 
   createRegistration(data: Registration): Observable<Registration> {
-    alert("createRegistration service");
+    // alert("createRegistration service");
     return this.http.post<Registration>('api/registrations', data, { headers: this.headers })
       .pipe(
         catchError(this.handleError)
       );
   }
   putRegistration(data: Registration): Observable<Registration> {
-    alert("putRegistration service");
+    // alert("putRegistration service");
     return this.http.put<Registration>('api/registrations', data, { headers: this.headers })
       .pipe(
         catchError(this.handleError)
