@@ -1,4 +1,4 @@
-﻿[
+[
     {
         "Name": "Tarrys",
         "RegionalDistrict": {
@@ -504,7 +504,7 @@
         }
     },
     {
-        "Name": "Balfour ",
+        "Name": "Balfour",
         "RegionalDistrict": {
             "Name": "Central Kootenay Area E"
         }
@@ -792,7 +792,7 @@
         }
     },
     {
-        "Name": "Silver Creek ",
+        "Name": "Silver Creek",
         "RegionalDistrict": {
             "Name": "East Kootenay Area C"
         }
@@ -1146,7 +1146,7 @@
         }
     },
     {
-        "Name": "Oasis ",
+        "Name": "Oasis",
         "RegionalDistrict": {
             "Name": "Kootenay Boundary Area B"
         }
@@ -1638,7 +1638,7 @@
         }
     },
     {
-        "Name": "Hazelton, Village of ",
+        "Name": "Hazelton, Village of",
         "RegionalDistrict": {
             "Name": "Regional District Kitimat-Stikine"
         }
@@ -1758,7 +1758,7 @@
         }
     },
     {
-        "Name": "Moricetown Band ",
+        "Name": "Moricetown Band",
         "RegionalDistrict": {
             "Name": "Regional District Kitimat-Stikine"
         }
@@ -1776,7 +1776,7 @@
         }
     },
     {
-        "Name": "Port Edward, City of ",
+        "Name": "Port Edward, City of",
         "RegionalDistrict": {
             "Name": "North Coast Regional District"
         }
@@ -2490,7 +2490,7 @@
         }
     },
     {
-        "Name": "Alexandria ",
+        "Name": "Alexandria",
         "RegionalDistrict": {
             "Name": "Cariboo Regional District"
         }
@@ -2508,7 +2508,7 @@
         }
     },
     {
-        "Name": "Anaham ",
+        "Name": "Anaham",
         "RegionalDistrict": {
             "Name": "Cariboo Regional District"
         }
@@ -3438,7 +3438,7 @@
         }
     },
     {
-        "Name": "Heiltsuk First Nation ",
+        "Name": "Heiltsuk First Nation",
         "RegionalDistrict": {
             "Name": "Northeast First Nations"
         }
@@ -3564,217 +3564,217 @@
         }
     },
     {
-        "Name": "     Lake Country",
+        "Name": "Lake Country",
         "RegionalDistrict": {
             "Name": "Central Okanagan"
         }
     },
     {
-        "Name": "     Peachland",
+        "Name": "Peachland",
         "RegionalDistrict": {
             "Name": "Central Okanagan"
         }
     },
     {
-        "Name": "     West Kelowna",
+        "Name": "West Kelowna",
         "RegionalDistrict": {
             "Name": "Central Okanagan"
         }
     },
     {
-        "Name": "     Armstrong",
+        "Name": "Armstrong",
         "RegionalDistrict": {
             "Name": "North Okanagan"
         }
     },
     {
-        "Name": "     Coldstream",
+        "Name": "Coldstream",
         "RegionalDistrict": {
             "Name": "North Okanagan"
         }
     },
     {
-        "Name": "     Enderby",
+        "Name": "Enderby",
         "RegionalDistrict": {
             "Name": "North Okanagan"
         }
     },
     {
-        "Name": "     Lumby",
+        "Name": "Lumby",
         "RegionalDistrict": {
             "Name": "North Okanagan"
         }
     },
     {
-        "Name": "     Spallumcheen",
+        "Name": "Spallumcheen",
         "RegionalDistrict": {
             "Name": "North Okanagan"
         }
     },
     {
-        "Name": "     Vernon",
+        "Name": "Vernon",
         "RegionalDistrict": {
             "Name": "North Okanagan"
         }
     },
     {
-        "Name": "     Golden",
+        "Name": "Golden",
         "RegionalDistrict": {
             "Name": "Columbia-Shuswap"
         }
     },
     {
-        "Name": "     Revelstoke",
+        "Name": "Revelstoke",
         "RegionalDistrict": {
             "Name": "Columbia-Shuswap"
         }
     },
     {
-        "Name": "     Salmon Arm",
+        "Name": "Salmon Arm",
         "RegionalDistrict": {
             "Name": "Columbia-Shuswap"
         }
     },
     {
-        "Name": "     Sicamous",
+        "Name": "Sicamous",
         "RegionalDistrict": {
             "Name": "Columbia-Shuswap"
         }
     },
     {
-        "Name": "     Armstrong",
+        "Name": "Armstrong",
         "RegionalDistrict": {
             "Name": "North Okanagan"
         }
     },
     {
-        "Name": "     Coldstream",
+        "Name": "Coldstream",
         "RegionalDistrict": {
             "Name": "North Okanagan"
         }
     },
     {
-        "Name": "     Enderby",
+        "Name": "Enderby",
         "RegionalDistrict": {
             "Name": "North Okanagan"
         }
     },
     {
-        "Name": "     Lumby",
+        "Name": "Lumby",
         "RegionalDistrict": {
             "Name": "North Okanagan"
         }
     },
     {
-        "Name": "     Spallumcheen",
+        "Name": "Spallumcheen",
         "RegionalDistrict": {
             "Name": "North Okanagan"
         }
     },
     {
-        "Name": "     Vernon",
+        "Name": "Vernon",
         "RegionalDistrict": {
             "Name": "North Okanagan"
         }
     },
     {
-        "Name": "     Keremeos",
+        "Name": "Keremeos",
         "RegionalDistrict": {
             "Name": "Okanagan-Similkameen"
         }
     },
     {
-        "Name": "     Oliver",
+        "Name": "Oliver",
         "RegionalDistrict": {
             "Name": "Okanagan-Similkameen"
         }
     },
     {
-        "Name": "     Osoyoos",
+        "Name": "Osoyoos",
         "RegionalDistrict": {
             "Name": "Okanagan-Similkameen"
         }
     },
     {
-        "Name": "     Penticton",
+        "Name": "Penticton",
         "RegionalDistrict": {
             "Name": "Okanagan-Similkameen"
         }
     },
     {
-        "Name": "     Princeton",
+        "Name": "Princeton",
         "RegionalDistrict": {
             "Name": "Okanagan-Similkameen"
         }
     },
     {
-        "Name": "     Summerland",
+        "Name": "Summerland",
         "RegionalDistrict": {
             "Name": "Okanagan-Similkameen"
         }
     },
     {
-        "Name": "     Ashcroft",
+        "Name": "Ashcroft",
         "RegionalDistrict": {
             "Name": "Thompson-Nicola"
         }
     },
     {
-        "Name": "     Barriere",
+        "Name": "Barriere",
         "RegionalDistrict": {
             "Name": "Thompson-Nicola"
         }
     },
     {
-        "Name": "     Cache Creek",
+        "Name": "Cache Creek",
         "RegionalDistrict": {
             "Name": "Thompson-Nicola"
         }
     },
     {
-        "Name": "     Chase",
+        "Name": "Chase",
         "RegionalDistrict": {
             "Name": "Thompson-Nicola"
         }
     },
     {
-        "Name": "     Clearwater",
+        "Name": "Clearwater",
         "RegionalDistrict": {
             "Name": "Thompson-Nicola"
         }
     },
     {
-        "Name": "     Clinton",
+        "Name": "Clinton",
         "RegionalDistrict": {
             "Name": "Thompson-Nicola"
         }
     },
     {
-        "Name": "     Kamloops",
+        "Name": "Kamloops",
         "RegionalDistrict": {
             "Name": "Thompson-Nicola"
         }
     },
     {
-        "Name": "     Logan Lake",
+        "Name": "Logan Lake",
         "RegionalDistrict": {
             "Name": "Thompson-Nicola"
         }
     },
     {
-        "Name": "     Lytton",
+        "Name": "Lytton",
         "RegionalDistrict": {
             "Name": "Thompson-Nicola"
         }
     },
     {
-        "Name": "     Merritt",
+        "Name": "Merritt",
         "RegionalDistrict": {
             "Name": "Thompson-Nicola"
         }
     },
     {
-        "Name": "     Sun Peaks Mountain",
+        "Name": "Sun Peaks Mountain",
         "RegionalDistrict": {
             "Name": "Thompson-Nicola"
         }
