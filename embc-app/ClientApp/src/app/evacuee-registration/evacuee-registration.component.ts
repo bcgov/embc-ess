@@ -43,6 +43,17 @@ export class EvacueeRegistrationComponent implements OnInit {
     this.initForm();
   }
 
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.form.controls;
+  }
+
+  // Shortcuts for this.form.get(...)
+  get familyMembers() {
+    // this is a way to grab the familymembers in a typed way
+    return this.f.familyMembers as FormArray;
+  }
+
   ngOnInit() {
     // if there are route params we should grab them
     if (this.route.snapshot.params.essFileNumber) {
@@ -50,19 +61,10 @@ export class EvacueeRegistrationComponent implements OnInit {
       this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
         .subscribe(r => {
           // TODO: get first registration for now
-          this.displayRegistration(r[0]);
+          // alert(JSON.stringify(r));
+          this.displayRegistration(r);
         });
     }
-  }
-
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.form.controls;
-  }
-  // Shortcuts for this.form.get(...)
-  get familyMembers() {
-    // this is a way to grab the familymembers in a typed way
-    return this.f.familyMembers as FormArray;
   }
 
   addFamilyMember(fmbr?: FamilyMember): void {
