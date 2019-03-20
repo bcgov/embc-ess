@@ -236,8 +236,10 @@ export class EvacueeRegistrationComponent implements OnInit {
       incidentTask: null, // which task is this from
       hostCommunity: null, // which community is hosting
       completedBy: null,
+      // UI bools
       primaryResidenceInBc: null,
       mailingAddressInBc: null,
+      hasMailingAddress: null,
     });
   }
 
@@ -253,8 +255,10 @@ export class EvacueeRegistrationComponent implements OnInit {
         r.registeringFamilyMembers = 'yes';
       }
 
+      // some form fields for showing or hiding UI elements
       const primaryResidenceInBc: boolean = this.isBcAddress(primaryResidence);
       const mailingAddressInBc: boolean = this.isBcAddress(mailingAddress);
+      const hasMailingAddress: boolean = (mailingAddress != null);
 
       // Update the data on the form from the data included from the API
       this.form.patchValue({
@@ -307,8 +311,10 @@ export class EvacueeRegistrationComponent implements OnInit {
         completedBy: r.completedBy as Volunteer,
         hostCommunity: hostCommunity as Community,
         incidentTask: incidentTask as IncidentTask,
+        // UI bools
         primaryResidenceInBc: primaryResidenceInBc as boolean,
         mailingAddressInBc: mailingAddressInBc as boolean,
+        hasMailingAddress: hasMailingAddress as boolean,
       });
       // alert(JSON.stringify(primaryResidence.province));
 

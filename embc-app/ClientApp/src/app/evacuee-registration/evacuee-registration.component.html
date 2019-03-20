@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col" (click)="submit()">
     <h4>Input State</h4>
-    <pre>{{registration.headOfHousehold.primaryResidence | json}}</pre>
+    <pre>{{registration.headOfHousehold.mailingAddress | json}}</pre>
   </div>
   <!-- <div class="col">
     <h4>Submission State</h4>
@@ -9,8 +9,8 @@
   </div> -->
   <!-- Form content for testing -->
   <div class="col">
-    <h4>Form State</h4>
-    <pre>{{ this.form.value.hohPrimaryResidence | json }}</pre>
+    <h4>Form State (hasMailingAddress: {{this.form.value.hasMailingAddress}})</h4>
+    <pre>{{ this.form.value.hohMailingAddress | json }}</pre>
   </div>
 </div>
 <div class="row">
@@ -243,7 +243,10 @@
           <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
         </div>
       </div> -->
-      <div class="mb-4">
+      <!-- CONFIRMED WORKING
+        TODO: community needs to be fixed
+      -->
+      <!-- <div class="mb-4">
         <div class="card">
           <div class="card-body">
             <div class="row mb-2" formGroupName="hohPrimaryResidence">
@@ -263,13 +266,11 @@
                   </select>
                 </div>
               </div>
-              <div class="col-3" formGroupName="hohPrimaryResidence">
-                <div requried="true">
-                  <label>Province</label>
-                  <input type="text" class="form-control" formControlName="province">
-                </div>
+              <div class="col-3">
+                <label required="true">Province</label>
+                <input type="text" class="form-control" formControlName="province">
               </div>
-              <div class="col-3" formGroupName="hohPrimaryResidence">
+              <div class="col-3">
                 <div class="form-check">
                   <label required="true">Postal Code</label>
                   <input type="text" class="form-control" formControlName="postalCode">
@@ -281,7 +282,7 @@
                 <label required="true">Country/Region</label>
                 <select class="form-control" formControlName="country">
                   <option [ngValue]="null">-- Select Country</option>
-                  <option [value]="item.id" *ngFor="let item of countries$ | async">
+                  <option [value]="item" *ngFor="let item of countries$ | async">
                     {{item.name}}
                   </option>
                 </select>
@@ -305,10 +306,10 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Mailing information -->
-      <!-- <div class="mb-4">
+      <div class="mb-4">
         <h3 class="blue-header">
           MAILING ADDRESS
         </h3>
@@ -324,9 +325,6 @@
             <input class="form-check-input" type="radio" [value]="false" formControlName="hasMailingAddress">
             <label class="form-check-label">No</label>
           </div>
-        </div>
-        <div>
-
         </div>
         <div class="card" *ngIf="form.value.hasMailingAddress" formGroupName="hohMailingAddress">
           <div class="card-body">
@@ -399,7 +397,7 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
 
       <!-- Disaster affect information -->
       <!-- <div class="mb-4">
