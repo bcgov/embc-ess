@@ -146,15 +146,18 @@ const TEST: Registration[] = [
         },
       },
       community: {
-        id: 'asdasd',
-        name: 'Victoria',
+        id: '963f9ff6-f637-4375-aac4-69b0678e1f81',
+        active: true,
+        name: 'Port McNeil',
         regionalDistrict: {
-          id: 'frustrated',
-          name: 'CRD',
+          id: '760bb5e1-7f59-4d43-aed8-c83887f5b9f4',
+          active: true,
+          name: 'Mount Waddington',
           region: {
-            id: 'lkasdjfh',
-            name: 'South BC'
-          },
+            id: '49f5a575-ce49-42c4-a117-1207a87ccd81',
+            active: true,
+            name: 'Vancouver Island'
+          }
         }
       },
     },

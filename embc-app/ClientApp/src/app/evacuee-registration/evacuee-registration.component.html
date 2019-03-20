@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col" (click)="submit()">
     <h4>Input State</h4>
-    <pre>{{registration.disasterAffectDetails | json}}</pre>
+    <pre>{{registration.insuranceCode}}</pre>
   </div>
   <!-- <div class="col">
     <h4>Submission State</h4>
@@ -10,7 +10,7 @@
   <!-- Form content for testing -->
   <div class="col">
     <h4>Form State</h4>
-    <pre>{{ this.form.value.disasterAffectDetails | json }}</pre>
+    <pre>{{ this.form.value.insuranceCode }}</pre>
   </div>
 </div>
 <div class="row">
@@ -393,7 +393,7 @@
 
       <!-- Disaster affect information -->
       <!-- CONFIRMED WORKING -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           BRIEF STATEMENT OF HOW THE PERSON/FAMILY WERE AFFECTED BY THE DISASTER
         </h3>
@@ -402,9 +402,10 @@
         </p>
         <textarea class="form-control" formControlName="disasterAffectDetails" placeholder="Please specify"
           rows="4"></textarea>
-      </div>
+      </div> -->
 
       <!-- Insurance information -->
+      <!-- CONFIRMATION -->
       <!-- <div class="mb-4">
         <h3 class="blue-header">
           INSURANCE
