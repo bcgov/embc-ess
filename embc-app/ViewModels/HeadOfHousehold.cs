@@ -22,7 +22,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
         public HeadOfHousehold()
         {
-            PersonType = "HOH";
+            PersonType = Sqlite.Models.Person.HOH;
         }
     }
 }
