@@ -1,14 +1,296 @@
-﻿[
-  {
-    "Name": "Capital Region",
-    "Region": {
-      "Name": "Vancouver Island"
+[
+    {
+        "Name": "Central Kootenay Area B",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "Central Kootenay Area C",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "Central Kootenay Area D",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "Central Kootenay Area E",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "Central Kootenay Area F",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "Central Kootenay Area H",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "Central Kootenay Area I",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "Central Kootenay Area J",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "Central Kootenay Area K",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "Columbia Shuswap Area A",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "Columbia Shuswap Area B",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "East Kootenay  Area B",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "East Kootenay  Area C",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "East Kootenay  Area G",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "East Kootenay Area A",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "East Kootenay Area B",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "East Kootenay Area C",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "East Kootenay Area E",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "East Kootenay Area F",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "East Kootenay Area G",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "Kootenay Boundary Area B",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "Kootenay Boundary Area C",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "Kootenay Boundary Area E",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
+        "Name": "Sunshine Coast",
+        "Region": {
+            "Name": "South West"
+        }
+    },
+    {
+        "Name": "Squamish Lillooet",
+        "Region": {
+            "Name": "South West"
+        }
+    },
+    {
+        "Name": "Metro Vancouver",
+        "Region": {
+            "Name": "South West"
+        }
+    },
+    {
+        "Name": "Fraser Valley",
+        "Region": {
+            "Name": "South West"
+        }
+    },
+    {
+        "Name": "Cariboo Regional District",
+        "Region": {
+            "Name": "North East"
+        }
+    },
+    {
+        "Name": "Central Coast Regional District",
+        "Region": {
+            "Name": "North East"
+        }
+    },
+    {
+        "Name": "Regional District of Fraser - Fort George",
+        "Region": {
+            "Name": "North East"
+        }
+    },
+    {
+        "Name": "Northern Rockies Regional Municipality",
+        "Region": {
+            "Name": "North East"
+        }
+    },
+    {
+        "Name": "Peace River Regional District",
+        "Region": {
+            "Name": "North East"
+        }
+    },
+    {
+        "Name": "Northeast First Nations",
+        "Region": {
+            "Name": "North East"
+        }
+    },
+    {
+        "Name": "Regional District Bulkely-Nechako",
+        "Region": {
+            "Name": "North West"
+        }
+    },
+    {
+        "Name": "Regional District Kitimat-Stikine",
+        "Region": {
+            "Name": "North West"
+        }
+    },
+    {
+        "Name": "North Coast Regional District",
+        "Region": {
+            "Name": "North West"
+        }
+    },
+    {
+        "Name": "Alberni-Clayoquot Regional District",
+        "Region": {
+            "Name": "Vancouver Island"
+        }
+    },
+    {
+        "Name": "Capital Regional District",
+        "Region": {
+            "Name": "Vancouver Island"
+        }
+    },
+    {
+        "Name": "Comox Regional District",
+        "Region": {
+            "Name": "Vancouver Island"
+        }
+    },
+    {
+        "Name": "Cowichan Valley",
+        "Region": {
+            "Name": "Vancouver Island"
+        }
+    },
+    {
+        "Name": "Mount Waddington",
+        "Region": {
+            "Name": "Vancouver Island"
+        }
+    },
+    {
+        "Name": "Nanaimo",
+        "Region": {
+            "Name": "Vancouver Island"
+        }
+    },
+    {
+        "Name": "Powell River",
+        "Region": {
+            "Name": "Vancouver Island"
+        }
+    },
+    {
+        "Name": "Strathcona Regional Dist.",
+        "Region": {
+            "Name": "Vancouver Island"
+        }
+    },
+    {
+        "Name": "Central Okanagan",
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "North Okanagan",
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Columbia-Shuswap",
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Okanagan-Similkameen",
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Thompson-Nicola",
+        "Region": {
+            "Name": "Central"
+        }
     }
-  },
-  {
-    "Name": "Mount Waddington",
-    "Region": {
-      "Name": "Vancouver Island"
-    }
-  }
 ]
