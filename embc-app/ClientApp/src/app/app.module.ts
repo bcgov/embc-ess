@@ -16,6 +16,7 @@ import { HomeComponent } from './home/home.component';
 import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.component';
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
 import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
+import { TesterPageComponent } from './tester-page/tester-page.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-reg
     VolunteerLoginComponent,
     VolunteerDashboardComponent,
     EvacueeRegistrationComponent,
+    TesterPageComponent,
   ],
   imports: [
     // angular
