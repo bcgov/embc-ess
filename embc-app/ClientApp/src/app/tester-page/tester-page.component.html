@@ -1,3 +1,28 @@
-<p>
-  <!-- <pre>{{countries|async|json}}</pre> -->
-</p>
+<div class="row">
+  <div class="col" (click)="submit()">
+    <h4>Countries</h4>
+    <pre>{{countries | json}}</pre>
+  </div>
+  <div class="col">
+    <h4>Regional Districts</h4>
+    <pre>{{regionalDistricts | json}}</pre>
+  </div>
+  <div class="col">
+    <h4>Regions</h4>
+    <pre>{{ regions | json}}</pre>
+  </div>
+</div>
+<div class="row">
+  <div class="col" (click)="submit()">
+    <h4>Incident Task</h4>
+    <pre>{{ incidentTasks | json}}</pre>
+  </div>
+  <div class="col">
+    <h4>Registrations</h4>
+    <pre>{{registrations | json}}</pre>
+  </div>
+  <!-- <div class="col">
+    <h4>Regions</h4>
+    <pre>{{ regions | json}}</pre>
+  </div> -->
+</div>

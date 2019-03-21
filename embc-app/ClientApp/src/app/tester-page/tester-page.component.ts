@@ -6,6 +6,7 @@ import { IncidentTaskService } from '../core/services/incident-task.service';
 import { RegistrationService } from '../core/services/registration.service';
 import { UserDataService } from '../core/services/user-data.service';
 import { AppState } from '../store';
+import { Country, RegionalDistrict, Region, IncidentTask, Registration } from '../core/models';
 
 @Component({
   selector: 'app-tester-page',
@@ -14,16 +15,22 @@ import { AppState } from '../store';
 })
 export class TesterPageComponent implements OnInit {
 
-  // state needed by this FORM
-  countries$ = this.store.select(s => s.lookups.countries.countries);
-  regionalDistrics$ = this.store.select(s => s.lookups.regionalDistricts);
-  regions$ = this.store.select(s => s.lookups.regions);
-  relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
-  incidentTask$ = this.store.select(s => s.incidentTasks.incidentTasks);
-  // communities$
+  // // state needed by this FORM
+  // countries$ = this.store.select(s => s.lookups.countries.countries);
+  // regionalDistrics$ = this.store.select(s => s.lookups.regionalDistricts);
+  // regions$ = this.store.select(s => s.lookups.regions);
+  // relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
+  // incidentTask$ = this.store.select(s => s.incidentTasks.incidentTasks);
+  // // communities$
+
+  countries: Country[];
+  regionalDistricts: RegionalDistrict[];
+  regions: Region[];
+  incidentTasks: IncidentTask[];
+  registrations: Registration[];
 
   constructor(
-    private store: Store<AppState>,
+    // private store: Store<AppState>,
     private geographicsService: GeographicsService,
     private incidentTaskService: IncidentTaskService,
     private registrationService: RegistrationService,
@@ -31,7 +38,7 @@ export class TesterPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    // this.registrationService
   }
 
 }
