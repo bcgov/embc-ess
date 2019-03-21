@@ -42,11 +42,13 @@
           <input class="form-control" type="text" formControlName="facility">
         </app-form-field>
         <app-form-field required="true">
-          <label>Host Community</label>
-          <select class="form-control">
-            <option [ngValue]="null">-- Select task number</option>
-            <option value="Grand Forks">Grand Forks</option>
-          </select>
+          <div requried="true">
+            <label>Community</label>
+            <select class="form-control">
+              <option [ngValue]="null">-- Select community</option>
+              <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
+            </select>
+          </div>
         </app-form-field>
       </div>
 
@@ -247,9 +249,9 @@
                   <div requried="true">
                     <label>Community</label>
                     <select class="form-control" formControlName="community">
-                      <option [ngValue]="null">Please select--</option>
-                      <option value="victoria">Victoria</option>
-                      <option value="grandForks">Grand Forks</option>
+                      <option [ngValue]="null">-- Select community</option>
+                      <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}
+                      </option>
                     </select>
                   </div>
                 </div>
