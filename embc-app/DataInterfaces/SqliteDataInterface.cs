@@ -13,6 +13,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         public SqliteContext Db;//YT: this is a recipe for bad EF behavior, it should be created (and optionally disposed) in each method
 
+        private readonly Func<SqliteContext> ctx;
+
         public SqliteDataInterface(string connectionString)
         {
             DbContextOptionsBuilder<SqliteContext> builder = new DbContextOptionsBuilder<SqliteContext>();
@@ -23,6 +25,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             Db = new SqliteContext(builder.Options);
 
             Db.Database.OpenConnection();
+
+            ctx = () => new SqliteContext(builder.Options);
         }
 
         public Task<Registration> CreateRegistration(Registration registration)
@@ -272,35 +276,53 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<Person> CreatePersonAsync(Person person)
         {
-            var newPerson = await Db.People.AddAsync(person.ToModel());
-            await Db.SaveChangesAsync();
+            var db = ctx();
+            var newPerson = await db.People.AddAsync(person.ToModel());
+            await db.SaveChangesAsync();
             return newPerson.Entity.ToViewModel();
         }
 
-        public async Task<bool> DeactivatePersonAsync(string id)
+        public async Task<bool> DeactivatePersonAsync(string type, string id)
         {
-            var person = await Db.People.FirstOrDefaultAsync();
+            var db = ctx();
+            var person = await GetSinglePersonByIdAsync(type, id);
             if (person == null) return true;
             person.Active = false;
-            Db.Update(person);
-            await Db.SaveChangesAsync();
+            db.Update(person);
+            await db.SaveChangesAsync();
             return true;
         }
 
-        public async Task<IEnumerable<Volunteer>> GetAllVolunteersAsync()
+        public async Task<IEnumerable<Person>> GetPeopleAsync(string type)
         {
-            return await GetAllPeopleAsync("VOLN").Cast<Sqlite.Models.Volunteer>().Select(p => p.ToViewModel()).ToArrayAsync();
+            return await GetAllPeopleAsync(type).Select(p => p.ToViewModel()).ToArrayAsync();
+        }
+
+        public async Task<Person> GetPersonByIdAsync(string type, string id)
+        {
+            var person = await GetSinglePersonByIdAsync(type, id);
+            if (person == null) return null;
+            return person.ToViewModel();
         }
 
         private IQueryable<Sqlite.Models.Person> GetAllPeopleAsync(string type)
         {
-            return Db.People.Where(p => p.PersonType == type);
+            var db = ctx();
+            return db.People.Where(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase));
         }
 
-        //private async Task<Sqlite.Models.Person> GetPersonAsync(string type, string id)
-        //{
-        //    return await Db.People.FirstOrDefaultAsync(p => p.PersonType == type && p.Id == Guid.Parse(id));
-        //}
+        private async Task<Sqlite.Models.Person> GetSinglePersonByIdAsync(string type, string id)
+        {
+            var db = ctx();
+            return await db.People.FirstOrDefaultAsync(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase) && p.Id == Guid.Parse(id));
+        }
+
+        public async Task UpdatePersonAsync(Person person)
+        {
+            var db = ctx();
+            db.People.Update(person.ToModel());
+            await db.SaveChangesAsync();
+        }
 
         #endregion People
     }
