@@ -18,7 +18,7 @@ export class TesterPageComponent implements OnInit {
   // // state needed by this FORM
   countries$ = this.store.select(s => s.lookups.countries.countries);
   regionalDistricts$ = this.store.select(s => s.lookups.regionalDistricts);
-  // regions$ = this.store.select(s => s.lookups.regions);
+  regions$ = this.store.select(s => s.lookups.regions);
   // relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
   // incidentTask$ = this.store.select(s => s.incidentTasks.incidentTasks);
   // // communities$

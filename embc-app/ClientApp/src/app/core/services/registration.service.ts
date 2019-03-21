@@ -204,7 +204,7 @@ export class RegistrationService extends RestService {
     // records and page are set limits on the query number
     if (!recordLimit) { recordLimit = 100; }
     if (!page) { page = 1; }
-
+    // return of(TEST);
     return this.http.get<Registration[]>('api/registrations', { headers: this.headers })
       .pipe(
         catchError(this.handleError)

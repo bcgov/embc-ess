@@ -9,10 +9,8 @@
   </div>
   <div class="col">
     <h4>Regions</h4>
-    <pre>{{ regions | json}}</pre>
+    <pre>{{ regions$ | async | json}}</pre>
   </div>
-</div>
-<div class="row">
   <div class="col" (click)="submit()">
     <h4>Incident Task</h4>
     <pre>{{ incidentTasks | json}}</pre>
