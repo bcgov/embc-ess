@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Gov.Jag.Embc.Public.ViewModels
 {
@@ -20,7 +21,10 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string Province { get; set; }
         public Country Country { get; set; }
 
-        public bool isBcAddress => this.AddressSubtype == "BCAD";
-        public bool isOtherAddress => this.AddressSubtype == "OTAD";
+        [JsonIgnore]
+        public bool isBcAddress => this.AddressSubtype == Sqlite.Models.Address.BC_ADDRESS;  // omitted from response
+
+        [JsonIgnore]
+        public bool isOtherAddress => this.AddressSubtype == Sqlite.Models.Address.OTHER_ADDRESS;  // omitted from response
     }
 }
