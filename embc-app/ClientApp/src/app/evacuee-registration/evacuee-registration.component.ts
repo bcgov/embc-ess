@@ -67,6 +67,17 @@ export class EvacueeRegistrationComponent implements OnInit {
       return false;
     }
   }
+
+  setHohPrimaryResidenceProvince() {
+    // if the unset flag is true or a value it clears the values
+    const patch = { hohPrimaryResidence: { province: 'BC', country: { name: 'Canada' } } };
+    this.form.patchValue(patch);
+  }
+  setHohMailingAddressProvince() {
+    const patch = { PrimaryResidence: { province: 'BC', country: { name: 'Canada' } } };
+    this.form.patchValue(patch);
+  }
+
   ngOnInit() {
     // if there are route params we should grab them
     if (this.route.snapshot.params.essFileNumber) {

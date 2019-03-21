@@ -163,7 +163,7 @@
               </div>
               <div class="row mb-2">
                 <div class="col-6">
-                  <app-form-field requried="true">
+                  <app-form-field required="true">
                     <label>Relationship to evacuee</label>
                     <select class="form-control" formControlName="relationshipToEvacuee">
                       <option [ngValue]="null">Please select--</option>
@@ -174,7 +174,7 @@
                   </app-form-field>
                 </div>
                 <div class="col">
-                  <app-form-field requried="true">
+                  <app-form-field required="true">
                     <label>Gender</label>
                     <select class="form-control" formControlName="gender">
                       <option [ngValue]="null">Please select--</option>
@@ -218,12 +218,13 @@
         </p>
         <div class="form-group">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="primaryResidenceInBc">
+            <input class="form-check-input" type="radio" [value]="true" formControlName="primaryResidenceInBc"
+              (click)="setHohPrimaryResidenceProvince()">
             <label class="form-check-label">Yes</label>
           </div>
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" [value]="false" formControlName="primaryResidenceInBc">
-            <label class="form-check-label">No</label>
+            <label class="form-check-label" (click)="unsetHohPrimaryResidenceProvince()"> No</label>
           </div>
         </div>
         <div *ngIf="form.value.primaryResidenceInBc===false" class="alert alert-danger" role="alert">
@@ -233,7 +234,8 @@
           <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
         </div>
       </div>
-      <div class="mb-4">
+      <!-- primary residence in BC -->
+      <div *ngIf="form.value.primaryResidenceInBc" class="mb-4">
         <div class="card">
           <div class="card-body">
             <span formGroupName="hohPrimaryResidence">
@@ -245,7 +247,7 @@
               </div>
               <div class="row mb-2">
                 <div class="col">
-                  <div requried="true">
+                  <div required="true">
                     <label>Community</label>
                     <select class="form-control" formControlName="community">
                       <option [ngValue]="null">-- Select community</option>
@@ -257,11 +259,74 @@
                 </div>
                 <div class="col-3">
                   <label required="true">Province</label>
-                  <input type="text" class="form-control" formControlName="province">
+                  <input class="form-control" type="text" [value]="form.value.hohPrimaryResidence.province"
+                    formControlName="province" disabled>
                 </div>
                 <div class="col-3">
                   <div class="form-check">
                     <label required="true">Postal Code</label>
+                    <input type="text" class="form-control" formControlName="postalCode">
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-6">
+                  <label required="true">Country/Region</label>
+                  <input class="form-control" type="text" [value]="form.value.hohPrimaryResidence.country.name"
+                    disabled>
+                </div>
+              </div>
+            </span>
+            <div class="row mb-2" formGroupName="headOfHousehold">
+              <div class="col">
+                <label>Telephone / Mobile Number (10 digits)</label>
+                <input type="text" class="form-control" formControlName="phoneNumber">
+              </div>
+              <div class="col">
+                <label>Alternate Telephone / Mobile Number</label>
+                <input type="text" class="form-control" formControlName="phoneNumberAlt">
+              </div>
+            </div>
+            <div class="row mb-2" formGroupName="headOfHousehold">
+              <div class="col">
+                <label>Email Address</label>
+                <input type="email" class="form-control" formControlName="email">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- primary address not in bc -->
+      <div *ngIf="form.value.primaryResidenceInBc===false" class="mb-4">
+        <div class="card">
+          <div class="card-body">
+            <span formGroupName="hohPrimaryResidence">
+              <div class="row mb-2">
+                <div class="col">
+                  <label required="true">Apt/Suite/Building Number & Street Address</label>
+                  <input type="text" class="form-control" formControlName="addressLine1">
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col">
+                  <div required="true">
+                    <label>City</label>
+                    <select class="form-control" formControlName="community">
+                      <option [ngValue]="null">-- Select community</option>
+                      <option [ngValue]="community" *ngFor="let community of communities$ | async">
+                        {{community.name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <label required="true">State or Province</label>
+                  <input type="text" class="form-control" formControlName="province">
+                </div>
+                <div class="col-3">
+                  <div class="form-check">
+                    <label required="true">Postal oe Zip Code</label>
                     <input type="text" class="form-control" formControlName="postalCode">
                   </div>
                 </div>
@@ -304,7 +369,7 @@
           MAILING ADDRESS
         </h3>
         <p class="required">
-          Is your mailing address different from your primary residence?
+          Is your mailing address different from your primary residence? (setHohMailingAddressProvince())
         </p>
         <div class="form-group">
           <div class="form-check form-check-inline">
@@ -327,7 +392,7 @@
             </div>
             <div class="row mb-2" formGroupName="hohMailingAddress">
               <div class="col">
-                <div requried="true">
+                <div required="true">
                   <label>Community</label>
                   <select class="form-control" formControlName="community">
                     <option [ngValue]="null">Please select--</option>
@@ -638,14 +703,23 @@
 </div>
 <!-- Only for debugging. Three boxes with the three data representations. -->
 <div class="row">
-  <div class="col" (click)="submit()">
+
+  <!-- <div class="col" (click)="submit()">
     <h4>Input State</h4>
     <pre>{{registration | json}}</pre>
   </div>
   <div class="col">
     <h4>Submission State</h4>
     <pre>{{submission | json}}</pre>
-  </div>
+  </div> -->
+
+  <button (click)="setHohPrimaryResidenceProvince()">
+    Primary Residence in BC
+  </button>
+  <button (click)="setHohPrimaryResidenceProvince()">
+    Mailing in in BC
+  </button>
+
   <div class="col">
     <h4>Form State</h4>
     <pre>{{ this.form.value | json}}</pre>
