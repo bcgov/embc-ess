@@ -6,13 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
-using System.Transactions;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public class SqliteDataInterface : IDataInterface
     {
-        public SqliteContext Db;
+        public SqliteContext Db;//YT: this is a recipe for bad EF behavior, it should be created (and optionally disposed) in each method
 
         public SqliteDataInterface(string connectionString)
         {
@@ -273,23 +272,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<Person> CreatePersonAsync(Person person)
         {
-            using (var tx = new TransactionScope())
-            {
-                await Db.AddAsync(person.ToModel());
-                return person;
-            }
+            var newPerson = await Db.People.AddAsync(person.ToModel());
+            await Db.SaveChangesAsync();
+            return newPerson.Entity.ToViewModel();
         }
 
         public async Task<bool> DeactivatePersonAsync(string id)
         {
-            using (var tx = new TransactionScope())
-            {
-                var person = await Db.People.FirstOrDefaultAsync();
-                if (person == null) return true;
-                person.Active = false;
-                Db.Update(person);
-                return true;
-            }
+            var person = await Db.People.FirstOrDefaultAsync();
+            if (person == null) return true;
+            person.Active = false;
+            Db.Update(person);
+            await Db.SaveChangesAsync();
+            return true;
         }
 
         public async Task<IEnumerable<Volunteer>> GetAllVolunteersAsync()
@@ -301,6 +296,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             return Db.People.Where(p => p.PersonType == type);
         }
+
+        //private async Task<Sqlite.Models.Person> GetPersonAsync(string type, string id)
+        //{
+        //    return await Db.People.FirstOrDefaultAsync(p => p.PersonType == type && p.Id == Guid.Parse(id));
+        //}
 
         #endregion People
     }
