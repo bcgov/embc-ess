@@ -39,7 +39,7 @@ export class TesterPageComponent implements OnInit {
   ngOnInit() {
     this.userDataService.getCurrentUser().subscribe(u => this.user = u);
     this.incidentTaskService.getIncidentTasks().subscribe(i => this.incidentTasks = i);
-    this.registrationService.getRegistrations().subscribe(r => this.registrations = r);
+    this.registrationService.getRegistrations().subscribe(r => this.registrations = r.data);
   }
 
 }

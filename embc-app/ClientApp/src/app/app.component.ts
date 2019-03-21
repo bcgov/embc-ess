@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.isIE = detectIE10orLower();
     this.initializeApp();
-    this.registrationService.getRegistrations().subscribe(r => this.registrations = r);
+    this.registrationService.getRegistrations().subscribe(r => this.registrations = r.data);
   }
 
   get versionInfo(): any {
