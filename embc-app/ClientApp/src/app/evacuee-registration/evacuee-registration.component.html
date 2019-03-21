@@ -166,7 +166,7 @@
                     <label>Relationship to evacuee</label>
                     <select class="form-control" formControlName="relationshipToEvacuee">
                       <option [ngValue]="null">Please select--</option>
-                      <option *ngFor="let item of relationshipTypes$ | async" [value]="item">
+                      <option *ngFor="let item of relationshipTypes$ | async" [ngValue]="item">
                         {{item.description}}
                       </option>
                     </select>
