@@ -130,7 +130,7 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-        <!-- <div formArrayName="familyMembers">
+        <div formArrayName="familyMembers">
           <div class="card mb-2" *ngFor="let m of familyMembers.controls; index as i;" [formGroupName]="i">
             <div class="card-body">
               <div class="row mb-2">
@@ -204,7 +204,7 @@
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
       </div>
 
       <!-- Residence information -->
@@ -269,9 +269,9 @@
                   <label required="true">Country/Region</label>
                   <select class="form-control" formControlName="country">
                     <option [ngValue]="null">-- Select Country</option>
-                    <!-- <option [ngValue]="country" *ngFor="let country of countries$ | async">
-                    {{country.name}}
-                  </option> -->
+                    <option [ngValue]="country" *ngFor="let country of countries$ | async">
+                      {{country.name}}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -350,9 +350,9 @@
                 <label required="true">Country/Region</label>
                 <select class="form-control" formControlName="country">
                   <option [ngValue]="null">-- Select Country</option>
-                  <!-- <option [ngValue]="country" *ngFor="let country of countries$ | async">
+                  <option [ngValue]="country" *ngFor="let country of countries$ | async">
                     {{country.name}}
-                  </option> -->
+                  </option>
                 </select>
               </div>
             </div>
@@ -620,14 +620,6 @@
         <textarea class="form-control" placeholder="Details" rows="4"
           formControlName="externalReferralsDetails"></textarea>
       </div>
-      <!-- Follow up -->
-      <!-- <div class="mb-4">
-        <h3 class="blue-header">
-          OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE
-        </h3>
-        <textarea class="form-control" placeholder="Details (TODO: Not working)" rows="4"
-          formControlName="externalReferralsDetails"></textarea>
-      </div> -->
 
       <!-- Submit button! -->
       <div class="mb-4">
