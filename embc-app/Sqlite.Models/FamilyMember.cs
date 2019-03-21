@@ -15,7 +15,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
 
         public FamilyMember()
         {
-            PersonType = "FMBR";
+            PersonType = Person.FAMILY_MEMBER;
         }
     }
 }
