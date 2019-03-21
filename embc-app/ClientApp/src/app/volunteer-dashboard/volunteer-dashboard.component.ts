@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Registration } from '../core/models';
 import { RegistrationService } from '../core/services/registration.service';
+import { MetaRegistration } from '../core/models/meta-registration';
 
 interface Stub {
   id?: string; // the guid to link them to their file
@@ -186,10 +187,10 @@ export class VolunteerDashboardComponent implements OnInit {
   refreshRegistrations() {
     // go get a fresh list of registrations from the service
     this.registrationService.getRegistrations()
-      .subscribe((registrations: Registration[]) => {
-        this.raw = registrations;
+      .subscribe((registrations: MetaRegistration) => {
+        this.raw = registrations.data;
         // save the registrations into the local data blob
-        this.registrations = this.unreduceRegistrationToStubs(registrations);
+        this.registrations = this.unreduceRegistrationToStubs(registrations.data);
       });
   }
   unreduceRegistrationToStubs(registrations: Registration[]): Stub[] {
