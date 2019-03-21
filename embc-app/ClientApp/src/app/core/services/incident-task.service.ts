@@ -28,8 +28,8 @@ const INCIDENTTASKS: IncidentTask[] = [
     region: null,
     regionalDistrict: null,
     community: {
-      id: "ID ELEMENT",
-      name: "Victoria",
+      id: 'ID ELEMENT',
+      name: 'Victoria',
       active: true,
       regionalDistrict: null,
     },
