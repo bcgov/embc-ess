@@ -185,7 +185,7 @@ export class VolunteerDashboardComponent implements OnInit {
   }
   refreshRegistrations() {
     // go get a fresh list of registrations from the service
-    this.registrationService.getRegistries()
+    this.registrationService.getRegistrations()
       .subscribe((registrations: Registration[]) => {
         this.raw = registrations;
         // save the registrations into the local data blob

@@ -6,7 +6,7 @@ import { IncidentTaskService } from '../core/services/incident-task.service';
 import { RegistrationService } from '../core/services/registration.service';
 import { UserDataService } from '../core/services/user-data.service';
 import { AppState } from '../store';
-import { Country, RegionalDistrict, Region, IncidentTask, Registration } from '../core/models';
+import { Country, RegionalDistrict, Region, IncidentTask, Registration, User } from '../core/models';
 
 @Component({
   selector: 'app-tester-page',
@@ -28,6 +28,7 @@ export class TesterPageComponent implements OnInit {
   regions: Region[];
   incidentTasks: IncidentTask[];
   registrations: Registration[];
+  user: User;
 
   constructor(
     // private store: Store<AppState>,
@@ -38,7 +39,9 @@ export class TesterPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.registrationService
+    this.userDataService.getCurrentUser().subscribe(u => this.user = u);
+    this.incidentTaskService.getIncidentTasks().subscribe(i => this.incidentTasks = i);
+    this.registrationService.getRegistrations().subscribe(r => this.registrations = r);
   }
 
 }

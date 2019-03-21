@@ -200,7 +200,7 @@ const TEST: Registration[] = [
 })
 export class RegistrationService extends RestService {
 
-  getRegistries(page?: number, recordLimit?: number): Observable<Registration[]> {
+  getRegistrations(page?: number, recordLimit?: number): Observable<Registration[]> {
     // records and page are set limits on the query number
     if (!recordLimit) { recordLimit = 100; }
     if (!page) { page = 1; }

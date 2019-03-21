@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.isIE = detectIE10orLower();
     this.initializeApp();
-    this.registrationService.getRegistries().subscribe(r => this.registrations = r);
+    this.registrationService.getRegistrations().subscribe(r => this.registrations = r);
   }
 
   get versionInfo(): any {
@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
   }
 
   initializeApp() {
-    
+
     this.reloadUser();
     // Loaded once at init time, as they do not change very often, and
     // certainly not within the app.
