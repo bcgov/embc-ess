@@ -8,7 +8,8 @@
 <div class="row">
   <div class="col col-lg-8">
     <div class="mb-4">
-      <h1>Add an Evacuee</h1>
+      <h1 *ngIf="!editMode">Add an Evacuee</h1>
+      <h1 *ngIf="editMode">Edit an Evacuee</h1>
       <p>Before starting a new evacuee registration, use the search tool on your dashboard to confirm that the evacuee
         hasn’t already registered.</p>
       <small>
@@ -29,35 +30,36 @@
         <h3 class="blue-header">
           TASK NUMBER & PLACE OF REGISTRATION
         </h3>
-        <app-form-field required="false">
+        <app-form-field required="true">
           <label>Task Number</label>
-          <select class="form-control">
-            <option [ngValue]="null">-- Select task number</option>
-            <option value="23465345">23465345</option>
+          <select class="form-control" formControlName="incidentTask">
+            <option [ngValue]="null">-- Select Incident</option>
+            <option [ngValue]="incident" *ngFor="let incident of incidentTasks">
+              {{incident.taskNumber}}<span *ngIf="incident.community"> - {{incident.community.name}}</span>
+            </option>
           </select>
         </app-form-field>
         <app-form-field required="true">
           <label>Facility Name / Registration Location</label>
           <input class="form-control" type="text" formControlName="facility">
         </app-form-field>
-        <app-form-field required="true">
-          <label>Host Community</label>
+        <app-form-field required="true"> <label>Community</label>
           <select class="form-control">
-            <option [ngValue]="null">-- Select task number</option>
-            <option value="Grand Forks">Grand Forks</option>
+            <option [ngValue]="null">-- Select community</option>
+            <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
           </select>
         </app-form-field>
-      </div>
-
-      <!-- Restricted access to this file? -->
+      </div> <!-- Restricted access to this file? -->
       <div class="mb-4">
         <h3 class="blue-header">
           RESTRICTION
         </h3>
         <p>
-          Concerned family and friends may inquire about you and your family because of the emergency. We would like to
+          Concerned family and friends may inquire about you and your family because of the emergency. We would like
+          to
           provide these people with some information about you.</p>
-        <p class="required">May we disclose your location and the contact information for you and your family members?
+        <p class="required">May we disclose your location and the contact information for you and your family
+          members?
         </p>
         <div class="form-group">
           <div class="form-check form-check-inline">
@@ -129,7 +131,7 @@
             <label class="form-check-label">No</label>
           </div>
         </div>
-        <!-- <div formArrayName="familyMembers">
+        <div formArrayName="familyMembers">
           <div class="card mb-2" *ngFor="let m of familyMembers.controls; index as i;" [formGroupName]="i">
             <div class="card-body">
               <div class="row mb-2">
@@ -165,7 +167,7 @@
                     <label>Relationship to evacuee</label>
                     <select class="form-control" formControlName="relationshipToEvacuee">
                       <option [ngValue]="null">Please select--</option>
-                      <option *ngFor="let item of relationshipTypes$ | async" [value]="item">
+                      <option *ngFor="let item of relationshipTypes$ | async" [ngValue]="item">
                         {{item.description}}
                       </option>
                     </select>
@@ -203,7 +205,7 @@
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
       </div>
 
       <!-- Residence information -->
@@ -246,9 +248,10 @@
                   <div requried="true">
                     <label>Community</label>
                     <select class="form-control" formControlName="community">
-                      <option [ngValue]="null">Please select--</option>
-                      <option value="victoria">Victoria</option>
-                      <option value="grandForks">Grand Forks</option>
+                      <option [ngValue]="null">-- Select community</option>
+                      <option [ngValue]="community" *ngFor="let community of communities$ | async">
+                        {{community.name}}
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -268,9 +271,9 @@
                   <label required="true">Country/Region</label>
                   <select class="form-control" formControlName="country">
                     <option [ngValue]="null">-- Select Country</option>
-                    <!-- <option [ngValue]="country" *ngFor="let country of countries$ | async">
-                    {{country.name}}
-                  </option> -->
+                    <option [ngValue]="country" *ngFor="let country of countries$ | async">
+                      {{country.name}}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -349,9 +352,9 @@
                 <label required="true">Country/Region</label>
                 <select class="form-control" formControlName="country">
                   <option [ngValue]="null">-- Select Country</option>
-                  <!-- <option [ngValue]="country" *ngFor="let country of countries$ | async">
+                  <option [ngValue]="country" *ngFor="let country of countries$ | async">
                     {{country.name}}
-                  </option> -->
+                  </option>
                 </select>
               </div>
             </div>
@@ -616,15 +619,7 @@
         <h3 class="blue-header">
           OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE
         </h3>
-        <textarea class="form-control" placeholder="Details (TODO: Not working)" rows="4"
-          formControlName="externalReferralsDetails"></textarea>
-      </div>
-      <!-- Follow up -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE
-        </h3>
-        <textarea class="form-control" placeholder="Details (TODO: Not working)" rows="4"
+        <textarea class="form-control" placeholder="Details" rows="4"
           formControlName="externalReferralsDetails"></textarea>
       </div>
 
@@ -658,17 +653,17 @@
   </div> -->
 </div>
 <!-- Only for debugging. Three boxes with the three data representations. -->
-<!-- <div class="row">
-    <div class="col" (click)="submit()">
-      <h4>Input State</h4>
-      <pre>{{registration | json}}</pre>
-    </div>
-    <div class="col">
-      <h4>Submission State</h4>
-      <pre>{{submission | json}}</pre>
-    </div>
-    <div class="col">
-      <h4>Form State</h4>
-      <pre>{{ this.form.value | json}}</pre>
-    </div>
-  </div> -->
+<div class="row">
+  <div class="col" (click)="submit()">
+    <h4>Input State</h4>
+    <pre>{{registration | json}}</pre>
+  </div>
+  <div class="col">
+    <h4>Submission State</h4>
+    <pre>{{submission | json}}</pre>
+  </div>
+  <div class="col">
+    <h4>Form State</h4>
+    <pre>{{ this.form.value | json}}</pre>
+  </div>
+</div>

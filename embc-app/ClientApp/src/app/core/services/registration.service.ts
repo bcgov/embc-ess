@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { CoreModule } from '../core.module';
 import { Registration } from '../models';
 import { RestService } from './rest.service';
+import { MetaRegistration } from '../models/meta-registration';
 
 const TEST: Registration[] = [
   {
@@ -200,12 +201,12 @@ const TEST: Registration[] = [
 })
 export class RegistrationService extends RestService {
 
-  getRegistries(page?: number, recordLimit?: number): Observable<Registration[]> {
+  getRegistrations(page?: number, recordLimit?: number): Observable<MetaRegistration> {
     // records and page are set limits on the query number
     if (!recordLimit) { recordLimit = 100; }
     if (!page) { page = 1; }
-
-    return this.http.get<Registration[]>('api/registrations', { headers: this.headers })
+    // return of(TEST);
+    return this.http.get<MetaRegistration>('api/registrations', { headers: this.headers })
       .pipe(
         catchError(this.handleError)
       );
@@ -213,14 +214,14 @@ export class RegistrationService extends RestService {
 
   createRegistration(data: Registration): Observable<Registration> {
     // alert("createRegistration service");
-    return this.http.post<Registration>('api/registrations', data, { headers: this.headers })
+    return this.http.post<Registration>('api/registrations/', data, { headers: this.headers })
       .pipe(
         catchError(this.handleError)
       );
   }
   putRegistration(data: Registration): Observable<Registration> {
     // alert("putRegistration service");
-    return this.http.put<Registration>('api/registrations', data, { headers: this.headers })
+    return this.http.put<Registration>('api/registrations/' + data.id, data, { headers: this.headers })
       .pipe(
         catchError(this.handleError)
       );

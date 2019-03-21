@@ -17,11 +17,8 @@ export class AppComponent implements OnInit {
   isIE = false;
   currentUser: User;
 
-  registrations: Registration[]; // TODO: Delete this testing var
-
   constructor(
     private lookups: ControlledListService,
-    private registrationService: RegistrationService, // TODO: Delete this. It is for testing only
     private userDataService: UserDataService,
 
   ) { }
@@ -29,7 +26,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.isIE = detectIE10orLower();
     this.initializeApp();
-    this.registrationService.getRegistries().subscribe(r => this.registrations = r);
   }
 
   get versionInfo(): any {
@@ -49,7 +45,7 @@ export class AppComponent implements OnInit {
   }
 
   initializeApp() {
-    
+
     this.reloadUser();
     // Loaded once at init time, as they do not change very often, and
     // certainly not within the app.

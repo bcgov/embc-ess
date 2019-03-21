@@ -6,7 +6,7 @@ All endpoints are accessed through `https://server.gov/api` endpoint. That endpo
 
 ## Expected
 
-url | Description | PUT/POST/GET/PATCH/DELETE | status
+url | Description | PUT/POST/GET/DELETE | status
 -|-|-|-
 `api/not-found` | Not found page  | |
 `api/countries` | A list of current countries available to the front-end. | |
@@ -15,7 +15,8 @@ url | Description | PUT/POST/GET/PATCH/DELETE | status
 `api/familyrelationships` | Family relationships that we acknowledge as choices in the front-end. | |
 `api/communities` | BC communities | |
 `api/incidenttasks` | Incident tasks | |
-`api/registrations` | Registrations retrievable by unique ID. | |
+`api/registrations` | Registrations retrievable as a list. | GET | Works
+`api/registrations/:id` | Registrations retrievable byhas service unique ID. | PUT POST |
 `api/organizations` | Organizations for volunteers. | |
 `api/organizations/1/users` | Users belonging to an organization | | 
 `api/user/current` | Details about the current user. |  |

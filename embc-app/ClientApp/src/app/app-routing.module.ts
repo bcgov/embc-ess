@@ -13,6 +13,7 @@ import {
 import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.component';
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
 import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
+import { TesterPageComponent } from './tester-page/tester-page.component';
 
 const routes: Routes = [
   {
@@ -65,6 +66,10 @@ const routes: Routes = [
   {
     path: 'register-evacuee/:essFileNumber',
     component: EvacueeRegistrationComponent
+  },
+  {
+    path: 'test',
+    component: TesterPageComponent
   }
 ];
 
