@@ -93,7 +93,7 @@ namespace Gov.Jag.Embc.Public
 
                     // ReferenceLoopHandling is set to Ignore to prevent JSON parser issues with the user / roles model.
                     opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                    opts.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All;
+                    opts.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto;
                 });
 
             // setup siteminder authentication (core 2.0)

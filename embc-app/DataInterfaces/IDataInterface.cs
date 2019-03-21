@@ -46,12 +46,16 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<Person> CreatePersonAsync(Person person);
 
-        Task<bool> DeactivatePersonAsync(string id);
+        Task<bool> DeactivatePersonAsync(string type, string id);
 
         Task<Volunteer> GetVolunteerByExternalIdAsync(string externalId);
 
         Task<Volunteer> GetVolunteerByIdAsync(string Id);
 
-        Task<IEnumerable<Volunteer>> GetAllVolunteersAsync();
+        Task<IEnumerable<Person>> GetPeopleAsync(string type);
+
+        Task<Person> GetPersonByIdAsync(string type, string id);
+
+        Task UpdatePersonAsync(Person person);
     }
 }

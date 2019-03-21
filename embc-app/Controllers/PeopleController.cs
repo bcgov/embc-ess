@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
@@ -31,12 +32,12 @@ namespace Gov.Jag.Embc.Public.Controllers
             this.env = env;
         }
 
-        [HttpGet()]
-        public async Task<IActionResult> Get()
+        [HttpGet("{type}")]
+        public async Task<IActionResult> Get(string type)
         {
             try
             {
-                return Json(await dataInterface.GetAllVolunteersAsync());
+                return Json(await dataInterface.GetPeopleAsync(type), new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
             }
             catch (Exception e)
             {
@@ -45,12 +46,12 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        [HttpGet("{type}/{id}")]
+        public async Task<IActionResult> Get(string type, string id)
         {
             try
             {
-                return Json(await dataInterface.GetVolunteerByIdAsync(id));
+                return Json(await dataInterface.GetPersonByIdAsync(type, id), new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
             }
             catch (Exception e)
             {
@@ -62,16 +63,14 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] Person item, string id)
         {
-            if (string.IsNullOrWhiteSpace(id) || id != item.Id)
+            if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id)
             {
                 return BadRequest();
             }
             try
             {
-                Guid bcId;
-                if (!Guid.TryParse(id, out bcId)) return BadRequest();
-
-                return Json(await dataInterface.GetPersonByBceidGuidAsync(bcId.ToString("d")));
+                await dataInterface.UpdatePersonAsync(item);
+                return Ok();
             }
             catch (Exception e)
             {
@@ -90,7 +89,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 item.Id = null;
                 var result = await dataInterface.CreatePersonAsync(item);
-                return Json(result);
+                return Json(result, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
             }
             catch (Exception e)
             {
@@ -99,14 +98,14 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        [HttpDelete("{type}/{id}")]
+        public async Task<IActionResult> Delete(string type, string id)
         {
             if (string.IsNullOrWhiteSpace(id)) return BadRequest();
 
             try
             {
-                var result = await dataInterface.DeactivatePersonAsync(id);
+                var result = await dataInterface.DeactivatePersonAsync(type, id);
                 return Ok();
             }
             catch (Exception e)

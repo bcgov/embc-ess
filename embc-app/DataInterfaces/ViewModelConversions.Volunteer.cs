@@ -1,10 +1,11 @@
 using System;
-using System.Collections.Generic;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static partial class ViewModelConversions
     {
+        //TODO: merge into PersonConversions
+        [Obsolete]
         public static ViewModels.Volunteer ToViewModel(this Sqlite.Models.Volunteer source)
         {
             ViewModels.Volunteer result = null;
@@ -26,19 +27,15 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     IsPrimaryContact = source.IsPrimaryContact,
                     CanAccessRestrictedFiles = source.CanAccessRestrictedFiles,
                     Externaluseridentifier = source.Externaluseridentifier
-
-    };
+                };
 
                 // related entities
                 if (source.Organization != null)
                 {
                     result.Organization = source.Organization.ToViewModel();
                 }
-                
-
             }
             return result;
         }
-
     }
 }

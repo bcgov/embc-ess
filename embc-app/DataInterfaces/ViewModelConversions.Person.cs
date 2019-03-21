@@ -19,6 +19,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result.Initials = source.Initials;
                 result.Gender = source.Gender;
                 result.Dob = source.Dob;
+                result.Active = source.Active;
 
                 // TODO: Add fields for HOH, FMBR, VOLN
                 if (source is Sqlite.Models.HeadOfHousehold sourceHoh)
@@ -44,7 +45,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     var resultFm = result as ViewModels.FamilyMember;
                     resultFm.RelationshipToEvacuee = sourceFm.RelationshipToEvacuee.ToViewModel();
                     resultFm.SameLastNameAsEvacuee = sourceFm.SameLastNameAsEvacuee;
-
                 }
                 if (source is Sqlite.Models.Volunteer sourceVol)
                 {
@@ -57,7 +57,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     resultVol.CanAccessRestrictedFiles = sourceVol.CanAccessRestrictedFiles;
                     // related entities
                     resultVol.Organization = sourceVol.Organization.ToViewModel();
-
                 }
             }
             return result;
@@ -76,6 +75,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result.Initials = source.Initials;
                 result.Gender = source.Gender;
                 result.Dob = source.Dob;
+                result.Active = source.Active;
                 if (source.Id != null)
                 {
                     result.Id = Guid.Parse(source.Id);
@@ -99,7 +99,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                             resultHoh.FamilyMembers.Add(familyMember.ToModel() as Sqlite.Models.FamilyMember);
                         }
                     }
-
                 }
                 if (source is ViewModels.FamilyMember sourceFm)
                 {
