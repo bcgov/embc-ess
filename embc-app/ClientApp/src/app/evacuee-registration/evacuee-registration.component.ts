@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store';
 import { state } from '@angular/animations';
@@ -18,11 +18,12 @@ import {
 export class EvacueeRegistrationComponent implements OnInit {
 
   // state needed by this FORM
-  countries$ = this.store.select(state => state.lookups.countries.countries);
-  regionalDistrics$ = this.store.select(state => state.lookups.regionalDistricts);
-  regions$ = this.store.select(state => state.lookups.regions);
-  relationshipTypes$ = this.store.select(state => state.lookups.relationshipTypes);
-  incidentTask$ = this.store.select(state => state.incidentTasks.incidentTasks); // TODO: make it go.
+  countries$ = this.store.select(s => s.lookups.countries.countries);
+  regionalDistrics$ = this.store.select(s => s.lookups.regionalDistricts);
+  regions$ = this.store.select(s => s.lookups.regions);
+  relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
+  incidentTask$ = this.store.select(s => s.incidentTasks.incidentTasks); // TODO: make it go.
+
   // communities$
 
   // The model for the form data collected
@@ -57,7 +58,13 @@ export class EvacueeRegistrationComponent implements OnInit {
     // this is a way to grab the familymembers in a typed way
     return this.f.familyMembers as FormArray;
   }
-
+  isBcAddress(a: Address): boolean {
+    if (a.province === 'BC') {
+      return true;
+    } else {
+      return false;
+    }
+  }
   ngOnInit() {
     // if there are route params we should grab them
     if (this.route.snapshot.params.essFileNumber) {
@@ -86,19 +93,19 @@ export class EvacueeRegistrationComponent implements OnInit {
       // push the new family member into the array
       familyMembers.push(this.createFamilyMember(fmbr));
       // set the value for familymembers
-      this.form.setValue(familyMembers);
+      // this.form.setValue(familyMembers);
     } else {
       // push the new family member into the array
       familyMembers.push(this.createFamilyMember());
       // set the value for familymembers
-      this.form.setValue(familyMembers);
+      // this.form.setValue(familyMembers);
     }
   }
   removeFamilyMember(i: number): void {
     // get the existing family members
     const familyMembers = this.familyMembers;
     familyMembers.removeAt(i);
-    this.form.setValue(familyMembers);
+    // this.form.setValue(familyMembers);
   }
   createFamilyMember(fmbr?: FamilyMember): FormGroup {
     if (fmbr) {
@@ -138,6 +145,13 @@ export class EvacueeRegistrationComponent implements OnInit {
       formArray.removeAt(0);
     }
   }
+  clearMailingAddress() {
+    // completely remove stored values for this area of the form
+    // no persistent mailing address
+    // this.form.reset('hohMailingAddress');
+    // todo: clear the hohMailingAddress to null so it can be null again instead of adding bad data to the DB
+  }
+
   getBoolean(booleanString: string): boolean {
     // convert boolean strings into actual boolean values
     if (booleanString === 'false') {
@@ -183,6 +197,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       requiresSupport: null,
 
       hohPrimaryResidence: this.formBuilder.group({
+        id: '',
         addressSubtype: null,
         addressLine1: '',
         addressLine2: null,
@@ -194,6 +209,7 @@ export class EvacueeRegistrationComponent implements OnInit {
           id: '',
           name: ''
         }),
+        community: null
       }),
       hohMailingAddress: this.formBuilder.group({
         id: null,
@@ -201,9 +217,10 @@ export class EvacueeRegistrationComponent implements OnInit {
         addressLine1: '',
         addressLine2: null,
         addressLine3: null,
+        postalCode: '',
+        community: null,
         city: '',
         province: '',
-        postalCode: '',
         country: this.formBuilder.group({
           id: '',
           name: ''
@@ -222,14 +239,16 @@ export class EvacueeRegistrationComponent implements OnInit {
         gender: null,
         dob: null,
         bcServicesNumber: '',
+        personType: '',
       }),
       familyMembers: this.formBuilder.array([]), // array of formGroups
       incidentTask: null, // which task is this from
       hostCommunity: null, // which community is hosting
       completedBy: null,
-
-      // special cases
-      isBcAddress: null
+      // UI bools
+      primaryResidenceInBc: null,
+      mailingAddressInBc: null,
+      hasMailingAddress: null,
     });
   }
 
@@ -244,6 +263,11 @@ export class EvacueeRegistrationComponent implements OnInit {
       if (r.registeringFamilyMembers === 'yes-later') {
         r.registeringFamilyMembers = 'yes';
       }
+
+      // some form fields for showing or hiding UI elements
+      const primaryResidenceInBc: boolean = this.isBcAddress(primaryResidence);
+      const mailingAddressInBc: boolean = this.isBcAddress(mailingAddress);
+      const hasMailingAddress: boolean = (mailingAddress != null);
 
       // Update the data on the form from the data included from the API
       this.form.patchValue({
@@ -263,20 +287,25 @@ export class EvacueeRegistrationComponent implements OnInit {
         selfRegisteredDate: r.selfRegisteredDate as Date,
         registrationCompletionDate: r.registrationCompletionDate as Date,
         registeringFamilyMembers: r.registeringFamilyMembers as string,
+
         hasThreeDayMedicationSupply: r.hasThreeDayMedicationSupply as boolean,
+
         hasInquiryReferral: r.hasInquiryReferral as boolean,
         hasHealthServicesReferral: r.hasHealthServicesReferral as boolean,
         hasFirstAidReferral: r.hasFirstAidReferral as boolean,
         hasChildCareReferral: r.hasChildCareReferral as boolean,
         hasPersonalServicesReferral: r.hasPersonalServicesReferral as boolean,
         hasPetCareReferral: r.hasPetCareReferral as boolean,
+
         hasPets: r.hasPets as boolean,
+
         requiresAccommodation: r.requiresAccommodation as boolean,
         requiresClothing: r.requiresClothing as boolean,
         requiresFood: r.requiresFood as boolean,
         requiresIncidentals: r.requiresIncidentals as boolean,
         requiresTransportation: r.requiresTransportation as boolean,
         requiresSupport: r.requiresSupport as boolean,
+
         headOfHousehold: {
           id: r.headOfHousehold.id as string,
           active: r.headOfHousehold.active as boolean,
@@ -290,15 +319,19 @@ export class EvacueeRegistrationComponent implements OnInit {
           gender: r.headOfHousehold.gender as string,
           dob: r.headOfHousehold.dob as Date,
           bcServicesNumber: r.headOfHousehold.bcServicesNumber as string,
-        } as HeadOfHousehold,
+          personType: r.headOfHousehold.personType,
+        },
         hohPrimaryResidence: r.headOfHousehold.primaryResidence as Address,
         hohMailingAddress: r.headOfHousehold.mailingAddress as Address,
         completedBy: r.completedBy as Volunteer,
         hostCommunity: hostCommunity as Community,
         incidentTask: incidentTask as IncidentTask,
-        isBcAddress: isBcAddress(r.headOfHousehold.primaryResidence) as boolean,
-
+        // UI bools
+        primaryResidenceInBc: primaryResidenceInBc as boolean,
+        mailingAddressInBc: mailingAddressInBc as boolean,
+        hasMailingAddress: hasMailingAddress as boolean,
       });
+      // alert(JSON.stringify(primaryResidence.province));
 
       // iterate over the array and collect each family member as a formgroup and put them into a form array
       if (familyMembers != null) {
@@ -315,12 +348,13 @@ export class EvacueeRegistrationComponent implements OnInit {
       if (hostCommunity != null) {
         alert('host community set');
       }
+
       // add the primary residence back into the form
       if (primaryResidence != null) {
         // alert('Primary not null!');
         this.form.patchValue({
-          // primaryResidenceInBC: isBcAddress(primaryResidence) as boolean,
           hohPrimaryResidence: {
+            id: r.headOfHousehold.primaryResidence.id as string,
             addressSubtype: r.headOfHousehold.primaryResidence.addressSubtype as string,
             addressLine1: r.headOfHousehold.primaryResidence.addressLine1 as string,
             postalCode: r.headOfHousehold.primaryResidence.postalCode as string,
@@ -329,7 +363,7 @@ export class EvacueeRegistrationComponent implements OnInit {
             // TODO: why not submitting community information?
             community: r.headOfHousehold.primaryResidence.community as Community,
             country: r.headOfHousehold.primaryResidence.country as Country,
-            // isBcAddress: isBcAddress(primaryResidence) as boolean,
+            isBcAddress: primaryResidenceInBc as boolean,
             // this line should call itself but unfortunately it calls itself infinitely.
             // isOtherAddress: isOtherAddress(primaryResidence) as boolean,
           },
@@ -338,16 +372,18 @@ export class EvacueeRegistrationComponent implements OnInit {
       // add the mailing address back into the form
       if (mailingAddress != null) {
         this.form.patchValue({
-          hasMailingAddress: true,
           hohMailingAddress: {
+            id: mailingAddress.id as string,
             addressSubtype: mailingAddress.addressSubtype as string,
             addressLine1: mailingAddress.addressLine1 as string,
+            addressLine2: mailingAddress.addressLine2 as string,
+            addressLine3: mailingAddress.addressLine3 as string,
             postalCode: mailingAddress.postalCode as string,
             community: mailingAddress.community as Community,
             city: mailingAddress.city as string,
             province: mailingAddress.province as string,
             country: mailingAddress.country as Country,
-            isBcAddress: isBcAddress(mailingAddress) as boolean,
+            isBcAddress: mailingAddressInBc as boolean,
           },
         });
       }
@@ -373,10 +409,9 @@ export class EvacueeRegistrationComponent implements OnInit {
       followUpDetails: r.followUpDetails as string,
       insuranceCode: r.insuranceCode as string,
       medicationNeeds: r.medicationNeeds as boolean,
+      selfRegisteredDate: r.selfRegisteredDate as Date,
       registrationCompletionDate: new Date() as Date, // this stamps whenever the data is cleaned up
       registeringFamilyMembers: r.registeringFamilyMembers as string, // 'yes'or'no'
-      selfRegisteredDate: r.selfRegisteredDate as Date,
-
       hasThreeDayMedicationSupply: r.hasThreeDayMedicationSupply as boolean,
       hasInquiryReferral: r.hasInquiryReferral as boolean,
       hasHealthServicesReferral: r.hasHealthServicesReferral as boolean,
@@ -385,30 +420,30 @@ export class EvacueeRegistrationComponent implements OnInit {
       hasPersonalServicesReferral: r.hasPersonalServicesReferral as boolean,
       hasPetCareReferral: r.hasPetCareReferral as boolean,
       hasPets: r.hasPets as boolean,
-
       requiresAccomodation: r.requiresAccomodation as boolean,
       requiresClothing: r.requiresClothing as boolean,
       requiresFood: r.requiresFood as boolean,
       requiresIncidentals: r.requiresIncidentals as boolean,
       requiresTransportation: r.requiresTransportation as boolean,
       requiresSupport: r.requiresSupport as boolean,
+
       headOfHousehold: {
+        id: r.headOfHousehold.id as string,
+        active: r.headOfHousehold.active as boolean,
         phoneNumber: r.headOfHousehold.phoneNumber as string,
         phoneNumberAlt: r.headOfHousehold.phoneNumberAlt as string,
         email: r.headOfHousehold.email as string,
-        primaryResidence: r.hohPrimaryResidence as Address,
-        mailingAddress: r.hohMailingAddress as Address,
-        familyMembers: r.familyMembers as FamilyMember[],
-        bcServicesNumber: r.headOfHousehold.bcServicesNumber as string,
-        id: r.headOfHousehold.id as string,
-        active: r.headOfHousehold.active as boolean,
-        personType: r.headOfHousehold.personType as string,
         firstName: r.headOfHousehold.firstName as string,
         lastName: r.headOfHousehold.lastName as string,
         nickname: r.headOfHousehold.nickname as string,
         initials: r.headOfHousehold.initials as string,
         gender: r.headOfHousehold.gender as string,
         dob: r.headOfHousehold.dob as Date,
+        bcServicesNumber: r.headOfHousehold.bcServicesNumber as string,
+        primaryResidence: r.hohPrimaryResidence as Address,
+        mailingAddress: r.hohMailingAddress as Address,
+        familyMembers: r.familyMembers as FamilyMember[],
+        personType: r.headOfHousehold.personType as string,
       },
       incidentTask: r.incidentTask as IncidentTask,
       hostCommunity: r.hostCommunity as Community,
@@ -425,11 +460,17 @@ export class EvacueeRegistrationComponent implements OnInit {
     if (this.registration) {
       // update
       this.submission = reg;
-      // this.registrationService.putRegistration(this.registration).subscribe(r => { alert(JSON.stringify(r)); });
+      this.registrationService.putRegistration(reg)
+        .subscribe(r => {
+          alert(JSON.stringify(r));
+        });
     } else {
       // post new
       this.submission = reg;
-      // this.registrationService.createRegistration(this.registration).subscribe(r => { alert(JSON.stringify(r)); });
+      this.registrationService.createRegistration(reg)
+        .subscribe(r => {
+          alert(JSON.stringify(r));
+        });
     }
   }
 }
