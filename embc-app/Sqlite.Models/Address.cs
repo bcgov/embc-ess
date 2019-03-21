@@ -9,14 +9,17 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// </summary>
     public abstract partial class Address
     {
+        public const string BC_ADDRESS = "BCAD";
+        public const string OTHER_ADDRESS = "OTAD";
+
         // Factory method
         public static Address Create(string subType)
         {
-            if (subType == "BCAD")
+            if (subType == BC_ADDRESS)
             {
                 return new BcAddress();
             }
-            else if (subType == "OTAD")
+            else if (subType == OTHER_ADDRESS)
             {
                 return new OtherAddress();
             }
@@ -48,7 +51,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
 
         public BcAddress()
         {
-            AddressSubtype = "BCAD";
+            AddressSubtype = Address.BC_ADDRESS;
         }
     }
 
@@ -62,7 +65,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
 
         public OtherAddress()
         {
-            AddressSubtype = "OTAD";
+            AddressSubtype = Address.OTHER_ADDRESS;
         }
     }
 }

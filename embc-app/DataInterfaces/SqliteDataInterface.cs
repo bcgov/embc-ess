@@ -37,6 +37,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return Task.FromResult(model.ToViewModel());
         }
 
+        public Task<Registration> UpdateRegistration(Registration registration)
+        {
+            var existing = Db.Registrations.FirstOrDefault(item => item.Id == new Guid(registration.Id));
+            if (existing != null)
+            {
+                existing.PatchValues(registration);
+                Db.Registrations.Update(existing);
+                Db.SaveChanges();
+                return Task.FromResult(existing.ToViewModel());
+            }
+            return Task.FromResult<Registration>(null);
+        }
+
         public Organization GetOrganizationByBceidGuid(string bceidGuid)
         {
             // TODO: Implement

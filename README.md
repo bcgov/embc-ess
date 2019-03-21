@@ -45,6 +45,29 @@ Login to the OpenShift Web Console and navigate to the Tools project for the sys
 Login to the OpenShift Web Console and navigate to the Tools project for the system.  Go to Builds->Pipelines.  Click  Start Pipeline on the Prod Pipeline.
 
 
+Authentication
+--------------
+
+### BCeID
+
+Business BCeID may be used to login as a Volunteer.    
+
+### IDIR
+
+Government users may use IDIR to login as an Administrator.
+
+### Development Users
+
+Access /login/token/username to login as a test BCeID user for development purposes.
+
+### Environments
+
+| Environment | URL                                    | VPN Required? |
+| ----------- | -------------------------------------- | ------------- |
+| DEV         | https://dev.justice.gov.bc.ca/embcess  | Yes           |
+| TEST        | https://test.justice.gov.bc.ca/embcess | Yes           |
+| PROD        | https://prod.justice.gov.bc.ca/embcess | No            |
+  
 Contribution
 ------------
 

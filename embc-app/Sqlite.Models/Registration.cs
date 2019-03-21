@@ -47,7 +47,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         public bool? HasPetCareReferral { get; set; }
         public bool? HasPets { get; set; }
 
-        // requirements
+        // requirements (needs assessment)
         public bool? RequiresAccommodation { get; set; }
         public bool? RequiresClothing { get; set; }
         public bool? RequiresFood { get; set; }

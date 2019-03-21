@@ -19,12 +19,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
                 if (source is Sqlite.Models.BcAddress sourceBc)
                 {
-                    // var resultBc = result as ViewModels.BcAddress;
+                    result.AddressSubtype = Sqlite.Models.Address.BC_ADDRESS;
                     result.Community = sourceBc.Community.ToViewModel();
                 }
                 if (source is Sqlite.Models.OtherAddress sourceOther)
                 {
-                    // var resultOther = result as ViewModels.OtherAddress;
+                    result.AddressSubtype = Sqlite.Models.Address.OTHER_ADDRESS;
                     result.City = sourceOther.City;
                     result.Province = sourceOther.Province;
                     result.Country = sourceOther.Country.ToViewModel();

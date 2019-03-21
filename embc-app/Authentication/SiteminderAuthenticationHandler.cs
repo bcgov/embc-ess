@@ -485,6 +485,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                 // set other session info
                 userSettings.SiteMinderGuid = siteMinderGuid;
                 userSettings.SiteMinderBusinessGuid = siteMinderBusinessGuid;
+
                 _logger.LogDebug("Before getting contact and account ids = " + userSettings.GetJson());
 
                 if (userSettings.AuthenticatedUser != null)
@@ -500,6 +501,11 @@ namespace Gov.Jag.Embc.Public.Authentication
                             userSettings.AuthenticatedUser.AccountId = Guid.Parse(account.Id);
                         }
                     }
+                    else
+                    {
+                        userSettings.AuthenticatedUser.UserType = siteMinderUserType;
+                    }
+
                 }
 
                 if (!hostingEnv.IsProduction() && (isDeveloperLogin || isBCSCDeveloperLogin))

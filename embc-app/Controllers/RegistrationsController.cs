@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Rest;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         /// <summary>
-        ///
+        /// Get All
         /// </summary>
         /// <returns></returns>
         [HttpGet(Name = nameof(GetAll))]
@@ -70,7 +71,7 @@ namespace Gov.Jag.Embc.Public.Controllers
                     metadata = paginationMetadata
                 });
             }
-            catch (RestException error)
+            catch (Exception error)
             {
                 // TODO: Remove error payload when live in PROD
                 return BadRequest(error);
@@ -78,7 +79,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         /// <summary>
-        ///
+        /// Get One
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -94,27 +95,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             return Json(result);
         }
 
-
         /// <summary>
-        /// Update
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpPut("{id}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Update([FromBody] ViewModels.Registration item, string id)
-        {
-            if (id != null && item.Id != null && id != item.Id)
-            {
-                return BadRequest();
-            }
-
-            return Json(null);
-        }
-
-        /// <summary>
-        ///
+        /// Create
         /// </summary>
         /// <param name="viewModel"></param>
         /// <returns></returns>
@@ -132,7 +114,43 @@ namespace Gov.Jag.Embc.Public.Controllers
                 var result = await _dataInterface.CreateRegistration(item);
                 return Json(result);
             }
-            catch (RestException error)
+            catch (Exception error)
+            {
+                return BadRequest(error);
+            }
+        }
+
+        /// <summary>
+        /// Update
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Update([FromBody] ViewModels.Registration item, string id)
+        {
+            if (id != null && item.Id != null && id != item.Id)
+            {
+                return BadRequest();
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _dataInterface.UpdateRegistration(item);
+                if (result != null)
+                {
+                    return Json(result);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception error)
             {
                 return BadRequest(error);
             }

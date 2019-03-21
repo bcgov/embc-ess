@@ -94,7 +94,7 @@ const TEST: Registration[] = [
           }
         },
         city: 'Calgary',
-        province: 'AB',
+        province: 'Alberta',
         country: {
           id: 'alksjfh',
           name: 'Canada'
@@ -109,12 +109,12 @@ const TEST: Registration[] = [
           nickname: 'Beebs',
           sameLastNameAsEvacuee: false,
           relationshipToEvacuee: {
-            code: 'EXFMBR',
+            code: 'IMMF',
             description: 'Could be a cousin or something.'
           },
           personType: 'FMBR',
           gender: 'female',
-          dob: new Date()
+          dob: new Date('2019-03-06T00:00:00-08:00')
 
         }
       ],
@@ -127,7 +127,7 @@ const TEST: Registration[] = [
       nickname: 'Curty',
       initials: 'J',
       gender: 'male',
-      dob: new Date()
+      dob: new Date('1984-03-06T00:00:00-08:00')
     },
     incidentTask: {
       id: 'wert',
@@ -146,15 +146,18 @@ const TEST: Registration[] = [
         },
       },
       community: {
-        id: 'asdasd',
-        name: 'Victoria',
+        id: '963f9ff6-f637-4375-aac4-69b0678e1f81',
+        active: true,
+        name: 'Port McNeil',
         regionalDistrict: {
-          id: 'frustrated',
-          name: 'CRD',
+          id: '760bb5e1-7f59-4d43-aed8-c83887f5b9f4',
+          active: true,
+          name: 'Mount Waddington',
           region: {
-            id: 'lkasdjfh',
-            name: 'South BC'
-          },
+            id: '49f5a575-ce49-42c4-a117-1207a87ccd81',
+            active: true,
+            name: 'Vancouver Island'
+          }
         }
       },
     },
@@ -209,14 +212,14 @@ export class RegistrationService extends RestService {
   }
 
   createRegistration(data: Registration): Observable<Registration> {
-    alert("createRegistration service");
+    // alert("createRegistration service");
     return this.http.post<Registration>('api/registrations', data, { headers: this.headers })
       .pipe(
         catchError(this.handleError)
       );
   }
   putRegistration(data: Registration): Observable<Registration> {
-    alert("putRegistration service");
+    // alert("putRegistration service");
     return this.http.put<Registration>('api/registrations', data, { headers: this.headers })
       .pipe(
         catchError(this.handleError)
