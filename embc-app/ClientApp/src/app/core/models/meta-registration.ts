@@ -5,18 +5,9 @@ export interface MetaRegistration {
     metadata: {
         page: number;
         pageSize: number;
-        totalCountTotalPages: number;
+        totalCount: number;
+        TotalPages: number;
         links: number;
 
     };
 }
-// {
-//     "data": [],
-//     "metadata": {
-//       "page": 1,
-//       "pageSize": 50,
-//       "totalCount": 0,
-//       "totalPages": 0,
-//       "links": null
-//     }
-//   }

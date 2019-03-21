@@ -16,7 +16,7 @@ url | Description | PUT/POST/GET/DELETE | status
 `api/communities` | BC communities | |
 `api/incidenttasks` | Incident tasks | |
 `api/registrations` | Registrations retrievable as a list. | GET | Works
-`api/registrations/:id` | Registrations retrievable by unique ID. | PUT POST |
+`api/registrations/:id` | Registrations retrievable byhas service unique ID. | PUT POST |
 `api/organizations` | Organizations for volunteers. | |
 `api/organizations/1/users` | Users belonging to an organization | | 
 `api/user/current` | Details about the current user. |  |
