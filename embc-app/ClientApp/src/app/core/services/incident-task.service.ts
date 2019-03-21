@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
 import { IncidentTask } from '../models';
 import { CoreModule } from '../core.module';
+import { RestService } from './rest.service';
 
 const INCIDENTTASKS: IncidentTask[] = [
   {
@@ -33,9 +34,7 @@ const INCIDENTTASKS: IncidentTask[] = [
 @Injectable({
   providedIn: CoreModule
 })
-export class IncidentTaskService {
-
-  constructor() { }
+export class IncidentTaskService extends RestService {
 
   getIncidentTasks(): Observable<IncidentTask[]> {
     // return a list of all incident task numbers for use in the application
