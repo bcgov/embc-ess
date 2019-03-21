@@ -180,7 +180,7 @@ const TEST: Registration[] = [
       lastName: 'Racklette',
       initials: 'BRB',
       personType: 'VOLN',
-      gender: 'other',
+      gender: 'X',
       dob: new Date(),
       organization: {
         name: 'Quartech',

@@ -11,5 +11,5 @@ export const INSURANCE_OPTIONS = [
 export const GENDER_OPTIONS = [
   { key: 'male', value: 'Male' },
   { key: 'female', value: 'Female' },
-  { key: 'other', value: 'Other' },
+  { key: 'x', value: 'X' },
 ];
