@@ -35,7 +35,7 @@
       <select class="form-control" formControlName="incidentTask">
         <option [ngValue]="null">-- Select Incident</option>
         <option [ngValue]="incident" *ngFor="let incident of incidentTasks">
-          {{incident.taskNumber}} - {{incident|json}}
+          {{incident.taskNumber}}<span *ngIf="incident.community"> - {{incident.community.name}}</span>
         </option>
       </select>
     </div>

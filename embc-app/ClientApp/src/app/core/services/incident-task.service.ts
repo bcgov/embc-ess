@@ -27,7 +27,12 @@ const INCIDENTTASKS: IncidentTask[] = [
     details: 'Province fire',
     region: null,
     regionalDistrict: null,
-    community: null,
+    community: {
+      id: "ID ELEMENT",
+      name: "Victoria",
+      active: true,
+      regionalDistrict: null,
+    },
   }
 ];
 
