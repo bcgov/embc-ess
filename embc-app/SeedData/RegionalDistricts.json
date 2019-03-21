@@ -1,5 +1,11 @@
 [
     {
+        "Name": "Central Kootenay Area A",
+        "Region": {
+            "Name": "South East"
+        }
+    },
+    {
         "Name": "Central Kootenay Area B",
         "Region": {
             "Name": "South East"
