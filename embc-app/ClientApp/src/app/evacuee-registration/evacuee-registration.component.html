@@ -616,17 +616,17 @@
         <h3 class="blue-header">
           OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE
         </h3>
-        <textarea class="form-control" placeholder="Details (TODO: Not working)" rows="4"
+        <textarea class="form-control" placeholder="Details" rows="4"
           formControlName="externalReferralsDetails"></textarea>
       </div>
       <!-- Follow up -->
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <h3 class="blue-header">
           OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE
         </h3>
         <textarea class="form-control" placeholder="Details (TODO: Not working)" rows="4"
           formControlName="externalReferralsDetails"></textarea>
-      </div>
+      </div> -->
 
       <!-- Submit button! -->
       <div class="mb-4">
@@ -658,17 +658,17 @@
   </div> -->
 </div>
 <!-- Only for debugging. Three boxes with the three data representations. -->
-<!-- <div class="row">
-    <div class="col" (click)="submit()">
-      <h4>Input State</h4>
-      <pre>{{registration | json}}</pre>
-    </div>
-    <div class="col">
-      <h4>Submission State</h4>
-      <pre>{{submission | json}}</pre>
-    </div>
-    <div class="col">
-      <h4>Form State</h4>
-      <pre>{{ this.form.value | json}}</pre>
-    </div>
-  </div> -->
+<div class="row">
+  <div class="col" (click)="submit()">
+    <h4>Input State</h4>
+    <pre>{{registration | json}}</pre>
+  </div>
+  <div class="col">
+    <h4>Submission State</h4>
+    <pre>{{submission | json}}</pre>
+  </div>
+  <div class="col">
+    <h4>Form State</h4>
+    <pre>{{ this.form.value | json}}</pre>
+  </div>
+</div>

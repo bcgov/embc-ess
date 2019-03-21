@@ -340,14 +340,15 @@ export class EvacueeRegistrationComponent implements OnInit {
         });
       }
 
-      // incident task
-      if (incidentTask != null) {
-        alert('There is an incident.');
-      }
-      // host community
-      if (hostCommunity != null) {
-        alert('host community set');
-      }
+      // // These are switches that will be handy maybe.
+      // // incident task
+      // if (incidentTask != null) {
+      //   alert('There is an incident.');
+      // }
+      // // host community
+      // if (hostCommunity != null) {
+      //   alert('host community set');
+      // }
 
       // add the primary residence back into the form
       if (primaryResidence != null) {
