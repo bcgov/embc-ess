@@ -20,7 +20,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<Region> Regions { get; set; }
         public DbSet<Registration> Registrations { get; set; }
         public DbSet<Person> People { get; set; }
-        public DbSet<Organization> Organizations { get; set; }    
+        public DbSet<Organization> Organizations { get; set; }
         // public DbSet<HeadOfHousehold> HeadOfHouseholds { get; set; }
         // public DbSet<FamilyMember> FamilyMembers { get; set; }
 
@@ -41,8 +41,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             modelBuilder.Entity<Address>()
                 .ToTable("Addresses")
                 .HasDiscriminator(addr => addr.AddressSubtype)
-                .HasValue<BcAddress>("BCAD")
-                .HasValue<OtherAddress>("OTAD");
+                .HasValue<BcAddress>(Address.BC_ADDRESS)
+                .HasValue<OtherAddress>(Address.OTHER_ADDRESS);
 
             // People hierarchy
             modelBuilder.Entity<Volunteer>().HasBaseType<Person>();
@@ -51,9 +51,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             modelBuilder.Entity<Person>()
                 .ToTable("People")
                 .HasDiscriminator(pers => pers.PersonType)
-                .HasValue<Volunteer>("VOLN")
-                .HasValue<HeadOfHousehold>("HOH")
-                .HasValue<FamilyMember>("FMBR");
+                .HasValue<Volunteer>(Person.VOLUNTEER)
+                .HasValue<HeadOfHousehold>(Person.HOH)
+                .HasValue<FamilyMember>(Person.FAMILY_MEMBER);
 
             // TODO: Specify any additional inheritance hierarchies here!
         }

@@ -28,7 +28,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
 
         public Volunteer()
         {
-            PersonType = "VOLN";
+            PersonType = Person.VOLUNTEER;
         }
     }
 }

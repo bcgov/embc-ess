@@ -9,17 +9,21 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// </summary>
     public abstract partial class Person
     {
+        public const string VOLUNTEER = "VOLN";
+        public const string HOH = "HOH";
+        public const string FAMILY_MEMBER = "FMBR";
+
         public static Person Create(string subType)
         {
-            if (subType == "VOLN")
+            if (subType == VOLUNTEER)
             {
                 return new Volunteer();
             }
-            else if (subType == "HOH")
+            else if (subType == HOH)
             {
                 return new HeadOfHousehold();
             }
-            else if (subType == "FMBR")
+            else if (subType == FAMILY_MEMBER)
             {
                 return new FamilyMember();
             }
