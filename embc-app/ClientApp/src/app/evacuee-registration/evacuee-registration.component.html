@@ -8,7 +8,8 @@
 <div class="row">
   <div class="col col-lg-8">
     <div class="mb-4">
-      <h1>Add an Evacuee</h1>
+      <h1 *ngIf="!editMode">Add an Evacuee</h1>
+      <h1 *ngIf="editMode">Edit an Evacuee</h1>
       <p>Before starting a new evacuee registration, use the search tool on your dashboard to confirm that the evacuee
         hasn’t already registered.</p>
       <small>
