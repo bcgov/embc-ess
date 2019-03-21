@@ -9,6 +9,7 @@ import {
   Registration, FamilyMember, isBcAddress, Community, Country,
   RelationshipType, HeadOfHousehold, Address, Volunteer, IncidentTask
 } from 'src/app/core/models';
+import { IncidentTaskService } from '../core/services/incident-task.service';
 
 @Component({
   selector: 'app-evacuee-registration',
@@ -22,8 +23,8 @@ export class EvacueeRegistrationComponent implements OnInit {
   regionalDistrics$ = this.store.select(s => s.lookups.regionalDistricts);
   regions$ = this.store.select(s => s.lookups.regions);
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
-  incidentTask$ = this.store.select(s => s.incidentTasks.incidentTasks); // TODO: make it go.
   communities$ = this.store.select(s => s.lookups.communities.communities);
+  incidentTasks: IncidentTask[];
 
   // The model for the form data collected
   form: FormGroup;
@@ -40,11 +41,13 @@ export class EvacueeRegistrationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private store: Store<AppState>, // ngrx app state
     private route: ActivatedRoute,
-    private registrationService: RegistrationService
-    // private store: Store<AppState>, // ngrx app state
+    private registrationService: RegistrationService,
+    private incidentTaskService: IncidentTaskService,
   ) {
     // build the form with formbuilder
     this.initForm();
+    this.incidentTaskService.getIncidentTasks()
+      .subscribe(i => this.incidentTasks = i);
   }
 
   // convenience getter for easy access to form fields
