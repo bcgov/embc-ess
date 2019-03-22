@@ -46,27 +46,25 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 var results = await dataInterface.GetRegistrationsAsync(queryParameters);
 
-                var toReturn = await PaginatedList<ViewModels.Registration>.CreateAsync(results, queryParameters.Offset, queryParameters.Limit);
-
-                // TODO: provide values for pagination metadata...
                 var paginationMetadata = new PaginationMetadata()
                 {
-                    CurrentPage = toReturn.GetCurrentPage(),
-                    PageSize = toReturn.Limit,
-                    TotalCount = toReturn.TotalItemCount,
-                    TotalPages = toReturn.GetTotalPages()
+                    CurrentPage = results.GetCurrentPage(),
+                    PageSize = results.Limit,
+                    TotalCount = results.TotalItemCount,
+                    TotalPages = results.GetTotalPages()
                 };
 
                 return Json(new
                 {
-                    data = toReturn,
+                    data = results,
                     metadata = paginationMetadata
                 });
             }
-            catch (Exception error)
+            catch (Exception e)
             {
                 // TODO: Remove error payload when live in PROD
-                return BadRequest(error);
+                logger.LogError(e.ToString());
+                return BadRequest(e.ToString());
             }
         }
 

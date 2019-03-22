@@ -17,9 +17,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public SqliteDataInterface(string connectionString)
         {
-            DbContextOptionsBuilder<SqliteContext> builder = new DbContextOptionsBuilder<SqliteContext>();
-
-            builder.UseSqlite(connectionString);
+            DbContextOptionsBuilder<SqliteContext> builder = new DbContextOptionsBuilder<SqliteContext>()
+                .UseLazyLoadingProxies()
+                .UseSqlite(connectionString);
 
             // init the database.
             Db = new SqliteContext(builder.Options);
@@ -43,8 +43,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var db = ctx();
             var created = await db.Registrations.AddAsync(registration.ToModel());
             await db.SaveChangesAsync();
-            await created.ReloadAsync();
-            return created.Entity.ToViewModel();
+
+            return await GetRegistrationAsync(created.Entity.Id.ToString());
         }
 
         public async Task UpdateRegistrationAsync(Registration registration)
@@ -63,24 +63,30 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             await db.SaveChangesAsync();
         }
 
-        public async Task<IQueryable<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters)
+        public async Task<PaginatedList<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters)
         {
             var db = ctx();
-            IQueryable<Sqlite.Models.Registration> _allItems = db.Registrations.AsQueryable();
+            IQueryable<Sqlite.Models.Registration> registrations = db.Registrations;
+            var allItemCount = await registrations.CountAsync();
 
             if (queryParameters.HasSortBy())
             {
                 // sort using dynamic linq extension method
-                _allItems = _allItems.Sort(queryParameters.SortBy);
+                registrations = registrations.Sort(queryParameters.SortBy);
             }
 
             if (queryParameters.HasQuery())
             {
                 // TODO: Implement FILTERING of search results!
-                _allItems = _allItems.Where(item => this.SimpleSearch(item, queryParameters.Query));
+                registrations = registrations.Where(item => this.SimpleSearch(item, queryParameters.Query));
             }
 
-            return await Task.FromResult(_allItems.Select(r => r.ToViewModel()));
+            var items = await registrations
+                .Skip(queryParameters.Offset)
+                .Take(queryParameters.Limit)
+                .ToArrayAsync();
+
+            return new PaginatedList<Registration>(items.Select(r => r.ToViewModel()), allItemCount, queryParameters.Offset, queryParameters.Limit);
         }
 
         private bool SimpleSearch(Sqlite.Models.Registration item, string q)
@@ -100,6 +106,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             // TODO: For NEXT RELEASE! - Advanced Search (out of scope for Release #1)
             throw new NotImplementedException();
+        }
+
+        public async Task<Registration> GetRegistrationAsync(string id)
+        {
+            var db = ctx();
+            if (Guid.TryParse(id, out var guid))
+            {
+                var entity = await db.Registrations.FirstOrDefaultAsync(reg => reg.Id == guid);
+                return entity?.ToViewModel();
+            }
+            return null;
         }
 
         #endregion Registration
@@ -178,33 +195,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             var all = Db.FamilyRelationshipTypes.Select(x => x.ToViewModel()).ToList();
             return all;
-        }
-
-        public async Task<Registration> GetRegistrationAsync(string id)
-        {
-            if (Guid.TryParse(id, out var guid))
-            {
-                var entity = await Db.Registrations
-                .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.FamilyMembers)
-                    .ThenInclude(fmbr => fmbr.RelationshipToEvacuee)
-                .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.PrimaryResidence)
-                    .ThenInclude(addr => (addr as Sqlite.Models.BcAddress).Community)
-                .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.PrimaryResidence)
-                    .ThenInclude(addr => (addr as Sqlite.Models.OtherAddress).Country)
-                .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.MailingAddress)
-                    .ThenInclude(addr => (addr as Sqlite.Models.BcAddress).Community)
-                .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.MailingAddress)
-                    .ThenInclude(addr => (addr as Sqlite.Models.OtherAddress).Country)
-                .AsQueryable()
-                .FirstOrDefaultAsync(reg => reg.Id == guid);
-                return entity?.ToViewModel();
-            }
-            return null;
         }
 
         //

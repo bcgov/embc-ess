@@ -7,7 +7,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// <summary>
     /// Role Database Model
     /// </summary>
-    public sealed partial class Country
+    public class Country
     {
         /// <summary>
         /// A system-generated unique identifier
