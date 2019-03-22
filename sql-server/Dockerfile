@@ -34,16 +34,17 @@ ENV ACCEPT_EULA=Y MSSQL_PID=$PID MSSQL_SA_PASSWORD=$SA_PASSWORD MSSQL_TCP_PORT=$
 # You don't have to register subscription if you build docker image on registered RHEL machine.
 # If you build on other machines, please fill in Red Hat subscription name and password and uncomment the below command.
 #RUN subscription-manager register --username <your_username> --password <your_password> --auto-attach
-#RUN yum install -y curl
+
+# Install latest mssql-server package
 RUN REPOLIST=rhel-7-server-rpms,packages-microsoft-com-mssql-server-2017,packages-microsoft-com-prod && \
     curl -o /etc/yum.repos.d/mssql-server.repo https://packages.microsoft.com/config/rhel/7/mssql-server-2017.repo && \
     curl -o /etc/yum.repos.d/msprod.repo https://packages.microsoft.com/config/rhel/7/prod.repo && \
-    yum install -y --disablerepo "*" --enablerepo ${REPOLIST} --setopt=tsflags=nodocs mssql-server mssql-server-agent mssql-server-fts mssql-tools unixODBC-devel && \
-    yum clean all && \
-    rm -rf /var/cache/yum
+    ACCEPT_EULA=Y yum -y install --disablerepo "*" --enablerepo ${REPOLIST} --setopt=tsflags=nodocs \
+      mssql-server mssql-tools unixODBC-devel && \
+    yum clean all
    
 COPY uid_entrypoint /opt/mssql-tools/bin/
-
+ENV PATH=${PATH}:/opt/mssql/bin:/opt/mssql-tools/bin
 RUN mkdir -p /var/opt/mssql && \
     chmod -R g=u /var/opt/mssql /etc/passwd
 
@@ -53,9 +54,7 @@ USER 10001
 # Default SQL Server TCP/Port
 EXPOSE $TCP_PORT
 
-ENV PATH $PATH:/opt/mssql-tools/binTH $PATH:/opt/mssql-tools/bin
-
 ### user name recognition at runtime w/ an arbitrary uid - for OpenShift deployments
 ENTRYPOINT [ "uid_entrypoint" ]
 
-CMD [ "/opt/mssql/bin/sqlservr" ]
+CMD sqlservr
