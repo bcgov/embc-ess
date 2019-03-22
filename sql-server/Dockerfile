@@ -43,7 +43,7 @@ RUN REPOLIST=rhel-7-server-rpms,packages-microsoft-com-mssql-server-2017,package
     rm -rf /var/cache/yum
    
 COPY uid_entrypoint /opt/mssql-tools/bin/
-
+ENV PATH=${PATH}:/opt/mssql/bin:/opt/mssql-tools/bin
 RUN mkdir -p /var/opt/mssql && \
     chmod -R g=u /var/opt/mssql /etc/passwd
 
@@ -53,9 +53,7 @@ USER 10001
 # Default SQL Server TCP/Port
 EXPOSE $TCP_PORT
 
-ENV PATH=${PATH}:/opt/mssql/bin:/opt/mssql-tools/bin
-
 ### user name recognition at runtime w/ an arbitrary uid - for OpenShift deployments
 ENTRYPOINT [ "uid_entrypoint" ]
 
-CMD [ "/opt/mssql/bin/sqlservr" ]
+CMD [ "sqlservr" ]
