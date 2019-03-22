@@ -56,7 +56,10 @@
             <td>{{stub.evacuatedTo}}</td>
             <td>Yes</td>
             <td>
-              <a *ngIf="stub.registrationCompletionDate===null" href="">Complete</a>
+              <span *ngIf="stub.registrationCompletionDate===null">
+                <a type="link" (click)="routeTo(stub.essFileNumber)">Complete</a>
+              </span>
+
               <a *ngIf="stub.registrationCompletionDate!==null" href="">View</a>
             </td>
           </tr>
