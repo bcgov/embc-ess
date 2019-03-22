@@ -1,6 +1,6 @@
 <div class="mb-4">
-  <h1 *ngIf="!editMode" (click)="editMode=!editMode">Add ESS User</h1>
-  <h1 *ngIf="editMode" (click)="editMode=!editMode">Edit ESS User</h1>
+  <h1 *ngIf="!editMode">Add ESS User</h1>
+  <h1 *ngIf="editMode">Edit ESS User</h1>
   <small>
     All fields are required
   </small>
@@ -45,3 +45,5 @@
     <span class="ml-2">Cancel &amp; Close</span>
   </a> </div>
 <!-- TODO Need yellow horizontal rule -->
+
+<p>Volunteer: {{volunteer|json}}</p>

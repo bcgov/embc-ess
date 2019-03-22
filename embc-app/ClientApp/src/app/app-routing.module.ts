@@ -101,6 +101,10 @@ const routes: Routes = [
         component: EssEditorOneComponent
       },
       {
+        path: 'fill/:essUser',
+        component: EssEditorOneComponent
+      },
+      {
         path: 'confirmation',
         component: EssEditorConfirmationComponent
       }
