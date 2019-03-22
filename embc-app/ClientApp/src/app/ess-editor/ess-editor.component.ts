@@ -25,5 +25,7 @@ export class EssEditorComponent implements OnInit {
     this.firstName = new FormControl('');
     this.restrictedAccess = new FormControl(false)
   }
-
+  submit() {
+    alert(this.lastName.value + '-' + this.firstName.value + '-' + this.bceid.value + '-' + this.restrictedAccess.value);
+  }
 }
