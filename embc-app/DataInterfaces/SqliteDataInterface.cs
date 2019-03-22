@@ -36,6 +36,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             //return person;
         }
 
+        #region Registration
+
         public async Task<Registration> CreateRegistrationAsync(Registration registration)
         {
             var db = ctx();
@@ -60,6 +62,47 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             db.Registrations.Update(registration.ToModel());
             await db.SaveChangesAsync();
         }
+
+        public async Task<IQueryable<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters)
+        {
+            var db = ctx();
+            IQueryable<Sqlite.Models.Registration> _allItems = db.Registrations.AsQueryable();
+
+            if (queryParameters.HasSortBy())
+            {
+                // sort using dynamic linq extension method
+                _allItems = _allItems.Sort(queryParameters.SortBy);
+            }
+
+            if (queryParameters.HasQuery())
+            {
+                // TODO: Implement FILTERING of search results!
+                _allItems = _allItems.Where(item => this.SimpleSearch(item, queryParameters.Query));
+            }
+
+            return await Task.FromResult(_allItems.Select(r => r.ToViewModel()));
+        }
+
+        private bool SimpleSearch(Sqlite.Models.Registration item, string q)
+        {
+            var byLastName = item.HeadOfHousehold?.LastName?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
+            var byTaskNumber = item.IncidentTask?.TaskNumber?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
+            var byEssFileNumber = item.EssFileNumber?.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
+            var byCommunity = (item.HeadOfHousehold?.PrimaryResidence as Sqlite.Models.BcAddress)?.Community?.Name?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
+
+            // TODO: Add more of these...
+
+            var filter = byLastName || byTaskNumber || byEssFileNumber || byCommunity;
+            return filter;
+        }
+
+        private bool AdvancedSearch(Sqlite.Models.Registration item, string q)
+        {
+            // TODO: For NEXT RELEASE! - Advanced Search (out of scope for Release #1)
+            throw new NotImplementedException();
+        }
+
+        #endregion Registration
 
         public Organization GetOrganizationByBceidGuid(string bceidGuid)
         {
@@ -129,59 +172,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 regions.Add(region.ToViewModel());
             }
             return regions;
-        }
-
-        public async Task<IQueryable<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters)
-        {
-            var db = ctx();
-            IQueryable<Sqlite.Models.Registration> _allItems = db.Registrations.AsQueryable();
-
-            if (queryParameters.HasSortBy())
-            {
-                // sort using dynamic linq extension method
-                _allItems = _allItems.Sort(queryParameters.SortBy);
-            }
-
-            if (queryParameters.HasQuery())
-            {
-                // TODO: Implement FILTERING of search results!
-                _allItems = _allItems.Where(item => this.SimpleSearch(item, queryParameters.Query));
-            }
-
-            return await Task.FromResult(_allItems.Select(r => r.ToViewModel()));
-
-            // IQueryable<FoodItem> _allItems = _foodDbContext.FoodItems.OrderBy(queryParameters.OrderBy,
-            //   queryParameters.IsDescending());
-
-            // if (queryParameters.HasQuery())
-            // {
-            //     _allItems = _allItems
-            //         .Where(x => x.Calories.ToString().Contains(queryParameters.Query.ToLowerInvariant())
-            //         || x.Name.ToLowerInvariant().Contains(queryParameters.Query.ToLowerInvariant()));
-            // }
-
-            // return _allItems
-            //     .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
-            //     .Take(queryParameters.PageCount);
-        }
-
-        private bool SimpleSearch(Sqlite.Models.Registration item, string q)
-        {
-            var byLastName = item.HeadOfHousehold?.LastName?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
-            var byTaskNumber = item.IncidentTask?.TaskNumber?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
-            var byEssFileNumber = item.EssFileNumber?.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
-            var byCommunity = (item.HeadOfHousehold?.PrimaryResidence as Sqlite.Models.BcAddress)?.Community?.Name?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
-
-            // TODO: Add more of these...
-
-            var filter = byLastName || byTaskNumber || byEssFileNumber || byCommunity;
-            return filter;
-        }
-
-        private bool AdvancedSearch(Sqlite.Models.Registration item, string q)
-        {
-            // TODO: For NEXT RELEASE! - Advanced Search (out of scope for Release #1)
-            throw new NotImplementedException();
         }
 
         public List<RegionalDistrict> GetRegionalDistricts()
