@@ -56,7 +56,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e.ToString());
-                return BadRequest(e);
+                return BadRequest(e.ToString());
             }
         }
 
@@ -78,9 +78,6 @@ namespace Gov.Jag.Embc.Public.Controllers
 
             return Json(result);
         }
-
-
-        
 
         /// <summary>
         /// 
@@ -104,7 +101,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e.ToString());
-                return BadRequest(e);
+                return BadRequest(e.ToString());
             }
         }
 
@@ -125,26 +122,30 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest();
             }
+
+            if(!item.Id.Equals(id, StringComparison.OrdinalIgnoreCase))
+            {
+                ModelState.AddModelError("Id", "id does not match Organization Id");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
             try
             {
                 var result = await _dataInterface.UpdateOrganizationAsync(item);
                 if (result != null)
                 {
-                    return Json(result);
+                    return Ok();
                 }
-                else
-                {
-                    return NotFound();
-                }
+                return NotFound();
             }
             catch (Exception e)
             {
                 _logger.LogError(e.ToString());
-                return BadRequest(e);
+                return BadRequest(e.ToString());
             }
         }
 
@@ -163,7 +164,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e.ToString());
-                return BadRequest(e);
+                return BadRequest(e.ToString());
             }
         }
 
