@@ -8,7 +8,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public interface IDataInterface
     {
-        Organization GetOrganizationByBceidGuid(string bceidGuid);
 
         Person GetPersonByBceidGuid(string bceidGuid);
 
@@ -44,9 +43,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         List<FamilyRelationshipType> GetFamilyRelationshipTypes();
 
+        #region Organization
+        //Organizations
+        Task<List<Organization>> GetOrganizationsAsync();
+        Task<Organization> GetOrganizationAsync(string id);
+        Task<Organization> GetOrganizationByBceidGuidAsync(string bceidGuid);
         Organization GetOrganizationByLegalName(string name);
-
         Organization GetOrganizationByExternalId(string externalId);
+        Task<Organization> CreateOrganizationAsync(Organization item);
+        Task<Organization> UpdateOrganizationAsync(Organization item);
+        Task<bool> DeactivateOrganizationAsync(string id); 
+        #endregion
 
         Volunteer GetVolunteerByExternalId(string externalId);
 
