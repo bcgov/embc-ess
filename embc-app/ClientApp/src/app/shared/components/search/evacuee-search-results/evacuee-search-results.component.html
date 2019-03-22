@@ -18,12 +18,10 @@
     <tbody>
       <tr [class.table-danger]="rowItem.restrictedAccess" *ngFor="let rowItem of rows">
         <th scope="row">
-          <span *ngIf="rowItem.personType==='HOH'">
-            <i class="fas fa-user mr-1"></i>
-          </span>
-          <span *ngIf="rowItem.restrictedAccess">
-            <i class="fas fa-lock"></i>
-          </span>
+          <app-font-awesome-icon class="mr-1 float-left" *ngIf="rowItem.headOfHousehold" icon="user">
+          </app-font-awesome-icon>
+          <app-font-awesome-icon class="float-right" *ngIf="rowItem.restrictedAccess" icon="lock">
+          </app-font-awesome-icon>
         </th>
         <td>{{rowItem.firstName}}</td>
         <td>{{rowItem.lastName}}</td>

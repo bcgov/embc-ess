@@ -20,6 +20,7 @@ interface RowItem {
   // They are populated in `processSearchResults()`
   id?: string; // the guid to link them to their file
   restrictedAccess: boolean; // should this file be shown or not?
+  headOfHousehold: boolean; // whether this rowItem is belongs to the head of household
   essFileNumber: number; // what is the ESS file number
   firstName: string;
   lastName: string;
@@ -93,7 +94,8 @@ export class EvacueeSearchResultsComponent implements OnChanges {
         firstName: registration.headOfHousehold.firstName,
         lastName: registration.headOfHousehold.lastName,
         requiresIncidentals: registration.requiresIncidentals, // do they need vouchers
-        personType: 'HOH', // HOH || FMBR || VOLN
+        personType: registration.headOfHousehold.personType, // HOH || FMBR || VOLN
+        headOfHousehold: true,
         incidentTaskTaskNumber: null,
         evacuatedFrom: null, // community name
         evacuatedTo: null, // community name
@@ -106,9 +108,11 @@ export class EvacueeSearchResultsComponent implements OnChanges {
       } else {
         hoh.incidentTaskTaskNumber = '';
       }
-      if (registration.incidentTask && registration.incidentTask.community && registration.incidentTask.community.name) {
+      if (registration.headOfHousehold.primaryResidence
+        && registration.headOfHousehold.primaryResidence.community
+        && registration.headOfHousehold.primaryResidence.community.name) {
         // check for nulls
-        hoh.evacuatedFrom = registration.incidentTask.community.name;
+        hoh.evacuatedFrom = registration.headOfHousehold.primaryResidence.community.name;
       } else {
         hoh.evacuatedFrom = '';
       }
@@ -142,6 +146,7 @@ export class EvacueeSearchResultsComponent implements OnChanges {
           incidentTaskTaskNumber: null,
           requiresIncidentals: registration.requiresIncidentals, // do they need vouchers
           personType: familyMember.personType, // HOH || FMBR || VOLN
+          headOfHousehold: false,
           evacuatedFrom: null, // community name
           evacuatedTo: null, // community name
           registrationCompletionDate: registration.registrationCompletionDate
@@ -153,9 +158,11 @@ export class EvacueeSearchResultsComponent implements OnChanges {
         } else {
           fmbr.incidentTaskTaskNumber = '';
         }
-        if (registration.incidentTask && registration.incidentTask.community && registration.incidentTask.community.name) {
+        if (registration.headOfHousehold.primaryResidence
+          && registration.headOfHousehold.primaryResidence.community
+          && registration.headOfHousehold.primaryResidence.community.name) {
           // check for nulls
-          fmbr.evacuatedFrom = registration.incidentTask.community.name;
+          fmbr.evacuatedFrom = registration.headOfHousehold.primaryResidence.community.name;
         } else {
           fmbr.evacuatedFrom = '';
         }
