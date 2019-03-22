@@ -1,16 +1,12 @@
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Utils;
-using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Rest;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -37,7 +33,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             Configuration = configuration;
             _dataInterface = dataInterface;
             _httpContextAccessor = httpContextAccessor;
-            _logger = loggerFactory.CreateLogger(typeof(PeopleController));
+            _logger = loggerFactory.CreateLogger(typeof(RegistrationsController));
             this._env = env;
             this.urlHelper = urlHelper;
         }

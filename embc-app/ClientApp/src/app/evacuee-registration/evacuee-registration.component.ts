@@ -9,6 +9,7 @@ import {
   Registration, FamilyMember, isBcAddress, Community, Country,
   RelationshipType, HeadOfHousehold, Address, Volunteer, IncidentTask
 } from 'src/app/core/models';
+import { IncidentTaskService } from '../core/services/incident-task.service';
 
 @Component({
   selector: 'app-evacuee-registration',
@@ -22,9 +23,8 @@ export class EvacueeRegistrationComponent implements OnInit {
   regionalDistrics$ = this.store.select(s => s.lookups.regionalDistricts);
   regions$ = this.store.select(s => s.lookups.regions);
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
-  incidentTask$ = this.store.select(s => s.incidentTasks.incidentTasks); // TODO: make it go.
-
-  // communities$
+  communities$ = this.store.select(s => s.lookups.communities.communities);
+  incidentTasks: IncidentTask[];
 
   // The model for the form data collected
   form: FormGroup;
@@ -41,11 +41,13 @@ export class EvacueeRegistrationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private store: Store<AppState>, // ngrx app state
     private route: ActivatedRoute,
-    private registrationService: RegistrationService
-    // private store: Store<AppState>, // ngrx app state
+    private registrationService: RegistrationService,
+    private incidentTaskService: IncidentTaskService,
   ) {
     // build the form with formbuilder
     this.initForm();
+    this.incidentTaskService.getIncidentTasks()
+      .subscribe(i => this.incidentTasks = i);
   }
 
   // convenience getter for easy access to form fields
@@ -65,6 +67,17 @@ export class EvacueeRegistrationComponent implements OnInit {
       return false;
     }
   }
+
+  setHohPrimaryResidenceProvince() {
+    // if the unset flag is true or a value it clears the values
+    const patch = { hohPrimaryResidence: { province: 'BC', country: { name: 'Canada' } } };
+    this.form.patchValue(patch);
+  }
+  setHohMailingAddressProvince() {
+    const patch = { hohMailingAddress: { province: 'BC', country: { name: 'Canada' } } };
+    this.form.patchValue(patch);
+  }
+
   ngOnInit() {
     // if there are route params we should grab them
     if (this.route.snapshot.params.essFileNumber) {
@@ -144,12 +157,6 @@ export class EvacueeRegistrationComponent implements OnInit {
     while (formArray && formArray.length !== 0) {
       formArray.removeAt(0);
     }
-  }
-  clearMailingAddress() {
-    // completely remove stored values for this area of the form
-    // no persistent mailing address
-    // this.form.reset('hohMailingAddress');
-    // todo: clear the hohMailingAddress to null so it can be null again instead of adding bad data to the DB
   }
 
   getBoolean(booleanString: string): boolean {
@@ -340,14 +347,15 @@ export class EvacueeRegistrationComponent implements OnInit {
         });
       }
 
-      // incident task
-      if (incidentTask != null) {
-        alert('There is an incident.');
-      }
-      // host community
-      if (hostCommunity != null) {
-        alert('host community set');
-      }
+      // // These are switches that will be handy maybe.
+      // // incident task
+      // if (incidentTask != null) {
+      //   alert('There is an incident.');
+      // }
+      // // host community
+      // if (hostCommunity != null) {
+      //   alert('host community set');
+      // }
 
       // add the primary residence back into the form
       if (primaryResidence != null) {
@@ -420,7 +428,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       hasPersonalServicesReferral: r.hasPersonalServicesReferral as boolean,
       hasPetCareReferral: r.hasPetCareReferral as boolean,
       hasPets: r.hasPets as boolean,
-      requiresAccomodation: r.requiresAccomodation as boolean,
+      requiresAccommodation: r.requiresAccommodation as boolean,
       requiresClothing: r.requiresClothing as boolean,
       requiresFood: r.requiresFood as boolean,
       requiresIncidentals: r.requiresIncidentals as boolean,
