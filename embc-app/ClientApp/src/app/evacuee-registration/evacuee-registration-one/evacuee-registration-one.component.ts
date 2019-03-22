@@ -464,7 +464,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     if (this.registration) {
       // update
       this.submission = reg;
-      this.registrationService.putRegistration(reg)
+      this.registrationService.updateRegistration(reg)
         .subscribe(r => {
           alert(JSON.stringify(r));
         });
