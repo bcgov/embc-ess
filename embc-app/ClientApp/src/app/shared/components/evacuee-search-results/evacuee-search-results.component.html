@@ -1,0 +1,72 @@
+<div class="search-results">
+  <div *ngIf="rowItems.length; then searchResults; else notFound"></div>
+</div>
+
+<ng-template #searchResults>
+  <table class="table">
+    <thead class="thead-light">
+      <th scope="col"></th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Task #</th>
+      <th scope="col">ESS File #</th>
+      <th scope="col">Evacuated From</th>
+      <th scope="col">Evacuated To</th>
+      <th scope="col">Referrals</th>
+      <th scope="col">Action</th>
+    </thead>
+    <tbody>
+      <!-- <tr class="table-danger">...</tr> -->
+      <tr [class.table-danger]="stub.restrictedAccess" *ngFor="let stub of rowItems">
+        <th>
+          <span *ngIf="stub.personType==='HOH'">
+            <i class="fas fa-user mr-1"></i>
+          </span>
+          <span *ngIf="stub.restrictedAccess">
+            <i class="fas fa-lock"></i>
+          </span>
+        </th>
+        <td>{{stub.firstName}}</td>
+        <td>{{stub.lastName}}</td>
+        <td>{{stub.incidentTaskTaskNumber}}</td>
+        <td>{{stub.essFileNumber}}</td>
+        <td>{{stub.evacuatedFrom}}</td>
+        <td>{{stub.evacuatedTo}}</td>
+        <td>Yes</td>
+        <td>
+          <a *ngIf="stub.registrationCompletionDate===null" [routerLink]=""
+            (click)="onResultSelected(stub, $event)">Complete</a>
+          <a *ngIf="stub.registrationCompletionDate!==null" [routerLink]=""
+            (click)="onResultSelected(stub, $event)">View</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+  <!-- <h2 class="visually-hidden">Search Results</h2>
+  <div class="search-area" *ngFor="let area of searchAreas">
+    <h3>{{area.name}} ({{area.pages.length + area.priorityPages.length}})</h3>
+    <ul class="priority-pages">
+      <li class="search-page" *ngFor="let page of area.priorityPages">
+        <a class="search-result-item" href="{{ page.path }}" (click)="onResultSelected(page, $event)">
+          <span class="symbol {{page.type}}" *ngIf="area.name === 'api'"></span>
+          <span [class.deprecated-api-item]="page.deprecated">{{ page.title }}</span>
+        </a>
+      </li>
+    </ul>
+    <ul>
+      <li class="search-page" *ngFor="let page of area.pages">
+        <a class="search-result-item" href="{{ page.path }}" (click)="onResultSelected(page, $event)">
+          <span class="symbol {{page.type}}" *ngIf="area.name === 'api'"></span>
+          <span [class.deprecated-api-item]="page.deprecated">{{ page.title }}</span>
+        </a>
+      </li>
+    </ul>
+  </div> -->
+</ng-template>
+
+<ng-template #notFound>
+  <p>{{notFoundMessage}}</p>
+</ng-template>

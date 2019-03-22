@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialModule } from './material.module';
@@ -14,6 +15,9 @@ import { BcAddressComponent } from './components/address-form/bc-address/bc-addr
 import { OtherAddressComponent } from './components/address-form/other-address/other-address.component';
 import { DisableControlDirective } from './directives/disable-control.directive';
 import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
+import { SearchBoxComponent } from './components/search-box/search-box.component';
+import { EvacueeSearchResultsComponent } from './components/evacuee-search-results/evacuee-search-results.component';
+
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { ByIdPipe } from './pipes/by-id.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
@@ -31,12 +35,15 @@ import { PluckPipe } from './pipes/pluck.pipe';
     OtherAddressComponent,
     DisableControlDirective,
     FontAwesomeIconComponent,
+    SearchBoxComponent,
+    EvacueeSearchResultsComponent,
     YesNoPipe,
     ByIdPipe,
     PluckPipe,
   ],
   imports: [
     CommonModule,
+    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
@@ -60,6 +67,8 @@ import { PluckPipe } from './pipes/pluck.pipe';
     OtherAddressComponent,
     DisableControlDirective,
     FontAwesomeIconComponent,
+    SearchBoxComponent,
+    EvacueeSearchResultsComponent,
     YesNoPipe,
     ByIdPipe,
     PluckPipe,
