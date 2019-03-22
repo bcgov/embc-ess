@@ -18,6 +18,7 @@ import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.compo
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
 // import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
+import { EssEditorComponent } from './ess-editor/ess-editor.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { TesterPageComponent } from './tester-page/tester-page.component';
     VolunteerDashboardComponent,
     // EvacueeRegistrationComponent,
     TesterPageComponent,
+    EssEditorComponent,
   ],
   imports: [
     // angular
