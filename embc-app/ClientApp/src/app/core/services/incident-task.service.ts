@@ -31,7 +31,15 @@ const INCIDENTTASKS: IncidentTask[] = [
       id: 'ID ELEMENT',
       name: 'Victoria',
       active: true,
-      regionalDistrict: null,
+      regionalDistrict: {
+        id: '',
+        name: '',
+        region: {
+          name: 'asdasd',
+          id: 'adasdasd',
+          active: true,
+        },
+      },
     },
   }
 ];

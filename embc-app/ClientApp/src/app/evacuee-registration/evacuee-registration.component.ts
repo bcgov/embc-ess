@@ -67,6 +67,17 @@ export class EvacueeRegistrationComponent implements OnInit {
       return false;
     }
   }
+
+  setHohPrimaryResidenceProvince() {
+    // if the unset flag is true or a value it clears the values
+    const patch = { hohPrimaryResidence: { province: 'BC', country: { name: 'Canada' } } };
+    this.form.patchValue(patch);
+  }
+  setHohMailingAddressProvince() {
+    const patch = { hohMailingAddress: { province: 'BC', country: { name: 'Canada' } } };
+    this.form.patchValue(patch);
+  }
+
   ngOnInit() {
     // if there are route params we should grab them
     if (this.route.snapshot.params.essFileNumber) {
@@ -146,12 +157,6 @@ export class EvacueeRegistrationComponent implements OnInit {
     while (formArray && formArray.length !== 0) {
       formArray.removeAt(0);
     }
-  }
-  clearMailingAddress() {
-    // completely remove stored values for this area of the form
-    // no persistent mailing address
-    // this.form.reset('hohMailingAddress');
-    // todo: clear the hohMailingAddress to null so it can be null again instead of adding bad data to the DB
   }
 
   getBoolean(booleanString: string): boolean {
@@ -423,7 +428,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       hasPersonalServicesReferral: r.hasPersonalServicesReferral as boolean,
       hasPetCareReferral: r.hasPetCareReferral as boolean,
       hasPets: r.hasPets as boolean,
-      requiresAccomodation: r.requiresAccomodation as boolean,
+      requiresAccommodation: r.requiresAccommodation as boolean,
       requiresClothing: r.requiresClothing as boolean,
       requiresFood: r.requiresFood as boolean,
       requiresIncidentals: r.requiresIncidentals as boolean,
