@@ -43,7 +43,8 @@
           <label>Facility Name / Registration Location</label>
           <input class="form-control" type="text" formControlName="facility">
         </app-form-field>
-        <app-form-field required="true"> <label>Community</label>
+        <app-form-field required="true">
+          <label>Community</label>
           <select class="form-control">
             <option [ngValue]="null">-- Select community</option>
             <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
@@ -231,7 +232,7 @@
           <h4 class="alert-heading">
             This Evacuee is a Stranded Traveller.
           </h4>
-          <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
+          <!-- <p>Relevant procedure and lorem ipsum dolor sit amet...</p> -->
         </div>
       </div>
       <!-- primary residence in BC -->
@@ -389,7 +390,7 @@
                 <label class="form-check-label">No</label>
               </div>
             </div>
-
+            <!-- Mailing address is in BC -->
             <div *ngIf="form.value.mailingAddressInBc">
               <div class="row mb-2" formGroupName="hohMailingAddress">
                 <div class="col">
@@ -400,13 +401,18 @@
               <div class="row mb-2" formGroupName="hohMailingAddress">
                 <div class="col">
                   <div required="true">
-                    <label>City</label>
-                    <input type="text" class="form-control" formControlName="city">
+                    <label>Community</label>
+                    <select class="form-control" formControlName="community">
+                      <option [ngValue]="null">-- Select community</option>
+                      <option [ngValue]="community" *ngFor="let community of communities$ | async">
+                        {{community.name}}
+                      </option>
+                    </select>
                   </div>
                 </div>
                 <div class="col-3">
                   <label required="true">Province</label>
-                  <input type="text" class="form-control" formControlName="province">
+                  <input type="text" class="form-control" formControlName="province" [attr.disabled]="true">
                 </div>
                 <div class="col-3">
                   <div class="form-check">
@@ -416,7 +422,7 @@
                 </div>
               </div>
             </div>
-
+            <!-- Mailing address not in bc -->
             <div *ngIf="!form.value.mailingAddressInBc">
               NOT IN BC
               <div class="row mb-2" formGroupName="hohMailingAddress">
@@ -745,14 +751,6 @@
     <h4>Submission State</h4>
     <pre>{{submission | json}}</pre>
   </div> -->
-
-  <button (click)="setHohPrimaryResidenceProvince()">
-    Primary Residence in BC
-  </button>
-  <button (click)="setHohPrimaryResidenceProvince()">
-    Mailing in in BC
-  </button>
-
   <div class="col">
     <h4>Form State</h4>
     <pre>{{ this.form.value | json}}</pre>
