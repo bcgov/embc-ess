@@ -67,15 +67,15 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'new',
+        redirectTo: 'fill',
         pathMatch: 'full'
       },
       {
-        path: 'complete/:essFileNumber',
+        path: 'fill/:essFileNumber',
         component: EvacueeRegistrationOneComponent
       },
       {
-        path: 'new',
+        path: 'fill',
         component: EvacueeRegistrationOneComponent
       },
       {

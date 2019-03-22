@@ -3,7 +3,7 @@ import { FormControl, FormBuilder, FormGroup, FormArray, AbstractControl } from 
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store';
 import { state } from '@angular/animations';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RegistrationService } from '../../core/services/registration.service';
 import {
   Registration, FamilyMember, isBcAddress, Community, Country,
@@ -43,6 +43,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     private route: ActivatedRoute,
     private registrationService: RegistrationService,
     private incidentTaskService: IncidentTaskService,
+    private router: Router
   ) {
     // build the form with formbuilder
     this.initForm();
@@ -475,5 +476,11 @@ export class EvacueeRegistrationOneComponent implements OnInit {
           alert(JSON.stringify(r));
         });
     }
+  }
+  next() {
+    // navigate to the next page.
+    // TODO flow to the next element
+    this.router.navigate(['../confirmation'], { relativeTo: this.route });
+
   }
 }
