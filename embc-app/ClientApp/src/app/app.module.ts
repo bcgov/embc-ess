@@ -19,6 +19,7 @@ import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-das
 // import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
 import { EssEditorComponent } from './ess-editor/ess-editor.component';
+import { EssEditorOneComponent } from './ess-editor/ess-editor-one/ess-editor-one.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { EssEditorComponent } from './ess-editor/ess-editor.component';
     // EvacueeRegistrationComponent,
     TesterPageComponent,
     EssEditorComponent,
+    EssEditorOneComponent,
   ],
   imports: [
     // angular
