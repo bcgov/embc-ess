@@ -1,8 +1,19 @@
-<div style="position: relative;">
-  <div class="row">
-
-    <div class="col-md-8 col-sm-12">
-      <router-outlet></router-outlet>
-    </div>
+<div class="row">
+  <div class="col col-lg-8">
+    <router-outlet></router-outlet>
+  </div>
+  <!-- Information side bar -->
+  <div class="col-12 col-lg-4">
+    <app-side-box title="Useful Information" icon="description">
+      <section role="content">
+        <p>
+          If the task number you're looking for is not listed, please contact your supervisor or the Emergency
+          Coordination Centre.
+        </p>
+        <section role="footer">
+          <a class="btn btn-primary" href="tel:1-800-663-3456">1-800-663-3456</a>
+        </section>
+      </section>
+    </app-side-box>
   </div>
 </div>

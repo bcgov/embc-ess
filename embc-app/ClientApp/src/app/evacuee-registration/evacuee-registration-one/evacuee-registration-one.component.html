@@ -5,653 +5,627 @@
   this bug is seen in the console. Unfortunately by commenting things out this simply moves the error location around the code. This seems to be potentially a bug with patching formArrays. (According to stack overflow.) Maybe this will come out in the wash? Revisit this later when we have more time to spend on a single non-breaking error.
  -->
 
-<div class="row">
-  <div class="col col-lg-8">
-    <div class="mb-4">
-      <h1 *ngIf="!editMode">Add an Evacuee</h1>
-      <h1 *ngIf="editMode">Edit an Evacuee</h1>
-      <p>Before starting a new evacuee registration, use the search tool on your dashboard to confirm that the evacuee
-        hasn’t already registered.</p>
-      <small>
-        All required fields are marked with an asterisk *
-      </small>
+
+<div class="mb-4">
+  <h1 *ngIf="!editMode">Add an Evacuee</h1>
+  <h1 *ngIf="editMode">Edit an Evacuee</h1>
+  <p>Before starting a new evacuee registration, use the search tool on your dashboard to confirm that the evacuee
+    hasn’t already registered.</p>
+  <small>
+    All required fields are marked with an asterisk *
+  </small>
+</div>
+
+<!-- <p>incidentTask$: {{incidentTask$|async|json}}</p> -->
+<!-- <p>countries$: {{countries$ | async | json}}</p> -->
+<!-- <p>regions$: {{regions$ | async | json}}</p> -->
+<!-- <p>regionalDistricts$: {{regionalDistricts$ | async | json}}</p> -->
+<!-- <p>relationshipTypes$: {{relationshipTypes$ | async | json}}</p> -->
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+
+  <!-- TODO: These need to have the task number and host community populated -->
+  <div class="mb-4">
+    <h3 class="blue-header">
+      TASK NUMBER & PLACE OF REGISTRATION
+    </h3>
+    <app-form-field required="true">
+      <label>Task Number</label>
+      <select class="form-control" formControlName="incidentTask">
+        <option [ngValue]="null">-- Select Incident</option>
+        <option [ngValue]="incident" *ngFor="let incident of incidentTasks">
+          {{incident.taskNumber}}<span *ngIf="incident.community"> - {{incident.community.name}}</span>
+        </option>
+      </select>
+    </app-form-field>
+    <app-form-field required="true">
+      <label>Facility Name / Registration Location</label>
+      <input class="form-control" type="text" formControlName="facility">
+    </app-form-field>
+    <app-form-field required="true"> <label>Community</label>
+      <select class="form-control">
+        <option [ngValue]="null">-- Select community</option>
+        <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
+      </select>
+    </app-form-field>
+  </div> <!-- Restricted access to this file? -->
+  <div class="mb-4">
+    <h3 class="blue-header">
+      RESTRICTION
+    </h3>
+    <p>
+      Concerned family and friends may inquire about you and your family because of the emergency. We would like
+      to
+      provide these people with some information about you.</p>
+    <p class="required">May we disclose your location and the contact information for you and your family
+      members?
+    </p>
+    <div class="form-group">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="restrictedAccess">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="restrictedAccess">
+        <label class="form-check-label">No</label>
+      </div>
     </div>
+  </div>
 
-    <!-- <p>incidentTask$: {{incidentTask$|async|json}}</p> -->
-    <!-- <p>countries$: {{countries$ | async | json}}</p> -->
-    <!-- <p>regions$: {{regions$ | async | json}}</p> -->
-    <!-- <p>regionalDistricts$: {{regionalDistricts$ | async | json}}</p> -->
-    <!-- <p>relationshipTypes$: {{relationshipTypes$ | async | json}}</p> -->
+  <!-- Primary contact information -->
+  <div class="mb-4" formGroupName="headOfHousehold">
+    <h3 class="blue-header">
+      EVACUEE DETAILS
+    </h3>
+    <app-form-field required="true">
+      <label>Last Name</label>
+      <input class="form-control" type="text" formControlName="lastName">
+    </app-form-field>
+    <app-form-field required="true">
+      <label>First Name</label>
+      <input class="form-control" type="text" formControlName="firstName">
+    </app-form-field>
+    <div class="form-row">
+      <app-form-field class="col">
+        <label>Initial</label>
+        <input class="form-control" type="text" formControlName="initials">
+      </app-form-field>
+      <app-form-field class="col">
+        <label>Nickname</label>
+        <input class="form-control" type="text" formControlName="nickname">
+      </app-form-field>
+    </div>
+    <div class="form-row">
+      <app-form-field class="col" required="true">
+        <label>Gender</label>
+        <select class="form-control" formControlName="gender">
+          <option [ngValue]="null">Please select--</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </app-form-field>
+      <app-form-field class="col" required="true">
+        <label>Date of Birth</label>
+        <input class="form-control" type="date" formControlName="dob">
+      </app-form-field>
+    </div>
+  </div>
 
-    <form [formGroup]="form" (ngSubmit)="submit()">
-
-      <!-- TODO: These need to have the task number and host community populated -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          TASK NUMBER & PLACE OF REGISTRATION
-        </h3>
-        <app-form-field required="true">
-          <label>Task Number</label>
-          <select class="form-control" formControlName="incidentTask">
-            <option [ngValue]="null">-- Select Incident</option>
-            <option [ngValue]="incident" *ngFor="let incident of incidentTasks">
-              {{incident.taskNumber}}<span *ngIf="incident.community"> - {{incident.community.name}}</span>
-            </option>
-          </select>
-        </app-form-field>
-        <app-form-field required="true">
-          <label>Facility Name / Registration Location</label>
-          <input class="form-control" type="text" formControlName="facility">
-        </app-form-field>
-        <app-form-field required="true"> <label>Community</label>
-          <select class="form-control">
-            <option [ngValue]="null">-- Select community</option>
-            <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
-          </select>
-        </app-form-field>
-      </div> <!-- Restricted access to this file? -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          RESTRICTION
-        </h3>
-        <p>
-          Concerned family and friends may inquire about you and your family because of the emergency. We would like
-          to
-          provide these people with some information about you.</p>
-        <p class="required">May we disclose your location and the contact information for you and your family
-          members?
-        </p>
-        <div class="form-group">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="restrictedAccess">
-            <label class="form-check-label">Yes</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="restrictedAccess">
-            <label class="form-check-label">No</label>
-          </div>
-        </div>
+  <!-- Family information section -->
+  <div class="mb-4">
+    <h3 class="blue-header">
+      EVACUEE FAMILY INFORMATION
+    </h3>
+    <p>
+      Are you registering immediate family members who live in the same household with you?
+    </p>
+    <div class="form-group">
+      <div class="form-check form-check-inline" (click)="addFamilyMember()">
+        <input class="form-check-input" type="radio" value="yes" formControlName="registeringFamilyMembers">
+        <label class="form-check-label">Yes</label>
       </div>
-
-      <!-- Primary contact information -->
-      <div class="mb-4" formGroupName="headOfHousehold">
-        <h3 class="blue-header">
-          EVACUEE DETAILS
-        </h3>
-        <app-form-field required="true">
-          <label>Last Name</label>
-          <input class="form-control" type="text" formControlName="lastName">
-        </app-form-field>
-        <app-form-field required="true">
-          <label>First Name</label>
-          <input class="form-control" type="text" formControlName="firstName">
-        </app-form-field>
-        <div class="form-row">
-          <app-form-field class="col">
-            <label>Initial</label>
-            <input class="form-control" type="text" formControlName="initials">
-          </app-form-field>
-          <app-form-field class="col">
-            <label>Nickname</label>
-            <input class="form-control" type="text" formControlName="nickname">
-          </app-form-field>
-        </div>
-        <div class="form-row">
-          <app-form-field class="col" required="true">
-            <label>Gender</label>
-            <select class="form-control" formControlName="gender">
-              <option [ngValue]="null">Please select--</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-          </app-form-field>
-          <app-form-field class="col" required="true">
-            <label>Date of Birth</label>
-            <input class="form-control" type="date" formControlName="dob">
-          </app-form-field>
-        </div>
+      <div class="form-check form-check-inline" (click)="clearFamilyMembers()">
+        <input class="form-check-input" type="radio" value="no" formControlName="registeringFamilyMembers">
+        <label class="form-check-label">No</label>
       </div>
-
-      <!-- Family information section -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          EVACUEE FAMILY INFORMATION
-        </h3>
-        <p>
-          Are you registering immediate family members who live in the same household with you?
-        </p>
-        <div class="form-group">
-          <div class="form-check form-check-inline" (click)="addFamilyMember()">
-            <input class="form-check-input" type="radio" value="yes" formControlName="registeringFamilyMembers">
-            <label class="form-check-label">Yes</label>
-          </div>
-          <div class="form-check form-check-inline" (click)="clearFamilyMembers()">
-            <input class="form-check-input" type="radio" value="no" formControlName="registeringFamilyMembers">
-            <label class="form-check-label">No</label>
-          </div>
-        </div>
-        <div formArrayName="familyMembers">
-          <div class="card mb-2" *ngFor="let m of familyMembers.controls; index as i;" [formGroupName]="i">
-            <div class="card-body">
-              <div class="row mb-2">
-                <div class="col">
-                  <label required="true">Last Name</label>
-                  <input type="text" class="form-control" formControlName="lastName">
-                </div>
-                <div class="col">
-                  <label for="sameLastName">
-                    Same as main applicant.
-                  </label>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="true"
-                      formControlName="sameLastNameAsEvacuee">
-                  </div>
-                </div>
-              </div>
-              <div class="row mb-2">
-                <div class="col">
-                  <label required="true">First Name</label>
-                  <input type="text" class="form-control" formControlName="firstName">
-                </div>
-                <div class="col">
-                  <div class="form-check">
-                    <label required="true">Middle Initial</label>
-                    <input type="text" class="form-control" formControlName="initials">
-                  </div>
-                </div>
-              </div>
-              <div class="row mb-2">
-                <div class="col-6">
-                  <app-form-field requried="true">
-                    <label>Relationship to evacuee</label>
-                    <select class="form-control" formControlName="relationshipToEvacuee">
-                      <option [ngValue]="null">Please select--</option>
-                      <option *ngFor="let item of relationshipTypes$ | async" [ngValue]="item">
-                        {{item.description}}
-                      </option>
-                    </select>
-                  </app-form-field>
-                </div>
-                <div class="col">
-                  <app-form-field requried="true">
-                    <label>Gender</label>
-                    <select class="form-control" formControlName="gender">
-                      <option [ngValue]="null">Please select--</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </app-form-field>
-                </div>
-                <div class="col">
-                  <label required="true">Date of Birth</label>
-                  <input type="date" class="form-control" formControlName="dob">
-                </div>
-              </div>
+    </div>
+    <div formArrayName="familyMembers">
+      <div class="card mb-2" *ngFor="let m of familyMembers.controls; index as i;" [formGroupName]="i">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col">
+              <label required="true">Last Name</label>
+              <input type="text" class="form-control" formControlName="lastName">
             </div>
-            <div class="card-footer">
-              <div class="float-left">
-                <i class="fas fa-minus-square"></i>
-                <span class="link" (click)="removeFamilyMember(i)">
-                  Remove
-                </span>
-              </div>
-              <div class="float-right">
-                <i class="fas fa-plus-circle"></i>
-                <span class="link" (click)="addFamilyMember()">
-                  Add another
-                </span>
+            <div class="col">
+              <label for="sameLastName">
+                Same as main applicant.
+              </label>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" formControlName="sameLastNameAsEvacuee">
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- Residence information -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          PRIMARY RESIDENCE & CONTACT DETAILS
-        </h3>
-        <p class="required">
-          Is your primary residence within BC?
-        </p>
-        <div class="form-group">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="primaryResidenceInBc">
-            <label class="form-check-label">Yes</label>
+          <div class="row mb-2">
+            <div class="col">
+              <label required="true">First Name</label>
+              <input type="text" class="form-control" formControlName="firstName">
+            </div>
+            <div class="col">
+              <div class="form-check">
+                <label required="true">Middle Initial</label>
+                <input type="text" class="form-control" formControlName="initials">
+              </div>
+            </div>
           </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="primaryResidenceInBc">
-            <label class="form-check-label">No</label>
+          <div class="row mb-2">
+            <div class="col-6">
+              <app-form-field requried="true">
+                <label>Relationship to evacuee</label>
+                <select class="form-control" formControlName="relationshipToEvacuee">
+                  <option [ngValue]="null">Please select--</option>
+                  <option *ngFor="let item of relationshipTypes$ | async" [ngValue]="item">
+                    {{item.description}}
+                  </option>
+                </select>
+              </app-form-field>
+            </div>
+            <div class="col">
+              <app-form-field requried="true">
+                <label>Gender</label>
+                <select class="form-control" formControlName="gender">
+                  <option [ngValue]="null">Please select--</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </app-form-field>
+            </div>
+            <div class="col">
+              <label required="true">Date of Birth</label>
+              <input type="date" class="form-control" formControlName="dob">
+            </div>
           </div>
         </div>
-        <div *ngIf="form.value.primaryResidenceInBc===false" class="alert alert-danger" role="alert">
-          <h4 class="alert-heading">
-            This Evacuee is a Stranded Traveller.
-          </h4>
-          <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
-        </div>
-      </div>
-      <div class="mb-4">
-        <div class="card">
-          <div class="card-body">
-            <span formGroupName="hohPrimaryResidence">
-              <div class="row mb-2">
-                <div class="col">
-                  <label required="true">Apt/Suite/Building Number & Street Address</label>
-                  <input type="text" class="form-control" formControlName="addressLine1">
-                </div>
-              </div>
-              <div class="row mb-2">
-                <div class="col">
-                  <div requried="true">
-                    <label>Community</label>
-                    <select class="form-control" formControlName="community">
-                      <option [ngValue]="null">-- Select community</option>
-                      <option [ngValue]="community" *ngFor="let community of communities$ | async">
-                        {{community.name}}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-3">
-                  <label required="true">Province</label>
-                  <input type="text" class="form-control" formControlName="province">
-                </div>
-                <div class="col-3">
-                  <div class="form-check">
-                    <label required="true">Postal Code</label>
-                    <input type="text" class="form-control" formControlName="postalCode">
-                  </div>
-                </div>
-              </div>
-              <div class="row mb-2">
-                <div class="col-6">
-                  <label required="true">Country/Region</label>
-                  <select class="form-control" formControlName="country">
-                    <option [ngValue]="null">-- Select Country</option>
-                    <option [ngValue]="country" *ngFor="let country of countries$ | async">
-                      {{country.name}}
-                    </option>
-                  </select>
-                </div>
-              </div>
+        <div class="card-footer">
+          <div class="float-left">
+            <i class="fas fa-minus-square"></i>
+            <span class="link" (click)="removeFamilyMember(i)">
+              Remove
             </span>
-            <div class="row mb-2" formGroupName="headOfHousehold">
-              <div class="col">
-                <label>Telephone / Mobile Number (10 digits)</label>
-                <input type="text" class="form-control" formControlName="phoneNumber">
-              </div>
-              <div class="col">
-                <label>Alternate Telephone / Mobile Number</label>
-                <input type="text" class="form-control" formControlName="phoneNumberAlt">
-              </div>
-            </div>
-            <div class="row mb-2" formGroupName="headOfHousehold">
-              <div class="col">
-                <label>Email Address</label>
-                <input type="email" class="form-control" formControlName="email">
-              </div>
-            </div>
+          </div>
+          <div class="float-right">
+            <i class="fas fa-plus-circle"></i>
+            <span class="link" (click)="addFamilyMember()">
+              Add another
+            </span>
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <!-- Mailing information -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          MAILING ADDRESS
-        </h3>
-        <p class="required">
-          Is your mailing address different from your primary residence?
-        </p>
-        <div class="form-group">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="hasMailingAddress">
-            <label class="form-check-label">Yes</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="hasMailingAddress"
-              (click)="clearMailingAddress()">
-            <label class="form-check-label">No</label>
-          </div>
-        </div>
-        <div class="card" *ngIf="form.value.hasMailingAddress">
-          <div class="card-body">
-            <div class="row mb-2" formGroupName="hohMailingAddress">
-              <div class="col">
-                <label required="true">Apt/Suite/Building Number & Street Address</label>
-                <input type="text" class="form-control" formControlName="addressLine1">
-              </div>
+  <!-- Residence information -->
+  <div class="mb-4">
+    <h3 class="blue-header">
+      PRIMARY RESIDENCE & CONTACT DETAILS
+    </h3>
+    <p class="required">
+      Is your primary residence within BC?
+    </p>
+    <div class="form-group">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="primaryResidenceInBc">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="primaryResidenceInBc">
+        <label class="form-check-label">No</label>
+      </div>
+    </div>
+    <div *ngIf="form.value.primaryResidenceInBc===false" class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">
+        This Evacuee is a Stranded Traveller.
+      </h4>
+      <p>Relevant procedure and lorem ipsum dolor sit amet...</p>
+    </div>
+  </div>
+  <div class="mb-4">
+    <div class="card">
+      <div class="card-body">
+        <span formGroupName="hohPrimaryResidence">
+          <div class="row mb-2">
+            <div class="col">
+              <label required="true">Apt/Suite/Building Number & Street Address</label>
+              <input type="text" class="form-control" formControlName="addressLine1">
             </div>
-            <div class="row mb-2" formGroupName="hohMailingAddress">
-              <div class="col">
-                <div requried="true">
-                  <label>Community</label>
-                  <select class="form-control" formControlName="community">
-                    <option [ngValue]="null">Please select--</option>
-                    <option value="victoria">Victoria</option>
-                    <option value="grandForks">Grand Forks</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-3">
-                <label required="true">Province</label>
-                <input type="text" class="form-control" formControlName="province">
-              </div>
-              <div class="col-3">
-                <div class="form-check">
-                  <label required="true">Postal Code</label>
-                  <input type="text" class="form-control" formControlName="postalCode">
-                </div>
-              </div>
-            </div>
-            <div class="row mb-2" formGroupName="hohMailingAddress">
-              <div class="col-6">
-                <label required="true">Country/Region</label>
-                <select class="form-control" formControlName="country">
-                  <option [ngValue]="null">-- Select Country</option>
-                  <option [ngValue]="country" *ngFor="let country of countries$ | async">
-                    {{country.name}}
+          </div>
+          <div class="row mb-2">
+            <div class="col">
+              <div requried="true">
+                <label>Community</label>
+                <select class="form-control" formControlName="community">
+                  <option [ngValue]="null">-- Select community</option>
+                  <option [ngValue]="community" *ngFor="let community of communities$ | async">
+                    {{community.name}}
                   </option>
                 </select>
               </div>
             </div>
-            <div class="row mb-2" formGroupName="headOfHousehold">
-              <div class="col">
-                <label>Telephone / Mobile Number (10 digits)</label>
-                <input type="text" class="form-control" formControlName="phoneNumber">
-              </div>
-              <div class="col">
-                <label>Alternate Telephone / Mobile Number</label>
-                <input type="text" class="form-control" formControlName="phoneNumberAlt">
-              </div>
+            <div class="col-3">
+              <label required="true">Province</label>
+              <input type="text" class="form-control" formControlName="province">
             </div>
-            <div class="row mb-2" formGroupName="headOfHousehold">
-              <div class="col">
-                <label>Email Address</label>
-                <input type="email" class="form-control" formControlName="email">
+            <div class="col-3">
+              <div class="form-check">
+                <label required="true">Postal Code</label>
+                <input type="text" class="form-control" formControlName="postalCode">
               </div>
             </div>
           </div>
+          <div class="row mb-2">
+            <div class="col-6">
+              <label required="true">Country/Region</label>
+              <select class="form-control" formControlName="country">
+                <option [ngValue]="null">-- Select Country</option>
+                <option [ngValue]="country" *ngFor="let country of countries$ | async">
+                  {{country.name}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </span>
+        <div class="row mb-2" formGroupName="headOfHousehold">
+          <div class="col">
+            <label>Telephone / Mobile Number (10 digits)</label>
+            <input type="text" class="form-control" formControlName="phoneNumber">
+          </div>
+          <div class="col">
+            <label>Alternate Telephone / Mobile Number</label>
+            <input type="text" class="form-control" formControlName="phoneNumberAlt">
+          </div>
         </div>
-      </div>
-
-      <!-- Disaster affect information -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          BRIEF STATEMENT OF HOW THE PERSON/FAMILY WERE AFFECTED BY THE DISASTER
-        </h3>
-        <p class="required">
-          Please do not include any personal/medical information pertaining to the evacuee and their family.
-        </p>
-        <textarea class="form-control" formControlName="disasterAffectDetails" placeholder="Please specify"
-          rows="4"></textarea>
-      </div>
-
-      <!-- Insurance information -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          INSURANCE
-        </h3>
-        <p class="required">
-          Do you have insurance to cover your immediate needs?
-        </p>
-        <div class="form-group">
-          <div class="form-check">
-            <input class="form-check-input" type="radio" value="yes" formControlName="insuranceCode">
-            <label class="form-check-label">Yes</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" value="no" formControlName="insuranceCode">
-            <label class="form-check-label">No</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" value="unsure" formControlName="insuranceCode">
-            <label class="form-check-label">I don't know</label>
+        <div class="row mb-2" formGroupName="headOfHousehold">
+          <div class="col">
+            <label>Email Address</label>
+            <input type="email" class="form-control" formControlName="email">
           </div>
         </div>
       </div>
-
-      <!-- Additional family information -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          ADDITIONAL INFORMATION
-        </h3>
-        <p class="required">
-          Do you have dietary requirements?
-        </p>
-        <div class="form-group">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="dietaryNeeds">
-            <label class="form-check-label">Yes</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="dietaryNeeds">
-            <label class="form-check-label">No</label>
-          </div>
-        </div>
-        <div *ngIf="form.value.dietaryNeeds">
-          <label>Please specify</label>
-          <input class="form-control" type="text" formControlName="dietaryNeedsDetails">
-        </div>
-      </div>
-
-      <!-- Medication information -->
-      <div class="mb-4">
-        <p class="required">
-          Do you (or anyone registering with you) take medication?
-        </p>
-        <div class="form-group">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="medicationNeeds">
-            <label class="form-check-label">Yes</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="medicationNeeds">
-            <label class="form-check-label">No</label>
-          </div>
-        </div>
-      </div>
-      <div class="mb-4" *ngIf="form.value.medicationNeeds===true">
-        <p class="required">
-          Do you have sufficient supply for the next 72 hours?
-        </p>
-        <div class="form-group">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="hasThreeDayMedicationSupply"
-              default>
-            <label class="form-check-label">Yes</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="hasThreeDayMedicationSupply">
-            <label class="form-check-label">No</label>
-          </div>
-        </div>
-        <div *ngIf="form.value.hasThreeDayMedicationSupply===false" class="alert alert-warning" role="alert">
-          <h4 class="alert-heading">
-            Refer the evacuee to Health Services at the Reception Centre where available.
-          </h4>
-        </div>
-      </div>
-
-      <!-- Pet information -->
-      <div class="mb-4">
-        <p class="required">
-          Do you have pets with you?
-        </p>
-        <div class="form-group">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="hasPets">
-            <label class="form-check-label">Yes</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="hasPets">
-            <label class="form-check-label">No</label>
-          </div>
-        </div>
-      </div>
-
-      <!-- Next steps -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          NEXT STEPS
-        </h3>
-        <p class="required">
-          While you are evacuated do you require supports?<br>
-          This could be in the form of food / accommodation / clothing / incidentals or transportation.
-        </p>
-        <div class="form-group">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="true" formControlName="requiresSupport">
-            <label class="form-check-label">Yes</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="requiresSupport">
-            <label class="form-check-label">No</label>
-          </div>
-        </div>
-      </div>
-
-      <div class="mb-4" *ngIf="form.value.requiresSupport===true">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" formControlName="requiresFood">
-          <label class="form-check-label">
-            Food
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" formControlName="requiresClothing">
-          <label class="form-check-label">
-            Clothing
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" formControlName="requiresAccommodation">
-          <label class="form-check-label">
-            Accommodation
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" formControlName="requiresIncidentals">
-          <label class="form-check-label">
-            Incidentals
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" formControlName="requiresTransportation">
-          <label class="form-check-label">
-            Transportation
-          </label>
-        </div>
-      </div>
-
-      <!-- Follow up -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          FOLLOW-UP REQUIRED
-        </h3>
-        <textarea class="form-control" placeholder="Details" rows="4" formControlName="followUpDetails"></textarea>
-      </div>
-
-      <!-- Referrals -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          REFERRALS MADE WITHIN RECEPTION CENTER
-        </h3>
-        <p required="true">
-          Please check the boxes below where you have made referrals within the Reception Centre.
-        </p>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" formControlName="hasInquiryReferral">
-          <label class="form-check-label" for="inquiry">
-            Inquiry
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" formControlName="hasHealthServicesReferral">
-          <label class="form-check-label" for="healthServices">
-            Health Services
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" formControlName="hasFirstAidReferral">
-          <label class="form-check-label" for="firstAid">
-            First Aid
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" formControlName="hasPersonalServicesReferral">
-          <label class="form-check-label" for="personalServices">
-            Personal Services
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" formControlName="hasChildCareReferral">
-          <label class="form-check-label" for="childCare">
-            Child Care
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" formControlName="hasPetCareReferral">
-          <label class="form-check-label" for="petCare">
-            Pet Care
-          </label>
-        </div>
-      </div>
-
-      <!-- Family recovery planning -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          FAMILY RECOVERY PLANS (IMMEDIATE & LONG TERM)
-        </h3>
-        <p class="required">
-          ESS (Emergency Support Services) provides short term assistance to give you and your family a chance to
-          recover.<br>
-          Have you thought about what you will do after that time?
-        </p>
-        <textarea class="form-control" placeholder="Details" rows="4" formControlName="familyRecoveryPlan"></textarea>
-      </div>
-
-      <!-- Follow up -->
-      <div class="mb-4">
-        <h3 class="blue-header">
-          OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE
-        </h3>
-        <textarea class="form-control" placeholder="Details" rows="4"
-          formControlName="externalReferralsDetails"></textarea>
-      </div>
-
-      <!-- Submit button! -->
-      <div class="mb-4">
-        <button class="btn btn-primary" type="submit">Submit</button>
-      </div>
-    </form>
+    </div>
   </div>
 
-  <!-- Information side bar -->
-  <div class="col-12 col-lg-4">
-    <app-side-box title="Useful Information" icon="description">
-      <section role="content">
-        <p>
-          If the task number you're looking for is not listed, please contact your supervisor or the Emergency
-          Coordination Centre.
-        </p>
-        <section role="footer">
-          <a class="btn btn-primary" href="tel:1-800-663-3456">1-800-663-3456</a>
-        </section>
-      </section>
-    </app-side-box>
+  <!-- Mailing information -->
+  <div class="mb-4">
+    <h3 class="blue-header">
+      MAILING ADDRESS
+    </h3>
+    <p class="required">
+      Is your mailing address different from your primary residence?
+    </p>
+    <div class="form-group">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="hasMailingAddress">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="hasMailingAddress"
+          (click)="clearMailingAddress()">
+        <label class="form-check-label">No</label>
+      </div>
+    </div>
+    <div class="card" *ngIf="form.value.hasMailingAddress">
+      <div class="card-body">
+        <div class="row mb-2" formGroupName="hohMailingAddress">
+          <div class="col">
+            <label required="true">Apt/Suite/Building Number & Street Address</label>
+            <input type="text" class="form-control" formControlName="addressLine1">
+          </div>
+        </div>
+        <div class="row mb-2" formGroupName="hohMailingAddress">
+          <div class="col">
+            <div requried="true">
+              <label>Community</label>
+              <select class="form-control" formControlName="community">
+                <option [ngValue]="null">Please select--</option>
+                <option value="victoria">Victoria</option>
+                <option value="grandForks">Grand Forks</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-3">
+            <label required="true">Province</label>
+            <input type="text" class="form-control" formControlName="province">
+          </div>
+          <div class="col-3">
+            <div class="form-check">
+              <label required="true">Postal Code</label>
+              <input type="text" class="form-control" formControlName="postalCode">
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2" formGroupName="hohMailingAddress">
+          <div class="col-6">
+            <label required="true">Country/Region</label>
+            <select class="form-control" formControlName="country">
+              <option [ngValue]="null">-- Select Country</option>
+              <option [ngValue]="country" *ngFor="let country of countries$ | async">
+                {{country.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-2" formGroupName="headOfHousehold">
+          <div class="col">
+            <label>Telephone / Mobile Number (10 digits)</label>
+            <input type="text" class="form-control" formControlName="phoneNumber">
+          </div>
+          <div class="col">
+            <label>Alternate Telephone / Mobile Number</label>
+            <input type="text" class="form-control" formControlName="phoneNumberAlt">
+          </div>
+        </div>
+        <div class="row mb-2" formGroupName="headOfHousehold">
+          <div class="col">
+            <label>Email Address</label>
+            <input type="email" class="form-control" formControlName="email">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- TODO: Delete this spacer hack -->
-  <!-- <div class="col mb-6 mt-6">
-      <h3>
-        TODO: Delete this spacer that unhides the content form under the footer.
-      </h3>
-    </div> -->
-</div>
+  <!-- Disaster affect information -->
+  <div class="mb-4">
+    <h3 class="blue-header">
+      BRIEF STATEMENT OF HOW THE PERSON/FAMILY WERE AFFECTED BY THE DISASTER
+    </h3>
+    <p class="required">
+      Please do not include any personal/medical information pertaining to the evacuee and their family.
+    </p>
+    <textarea class="form-control" formControlName="disasterAffectDetails" placeholder="Please specify"
+      rows="4"></textarea>
+  </div>
+
+  <!-- Insurance information -->
+  <div class="mb-4">
+    <h3 class="blue-header">
+      INSURANCE
+    </h3>
+    <p class="required">
+      Do you have insurance to cover your immediate needs?
+    </p>
+    <div class="form-group">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" value="yes" formControlName="insuranceCode">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" value="no" formControlName="insuranceCode">
+        <label class="form-check-label">No</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" value="unsure" formControlName="insuranceCode">
+        <label class="form-check-label">I don't know</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional family information -->
+  <div class="mb-4">
+    <h3 class="blue-header">
+      ADDITIONAL INFORMATION
+    </h3>
+    <p class="required">
+      Do you have dietary requirements?
+    </p>
+    <div class="form-group">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="dietaryNeeds">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="dietaryNeeds">
+        <label class="form-check-label">No</label>
+      </div>
+    </div>
+    <div *ngIf="form.value.dietaryNeeds">
+      <label>Please specify</label>
+      <input class="form-control" type="text" formControlName="dietaryNeedsDetails">
+    </div>
+  </div>
+
+  <!-- Medication information -->
+  <div class="mb-4">
+    <p class="required">
+      Do you (or anyone registering with you) take medication?
+    </p>
+    <div class="form-group">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="medicationNeeds">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="medicationNeeds">
+        <label class="form-check-label">No</label>
+      </div>
+    </div>
+  </div>
+  <div class="mb-4" *ngIf="form.value.medicationNeeds===true">
+    <p class="required">
+      Do you have sufficient supply for the next 72 hours?
+    </p>
+    <div class="form-group">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="hasThreeDayMedicationSupply"
+          default>
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="hasThreeDayMedicationSupply">
+        <label class="form-check-label">No</label>
+      </div>
+    </div>
+    <div *ngIf="form.value.hasThreeDayMedicationSupply===false" class="alert alert-warning" role="alert">
+      <h4 class="alert-heading">
+        Refer the evacuee to Health Services at the Reception Centre where available.
+      </h4>
+    </div>
+  </div>
+
+  <!-- Pet information -->
+  <div class="mb-4">
+    <p class="required">
+      Do you have pets with you?
+    </p>
+    <div class="form-group">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="hasPets">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="hasPets">
+        <label class="form-check-label">No</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Next steps -->
+  <div class="mb-4">
+    <h3 class="blue-header">
+      NEXT STEPS
+    </h3>
+    <p class="required">
+      While you are evacuated do you require supports?<br>
+      This could be in the form of food / accommodation / clothing / incidentals or transportation.
+    </p>
+    <div class="form-group">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="requiresSupport">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="requiresSupport">
+        <label class="form-check-label">No</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4" *ngIf="form.value.requiresSupport===true">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" formControlName="requiresFood">
+      <label class="form-check-label">
+        Food
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" formControlName="requiresClothing">
+      <label class="form-check-label">
+        Clothing
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" formControlName="requiresAccommodation">
+      <label class="form-check-label">
+        Accommodation
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" formControlName="requiresIncidentals">
+      <label class="form-check-label">
+        Incidentals
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" formControlName="requiresTransportation">
+      <label class="form-check-label">
+        Transportation
+      </label>
+    </div>
+  </div>
+
+  <!-- Follow up -->
+  <div class="mb-4">
+    <h3 class="blue-header">
+      FOLLOW-UP REQUIRED
+    </h3>
+    <textarea class="form-control" placeholder="Details" rows="4" formControlName="followUpDetails"></textarea>
+  </div>
+
+  <!-- Referrals -->
+  <div class="mb-4">
+    <h3 class="blue-header">
+      REFERRALS MADE WITHIN RECEPTION CENTER
+    </h3>
+    <p required="true">
+      Please check the boxes below where you have made referrals within the Reception Centre.
+    </p>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" formControlName="hasInquiryReferral">
+      <label class="form-check-label" for="inquiry">
+        Inquiry
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" formControlName="hasHealthServicesReferral">
+      <label class="form-check-label" for="healthServices">
+        Health Services
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" formControlName="hasFirstAidReferral">
+      <label class="form-check-label" for="firstAid">
+        First Aid
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" formControlName="hasPersonalServicesReferral">
+      <label class="form-check-label" for="personalServices">
+        Personal Services
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" formControlName="hasChildCareReferral">
+      <label class="form-check-label" for="childCare">
+        Child Care
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" formControlName="hasPetCareReferral">
+      <label class="form-check-label" for="petCare">
+        Pet Care
+      </label>
+    </div>
+  </div>
+
+  <!-- Family recovery planning -->
+  <div class="mb-4">
+    <h3 class="blue-header">
+      FAMILY RECOVERY PLANS (IMMEDIATE & LONG TERM)
+    </h3>
+    <p class="required">
+      ESS (Emergency Support Services) provides short term assistance to give you and your family a chance to
+      recover.<br>
+      Have you thought about what you will do after that time?
+    </p>
+    <textarea class="form-control" placeholder="Details" rows="4" formControlName="familyRecoveryPlan"></textarea>
+  </div>
+
+  <!-- Follow up -->
+  <div class="mb-4">
+    <h3 class="blue-header">
+      OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE
+    </h3>
+    <textarea class="form-control" placeholder="Details" rows="4" formControlName="externalReferralsDetails"></textarea>
+  </div>
+
+  <!-- Submit button! -->
+  <div class="mb-4">
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </div>
+</form>
+
 <!-- Only for debugging. Three boxes with the three data representations. -->
 <div class="row">
   <div class="col" (click)="submit()">
