@@ -12,10 +12,11 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { SelfRegistrationModule } from './self-registration';
+import { EvacueeRegistrationModule } from './evacuee-registration';
 import { HomeComponent } from './home/home.component';
 import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.component';
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
-import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
+// import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
 
 @NgModule({
@@ -24,7 +25,7 @@ import { TesterPageComponent } from './tester-page/tester-page.component';
     HomeComponent,
     VolunteerLoginComponent,
     VolunteerDashboardComponent,
-    EvacueeRegistrationComponent,
+    // EvacueeRegistrationComponent,
     TesterPageComponent,
   ],
   imports: [
@@ -44,6 +45,7 @@ import { TesterPageComponent } from './tester-page/tester-page.component';
     // app
     AppRoutingModule,
     SelfRegistrationModule,
+    EvacueeRegistrationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

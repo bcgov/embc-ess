@@ -14,6 +14,8 @@ import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.compo
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
 import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
+import { EvacueeRegistrationOneComponent } from './evacuee-registration/evacuee-registration-one/evacuee-registration-one.component';
+import { EvacueeRegistrationConfirmationComponent } from './evacuee-registration';
 
 const routes: Routes = [
   {
@@ -61,11 +63,26 @@ const routes: Routes = [
   },
   {
     path: 'register-evacuee',
-    component: EvacueeRegistrationComponent
-  },
-  {
-    path: 'register-evacuee/:essFileNumber',
-    component: EvacueeRegistrationComponent
+    component: EvacueeRegistrationComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'fill',
+        pathMatch: 'full'
+      },
+      {
+        path: 'fill/:essFileNumber',
+        component: EvacueeRegistrationOneComponent
+      },
+      {
+        path: 'fill',
+        component: EvacueeRegistrationOneComponent
+      },
+      {
+        path: 'confirmation',
+        component: EvacueeRegistrationConfirmationComponent
+      }
+    ]
   },
   {
     path: 'test',
