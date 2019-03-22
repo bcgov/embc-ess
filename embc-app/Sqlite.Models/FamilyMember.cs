@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Gov.Jag.Embc.Public.Sqlite.Models
 {
     /// <summary>
@@ -10,8 +8,9 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         public bool SameLastNameAsEvacuee { get; set; }
 
         // related entities
-        public FamilyRelationshipType RelationshipToEvacuee { get; set; }
+        public string RelationshipToEvacueeCode { get; set; }
 
+        public FamilyRelationshipType RelationshipToEvacuee { get; set; }
 
         public FamilyMember()
         {

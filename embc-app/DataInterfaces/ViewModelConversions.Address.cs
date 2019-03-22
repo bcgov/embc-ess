@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -50,14 +49,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 if (source.isBcAddress)
                 {
                     var resultBc = result as Sqlite.Models.BcAddress;
-                    resultBc.Community = source.Community.ToModel();
+                    resultBc.CommunityId = Guid.Parse(source.Community.Id);
                 }
                 if (source.isOtherAddress)
                 {
                     var resultOther = result as Sqlite.Models.OtherAddress;
                     resultOther.City = source.City;
                     resultOther.Province = source.Province;
-                    resultOther.Country = source.Country.ToModel();
+                    resultOther.CountryId = Guid.Parse(source.Country.Id);
                 }
             }
             return result;

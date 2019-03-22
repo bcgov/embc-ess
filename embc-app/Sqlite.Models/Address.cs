@@ -47,6 +47,8 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
 
     public sealed partial class BcAddress : Address
     {
+        public Guid CommunityId { get; set; }
+
         public Community Community { get; set; }
 
         public BcAddress()
@@ -60,6 +62,8 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         public string City { get; set; }
 
         public string Province { get; set; }
+
+        public Guid CountryId { get; set; }
 
         public Country Country { get; set; }
 

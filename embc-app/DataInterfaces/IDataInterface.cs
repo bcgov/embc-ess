@@ -17,13 +17,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Person CreatePerson(Person person);
 
         // Registrations
-        Task<IQueryable<Registration>> GetRegistrations(SearchQueryParameters queryParameters);
+        Task<IQueryable<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters);
 
-        Task<Registration> GetRegistration(string id);
+        Task<Registration> GetRegistrationAsync(string id);
 
-        Task<Registration> CreateRegistration(Registration registration);
+        Task<Registration> CreateRegistrationAsync(Registration registration);
 
-        Task<Registration> UpdateRegistration(Registration registration);
+        Task UpdateRegistrationAsync(Registration registration);
 
         // Incident Tasks
         Task<List<IncidentTask>> GetIncidentTasks();

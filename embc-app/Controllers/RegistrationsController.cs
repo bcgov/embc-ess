@@ -15,10 +15,10 @@ namespace Gov.Jag.Embc.Public.Controllers
     public class RegistrationsController : Controller
     {
         private readonly IConfiguration Configuration;
-        private readonly IDataInterface _dataInterface;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ILogger _logger;
-        private readonly IHostingEnvironment _env;
+        private readonly IDataInterface dataInterface;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly ILogger logger;
+        private readonly IHostingEnvironment env;
         private readonly IUrlHelper urlHelper;
 
         public RegistrationsController(
@@ -31,24 +31,20 @@ namespace Gov.Jag.Embc.Public.Controllers
         )
         {
             Configuration = configuration;
-            _dataInterface = dataInterface;
-            _httpContextAccessor = httpContextAccessor;
-            _logger = loggerFactory.CreateLogger(typeof(RegistrationsController));
-            this._env = env;
+            this.dataInterface = dataInterface;
+            this.httpContextAccessor = httpContextAccessor;
+            logger = loggerFactory.CreateLogger(typeof(RegistrationsController));
+            this.env = env;
             this.urlHelper = urlHelper;
         }
 
-        /// <summary>
-        /// Get All
-        /// </summary>
-        /// <returns></returns>
         [HttpGet(Name = nameof(GetAll))]
         [AllowAnonymous]
         public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters queryParameters)
         {
             try
             {
-                var results = await _dataInterface.GetRegistrations(queryParameters);
+                var results = await dataInterface.GetRegistrationsAsync(queryParameters);
 
                 var toReturn = await PaginatedList<ViewModels.Registration>.CreateAsync(results, queryParameters.Offset, queryParameters.Limit);
 
@@ -74,16 +70,11 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
         }
 
-        /// <summary>
-        /// Get One
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetOne(string id)
         {
-            var result = await _dataInterface.GetRegistration(id);
+            var result = await dataInterface.GetRegistrationAsync(id);
             if (result == null)
             {
                 return NotFound();
@@ -91,11 +82,6 @@ namespace Gov.Jag.Embc.Public.Controllers
             return Json(result);
         }
 
-        /// <summary>
-        /// Create
-        /// </summary>
-        /// <param name="viewModel"></param>
-        /// <returns></returns>
         [HttpPost()]
         [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] ViewModels.Registration item)
@@ -106,22 +92,16 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
             try
             {
-                item.Id = null;
-                var result = await _dataInterface.CreateRegistration(item);
+                if (item != null && item.Id != null) item.Id = null;
+                var result = await dataInterface.CreateRegistrationAsync(item);
                 return Json(result);
             }
             catch (Exception error)
             {
-                return BadRequest(error);
+                return BadRequest(error.ToString());
             }
         }
 
-        /// <summary>
-        /// Update
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpPut("{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> Update([FromBody] ViewModels.Registration item, string id)
@@ -136,15 +116,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
             try
             {
-                var result = await _dataInterface.UpdateRegistration(item);
-                if (result != null)
-                {
-                    return Json(result);
-                }
-                else
-                {
-                    return NotFound();
-                }
+                await dataInterface.UpdateRegistrationAsync(item);
+                return Ok();
             }
             catch (Exception error)
             {

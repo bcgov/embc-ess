@@ -36,25 +36,29 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             //return person;
         }
 
-        public Task<Registration> CreateRegistration(Registration registration)
+        public async Task<Registration> CreateRegistrationAsync(Registration registration)
         {
-            var model = registration.ToModel();
-            Db.Registrations.Add(model);
-            Db.SaveChanges();
-            return Task.FromResult(model.ToViewModel());
+            var db = ctx();
+            var created = await db.Registrations.AddAsync(registration.ToModel());
+            await db.SaveChangesAsync();
+            await created.ReloadAsync();
+            return created.Entity.ToViewModel();
         }
 
-        public Task<Registration> UpdateRegistration(Registration registration)
+        public async Task UpdateRegistrationAsync(Registration registration)
         {
-            var existing = Db.Registrations.FirstOrDefault(item => item.Id == new Guid(registration.Id));
-            if (existing != null)
-            {
-                existing.PatchValues(registration);
-                Db.Registrations.Update(existing);
-                Db.SaveChanges();
-                return Task.FromResult(existing.ToViewModel());
-            }
-            return Task.FromResult<Registration>(null);
+            //var existing = Db.Registrations.FirstOrDefault(item => item.Id == new Guid(registration.Id));
+            //if (existing != null)
+            //{
+            //    existing.PatchValues(registration);
+            //    Db.Registrations.Update(existing);
+            //    Db.SaveChanges();
+            //    return Task.FromResult(existing.ToViewModel());
+            //}
+            //return Task.FromResult<Registration>(null);
+            var db = ctx();
+            db.Registrations.Update(registration.ToModel());
+            await db.SaveChangesAsync();
         }
 
         public Organization GetOrganizationByBceidGuid(string bceidGuid)
@@ -127,9 +131,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return regions;
         }
 
-        public Task<IQueryable<Registration>> GetRegistrations(SearchQueryParameters queryParameters)
+        public async Task<IQueryable<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters)
         {
-            IQueryable<Sqlite.Models.Registration> _allItems = Db.Registrations.AsQueryable();
+            var db = ctx();
+            IQueryable<Sqlite.Models.Registration> _allItems = db.Registrations.AsQueryable();
 
             if (queryParameters.HasSortBy())
             {
@@ -140,12 +145,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             if (queryParameters.HasQuery())
             {
                 // TODO: Implement FILTERING of search results!
-                _allItems = _allItems
-                    .Where(item => this.SimpleSearch(item, queryParameters.Query));
+                _allItems = _allItems.Where(item => this.SimpleSearch(item, queryParameters.Query));
             }
 
-            var toReturn = _allItems.Select(r => r.ToViewModel());
-            return Task.FromResult(toReturn);
+            return await Task.FromResult(_allItems.Select(r => r.ToViewModel()));
 
             // IQueryable<FoodItem> _allItems = _foodDbContext.FoodItems.OrderBy(queryParameters.OrderBy,
             //   queryParameters.IsDescending());
@@ -209,14 +212,31 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return all;
         }
 
-        public Task<Registration> GetRegistration(string id)
+        public async Task<Registration> GetRegistrationAsync(string id)
         {
             if (Guid.TryParse(id, out var guid))
             {
-                var entity = Db.Registrations.FirstOrDefault(reg => reg.Id == guid);
-                return Task.FromResult(entity?.ToViewModel());
+                var entity = await Db.Registrations
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.FamilyMembers)
+                    .ThenInclude(fmbr => fmbr.RelationshipToEvacuee)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.PrimaryResidence)
+                    .ThenInclude(addr => (addr as Sqlite.Models.BcAddress).Community)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.PrimaryResidence)
+                    .ThenInclude(addr => (addr as Sqlite.Models.OtherAddress).Country)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.MailingAddress)
+                    .ThenInclude(addr => (addr as Sqlite.Models.BcAddress).Community)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.MailingAddress)
+                    .ThenInclude(addr => (addr as Sqlite.Models.OtherAddress).Country)
+                .AsQueryable()
+                .FirstOrDefaultAsync(reg => reg.Id == guid);
+                return entity?.ToViewModel();
             }
-            return Task.FromResult<Registration>(null);
+            return null;
         }
 
         //
