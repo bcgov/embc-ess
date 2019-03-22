@@ -62,7 +62,6 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
             catch (Exception e)
             {
-                // TODO: Remove error payload when live in PROD
                 logger.LogError(e.ToString());
                 return BadRequest(e.ToString());
             }
@@ -94,9 +93,10 @@ namespace Gov.Jag.Embc.Public.Controllers
                 var result = await dataInterface.CreateRegistrationAsync(item);
                 return Json(result);
             }
-            catch (Exception error)
+            catch (Exception e)
             {
-                return BadRequest(error.ToString());
+                logger.LogError(e.ToString());
+                return BadRequest(e.ToString());
             }
         }
 
@@ -117,9 +117,10 @@ namespace Gov.Jag.Embc.Public.Controllers
                 await dataInterface.UpdateRegistrationAsync(item);
                 return Ok();
             }
-            catch (Exception error)
+            catch (Exception e)
             {
-                return BadRequest(error);
+                logger.LogError(e.ToString());
+                return BadRequest(e.ToString());
             }
         }
     }
