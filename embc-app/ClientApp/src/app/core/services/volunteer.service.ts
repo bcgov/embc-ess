@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { CoreModule } from '../core.module';
 import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
+
+import { CoreModule } from '../core.module';
 import { Volunteer } from '../models';
 import { RestService } from './rest.service';
 
@@ -32,10 +33,12 @@ const VOLUNTEERS: Volunteer[] = [
 })
 export class VolunteerService extends RestService {
 
+  apiRoute: string = 'api/volunteers';
+
   getAllVolunteers(): Observable<Volunteer[]> {
     // get a list of all volunteers back from the api
     return of(VOLUNTEERS);
-    // return this.http.get<Volunteer[]>('api/registrations', { headers: this.headers })
+    // return this.http.get<Volunteer[]>(this.apiRoute, { headers: this.headers })
     // .pipe(
     //   catchError(this.handleError)
     // );
@@ -43,19 +46,27 @@ export class VolunteerService extends RestService {
   getVolunteerByBceidAccountNumber(bceidAccountNumber: string): Observable<Volunteer> {
     // get a single volunteer by their bceidAccountNumber
     return of(VOLUNTEERS[0]);
-    return this.http.get<Volunteer>('api/registrations/' + bceidAccountNumber, { headers: this.headers })
+    // return this.http.get<Volunteer>(this.apiRoute + bceidAccountNumber, { headers: this.headers })
+    //   .pipe(
+    //     catchError(this.handleError)
+    //   );
+  }
+  createVolunteer(data: Volunteer): Observable<Volunteer> {
+    // this will return a response string of 200. This may need to become a Response eventually
+    // return of('200');
+    return this.http.post<Volunteer>(this.apiRoute, data, { headers: this.headers })
       .pipe(
+        retry(3),
         catchError(this.handleError)
       );
   }
-  createVolunteer(): Observable<string> {
+  updateVolunteer(data: Volunteer): Observable<Volunteer> {
     // this will return a response string of 200. This may need to become a Response eventually
-    return of('200');
-
-  }
-  updateVolunteer(): Observable<string> {
-    // this will return a response string of 200. This may need to become a Response eventually
-    return of('200');
-
+    // return of('200');
+    return this.http.put<Volunteer>(this.apiRoute + data.id, data, { headers: this.headers })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
   }
 }
