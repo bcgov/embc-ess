@@ -10,7 +10,7 @@ import { Volunteer } from 'src/app/core/models';
   styleUrls: ['./ess-editor-one.component.scss']
 })
 export class EssEditorOneComponent implements OnInit {
-  editMode: boolean = false;
+  editMode = false;
   constructor(
     private route: ActivatedRoute,
     private volunteerService: VolunteerService,
@@ -56,11 +56,12 @@ export class EssEditorOneComponent implements OnInit {
     this.bceid = new FormControl('');
     this.lastName = new FormControl('');
     this.firstName = new FormControl('');
-    this.restrictedAccess = new FormControl(false)
+    this.restrictedAccess = new FormControl(false);
   }
   displayVolunteer(v: Volunteer) {
     // flow the volunteer into the form
   }
+
   submit() {
     // stuff the data back into the volunteer object
     this.volunteer.lastName = this.lastName.value;
@@ -68,6 +69,19 @@ export class EssEditorOneComponent implements OnInit {
     this.volunteer.bceidAccountNumber = this.bceid.value;
     this.volunteer.canAccessRestrictedFiles = this.restrictedAccess.value;
 
-    alert(this.lastName.value + '-' + this.firstName.value + '-' + this.bceid.value + '-' + this.restrictedAccess.value);
+    if (this.volunteer.id) {
+      // if the volunteer has an ID we need to update
+      this.volunteerService.updateVolunteer(this.volunteer)
+        .subscribe(v => {
+          alert(v);
+        });
+    } else {
+      // if the volunteer has no id we need to create a new one
+      this.volunteerService.createVolunteer(this.volunteer)
+        .subscribe(v => {
+          alert(v);
+        });
+    }
+    // alert(this.lastName.value + '-' + this.firstName.value + '-' + this.bceid.value + '-' + this.restrictedAccess.value);
   }
 }

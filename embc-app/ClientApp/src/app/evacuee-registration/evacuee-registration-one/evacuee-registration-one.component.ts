@@ -30,7 +30,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   form: FormGroup;
 
   // EditMode
-  editMode: boolean = false;
+  editMode = false;
 
   registration: Registration;
   submission: any;

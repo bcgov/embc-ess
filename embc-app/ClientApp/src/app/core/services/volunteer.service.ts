@@ -33,7 +33,7 @@ const VOLUNTEERS: Volunteer[] = [
 })
 export class VolunteerService extends RestService {
 
-  apiRoute: string = 'api/volunteers';
+  apiRoute = 'api/volunteers';
 
   getAllVolunteers(): Observable<Volunteer[]> {
     // get a list of all volunteers back from the api
