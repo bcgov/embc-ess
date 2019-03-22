@@ -25,7 +25,9 @@
       <p>1 - 10 of 2000 active evacuees
         <small class="ml-3">(<a href="">show deactivated</a>)</small>
       </p>
-      <table class="table">
+      <app-evacuee-search-results #searchResultsView [searchResults]="searchResults$ | async">
+      </app-evacuee-search-results>
+      <!-- <table class="table">
         <thead class="thead-light">
           <th scope="col"></th>
           <th scope="col">First Name</th>
@@ -38,7 +40,7 @@
           <th scope="col">Action</th>
         </thead>
         <tbody>
-          <!-- <tr class="table-danger">...</tr> -->
+          <tr class="table-danger">...</tr>
           <tr *ngFor="let stub of registrations" [class.table-danger]="stub.restrictedAccess">
             <th>
               <span *ngIf="stub.personType==='HOH'">
@@ -64,7 +66,7 @@
             </td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
       <!-- This is for development only. Inspect the data and whatnot. -->
       <!-- <p>{{raw|json}}</p> -->
       <!-- <button class="btn btn-sm btn-light" (click)="refreshRegistrations()">Dev force refresh.</button> -->

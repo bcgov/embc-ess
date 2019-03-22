@@ -15,7 +15,6 @@ interface Stub {
   evacuatedFrom: string; // community name
   evacuatedTo: string; // community name
   registrationCompletionDate: Date;
-
 }
 
 /**
