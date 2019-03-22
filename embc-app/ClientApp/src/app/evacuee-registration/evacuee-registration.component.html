@@ -363,7 +363,7 @@
           MAILING ADDRESS
         </h3>
         <p class="required">
-          Is your mailing address different from your primary residence? (setHohMailingAddressProvince())
+          Is your mailing address different from your primary residence?
         </p>
         <div class="form-group">
           <div class="form-check form-check-inline">
@@ -371,42 +371,81 @@
             <label class="form-check-label">Yes</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" [value]="false" formControlName="hasMailingAddress"
-              (click)="clearMailingAddress()">
+            <input class="form-check-input" type="radio" [value]="false" formControlName="hasMailingAddress">
             <label class="form-check-label">No</label>
           </div>
         </div>
         <div class="card" *ngIf="form.value.hasMailingAddress">
           <div class="card-body">
-            <div class="row mb-2" formGroupName="hohMailingAddress">
-              <div class="col">
-                <label required="true">Apt/Suite/Building Number & Street Address</label>
-                <input type="text" class="form-control" formControlName="addressLine1">
+            <p class="required">Is your mailing address within BC</p>
+            <div class="form-group">
+              <div class="form-check form-check-inline" (click)="setHohMailingAddressProvince()">
+                <input class="form-check-input" type="radio" [value]="true" formControlName="mailingAddressInBc">
+                <label class="form-check-label">Yes</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" [value]="false" formControlName="mailingAddressInBc"
+                  (click)="clearMailingAddress()">
+                <label class="form-check-label">No</label>
               </div>
             </div>
-            <div class="row mb-2" formGroupName="hohMailingAddress">
-              <div class="col">
-                <div required="true">
-                  <label>Community</label>
-                  <select class="form-control" formControlName="community">
-                    <option [ngValue]="null">Please select--</option>
-                    <option value="victoria">Victoria</option>
-                    <option value="grandForks">Grand Forks</option>
-                  </select>
+
+            <div *ngIf="form.value.mailingAddressInBc">
+              <div class="row mb-2" formGroupName="hohMailingAddress">
+                <div class="col">
+                  <label required="true">Apt/Suite/Building Number & Street Address</label>
+                  <input type="text" class="form-control" formControlName="addressLine1">
                 </div>
               </div>
-              <div class="col-3">
-                <label required="true">Province</label>
-                <input type="text" class="form-control" formControlName="province">
-              </div>
-              <div class="col-3">
-                <div class="form-check">
-                  <label required="true">Postal Code</label>
-                  <input type="text" class="form-control" formControlName="postalCode">
+              <div class="row mb-2" formGroupName="hohMailingAddress">
+                <div class="col">
+                  <div required="true">
+                    <label>City</label>
+                    <input type="text" class="form-control" formControlName="city">
+                  </div>
+                </div>
+                <div class="col-3">
+                  <label required="true">Province</label>
+                  <input type="text" class="form-control" formControlName="province">
+                </div>
+                <div class="col-3">
+                  <div class="form-check">
+                    <label required="true">Postal Code</label>
+                    <input type="text" class="form-control" formControlName="postalCode">
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="row mb-2" formGroupName="hohMailingAddress">
+
+            <div *ngIf="!form.value.mailingAddressInBc">
+              NOT IN BC
+              <div class="row mb-2" formGroupName="hohMailingAddress">
+                <div class="col">
+                  <label required="true">Apt/Suite/Building Number & Street Address</label>
+                  <input type="text" class="form-control" formControlName="addressLine1">
+                </div>
+              </div>
+              <div class="row mb-2" formGroupName="hohMailingAddress">
+                <div class="col">
+                  <div required="true">
+                    <label>City</label>
+                    <input type="text" class="form-control" formControlName="city">
+                  </div>
+                </div>
+                <div class="col-3">
+                  <label required="true">Province</label>
+                  <input type="text" class="form-control" formControlName="province">
+                </div>
+                <div class="col-3">
+                  <div class="form-check">
+                    <label required="true">Postal Code</label>
+                    <input type="text" class="form-control" formControlName="postalCode">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="row mb-2" formGroupName="hohMailingAddress">
               <div class="col-6">
                 <label required="true">Country/Region</label>
                 <select class="form-control" formControlName="country">
@@ -416,7 +455,7 @@
                   </option>
                 </select>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

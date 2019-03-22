@@ -74,7 +74,7 @@ export class EvacueeRegistrationComponent implements OnInit {
     this.form.patchValue(patch);
   }
   setHohMailingAddressProvince() {
-    const patch = { PrimaryResidence: { province: 'BC', country: { name: 'Canada' } } };
+    const patch = { hohMailingAddress: { province: 'BC', country: { name: 'Canada' } } };
     this.form.patchValue(patch);
   }
 
@@ -157,12 +157,6 @@ export class EvacueeRegistrationComponent implements OnInit {
     while (formArray && formArray.length !== 0) {
       formArray.removeAt(0);
     }
-  }
-  clearMailingAddress() {
-    // completely remove stored values for this area of the form
-    // no persistent mailing address
-    // this.form.reset('hohMailingAddress');
-    // todo: clear the hohMailingAddress to null so it can be null again instead of adding bad data to the DB
   }
 
   getBoolean(booleanString: string): boolean {
