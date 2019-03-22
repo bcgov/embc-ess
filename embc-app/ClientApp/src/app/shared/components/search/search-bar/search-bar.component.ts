@@ -1,13 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-search-box',
+  selector: 'app-search-bar',
   template: `
-    <div class="form-row">
+    <div role="search" class="form-row">
       <div class="col-md-9">
         <input #searchBox
           type="text"
           aria-label="search"
+          class="form-control mb-2"
           placeholder="{{placeholder}}"
           (keydown.enter)="doSearch()">
       </div>
@@ -18,17 +19,14 @@ import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter }
   `,
   styles: []
 })
-export class SearchBoxComponent implements OnInit {
+export class SearchBarComponent {
 
   @ViewChild('searchBox') searchBox: ElementRef;
-  @Input() placeholder: string;
-  @Output() search = new EventEmitter<string>();
-
-  ngOnInit() {
-  }
+  @Input() placeholder = 'Search';
+  @Output() valueChange = new EventEmitter<string>();
 
   doSearch() {
-    this.search.emit(this.query);
+    this.valueChange.emit(this.query);
   }
 
   private get query() { return this.searchBox.nativeElement.value; }

@@ -1,9 +1,23 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 
-import { EvacueeSearchResults } from '../../utils';
+import { EvacueeSearchResults } from '../interfaces';
+import { Registration } from 'src/app/core/models';
 
 // TODO: Rename this
-interface Stub {
+interface RowItem {
+  // The underlying data for any given row within the table view.
+  rowData: Registration;
+
+  // metadata for this row
+  count: number;  // Length of the number of total rows.
+  even: boolean;  // True if this cell is contained in a row with an even-numbered index.
+  first: boolean; // True if this cell is contained in the first row.
+  index: number;  // Index of the data object in the provided data array.
+  last: boolean;  // True if this cell is contained in the last row.
+  odd: boolean;   // True if this cell is contained in a row with an odd-numbered index.
+
+  // These are convenience accessors to the underlying data represented by `rowData`
+  // They are populated in `processSearchResults()`
   id?: string; // the guid to link them to their file
   restrictedAccess: boolean; // should this file be shown or not?
   essFileNumber: number; // what is the ESS file number
@@ -18,7 +32,7 @@ interface Stub {
 }
 
 /**
- * A component to display search results in groups
+ * A basic TableView component to display search results in groups
  */
 @Component({
   selector: 'app-evacuee-search-results',
@@ -35,33 +49,44 @@ export class EvacueeSearchResultsComponent implements OnChanges {
   /**
    * Emitted when the user selects a search result
    */
-  @Output() resultSelected = new EventEmitter<Stub>();
+  @Output() resultSelected = new EventEmitter<RowItem>();
 
+  rows: RowItem[] = [];
   notFoundMessage = 'Searching ...';
-  rowItems: Stub[] = [];
 
   ngOnChanges(changes: SimpleChanges) {
-    this.rowItems = this.processSearchResults(this.searchResults);
+    this.rows = this.processSearchResults(this.searchResults);
   }
 
-  onResultSelected(rowItem: Stub, event: MouseEvent) {
+  onResultSelected(rowItem: RowItem, event: MouseEvent) {
     this.resultSelected.emit(rowItem);
   }
 
   // Map the search results (i.e. Registrations) into row items suitable for display on a table
-  private processSearchResults(search: EvacueeSearchResults): Stub[] {
+  private processSearchResults(search: EvacueeSearchResults): RowItem[] {
     if (!search) {
       return [];
     }
 
     this.notFoundMessage = 'No results found.';
-    const stubCollector: Stub[] = [];
-    search.results.forEach(registration => {
+    const listItems: RowItem[] = [];
+    search.results.forEach((registration, index, array) => {
       if (!registration) {
         return;  // bad data; should fix
       }
       // push the head of household as a stub
-      const hoh: Stub = {
+      const hoh: RowItem = {
+        // hold on to a copy of the source data
+        rowData: { ...registration },
+
+        // populate row metadata
+        index,
+        count: array.length,
+        even: index % 2 === 0,
+        odd: Math.abs(index % 2) === 1,
+        first: index === 0,
+        last: index === array.length - 1,
+
         id: registration.id, // the guid to link them to their file
         restrictedAccess: registration.restrictedAccess, // should this file be shown or not?
         essFileNumber: registration.essFileNumber, // what is the ESS file number
@@ -93,11 +118,22 @@ export class EvacueeSearchResultsComponent implements OnChanges {
       } else {
         hoh.evacuatedTo = '';
       }
-      stubCollector.push(hoh);
+      listItems.push(hoh);
 
       // push the family members of the HOH as stubs
       for (const familyMember of registration.headOfHousehold.familyMembers) {
         const fmbr = {
+          // hold on to a copy of the source data
+          rowData: { ...registration },
+
+          // populate row metadata
+          index,
+          count: array.length,
+          even: index % 2 === 0,
+          odd: Math.abs(index % 2) === 1,
+          first: index === 0,
+          last: index === array.length - 1,
+
           id: registration.id, // the guid to link them to their file
           restrictedAccess: registration.restrictedAccess, // should this file be shown or not?
           essFileNumber: registration.essFileNumber, // what is the ESS file number
@@ -129,9 +165,9 @@ export class EvacueeSearchResultsComponent implements OnChanges {
         } else {
           fmbr.evacuatedTo = '';
         }
-        stubCollector.push(fmbr);
+        listItems.push(fmbr);
       }
     });
-    return stubCollector;
+    return listItems;
   }
 }
