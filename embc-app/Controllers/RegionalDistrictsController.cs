@@ -1,17 +1,10 @@
-﻿using Gov.Jag.Embc.Interfaces;
-using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
-using Gov.Jag.Embc.Public.Models;
-using Gov.Jag.Embc.Public.Sqlite.Models;
-using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -32,7 +25,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             Configuration = configuration;
             _dataInterface = dataInterface;
             _httpContextAccessor = httpContextAccessor;
-            _logger = loggerFactory.CreateLogger(typeof(PeopleController));
+            _logger = loggerFactory.CreateLogger(typeof(RegionalDistrictsController));
             this._env = env;
         }
 
@@ -43,9 +36,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             List<ViewModels.RegionalDistrict> result = _dataInterface.GetRegionalDistricts();
 
             return Json(result);
-            
         }
-
 
         /// <summary>
         /// Update
@@ -68,7 +59,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="viewModel"></param>
         /// <returns></returns>
@@ -77,7 +68,5 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             return Json(null);
         }
-
-
     }
 }

@@ -3,19 +3,20 @@ using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public class SqliteDataInterface : IDataInterface
     {
-        public SqliteContext Db;
+        public SqliteContext Db;//YT: this is a recipe for bad EF behavior, it should be created (and optionally disposed) in each method
+
+        private readonly Func<SqliteContext> ctx;
 
         public SqliteDataInterface(string connectionString)
         {
-
             DbContextOptionsBuilder<SqliteContext> builder = new DbContextOptionsBuilder<SqliteContext>();
 
             builder.UseSqlite(connectionString);
@@ -25,8 +26,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             Db.Database.OpenConnection();
 
-
-
+            ctx = () => new SqliteContext(builder.Options);
         }
 
         public Person CreatePerson(Person person)
@@ -82,8 +82,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
             return result;
         }
-
-
 
         public List<Country> GetCountries()
         {
@@ -280,5 +278,59 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
             return result;
         }
+
+        #region People
+
+        private IQueryable<Sqlite.Models.Person> GetAllPeopleAsync(string type)
+        {
+            var db = ctx();
+            return db.People.Where(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private async Task<Sqlite.Models.Person> GetSinglePersonByIdAsync(string type, string id)
+        {
+            var db = ctx();
+            return await db.People.FirstOrDefaultAsync(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase) && p.Id == Guid.Parse(id));
+        }
+
+        public async Task UpdatePersonAsync(Person person)
+        {
+            var db = ctx();
+            db.People.Update(person.ToModel());
+            await db.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Person>> GetPeopleAsync(string type)
+        {
+            return await GetAllPeopleAsync(type).Select(p => p.ToViewModel()).ToArrayAsync();
+        }
+
+        public async Task<Person> GetPersonByIdAsync(string type, string id)
+        {
+            var person = await GetSinglePersonByIdAsync(type, id);
+            if (person == null) return null;
+            return person.ToViewModel();
+        }
+
+        public async Task<Person> CreatePersonAsync(Person person)
+        {
+            var db = ctx();
+            var newPerson = await db.People.AddAsync(person.ToModel());
+            await db.SaveChangesAsync();
+            return newPerson.Entity.ToViewModel();
+        }
+
+        public async Task<bool> DeactivatePersonAsync(string type, string id)
+        {
+            var db = ctx();
+            var person = await GetSinglePersonByIdAsync(type, id);
+            if (person == null) return true;
+            person.Active = false;
+            db.Update(person);
+            await db.SaveChangesAsync();
+            return true;
+        }
+
+        #endregion People
     }
 }
