@@ -428,7 +428,7 @@ export class EvacueeRegistrationComponent implements OnInit {
       hasPersonalServicesReferral: r.hasPersonalServicesReferral as boolean,
       hasPetCareReferral: r.hasPetCareReferral as boolean,
       hasPets: r.hasPets as boolean,
-      requiresAccomodation: r.requiresAccomodation as boolean,
+      requiresAccommodation: r.requiresAccommodation as boolean,
       requiresClothing: r.requiresClothing as boolean,
       requiresFood: r.requiresFood as boolean,
       requiresIncidentals: r.requiresIncidentals as boolean,
