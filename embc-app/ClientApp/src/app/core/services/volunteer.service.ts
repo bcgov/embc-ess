@@ -48,4 +48,10 @@ export class VolunteerService extends RestService {
         catchError(this.handleError)
       );
   }
+  createVolunteer() {
+
+  }
+  updateVolunteer() {
+
+  }
 }

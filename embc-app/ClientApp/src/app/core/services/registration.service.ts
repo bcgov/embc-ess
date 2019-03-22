@@ -219,7 +219,7 @@ export class RegistrationService extends RestService {
         catchError(this.handleError)
       );
   }
-  putRegistration(data: Registration): Observable<Registration> {
+  updateRegistration(data: Registration): Observable<Registration> {
     // alert("putRegistration service");
     return this.http.put<Registration>('api/registrations/' + data.id, data, { headers: this.headers })
       .pipe(
