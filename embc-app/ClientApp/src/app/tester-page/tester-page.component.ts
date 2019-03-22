@@ -30,7 +30,7 @@ export class TesterPageComponent implements OnInit {
   // registrations: Registration[];
   // user: User;
   volunteers: Volunteer[];
-
+  volunteer: Volunteer;
   constructor(
     // private store: Store<AppState>,
     // private incidentTaskService: IncidentTaskService,
@@ -42,6 +42,7 @@ export class TesterPageComponent implements OnInit {
 
   ngOnInit() {
     this.volunteerService.getAllVolunteers().subscribe(v => this.volunteers = v);
+    this.volunteerService.getVolunteerByBceidAccountNumber('BCEIDACCOUNT').subscribe(v => this.volunteer = v);
     // this.userDataService.getCurrentUser().subscribe(u => this.user = u);
     // this.incidentTaskService.getIncidentTasks().subscribe(i => this.incidentTasks = i);
     // this.registrationService.getRegistrations().subscribe(r => this.registrations = r.data);

@@ -17,7 +17,7 @@ const VOLUNTEERS: Volunteer[] = [
     initials: '',
     lastName: '',
     nickname: '',
-    gender: null,
+    gender: 'X',
     dob: new Date(),
     organization: {
       id: '1234',
@@ -43,10 +43,9 @@ export class VolunteerService extends RestService {
   getVolunteerByBceidAccountNumber(bceidAccountNumber: string): Observable<Volunteer> {
     // get a single volunteer by their bceidAccountNumber
     return of(VOLUNTEERS[0]);
-    // return this.http.get<Volunteer>('api/registrations/' + bceidAccountNumber, { headers: this.headers })
-    //   .pipe(
-    //     catchError(this.handleError)
-    //   );
+    return this.http.get<Volunteer>('api/registrations/' + bceidAccountNumber, { headers: this.headers })
+      .pipe(
+        catchError(this.handleError)
+      );
   }
-
 }
