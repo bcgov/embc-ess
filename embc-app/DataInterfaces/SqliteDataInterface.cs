@@ -95,37 +95,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         }
 
 
-        public async Task<List<Organization>> GetOrganizationsAsync()
-        {
-            var entities = await Db.Organizations.ToListAsync();
-            var result = new List<Organization>();
-            foreach (var item in entities)
-            {
-                result.Add(item.ToViewModel());
-            }
-            return result;
-        }
-
-        public async Task<Organization> GetOrganizationAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Organization GetOrganizationByLegalName(string name)
-        {
-            var item = Db.Organizations.FirstOrDefault(x => x.Name == name);
-            var result = item.ToViewModel();
-
-            return result;
-        }
-
-        public Organization GetOrganizationByExternalId(string externalId)
-        {
-            var item = Db.Organizations.FirstOrDefault(x => x.Externaluseridentifier == externalId);
-            var result = item.ToViewModel();
-            return result;
-        }
-
         public List<Region> GetRegions()
         {
             List<Region> regions = new List<Region>();
@@ -289,24 +258,88 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
+        #region Organization
+
+        public async Task<List<Organization>> GetOrganizationsAsync()
+        {
+            var db = ctx();
+            var entities = await db.Organizations.ToListAsync();
+            var result = new List<Organization>();
+            foreach (var item in entities)
+            {
+                result.Add(item.ToViewModel());
+            }
+            return result;
+        }
+
+        public async Task<Organization> GetOrganizationAsync(string id)
+        {
+            var db = ctx();
+            if (Guid.TryParse(id, out var guid))
+            {
+                var entity = await db.Organizations.FirstOrDefaultAsync(x => x.Id == guid);
+                var result = entity.ToViewModel();
+                return entity.ToViewModel();
+            }
+            return null;
+        }
+
+        public Organization GetOrganizationByLegalName(string name)
+        {
+            var db = ctx();
+            var item = db.Organizations.FirstOrDefault(x => x.Name == name);
+            var result = item.ToViewModel();
+
+            return result;
+        }
+
+        public Organization GetOrganizationByExternalId(string externalId)
+        {
+            var db = ctx();
+            var item = db.Organizations.FirstOrDefault(x => x.Externaluseridentifier == externalId);
+            var result = item.ToViewModel();
+
+            return result;
+        }
 
         public async Task<Organization> CreateOrganizationAsync(Organization item)
         {
+            var db = ctx();
             var entity = item.ToModel();
-            await Db.Organizations.AddAsync(entity);
-            Db.SaveChanges();
+            await db.Organizations.AddAsync(entity);
+            await db.SaveChangesAsync();
 
             return entity.ToViewModel();
         }
 
         public async Task<Organization> UpdateOrganizationAsync(Organization item)
         {
-            var entity = await Db.Organizations.FirstOrDefaultAsync(x => x.Id == new Guid(item.Id));
+            var db = ctx();
+            var entity = await db.Organizations.FirstOrDefaultAsync(x => x.Id == new Guid(item.Id));
             entity.PatchValues(item);
-            Db.Organizations.Update(entity);
+            db.Organizations.Update(entity);
+            await db.SaveChangesAsync();
 
             return entity.ToViewModel();
         }
+
+        public async Task<bool> DeactivateOrganizationAsync(string id)
+        {
+            var db = ctx();
+            var entity = await db.Organizations.FirstOrDefaultAsync(x => x.Id == new Guid(id));
+            if(entity == null)
+            {
+                return true;
+            }
+            entity.Active = false;
+            db.Organizations.Update(entity);
+            await db.SaveChangesAsync();
+
+            return true;
+        }
+
+        #endregion
+
 
         #region People
 
