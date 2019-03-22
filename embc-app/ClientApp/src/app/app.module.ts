@@ -20,6 +20,7 @@ import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-das
 import { TesterPageComponent } from './tester-page/tester-page.component';
 import { EssEditorComponent } from './ess-editor/ess-editor.component';
 import { EssEditorOneComponent } from './ess-editor/ess-editor-one/ess-editor-one.component';
+import { EssEditorConfirmationComponent } from './ess-editor/ess-editor-confirmation/ess-editor-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { EssEditorOneComponent } from './ess-editor/ess-editor-one/ess-editor-on
     TesterPageComponent,
     EssEditorComponent,
     EssEditorOneComponent,
+    EssEditorConfirmationComponent,
   ],
   imports: [
     // angular
