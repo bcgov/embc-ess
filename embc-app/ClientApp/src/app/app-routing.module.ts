@@ -16,6 +16,7 @@ import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-reg
 import { TesterPageComponent } from './tester-page/tester-page.component';
 import { EvacueeRegistrationOneComponent } from './evacuee-registration/evacuee-registration-one/evacuee-registration-one.component';
 import { EvacueeRegistrationConfirmationComponent } from './evacuee-registration';
+import { EssEditorComponent } from './ess-editor/ess-editor.component';
 
 const routes: Routes = [
   {
@@ -83,6 +84,10 @@ const routes: Routes = [
         component: EvacueeRegistrationConfirmationComponent
       }
     ]
+  },
+  {
+    path: 'user-edit',
+    component: EssEditorComponent
   },
   {
     path: 'test',
