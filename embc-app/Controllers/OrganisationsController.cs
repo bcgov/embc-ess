@@ -1,6 +1,7 @@
-﻿using Gov.Jag.Embc.Interfaces;
+using Gov.Jag.Embc.Interfaces;
 
 using Gov.Jag.Embc.Public.Authentication;
+using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Rest;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -28,8 +30,9 @@ namespace Gov.Jag.Embc.Public.Controllers
         //private readonly SharePointFileManager _sharePointFileManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger _logger;
+        private readonly IDataInterface _dataInterface;
 
-        public OrganisationsController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, BCeIDBusinessQuery bceid, ILoggerFactory loggerFactory)
+        public OrganisationsController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, BCeIDBusinessQuery bceid, ILoggerFactory loggerFactory, IDataInterface dataInterface)
         {
             Configuration = configuration;
             _bceid = bceid;
@@ -37,6 +40,27 @@ namespace Gov.Jag.Embc.Public.Controllers
             _httpContextAccessor = httpContextAccessor;
             //_sharePointFileManager = sharePointFileManager;
             _logger = loggerFactory.CreateLogger(typeof(OrganisationsController));
+            _dataInterface = dataInterface;
+        }
+
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet()]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                List<ViewModels.Organization> result = await _dataInterface.GetOrganizationsAsync();
+                return Json(result);
+            }
+            catch (RestException error)
+            {
+                return BadRequest(error);
+            }
         }
 
 
@@ -46,10 +70,16 @@ namespace Gov.Jag.Embc.Public.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public IActionResult Get(string id)
+        public async Task<IActionResult> GetOne(string id)
         {
+            var result = Task.FromResult(_dataInterface.GetOrganizationByExternalId(id));
 
-            return Json(null);
+            if(result == null)
+            {
+                return NotFound();
+            }
+
+            return Json(result);
         }
 
 
@@ -61,9 +91,61 @@ namespace Gov.Jag.Embc.Public.Controllers
         /// <param name="viewModel"></param>
         /// <returns></returns>
         [HttpPost()]
-        public async Task<IActionResult> Create([FromBody] ViewModels.Person item)
+        public async Task<IActionResult> Create([FromBody] Organization item)
         {
-            return Json(null);
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                item.Id = null;
+                var result = await _dataInterface.CreateOrganizationAsync(item);
+                return Json(result);
+            }
+            catch (RestException error)
+            {
+                return BadRequest(error);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Update
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Update([FromBody] ViewModels.Organization item, string id)
+        {
+            if (id != null && item.Id != null && id != item.Id)
+            {
+                return BadRequest();
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _dataInterface.UpdateOrganizationAsync(item);
+                if (result != null)
+                {
+                    return Json(result);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (RestException error)
+            {
+                return BadRequest(error);
+            }
         }
 
     }

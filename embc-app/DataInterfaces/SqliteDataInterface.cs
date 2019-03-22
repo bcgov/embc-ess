@@ -57,10 +57,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return Task.FromResult<Registration>(null);
         }
 
-        public Organization GetOrganizationByBceidGuid(string bceidGuid)
+        public async Task<Organization> GetOrganizationByBceidGuidAsync(string bceidGuid)
         {
-            // TODO: Implement
-            Organization result = new Organization();
+            var item = await Db.Organizations.FirstOrDefaultAsync(x => x.BceidAccountNumber.Equals(bceidGuid, StringComparison.CurrentCultureIgnoreCase));
+            var result = item.ToViewModel();
             return result;
         }
 
@@ -96,25 +96,35 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return countries;
         }
 
+
+        public async Task<List<Organization>> GetOrganizationsAsync()
+        {
+            var entities = await Db.Organizations.ToListAsync();
+            var result = new List<Organization>();
+            foreach (var item in entities)
+            {
+                result.Add(item.ToViewModel());
+            }
+            return result;
+        }
+
+        public async Task<Organization> GetOrganizationAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Organization GetOrganizationByLegalName(string name)
         {
-            Organization result = null;
             var item = Db.Organizations.FirstOrDefault(x => x.Name == name);
-            if (item != null)
-            {
-                result = item.ToViewModel();
-            }
+            var result = item.ToViewModel();
+
             return result;
         }
 
         public Organization GetOrganizationByExternalId(string externalId)
         {
-            Organization result = null;
             var item = Db.Organizations.FirstOrDefault(x => x.Externaluseridentifier == externalId);
-            if (item != null)
-            {
-                result = item.ToViewModel();
-            }
+            var result = item.ToViewModel();
             return result;
         }
 
@@ -279,6 +289,25 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result = item.ToViewModel();
             }
             return result;
+        }
+
+
+        public async Task<Organization> CreateOrganizationAsync(Organization item)
+        {
+            var entity = item.ToModel();
+            await Db.Organizations.AddAsync(entity);
+            Db.SaveChanges();
+
+            return entity.ToViewModel();
+        }
+
+        public async Task<Organization> UpdateOrganizationAsync(Organization item)
+        {
+            var entity = await Db.Organizations.FirstOrDefaultAsync(x => x.Id == new Guid(item.Id));
+            entity.PatchValues(item);
+            Db.Organizations.Update(entity);
+
+            return entity.ToViewModel();
         }
     }
 }
