@@ -1,3 +1,8 @@
+.verticalOffset {
+    // we have a silly footer thing going on. This is a div that gets added to the end of the page.
+    height: 60px;
+}
+
 footer{
     bottom: 0;
     position: fixed;

@@ -423,9 +423,9 @@
               </div>
             </div>
             <!-- Mailing address not in bc -->
-            <div *ngIf="!form.value.mailingAddressInBc">
+            <div *ngIf="!form.value.mailingAddressInBc" formGroupName="hohMailingAddress">
               NOT IN BC
-              <div class="row mb-2" formGroupName="hohMailingAddress">
+              <div class="row mb-2">
                 <div class="col">
                   <label required="true">Apt/Suite/Building Number & Street Address</label>
                   <input type="text" class="form-control" formControlName="addressLine1">
@@ -439,29 +439,30 @@
                   </div>
                 </div>
                 <div class="col-3">
-                  <label required="true">Province</label>
+                  <label required="true">Province or State</label>
                   <input type="text" class="form-control" formControlName="province">
                 </div>
                 <div class="col-3">
                   <div class="form-check">
-                    <label required="true">Postal Code</label>
+                    <label required="true">Postal or Zip Code</label>
                     <input type="text" class="form-control" formControlName="postalCode">
                   </div>
                 </div>
               </div>
+              <div class="row mb-2">
+                <!-- <div class="col-6">
+                  <label required="true">Country/Region</label>
+                  <select class="form-control" formControlName="country">
+                    <option [ngValue]="null">-- Select Country</option>
+                    <option [ngValue]="country" *ngFor="let country of countries$ | async">
+                      {{country.name}}
+                    </option>
+                  </select>
+                </div> -->
+              </div>
             </div>
 
-            <!-- <div class="row mb-2" formGroupName="hohMailingAddress">
-              <div class="col-6">
-                <label required="true">Country/Region</label>
-                <select class="form-control" formControlName="country">
-                  <option [ngValue]="null">-- Select Country</option>
-                  <option [ngValue]="country" *ngFor="let country of countries$ | async">
-                    {{country.name}}
-                  </option>
-                </select>
-              </div>
-            </div> -->
+
           </div>
         </div>
       </div>
@@ -751,8 +752,8 @@
     <h4>Submission State</h4>
     <pre>{{submission | json}}</pre>
   </div> -->
-  <div class="col">
+  <!-- <div class="col">
     <h4>Form State</h4>
     <pre>{{ this.form.value | json}}</pre>
-  </div>
+  </div> -->
 </div>
