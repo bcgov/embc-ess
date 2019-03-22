@@ -1,7 +1,44 @@
 <div class="row">
   <div class="col col-lg-8">
-
-
+    <div class="mb-4">
+      <h1 *ngIf="!editMode" (click)="editMode=!editMode">Add ESS User</h1>
+      <h1 *ngIf="editMode" (click)="editMode=!editMode">Edit ESS Evacuee</h1>
+      <small>
+        All fields are required
+      </small>
+      <h3 class="blue-header">
+        EVACUEE DETAILS
+      </h3>
+      <app-form-field required="true">
+        <label>Last Name</label>
+        <input class="form-control" type="text" [formControl]="lastName">
+      </app-form-field>
+      <app-form-field required="true">
+        <label>First Name</label>
+        <input class="form-control" type="text" [formControl]="firstName">
+      </app-form-field>
+      <div class="form-row">
+        <app-form-field class="col">
+          <label>BCeID</label>
+          <input class="form-control" type="text" [formControl]="bceid">
+        </app-form-field>
+      </div>
+      <p class="required">
+        Can this user access restricted files?
+      </p>
+      <div class="form-row">
+        <div class="form-group">
+          <div class="form-check form-check-inline">
+            <input [formControl]="restrictedAccess" class="form-check-input" type="radio" [value]="true">
+            <label class="form-check-label">Yes</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input [formControl]="restrictedAccess" class="form-check-input" type="radio" [value]="false">
+            <label class="form-check-label">No</label>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
   <!-- Information side bar -->
@@ -23,5 +60,13 @@
         </section> -->
       </section>
     </app-side-box>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <p>{{lastName.value}}</p>
+    <p>{{firstName.value}}</p>
+    <p>{{bceid.value}}</p>
+    <p>{{restrictedAccess.value}}</p>
   </div>
 </div>
