@@ -48,10 +48,14 @@ export class VolunteerService extends RestService {
         catchError(this.handleError)
       );
   }
-  createVolunteer() {
+  createVolunteer(): Observable<string> {
+    // this will return a response string of 200. This may need to become a Response eventually
+    return of('200');
 
   }
-  updateVolunteer() {
+  updateVolunteer(): Observable<string> {
+    // this will return a response string of 200. This may need to become a Response eventually
+    return of('200');
 
   }
 }
