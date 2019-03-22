@@ -71,7 +71,7 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: 'complete',
+        path: 'complete/:essFileNumber',
         component: EvacueeRegistrationOneComponent
       },
       {
@@ -83,10 +83,6 @@ const routes: Routes = [
         component: EvacueeRegistrationConfirmationComponent
       }
     ]
-  },
-  {
-    path: 'register-evacuee/:essFileNumber',
-    component: EvacueeRegistrationComponent
   },
   {
     path: 'test',
