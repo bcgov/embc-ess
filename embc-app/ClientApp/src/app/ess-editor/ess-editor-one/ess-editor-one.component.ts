@@ -73,13 +73,13 @@ export class EssEditorOneComponent implements OnInit {
       // if the volunteer has an ID we need to update
       this.volunteerService.updateVolunteer(this.volunteer)
         .subscribe(v => {
-          alert(v);
+          alert(JSON.stringify(v));
         });
     } else {
       // if the volunteer has no id we need to create a new one
       this.volunteerService.createVolunteer(this.volunteer)
         .subscribe(v => {
-          alert(v);
+          alert(JSON.stringify(v));
         });
     }
     // alert(this.lastName.value + '-' + this.firstName.value + '-' + this.bceid.value + '-' + this.restrictedAccess.value);
