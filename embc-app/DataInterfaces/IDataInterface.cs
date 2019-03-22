@@ -18,14 +18,20 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         // Registrations
         Task<IQueryable<Registration>> GetRegistrations(SearchQueryParameters queryParameters);
+
         Task<Registration> GetRegistration(string id);
+
         Task<Registration> CreateRegistration(Registration registration);
+
         Task<Registration> UpdateRegistration(Registration registration);
 
         // Incident Tasks
         Task<List<IncidentTask>> GetIncidentTasks();
+
         Task<IncidentTask> GetIncidentTask(string id);
+
         Task<IncidentTask> CreateIncidentTask(IncidentTask task);
+
         Task<IncidentTask> UpdateIncidentTask(IncidentTask task);
 
         List<Community> GetCommunities();
@@ -39,10 +45,21 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         List<FamilyRelationshipType> GetFamilyRelationshipTypes();
 
         Organization GetOrganizationByLegalName(string name);
+
         Organization GetOrganizationByExternalId(string externalId);
 
         Volunteer GetVolunteerByExternalId(string externalId);
+
         Volunteer GetVolunteerById(string Id);
 
+        Task<IEnumerable<Person>> GetPeopleAsync(string type);
+
+        Task<Person> GetPersonByIdAsync(string type, string id);
+
+        Task UpdatePersonAsync(Person person);
+
+        Task<Person> CreatePersonAsync(Person person);
+
+        Task<bool> DeactivatePersonAsync(string type, string id);
     }
 }
