@@ -480,7 +480,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                 // create session info for the current user
                 userSettings.UserId = userId;
                 userSettings.UserAuthenticated = true;
-                userSettings.IsNewUserRegistration = (userSettings.AuthenticatedUser == null);
+                userSettings.IsNewUser = (userSettings.AuthenticatedUser == null);
 
                 // set other session info
                 userSettings.SiteMinderGuid = siteMinderGuid;
@@ -499,6 +499,34 @@ namespace Gov.Jag.Embc.Public.Authentication
                         {
                             userSettings.AccountId = account.Id;
                             userSettings.AuthenticatedUser.AccountId = Guid.Parse(account.Id);
+                        }
+                        else
+                        {
+                            // lookup by the userId, this may be a pre-approved user.
+                            var volunteer = _dataInterface.GetVolunteerByBceidUserId(userId);
+
+                            if (volunteer != null) // fully populate the Volunteer.
+                            {
+                                if (volunteer.Organization == null)
+                                {
+                                    ViewModels.Organization volunteerOrganization = new ViewModels.Organization()
+                                    {
+                                        Externaluseridentifier = siteMinderBusinessGuid,
+                                        Name = smgov_businesslegalname,
+                                        Active = true
+                                    };
+                                    userSettings.AccountId = volunteerOrganization.Id;
+                                    volunteerOrganization = await _dataInterface.CreateOrganizationAsync(volunteerOrganization);
+                                    volunteer.Organization = volunteerOrganization;
+                                }
+
+                                volunteer.Externaluseridentifier = siteMinderGuid;
+                                
+                                await _dataInterface.UpdatePersonAsync(volunteer);
+                                userSettings.ContactId = volunteer.Id;
+                                userSettings.IsNewUser = false;
+                            }
+
                         }
                     }
                     else
@@ -531,7 +559,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                         userSettings.SiteMinderGuid = GuidUtility.CreateIdForDynamics("bcsc", userSettings.UserDisplayName).ToString();
                     }
 
-                    if (userSettings.IsNewUserRegistration)
+                    if (userSettings.IsNewUser)
                     {
                         if (isDeveloperLogin)
                         {
@@ -569,7 +597,6 @@ namespace Gov.Jag.Embc.Public.Authentication
                         _logger.LogDebug("userSettings.ContactId:" + userSettings.ContactId);
                     }
                 }
-
 
                 // add the worker settings if it is a new user.  EMBC ESS does not currently support a service card login.
                 //if (userSettings.IsNewUserRegistration && userSettings.NewContact == null)
