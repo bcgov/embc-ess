@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VolunteerNavbarComponent implements OnInit {
 
+  // This component needs to be only shown when the application state for the user is correct.
   constructor() { }
 
   ngOnInit() {
