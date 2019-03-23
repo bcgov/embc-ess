@@ -10,6 +10,7 @@ import {
   RelationshipType, HeadOfHousehold, Address, Volunteer, IncidentTask
 } from 'src/app/core/models';
 import { IncidentTaskService } from '../../core/services/incident-task.service';
+import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 
 
 @Component({
@@ -68,6 +69,17 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       return false;
     }
   }
+
+  setHohPrimaryResidenceProvince() {
+    // if the unset flag is true or a value it clears the values
+    const patch = { hohPrimaryResidence: { province: 'BC', country: { name: 'Canada' } } };
+    this.form.patchValue(patch);
+  }
+  setHohMailingAddressProvince() {
+    const patch = { hohMailingAddress: { province: 'BC', country: { name: 'Canada' } } };
+    this.form.patchValue(patch);
+  }
+
   ngOnInit() {
     // if there are route params we should grab them
     if (this.route.snapshot.params.essFileNumber) {
@@ -148,12 +160,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       formArray.removeAt(0);
     }
   }
-  clearMailingAddress() {
-    // completely remove stored values for this area of the form
-    // no persistent mailing address
-    // this.form.reset('hohMailingAddress');
-    // todo: clear the hohMailingAddress to null so it can be null again instead of adding bad data to the DB
-  }
+
 
   getBoolean(booleanString: string): boolean {
     // convert boolean strings into actual boolean values
@@ -478,9 +485,35 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     }
   }
   next() {
+    const registration: Registration = {
+      ...this.registration,
+      ...this.form.value
+    };
+    // update client-side state
+    this.onSave(registration);
+
+    this.registrationService.createRegistration(registration).subscribe(
+      data => {
+        console.log('NEW REGISTRATION ==>');
+        console.log(data);
+        this.router.navigate(['register-evacuee/confirmation']);
+      },
+      err => {
+        // this.router.navigate(['../error'], { relativeTo: this.route });
+      }
+    );
     // navigate to the next page.
     // TODO flow to the next element
-    this.router.navigate(['../confirmation'], { relativeTo: this.route });
+    // this.router.navigate(['../confirmation'], { relativeTo: this.route });
 
+  }
+  // back() {
+  // there is no place to go back to on this page. 
+  // If it is useful we can look at how the back button works in the self-registration components
+  // }
+
+  onSave(registration: Registration) {
+    // save the registration in the application state
+    this.store.dispatch(new UpdateRegistration({ registration }));
   }
 }
