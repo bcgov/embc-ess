@@ -4,6 +4,7 @@ using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Authorization;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models;
+using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -43,6 +44,7 @@ namespace Gov.Jag.Embc.Public
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IConfiguration>(Configuration);
             // add singleton to allow Controllers to query the Request object
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -156,6 +158,7 @@ namespace Gov.Jag.Embc.Public
                 var factory = x.GetRequiredService<IUrlHelperFactory>();
                 return factory.GetUrlHelper(actionContext);
             });
+            services.AddTransient<IEmailSender, EmailSender>();
         }
 
         private void SetupDynamics(IServiceCollection services)

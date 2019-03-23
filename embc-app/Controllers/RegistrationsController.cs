@@ -20,6 +20,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         private readonly ILogger logger;
         private readonly IHostingEnvironment env;
         private readonly IUrlHelper urlHelper;
+        private readonly IEmailSender emailSender;
 
         public RegistrationsController(
             IConfiguration configuration,
@@ -27,9 +28,11 @@ namespace Gov.Jag.Embc.Public.Controllers
             ILoggerFactory loggerFactory,
             IHostingEnvironment env,
             IDataInterface dataInterface,
+            IEmailSender emailSender,
             IUrlHelper urlHelper
         )
         {
+            this.emailSender = emailSender;
             Configuration = configuration;
             this.dataInterface = dataInterface;
             this.httpContextAccessor = httpContextAccessor;
@@ -79,7 +82,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             return Json(result);
         }
 
-        [HttpPost()]
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] ViewModels.Registration item)
         {
@@ -91,6 +94,10 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 if (item != null && item.Id != null) item.Id = null;
                 var result = await dataInterface.CreateRegistrationAsync(item);
+                if (!string.IsNullOrWhiteSpace(result.HeadOfHousehold.Email))
+                {
+                    emailSender.Send(new EmailMessage(result.HeadOfHousehold.Email, result.HeadOfHousehold.Email, "test"));
+                }
                 return Json(result);
             }
             catch (Exception e)
