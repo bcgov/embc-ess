@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { VolunteerService } from 'src/app/core/services/volunteer.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Volunteer } from 'src/app/core/models';
+import { AppState } from 'src/app/store';
+import { Store } from '@ngrx/store';
+import { UpdateVolunteer } from 'src/app/store/volunteer/volunteer.actions';
 
 @Component({
   selector: 'app-ess-editor-one',
@@ -13,7 +16,9 @@ export class EssEditorOneComponent implements OnInit {
   editMode = false;
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private volunteerService: VolunteerService,
+    private store: Store<AppState>,
   ) { }
 
   // collect the four form values and submit them back to the form
@@ -85,10 +90,13 @@ export class EssEditorOneComponent implements OnInit {
     // alert(this.lastName.value + '-' + this.firstName.value + '-' + this.bceid.value + '-' + this.restrictedAccess.value);
   }
   next(): void {
+    // when routing to the next page we save first into the application state.
     this.onSave();
-    // this.router
+    this.router.navigate(['../confirmation'], { relativeTo: this.route });
   }
+
   onSave(): void {
-    // this.sto
+    const volunteer: Volunteer = this.volunteer;
+    this.store.dispatch(new UpdateVolunteer({ volunteer }))
   }
 }
