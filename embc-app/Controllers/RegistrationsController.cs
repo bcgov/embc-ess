@@ -113,14 +113,19 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             var subject = "Registration completed successfully";
             var body = "<h2>Evacuee Registration Success</h2><br/>" + "<b>What you need to know:</b><br/><br/>" +
-               $"Your ESS File Number is: <b>{registration.EssFileNumber}</b><br/><br/>" +
-               "- If you do not require support services, no further action is needed.<br/>" +
-               "- If services are required, please report to your nearest Reception Centre." +
-               " An updated list of reception centres can be found at <a href='https://www.emergencyinfobc.gov.bc.ca/'>EmergencyInfoBC</a>.<br/>" +
-               "- If you are at a Reception Centre, proceed to one of the ESS team members on site who will be able to assist you with completing your registration.<br/>" +
-               "- Don’t forget to bring your evacuee registration number with you to the Reception Centre.";
+               $"Your ESS File Number is: <b>{registration.EssFileNumber}</b>";
 
-            return new EmailMessage(registration.HeadOfHousehold.Email, registration.HeadOfHousehold.Email, subject, body);
+            if (registration.IncidentTask == null)
+            {
+                body += "<br/><br/>" +
+                   "- If you do not require support services, no further action is needed.<br/> " +
+                   "- If services are required, please report to your nearest Reception Centre." +
+                   " An updated list of reception centres can be found at <a href='https://www.emergencyinfobc.gov.bc.ca/'>EmergencyInfoBC</a>.<br/>" +
+                   "- If you are at a Reception Centre, proceed to one of the ESS team members on site who will be able to assist you with completing your registration.<br/>" +
+                   "- Don’t forget to bring your evacuee registration number with you to the Reception Centre.";
+            }
+
+            return new EmailMessage(registration.HeadOfHousehold.Email, subject, body);
         }
 
         [HttpPut("{id}")]
