@@ -7,7 +7,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./ess-editor.component.scss']
 })
 export class EssEditorComponent implements OnInit {
-  editMode: boolean = false;
+  editMode = false;
   constructor() { }
 
   // collect the four form values and submit them back to the form
@@ -23,7 +23,7 @@ export class EssEditorComponent implements OnInit {
     this.bceid = new FormControl('');
     this.lastName = new FormControl('');
     this.firstName = new FormControl('');
-    this.restrictedAccess = new FormControl(false)
+    this.restrictedAccess = new FormControl(false);
   }
   submit() {
     alert(this.lastName.value + '-' + this.firstName.value + '-' + this.bceid.value + '-' + this.restrictedAccess.value);

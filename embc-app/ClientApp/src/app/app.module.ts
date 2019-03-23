@@ -4,23 +4,21 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // ngrx + configuration
+import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { rootReducer, metaReducers } from './store';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module';
-import { SharedModule } from './shared/shared.module';
-import { SelfRegistrationModule } from './self-registration';
-import { EvacueeRegistrationModule } from './evacuee-registration';
 import { HomeComponent } from './home/home.component';
 import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.component';
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
-// import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
-import { EssEditorComponent } from './ess-editor/ess-editor.component';
-import { EssEditorOneComponent } from './ess-editor/ess-editor-one/ess-editor-one.component';
-import { EssEditorConfirmationComponent } from './ess-editor/ess-editor-confirmation/ess-editor-confirmation.component';
+
+import { AppRoutingModule } from './app-routing.module';
+import { CoreModule } from './core/core.module';
+import { EssEditorModule } from './ess-editor';
+import { EvacueeRegistrationModule } from './evacuee-registration';
+import { SelfRegistrationModule } from './self-registration';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -28,11 +26,7 @@ import { EssEditorConfirmationComponent } from './ess-editor/ess-editor-confirma
     HomeComponent,
     VolunteerLoginComponent,
     VolunteerDashboardComponent,
-    // EvacueeRegistrationComponent,
     TesterPageComponent,
-    EssEditorComponent,
-    EssEditorOneComponent,
-    EssEditorConfirmationComponent,
   ],
   imports: [
     // angular
@@ -51,7 +45,8 @@ import { EssEditorConfirmationComponent } from './ess-editor/ess-editor-confirma
     // app
     AppRoutingModule,
     SelfRegistrationModule,
-    EvacueeRegistrationModule
+    EvacueeRegistrationModule,
+    EssEditorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

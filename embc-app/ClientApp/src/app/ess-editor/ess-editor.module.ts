@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { SharedModule } from './../shared/shared.module';
+
 import { EssEditorComponent } from './ess-editor.component';
 import { EssEditorOneComponent } from './ess-editor-one/ess-editor-one.component';
 import { EssEditorConfirmationComponent } from './ess-editor-confirmation/ess-editor-confirmation.component';
@@ -23,4 +24,4 @@ import { EssEditorConfirmationComponent } from './ess-editor-confirmation/ess-ed
         EssEditorComponent
     ]
 })
-export class EvacueeRegistrationModule { }
+export class EssEditorModule { }
