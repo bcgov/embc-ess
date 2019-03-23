@@ -490,7 +490,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       data => {
         console.log('NEW REGISTRATION ==>');
         console.log(data);
-        this.router.navigate(['../confirmation'], { relativeTo: this.route });
+        this.router.navigate(['register-evacuee/confirmation']);
       },
       err => {
         // this.router.navigate(['../error'], { relativeTo: this.route });
