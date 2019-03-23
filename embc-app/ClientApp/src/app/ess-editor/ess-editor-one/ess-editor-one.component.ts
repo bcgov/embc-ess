@@ -49,6 +49,11 @@ export class EssEditorOneComponent implements OnInit {
       // there may be a user to edit because the route looks right
       this.volunteerService.getVolunteerByBceidAccountNumber(this.route.snapshot.params.essUser).subscribe((v: Volunteer) => {
         // save the volunteer for filling in information later.
+        this.lastName.setValue(v.lastName);
+        this.firstName.setValue(v.firstName);
+        this.bceid.setValue(v.bceidAccountNumber);
+        this.restrictedAccess.setValue(v.canAccessRestrictedFiles);
+
         this.volunteer = v;
         this.editMode = true;
       });

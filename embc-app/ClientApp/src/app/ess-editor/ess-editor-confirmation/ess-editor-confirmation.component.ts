@@ -29,7 +29,9 @@ export class EssEditorConfirmationComponent implements OnInit {
 
   ngOnInit() {
     this.currentVolunteer$.pipe(takeWhile(() => this.componentActive))
-      .subscribe(v => this.volunteer = v);
+      .subscribe(v => {
+        this.volunteer = v;
+      });
   }
   back() {
     this.onSave();
