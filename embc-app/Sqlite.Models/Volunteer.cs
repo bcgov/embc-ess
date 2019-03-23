@@ -5,7 +5,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// <summary>
     /// Volunteer Database Model
     /// </summary>
-    public sealed partial class Volunteer : Person
+    public class Volunteer : Person
     {
         [MaxLength(255)]
         public string Name { get; set; } // TODO: What's this? Their display name? full name?
@@ -23,8 +23,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         public string Externaluseridentifier { get; set; }
 
         // related entities
-        public Organization Organization { get; set; }
-
+        public virtual Organization Organization { get; set; }
 
         public Volunteer()
         {

@@ -7,7 +7,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// <summary>
     /// Organization Database Model
     /// </summary>
-    public sealed partial class Organization
+    public class Organization
     {
         /// <summary>
         /// A system-generated unique identifier

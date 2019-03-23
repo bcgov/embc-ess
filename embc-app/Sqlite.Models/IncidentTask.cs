@@ -1,8 +1,4 @@
 using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,9 +7,8 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// <summary>
     /// Incident Task Database Model
     /// </summary>
-    public sealed partial class IncidentTask
+    public class IncidentTask
     {
-
         public IncidentTask()
         { }
 
@@ -34,9 +29,9 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         public bool? Active { get; set; }
 
         // only one of the following will be set; ie a regional incident vs a community one, etc
-        public Region Region { get; set; }
-        public RegionalDistrict RegionalDistrict { get; set; }
-        public Community Community { get; set; }
+        public virtual Region Region { get; set; }
 
+        public virtual RegionalDistrict RegionalDistrict { get; set; }
+        public virtual Community Community { get; set; }
     }
 }

@@ -45,9 +45,11 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         public string PostalCode { get; set; }
     }
 
-    public sealed partial class BcAddress : Address
+    public partial class BcAddress : Address
     {
-        public Community Community { get; set; }
+        public Guid CommunityId { get; set; }
+
+        public virtual Community Community { get; set; }
 
         public BcAddress()
         {
@@ -55,13 +57,15 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         }
     }
 
-    public sealed partial class OtherAddress : Address
+    public partial class OtherAddress : Address
     {
         public string City { get; set; }
 
         public string Province { get; set; }
 
-        public Country Country { get; set; }
+        public Guid CountryId { get; set; }
+
+        public virtual Country Country { get; set; }
 
         public OtherAddress()
         {
