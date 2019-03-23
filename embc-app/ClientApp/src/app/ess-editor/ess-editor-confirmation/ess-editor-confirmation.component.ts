@@ -47,20 +47,18 @@ export class EssEditorConfirmationComponent implements OnInit {
 
     // check if this is an update
     if (this.volunteer.id) {
-      alert("Update Volunteer");
+      // alert("Update Volunteer");
 
       // if the volunteer has an ID we need to update
       this.volunteerService.updateVolunteer(this.volunteer)
         .subscribe(v => {
-          this.results = v;
+          alert(JSON.stringify(v));
         });
     } else {
-      alert("Create volunteer")
-
       // if the volunteer has no id we need to create a new one
       this.volunteerService.createVolunteer(this.volunteer)
         .subscribe(v => {
-          this.results = v;
+          alert(JSON.stringify(v));
         });
     }
   }
