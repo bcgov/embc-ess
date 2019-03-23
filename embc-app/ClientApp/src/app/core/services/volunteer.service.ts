@@ -14,18 +14,75 @@ const VOLUNTEERS: Volunteer[] = [
     isAdministrator: true,
     isPrimaryContact: true,
     canAccessRestrictedFiles: true,
-    firstName: '',
-    initials: '',
-    lastName: '',
-    nickname: '',
-    gender: 'X',
+    firstName: 'Fonzie',
+    initials: 'D',
+    lastName: 'Delphon',
+    nickname: 'Fando',
+    gender: 'Male',
     dob: new Date(),
     organization: {
       id: '1234',
       name: 'Quartech',
       bceidAccountNumber: 'BCEIDACCOUNTNUMBER'
     }
-  }
+  },
+  {
+    personType: 'VOLN',
+    id: 'none',
+    bceidAccountNumber: 'NUMBERGOESHERE',
+    isAdministrator: false,
+    isPrimaryContact: true,
+    canAccessRestrictedFiles: false,
+    firstName: 'Beana',
+    initials: 'K',
+    lastName: 'Andervig',
+    nickname: 'Bean',
+    gender: 'female',
+    dob: new Date(),
+    organization: {
+      id: '1234',
+      name: 'Quartech',
+      bceidAccountNumber: 'BCEIDACCOUNTNUMBER'
+    }
+  },
+  {
+    personType: 'VOLN',
+    id: 'none',
+    bceidAccountNumber: 'IAMACATMEOW',
+    isAdministrator: false,
+    isPrimaryContact: false,
+    canAccessRestrictedFiles: true,
+    firstName: 'Fluffer',
+    initials: '',
+    lastName: 'Macgoodie',
+    nickname: 'Fluf',
+    gender: 'x',
+    dob: new Date(),
+    organization: {
+      id: '764',
+      name: 'Pet Store',
+      bceidAccountNumber: 'KLASHIFUAYFUISOAYDOIU'
+    }
+  },
+  {
+    personType: 'VOLN',
+    id: 'none',
+    bceidAccountNumber: 'WHATISTHISANDWHATAMIDOING',
+    isAdministrator: false,
+    isPrimaryContact: false,
+    canAccessRestrictedFiles: false,
+    firstName: 'Allan',
+    initials: '',
+    lastName: 'McGruff',
+    nickname: 'Big Al',
+    gender: 'male',
+    dob: new Date(),
+    organization: {
+      id: '6970',
+      name: 'Land Movers',
+      bceidAccountNumber: 'BCEIDACCOUNTNUMBER'
+    }
+  },
 ];
 
 @Injectable({
@@ -33,7 +90,7 @@ const VOLUNTEERS: Volunteer[] = [
 })
 export class VolunteerService extends RestService {
 
-  apiRoute: string = 'api/volunteers';
+  apiRoute = 'api/volunteers';
 
   getAllVolunteers(): Observable<Volunteer[]> {
     // get a list of all volunteers back from the api
