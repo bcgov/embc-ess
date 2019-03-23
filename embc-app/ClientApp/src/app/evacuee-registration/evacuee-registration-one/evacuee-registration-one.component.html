@@ -702,6 +702,22 @@
 
   <!-- Submit button! -->
   <div class="mb-4">
-    <button class="btn btn-primary" type="submit">Submit</button>
+    <button class="btn btn-primary" (click)="next()">Confirmation</button>
   </div>
 </form>
+
+<!-- Only for debugging. Three boxes with the three data representations. -->
+<div class="row">
+  <div class="col" (click)="submit()">
+    <h4>Input State</h4>
+    <pre>{{registration | json}}</pre>
+  </div>
+  <div class="col">
+    <h4>Submission State</h4>
+    <pre>{{submission | json}}</pre>
+  </div>
+  <div class="col">
+    <h4>Form State</h4>
+    <pre>{{ this.form.value | json}}</pre>
+  </div>
+</div>
