@@ -35,6 +35,7 @@ export const rootReducer: ActionReducerMap<AppState> = {
   registrations: fromRegistration.reducer,
   lookups: fromLookups.reducer,
   incidentTasks: fromIncidentTasks.reducer,
+  volunteers: fromVolunteers.reducer,
 };
 
 // TODO: Discard this when done developing/debugging
