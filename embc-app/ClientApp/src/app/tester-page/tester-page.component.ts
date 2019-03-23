@@ -20,8 +20,9 @@ import { state } from '@angular/animations';
   styleUrls: ['./tester-page.component.scss']
 })
 export class TesterPageComponent implements OnInit {
-  currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
+  // currentRegistration$ = this.store.select(s => s.registrations.currentRegistration);
   componentActive = true;
+  volunteer$ = this.store.select(s => s.volunteers.currentVolunteer);
   // currentVolunteer$ = this.store.select(s => s.)
   // // state needed by this FORM
   // countries$ = this.store.select(s => s.lookups.countries.countries);
@@ -35,9 +36,7 @@ export class TesterPageComponent implements OnInit {
   // incidentTasks: IncidentTask[];
   // registrations: Registration[];
   // user: User;
-  volunteers: Volunteer[];
   volunteer: Volunteer;
-  registration: Registration;
 
   constructor(
     private store: Store<AppState>,
@@ -54,6 +53,8 @@ export class TesterPageComponent implements OnInit {
 
     this.currentRegistration$.pipe(takeWhile(() => this.componentActive))
       .subscribe(value => this.registration = value);
+    this.volunteer$.pipe(takeWhile(() => this.componentActive))
+      .subscribe(v => this.volunteer = v);
     // this.userDataService.getCurrentUser().subscribe(u => this.user = u);
     // this.incidentTaskService.getIncidentTasks().subscribe(i => this.incidentTasks = i);
     // this.registrationService.getRegistrations().subscribe(r => this.registrations = r.data);
