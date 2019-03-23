@@ -4,6 +4,8 @@ import { AppState } from 'src/app/store';
 import { Store } from '@ngrx/store';
 import { VolunteerService } from 'src/app/core/services/volunteer.service';
 import { takeWhile } from 'rxjs/operators';
+import { UpdateVolunteer } from 'src/app/store/volunteer/volunteer.actions';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-ess-editor-confirmation',
@@ -18,15 +20,26 @@ export class EssEditorConfirmationComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    private volunteerService: VolunteerService
+    private volunteerService: VolunteerService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.currentVolunteer$.pipe(takeWhile(() => this.componentActive))
       .subscribe(v => this.volunteer = v);
   }
+  back() {
+    this.onSave();
+    this.router.navigate(['/user-edit']);
+  }
+  onSave() {
+    // update the stored version
+    const volunteer = this.volunteer;
+    this.store.dispatch(new UpdateVolunteer({ volunteer }))
+  }
+  submit(addAnother: boolean) {
 
-  submit() {
     if (this.volunteer.id) {
       // if the volunteer has an ID we need to update
       this.volunteerService.updateVolunteer(this.volunteer)
