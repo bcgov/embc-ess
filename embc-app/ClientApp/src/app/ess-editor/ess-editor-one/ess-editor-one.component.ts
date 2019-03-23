@@ -68,11 +68,7 @@ export class EssEditorOneComponent implements OnInit {
   }
 
   submit() {
-    // stuff the data back into the volunteer object
-    this.volunteer.lastName = this.lastName.value;
-    this.volunteer.firstName = this.firstName.value;
-    this.volunteer.bceidAccountNumber = this.bceid.value;
-    this.volunteer.canAccessRestrictedFiles = this.restrictedAccess.value;
+
 
     if (this.volunteer.id) {
       // if the volunteer has an ID we need to update
@@ -92,10 +88,15 @@ export class EssEditorOneComponent implements OnInit {
   next(): void {
     // when routing to the next page we save first into the application state.
     this.onSave();
-    this.router.navigate(['../confirmation'], { relativeTo: this.route });
+    // this.router.navigate(['../confirmation'], { relativeTo: this.route });
   }
 
   onSave(): void {
+    // stuff the data back into the volunteer object
+    this.volunteer.lastName = this.lastName.value;
+    this.volunteer.firstName = this.firstName.value;
+    this.volunteer.bceidAccountNumber = this.bceid.value;
+    this.volunteer.canAccessRestrictedFiles = this.restrictedAccess.value;
     const volunteer: Volunteer = this.volunteer;
     this.store.dispatch(new UpdateVolunteer({ volunteer }))
   }
