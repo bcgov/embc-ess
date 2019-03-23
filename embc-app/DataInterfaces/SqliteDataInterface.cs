@@ -49,15 +49,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task UpdateRegistrationAsync(Registration registration)
         {
-            //var existing = Db.Registrations.FirstOrDefault(item => item.Id == new Guid(registration.Id));
-            //if (existing != null)
-            //{
-            //    existing.PatchValues(registration);
-            //    Db.Registrations.Update(existing);
-            //    Db.SaveChanges();
-            //    return Task.FromResult(existing.ToViewModel());
-            //}
-            //return Task.FromResult<Registration>(null);
             var db = ctx();
             db.Registrations.Update(registration.ToModel());
             await db.SaveChangesAsync();
