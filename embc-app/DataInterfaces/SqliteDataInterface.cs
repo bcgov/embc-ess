@@ -44,6 +44,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var created = await db.Registrations.AddAsync(registration.ToModel());
             await db.SaveChangesAsync();
 
+            created.Entity.EssFileNumber = Math.Abs(created.Entity.Id.GetHashCode()); //TODO: replace with DB based sequence
+            await db.SaveChangesAsync();
+
             return await GetRegistrationAsync(created.Entity.Id.ToString());
         }
 
