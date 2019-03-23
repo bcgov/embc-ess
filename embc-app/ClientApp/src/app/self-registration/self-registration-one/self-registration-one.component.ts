@@ -52,9 +52,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         lastName: {
           required: 'Please enter your last name.',
         },
-        gender: {
-          required: 'Please make a selection.',
-        },
         dob: {
           required: 'Please enter your date of birth.',
         },
@@ -130,7 +127,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         lastName: ['', Validators.required],
         nickname: '',
         initials: '',
-        gender: [null, Validators.required],
+        gender: null,
         dob: [null, [Validators.required]], // TODO: Add extra DOB validation (must be in the past)
       }),
       registeringFamilyMembers: [null, Validators.required],

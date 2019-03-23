@@ -56,18 +56,14 @@
       </app-form-field>
     </div>
     <div class="row">
-      <app-form-field class="col-md-4" required="true">
+      <app-form-field class="col-md-4">
         <label>Gender</label>
-        <select [class.is-invalid]="submitted && !!invalidFeedback.headOfHousehold.gender" class="form-control"
-          formControlName="gender">
+        <select class="form-control" formControlName="gender">
           <option [ngValue]="null">Please select--</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
           <option value="x">X</option>
         </select>
-        <span *ngIf="submitted" class="invalid-feedback">
-          {{invalidFeedback['headOfHousehold'].gender}}
-        </span>
       </app-form-field>
       <app-form-field class="col-md-4" required="true">
         <label>Date of Birth</label>
