@@ -112,7 +112,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         private EmailMessage CreateEmailMessageForRegistration(Registration registration)
         {
             var subject = "Registration completed successfully";
-            var body = $"<b>What you need to know:</b><br/><br/>" +
+            var body = "<h2>Evacuee Registration Success</h2><br/>" + "<b>What you need to know:</b><br/><br/>" +
                $"Your ESS File Number is: <b>{registration.EssFileNumber}</b><br/><br/>" +
                "- If you do not require support services, no further action is needed.<br/>" +
                "- If services are required, please report to your nearest Reception Centre." +
