@@ -7,14 +7,7 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public interface IDataInterface
-    {
-        Organization GetOrganizationByBceidGuid(string bceidGuid);
-
-        Person GetPersonByBceidGuid(string bceidGuid);
-
-        Volunteer GetVolunteerByName(string firstName, string lastName);
-
-        Person CreatePerson(Person person);
+    {                
 
         // Registrations
         Task<IQueryable<Registration>> GetRegistrations(SearchQueryParameters queryParameters);
@@ -48,9 +41,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Organization GetOrganizationByExternalId(string externalId);
 
-        Volunteer GetVolunteerByExternalId(string externalId);
+        Task<Organization> CreateOrganizationAsync(Organization organization);
 
-        Volunteer GetVolunteerById(string Id);
+        #region People
+        Person GetPersonByBceidGuid(string bceidGuid);
+
+        Person CreatePerson(Person person);
 
         Task<IEnumerable<Person>> GetPeopleAsync(string type);
 
@@ -61,5 +57,20 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<Person> CreatePersonAsync(Person person);
 
         Task<bool> DeactivatePersonAsync(string type, string id);
+
+        #endregion People
+
+        #region Volunteer
+
+        Volunteer GetVolunteerByName(string firstName, string lastName);
+
+        Volunteer GetVolunteerByExternalId(string externalId);
+
+        Volunteer GetVolunteerByBceidUserId(string bceidUserId);
+
+        Volunteer GetVolunteerById(string Id);
+
+        #endregion Volunteer
+
     }
 }

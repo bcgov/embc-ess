@@ -57,12 +57,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return Task.FromResult<Registration>(null);
         }
 
-        public Organization GetOrganizationByBceidGuid(string bceidGuid)
-        {
-            // TODO: Implement
-            Organization result = new Organization();
-            return result;
-        }
+
 
         public Person GetPersonByBceidGuid(string bceidGuid)
         {
@@ -71,17 +66,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             //Person result = new Person();
             //return result;
         }
-
-        public Volunteer GetVolunteerByName(string firstName, string lastName)
-        {
-            Volunteer result = null;
-            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
-            if (item != null)
-            {
-                result = item.ToViewModel();
-            }
-            return result;
-        }
+        
 
         public List<Country> GetCountries()
         {
@@ -94,27 +79,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return countries;
         }
 
-        public Organization GetOrganizationByLegalName(string name)
-        {
-            Organization result = null;
-            var item = Db.Organizations.FirstOrDefault(x => x.Name == name);
-            if (item != null)
-            {
-                result = item.ToViewModel();
-            }
-            return result;
-        }
 
-        public Organization GetOrganizationByExternalId(string externalId)
-        {
-            Organization result = null;
-            var item = Db.Organizations.FirstOrDefault(x => x.Externaluseridentifier == externalId);
-            if (item != null)
-            {
-                result = item.ToViewModel();
-            }
-            return result;
-        }
 
         public List<Region> GetRegions()
         {
@@ -256,10 +221,32 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return Task.FromResult(entity.ToViewModel());
         }
 
+        public Volunteer GetVolunteerByBceidUserId(string bceidUserId)
+        {
+            Volunteer result = null;
+            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).BceidAccountNumber == bceidUserId);
+            if (item != null)
+            {
+                result = item.ToViewModel();
+            }
+            return result;
+        }
+
         public Volunteer GetVolunteerByExternalId(string externalId)
         {
             Volunteer result = null;
             var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).Externaluseridentifier == externalId);
+            if (item != null)
+            {
+                result = item.ToViewModel();
+            }
+            return result;
+        }
+
+        public Volunteer GetVolunteerByName(string firstName, string lastName)
+        {
+            Volunteer result = null;
+            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
             if (item != null)
             {
                 result = item.ToViewModel();
@@ -279,6 +266,42 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
+        #region Organization
+
+        public async Task<Organization> CreateOrganizationAsync(Organization organization)
+        {
+            var db = ctx();
+            var newPerson = await db.Organizations.AddAsync(organization.ToModel());
+            await db.SaveChangesAsync();
+            return newPerson.Entity.ToViewModel();
+        }
+
+
+
+        public Organization GetOrganizationByLegalName(string name)
+        {
+            Organization result = null;
+            var item = Db.Organizations.FirstOrDefault(x => x.Name == name);
+            if (item != null)
+            {
+                result = item.ToViewModel();
+            }
+            return result;
+        }
+        
+
+        public Organization GetOrganizationByExternalId(string externalId)
+        {
+            Organization result = null;
+            var item = Db.Organizations.FirstOrDefault(x => x.Externaluseridentifier == externalId);
+            if (item != null)
+            {
+                result = item.ToViewModel();
+            }
+            return result;
+        }
+
+        #endregion Organization
         #region People
 
         private IQueryable<Sqlite.Models.Person> GetAllPeopleAsync(string type)
