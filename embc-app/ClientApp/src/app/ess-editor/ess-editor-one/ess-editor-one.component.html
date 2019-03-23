@@ -1,0 +1,51 @@
+<div class="mb-4">
+  <h1 *ngIf="!editMode">Add ESS User</h1>
+  <h1 *ngIf="editMode">Edit ESS User</h1>
+  <small>
+    All fields are required
+  </small>
+  <h3 class="blue-header">
+    USER DETAILS
+  </h3>
+  <div class="col mb-4">
+    <label>Last Name</label>
+    <input class="form-control" type="text" [formControl]="lastName">
+  </div>
+  <div class="col mb-4">
+    <label>First Name</label>
+    <input class="form-control" type="text" [formControl]="firstName">
+  </div>
+  <div class="col mb-4">
+    <label>BCeID</label>
+    <input class="form-control" type="text" [formControl]="bceid">
+  </div>
+  <div class="col mb-4">
+    <p>
+      Can this user access restricted files?
+    </p>
+    <div class="form-group">
+      <div class="form-check form-check-inline">
+        <input [formControl]="restrictedAccess" class="form-check-input" type="radio" [value]="true">
+        <label class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input [formControl]="restrictedAccess" class="form-check-input" type="radio" [value]="false">
+        <label class="form-check-label">No</label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col mb-4">
+  <!-- <button class="btn btn-primary">Cancel</button> -->
+  <!-- <button class="btn btn-primary" (click)="submit()">Submit</button> -->
+
+  <button class="btn btn-primary float-right" (click)="submit()">Next</button>
+  <a [routerLink]="">
+    <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+    <span class="ml-2">Cancel &amp; Close</span>
+  </a>
+</div>
+<!-- TODO Need yellow horizontal rule -->
+<div class="col mb-4">
+  <pre>Volunteer: {{volunteer|json}}</pre>
+</div>

@@ -91,7 +91,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     resultHoh.Email = sourceHoh.Email;
                     // related entities
                     resultHoh.PrimaryResidence = sourceHoh.PrimaryResidence.ToModel();
-                    // resultHoh.MailingAddress = sourceHoh.MailingAddress?.ToModel();
+                    resultHoh.MailingAddress = sourceHoh.MailingAddress?.ToModel();
                     if (sourceHoh.FamilyMembers != null)
                     {
                         resultHoh.FamilyMembers = new List<Sqlite.Models.FamilyMember>();
@@ -104,7 +104,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 if (source is ViewModels.FamilyMember sourceFm)
                 {
                     var resultFm = result as Sqlite.Models.FamilyMember;
-                    resultFm.RelationshipToEvacuee = sourceFm.RelationshipToEvacuee.ToModel();
+                    resultFm.RelationshipToEvacueeCode = sourceFm.RelationshipToEvacuee.Code;
                     resultFm.SameLastNameAsEvacuee = sourceFm.SameLastNameAsEvacuee;
                 }
                 if (source is ViewModels.Volunteer sourceVol)

@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace Gov.Jag.Embc.Public.Utils
 {
@@ -18,20 +15,33 @@ namespace Gov.Jag.Embc.Public.Utils
         public int Offset { get; private set; }
         public int TotalItemCount { get; private set; }
 
-        public PaginatedList(List<T> items, int count, int offset = 0, int limit = 50)
+        public bool HasPreviousPage()
+        {
+            return GetCurrentPage() > 1;
+        }
+
+        public bool HasNextPage()
+        {
+            return GetCurrentPage() < this.GetTotalPages();
+        }
+
+        public int GetCurrentPage()
+        {
+            double pageSize = (double)this.Limit;
+            return (int)Math.Floor(this.Offset / pageSize) + 1;
+        }
+
+        public int GetTotalPages()
+        {
+            double pageSize = (double)this.Limit;
+            return (int)Math.Ceiling(this.TotalItemCount / pageSize);
+        }
+
+        public PaginatedList(IEnumerable<T> items, int count, int offset, int limit) : base(items)
         {
             Offset = offset;
             Limit = (limit > maxLimit ? maxLimit : limit);
             TotalItemCount = count;
-
-            this.AddRange(items);
-        }
-
-        public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int offset = 0, int limit = 50)
-        {
-            var count = await source.CountAsync();
-            var items = await source.Skip(offset).Take(limit).ToListAsync();
-            return new PaginatedList<T>(items, count, offset, limit);
         }
     }
 }

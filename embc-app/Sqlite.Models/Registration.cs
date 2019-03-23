@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,7 +7,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// <summary>
     /// Evacuee Registration Database Model
     /// </summary>
-    public sealed partial class Registration
+    public class Registration
     {
         /// <summary>
         /// A system-generated unique identifier
@@ -20,11 +19,13 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
 
         // important
         public bool? RestrictedAccess { get; set; }
+
         public bool? DeclarationAndConsent { get; set; }
         public long? EssFileNumber { get; set; }
 
         // registration record
         public bool? DietaryNeeds { get; set; }
+
         public string DietaryNeedsDetails { get; set; }
         public string DisasterAffectDetails { get; set; }
         public string ExternalReferralsDetails { get; set; }
@@ -39,6 +40,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
 
         // family state flags
         public bool? HasThreeDayMedicationSupply { get; set; }
+
         public bool? HasInquiryReferral { get; set; }
         public bool? HasHealthServicesReferral { get; set; }
         public bool? HasFirstAidReferral { get; set; }
@@ -49,6 +51,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
 
         // requirements (needs assessment)
         public bool? RequiresAccommodation { get; set; }
+
         public bool? RequiresClothing { get; set; }
         public bool? RequiresFood { get; set; }
         public bool? RequiresIncidentals { get; set; }
@@ -56,9 +59,10 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         public bool? RequiresSupport { get; set; }
 
         // related entities
-        public HeadOfHousehold HeadOfHousehold { get; set; }
-        public IncidentTask IncidentTask { get; set; }
-        public Community HostCommunity { get; set; }
+        public virtual HeadOfHousehold HeadOfHousehold { get; set; }
+
+        public virtual IncidentTask IncidentTask { get; set; }
+        public virtual Community HostCommunity { get; set; }
 
         // TODO: Should we link to the full User record for an interviewer or just capture basic info (name + last name initial)?
 

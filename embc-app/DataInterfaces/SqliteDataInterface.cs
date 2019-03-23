@@ -17,9 +17,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public SqliteDataInterface(string connectionString)
         {
-            DbContextOptionsBuilder<SqliteContext> builder = new DbContextOptionsBuilder<SqliteContext>();
-
-            builder.UseSqlite(connectionString);
+            DbContextOptionsBuilder<SqliteContext> builder = new DbContextOptionsBuilder<SqliteContext>()
+                .UseLazyLoadingProxies()
+                .UseSqlite(connectionString);
 
             // init the database.
             Db = new SqliteContext(builder.Options);
@@ -36,27 +36,88 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             //return person;
         }
 
-        public Task<Registration> CreateRegistration(Registration registration)
+        #region Registration
+
+        public async Task<Registration> CreateRegistrationAsync(Registration registration)
         {
-            var model = registration.ToModel();
-            Db.Registrations.Add(model);
-            Db.SaveChanges();
-            return Task.FromResult(model.ToViewModel());
+            var db = ctx();
+            var created = await db.Registrations.AddAsync(registration.ToModel());
+            await db.SaveChangesAsync();
+
+            return await GetRegistrationAsync(created.Entity.Id.ToString());
         }
 
-        public Task<Registration> UpdateRegistration(Registration registration)
+        public async Task UpdateRegistrationAsync(Registration registration)
         {
-            var existing = Db.Registrations.FirstOrDefault(item => item.Id == new Guid(registration.Id));
-            if (existing != null)
+            var db = ctx();
+            db.Registrations.Update(registration.ToModel());
+            await db.SaveChangesAsync();
+        }
+
+        public async Task<PaginatedList<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters)
+        {
+            var db = ctx();
+            IQueryable<Sqlite.Models.Registration> registrations = db.Registrations;
+            var allItemCount = await registrations.CountAsync();
+
+            if (queryParameters.HasSortBy())
             {
-                existing.PatchValues(registration);
-                Db.Registrations.Update(existing);
-                Db.SaveChanges();
-                return Task.FromResult(existing.ToViewModel());
+                // sort using dynamic linq extension method
+                registrations = registrations.Sort(queryParameters.SortBy);
             }
-            return Task.FromResult<Registration>(null);
+
+            if (queryParameters.HasQuery())
+            {
+                // TODO: Implement FILTERING of search results!
+                registrations = registrations.Where(item => this.SimpleSearch(item, queryParameters.Query));
+            }
+
+            var items = await registrations
+                .Skip(queryParameters.Offset)
+                .Take(queryParameters.Limit)
+                .ToArrayAsync();
+
+            return new PaginatedList<Registration>(items.Select(r => r.ToViewModel()), allItemCount, queryParameters.Offset, queryParameters.Limit);
         }
 
+        private bool SimpleSearch(Sqlite.Models.Registration item, string q)
+        {
+            var byLastName = item.HeadOfHousehold?.LastName?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
+            var byTaskNumber = item.IncidentTask?.TaskNumber?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
+            var byEssFileNumber = item.EssFileNumber?.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
+            var byCommunity = (item.HeadOfHousehold?.PrimaryResidence as Sqlite.Models.BcAddress)?.Community?.Name?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
+
+            // TODO: Add more of these...
+
+            var filter = byLastName || byTaskNumber || byEssFileNumber || byCommunity;
+            return filter;
+        }
+
+        private bool AdvancedSearch(Sqlite.Models.Registration item, string q)
+        {
+            // TODO: For NEXT RELEASE! - Advanced Search (out of scope for Release #1)
+            throw new NotImplementedException();
+        }
+
+        public async Task<Registration> GetRegistrationAsync(string id)
+        {
+            var db = ctx();
+            if (Guid.TryParse(id, out var guid))
+            {
+                var entity = await db.Registrations.FirstOrDefaultAsync(reg => reg.Id == guid);
+                return entity?.ToViewModel();
+            }
+            return null;
+        }
+
+        #endregion Registration
+
+        public async Task<Organization> GetOrganizationByBceidGuidAsync(string bceidGuid)
+        {
+            var item = await Db.Organizations.FirstOrDefaultAsync(x => x.BceidAccountNumber.Equals(bceidGuid, StringComparison.CurrentCultureIgnoreCase));
+            var result = item.ToViewModel();
+            return result;
+        }
 
 
         public Person GetPersonByBceidGuid(string bceidGuid)
@@ -79,8 +140,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return countries;
         }
 
-
-
         public List<Region> GetRegions()
         {
             List<Region> regions = new List<Region>();
@@ -90,60 +149,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 regions.Add(region.ToViewModel());
             }
             return regions;
-        }
-
-        public Task<IQueryable<Registration>> GetRegistrations(SearchQueryParameters queryParameters)
-        {
-            IQueryable<Sqlite.Models.Registration> _allItems = Db.Registrations.AsQueryable();
-
-            if (queryParameters.HasSortBy())
-            {
-                // sort using dynamic linq extension method
-                _allItems = _allItems.Sort(queryParameters.SortBy);
-            }
-
-            if (queryParameters.HasQuery())
-            {
-                // TODO: Implement FILTERING of search results!
-                _allItems = _allItems
-                    .Where(item => this.SimpleSearch(item, queryParameters.Query));
-            }
-
-            var toReturn = _allItems.Select(r => r.ToViewModel());
-            return Task.FromResult(toReturn);
-
-            // IQueryable<FoodItem> _allItems = _foodDbContext.FoodItems.OrderBy(queryParameters.OrderBy,
-            //   queryParameters.IsDescending());
-
-            // if (queryParameters.HasQuery())
-            // {
-            //     _allItems = _allItems
-            //         .Where(x => x.Calories.ToString().Contains(queryParameters.Query.ToLowerInvariant())
-            //         || x.Name.ToLowerInvariant().Contains(queryParameters.Query.ToLowerInvariant()));
-            // }
-
-            // return _allItems
-            //     .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
-            //     .Take(queryParameters.PageCount);
-        }
-
-        private bool SimpleSearch(Sqlite.Models.Registration item, string q)
-        {
-            var byLastName = item.HeadOfHousehold?.LastName?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
-            var byTaskNumber = item.IncidentTask?.TaskNumber?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
-            var byEssFileNumber = item.EssFileNumber?.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
-            var byCommunity = (item.HeadOfHousehold?.PrimaryResidence as Sqlite.Models.BcAddress)?.Community?.Name?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
-
-            // TODO: Add more of these...
-
-            var filter = byLastName || byTaskNumber || byEssFileNumber || byCommunity;
-            return filter;
-        }
-
-        private bool AdvancedSearch(Sqlite.Models.Registration item, string q)
-        {
-            // TODO: For NEXT RELEASE! - Advanced Search (out of scope for Release #1)
-            throw new NotImplementedException();
         }
 
         public List<RegionalDistrict> GetRegionalDistricts()
@@ -172,16 +177,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             var all = Db.FamilyRelationshipTypes.Select(x => x.ToViewModel()).ToList();
             return all;
-        }
-
-        public Task<Registration> GetRegistration(string id)
-        {
-            if (Guid.TryParse(id, out var guid))
-            {
-                var entity = Db.Registrations.FirstOrDefault(reg => reg.Id == guid);
-                return Task.FromResult(entity?.ToViewModel());
-            }
-            return Task.FromResult<Registration>(null);
         }
 
         //
@@ -268,40 +263,86 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         #region Organization
 
-        public async Task<Organization> CreateOrganizationAsync(Organization organization)
+        public async Task<List<Organization>> GetOrganizationsAsync()
         {
             var db = ctx();
-            var newPerson = await db.Organizations.AddAsync(organization.ToModel());
-            await db.SaveChangesAsync();
-            return newPerson.Entity.ToViewModel();
+            var entities = await db.Organizations.ToListAsync();
+            var result = new List<Organization>();
+            foreach (var item in entities)
+            {
+                result.Add(item.ToViewModel());
+            }
+            return result;
         }
 
-
+        public async Task<Organization> GetOrganizationAsync(string id)
+        {
+            var db = ctx();
+            if (Guid.TryParse(id, out var guid))
+            {
+                var entity = await db.Organizations.FirstOrDefaultAsync(x => x.Id == guid);
+                var result = entity.ToViewModel();
+                return entity.ToViewModel();
+            }
+            return null;
+        }
 
         public Organization GetOrganizationByLegalName(string name)
         {
-            Organization result = null;
-            var item = Db.Organizations.FirstOrDefault(x => x.Name == name);
-            if (item != null)
-            {
-                result = item.ToViewModel();
-            }
+            var db = ctx();
+            var item = db.Organizations.FirstOrDefault(x => x.Name == name);
+            var result = item.ToViewModel();
+
             return result;
         }
-        
 
         public Organization GetOrganizationByExternalId(string externalId)
         {
-            Organization result = null;
-            var item = Db.Organizations.FirstOrDefault(x => x.Externaluseridentifier == externalId);
-            if (item != null)
-            {
-                result = item.ToViewModel();
-            }
+            var db = ctx();
+            var item = db.Organizations.FirstOrDefault(x => x.Externaluseridentifier == externalId);
+            var result = item.ToViewModel();
+
             return result;
+        }      
+
+        public async Task<Organization> CreateOrganizationAsync(Organization item)
+        {
+            var db = ctx();
+            var entity = item.ToModel();
+            await db.Organizations.AddAsync(entity);
+            await db.SaveChangesAsync();
+
+            return entity.ToViewModel();
+        }
+
+        public async Task<Organization> UpdateOrganizationAsync(Organization item)
+        {
+            var db = ctx();
+            var entity = await db.Organizations.FirstOrDefaultAsync(x => x.Id == new Guid(item.Id));
+            entity.PatchValues(item);
+            db.Organizations.Update(entity);
+            await db.SaveChangesAsync();
+
+            return entity.ToViewModel();
+        }
+
+        public async Task<bool> DeactivateOrganizationAsync(string id)
+        {
+            var db = ctx();
+            var entity = await db.Organizations.FirstOrDefaultAsync(x => x.Id == new Guid(id));
+            if (entity == null)
+            {
+                return true;
+            }
+            entity.Active = false;
+            db.Organizations.Update(entity);
+            await db.SaveChangesAsync();
+
+            return true;
         }
 
         #endregion Organization
+
         #region People
 
         private IQueryable<Sqlite.Models.Person> GetAllPeopleAsync(string type)
