@@ -148,7 +148,7 @@ namespace Gov.Jag.Embc.Public
                 connectionString = Configuration["CONNECTION_STRING"];
             }
 
-            services.AddSingleton<IDataInterface>(_ => new SqliteDataInterface(connectionString));
+            services.AddSingleton<IDataInterface>(sp => new SqliteDataInterface(sp.GetService<ILoggerFactory>(), connectionString));
 
             // Enable the IURLHelper to be able to build links within Controllers
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
