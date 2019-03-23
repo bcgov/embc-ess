@@ -1,4 +1,4 @@
-<div [formGroup]="form">
+<form novalidate (ngSubmit)="next()" [formGroup]="form">
   <h2 class="step">STEP 1 of 4</h2>
   <h1 class="mt-3">Register as an Evacuee</h1>
 
@@ -8,7 +8,7 @@
   <small>All required fields are marked with an asterisk *</small>
 
   <div class="mt-3 feature-block">
-    <h3 class="required">Restriction</h3>
+    <h3>Restriction</h3>
     <p>Concerned family and friends may inquire about you and your family because of the emergency. We would like to
       provide these people with some information about you. Please check "Yes" if you <u>do not</u> want EMBC to
       disclose your
@@ -27,14 +27,22 @@
       <app-form-field class="col-md-9" required="true"
         tooltip="Tool Tip: Please ensure you use the legal last name of the person registering the family.">
         <label>Last Name</label>
-        <input class="form-control" type="text" formControlName="lastName">
+        <input [class.is-invalid]="submitted && !!invalidFeedback.headOfHousehold.lastName" class="form-control"
+          type="text" formControlName="lastName">
+        <span *ngIf="submitted" class="invalid-feedback">
+          {{invalidFeedback['headOfHousehold'].lastName}}
+        </span>
       </app-form-field>
     </div>
     <div class="row">
       <app-form-field class="col-md-9" required="true"
         tooltip="Tool Tip: Please ensure you use the legal first name of the person registering the family.">
         <label>First Name</label>
-        <input class="form-control" type="text" formControlName="firstName">
+        <input [class.is-invalid]="submitted && !!invalidFeedback.headOfHousehold.firstName" class="form-control"
+          type="text" formControlName="firstName">
+        <span *ngIf="submitted" class="invalid-feedback">
+          {{invalidFeedback['headOfHousehold'].firstName}}
+        </span>
       </app-form-field>
     </div>
     <div class="row">
@@ -50,16 +58,24 @@
     <div class="row">
       <app-form-field class="col-md-4" required="true">
         <label>Gender</label>
-        <select class="form-control" formControlName="gender">
+        <select [class.is-invalid]="submitted && !!invalidFeedback.headOfHousehold.gender" class="form-control"
+          formControlName="gender">
           <option [ngValue]="null">Please select--</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
           <option value="x">X</option>
         </select>
+        <span *ngIf="submitted" class="invalid-feedback">
+          {{invalidFeedback['headOfHousehold'].gender}}
+        </span>
       </app-form-field>
       <app-form-field class="col-md-4" required="true">
         <label>Date of Birth</label>
-        <input class="form-control" type="date" formControlName="dob">
+        <input [class.is-invalid]="submitted && !!invalidFeedback.headOfHousehold.dob" class="form-control" type="date"
+          formControlName="dob">
+        <span *ngIf="submitted" class="invalid-feedback">
+          {{invalidFeedback['headOfHousehold'].dob}}
+        </span>
       </app-form-field>
     </div>
   </section>
@@ -74,17 +90,23 @@
     <p class="required">Are you registering immediate family members who live in the same household with you?</p>
     <div class="form-group">
       <div class="form-check">
-        <input class="form-check-input" type="radio" value="yes" formControlName="registeringFamilyMembers">
+        <input [class.is-invalid]="submitted && !!invalidFeedback.registeringFamilyMembers" class="form-check-input"
+          type="radio" value="yes" formControlName="registeringFamilyMembers">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" value="yes-later" formControlName="registeringFamilyMembers">
+        <input [class.is-invalid]="submitted && !!invalidFeedback.registeringFamilyMembers" class="form-check-input"
+          type="radio" value="yes-later" formControlName="registeringFamilyMembers">
         <label class="form-check-label">Yes, but I'd like to register them when I get to the
           Reception Center</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" value="no" formControlName="registeringFamilyMembers">
+        <input [class.is-invalid]="submitted && !!invalidFeedback.registeringFamilyMembers" class="form-check-input"
+          type="radio" value="no" formControlName="registeringFamilyMembers">
         <label class="form-check-label">No</label>
+        <span *ngIf="submitted" class="invalid-feedback">
+          {{invalidFeedback['registeringFamilyMembers']}}
+        </span>
       </div>
     </div>
     <div *ngIf="ui.showFamilyMembers()" class="feature-block">
@@ -150,23 +172,23 @@
 
   <h3 class="blue-header">PRIMARY RESIDENCE &amp; CONTACT DETAILS</h3>
   <section class="padded-section">
-    <div class="form-group d-flex flex-row">
+    <div class="d-flex flex-row">
       <p class="m-0 mr-4 required">Is your primary residence within BC</p>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" formControlName="primaryResidenceInBC" [value]="true">
+        <input [class.is-invalid]="submitted && !!invalidFeedback.primaryResidenceInBC" class="form-check-input"
+          type="radio" formControlName="primaryResidenceInBC" [value]="true">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" formControlName="primaryResidenceInBC" [value]="false">
+        <input [class.is-invalid]="submitted && !!invalidFeedback.primaryResidenceInBC" class="form-check-input"
+          type="radio" formControlName="primaryResidenceInBC" [value]="false">
         <label class="form-check-label">No</label>
       </div>
     </div>
-    <section *ngIf="ui.showPrimaryAddressSection()" class="feature-block">
-      <section class="blurb" *ngIf="ui.showStrandedTravellerBlurb()">
-        <h4 class="text-danger">Stranded Traveller</h4>
-        <p class="text-danger">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit
-          amet pulvinar. Vestibulum ante ipsum primis in faucibus orci.</p>
-      </section>
+    <span [class.d-block]="submitted && !!invalidFeedback.primaryResidenceInBC" class="invalid-feedback">
+      {{invalidFeedback['primaryResidenceInBC']}}
+    </span>
+    <section *ngIf="ui.showPrimaryAddressSection()" class="mt-4 feature-block">
       <app-address-selector [parent]="primaryResidence" [withinBC]="f['primaryResidenceInBC'].value">
       </app-address-selector>
       <section>
@@ -193,19 +215,24 @@
 
   <h3 class="blue-header">MAILING ADDRESS</h3>
   <section class="padded-section">
-    <p class="required">Is your mailing address different from your primary residence?</p>
+    <p class="required">Is your mailing address the same as your primary residence?</p>
     <div class="form-group">
       <div class="form-check">
-        <input class="form-check-input" type="radio" formControlName="hasMailingAddress" [value]="true">
+        <input [class.is-invalid]="submitted && !!invalidFeedback.mailingAddressSameAsPrimary" class="form-check-input"
+          type="radio" formControlName="mailingAddressSameAsPrimary" [value]="true">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" formControlName="hasMailingAddress" [value]="false">
+        <input [class.is-invalid]="submitted && !!invalidFeedback.mailingAddressSameAsPrimary" class="form-check-input"
+          type="radio" formControlName="mailingAddressSameAsPrimary" [value]="false">
         <label class="form-check-label">No</label>
+        <span *ngIf="submitted" class="invalid-feedback">
+          {{invalidFeedback['mailingAddressSameAsPrimary']}}
+        </span>
       </div>
     </div>
     <section *ngIf="ui.showMailingAddressSelector()" class="feature-block">
-      <div class="form-group d-flex flex-row">
+      <div class="d-flex flex-row">
         <p class="m-0 mr-4 required">Is your mailing address within BC</p>
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="radio" formControlName="mailingAddressInBC" [value]="true">
@@ -216,10 +243,17 @@
           <label class="form-check-label">No</label>
         </div>
       </div>
-      <app-address-selector *ngIf="ui.showMailingAddressSection()" [parent]="mailingAddress"
+      <span [class.d-block]="submitted && !!invalidFeedback.mailingAddressInBC" class="invalid-feedback">
+        {{invalidFeedback['mailingAddressInBC']}}
+      </span>
+      <app-address-selector class="mt-4" *ngIf="ui.showMailingAddressSection()" [parent]="mailingAddress"
         [withinBC]="f['mailingAddressInBC'].value"></app-address-selector>
     </section>
   </section>
+
+  <div *ngIf="errorSummary" class="mt-5 pl-5 text-danger">
+    <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon> {{ errorSummary }}
+  </div>
 
   <div class="mt-5 space-between">
     <section>
@@ -229,7 +263,7 @@
       </a>
     </section>
     <section>
-      <button class="btn btn-primary" (click)="next()">NEXT</button>
+      <button class="btn btn-primary" type="submit">NEXT</button>
     </section>
   </div>
-</div>
+</form>
