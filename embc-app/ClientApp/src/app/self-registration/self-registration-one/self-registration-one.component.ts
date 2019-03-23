@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { skipWhile, takeWhile } from 'rxjs/operators';
@@ -82,22 +82,22 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       restrictedAccess: null,
       headOfHousehold: this.fb.group({
-        firstName: '',
-        lastName: '',
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
         nickname: '',
         initials: '',
-        gender: null,
-        dob: null,
+        gender: [null, Validators.required],
+        dob: [null, [Validators.required]], // TODO: Add extra DOB validation (must be in the past)
       }),
-      registeringFamilyMembers: null,
+      registeringFamilyMembers: [null, Validators.required],
       familyMembers: this.fb.array([]),
       phoneNumber: '',
       phoneNumberAlt: '',
-      email: '',
-      primaryResidenceInBC: null,
+      email: ['', Validators.email],
+      primaryResidenceInBC: [null, Validators.required],
       primaryResidence: this.fb.group({
         addressSubtype: '',
-        addressLine1: '',
+        addressLine1: ['', Validators.required],
         postalCode: '',
         community: '',
         city: '',
@@ -208,13 +208,13 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   newFamilyMember(): FormGroup {
     return this.fb.group({
-      relationshipToEvacuee: null,
       sameLastNameAsEvacuee: true,
-      firstName: '',
-      lastName: '',
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       initials: '',
-      gender: null,
-      dob: null,
+      gender: [null, Validators.required],
+      dob: [null, [Validators.required]], // TODO: Add extra DOB validation (must be in the past)
+      relationshipToEvacuee: [null, Validators.required],
     });
   }
 

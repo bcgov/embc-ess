@@ -38,7 +38,7 @@
     "hammerjs": "^2.0.8",
     "jasmine-reporters": "^2.3.0",
     "jasmine2-protractor-utils": "^1.3.0",
-    "moment": "^2.22.2",
+    "moment": "2.24.0",
     "mygovbc-bootstrap-theme": "^0.4.1",
     "ng-busy": "^6.2.0",
     "ngx-bootstrap": "^3.0.0",
