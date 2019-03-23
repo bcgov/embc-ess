@@ -42,23 +42,24 @@ export class EssEditorConfirmationComponent implements OnInit {
     const volunteer = this.volunteer;
     this.store.dispatch(new UpdateVolunteer({ volunteer }))
   }
-  submit(addAnother: boolean) {
+  submit(addAnother?: boolean) {
     // TODO the add another flag should route the user back to the create page in the subscription
 
     // check if this is an update
     if (this.volunteer.id) {
+      alert("Update Volunteer");
+
       // if the volunteer has an ID we need to update
       this.volunteerService.updateVolunteer(this.volunteer)
         .subscribe(v => {
-          alert("Update Volunteer");
           this.results = v;
         });
     } else {
+      alert("Create volunteer")
 
       // if the volunteer has no id we need to create a new one
       this.volunteerService.createVolunteer(this.volunteer)
         .subscribe(v => {
-          alert("Create volunteer")
           this.results = v;
         });
     }

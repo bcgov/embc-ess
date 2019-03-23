@@ -76,16 +76,16 @@ export class EssEditorOneComponent implements OnInit {
   next(): void {
     // when routing to the next page we save first into the application state.
     this.onSave();
-    this.router.navigate(['../confirmation'], { relativeTo: this.route });
+    this.router.navigate(['user-edit/confirmation']);
   }
 
   onSave(): void {
     // stuff the data back into the volunteer object
-    this.volunteer.lastName = this.lastName.value;
-    this.volunteer.firstName = this.firstName.value;
-    this.volunteer.bceidAccountNumber = this.bceid.value;
-    this.volunteer.canAccessRestrictedFiles = this.restrictedAccess.value;
     const volunteer: Volunteer = this.volunteer;
+    volunteer.lastName = this.lastName.value;
+    volunteer.firstName = this.firstName.value;
+    volunteer.bceidAccountNumber = this.bceid.value;
+    volunteer.canAccessRestrictedFiles = this.restrictedAccess.value;
     this.store.dispatch(new UpdateVolunteer({ volunteer }))
   }
 }
