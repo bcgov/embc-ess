@@ -1,27 +1,20 @@
-<header class="app-header">
-  <div class="top-menu row" style="padding-left: 30px; padding-right: 30px;">
-    <section class="col-md-8 col-xs-12">
-      <a (click)='homeButton()' tabindex="1">
-        <img class="header-logo" alt="B.C. Government Logo" src="assets/bc-logo.svg">
-      </a>
-      <span class="title" role="banner">
-        EMBC&nbsp;
-        <!-- <span class="label label-beta">Beta</span> -->
-      </span>
-    </section>
-    <section class="col-md-4 col-xs-12 sign-container">
-      <span class="sign" *ngIf="currentUser">
-        <span>{{currentUser.name}}</span>
-        &nbsp;
-        <span class="text-right signin">
-          <a href="logout">Sign Out</a>
-        </span>
-      </span>
-      <span class="sign" *ngIf="!currentUser">
-        <span class="text-right signin">
-          <a href="login" tabindex="1">Log In</a>
-        </span>
-      </span>
-    </section>
-  </div>
-</header>
+<nav class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
+  <ul class="navbar-nav">
+    <li class="c2">
+      <a href="https://www2.gov.bc.ca/gov/content/home/disclaimer" target="_blank"
+        title="Goes to BC Gov Disclaimer Page">Disclaimer</a>
+    </li>
+    <li class="c2">
+      <a href="https://www2.gov.bc.ca/gov/content/home/privacy" target="_blank"
+        title="Goes to BC Gov Privacy Page">Privacy</a>
+    </li>
+    <li class="c2">
+      <a href="https://www2.gov.bc.ca/gov/content/home/accessibility" target="_blank"
+        title="Goes to BC Gov Accessibility Page">Accessibility</a>
+    </li>
+    <li class="c2">
+      <a href="https://www2.gov.bc.ca/gov/content/home/copyright" target="_blank"
+        title="Goes to BC Gov Copyright Page">Copyright</a>
+    </li>
+  </ul>
+</nav>
