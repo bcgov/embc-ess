@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { VolunteerService } from '../core/services/volunteer.service';
-import { Volunteer } from '../core/models';
+import { Volunteer, Registration } from '../core/models';
+import { Store } from '@ngrx/store';
+import { AppState } from '../store';
+import { takeWhile } from 'rxjs/operators';
+import { state } from '@angular/animations';
 // import { Store } from '@ngrx/store';
 
 // import { IncidentTaskService } from '../core/services/incident-task.service';
@@ -16,7 +20,9 @@ import { Volunteer } from '../core/models';
   styleUrls: ['./tester-page.component.scss']
 })
 export class TesterPageComponent implements OnInit {
-
+  currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
+  componentActive = true;
+  // currentVolunteer$ = this.store.select(s => s.)
   // // state needed by this FORM
   // countries$ = this.store.select(s => s.lookups.countries.countries);
   // regionalDistricts$ = this.store.select(s => s.lookups.regionalDistricts);
@@ -31,18 +37,23 @@ export class TesterPageComponent implements OnInit {
   // user: User;
   volunteers: Volunteer[];
   volunteer: Volunteer;
+  registration: Registration;
+
   constructor(
-    // private store: Store<AppState>,
+    private store: Store<AppState>,
     // private incidentTaskService: IncidentTaskService,
     // private registrationService: RegistrationService,
     // private userDataService: UserDataService,
     // private controlledListService: ControlledListService,
-    private volunteerService: VolunteerService
+    // private volunteerService: VolunteerService
   ) { }
 
   ngOnInit() {
-    this.volunteerService.getAllVolunteers().subscribe(v => this.volunteers = v);
-    this.volunteerService.getVolunteerByBceidAccountNumber('BCEIDACCOUNT').subscribe(v => this.volunteer = v);
+    // this.volunteerService.getAllVolunteers().subscribe(v => this.volunteers = v);
+    // this.volunteerService.getVolunteerByBceidAccountNumber('BCEIDACCOUNT').subscribe(v => this.volunteer = v);
+
+    this.currentRegistration$.pipe(takeWhile(() => this.componentActive))
+      .subscribe(value => this.registration = value);
     // this.userDataService.getCurrentUser().subscribe(u => this.user = u);
     // this.incidentTaskService.getIncidentTasks().subscribe(i => this.incidentTasks = i);
     // this.registrationService.getRegistrations().subscribe(r => this.registrations = r.data);

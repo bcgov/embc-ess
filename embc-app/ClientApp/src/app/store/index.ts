@@ -3,6 +3,7 @@ import { ActionReducerMap, ActionReducer, MetaReducer } from '@ngrx/store';
 import * as fromRegistration from './registration/registration.reducer';
 import * as fromLookups from './lookups';
 import * as fromIncidentTasks from './incident-tasks/incident-tasks.reducer';
+import * as fromVolunteers from './volunteer/volunteer.reducer';
 
 export interface Loadable {
   loading: boolean;
@@ -22,6 +23,7 @@ export interface AppState {
   registrations: fromRegistration.State;
   lookups: fromLookups.State;
   incidentTasks: fromIncidentTasks.State;
+  volunteers: fromVolunteers.State;
 }
 
 /**
