@@ -17,12 +17,14 @@ export class EssEditorConfirmationComponent implements OnInit {
   currentVolunteer$ = this.store.select(s => s.volunteers.currentVolunteer);
   volunteer: Volunteer;
 
+  // whatever came back from the service
+  results: any;
 
   constructor(
     private store: Store<AppState>,
     private volunteerService: VolunteerService,
     private router: Router,
-    private route: ActivatedRoute,
+    // private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -39,18 +41,23 @@ export class EssEditorConfirmationComponent implements OnInit {
     this.store.dispatch(new UpdateVolunteer({ volunteer }))
   }
   submit(addAnother: boolean) {
+    // TODO the add another flag should route the user back to the create page in the subscription
 
+    // check if this is an update
     if (this.volunteer.id) {
       // if the volunteer has an ID we need to update
       this.volunteerService.updateVolunteer(this.volunteer)
         .subscribe(v => {
-          alert(JSON.stringify(v));
+          alert("Update Volunteer");
+          this.results = v;
         });
     } else {
+
       // if the volunteer has no id we need to create a new one
       this.volunteerService.createVolunteer(this.volunteer)
         .subscribe(v => {
-          alert(JSON.stringify(v));
+          alert("Create volunteer")
+          this.results = v;
         });
     }
   }
