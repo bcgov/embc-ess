@@ -67,28 +67,11 @@ export class EssEditorOneComponent implements OnInit {
     // flow the volunteer into the form
   }
 
-  submit() {
 
-
-    if (this.volunteer.id) {
-      // if the volunteer has an ID we need to update
-      this.volunteerService.updateVolunteer(this.volunteer)
-        .subscribe(v => {
-          alert(JSON.stringify(v));
-        });
-    } else {
-      // if the volunteer has no id we need to create a new one
-      this.volunteerService.createVolunteer(this.volunteer)
-        .subscribe(v => {
-          alert(JSON.stringify(v));
-        });
-    }
-    // alert(this.lastName.value + '-' + this.firstName.value + '-' + this.bceid.value + '-' + this.restrictedAccess.value);
-  }
   next(): void {
     // when routing to the next page we save first into the application state.
     this.onSave();
-    // this.router.navigate(['../confirmation'], { relativeTo: this.route });
+    this.router.navigate(['../confirmation'], { relativeTo: this.route });
   }
 
   onSave(): void {
