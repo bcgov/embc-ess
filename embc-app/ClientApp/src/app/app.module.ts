@@ -19,6 +19,7 @@ import { EssEditorModule } from './ess-editor';
 import { EvacueeRegistrationModule } from './evacuee-registration';
 import { SelfRegistrationModule } from './self-registration';
 import { SharedModule } from './shared/shared.module';
+import { VolunteerNavbarComponent } from './volunteer-navbar/volunteer-navbar.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { SharedModule } from './shared/shared.module';
     VolunteerLoginComponent,
     VolunteerDashboardComponent,
     TesterPageComponent,
+    VolunteerNavbarComponent,
   ],
   imports: [
     // angular
