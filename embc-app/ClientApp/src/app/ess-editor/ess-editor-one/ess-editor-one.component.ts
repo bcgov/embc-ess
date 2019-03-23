@@ -84,4 +84,11 @@ export class EssEditorOneComponent implements OnInit {
     }
     // alert(this.lastName.value + '-' + this.firstName.value + '-' + this.bceid.value + '-' + this.restrictedAccess.value);
   }
+  next(): void {
+    this.onSave();
+    // this.router
+  }
+  onSave(): void {
+    // this.sto
+  }
 }
