@@ -223,7 +223,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             Volunteer result = null;
             var item = (Sqlite.Models.Volunteer)Db.People
                 .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
-                .FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).BceidAccountNumber.ToUpper() == bceidUserId.ToUpper());
+                .FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).BceidAccountNumber == bceidUserId);
             if (item != null)
             {
                 result = item.ToViewModel();

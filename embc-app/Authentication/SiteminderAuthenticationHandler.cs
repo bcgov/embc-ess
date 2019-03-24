@@ -436,6 +436,7 @@ namespace Gov.Jag.Embc.Public.Authentication
 
                 if (userSettings.AuthenticatedUser == null) // could be a pre-approved user
                 {
+                    _logger.LogError($"Loading user by UserID {userId}");
                     // lookup by the userId, this may be a pre-approved user.
                     var volunteer = _dataInterface.GetVolunteerByBceidUserId(userId);
 
@@ -462,6 +463,10 @@ namespace Gov.Jag.Embc.Public.Authentication
 
                         userSettings.ContactId = volunteer.Id;
                         userSettings.IsNewUser = false;
+                    }
+                    else
+                    {
+                        _logger.LogError($"Unable to find user {userId}");
                     }
                 }
 
