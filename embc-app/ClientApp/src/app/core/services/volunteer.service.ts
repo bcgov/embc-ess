@@ -120,7 +120,7 @@ export class VolunteerService extends RestService {
   updateVolunteer(data: Volunteer): Observable<Volunteer> {
     // this will return a response string of 200. This may need to become a Response eventually
     // return of('200');
-    return this.http.put<Volunteer>(this.apiRoute + data.id, data, { headers: this.headers })
+    return this.http.put<Volunteer>(this.apiRoute, data, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError)

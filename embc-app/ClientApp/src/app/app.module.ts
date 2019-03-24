@@ -20,6 +20,8 @@ import { EvacueeRegistrationModule } from './evacuee-registration';
 import { SelfRegistrationModule } from './self-registration';
 import { SharedModule } from './shared/shared.module';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
+import { VolunteerNavbarComponent } from './volunteer-navbar/volunteer-navbar.component';
+import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volu
     VolunteerDashboardComponent,
     TesterPageComponent,
     VolunteerTeamDashboardComponent,
+    VolunteerNavbarComponent,
+    VolunteerUsefulInformationComponent,
   ],
   imports: [
     // angular

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { concat } from 'rxjs';
 
-import { User, Registration } from './core/models'; // TODO: remove registration
-import { detectIE10orLower } from './shared/utils/environmentUtils';
+import { User } from './core/models';
+import { detectIE10orLower } from './shared/utils';
 import { ControlledListService } from './core/services/controlled-list.service';
-import { RegistrationService } from './core/services/registration.service';
 import { UserDataService } from './core/services/user-data.service';
 
 @Component({

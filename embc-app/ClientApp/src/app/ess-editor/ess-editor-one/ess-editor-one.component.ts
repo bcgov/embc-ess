@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { VolunteerService } from 'src/app/core/services/volunteer.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Volunteer } from 'src/app/core/models';
+import { AppState } from 'src/app/store';
+import { Store } from '@ngrx/store';
+import { UpdateVolunteer } from 'src/app/store/volunteer/volunteer.actions';
 
 @Component({
   selector: 'app-ess-editor-one',
@@ -13,7 +16,9 @@ export class EssEditorOneComponent implements OnInit {
   editMode = false;
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private volunteerService: VolunteerService,
+    private store: Store<AppState>,
   ) { }
 
   // collect the four form values and submit them back to the form
@@ -44,6 +49,11 @@ export class EssEditorOneComponent implements OnInit {
       // there may be a user to edit because the route looks right
       this.volunteerService.getVolunteerByBceidAccountNumber(this.route.snapshot.params.essUser).subscribe((v: Volunteer) => {
         // save the volunteer for filling in information later.
+        this.lastName.setValue(v.lastName);
+        this.firstName.setValue(v.firstName);
+        this.bceid.setValue(v.bceidAccountNumber);
+        this.restrictedAccess.setValue(v.canAccessRestrictedFiles);
+
         this.volunteer = v;
         this.editMode = true;
       });
@@ -62,26 +72,20 @@ export class EssEditorOneComponent implements OnInit {
     // flow the volunteer into the form
   }
 
-  submit() {
-    // stuff the data back into the volunteer object
-    this.volunteer.lastName = this.lastName.value;
-    this.volunteer.firstName = this.firstName.value;
-    this.volunteer.bceidAccountNumber = this.bceid.value;
-    this.volunteer.canAccessRestrictedFiles = this.restrictedAccess.value;
 
-    if (this.volunteer.id) {
-      // if the volunteer has an ID we need to update
-      this.volunteerService.updateVolunteer(this.volunteer)
-        .subscribe(v => {
-          alert(JSON.stringify(v));
-        });
-    } else {
-      // if the volunteer has no id we need to create a new one
-      this.volunteerService.createVolunteer(this.volunteer)
-        .subscribe(v => {
-          alert(JSON.stringify(v));
-        });
-    }
-    // alert(this.lastName.value + '-' + this.firstName.value + '-' + this.bceid.value + '-' + this.restrictedAccess.value);
+  next(): void {
+    // when routing to the next page we save first into the application state.
+    this.onSave();
+    this.router.navigate(['user-edit/confirmation']);
+  }
+
+  onSave(): void {
+    // stuff the data back into the volunteer object
+    const volunteer: Volunteer = this.volunteer;
+    volunteer.lastName = this.lastName.value;
+    volunteer.firstName = this.firstName.value;
+    volunteer.bceidAccountNumber = this.bceid.value;
+    volunteer.canAccessRestrictedFiles = this.restrictedAccess.value;
+    this.store.dispatch(new UpdateVolunteer({ volunteer }))
   }
 }

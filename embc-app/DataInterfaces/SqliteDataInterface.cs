@@ -1,6 +1,7 @@
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         private readonly Func<SqliteContext> ctx;
 
-        public SqliteDataInterface(string connectionString)
+        public SqliteDataInterface(ILoggerFactory loggingFactory, string connectionString)
         {
             DbContextOptionsBuilder<SqliteContext> builder = new DbContextOptionsBuilder<SqliteContext>()
                 .UseLazyLoadingProxies()
+                //.UseLoggerFactory(loggingFactory)
                 .UseSqlite(connectionString);
 
             // init the database.
@@ -59,41 +61,38 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<PaginatedList<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters)
         {
-            var db = ctx();
-            IQueryable<Sqlite.Models.Registration> registrations = db.Registrations;
-            var allItemCount = await registrations.CountAsync();
-
-            if (queryParameters.HasSortBy())
+            using (var db = ctx())
             {
-                // sort using dynamic linq extension method
-                registrations = registrations.Sort(queryParameters.SortBy);
+                var q = queryParameters.Query;
+
+                IQueryable<Sqlite.Models.Registration> registrations = db.Registrations
+                     .Where(r => !queryParameters.HasQuery() ||
+                    (
+                        //TODO: see if it is possible to move this into a method, right now EF refuses to work with lazy loading enabled
+                        // and the search criteria in a method, consider switching the search to raw sql for better control of the query
+                        r.HeadOfHousehold.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
+                        r.HeadOfHousehold.FamilyMembers.Any(fm => fm.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
+                        (r.EssFileNumber.HasValue && r.EssFileNumber.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
+                        (r.IncidentTask != null && r.IncidentTask.TaskNumber.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
+                        (r.HeadOfHousehold.PrimaryResidence is Sqlite.Models.BcAddress) &&
+                        ((Sqlite.Models.BcAddress)r.HeadOfHousehold.PrimaryResidence).Community.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase))
+                    )
+                    ;
+
+                if (queryParameters.HasSortBy())
+                {
+                    // sort using dynamic linq extension method
+                    registrations = registrations.Sort(queryParameters.SortBy);
+                }
+
+                var items = await registrations
+                    .Skip(queryParameters.Offset)
+                    .Take(queryParameters.Limit)
+                    .ToArrayAsync();
+
+                var allItemCount = await registrations.CountAsync();
+                return new PaginatedList<Registration>(items.Select(r => r.ToViewModel()), allItemCount, queryParameters.Offset, queryParameters.Limit);
             }
-
-            if (queryParameters.HasQuery())
-            {
-                // TODO: Implement FILTERING of search results!
-                registrations = registrations.Where(item => this.SimpleSearch(item, queryParameters.Query));
-            }
-
-            var items = await registrations
-                .Skip(queryParameters.Offset)
-                .Take(queryParameters.Limit)
-                .ToArrayAsync();
-
-            return new PaginatedList<Registration>(items.Select(r => r.ToViewModel()), allItemCount, queryParameters.Offset, queryParameters.Limit);
-        }
-
-        private bool SimpleSearch(Sqlite.Models.Registration item, string q)
-        {
-            var byLastName = item.HeadOfHousehold?.LastName?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
-            var byTaskNumber = item.IncidentTask?.TaskNumber?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
-            var byEssFileNumber = item.EssFileNumber?.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
-            var byCommunity = (item.HeadOfHousehold?.PrimaryResidence as Sqlite.Models.BcAddress)?.Community?.Name?.Contains(q, StringComparison.InvariantCultureIgnoreCase) ?? false;
-
-            // TODO: Add more of these...
-
-            var filter = byLastName || byTaskNumber || byEssFileNumber || byCommunity;
-            return filter;
         }
 
         private bool AdvancedSearch(Sqlite.Models.Registration item, string q)
