@@ -12,17 +12,14 @@ export class VolunteerTeamDashboardComponent implements OnInit {
     // simple server response
     volunteers: Volunteer[];
 
-    // search related
-    // isLoadingResults = false;
-    // searchState = { offset: 0, limit: 100, sort: '', query: '' };
-    // searchResults$: Observable<EvacueeSearchResults>;
-
     constructor(
         private volunteerService: VolunteerService,
     ) { }
 
     ngOnInit() {
-        this.volunteerService.getAllVolunteers().subscribe(v => this.volunteers = v);
+        this.volunteerService.getAllVolunteers().subscribe((v: Volunteer[]) => {
+            this.volunteers = v;
+        });
     }
 
 }
