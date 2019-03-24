@@ -25,7 +25,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         //public bool? MedicationNeeds { get; set; }
         //public DateTimeOffset? SelfRegisteredDate { get; set; }
         //public DateTimeOffset? RegistrationCompletionDate { get; set; }
-        //public string RegisteringFamilyMembers { get; set; }  // one of ['yes', 'yes-later', 'no']
+        public string RegisteringFamilyMembers { get; set; }  // one of ['yes', 'yes-later', 'no']
 
         // family state flags
         public bool? HasThreeDayMedicationSupply { get; set; }

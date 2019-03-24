@@ -17,7 +17,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<PaginatedList<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters);
 
         Task<Registration> GetRegistrationAsync(string id);
-        Task<Registration> GetRegistrationSummary(string id);
+        Task<RegistrationSummary> GetRegistrationSummary(string id);
 
         Task<Registration> CreateRegistrationAsync(Registration registration);
 

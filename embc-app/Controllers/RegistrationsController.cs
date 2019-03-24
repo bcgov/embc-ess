@@ -87,7 +87,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetOneSummary(string id)
         {
-            var result = await _dataInterface.GetRegistrationSummary(id);
+            var result = await dataInterface.GetRegistrationSummary(id);
             if (result == null)
             {
                 return NotFound();

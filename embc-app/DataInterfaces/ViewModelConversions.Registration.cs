@@ -107,7 +107,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     Id = source.Id.ToString(),
                     EssFileNumber = source.EssFileNumber,
                     RestrictedAccess = source.RestrictedAccess,
-                    //RegisteringFamilyMembers = source.RegisteringFamilyMembers,
+                    RegisteringFamilyMembers = source.RegisteringFamilyMembers,
                     HasThreeDayMedicationSupply = source.HasThreeDayMedicationSupply,
                     HasPets = source.HasPets,
                     RequiresSupport = source.RequiresSupport,
