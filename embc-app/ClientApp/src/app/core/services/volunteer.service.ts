@@ -94,19 +94,19 @@ export class VolunteerService extends RestService {
 
   getAllVolunteers(): Observable<Volunteer[]> {
     // get a list of all volunteers back from the api
-    return of(VOLUNTEERS);
-    // return this.http.get<Volunteer[]>(this.apiRoute, { headers: this.headers })
-    // .pipe(
-    //   catchError(this.handleError)
-    // );
+    // return of(VOLUNTEERS);
+    return this.http.get<Volunteer[]>(this.apiRoute, { headers: this.headers })
+      .pipe(
+        catchError(this.handleError)
+      );
   }
   getVolunteerByBceidAccountNumber(bceidAccountNumber: string): Observable<Volunteer> {
     // get a single volunteer by their bceidAccountNumber
-    return of(VOLUNTEERS[0]);
-    // return this.http.get<Volunteer>(this.apiRoute + bceidAccountNumber, { headers: this.headers })
-    //   .pipe(
-    //     catchError(this.handleError)
-    //   );
+    // return of(VOLUNTEERS[0]);
+    return this.http.get<Volunteer>(this.apiRoute + bceidAccountNumber, { headers: this.headers })
+      .pipe(
+        catchError(this.handleError)
+      );
   }
   createVolunteer(data: Volunteer): Observable<Volunteer> {
     // this will return a response string of 200. This may need to become a Response eventually

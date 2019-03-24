@@ -19,6 +19,7 @@ import { EssEditorModule } from './ess-editor';
 import { EvacueeRegistrationModule } from './evacuee-registration';
 import { SelfRegistrationModule } from './self-registration';
 import { SharedModule } from './shared/shared.module';
+import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { VolunteerNavbarComponent } from './volunteer-navbar/volunteer-navbar.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 
@@ -29,6 +30,7 @@ import { VolunteerUsefulInformationComponent } from './volunteer-useful-informat
     VolunteerLoginComponent,
     VolunteerDashboardComponent,
     TesterPageComponent,
+    VolunteerTeamDashboardComponent,
     VolunteerNavbarComponent,
     VolunteerUsefulInformationComponent,
   ],

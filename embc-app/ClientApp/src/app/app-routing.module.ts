@@ -19,6 +19,7 @@ import { EvacueeRegistrationConfirmationComponent } from './evacuee-registration
 import { EssEditorComponent } from './ess-editor/ess-editor.component';
 import { EssEditorOneComponent } from './ess-editor/ess-editor-one/ess-editor-one.component';
 import { EssEditorConfirmationComponent } from './ess-editor/ess-editor-confirmation/ess-editor-confirmation.component';
+import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 
 const routes: Routes = [
@@ -68,6 +69,10 @@ const routes: Routes = [
   {
     path: 'volunteer-dashboard',
     component: VolunteerDashboardComponent
+  },
+  {
+    path: 'volunteer-team-dashboard',
+    component: VolunteerTeamDashboardComponent
   },
   {
     path: 'register-evacuee',
