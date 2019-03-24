@@ -12,7 +12,7 @@ const initialState: State = {
   currentRegistration: {
     id: null,
     essFileNumber: null,
-    restrictedAccess: null,
+    restrictedAccess: false,
     declarationAndConsent: null,
     registeringFamilyMembers: null,
     dietaryNeeds: null,

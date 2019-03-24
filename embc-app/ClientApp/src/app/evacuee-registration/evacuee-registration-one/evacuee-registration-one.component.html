@@ -1,3 +1,11 @@
+<!--
+  TODO:
+  "control.registeronchange is not a function"
+
+  this bug is seen in the console. Unfortunately by commenting things out this simply moves the error location around the code. This seems to be potentially a bug with patching formArrays. (According to stack overflow.) Maybe this will come out in the wash? Revisit this later when we have more time to spend on a single non-breaking error.
+ -->
+
+
 <div class="mb-4">
   <h1 *ngIf="!editMode">Add an Evacuee</h1>
   <h1 *ngIf="editMode">Edit an Evacuee</h1>
@@ -354,19 +362,19 @@
       MAILING ADDRESS
     </h3>
     <p class="required">
-      Is your mailing address different from your primary residence?
+      Is your mailing address the same as your primary residence?
     </p>
     <div class="form-group">
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" [value]="true" formControlName="hasMailingAddress">
+        <input class="form-check-input" type="radio" [value]="true" formControlName="mailingAddressSameAsPrimary">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" [value]="false" formControlName="hasMailingAddress">
+        <input class="form-check-input" type="radio" [value]="false" formControlName="mailingAddressSameAsPrimary">
         <label class="form-check-label">No</label>
       </div>
     </div>
-    <div class="card" *ngIf="form.value.hasMailingAddress">
+    <div class="card" *ngIf="!form.value.mailingAddressSameAsPrimary">
       <div class="card-body">
         <p class="required">Is your mailing address within BC</p>
         <div class="form-group">
