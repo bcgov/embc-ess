@@ -24,7 +24,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   componentActive = true;
-
   registration: Registration | null;
 
   constructor(

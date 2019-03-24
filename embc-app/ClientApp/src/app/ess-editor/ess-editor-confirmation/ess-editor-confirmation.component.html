@@ -6,29 +6,35 @@
     <ul class="summary">
       <li>
         <span class="name">Last Name:</span>
-        <span class="value">Test</span>
+        <span class="value">{{volunteer.lastName}}</span>
       </li>
       <li>
         <span class="name">First Name:</span>
-        <span class="value">User</span>
+        <span class="value">{{volunteer.firstName}}</span>
       </li>
       <li>
         <span class="name">BCeID:</span>
-        <span class="value">KASLJDHLKASD</span>
+        <span class="value">{{volunteer.bceidAccountNumber}}</span>
       </li>
       <li>
         <span class="name">Access Restricted Files:</span>
-        <span class="value">Yes</span>
+        <span *ngIf="volunteer.canAccessRestrictedFiles" class="value">Yes</span>
+        <span *ngIf="!volunteer.canAccessRestrictedFiles" class="value">No</span>
+
       </li>
     </ul>
   </section>
 </div>
 <div class="mt-5 space-between">
   <section>
-    <button class="btn btn-secondary">Edit</button>
+    <button (click)="back()" class="btn btn-secondary">Edit</button>
   </section>
   <section>
-    <button class="btn btn-primary">SAVE</button>
+    <button class="btn btn-primary" (click)="submit()">SAVE</button>
     <button class="btn btn-primary ml-2">SAVE &amp; ADD ANOTHER</button>
   </section>
 </div>
+
+<!-- <div class="col mb-4 space-between">
+  <pre>{{volunteer|json}}</pre>
+</div> -->
