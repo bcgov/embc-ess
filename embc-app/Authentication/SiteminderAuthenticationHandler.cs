@@ -222,7 +222,7 @@ namespace Gov.Jag.Embc.Public.Authentication
             ClaimsPrincipal principal = new ClaimsPrincipal();
             
             // get siteminder headers
-            _logger.LogDebug("Parsing the HTTP headers for SiteMinder authentication credential");
+            _logger.LogError("Parsing the HTTP headers for SiteMinder authentication credential");
 
             SiteMinderAuthOptions options = new SiteMinderAuthOptions();
             bool isDeveloperLogin = false;
@@ -285,7 +285,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                         }
                         isDeveloperLogin = true;
 
-                        _logger.LogDebug("Got user from dev cookie = " + userId + ", company = " + devCompanyId);
+                        _logger.LogError("Got user from dev cookie = " + userId + ", company = " + devCompanyId);
                     }
                     else
                     {
@@ -302,7 +302,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                             userId = temp;
                             isBCSCDeveloperLogin = true;
 
-                            _logger.LogDebug("Got user from dev cookie = " + userId);
+                            _logger.LogError("Got user from dev cookie = " + userId);
                         }
                     }
                 //}
@@ -314,12 +314,12 @@ namespace Gov.Jag.Embc.Public.Authentication
                 {
                     _logger.LogInformation("Checking user session");
                     userSettings = UserSettings.ReadUserSettings(context);
-                    _logger.LogDebug("UserSettings found: " + userSettings.GetJson());
+                    _logger.LogError("UserSettings found: " + userSettings.GetJson());
                 }
                 catch
                 {
                     //do nothing
-                    _logger.LogDebug("No UserSettings found");
+                    _logger.LogError("No UserSettings found");
                 }
 
                 // is user authenticated - if so we're done
@@ -327,7 +327,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                     (userSettings.UserAuthenticated && !string.IsNullOrEmpty(userId) &&
                      !string.IsNullOrEmpty(userSettings.UserId) && userSettings.UserId == userId))
                 {
-                    _logger.LogDebug("User already authenticated with active session: " + userSettings.UserId);
+                    _logger.LogError("User already authenticated with active session: " + userSettings.UserId);
                     principal = userSettings.AuthenticatedUser.ToClaimsPrincipal(options.Scheme, userSettings.UserType);
                     return AuthenticateResult.Success(new AuthenticationTicket(principal, null, Options.Scheme));
                 }
@@ -347,13 +347,13 @@ namespace Gov.Jag.Embc.Public.Authentication
                 // **************************************************
                 // Authenticate based on SiteMinder Headers
                 // **************************************************
-                _logger.LogDebug("Parsing the HTTP headers for SiteMinder authentication credential");
+                _logger.LogError("Parsing the HTTP headers for SiteMinder authentication credential");
 
                 // At this point userID would only be set if we are logging in through as a DEV user
 
                 if (string.IsNullOrEmpty(userId))
                 {
-                    _logger.LogDebug("Getting user data from headers");
+                    _logger.LogError("Getting user data from headers");
 
                     userId = context.Request.Headers[options.SiteMinderUserNameKey];
                     if (string.IsNullOrEmpty(userId))
@@ -371,18 +371,18 @@ namespace Gov.Jag.Embc.Public.Authentication
                     // **************************************************
                     if (string.IsNullOrEmpty(userId))
                     {
-                        _logger.LogDebug(options.MissingSiteMinderUserIdError);
+                        _logger.LogError(options.MissingSiteMinderUserIdError);
                         return AuthenticateResult.Fail(options.MissingSiteMinderGuidError);
                     }
 
                     if (string.IsNullOrEmpty(siteMinderGuid))
                     {
-                        _logger.LogDebug(options.MissingSiteMinderGuidError);
+                        _logger.LogError(options.MissingSiteMinderGuidError);
                         return AuthenticateResult.Fail(options.MissingSiteMinderGuidError);
                     }
                     if (string.IsNullOrEmpty(siteMinderUserType))
                     {
-                        _logger.LogDebug(options.MissingSiteMinderUserTypeError);
+                        _logger.LogError(options.MissingSiteMinderUserTypeError);
                         return AuthenticateResult.Fail(options.MissingSiteMinderUserTypeError);
                     }
                 }
@@ -428,7 +428,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                 }
 
 
-                _logger.LogDebug("Loading user external id = " + siteMinderGuid);
+                _logger.LogError("Loading user external id = " + siteMinderGuid);
                 if (_dataInterface != null)
                 {
                     userSettings.AuthenticatedUser = await _dataInterface.LoadUser(siteMinderGuid, context.Request.Headers, _logger);
@@ -466,7 +466,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                 }
 
                 
-                _logger.LogDebug("After getting authenticated user = " + userSettings.GetJson());
+                _logger.LogError("After getting authenticated user = " + userSettings.GetJson());
 
 
                 // check that the potential new user is 19.
@@ -504,8 +504,8 @@ namespace Gov.Jag.Embc.Public.Authentication
                 // **************************************************
                 // Create authenticated user
                 // **************************************************
-                _logger.LogDebug("Authentication successful: " + userId);
-                _logger.LogDebug("Setting identity and creating session for: " + userId);
+                _logger.LogError("Authentication successful: " + userId);
+                _logger.LogError("Setting identity and creating session for: " + userId);
 
                 // create session info for the current user
                 userSettings.UserId = userId;
@@ -516,7 +516,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                 userSettings.SiteMinderGuid = siteMinderGuid;
                 userSettings.SiteMinderBusinessGuid = siteMinderBusinessGuid;
 
-                _logger.LogDebug("Before getting contact and account ids = " + userSettings.GetJson());
+                _logger.LogError("Before getting contact and account ids = " + userSettings.GetJson());
 
                 if (userSettings.AuthenticatedUser != null)
                 {
@@ -577,11 +577,11 @@ namespace Gov.Jag.Embc.Public.Authentication
                             userSettings.ContactId = null;
                         }
 
-                        _logger.LogDebug("New user registration:" + userSettings.UserDisplayName);
-                        _logger.LogDebug("userSettings.SiteMinderBusinessGuid:" + userSettings.SiteMinderBusinessGuid);
-                        _logger.LogDebug("userSettings.SiteMinderGuid:" + userSettings.SiteMinderGuid);
-                        _logger.LogDebug("userSettings.AccountId:" + userSettings.AccountId);
-                        _logger.LogDebug("userSettings.ContactId:" + userSettings.ContactId);
+                        _logger.LogError("New user registration:" + userSettings.UserDisplayName);
+                        _logger.LogError("userSettings.SiteMinderBusinessGuid:" + userSettings.SiteMinderBusinessGuid);
+                        _logger.LogError("userSettings.SiteMinderGuid:" + userSettings.SiteMinderGuid);
+                        _logger.LogError("userSettings.AccountId:" + userSettings.AccountId);
+                        _logger.LogError("userSettings.ContactId:" + userSettings.ContactId);
                     }
                     // Set account ID from authenticated user
                     else if (userSettings.AuthenticatedUser != null)
@@ -595,9 +595,9 @@ namespace Gov.Jag.Embc.Public.Authentication
                         {
                             userSettings.ContactId = userSettings.AuthenticatedUser.ContactId.ToString();
                         }
-                        _logger.LogDebug("Returning user:" + userSettings.UserDisplayName);
-                        _logger.LogDebug("userSettings.AccountId:" + userSettings.AccountId);
-                        _logger.LogDebug("userSettings.ContactId:" + userSettings.ContactId);
+                        _logger.LogError("Returning user:" + userSettings.UserDisplayName);
+                        _logger.LogError("userSettings.AccountId:" + userSettings.AccountId);
+                        _logger.LogError("userSettings.ContactId:" + userSettings.ContactId);
                     }
                 }
 
