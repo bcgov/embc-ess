@@ -27,7 +27,7 @@
       <app-form-field class="col-md-9" required="true"
         tooltip="Tool Tip: Please ensure you use the legal last name of the person registering the family.">
         <label>Last Name</label>
-        <input [class.is-invalid]="submitted && !!invalidFeedback.headOfHousehold.lastName" class="form-control"
+        <input [class.is-invalid]="submitted && invalidFeedback['headOfHousehold'].lastName" class="form-control"
           type="text" formControlName="lastName">
         <span *ngIf="submitted" class="invalid-feedback">
           {{invalidFeedback['headOfHousehold'].lastName}}
@@ -38,7 +38,7 @@
       <app-form-field class="col-md-9" required="true"
         tooltip="Tool Tip: Please ensure you use the legal first name of the person registering the family.">
         <label>First Name</label>
-        <input [class.is-invalid]="submitted && !!invalidFeedback.headOfHousehold.firstName" class="form-control"
+        <input [class.is-invalid]="submitted && invalidFeedback['headOfHousehold'].firstName" class="form-control"
           type="text" formControlName="firstName">
         <span *ngIf="submitted" class="invalid-feedback">
           {{invalidFeedback['headOfHousehold'].firstName}}
@@ -67,7 +67,7 @@
       </app-form-field>
       <app-form-field class="col-md-4" required="true">
         <label>Date of Birth</label>
-        <input [class.is-invalid]="submitted && !!invalidFeedback.headOfHousehold.dob" class="form-control" type="date"
+        <input [class.is-invalid]="submitted && invalidFeedback['headOfHousehold'].dob" class="form-control" type="date"
           formControlName="dob">
         <span *ngIf="submitted" class="invalid-feedback">
           {{invalidFeedback['headOfHousehold'].dob}}

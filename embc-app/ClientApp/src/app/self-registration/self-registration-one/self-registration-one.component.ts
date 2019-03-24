@@ -29,7 +29,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   registration: Registration | null;
 
   // Use with the generic validation message class
-  invalidFeedback: { [key: string]: string | { [key: string]: string } } = {};
+  invalidFeedback: { [key: string]: any } = {};
   errorSummary = '';
 
   // generic validation helper
