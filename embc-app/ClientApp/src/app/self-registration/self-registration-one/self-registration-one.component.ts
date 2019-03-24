@@ -29,8 +29,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   registration: Registration | null;
 
   // Use with the generic validation message class
-  invalidFeedback: { [key: string]: any } = {};
-  errorSummary = '';
+  validationFeedback: { [key: string]: any } = {};
+  validationErrorSummary = '';
 
   // generic validation helper
   private validationMessages: { [key: string]: { [key: string]: string | { [key: string]: string } } };
@@ -187,7 +187,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   }
 
   validateForm(): void {
-    this.invalidFeedback = this.validationHelper.processMessages(this.form);
+    this.validationFeedback = this.validationHelper.processMessages(this.form);
   }
 
   displayRegistration(registration: Registration | null): void {
@@ -286,12 +286,12 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
     // stop here if form is invalid
     if (this.form.invalid) {
-      this.errorSummary = 'Some required fields have not been completed.';
+      this.validationErrorSummary = 'Some required fields have not been completed.';
       return;
     }
 
     // success!
-    this.errorSummary = null;
+    this.validationErrorSummary = null;
     this.onSave();
     this.router.navigate(['../step-2'], { relativeTo: this.route });
   }
