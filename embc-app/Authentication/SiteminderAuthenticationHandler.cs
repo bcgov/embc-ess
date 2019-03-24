@@ -427,8 +427,6 @@ namespace Gov.Jag.Embc.Public.Authentication
                     }
                 }
 
-                // Previously the code would do a database lookup here.  However there is no backing database for the users table now,
-                // so we just do a Dynamics lookup on the siteMinderGuid.
 
                 _logger.LogDebug("Loading user external id = " + siteMinderGuid);
                 if (_dataInterface != null)

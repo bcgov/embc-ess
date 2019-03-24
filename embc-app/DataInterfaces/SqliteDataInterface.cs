@@ -221,7 +221,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public Volunteer GetVolunteerByBceidUserId(string bceidUserId)
         {
             Volunteer result = null;
-            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).BceidAccountNumber == bceidUserId);
+            var item = (Sqlite.Models.Volunteer)Db.People
+                .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
+                .FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).BceidAccountNumber.ToUpper() == bceidUserId.ToUpper());
             if (item != null)
             {
                 result = item.ToViewModel();
@@ -232,7 +234,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public Volunteer GetVolunteerByExternalId(string externalId)
         {
             Volunteer result = null;
-            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).Externaluseridentifier == externalId);
+            var item = (Sqlite.Models.Volunteer)Db.People
+                .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
+                .FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).Externaluseridentifier == externalId);
             if (item != null)
             {
                 result = item.ToViewModel();
@@ -243,7 +247,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public Volunteer GetVolunteerByName(string firstName, string lastName)
         {
             Volunteer result = null;
-            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
+            var item = (Sqlite.Models.Volunteer)Db.People
+                .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
+                .FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
             if (item != null)
             {
                 result = item.ToViewModel();
@@ -255,7 +261,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             Volunteer result = null;
             Guid guid = new Guid(id);
-            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => x.Id == guid);
+            var item = (Sqlite.Models.Volunteer)Db.People
+                .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
+                .FirstOrDefault(x => x.Id == guid);
             if (item != null)
             {
                 result = item.ToViewModel();
