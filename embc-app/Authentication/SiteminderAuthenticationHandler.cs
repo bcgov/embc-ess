@@ -431,7 +431,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                 _logger.LogError("Loading user external id = " + siteMinderGuid);
                 if (_dataInterface != null)
                 {
-                    userSettings.AuthenticatedUser = await _dataInterface.LoadUser(null, context.Request.Headers, _logger, siteMinderGuid);
+                    userSettings.AuthenticatedUser = await _dataInterface.LoadUser(siteMinderGuid, context.Request.Headers, _logger);
                 }
 
                 if (userSettings.AuthenticatedUser == null) // could be a pre-approved user
@@ -466,7 +466,7 @@ namespace Gov.Jag.Embc.Public.Authentication
 
                         await _dataInterface.UpdatePersonAsync(volunteer);
 
-                        userSettings.AuthenticatedUser = await _dataInterface.LoadUser(null, context.Request.Headers, _logger, siteMinderGuid);
+                        userSettings.AuthenticatedUser = await _dataInterface.LoadUser(siteMinderGuid, context.Request.Headers, _logger);
 
                         userSettings.ContactId = volunteer.Id;
                         userSettings.IsNewUser = false;

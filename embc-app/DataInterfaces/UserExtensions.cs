@@ -17,10 +17,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// Load User from database using their userId and guid
         /// </summary>
         /// <param name="context"></param>
-        /// <param name="userId"></param>
+        /// <param name="siteminderGuid"></param>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public static async Task<User> LoadUser(this IDataInterface _dataInterface, string userId, IHeaderDictionary Headers, ILogger _logger, string guid = null)
+        public static async Task<User> LoadUser(this IDataInterface _dataInterface, string siteminderGuid, IHeaderDictionary Headers, ILogger _logger, string guid = null)
         {
             User user = null;
             ViewModels.Volunteer contact = null;
@@ -34,64 +34,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             if (user == null)
             {
                 _logger.LogInformation(">>>> LoadUser for BCEID.");
-                if (Guid.TryParse(userId, out userGuid))
+                user = _dataInterface.GetUserByExternalId(siteminderGuid);
+                if (user != null)
                 {
-                    user = _dataInterface.GetUserBySmUserId(userId);
-                    if (user != null)
-                    {
-                        _logger.LogInformation(">>>> LoadUser for BCEID: user != null");
+                    _logger.LogInformation(">>>> LoadUser for BCEID: user != null");
                         
-                        // if you wish to update the contact with Siteminder headers, do it here.
-                    }
+                    // if you wish to update the contact with Siteminder headers, do it here.
                 }
-                else
-                { //BC service card login
-
-                    _logger.LogInformation(">>>> LoadUser for BC Services Card.");
-                    //string externalId = GetServiceCardID(userId);
-                    contact = null; //  _dynamicsClient.GetContactByExternalId(externalId);
-
-                    if (contact != null)
-                    {
-                        _logger.LogInformation(">>>> LoadUser for BC Services Card: contact != null");
-
-                        /*
-                        user = new User();
-                        user.FromContact(contact);
-
-                        // Update the contact and worker with info from Siteminder
-                        var contactVM = new Public.ViewModels.Contact();
-                        var workerVm = new Public.ViewModels.Worker();
-                        contactVM.CopyHeaderValues(Headers);
-                        workerVm.CopyHeaderValues(Headers);
-                        MicrosoftDynamicsCRMcontact patchContact = new MicrosoftDynamicsCRMcontact();
-                        MicrosoftDynamicsCRMadoxioWorker patchWorker = new MicrosoftDynamicsCRMadoxioWorker();
-                        patchContact.CopyValues(contactVM);
-                        patchWorker.CopyValues(workerVm);
-                        try
-                        {
-                            string filter = $"_adoxio_contactid_value eq {contact.Contactid}";
-                            var workers = _dynamicsClient.Workers.Get(filter: filter).Value;
-                            foreach (var item in workers)
-                            {
-                                _dynamicsClient.Workers.Update(item.AdoxioWorkerid, patchWorker);
-
-                            }
-                            _dynamicsClient.Contacts.Update(user.ContactId.ToString(), patchContact);
-                        }
-                        catch (OdataerrorException odee)
-                        {
-                            _logger.LogError("Error updating Contact");
-                            _logger.LogError("Request:");
-                            _logger.LogError(odee.Request.Content);
-                            _logger.LogError("Response:");
-                            _logger.LogError(odee.Response.Content);
-                            // fail if we can't create.
-                            throw (odee);
-                        }
-                        */
-                    }
-                }
+                                
             }
 
             if (user == null)
@@ -165,7 +115,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <param name="context"></param>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public static User GetUserBySmUserId(this IDataInterface _dataInterface, string guid)
+        public static User GetUserByExternalId(this IDataInterface _dataInterface, string guid)
         {
             Guid id = new Guid(guid);
             User user = null;
@@ -199,6 +149,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             to.GivenName = from.FirstName;
             to.Surname = from.LastName;
             to.SmUserId = from.BceidAccountNumber;
+            to.SiteMinderGuid = from.Externaluseridentifier;
             to.Email = from.Email;
             to.Active = true;
         }
