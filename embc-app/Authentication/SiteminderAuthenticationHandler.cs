@@ -444,14 +444,21 @@ namespace Gov.Jag.Embc.Public.Authentication
                     {
                         if (volunteer.Organization == null)
                         {
-                            ViewModels.Organization volunteerOrganization = new ViewModels.Organization()
+                            ViewModels.Organization volunteerOrganization = _dataInterface.GetOrganizationByExternalId(siteMinderBusinessGuid);
+
+                            if (volunteerOrganization == null) // create it
                             {
-                                Externaluseridentifier = siteMinderBusinessGuid,
-                                Name = smgov_businesslegalname,
-                                Active = true
-                            };
+                                volunteerOrganization = new ViewModels.Organization()
+                                {
+                                    Externaluseridentifier = siteMinderBusinessGuid,
+                                    Name = smgov_businesslegalname,
+                                    Active = true
+                                };
+
+                                volunteerOrganization = await _dataInterface.CreateOrganizationAsync(volunteerOrganization);
+                            }
+
                             userSettings.AccountId = volunteerOrganization.Id;
-                            volunteerOrganization = await _dataInterface.CreateOrganizationAsync(volunteerOrganization);
                             volunteer.Organization = volunteerOrganization;
                         }
 
