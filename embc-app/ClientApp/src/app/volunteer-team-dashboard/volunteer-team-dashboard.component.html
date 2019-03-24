@@ -19,7 +19,7 @@
       </p>
 
       <div class="search-results">
-        <div *ngIf="volunteers.length; then searchResultsTable; else notFound"></div>
+        <div *ngIf="volunteers && volunteers.length>0; then searchResultsTable; else notFound"></div>
       </div>
 
       <ng-template #searchResultsTable>
@@ -48,9 +48,9 @@
         </table>
       </ng-template>
 
-      <!-- <ng-template #notFound>
-        <p>{{notFoundMessage}}</p>
-      </ng-template> -->
+      <ng-template #notFound>
+        <!-- <p>{{notFoundMessage}}</p> -->
+      </ng-template>
 
     </div>
   </div>
