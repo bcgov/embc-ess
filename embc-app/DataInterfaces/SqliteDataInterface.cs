@@ -350,13 +350,34 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         private IQueryable<Sqlite.Models.Person> GetAllPeopleAsync(string type)
         {
             var db = ctx();
-            return db.People.Where(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase));
+            IQueryable<Sqlite.Models.Person> result = null;
+            if (type == Sqlite.Models.Person.VOLUNTEER)
+            {
+                result = db.People.Include(x => ((Sqlite.Models.Volunteer)x).Organization)
+                    .Where(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase));                    
+            }
+                else
+            {
+                result = db.People.Where(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase));
+            }
+            return result;
         }
 
         private async Task<Sqlite.Models.Person> GetSinglePersonByIdAsync(string type, string id)
         {
             var db = ctx();
-            return await db.People.FirstOrDefaultAsync(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase) && p.Id == Guid.Parse(id));
+            Sqlite.Models.Person result = null;
+            if (type == Sqlite.Models.Person.VOLUNTEER)
+            {
+                result = await db.People
+                    .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
+                    .FirstOrDefaultAsync(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase) && p.Id == Guid.Parse(id));                    
+            }
+            else
+            {
+                result = await db.People.FirstOrDefaultAsync(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase) && p.Id == Guid.Parse(id));
+            }
+            return result;
         }
 
         public async Task UpdatePersonAsync(Person person)
