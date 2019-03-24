@@ -117,9 +117,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <returns></returns>
         public static User GetUserByExternalId(this IDataInterface _dataInterface, string guid)
         {
-            Guid id = new Guid(guid);
+            
             User user = null;
-            var contact = _dataInterface.GetVolunteerByExternalId(id.ToString());
+            var contact = _dataInterface.GetVolunteerByExternalId(guid);
             if (contact != null)
             {
                 user = new User();
