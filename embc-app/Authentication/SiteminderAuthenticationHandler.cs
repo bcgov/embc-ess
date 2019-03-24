@@ -435,6 +435,38 @@ namespace Gov.Jag.Embc.Public.Authentication
                 {
                     userSettings.AuthenticatedUser = await _dataInterface.LoadUser(siteMinderGuid, context.Request.Headers, _logger);
                 }
+
+                if (userSettings.AuthenticatedUser == null) // could be a pre-approved user
+                {
+                    // lookup by the userId, this may be a pre-approved user.
+                    var volunteer = _dataInterface.GetVolunteerByBceidUserId(userId);
+
+                    if (volunteer != null) // fully populate the Volunteer.
+                    {
+                        if (volunteer.Organization == null)
+                        {
+                            ViewModels.Organization volunteerOrganization = new ViewModels.Organization()
+                            {
+                                Externaluseridentifier = siteMinderBusinessGuid,
+                                Name = smgov_businesslegalname,
+                                Active = true
+                            };
+                            userSettings.AccountId = volunteerOrganization.Id;
+                            volunteerOrganization = await _dataInterface.CreateOrganizationAsync(volunteerOrganization);
+                            volunteer.Organization = volunteerOrganization;
+                        }
+
+                        volunteer.Externaluseridentifier = siteMinderGuid;
+
+                        await _dataInterface.UpdatePersonAsync(volunteer);
+
+                        userSettings.AuthenticatedUser = await _dataInterface.LoadUser(siteMinderGuid, context.Request.Headers, _logger);
+
+                        userSettings.ContactId = volunteer.Id;
+                        userSettings.IsNewUser = false;
+                    }
+                }
+
                 
                 _logger.LogDebug("After getting authenticated user = " + userSettings.GetJson());
 
@@ -500,34 +532,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                             userSettings.AccountId = account.Id;
                             userSettings.AuthenticatedUser.AccountId = Guid.Parse(account.Id);
                         }
-                        else
-                        {
-                            // lookup by the userId, this may be a pre-approved user.
-                            var volunteer = _dataInterface.GetVolunteerByBceidUserId(userId);
-
-                            if (volunteer != null) // fully populate the Volunteer.
-                            {
-                                if (volunteer.Organization == null)
-                                {
-                                    ViewModels.Organization volunteerOrganization = new ViewModels.Organization()
-                                    {
-                                        Externaluseridentifier = siteMinderBusinessGuid,
-                                        Name = smgov_businesslegalname,
-                                        Active = true
-                                    };
-                                    userSettings.AccountId = volunteerOrganization.Id;
-                                    volunteerOrganization = await _dataInterface.CreateOrganizationAsync(volunteerOrganization);
-                                    volunteer.Organization = volunteerOrganization;
-                                }
-
-                                volunteer.Externaluseridentifier = siteMinderGuid;
-                                
-                                await _dataInterface.UpdatePersonAsync(volunteer);
-                                userSettings.ContactId = volunteer.Id;
-                                userSettings.IsNewUser = false;
-                            }
-
-                        }
+                        
                     }
                     else
                     {
