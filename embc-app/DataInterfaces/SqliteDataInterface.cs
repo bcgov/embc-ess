@@ -198,6 +198,16 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return Task.FromResult<Registration>(null);
         }
 
+        public Task<RegistrationSummary> GetRegistrationSummary(string id)
+        {
+            if (Guid.TryParse(id, out var guid))
+            {
+                var entity = Db.Registrations.FirstOrDefault(reg => reg.Id == guid);
+                return Task.FromResult(entity?.ToSummaryViewModel());
+            }
+            return Task.FromResult<RegistrationSummary>(null);
+        }
+
         //
         // Incident Tasks
         //

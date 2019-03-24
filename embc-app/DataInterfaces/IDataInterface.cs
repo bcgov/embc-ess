@@ -19,6 +19,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<IQueryable<Registration>> GetRegistrations(SearchQueryParameters queryParameters);
 
         Task<Registration> GetRegistration(string id);
+        Task<Registration> GetRegistrationSummary(string id);
 
         Task<Registration> CreateRegistration(Registration registration);
 
