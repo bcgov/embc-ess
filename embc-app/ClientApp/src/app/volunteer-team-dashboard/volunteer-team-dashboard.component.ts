@@ -4,24 +4,25 @@ import { Volunteer } from '../core/models';
 import { Observable } from 'rxjs';
 // import { }
 @Component({
-  selector: 'app-volunteer-team-dashboard',
-  templateUrl: './volunteer-team-dashboard.component.html',
-  styleUrls: ['./volunteer-team-dashboard.component.scss']
+    selector: 'app-volunteer-team-dashboard',
+    templateUrl: './volunteer-team-dashboard.component.html',
+    styleUrls: ['./volunteer-team-dashboard.component.scss']
 })
 export class VolunteerTeamDashboardComponent implements OnInit {
-  // server response
-  resultsAndPagination: Observable<Volunteer[]>;
+    // simple server response
+    volunteers: Volunteer[];
 
-  // search related
-  isLoadingResults = false;
-  searchState = { offset: 0, limit: 100, sort: '', query: '' };
-  // searchResults$: Observable<EvacueeSearchResults>;
+    // search related
+    // isLoadingResults = false;
+    // searchState = { offset: 0, limit: 100, sort: '', query: '' };
+    // searchResults$: Observable<EvacueeSearchResults>;
 
-  constructor(
-    private volunteerService: VolunteerService,
-  ) { }
+    constructor(
+        private volunteerService: VolunteerService,
+    ) { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+        this.volunteerService.getAllVolunteers().subscribe(v => this.volunteers = v);
+    }
 
 }
