@@ -52,6 +52,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     resultVol.Name = sourceVol.Name;
                     resultVol.Email = sourceVol.Email;
                     resultVol.BceidAccountNumber = sourceVol.BceidAccountNumber;
+                    resultVol.Externaluseridentifier = sourceVol.Externaluseridentifier;
                     resultVol.IsAdministrator = sourceVol.IsAdministrator;
                     resultVol.IsPrimaryContact = sourceVol.IsPrimaryContact;
                     resultVol.CanAccessRestrictedFiles = sourceVol.CanAccessRestrictedFiles;
@@ -113,6 +114,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     resultVol.Name = sourceVol.Name;
                     resultVol.Email = sourceVol.Email;
                     resultVol.BceidAccountNumber = sourceVol.BceidAccountNumber;
+                    resultVol.Externaluseridentifier = sourceVol.Externaluseridentifier;
                     resultVol.IsAdministrator = sourceVol.IsAdministrator;
                     resultVol.IsPrimaryContact = sourceVol.IsPrimaryContact;
                     resultVol.CanAccessRestrictedFiles = sourceVol.CanAccessRestrictedFiles;
