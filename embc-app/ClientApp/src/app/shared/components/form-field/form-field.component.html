@@ -1,8 +1,12 @@
 <section class="form-field">
   <div class="row">
     <div class="form-group col">
-      <div [ngClass]="{ 'required': required }">
-        <ng-content select="label"></ng-content>
+      <div class="d-flex flex-row">
+        <div [ngClass]="{ 'required': required }">
+          <ng-content select="label"></ng-content>
+        </div>
+        <app-font-awesome-icon *ngIf="tooltip" icon="info-circle" className="ml-3" color="#C9C9C9" title="{{tooltip}}">
+        </app-font-awesome-icon>
       </div>
       <ng-content></ng-content>
     </div>

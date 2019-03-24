@@ -10,6 +10,7 @@ export class FormFieldComponent implements OnInit {
   @Input() showChevrons = true;
   @Input() valid = true;
   @Input() errorMessage: string;
+  @Input() tooltip: string;
 
   constructor() { }
 
