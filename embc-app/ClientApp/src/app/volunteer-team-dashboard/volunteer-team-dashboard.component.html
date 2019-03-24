@@ -41,7 +41,7 @@
                 <span *ngIf="!volunteer.canAccessRestrictedFiles">No</span>
               </td>
               <td>
-                <a>Edit</a>
+                <a [routerLink]="" (click)="routeTo(volunteer.bceidAccountNumber)">Edit</a>
               </td>
             </tr>
           </tbody>

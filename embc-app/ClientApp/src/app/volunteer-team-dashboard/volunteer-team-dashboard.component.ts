@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { VolunteerService } from '../core/services/volunteer.service';
 import { Volunteer } from '../core/models';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 // import { }
 @Component({
     selector: 'app-volunteer-team-dashboard',
@@ -14,6 +15,7 @@ export class VolunteerTeamDashboardComponent implements OnInit {
 
     constructor(
         private volunteerService: VolunteerService,
+        private router: Router
     ) { }
 
     ngOnInit() {
@@ -21,5 +23,8 @@ export class VolunteerTeamDashboardComponent implements OnInit {
             this.volunteers = v;
         });
     }
-
+    routeTo(bceidAccountNumber: string) {
+        // TODO: this seems like bad practive but fix when we have time
+        this.router.navigate(['user-edit/fill/' + bceidAccountNumber]);
+    }
 }
