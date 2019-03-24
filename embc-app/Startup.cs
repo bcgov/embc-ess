@@ -4,6 +4,7 @@ using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Authorization;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models;
+using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -22,7 +23,6 @@ using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Net.Http.Headers;
-using Microsoft.Rest;
 using NWebsec.AspNetCore.Mvc;
 using NWebsec.AspNetCore.Mvc.Csp;
 using System;
@@ -44,7 +44,7 @@ namespace Gov.Jag.Embc.Public
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddSingleton<IConfiguration>(Configuration);
             // add singleton to allow Controllers to query the Request object
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -97,7 +97,6 @@ namespace Gov.Jag.Embc.Public
                     opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
 
-
             // setup siteminder authentication (core 2.0)
             services.AddAuthentication(options =>
             {
@@ -105,7 +104,6 @@ namespace Gov.Jag.Embc.Public
                 options.DefaultChallengeScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
             }).AddSiteminderAuth(options =>
             {
-
             });
 
             // setup authorization
@@ -138,7 +136,6 @@ namespace Gov.Jag.Embc.Public
             services.AddHealthChecks(checks =>
             {
                 checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
-
             });
 
             services.AddSession();
@@ -151,7 +148,7 @@ namespace Gov.Jag.Embc.Public
                 connectionString = Configuration["CONNECTION_STRING"];
             }
 
-            services.AddSingleton<IDataInterface>(_ => new SqliteDataInterface(connectionString));
+            services.AddSingleton<IDataInterface>(sp => new SqliteDataInterface(sp.GetService<ILoggerFactory>(), connectionString));
 
             // Enable the IURLHelper to be able to build links within Controllers
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -161,11 +158,11 @@ namespace Gov.Jag.Embc.Public
                 var factory = x.GetRequiredService<IUrlHelperFactory>();
                 return factory.GetUrlHelper(actionContext);
             });
+            services.AddTransient<IEmailSender, EmailSender>();
         }
 
         private void SetupDynamics(IServiceCollection services)
         {
-
             string dynamicsOdataUri = Configuration["DYNAMICS_ODATA_URI"];
             string aadTenantId = Configuration["DYNAMICS_AAD_TENANT_ID"];
             string serverAppIdUri = Configuration["DYNAMICS_SERVER_APP_ID_URI"];
@@ -187,7 +184,6 @@ namespace Gov.Jag.Embc.Public
                 authenticationResult = task.Result;
             }
 
-
             // add BCeID Web Services
 
             string bceidUrl = Configuration["BCEID_SERVICE_URL"];
@@ -196,7 +192,6 @@ namespace Gov.Jag.Embc.Public
             string bceidPasswd = Configuration["BCEID_SERVICE_PASSWD"];
 
             services.AddTransient<BCeIDBusinessQuery>(_ => new BCeIDBusinessQuery(bceidSvcId, bceidUserid, bceidPasswd, bceidUrl));
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -217,7 +212,9 @@ namespace Gov.Jag.Embc.Public
 
                     log.LogInformation("Resetting database");
                     context.Database.CloseConnection();
+#if !DEBUG
                     context.Database.EnsureDeleted();
+#endif
                     context.Database.OpenConnection();
                     context.Database.EnsureCreated();
 
@@ -239,7 +236,6 @@ namespace Gov.Jag.Embc.Public
                 msg.AppendLine("Error message is " + e.Message);
                 log.LogCritical(new EventId(-1, "Database Seeding Failed"), e, msg.ToString());
             }
-
 
             string pathBase = Configuration["BASE_PATH"];
 
@@ -309,7 +305,6 @@ namespace Gov.Jag.Embc.Public
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
-
         }
     }
 }

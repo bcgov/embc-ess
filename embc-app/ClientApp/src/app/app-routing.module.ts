@@ -14,6 +14,13 @@ import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.compo
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
 import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
+import { EvacueeRegistrationOneComponent } from './evacuee-registration/evacuee-registration-one/evacuee-registration-one.component';
+import { EvacueeRegistrationConfirmationComponent } from './evacuee-registration';
+import { EssEditorComponent } from './ess-editor/ess-editor.component';
+import { EssEditorOneComponent } from './ess-editor/ess-editor-one/ess-editor-one.component';
+import { EssEditorConfirmationComponent } from './ess-editor/ess-editor-confirmation/ess-editor-confirmation.component';
+import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
+import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 
 const routes: Routes = [
   {
@@ -56,16 +63,62 @@ const routes: Routes = [
     component: VolunteerLoginComponent
   },
   {
+    path: 'volunteer-info',
+    component: VolunteerUsefulInformationComponent
+  },
+  {
     path: 'volunteer-dashboard',
     component: VolunteerDashboardComponent
   },
   {
-    path: 'register-evacuee',
-    component: EvacueeRegistrationComponent
+    path: 'volunteer-team-dashboard',
+    component: VolunteerTeamDashboardComponent
   },
   {
-    path: 'register-evacuee/:essFileNumber',
-    component: EvacueeRegistrationComponent
+    path: 'register-evacuee',
+    component: EvacueeRegistrationComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'fill',
+        pathMatch: 'full'
+      },
+      {
+        path: 'fill/:essFileNumber',
+        component: EvacueeRegistrationOneComponent
+      },
+      {
+        path: 'fill',
+        component: EvacueeRegistrationOneComponent
+      },
+      {
+        path: 'confirmation',
+        component: EvacueeRegistrationConfirmationComponent
+      }
+    ]
+  },
+  {
+    path: 'user-edit',
+    component: EssEditorComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'fill',
+        pathMatch: 'full'
+      },
+      {
+        path: 'fill',
+        component: EssEditorOneComponent
+      },
+      {
+        path: 'fill/:essUser',
+        component: EssEditorOneComponent
+      },
+      {
+        path: 'confirmation',
+        component: EssEditorConfirmationComponent
+      }
+    ]
   },
   {
     path: 'test',

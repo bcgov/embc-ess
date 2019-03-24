@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,7 +6,7 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// <summary>
     /// Database Model
     /// </summary>
-    public sealed partial class FamilyRelationshipType
+    public class FamilyRelationshipType
     {
         /// <summary>
         /// A system-generated unique identifier

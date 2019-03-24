@@ -7,7 +7,7 @@ import { map, takeWhile } from 'rxjs/operators';
 
 import { INSURANCE_OPTIONS, GENDER_OPTIONS } from 'src/app/constants/lookups';
 import { Registration, isBcAddress, Address } from 'src/app/core/models';
-import { normalize } from 'src/app/shared/utils/stateUtils';
+import { normalize } from 'src/app/shared/utils';
 import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { RegistrationService } from 'src/app/core/services/registration.service';

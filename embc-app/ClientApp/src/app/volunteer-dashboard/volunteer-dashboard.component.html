@@ -1,70 +1,26 @@
 <div class="row">
   <div class="col col-lg-8">
     <div class="mb-4">
-      <h1>Volunteer Dashboard</h1>
+      <h1>ESS Team Dashboard</h1>
       <h3>Welcome to your Dashboard!</h3>
-      <p>
-        As an Emergency Social Services Volunteer you'll be able to register new evacuees, complete an existing evacuee
-        self- registration, or if needed, search and edit evacuee information.
-      </p>
+      <p>As an Emergency Support Services user you'll be able to register new evacuees, complete an existing evacuee
+        self- registration, or if needed, search and edit evacuee information.</p>
       <h3 class="blue-header">LIST OF EVACUEES</h3>
 
-      <div class="form-row">
-        <div class="col-md-9">
-          <input type="search" class="form-control mb-2" id="searchBox"
-            placeholder="Search by task number / last name / registration number / community / ...">
-          <!-- <a class="small" href="">advanced Search</a> -->
-        </div>
-        <div class="col-3">
-          <button class="btn btn-primary">Search</button>
-        </div>
-      </div>
+      <app-search-bar #searchBar (valueChange)="doSearch($event)"
+        placeholder="Search by task number / last name / registration number / community ...">
+      </app-search-bar>
+
+      <!-- TODO: <a class="small" href="">advanced search</a> -->
+      <!-- TODO: show icons for HOH, RESTRICTED FILE -->
     </div>
     <div>
       <!-- The start of the table stuff. -->
-      <p>1 - 10 of 2000 active evacuees
+      <p>1 - 10 of 2000 <span class="font-weight-bold">ACTIVE</span> evacuees
         <small class="ml-3">(<a href="">show deactivated</a>)</small>
       </p>
-      <table class="table">
-        <thead class="thead-light">
-          <th scope="col"></th>
-          <th scope="col">First Name</th>
-          <th scope="col">Last Name</th>
-          <th scope="col">Task #</th>
-          <th scope="col">ESS File #</th>
-          <th scope="col">Evacuated From</th>
-          <th scope="col">Evacuated To</th>
-          <th scope="col">Referrals</th>
-          <th scope="col">Action</th>
-        </thead>
-        <tbody>
-          <!-- <tr class="table-danger">...</tr> -->
-          <tr *ngFor="let stub of registrations" [class.table-danger]="stub.restrictedAccess">
-            <th>
-              <span *ngIf="stub.personType==='HOH'">
-                <i class="fas fa-user mr-1"></i>
-              </span>
-              <span *ngIf="stub.restrictedAccess">
-                <i class="fas fa-lock"></i>
-              </span>
-            </th>
-            <td>{{stub.firstName}}</td>
-            <td>{{stub.lastName}}</td>
-            <td>{{stub.incidentTaskTaskNumber}}</td>
-            <td>{{stub.essFileNumber}}</td>
-            <td>{{stub.evacuatedFrom}}</td>
-            <td>{{stub.evacuatedTo}}</td>
-            <td>Yes</td>
-            <td>
-              <a *ngIf="stub.registrationCompletionDate===null" href="">Complete</a>
-              <a *ngIf="stub.registrationCompletionDate!==null" href="">View</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <!-- This is for development only. Inspect the data and whatnot. -->
-      <!-- <p>{{raw|json}}</p> -->
-      <!-- <button class="btn btn-sm btn-light" (click)="refreshRegistrations()">Dev force refresh.</button> -->
+      <app-evacuee-search-results #searchResultsView [searchResults]="searchResults$ | async">
+      </app-evacuee-search-results>
     </div>
   </div>
 

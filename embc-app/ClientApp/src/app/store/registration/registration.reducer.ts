@@ -2,19 +2,6 @@ import { Registration, Address } from 'src/app/core/models';
 import * as RegistrationActions from './registration.actions';
 import { Loadable } from '..';
 
-const initialAddress: Address = {
-  id: null,
-  addressSubtype: null,
-  addressLine1: null,
-  addressLine2: null,
-  addressLine3: null,
-  postalCode: null,
-  community: null,
-  city: null,
-  province: null,
-  country: null,
-};
-
 export interface State extends Loadable {
   registrations: Registration[];
   currentRegistration: Registration | null;
@@ -25,7 +12,7 @@ const initialState: State = {
   currentRegistration: {
     id: null,
     essFileNumber: null,
-    restrictedAccess: null,
+    restrictedAccess: false,
     declarationAndConsent: null,
     registeringFamilyMembers: null,
     dietaryNeeds: null,

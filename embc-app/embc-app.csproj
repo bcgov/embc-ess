@@ -23,6 +23,8 @@
 
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.1.1" />
 
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.3" />
+
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="Microsoft.NETCore.TestHost" Version="2.0.8" />

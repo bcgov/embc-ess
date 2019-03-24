@@ -1,14 +1,12 @@
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public interface IDataInterface
     {
-
         Person GetPersonByBceidGuid(string bceidGuid);
 
         Volunteer GetVolunteerByName(string firstName, string lastName);
@@ -16,14 +14,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Person CreatePerson(Person person);
 
         // Registrations
-        Task<IQueryable<Registration>> GetRegistrations(SearchQueryParameters queryParameters);
+        Task<PaginatedList<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters);
 
-        Task<Registration> GetRegistration(string id);
+        Task<Registration> GetRegistrationAsync(string id);
         Task<Registration> GetRegistrationSummary(string id);
 
-        Task<Registration> CreateRegistration(Registration registration);
+        Task<Registration> CreateRegistrationAsync(Registration registration);
 
-        Task<Registration> UpdateRegistration(Registration registration);
+        Task UpdateRegistrationAsync(Registration registration);
 
         // Incident Tasks
         Task<List<IncidentTask>> GetIncidentTasks();
@@ -45,16 +43,25 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         List<FamilyRelationshipType> GetFamilyRelationshipTypes();
 
         #region Organization
+
         //Organizations
         Task<List<Organization>> GetOrganizationsAsync();
+
         Task<Organization> GetOrganizationAsync(string id);
+
         Task<Organization> GetOrganizationByBceidGuidAsync(string bceidGuid);
+
         Organization GetOrganizationByLegalName(string name);
+
         Organization GetOrganizationByExternalId(string externalId);
+
         Task<Organization> CreateOrganizationAsync(Organization item);
+
         Task<Organization> UpdateOrganizationAsync(Organization item);
-        Task<bool> DeactivateOrganizationAsync(string id); 
-        #endregion
+
+        Task<bool> DeactivateOrganizationAsync(string id);
+
+        #endregion Organization
 
         Volunteer GetVolunteerByExternalId(string externalId);
 

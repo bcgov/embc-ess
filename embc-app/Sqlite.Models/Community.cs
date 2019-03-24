@@ -7,9 +7,8 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// <summary>
     /// Role Database Model
     /// </summary>
-    public sealed partial class Community
+    public class Community
     {
-
         public Community()
         { }
 
@@ -33,6 +32,6 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         /// </summary>
         public bool? Active { get; set; }
 
-        public RegionalDistrict RegionalDistrict { get; set; }
+        public virtual RegionalDistrict RegionalDistrict { get; set; }
     }
 }

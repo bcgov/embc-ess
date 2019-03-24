@@ -1,8 +1,4 @@
 using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,9 +7,8 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
     /// <summary>
     /// Role Database Model
     /// </summary>
-    public sealed partial class RegionalDistrict
+    public class RegionalDistrict
     {
-
         public RegionalDistrict()
         { }
 
@@ -37,6 +32,6 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         /// </summary>
         public bool? Active { get; set; }
 
-        public Region Region { get; set; }
+        public virtual Region Region { get; set; }
     }
 }

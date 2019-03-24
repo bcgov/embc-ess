@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 
 import { CoreModule } from '../core.module';
 import { Registration } from '../models';
 import { RestService } from './rest.service';
 import { MetaRegistration } from '../models/meta-registration';
+import { SearchQueryParameters } from 'src/app/shared/components/search';
 
 const TEST: Registration[] = [
   {
@@ -201,13 +202,17 @@ const TEST: Registration[] = [
 })
 export class RegistrationService extends RestService {
 
-  getRegistrations(page?: number, recordLimit?: number): Observable<MetaRegistration> {
-    // records and page are set limits on the query number
-    if (!recordLimit) { recordLimit = 100; }
-    if (!page) { page = 1; }
-    // return of(TEST);
-    return this.http.get<MetaRegistration>('api/registrations', { headers: this.headers })
+  getRegistrations(props: SearchQueryParameters = {}): Observable<MetaRegistration> {
+    const { limit = 100, offset = 0, q, sort } = props;
+    const params = {
+      limit: limit.toString(), // query params are strings
+      offset: offset.toString(),
+      q,
+      sort
+    };
+    return this.http.get<MetaRegistration>('api/registrations', { headers: this.headers, params })
       .pipe(
+        retry(3),
         catchError(this.handleError)
       );
   }
@@ -216,13 +221,15 @@ export class RegistrationService extends RestService {
     // alert("createRegistration service");
     return this.http.post<Registration>('api/registrations/', data, { headers: this.headers })
       .pipe(
+        retry(3),
         catchError(this.handleError)
       );
   }
-  putRegistration(data: Registration): Observable<Registration> {
+  updateRegistration(data: Registration): Observable<Registration> {
     // alert("putRegistration service");
     return this.http.put<Registration>('api/registrations/' + data.id, data, { headers: this.headers })
       .pipe(
+        retry(3),
         catchError(this.handleError)
       );
   }
@@ -230,6 +237,10 @@ export class RegistrationService extends RestService {
   getRegistrationByEssFileNumber(essFileNumber: string): Observable<Registration> {
     // TODO: this needs to become its own api
     return of(TEST[0]);
-    // return this.http.get<Registration>('api/registrations/' + essFileNumber);
+    // return this.http.get<Registration>('api/registrations/' + essFileNumber)
+    //   .pipe(
+    //     retry(3),
+    //     catchError(this.handleError),
+    //   );
   }
 }
