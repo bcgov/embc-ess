@@ -21,6 +21,7 @@ import { EssEditorOneComponent } from './ess-editor/ess-editor-one/ess-editor-on
 import { EssEditorConfirmationComponent } from './ess-editor/ess-editor-confirmation/ess-editor-confirmation.component';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
+import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,7 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
+    // TODO: naming this should be "evacuee-self-registration"
     path: 'self-registration',
     component: SelfRegistrationComponent,
     children: [
@@ -75,6 +77,11 @@ const routes: Routes = [
     component: VolunteerTeamDashboardComponent
   },
   {
+    path: 'evacuee-summary',
+    component: EvacueeSummaryComponent
+  },
+  {
+    // TODO: naming: this should be changed to be "evacuee-registration"
     path: 'register-evacuee',
     component: EvacueeRegistrationComponent,
     children: [
