@@ -58,14 +58,18 @@
         </li>
         <li>
           <span class="name"> Family Members:</span>
-          <span class="value">{{registration.headOfHousehold.familyMembers|json}}</span>
+          <span class="value">
+            {{registration.headOfHousehold.lastName}}, {{registration.headOfHousehold.firstName}}<br>
+            <span *ngFor="let familyMember of registration.headOfHousehold.familyMembers">{{familyMember.lastName}},
+              {{familyMember.firstName}}<br>
+            </span>
+          </span>
         </li>
         <li>
           <span class="name">Supports:</span>
           <span class="value">
             <span *ngIf="registration.requiresSupport">Yes</span>
             <span *ngIf="!registration.requiresSupport">No</span>
-
           </span>
         </li>
         <li>
