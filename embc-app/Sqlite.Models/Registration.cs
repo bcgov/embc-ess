@@ -17,6 +17,8 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         [Key]
         public Guid Id { get; set; }
 
+        public bool Active { get; set; }
+
         // important
         public bool? RestrictedAccess { get; set; }
 

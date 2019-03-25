@@ -5,6 +5,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
     public class Registration
     {
         public string Id { get; set; }
+        public bool? Active { get; set; }
 
         // important
         public bool? RestrictedAccess { get; set; }

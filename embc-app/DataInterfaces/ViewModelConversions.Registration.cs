@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -13,6 +12,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result = new ViewModels.Registration()
                 {
                     Id = source.Id.ToString(),
+                    Active = source.Active,
                     EssFileNumber = source.EssFileNumber,
                     RestrictedAccess = source.RestrictedAccess,
                     RegisteringFamilyMembers = source.RegisteringFamilyMembers,
@@ -91,11 +91,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 {
                     result.Id = Guid.Parse(source.Id);
                 }
+                if (source.Active.HasValue)
+                {
+                    result.Active = source.Active.Value;
+                }
             }
 
             return result;
         }
-
 
         public static ViewModels.RegistrationSummary ToSummaryViewModel(this Sqlite.Models.Registration source)
         {
