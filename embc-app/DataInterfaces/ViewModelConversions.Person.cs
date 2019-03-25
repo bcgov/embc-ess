@@ -5,7 +5,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static partial class ViewModelConversions
     {
-        public static ViewModels.Person ToViewModel(this Sqlite.Models.Person source)
+        public static ViewModels.Person ToViewModel(this Models.Db.Person source)
         {
             ViewModels.Person result = null;
             if (source != null)
@@ -22,7 +22,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result.Active = source.Active;
 
                 // TODO: Add fields for HOH, FMBR, VOLN
-                if (source is Sqlite.Models.HeadOfHousehold sourceHoh)
+                if (source is Models.Db.HeadOfHousehold sourceHoh)
                 {
                     var resultHoh = result as ViewModels.HeadOfHousehold;
                     resultHoh.PhoneNumber = sourceHoh.PhoneNumber;
@@ -40,13 +40,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         }
                     }
                 }
-                if (source is Sqlite.Models.FamilyMember sourceFm)
+                if (source is Models.Db.FamilyMember sourceFm)
                 {
                     var resultFm = result as ViewModels.FamilyMember;
                     resultFm.RelationshipToEvacuee = sourceFm.RelationshipToEvacuee.ToViewModel();
                     resultFm.SameLastNameAsEvacuee = sourceFm.SameLastNameAsEvacuee;
                 }
-                if (source is Sqlite.Models.Volunteer sourceVol)
+                if (source is Models.Db.Volunteer sourceVol)
                 {
                     var resultVol = result as ViewModels.Volunteer;
                     resultVol.Name = sourceVol.Name;
@@ -63,12 +63,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public static Sqlite.Models.Person ToModel(this ViewModels.Person source)
+        public static Models.Db.Person ToModel(this ViewModels.Person source)
         {
-            Sqlite.Models.Person result = null;
+            Models.Db.Person result = null;
             if (source != null)
             {
-                result = Sqlite.Models.Person.Create(source.PersonType);
+                result = Models.Db.Person.Create(source.PersonType);
 
                 result.FirstName = source.FirstName;
                 result.LastName = source.LastName;
@@ -86,7 +86,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 // TODO: Add fields for HOH, FMBR, VOLN
                 if (source is ViewModels.HeadOfHousehold sourceHoh)
                 {
-                    var resultHoh = result as Sqlite.Models.HeadOfHousehold;
+                    var resultHoh = result as Models.Db.HeadOfHousehold;
                     resultHoh.PhoneNumber = sourceHoh.PhoneNumber;
                     resultHoh.PhoneNumberAlt = sourceHoh.PhoneNumberAlt;
                     resultHoh.Email = sourceHoh.Email;
@@ -95,22 +95,22 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     resultHoh.MailingAddress = sourceHoh.MailingAddress?.ToModel();
                     if (sourceHoh.FamilyMembers != null)
                     {
-                        resultHoh.FamilyMembers = new List<Sqlite.Models.FamilyMember>();
+                        resultHoh.FamilyMembers = new List<Models.Db.FamilyMember>();
                         foreach (var familyMember in sourceHoh.FamilyMembers)
                         {
-                            resultHoh.FamilyMembers.Add(familyMember.ToModel() as Sqlite.Models.FamilyMember);
+                            resultHoh.FamilyMembers.Add(familyMember.ToModel() as Models.Db.FamilyMember);
                         }
                     }
                 }
                 if (source is ViewModels.FamilyMember sourceFm)
                 {
-                    var resultFm = result as Sqlite.Models.FamilyMember;
+                    var resultFm = result as Models.Db.FamilyMember;
                     resultFm.RelationshipToEvacueeCode = sourceFm.RelationshipToEvacuee.Code;
                     resultFm.SameLastNameAsEvacuee = sourceFm.SameLastNameAsEvacuee;
                 }
                 if (source is ViewModels.Volunteer sourceVol)
                 {
-                    var resultVol = result as Sqlite.Models.Volunteer;
+                    var resultVol = result as Models.Db.Volunteer;
                     resultVol.Name = sourceVol.Name;
                     resultVol.Email = sourceVol.Email;
                     resultVol.BceidAccountNumber = sourceVol.BceidAccountNumber;
@@ -125,12 +125,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        // public static Sqlite.Models.FamilyMember ToModel(this ViewModels.FamilyMember source)
+        // public static Models.Db.FamilyMember ToModel(this ViewModels.FamilyMember source)
         // {
-        //     Sqlite.Models.FamilyMember result = null;
+        //     Models.Db.FamilyMember result = null;
         //     if (source != null)
         //     {
-        //         result = new Sqlite.Models.FamilyMember()
+        //         result = new Models.Db.FamilyMember()
         //         {
         //             FirstName = source.FirstName,
         //             LastName = source.LastName,
@@ -149,7 +149,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         //     return result;
         // }
 
-        // public static ViewModels.FamilyMember ToViewModel(this Sqlite.Models.FamilyMember source)
+        // public static ViewModels.FamilyMember ToViewModel(this Models.Db.FamilyMember source)
         // {
         //     ViewModels.FamilyMember result = null;
         //     if (source != null)
@@ -170,7 +170,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         //     return result;
         // }
 
-        // public static ViewModels.HeadOfHousehold ToViewModel(this Sqlite.Models.HeadOfHousehold source)
+        // public static ViewModels.HeadOfHousehold ToViewModel(this Models.Db.HeadOfHousehold source)
         // {
         //     ViewModels.HeadOfHousehold result = null;
         //     if (source != null)
@@ -195,12 +195,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         //     return result;
         // }
 
-        // public static Sqlite.Models.HeadOfHousehold ToModel(this ViewModels.HeadOfHousehold source)
+        // public static Models.Db.HeadOfHousehold ToModel(this ViewModels.HeadOfHousehold source)
         // {
-        //     Sqlite.Models.HeadOfHousehold result = null;
+        //     Models.Db.HeadOfHousehold result = null;
         //     if (source != null)
         //     {
-        //         result = new Sqlite.Models.HeadOfHousehold()
+        //         result = new Models.Db.HeadOfHousehold()
         //         {
         //             FirstName = source.FirstName,
         //             LastName = source.LastName,

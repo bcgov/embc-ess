@@ -1,10 +1,8 @@
-﻿using Gov.Jag.Embc.Public.Sqlite.Models;
+using Gov.Jag.Embc.Public.Models.Db;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -12,7 +10,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         public static void AddRegion(this EmbcDbContext context, Region Region)
         {
-            // create a new Region.           
+            // create a new Region.
             context.Regions.Add(Region);
             context.SaveChanges();
         }
@@ -42,8 +40,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             Region Region = context.Regions.FirstOrDefault(x => x.Name == name);
             return Region;
         }
-
-
 
         /// <summary>
         /// Create Regions from a (json) file
@@ -95,7 +91,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             context.AddRegion(Region);
         }
-
 
         /// <summary>
         /// Update region

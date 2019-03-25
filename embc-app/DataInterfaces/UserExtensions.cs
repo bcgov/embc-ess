@@ -1,12 +1,7 @@
 using Gov.Jag.Embc.Public.Models;
-using Gov.Jag.Embc.Public.Sqlite.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
@@ -38,10 +33,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 if (user != null)
                 {
                     _logger.LogInformation(">>>> LoadUser for BCEID: user != null");
-                        
+
                     // if you wish to update the contact with Siteminder headers, do it here.
                 }
-                                
             }
 
             if (user == null)
@@ -49,7 +43,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             if (guid == null)
                 return user;
-
 
             if (!user.ContactId.ToString().Equals(guid, StringComparison.OrdinalIgnoreCase))
             {
@@ -86,7 +79,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-
         /// <summary>
         /// Returns a User based on the guid
         /// </summary>
@@ -107,8 +99,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return user;
         }
 
-
-
         /// <summary>
         /// Returns a User based on the guid
         /// </summary>
@@ -117,7 +107,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <returns></returns>
         public static User GetUserByExternalId(this IDataInterface _dataInterface, string guid)
         {
-            
             User user = null;
             var contact = _dataInterface.GetVolunteerByExternalId(guid);
             if (contact != null)
@@ -153,7 +142,5 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             to.Email = from.Email;
             to.Active = true;
         }
-
     }
-
 }

@@ -1,10 +1,8 @@
-﻿using Gov.Jag.Embc.Public.Sqlite.Models;
+using Gov.Jag.Embc.Public.Models.Db;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -53,7 +51,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return entity;
         }
 
-
         /// <summary>
         /// Create FamilyRelationshipTypes from a (json) file
         /// </summary>
@@ -98,7 +95,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             entity.PatchValues(value);
             context.AddFamilyRelationshipType(entity);
         }
-
 
         /// <summary>
         /// Update FamilyRelationshipType

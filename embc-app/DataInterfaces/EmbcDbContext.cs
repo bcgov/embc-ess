@@ -1,4 +1,4 @@
-using Gov.Jag.Embc.Public.Sqlite.Models;
+using Gov.Jag.Embc.Public.Models.Db;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces

@@ -1,16 +1,14 @@
-using Gov.Jag.Embc.Public.Sqlite.Models;
+using Gov.Jag.Embc.Public.Models.Db;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static class IncidentTaskExtensions
     {
-        public static void PatchValues(this Sqlite.Models.IncidentTask self, ViewModels.IncidentTask values)
+        public static void PatchValues(this Models.Db.IncidentTask self, ViewModels.IncidentTask values)
         {
             self.TaskNumber = values.TaskNumber;
             self.Details = values.Details;
@@ -21,7 +19,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             self.Community = values.Community != null ? values.Community.ToModel() : null;
         }
 
-        public static void PatchValues(this Sqlite.Models.IncidentTask self, Sqlite.Models.IncidentTask values)
+        public static void PatchValues(this Models.Db.IncidentTask self, Models.Db.IncidentTask values)
         {
             self.TaskNumber = values.TaskNumber;
             self.Details = values.Details;

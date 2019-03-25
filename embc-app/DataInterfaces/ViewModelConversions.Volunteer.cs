@@ -5,7 +5,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     public static partial class ViewModelConversions
     {
         [Obsolete("Use Person to convert")]
-        public static ViewModels.Volunteer ToViewModel(this Sqlite.Models.Volunteer source)
+        public static ViewModels.Volunteer ToViewModel(this Models.Db.Volunteer source)
         {
             ViewModels.Volunteer result = null;
             if (source != null)

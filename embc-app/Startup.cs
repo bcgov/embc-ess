@@ -152,7 +152,7 @@ namespace Gov.Jag.Embc.Public
                 //.UseLoggerFactory(loggingFactory)
                 .UseSqlite(connectionString));
 
-            services.AddTransient<IDataInterface, SqliteDataInterface>();
+            services.AddTransient<IDataInterface, DataInterface>();
 
             // Enable the IURLHelper to be able to build links within Controllers
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();

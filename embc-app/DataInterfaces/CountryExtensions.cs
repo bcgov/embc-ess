@@ -1,10 +1,8 @@
-﻿using Gov.Jag.Embc.Public.Sqlite.Models;
+using Gov.Jag.Embc.Public.Models.Db;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -12,7 +10,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         public static void AddCountry(this EmbcDbContext context, Country Country)
         {
-            // create a new Country.           
+            // create a new Country.
             context.Countries.Add(Country);
             context.SaveChanges();
         }
@@ -42,8 +40,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             Country Country = context.Countries.FirstOrDefault(x => x.Name == name);
             return Country;
         }
-
-
 
         /// <summary>
         /// Create Countries from a (json) file
@@ -84,7 +80,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 return;
             }
-            
+
             Country = new Country
             ()
             {
@@ -95,7 +91,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             context.AddCountry(Country);
         }
-
 
         /// <summary>
         /// Update Country
@@ -112,7 +107,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             else
             {
                 Country.Name = CountryInfo.Name;
-                Country.Active = CountryInfo.Active;                
+                Country.Active = CountryInfo.Active;
                 context.UpdateCountry(Country);
             }
         }
