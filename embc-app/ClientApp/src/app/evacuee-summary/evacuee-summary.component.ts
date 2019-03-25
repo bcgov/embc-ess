@@ -23,6 +23,7 @@ export class EvacueeSummaryComponent implements OnInit {
     // collect ess file from activated route
     this.loadFromRoute();
   }
+
   loadFromRoute() {
     // try to collect the ess file number and load it
     // if there are route params we should grab them
@@ -30,11 +31,14 @@ export class EvacueeSummaryComponent implements OnInit {
       // TODO: go get the evacuee from db eventually
       this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
         .subscribe(r => {
+          // if there is nothing useful returned route somewhere else.
+          if (!r.essFileNumber) {
+            this.router.navigate(['volunteer-dashboard']);
+          }
+
           // Save the registration into the
           this.registration = r;
         });
-    } else {
-      // there is nothing to show? Route back somewhere else. (Volunteer dashboard?)
     }
   }
 }
