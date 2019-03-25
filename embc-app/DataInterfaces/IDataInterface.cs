@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public interface IDataInterface
-    {                
-
+    {
         // Registrations
         Task<PaginatedList<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters);
 
         Task<Registration> GetRegistrationAsync(string id);
+
         Task<RegistrationSummary> GetRegistrationSummaryAsync(string id);
 
         Task<Registration> CreateRegistrationAsync(Registration registration);
 
         Task UpdateRegistrationAsync(Registration registration);
+
+        Task<bool> DeactivateRegistration(string id);
 
         // Incident Tasks
         Task<List<IncidentTask>> GetIncidentTasks();
@@ -56,9 +58,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<bool> DeactivateOrganizationAsync(string id);
 
-        #endregion Organization        
+        #endregion Organization
+
+
 
         #region People
+
         Person GetPersonByBceidGuid(string bceidGuid);
 
         Person CreatePerson(Person person);
@@ -86,6 +91,5 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Volunteer GetVolunteerById(string Id);
 
         #endregion Volunteer
-
     }
 }
