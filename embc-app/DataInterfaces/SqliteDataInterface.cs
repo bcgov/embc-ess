@@ -112,6 +112,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return null;
         }
 
+        public async Task<RegistrationSummary> GetRegistrationSummaryAsync(string id)
+        {
+            if (Guid.TryParse(id, out var guid))
+            {
+                var db = ctx();
+                var entity = await db.Registrations.FirstOrDefaultAsync(reg => reg.Id == guid);
+                return entity?.ToSummaryViewModel();
+            }
+            return null;
+        }
+
         #endregion Registration
 
         public async Task<Organization> GetOrganizationByBceidGuidAsync(string bceidGuid)

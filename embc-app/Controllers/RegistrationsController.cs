@@ -83,6 +83,17 @@ namespace Gov.Jag.Embc.Public.Controllers
             return Json(result);
         }
 
+        [HttpGet("{id}/summary")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetOneSummary(string id)
+        {
+            var result = await dataInterface.GetRegistrationSummaryAsync(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Json(result);
+        }
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] ViewModels.Registration item)

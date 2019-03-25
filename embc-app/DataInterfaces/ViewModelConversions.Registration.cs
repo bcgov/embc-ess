@@ -95,5 +95,31 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             return result;
         }
+
+
+        public static ViewModels.RegistrationSummary ToSummaryViewModel(this Sqlite.Models.Registration source)
+        {
+            ViewModels.RegistrationSummary result = null;
+            if (source != null)
+            {
+                result = new ViewModels.RegistrationSummary()
+                {
+                    Id = source.Id.ToString(),
+                    EssFileNumber = source.EssFileNumber,
+                    RestrictedAccess = source.RestrictedAccess,
+                    RegisteringFamilyMembers = source.RegisteringFamilyMembers,
+                    RequiresSupport = source.RequiresSupport,
+                    RequiresFood = source.RequiresFood,
+                    RequiresClothing = source.RequiresClothing,
+                    RequiresAccommodation = source.RequiresAccommodation,
+                    RequiresIncidentals = source.RequiresIncidentals,
+                    RequiresTransportation = source.RequiresTransportation,
+                    SelfRegisteredDate = source.SelfRegisteredDate,
+                    RegistrationCompletionDate = source.RegistrationCompletionDate,
+                };
+            }
+
+            return result;
+        }
     }
 }
