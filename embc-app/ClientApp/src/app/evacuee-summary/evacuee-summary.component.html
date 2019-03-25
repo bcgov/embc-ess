@@ -74,39 +74,45 @@
         </li>
         <li>
           <span class="name">Supports Requested:</span>
+          <!-- "requiresAccommodation": true,
+          "requiresClothing": true,
+          "requiresFood": true,
+          "requiresIncidentals": false,
+          "requiresTransportation": true,
+          "requiresSupport": true, -->
+          <!-- {{registration.requiresFood}} -->
           <span class="value">
             <div class="form-check mt-2">
-              <input class="form-check-input" type="checkbox" disabled>
+              <input class="form-check-input" [checked]="registration.requiresFood" type="checkbox" disabled>
               <label class="form-check-label">Food</label>
             </div>
             <div class="form-check mt-2">
-              <input class="form-check-input" type="checkbox" disabled>
+              <input class="form-check-input" [checked]="registration.requiresClothing" type="checkbox" disabled>
               <label class="form-check-label">Clothing</label>
             </div>
             <div class="form-check mt-2">
-              <input class="form-check-input" type="checkbox" disabled>
+              <input class="form-check-input" [checked]="registration.requiresAccomodation" type="checkbox" disabled>
               <label class="form-check-label">Accommodation</label>
             </div>
             <div class="form-check mt-2">
-              <input class="form-check-input" type="checkbox" disabled>
+              <input class="form-check-input" [checked]="registration.requiresIncidentals" type="checkbox" disabled>
               <label class="form-check-label">Incidentals</label>
             </div>
             <div class="form-check mt-2">
-              <input class="form-check-input" type="checkbox" disabled>
+              <input class="form-check-input" [checked]="registration.requiresTransportation" type="checkbox" disabled>
               <label class="form-check-label">Transportation</label>
             </div>
           </span>
         </li>
       </ul>
+      <div class="mt-5">
+        <button class="btn btn-primary float-right">NEXT</button>
+      </div>
     </section>
-    <div class="mt-5">
-      <button class="btn btn-primary float-right">NEXT</button>
-    </div>
-
   </div>
-  <div class="mt-5">
+  <!-- <div class="mt-5">
     <pre>{{registration|json}}</pre>
-  </div>
+  </div> -->
 </div>
 
 <!-- Information side bar -->
