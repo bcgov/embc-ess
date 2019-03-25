@@ -59,26 +59,9 @@ export class BcAddressComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.parent.controls; }
 
-  get invalidAddressLine1() {
-    return (
-      this.f.addressLine1.hasError('required') &&
-      this.touched
-    );
-  }
-
-  get invalidCommunity() {
-    return (
-      this.f.community.hasError('required') &&
-      this.touched
-    );
-  }
-
-  get invalidPostalCode() {
-    return (
-      this.f.postalCode.hasError('postalCodeCanada') &&
-      this.touched
-    );
-  }
+  get invalidAddressLine1() { return this.f.addressLine1.hasError('required') && this.touched; }
+  get invalidCommunity() { return this.f.community.hasError('required') && this.touched; }
+  get invalidPostalCode() { return this.f.postalCode.hasError('postalCodeCanada') && this.touched; }
 
   ngOnInit() {
     this.parent.controls.addressSubtype.setValue('BCAD');

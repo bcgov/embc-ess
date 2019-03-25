@@ -58,26 +58,9 @@ export class OtherAddressComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.parent.controls; }
 
-  get invalidAddressLine1() {
-    return (
-      this.f.addressLine1.hasError('required') &&
-      this.touched
-    );
-  }
-
-  get invalidCity() {
-    return (
-      this.f.city.hasError('required') &&
-      this.touched
-    );
-  }
-
-  get invalidCountry() {
-    return (
-      this.f.country.hasError('required') &&
-      this.touched
-    );
-  }
+  get invalidAddressLine1() { return this.f.addressLine1.hasError('required') && this.touched; }
+  get invalidCity() { return this.f.city.hasError('required') && this.touched; }
+  get invalidCountry() { return this.f.country.hasError('required') && this.touched; }
 
   ngOnInit() {
     this.parent.controls.addressSubtype.setValue('OTAD');
