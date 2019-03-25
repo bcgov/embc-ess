@@ -2,14 +2,14 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Gov.Jag.Embc.Public.Sqlite.Models
+namespace Gov.Jag.Embc.Public.Models.Db
 {
     /// <summary>
-    /// Incident Task Database Model
+    /// Role Database Model
     /// </summary>
-    public class IncidentTask
+    public class Region
     {
-        public IncidentTask()
+        public Region()
         { }
 
         /// <summary>
@@ -20,18 +20,16 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         [Key]
         public Guid Id { get; set; }
 
-        public string TaskNumber { get; set; }
-        public string Details { get; set; }
+        /// <summary>
+        /// The name of the Region
+        /// </summary>
+        /// <value>The name of the Region</value>
+        [MaxLength(255)]
+        public string Name { get; set; }
 
         /// <summary>
         /// true if active
         /// </summary>
         public bool? Active { get; set; }
-
-        // only one of the following will be set; ie a regional incident vs a community one, etc
-        public virtual Region Region { get; set; }
-
-        public virtual RegionalDistrict RegionalDistrict { get; set; }
-        public virtual Community Community { get; set; }
     }
 }

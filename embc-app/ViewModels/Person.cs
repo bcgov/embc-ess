@@ -6,15 +6,15 @@ namespace Gov.Jag.Embc.Public.ViewModels
     {
         public static Person Create(string subType)
         {
-            if (subType == Sqlite.Models.Person.VOLUNTEER)
+            if (subType == Models.Db.Person.VOLUNTEER)
             {
                 return new Volunteer();
             }
-            else if (subType == Sqlite.Models.Person.HOH)
+            else if (subType == Models.Db.Person.HOH)
             {
                 return new HeadOfHousehold();
             }
-            else if (subType == Sqlite.Models.Person.FAMILY_MEMBER)
+            else if (subType == Models.Db.Person.FAMILY_MEMBER)
             {
                 return new FamilyMember();
             }

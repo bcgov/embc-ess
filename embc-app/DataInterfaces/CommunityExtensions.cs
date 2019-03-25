@@ -1,10 +1,8 @@
-using Gov.Jag.Embc.Public.Sqlite.Models;
+using Gov.Jag.Embc.Public.Models.Db;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -12,7 +10,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         public static void AddCommunity(this EmbcDbContext context, Community Community)
         {
-            // create a new Community.           
+            // create a new Community.
             context.Communities.Add(Community);
             context.SaveChanges();
         }
@@ -42,8 +40,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             Community Community = context.Communities.FirstOrDefault(x => x.Name == name);
             return Community;
         }
-
-
 
         /// <summary>
         /// Create Communities from a (json) file
@@ -94,7 +90,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 regionalDistrict = context.GetRegionalDistrictByName(initialCommunity.RegionalDistrict.Name);
             }
 
-
             Community = new Community
             ()
             {
@@ -102,11 +97,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 Name = initialCommunity.Name,
                 Active = true,
                 RegionalDistrict = regionalDistrict
-            };            
+            };
 
             context.AddCommunity(Community);
         }
-
 
         /// <summary>
         /// Update Community

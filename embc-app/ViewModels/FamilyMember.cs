@@ -7,7 +7,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
         public FamilyMember()
         {
-            PersonType = Sqlite.Models.Person.FAMILY_MEMBER;
+            PersonType = Models.Db.Person.FAMILY_MEMBER;
         }
     }
 }

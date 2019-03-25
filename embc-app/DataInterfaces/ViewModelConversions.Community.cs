@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static partial class ViewModelConversions
     {
-        public static ViewModels.Community ToViewModel(this Sqlite.Models.Community source)
+        public static ViewModels.Community ToViewModel(this Models.Db.Community source)
         {
             ViewModels.Community result = null;
             if (source != null)
@@ -21,12 +20,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public static Sqlite.Models.Community ToModel(this ViewModels.Community source)
+        public static Models.Db.Community ToModel(this ViewModels.Community source)
         {
-            Sqlite.Models.Community result = null;
+            Models.Db.Community result = null;
             if (source != null)
             {
-                result = new Sqlite.Models.Community()
+                result = new Models.Db.Community()
                 {
                     Name = source.Name,
                     Active = source.Active,

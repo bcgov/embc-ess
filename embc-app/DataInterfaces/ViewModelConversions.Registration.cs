@@ -4,7 +4,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static partial class ViewModelConversions
     {
-        public static ViewModels.Registration ToViewModel(this Sqlite.Models.Registration source)
+        public static ViewModels.Registration ToViewModel(this Models.Db.Registration source)
         {
             ViewModels.Registration result = null;
             if (source != null)
@@ -49,12 +49,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public static Sqlite.Models.Registration ToModel(this ViewModels.Registration source)
+        public static Models.Db.Registration ToModel(this ViewModels.Registration source)
         {
-            Sqlite.Models.Registration result = null;
+            Models.Db.Registration result = null;
             if (source != null)
             {
-                result = new Sqlite.Models.Registration()
+                result = new Models.Db.Registration()
                 {
                     EssFileNumber = source.EssFileNumber,
                     RestrictedAccess = source.RestrictedAccess,
@@ -85,7 +85,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     HasPetCareReferral = source.HasPetCareReferral,
                     SelfRegisteredDate = source.SelfRegisteredDate,
                     RegistrationCompletionDate = source.RegistrationCompletionDate,
-                    HeadOfHousehold = source.HeadOfHousehold.ToModel() as Sqlite.Models.HeadOfHousehold,
+                    HeadOfHousehold = source.HeadOfHousehold.ToModel() as Models.Db.HeadOfHousehold,
                 };
                 if (source.Id != null)
                 {
@@ -100,7 +100,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public static ViewModels.RegistrationSummary ToSummaryViewModel(this Sqlite.Models.Registration source)
+        public static ViewModels.RegistrationSummary ToSummaryViewModel(this Models.Db.Registration source)
         {
             ViewModels.RegistrationSummary result = null;
             if (source != null)

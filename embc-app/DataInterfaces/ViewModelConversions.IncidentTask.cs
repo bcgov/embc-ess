@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static partial class ViewModelConversions
     {
-        public static ViewModels.IncidentTask ToViewModel(this Sqlite.Models.IncidentTask source)
+        public static ViewModels.IncidentTask ToViewModel(this Models.Db.IncidentTask source)
         {
             ViewModels.IncidentTask result = null;
             if (source != null)
@@ -24,12 +23,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public static Sqlite.Models.IncidentTask ToModel(this ViewModels.IncidentTask source)
+        public static Models.Db.IncidentTask ToModel(this ViewModels.IncidentTask source)
         {
-            Sqlite.Models.IncidentTask result = null;
+            Models.Db.IncidentTask result = null;
             if (source != null)
             {
-                result = new Sqlite.Models.IncidentTask();
+                result = new Models.Db.IncidentTask();
                 result.PatchValues(source);
                 if (source.Id != null)
                 {

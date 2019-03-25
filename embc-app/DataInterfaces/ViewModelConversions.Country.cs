@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static partial class ViewModelConversions
     {
-        public static ViewModels.Country ToViewModel(this Sqlite.Models.Country source)
+        public static ViewModels.Country ToViewModel(this Models.Db.Country source)
         {
             ViewModels.Country result = null;
             if (source != null)
@@ -20,12 +19,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public static Sqlite.Models.Country ToModel(this ViewModels.Country source)
+        public static Models.Db.Country ToModel(this ViewModels.Country source)
         {
-            Sqlite.Models.Country result = null;
+            Models.Db.Country result = null;
             if (source != null)
             {
-                result = new Sqlite.Models.Country()
+                result = new Models.Db.Country()
                 {
                     Name = source.Name,
                     Active = source.Active

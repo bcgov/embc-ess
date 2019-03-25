@@ -1,10 +1,8 @@
-﻿using Gov.Jag.Embc.Public.Sqlite.Models;
+using Gov.Jag.Embc.Public.Models.Db;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -12,7 +10,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         public static void AddRegionalDistrict(this EmbcDbContext context, RegionalDistrict RegionalDistrict)
         {
-            // create a new RegionalDistrict.           
+            // create a new RegionalDistrict.
             context.RegionalDistricts.Add(RegionalDistrict);
             context.SaveChanges();
         }
@@ -42,8 +40,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             RegionalDistrict RegionalDistrict = context.RegionalDistricts.FirstOrDefault(x => x.Name == name);
             return RegionalDistrict;
         }
-
-
 
         /// <summary>
         /// Create RegionalDistricts from a (json) file
@@ -98,7 +94,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             context.AddRegionalDistrict(RegionalDistrict);
         }
-
 
         /// <summary>
         /// Update RegionalDistrict

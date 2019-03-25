@@ -2,13 +2,16 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Gov.Jag.Embc.Public.Sqlite.Models
+namespace Gov.Jag.Embc.Public.Models.Db
 {
     /// <summary>
     /// Role Database Model
     /// </summary>
-    public class Country
+    public class RegionalDistrict
     {
+        public RegionalDistrict()
+        { }
+
         /// <summary>
         /// A system-generated unique identifier
         /// </summary>
@@ -18,9 +21,9 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         public Guid Id { get; set; }
 
         /// <summary>
-        /// The name of the Region
+        /// The name of the Community
         /// </summary>
-        /// <value>The name of the Region</value>
+        /// <value>The name of the Community</value>
         [MaxLength(255)]
         public string Name { get; set; }
 
@@ -29,7 +32,6 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         /// </summary>
         public bool? Active { get; set; }
 
-        public Country()
-        { }
+        public virtual Region Region { get; set; }
     }
 }
