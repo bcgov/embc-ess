@@ -83,11 +83,11 @@ namespace Gov.Jag.Embc.Public.Controllers
             return Json(result);
         }
 
-        [HttpGet("{id/summary}")]
+        [HttpGet("{id}/summary")]
         [AllowAnonymous]
         public async Task<IActionResult> GetOneSummary(string id)
         {
-            var result = await dataInterface.GetRegistrationSummary(id);
+            var result = await dataInterface.GetRegistrationSummaryAsync(id);
             if (result == null)
             {
                 return NotFound();

@@ -108,24 +108,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     EssFileNumber = source.EssFileNumber,
                     RestrictedAccess = source.RestrictedAccess,
                     RegisteringFamilyMembers = source.RegisteringFamilyMembers,
-                    HasThreeDayMedicationSupply = source.HasThreeDayMedicationSupply,
-                    HasPets = source.HasPets,
                     RequiresSupport = source.RequiresSupport,
                     RequiresFood = source.RequiresFood,
-
                     RequiresClothing = source.RequiresClothing,
                     RequiresAccommodation = source.RequiresAccommodation,
                     RequiresIncidentals = source.RequiresIncidentals,
                     RequiresTransportation = source.RequiresTransportation,
-                    HasInquiryReferral = source.HasInquiryReferral,
-                    HasHealthServicesReferral = source.HasHealthServicesReferral,
-                    HasFirstAidReferral = source.HasFirstAidReferral,
-                    HasPersonalServicesReferral = source.HasPersonalServicesReferral,
-                    HasChildCareReferral = source.HasChildCareReferral,
-                    HasPetCareReferral = source.HasPetCareReferral,
-                    //SelfRegisteredDate = source.SelfRegisteredDate,
-                    //RegistrationCompletionDate = source.RegistrationCompletionDate,
-                    HeadOfHousehold = source.HeadOfHousehold.ToViewModel() as ViewModels.HeadOfHousehold,
+                    SelfRegisteredDate = source.SelfRegisteredDate,
+                    RegistrationCompletionDate = source.RegistrationCompletionDate,
                 };
             }
 
