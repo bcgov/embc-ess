@@ -43,5 +43,6 @@ export class EvacueeSummaryComponent implements OnInit {
   }
   viewProfile() {
     alert("WHAT ARE YOU DOING?????");
+    this.router.navigate(['']);
   }
 }

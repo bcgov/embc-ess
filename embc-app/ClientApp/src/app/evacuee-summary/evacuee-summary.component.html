@@ -4,50 +4,45 @@
     <h3 class="blue-header">
       EVACUEE INFORMATION
     </h3>
-
-    <section class="pt-3 pr-3 pl-3">
-
-
-      <div class="feature-block">
-        <table class="w-auto">
-          <thead>
-            <tr>
-              <td scope="col" colspan="4">
-                <h1>
-                  {{registration.headOfHousehold.lastName}}, {{registration.headOfHousehold.firstName}}
-                  {{registration.headOfHousehold.initials}}
-                </h1>
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Task #: {{registration.incidentTask.taskNumber}}</td>
-              <td class="pr-2 pl-2" colspan="2">Self Registration Date & Time:
-                {{registration.selfRegisteredDate | date}}
-              </td>
-              <td>File Status:
-                <span *ngIf="registration.active">Active</span>
-                <span *ngIf="!registration.active">Inactive</span>
-              </td>
-            </tr>
-            <tr>
-              <td>ESS File #: {{registration.essFileNumber}}</td>
-              <td class="pr-2 pl-2" colspan="2">Registration Completed Date & Time:
-                {{registration.registrationCompletionDate | date}}
-              </td>
-              <td>Restricted File:
-                <span *ngIf="registration.restrictedAccess">Yes</span>
-                <span *ngIf="!registration.restrictedAccess">No</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-      </div>
-    </section>
     <section class="p-3">
       <ul class="summary">
+        <li>
+          <table class="m-2">
+            <thead>
+              <tr>
+                <td scope="col" colspan="4">
+                  <h1>
+                    {{registration.headOfHousehold.lastName}}, {{registration.headOfHousehold.firstName}}
+                    {{registration.headOfHousehold.initials}}
+                  </h1>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Task #: {{registration.incidentTask.taskNumber}}</td>
+                <td class="pr-2 pl-2" colspan="2">Self Registration Date & Time:
+                  {{registration.selfRegisteredDate | date}}
+                </td>
+                <td>File Status:
+                  <span *ngIf="registration.active">Active</span>
+                  <span *ngIf="!registration.active">Inactive</span>
+                </td>
+              </tr>
+              <tr>
+                <td>ESS File #: {{registration.essFileNumber}}</td>
+                <td class="pr-2 pl-2" colspan="2">Registration Completed Date & Time:
+                  {{registration.registrationCompletionDate | date}}
+                </td>
+                <td>Restricted File:
+                  <span *ngIf="registration.restrictedAccess">Yes</span>
+                  <span *ngIf="!registration.restrictedAccess">No</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </li>
         <li>
           <span class="name">Facility Name/Registration Location</span>
           <span class="value">{{registration.facility}}</span>
