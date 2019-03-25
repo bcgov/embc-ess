@@ -11,7 +11,7 @@ import { Country } from 'src/app/core/models';
         <app-form-field class="col-md-6" required="true">
           <label>Apt/Suite/Building Number &amp; Street Address</label>
           <input [class.is-invalid]="invalidAddressLine1" class="form-control" type="text" formControlName="addressLine1">
-          <span *ngIf="invalidAddressLine1" class="invalid-feedback">
+          <span class="invalid-feedback">
             Please enter your street address
           </span>
         </app-form-field>
@@ -20,7 +20,7 @@ import { Country } from 'src/app/core/models';
         <app-form-field class="col-md-6" required="true">
           <label>City</label>
           <input [class.is-invalid]="invalidCity" class="form-control" type="text" formControlName="city">
-          <span *ngIf="invalidCity" class="invalid-feedback">
+          <span class="invalid-feedback">
             Please enter your city
           </span>
         </app-form-field>
@@ -40,7 +40,7 @@ import { Country } from 'src/app/core/models';
             <option [ngValue]="null">-- Select Country</option>
             <option [ngValue]="item" *ngFor="let item of countries">{{item.name}}</option>
           </select>
-          <span *ngIf="invalidCountry" class="invalid-feedback">
+          <span class="invalid-feedback">
             Please select a country from the dropdown list
           </span>
         </app-form-field>

@@ -12,7 +12,7 @@ import { CustomValidators } from 'src/app/shared/validation/custom.validators';
         <app-form-field class="col-md-6" required="true">
           <label>Apt/Suite/Building Number &amp; Street Address</label>
           <input [class.is-invalid]="invalidAddressLine1" class="form-control" type="text" formControlName="addressLine1">
-          <span *ngIf="invalidAddressLine1" class="invalid-feedback">
+          <span class="invalid-feedback">
             Please enter your street address
           </span>
         </app-form-field>
@@ -24,7 +24,7 @@ import { CustomValidators } from 'src/app/shared/validation/custom.validators';
             <option [ngValue]="null">-- Select community</option>
             <option [ngValue]="item" *ngFor="let item of communities">{{item.name}}</option>
           </select>
-          <span *ngIf="invalidCommunity" class="invalid-feedback">
+          <span class="invalid-feedback">
             Please enter your community
           </span>
         </app-form-field>
@@ -35,7 +35,7 @@ import { CustomValidators } from 'src/app/shared/validation/custom.validators';
         <app-form-field class="col-md-3">
           <label>Postal Code</label>
           <input [class.is-invalid]="invalidPostalCode" class="form-control" type="text" formControlName="postalCode">
-          <span *ngIf="invalidPostalCode" class="invalid-feedback">
+          <span class="invalid-feedback">
             Format: A1A 1A1
           </span>
         </app-form-field>
