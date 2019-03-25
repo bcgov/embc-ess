@@ -82,9 +82,9 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
   ngOnInit() {
     // if there are route params we should grab them
-    if (this.route.snapshot.params.essFileNumber) {
+    if (this.route.snapshot.params.id) {
       // TODO: go get the evacuee from db eventually
-      this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
+      this.registrationService.getRegistrationById(this.route.snapshot.params.id)
         .subscribe(r => {
           // TODO: get first registration for now
           // alert(JSON.stringify(r));

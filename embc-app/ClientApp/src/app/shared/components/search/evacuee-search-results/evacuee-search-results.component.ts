@@ -185,10 +185,10 @@ export class EvacueeSearchResultsComponent implements OnChanges {
     // alert(JSON.stringify(r.rowData.essFileNumber));
     // look up the registration correctly for the context
     // alert('register-evacuee/fill/' + r.essfileNumber);
-    this.router.navigate(['register-evacuee/fill/' + r.rowData.essFileNumber]);
+    this.router.navigate(['register-evacuee/fill/' + r.rowData.id]);
   }
   view(r: RowItem) {
     // look up the registration correctly for the context
-    this.router.navigate(['evacuee-summary/' + r.rowData.essFileNumber]);
+    this.router.navigate(['evacuee-summary/' + r.rowData.id]);
   }
 }
