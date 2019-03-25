@@ -47,7 +47,7 @@ export class EssEditorOneComponent implements OnInit {
     // if there are route params we should grab them
     if (this.route.snapshot.params.essUser) {
       // there may be a user to edit because the route looks right
-      this.volunteerService.getVolunteerByBceidAccountNumber(this.route.snapshot.params.essUser).subscribe((v: Volunteer) => {
+      this.volunteerService.getVolunteerById(this.route.snapshot.params.essUser).subscribe((v: Volunteer) => {
         // save the volunteer for filling in information later.
         this.lastName.setValue(v.lastName);
         this.firstName.setValue(v.firstName);

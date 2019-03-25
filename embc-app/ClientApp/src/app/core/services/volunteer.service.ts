@@ -100,7 +100,7 @@ export class VolunteerService extends RestService {
         catchError(this.handleError)
       );
   }
-  getVolunteerByBceidAccountNumber(bceidAccountNumber: string): Observable<Volunteer> {
+  getVolunteerById(bceidAccountNumber: string): Observable<Volunteer> {
     // get a single volunteer by their bceidAccountNumber
     // return of(VOLUNTEERS[0]);
     return this.http.get<Volunteer>(this.apiRoute + bceidAccountNumber, { headers: this.headers })
