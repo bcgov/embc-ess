@@ -10,14 +10,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static class RegionalDistrictExtensions
     {
-        public static void AddRegionalDistrict(this SqliteContext context, RegionalDistrict RegionalDistrict)
+        public static void AddRegionalDistrict(this EmbcDbContext context, RegionalDistrict RegionalDistrict)
         {
             // create a new RegionalDistrict.           
             context.RegionalDistricts.Add(RegionalDistrict);
             context.SaveChanges();
         }
 
-        public static void UpdateRegionalDistrict(this SqliteContext context, RegionalDistrict RegionalDistrict)
+        public static void UpdateRegionalDistrict(this EmbcDbContext context, RegionalDistrict RegionalDistrict)
         {
             RegionalDistrict _RegionalDistrict = context.RegionalDistricts.FirstOrDefault<RegionalDistrict>(x => x.Id == RegionalDistrict.Id);
             _RegionalDistrict.Name = RegionalDistrict.Name;
@@ -25,7 +25,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             context.SaveChanges();
         }
 
-        public static List<RegionalDistrict> GetRegionalDistricts(this SqliteContext context)
+        public static List<RegionalDistrict> GetRegionalDistricts(this EmbcDbContext context)
         {
             List<RegionalDistrict> RegionalDistricts =
                 context.RegionalDistricts.ToList<RegionalDistrict>();
@@ -37,7 +37,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         /// <param name="name">The name of the RegionalDistrict</param>
         /// <returns>The RegionalDistrict, or null if it does not exist.</returns>
-        public static RegionalDistrict GetRegionalDistrictByName(this SqliteContext context, string name)
+        public static RegionalDistrict GetRegionalDistrictByName(this EmbcDbContext context, string name)
         {
             RegionalDistrict RegionalDistrict = context.RegionalDistricts.FirstOrDefault(x => x.Name == name);
             return RegionalDistrict;
@@ -50,7 +50,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         /// <param name="context"></param>
         /// <param name="RegionalDistrictJsonPath"></param>
-        public static void AddInitialRegionalDistrictsFromFile(this SqliteContext context, string RegionalDistrictJsonPath)
+        public static void AddInitialRegionalDistrictsFromFile(this EmbcDbContext context, string RegionalDistrictJsonPath)
         {
             if (!string.IsNullOrEmpty(RegionalDistrictJsonPath) && File.Exists(RegionalDistrictJsonPath))
             {
@@ -59,7 +59,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        private static void AddInitialRegionalDistricts(this SqliteContext context, string RegionalDistrictJson)
+        private static void AddInitialRegionalDistricts(this EmbcDbContext context, string RegionalDistrictJson)
         {
             List<RegionalDistrict> RegionalDistricts = JsonConvert.DeserializeObject<List<RegionalDistrict>>(RegionalDistrictJson);
 
@@ -69,7 +69,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        private static void AddInitialRegionalDistricts(this SqliteContext context, List<RegionalDistrict> RegionalDistricts)
+        private static void AddInitialRegionalDistricts(this EmbcDbContext context, List<RegionalDistrict> RegionalDistricts)
         {
             RegionalDistricts.ForEach(context.AddInitialRegionalDistrict);
         }
@@ -77,7 +77,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <summary>
         /// Adds a RegionalDistrict to the system, only if it does not exist.
         /// </summary>
-        private static void AddInitialRegionalDistrict(this SqliteContext context, RegionalDistrict initialRegionalDistrict)
+        private static void AddInitialRegionalDistrict(this EmbcDbContext context, RegionalDistrict initialRegionalDistrict)
         {
             RegionalDistrict RegionalDistrict = context.GetRegionalDistrictByName(initialRegionalDistrict.Name);
             if (RegionalDistrict != null)
@@ -105,7 +105,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         /// <param name="context"></param>
         /// <param name="RegionalDistrictInfo"></param>
-        public static void UpdateSeedRegionalDistrictInfo(this SqliteContext context, RegionalDistrict RegionalDistrictInfo)
+        public static void UpdateSeedRegionalDistrictInfo(this EmbcDbContext context, RegionalDistrict RegionalDistrictInfo)
         {
             RegionalDistrict RegionalDistrict = context.GetRegionalDistrictByName(RegionalDistrictInfo.Name);
             if (RegionalDistrict == null)

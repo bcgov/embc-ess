@@ -9,7 +9,7 @@ using Gov.Jag.Embc.Public.Sqlite.Models;
 
 namespace Gov.Embc.Public.Seeders
 {
-    public class RegionSeeder : Seeder<SqliteContext>
+    public class RegionSeeder : Seeder<EmbcDbContext>
     {
         private readonly string[] _profileTriggers = { AllProfiles };
 
@@ -19,12 +19,12 @@ namespace Gov.Embc.Public.Seeders
 
         protected override IEnumerable<string> TriggerProfiles => _profileTriggers;
 
-        protected override void Invoke(SqliteContext context)
+        protected override void Invoke(EmbcDbContext context)
         {
             UpdateRegions(context);
         }
 
-        private void UpdateRegions(SqliteContext context)
+        private void UpdateRegions(EmbcDbContext context)
         {
             List<Region> seedRegions = GetSeedRegions();
 
@@ -36,7 +36,7 @@ namespace Gov.Embc.Public.Seeders
             AddInitialRegions(context);
         }
 
-        private void AddInitialRegions(SqliteContext context)
+        private void AddInitialRegions(EmbcDbContext context)
         {
             string regionInitializationFilename = Configuration["RegionInitializationFilename"];
             if (string.IsNullOrEmpty(regionInitializationFilename))

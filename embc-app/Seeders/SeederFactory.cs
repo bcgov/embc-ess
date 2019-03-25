@@ -1,10 +1,8 @@
-
-using Gov.Jag.Embc.Public.DataInterfaces;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,7 +13,7 @@ namespace Gov.Embc.Public.Seeders
     /// This class automattically loades all seeder classes defined in this assembly,
     /// and provides a simple interface for seeding the application and database with data.
     /// </summary>
-    public class SeedFactory<T> where T : SqliteContext
+    public class SeedFactory<T> where T : DbContext
     {
         private readonly IHostingEnvironment _env;
         private readonly ILoggerFactory _loggerFactory;
@@ -69,12 +67,10 @@ namespace Gov.Embc.Public.Seeders
             }
         }
 
-        private class SeederComparer<TY> : Comparer<Seeder<TY>> where TY : SqliteContext
+        private class SeederComparer<TY> : Comparer<Seeder<TY>> where TY : DbContext
         {
-
             public override int Compare(Seeder<TY> x, Seeder<TY> y)
             {
-
                 // < 0 x is less than y
                 // = 0 same
                 // > 0 x greater than y
