@@ -51,7 +51,9 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Create form controls
     this.initForm();
-    this.onFormChanges();
+
+    // Watch for value changes
+    this.onFormChange();
 
     // Update form values based on the state
     this.currentRegistration$
@@ -91,8 +93,7 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     });
   }
 
-  onFormChanges() {
-  }
+  onFormChange() { }
 
   displayRegistration(props: { registration: Registration | null }): void {
     // Set the local registration property

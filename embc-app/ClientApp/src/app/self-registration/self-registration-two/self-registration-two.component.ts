@@ -46,7 +46,9 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Create form controls
     this.initForm();
-    this.onFormChanges();
+
+    // Watch for value changes
+    this.onFormChange();
 
     // Update form values based on the state
     this.currentRegistration$
@@ -74,8 +76,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Watch for value changes
-  onFormChanges() {
+  onFormChange() {
     // clear any previous supports section selections based on the "require supports" radio button
     this.f.requiresSupport.valueChanges.subscribe((value: boolean) => {
       if (value === false) {

@@ -27,10 +27,10 @@
       <app-form-field class="col-md-9" required="true"
         tooltip="Tool Tip: Please ensure you use the legal last name of the person registering the family.">
         <label>Last Name</label>
-        <input [class.is-invalid]="submitted && validationFeedback['headOfHousehold'].lastName" class="form-control"
+        <input [class.is-invalid]="submitted && validationErrors['headOfHousehold'].lastName" class="form-control"
           type="text" formControlName="lastName">
         <span *ngIf="submitted" class="invalid-feedback">
-          {{validationFeedback['headOfHousehold'].lastName}}
+          {{validationErrors['headOfHousehold'].lastName}}
         </span>
       </app-form-field>
     </div>
@@ -38,10 +38,10 @@
       <app-form-field class="col-md-9" required="true"
         tooltip="Tool Tip: Please ensure you use the legal first name of the person registering the family.">
         <label>First Name</label>
-        <input [class.is-invalid]="submitted && validationFeedback['headOfHousehold'].firstName" class="form-control"
+        <input [class.is-invalid]="submitted && validationErrors['headOfHousehold'].firstName" class="form-control"
           type="text" formControlName="firstName">
         <span *ngIf="submitted" class="invalid-feedback">
-          {{validationFeedback['headOfHousehold'].firstName}}
+          {{validationErrors['headOfHousehold'].firstName}}
         </span>
       </app-form-field>
     </div>
@@ -66,11 +66,13 @@
         </select>
       </app-form-field>
       <app-form-field class="col-md-4" required="true">
+        <!-- TODO: Split DOB into 3 inputs [MM] [DD] [YYYY] -->
         <label>Date of Birth</label>
-        <input [class.is-invalid]="submitted && validationFeedback['headOfHousehold'].dob" class="form-control"
+        <input [class.is-invalid]="submitted && validationErrors['headOfHousehold'].dob" class="form-control"
           type="date" formControlName="dob">
+        <small>For example: 31 12 1970</small>
         <span *ngIf="submitted" class="invalid-feedback">
-          {{validationFeedback['headOfHousehold'].dob}}
+          {{validationErrors['headOfHousehold'].dob}}
         </span>
       </app-form-field>
     </div>
@@ -86,22 +88,22 @@
     <p class="required">Are you registering immediate family members who live in the same household with you?</p>
     <div class="form-group">
       <div class="form-check">
-        <input [class.is-invalid]="submitted && !!validationFeedback.registeringFamilyMembers" class="form-check-input"
+        <input [class.is-invalid]="submitted && !!validationErrors.registeringFamilyMembers" class="form-check-input"
           type="radio" value="yes" formControlName="registeringFamilyMembers">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input [class.is-invalid]="submitted && !!validationFeedback.registeringFamilyMembers" class="form-check-input"
+        <input [class.is-invalid]="submitted && !!validationErrors.registeringFamilyMembers" class="form-check-input"
           type="radio" value="yes-later" formControlName="registeringFamilyMembers">
         <label class="form-check-label">Yes, but I'd like to register them when I get to the
           Reception Center</label>
       </div>
       <div class="form-check">
-        <input [class.is-invalid]="submitted && !!validationFeedback.registeringFamilyMembers" class="form-check-input"
+        <input [class.is-invalid]="submitted && !!validationErrors.registeringFamilyMembers" class="form-check-input"
           type="radio" value="no" formControlName="registeringFamilyMembers">
         <label class="form-check-label">No</label>
         <span *ngIf="submitted" class="invalid-feedback">
-          {{validationFeedback['registeringFamilyMembers']}}
+          {{validationErrors['registeringFamilyMembers']}}
         </span>
       </div>
     </div>
@@ -171,18 +173,18 @@
     <div class="d-flex flex-row">
       <p class="m-0 mr-4 required">Is your primary residence within BC</p>
       <div class="form-check form-check-inline">
-        <input [class.is-invalid]="submitted && !!validationFeedback.primaryResidenceInBC" class="form-check-input"
+        <input [class.is-invalid]="submitted && !!validationErrors.primaryResidenceInBC" class="form-check-input"
           type="radio" formControlName="primaryResidenceInBC" [value]="true">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check form-check-inline">
-        <input [class.is-invalid]="submitted && !!validationFeedback.primaryResidenceInBC" class="form-check-input"
+        <input [class.is-invalid]="submitted && !!validationErrors.primaryResidenceInBC" class="form-check-input"
           type="radio" formControlName="primaryResidenceInBC" [value]="false">
         <label class="form-check-label">No</label>
       </div>
     </div>
-    <span [class.d-block]="submitted && !!validationFeedback.primaryResidenceInBC" class="invalid-feedback">
-      {{validationFeedback['primaryResidenceInBC']}}
+    <span [class.d-block]="submitted && !!validationErrors.primaryResidenceInBC" class="invalid-feedback">
+      {{validationErrors['primaryResidenceInBC']}}
     </span>
     <section *ngIf="ui.showPrimaryAddressSection()" class="mt-4 feature-block">
       <app-address-selector [parent]="primaryResidence" [touched]="submitted"
@@ -191,19 +193,31 @@
       <section>
         <div class="row">
           <app-form-field class="col-md-6">
-            <label>Telephone / Mobile Number (10 digits)</label>
-            <input class="form-control" type="text" placeholder="xxx xxx xxxx" formControlName="phoneNumber">
+            <label>Telephone / Mobile Number</label>
+            <input [class.is-invalid]="submitted && !!validationErrors.phoneNumber" class="form-control" type="text"
+              placeholder="" formControlName="phoneNumber">
+            <span *ngIf="submitted" class="invalid-feedback">
+              {{validationErrors['phoneNumber']}}
+            </span>
           </app-form-field>
           <app-form-field class="col-md-6">
             <label>Alternate Telephone / Mobile Number</label>
-            <input class="form-control" type="text" placeholder="xxx xxx xxxx" formControlName="phoneNumberAlt">
+            <input [class.is-invalid]="submitted && !!validationErrors.phoneNumberAlt" class="form-control" type="text"
+              placeholder="" formControlName="phoneNumberAlt">
+            <span *ngIf="submitted" class="invalid-feedback">
+              {{validationErrors['phoneNumberAlt']}}
+            </span>
           </app-form-field>
         </div>
         <div class="row">
           <app-form-field class="col-md-8">
             <label>Email Address</label>
-            <input class="form-control" type="text" formControlName="email">
+            <input [class.is-invalid]="submitted && !!validationErrors.email" class="form-control" type="text"
+              autocomplete="email" spellcheck="false" formControlName="email">
             <small>Your email address will be used to communicate with you about your registration.</small>
+            <span *ngIf="submitted" class="invalid-feedback">
+              {{validationErrors['email']}}
+            </span>
           </app-form-field>
         </div>
       </section>
@@ -215,16 +229,16 @@
     <p class="required">Is your mailing address the same as your primary residence?</p>
     <div class="form-group">
       <div class="form-check">
-        <input [class.is-invalid]="submitted && !!validationFeedback.mailingAddressSameAsPrimary"
-          class="form-check-input" type="radio" formControlName="mailingAddressSameAsPrimary" [value]="true">
+        <input [class.is-invalid]="submitted && !!validationErrors.mailingAddressSameAsPrimary" class="form-check-input"
+          type="radio" formControlName="mailingAddressSameAsPrimary" [value]="true">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input [class.is-invalid]="submitted && !!validationFeedback.mailingAddressSameAsPrimary"
-          class="form-check-input" type="radio" formControlName="mailingAddressSameAsPrimary" [value]="false">
+        <input [class.is-invalid]="submitted && !!validationErrors.mailingAddressSameAsPrimary" class="form-check-input"
+          type="radio" formControlName="mailingAddressSameAsPrimary" [value]="false">
         <label class="form-check-label">No</label>
         <span *ngIf="submitted" class="invalid-feedback">
-          {{validationFeedback['mailingAddressSameAsPrimary']}}
+          {{validationErrors['mailingAddressSameAsPrimary']}}
         </span>
       </div>
     </div>
@@ -240,16 +254,16 @@
           <label class="form-check-label">No</label>
         </div>
       </div>
-      <span [class.d-block]="submitted && !!validationFeedback.mailingAddressInBC" class="invalid-feedback">
-        {{validationFeedback['mailingAddressInBC']}}
+      <span [class.d-block]="submitted && !!validationErrors.mailingAddressInBC" class="invalid-feedback">
+        {{validationErrors['mailingAddressInBC']}}
       </span>
       <app-address-selector class="mt-4" *ngIf="ui.showMailingAddressSection()" [parent]="mailingAddress"
         [withinBC]="f['mailingAddressInBC'].value"></app-address-selector>
     </section>
   </section>
 
-  <div *ngIf="validationErrorSummary" class="mt-5 pl-5 text-danger">
-    <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon> {{ validationErrorSummary }}
+  <div *ngIf="errorSummary" class="mt-5 pl-5 text-danger">
+    <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon> {{ errorSummary }}
   </div>
 
   <div class="mt-5 space-between">

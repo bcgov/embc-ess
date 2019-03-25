@@ -6,7 +6,7 @@ import { FormGroup } from '@angular/forms';
  * Implemented as a class, not a service, so it can retain state for multiple forms.
  *
  * @usageNotes
- * Provide a set of validation messages with the following structure:
+ * Provide a set of validation constraints with the following structure:
  *
  * ```typescript
  * {
@@ -24,7 +24,7 @@ import { FormGroup } from '@angular/forms';
  */
 export class ValidationHelper {
 
-  constructor(private validationMessages: { [key: string]: { [key: string]: string | { [key: string]: string } } }) { }
+  constructor(private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } }) { }
 
   /**
    * @description
@@ -45,7 +45,7 @@ export class ValidationHelper {
    */
   processMessages(container: FormGroup, parentName?: string): { [key: string]: string | { [key: string]: string } } {
     // the object to return
-    const feedback = {};
+    const errors = {};
 
     // walk over all controls in the form checking for validation errors.
     for (const controlName in container.controls) {
@@ -55,19 +55,19 @@ export class ValidationHelper {
         if (c instanceof FormGroup) {
           // process child controls.
           const childMessages = this.processMessages(c, controlName);
-          feedback[controlName] = { ...childMessages };
+          errors[controlName] = { ...childMessages };
         } else {
           // this only goes one-level deep but we don't nest our forms more than that
-          const parentMessages = this.validationMessages[parentName] || {};
-          const controlMessages = parentName ? parentMessages[controlName] : this.validationMessages[controlName];
+          const parentMessages = this.constraints[parentName] || {};
+          const controlMessages = parentName ? parentMessages[controlName] : this.constraints[controlName];
 
           // only validate if there are validation messages for the control
           if (controlMessages) {
-            feedback[controlName] = '';
+            errors[controlName] = '';
             if (c.errors) {
               Object.keys(c.errors).forEach(k => {
                 if (controlMessages[k]) {
-                  feedback[controlName] += controlMessages[k] + ' ';
+                  errors[controlName] += controlMessages[k] + ' ';
                 }
               });
             }
@@ -75,6 +75,6 @@ export class ValidationHelper {
         }
       }
     }
-    return feedback;
+    return errors;
   }
 }
