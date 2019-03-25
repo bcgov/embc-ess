@@ -77,7 +77,7 @@ const routes: Routes = [
     component: VolunteerTeamDashboardComponent
   },
   {
-    path: 'evacuee-summary/:essFileNumber',
+    path: 'evacuee-summary/:id',
     component: EvacueeSummaryComponent
   },
   {
@@ -91,7 +91,7 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: 'fill/:essFileNumber',
+        path: 'fill/:id',
         component: EvacueeRegistrationOneComponent
       },
       {
