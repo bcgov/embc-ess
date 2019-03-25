@@ -31,13 +31,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             ctx = () => new SqliteContext(builder.Options);
         }
 
-        public Person CreatePerson(Person person)
-        {
-            // TODO: Implement
-            throw new NotImplementedException();
-            //return person;
-        }
-
         #region Registration
 
         public async Task<Registration> CreateRegistrationAsync(Registration registration)
@@ -124,23 +117,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         }
 
         #endregion Registration
-
-        public async Task<Organization> GetOrganizationByBceidGuidAsync(string bceidGuid)
-        {
-            var item = await Db.Organizations.FirstOrDefaultAsync(x => x.BceidAccountNumber.Equals(bceidGuid, StringComparison.CurrentCultureIgnoreCase));
-            var result = item.ToViewModel();
-            return result;
-        }
-
-
-        public Person GetPersonByBceidGuid(string bceidGuid)
-        {
-            // TODO: Implement
-            throw new NotImplementedException();
-            //Person result = new Person();
-            //return result;
-        }
-        
 
         public List<Country> GetCountries()
         {
@@ -296,18 +272,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public async Task<Organization> GetOrganizationAsync(string id)
-        {
-            var db = ctx();
-            if (Guid.TryParse(id, out var guid))
-            {
-                var entity = await db.Organizations.FirstOrDefaultAsync(x => x.Id == guid);
-                var result = entity.ToViewModel();
-                return entity.ToViewModel();
-            }
-            return null;
-        }
-
         public Organization GetOrganizationByLegalName(string name)
         {
             var db = ctx();
@@ -324,7 +288,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var result = item.ToViewModel();
 
             return result;
-        }      
+        }
 
         public async Task<Organization> CreateOrganizationAsync(Organization item)
         {
@@ -373,9 +337,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             if (type == Sqlite.Models.Person.VOLUNTEER)
             {
                 result = db.People.Include(x => ((Sqlite.Models.Volunteer)x).Organization)
-                    .Where(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase));                    
+                    .Where(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase));
             }
-                else
+            else
             {
                 result = db.People.Where(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase));
             }
@@ -390,7 +354,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 result = await db.People
                     .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
-                    .FirstOrDefaultAsync(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase) && p.Id == Guid.Parse(id));                    
+                    .FirstOrDefaultAsync(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase) && p.Id == Guid.Parse(id));
             }
             else
             {
