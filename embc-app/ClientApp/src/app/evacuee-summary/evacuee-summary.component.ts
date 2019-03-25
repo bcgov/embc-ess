@@ -41,8 +41,10 @@ export class EvacueeSummaryComponent implements OnInit {
         });
     }
   }
-  viewProfile() {
-    alert("WHAT ARE YOU DOING?????");
-    this.router.navigate(['']);
+  routeTo(essFileNumber: string) {
+    // TODO: this seems like bad practive but fix when we have time
+    if (confirm('By clicking continue you acknowledge that all changes to this information will be collected, audited, and your administrator may contact you about them.')) {
+      this.router.navigate(['register-evacuee/fill/' + essFileNumber]);
+    }
   }
 }
