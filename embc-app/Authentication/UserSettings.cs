@@ -35,7 +35,7 @@ namespace Gov.Jag.Embc.Public.Authentication
         /// </summary>
         public User AuthenticatedUser { get; set; }
 
-        public bool IsNewUserRegistration { get; set; }
+        public bool IsNewUser { get; set; }
 
         public string ContactId { get; set; }
         public string AccountId { get; set; }

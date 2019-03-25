@@ -54,7 +54,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             };
             
 
-            if (userSettings.IsNewUserRegistration)
+            if (userSettings.IsNewUser)
             {
                 user.isNewUser = true;
                 // get details from the headers.

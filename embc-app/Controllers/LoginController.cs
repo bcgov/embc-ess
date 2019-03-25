@@ -85,7 +85,7 @@ namespace Gov.Jag.Embc.Public.Controllers
                 else
                 {
                     UserSettings userSettings = JsonConvert.DeserializeObject<UserSettings>(temp);
-                    if (userSettings.IsNewUserRegistration || isBusinessProfileSubmitted(userSettings))
+                    if (userSettings.IsNewUser || isBusinessProfileSubmitted(userSettings))
                     {
                         dashboard = BUSINESS_PROFILE_PAGE;
                     }

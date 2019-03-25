@@ -132,6 +132,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
+
         public Person GetPersonByBceidGuid(string bceidGuid)
         {
             // TODO: Implement
@@ -139,17 +140,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             //Person result = new Person();
             //return result;
         }
-
-        public Volunteer GetVolunteerByName(string firstName, string lastName)
-        {
-            Volunteer result = null;
-            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
-            if (item != null)
-            {
-                result = item.ToViewModel();
-            }
-            return result;
-        }
+        
 
         public List<Country> GetCountries()
         {
@@ -238,10 +229,38 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return Task.FromResult(entity.ToViewModel());
         }
 
+        public Volunteer GetVolunteerByBceidUserId(string bceidUserId)
+        {
+            Volunteer result = null;
+            var item = (Sqlite.Models.Volunteer)Db.People
+                .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
+                .FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).BceidAccountNumber == bceidUserId);
+            if (item != null)
+            {
+                result = item.ToViewModel();
+            }
+            return result;
+        }
+
         public Volunteer GetVolunteerByExternalId(string externalId)
         {
             Volunteer result = null;
-            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).Externaluseridentifier == externalId);
+            var item = (Sqlite.Models.Volunteer)Db.People
+                .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
+                .FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).Externaluseridentifier == externalId);
+            if (item != null)
+            {
+                result = item.ToViewModel();
+            }
+            return result;
+        }
+
+        public Volunteer GetVolunteerByName(string firstName, string lastName)
+        {
+            Volunteer result = null;
+            var item = (Sqlite.Models.Volunteer)Db.People
+                .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
+                .FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
             if (item != null)
             {
                 result = item.ToViewModel();
@@ -253,7 +272,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             Volunteer result = null;
             Guid guid = new Guid(id);
-            var item = (Sqlite.Models.Volunteer)Db.People.FirstOrDefault(x => x.Id == guid);
+            var item = (Sqlite.Models.Volunteer)Db.People
+                .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
+                .FirstOrDefault(x => x.Id == guid);
             if (item != null)
             {
                 result = item.ToViewModel();
@@ -303,7 +324,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var result = item.ToViewModel();
 
             return result;
-        }
+        }      
 
         public async Task<Organization> CreateOrganizationAsync(Organization item)
         {
@@ -348,13 +369,34 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         private IQueryable<Sqlite.Models.Person> GetAllPeopleAsync(string type)
         {
             var db = ctx();
-            return db.People.Where(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase));
+            IQueryable<Sqlite.Models.Person> result = null;
+            if (type == Sqlite.Models.Person.VOLUNTEER)
+            {
+                result = db.People.Include(x => ((Sqlite.Models.Volunteer)x).Organization)
+                    .Where(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase));                    
+            }
+                else
+            {
+                result = db.People.Where(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase));
+            }
+            return result;
         }
 
         private async Task<Sqlite.Models.Person> GetSinglePersonByIdAsync(string type, string id)
         {
             var db = ctx();
-            return await db.People.FirstOrDefaultAsync(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase) && p.Id == Guid.Parse(id));
+            Sqlite.Models.Person result = null;
+            if (type == Sqlite.Models.Person.VOLUNTEER)
+            {
+                result = await db.People
+                    .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
+                    .FirstOrDefaultAsync(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase) && p.Id == Guid.Parse(id));                    
+            }
+            else
+            {
+                result = await db.People.FirstOrDefaultAsync(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase) && p.Id == Guid.Parse(id));
+            }
+            return result;
         }
 
         public async Task UpdatePersonAsync(Person person)
