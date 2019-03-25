@@ -164,5 +164,23 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest(e.ToString());
             }
         }
+
+        [HttpDelete("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return BadRequest();
+
+            try
+            {
+                var result = await dataInterface.DeactivateRegistration(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e.ToString());
+                return BadRequest(e);
+            }
+        }
     }
 }

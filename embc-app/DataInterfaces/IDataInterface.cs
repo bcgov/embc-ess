@@ -18,6 +18,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task UpdateRegistrationAsync(Registration registration);
 
+        Task<bool> DeactivateRegistration(string id);
+
         // Incident Tasks
         Task<List<IncidentTask>> GetIncidentTasks();
 
@@ -53,6 +55,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<bool> DeactivateOrganizationAsync(string id);
 
         #endregion Organization
+
+
 
         #region People
 
