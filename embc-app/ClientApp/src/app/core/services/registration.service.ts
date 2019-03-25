@@ -201,7 +201,6 @@ const TEST: Registration[] = [
   providedIn: CoreModule
 })
 export class RegistrationService extends RestService {
-
   getRegistrations(props: SearchQueryParameters = {}): Observable<MetaRegistration> {
     const { limit = 100, offset = 0, q, sort } = props;
     const params = {
