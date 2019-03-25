@@ -10,14 +10,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static class RegionExtensions
     {
-        public static void AddRegion(this SqliteContext context, Region Region)
+        public static void AddRegion(this EmbcDbContext context, Region Region)
         {
             // create a new Region.           
             context.Regions.Add(Region);
             context.SaveChanges();
         }
 
-        public static void UpdateRegion(this SqliteContext context, Region Region)
+        public static void UpdateRegion(this EmbcDbContext context, Region Region)
         {
             Region _Region = context.Regions.FirstOrDefault<Region>(x => x.Id == Region.Id);
             _Region.Name = Region.Name;
@@ -25,7 +25,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             context.SaveChanges();
         }
 
-        public static List<Region> GetRegions(this SqliteContext context)
+        public static List<Region> GetRegions(this EmbcDbContext context)
         {
             List<Region> Regions =
                 context.Regions.ToList<Region>();
@@ -37,7 +37,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         /// <param name="name">The name of the Region</param>
         /// <returns>The Region, or null if it does not exist.</returns>
-        public static Region GetRegionByName(this SqliteContext context, string name)
+        public static Region GetRegionByName(this EmbcDbContext context, string name)
         {
             Region Region = context.Regions.FirstOrDefault(x => x.Name == name);
             return Region;
@@ -50,7 +50,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         /// <param name="context"></param>
         /// <param name="RegionJsonPath"></param>
-        public static void AddInitialRegionsFromFile(this SqliteContext context, string RegionJsonPath)
+        public static void AddInitialRegionsFromFile(this EmbcDbContext context, string RegionJsonPath)
         {
             if (!string.IsNullOrEmpty(RegionJsonPath) && File.Exists(RegionJsonPath))
             {
@@ -59,7 +59,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        private static void AddInitialRegions(this SqliteContext context, string RegionJson)
+        private static void AddInitialRegions(this EmbcDbContext context, string RegionJson)
         {
             List<Region> Regions = JsonConvert.DeserializeObject<List<Region>>(RegionJson);
 
@@ -69,7 +69,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        private static void AddInitialRegions(this SqliteContext context, List<Region> Regions)
+        private static void AddInitialRegions(this EmbcDbContext context, List<Region> Regions)
         {
             Regions.ForEach(context.AddInitialRegion);
         }
@@ -77,7 +77,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <summary>
         /// Adds a Region to the system, only if it does not exist.
         /// </summary>
-        private static void AddInitialRegion(this SqliteContext context, Region initialRegion)
+        private static void AddInitialRegion(this EmbcDbContext context, Region initialRegion)
         {
             Region Region = context.GetRegionByName(initialRegion.Name);
             if (Region != null)
@@ -102,7 +102,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         /// <param name="context"></param>
         /// <param name="regionInfo"></param>
-        public static void UpdateSeedRegionInfo(this SqliteContext context, Region RegionInfo)
+        public static void UpdateSeedRegionInfo(this EmbcDbContext context, Region RegionInfo)
         {
             Region Region = context.GetRegionByName(RegionInfo.Name);
             if (Region == null)

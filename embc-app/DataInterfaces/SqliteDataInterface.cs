@@ -1,7 +1,6 @@
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,37 +11,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public class SqliteDataInterface : IDataInterface
     {
-        public SqliteContext Db;//YT: this is a recipe for bad EF behavior, it should be created (and optionally disposed) in each method
+        private readonly EmbcDbContext db;
 
-        private readonly Func<SqliteContext> ctx;
-
-        public SqliteDataInterface(ILoggerFactory loggingFactory, string connectionString)
+        public SqliteDataInterface(EmbcDbContext ctx)
         {
-            DbContextOptionsBuilder<SqliteContext> builder = new DbContextOptionsBuilder<SqliteContext>()
-                .UseLazyLoadingProxies()
-                //.UseLoggerFactory(loggingFactory)
-                .UseSqlite(connectionString);
-
-            // init the database.
-            Db = new SqliteContext(builder.Options);
-
-            Db.Database.OpenConnection();
-
-            ctx = () => new SqliteContext(builder.Options);
-        }
-
-        public Person CreatePerson(Person person)
-        {
-            // TODO: Implement
-            throw new NotImplementedException();
-            //return person;
+            db = ctx;
         }
 
         #region Registration
 
         public async Task<Registration> CreateRegistrationAsync(Registration registration)
         {
-            var db = ctx();
             var created = await db.Registrations.AddAsync(registration.ToModel());
             await db.SaveChangesAsync();
 
@@ -54,45 +33,41 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task UpdateRegistrationAsync(Registration registration)
         {
-            var db = ctx();
             db.Registrations.Update(registration.ToModel());
             await db.SaveChangesAsync();
         }
 
         public async Task<PaginatedList<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters)
         {
-            using (var db = ctx())
+            var q = queryParameters.Query;
+
+            IQueryable<Sqlite.Models.Registration> registrations = db.Registrations
+                 .Where(r => !queryParameters.HasQuery() ||
+                (
+                    //TODO: see if it is possible to move this into a method, right now EF refuses to work with lazy loading enabled
+                    // and the search criteria in a method, consider switching the search to raw sql for better control of the query
+                    r.HeadOfHousehold.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
+                    r.HeadOfHousehold.FamilyMembers.Any(fm => fm.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
+                    (r.EssFileNumber.HasValue && r.EssFileNumber.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
+                    (r.IncidentTask != null && r.IncidentTask.TaskNumber.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
+                    (r.HeadOfHousehold.PrimaryResidence is Sqlite.Models.BcAddress) &&
+                    ((Sqlite.Models.BcAddress)r.HeadOfHousehold.PrimaryResidence).Community.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase))
+                )
+                ;
+
+            if (queryParameters.HasSortBy())
             {
-                var q = queryParameters.Query;
-
-                IQueryable<Sqlite.Models.Registration> registrations = db.Registrations
-                     .Where(r => !queryParameters.HasQuery() ||
-                    (
-                        //TODO: see if it is possible to move this into a method, right now EF refuses to work with lazy loading enabled
-                        // and the search criteria in a method, consider switching the search to raw sql for better control of the query
-                        r.HeadOfHousehold.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
-                        r.HeadOfHousehold.FamilyMembers.Any(fm => fm.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
-                        (r.EssFileNumber.HasValue && r.EssFileNumber.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
-                        (r.IncidentTask != null && r.IncidentTask.TaskNumber.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
-                        (r.HeadOfHousehold.PrimaryResidence is Sqlite.Models.BcAddress) &&
-                        ((Sqlite.Models.BcAddress)r.HeadOfHousehold.PrimaryResidence).Community.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase))
-                    )
-                    ;
-
-                if (queryParameters.HasSortBy())
-                {
-                    // sort using dynamic linq extension method
-                    registrations = registrations.Sort(queryParameters.SortBy);
-                }
-
-                var items = await registrations
-                    .Skip(queryParameters.Offset)
-                    .Take(queryParameters.Limit)
-                    .ToArrayAsync();
-
-                var allItemCount = await registrations.CountAsync();
-                return new PaginatedList<Registration>(items.Select(r => r.ToViewModel()), allItemCount, queryParameters.Offset, queryParameters.Limit);
+                // sort using dynamic linq extension method
+                registrations = registrations.Sort(queryParameters.SortBy);
             }
+
+            var items = await registrations
+                .Skip(queryParameters.Offset)
+                .Take(queryParameters.Limit)
+                .ToArrayAsync();
+
+            var allItemCount = await registrations.CountAsync();
+            return new PaginatedList<Registration>(items.Select(r => r.ToViewModel()), allItemCount, queryParameters.Offset, queryParameters.Limit);
         }
 
         private bool AdvancedSearch(Sqlite.Models.Registration item, string q)
@@ -103,7 +78,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<Registration> GetRegistrationAsync(string id)
         {
-            var db = ctx();
             if (Guid.TryParse(id, out var guid))
             {
                 var entity = await db.Registrations.FirstOrDefaultAsync(reg => reg.Id == guid);
@@ -116,7 +90,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             if (Guid.TryParse(id, out var guid))
             {
-                var db = ctx();
                 var entity = await db.Registrations.FirstOrDefaultAsync(reg => reg.Id == guid);
                 return entity?.ToSummaryViewModel();
             }
@@ -127,7 +100,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             if (!Guid.TryParse(id, out var guid)) return false;
 
-            var db = ctx();
             var item = await db.Registrations.FirstOrDefaultAsync(reg => reg.Id == guid);
             if (item == null) return false;
             item.Active = false;
@@ -138,25 +110,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         #endregion Registration
 
-        public async Task<Organization> GetOrganizationByBceidGuidAsync(string bceidGuid)
-        {
-            var item = await Db.Organizations.FirstOrDefaultAsync(x => x.BceidAccountNumber.Equals(bceidGuid, StringComparison.CurrentCultureIgnoreCase));
-            var result = item.ToViewModel();
-            return result;
-        }
-
-        public Person GetPersonByBceidGuid(string bceidGuid)
-        {
-            // TODO: Implement
-            throw new NotImplementedException();
-            //Person result = new Person();
-            //return result;
-        }
-
         public List<Country> GetCountries()
         {
             List<Country> countries = new List<Country>();
-            var countryList = Db.Countries.ToList();
+            var countryList = db.Countries.ToList();
             foreach (var country in countryList)
             {
                 countries.Add(country.ToViewModel());
@@ -167,7 +124,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public List<Region> GetRegions()
         {
             List<Region> regions = new List<Region>();
-            var regionList = Db.Regions.ToList();
+            var regionList = db.Regions.ToList();
             foreach (var region in regionList)
             {
                 regions.Add(region.ToViewModel());
@@ -178,7 +135,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public List<RegionalDistrict> GetRegionalDistricts()
         {
             List<RegionalDistrict> regions = new List<RegionalDistrict>();
-            var regionalDistrictList = Db.RegionalDistricts.ToList();
+            var regionalDistrictList = db.RegionalDistricts.ToList();
             foreach (var regionalDistrict in regionalDistrictList)
             {
                 regions.Add(regionalDistrict.ToViewModel());
@@ -189,7 +146,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public List<Community> GetCommunities()
         {
             List<Community> regions = new List<Community>();
-            var communityList = Db.Communities.ToList();
+            var communityList = db.Communities.ToList();
             foreach (var community in communityList)
             {
                 regions.Add(community.ToViewModel());
@@ -199,7 +156,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public List<FamilyRelationshipType> GetFamilyRelationshipTypes()
         {
-            var all = Db.FamilyRelationshipTypes.Select(x => x.ToViewModel()).ToList();
+            var all = db.FamilyRelationshipTypes.Select(x => x.ToViewModel()).ToList();
             return all;
         }
 
@@ -209,7 +166,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public Task<List<IncidentTask>> GetIncidentTasks()
         {
-            var all = Db.IncidentTasks.Select(task => task.ToViewModel()).ToListAsync();
+            var all = db.IncidentTasks.Select(task => task.ToViewModel()).ToListAsync();
             return all;
         }
 
@@ -217,7 +174,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             if (Guid.TryParse(id, out var guid))
             {
-                var entity = Db.IncidentTasks.FirstOrDefault(task => task.Id == guid);
+                var entity = db.IncidentTasks.FirstOrDefault(task => task.Id == guid);
                 return Task.FromResult(entity?.ToViewModel());
             }
             return Task.FromResult<IncidentTask>(null);
@@ -226,24 +183,24 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public Task<IncidentTask> CreateIncidentTask(IncidentTask task)
         {
             var entity = task.ToModel();
-            Db.IncidentTasks.Add(entity);
-            Db.SaveChanges();
+            db.IncidentTasks.Add(entity);
+            db.SaveChanges();
             return Task.FromResult(entity.ToViewModel());
         }
 
         public Task<IncidentTask> UpdateIncidentTask(IncidentTask task)
         {
-            var entity = Db.IncidentTasks.FirstOrDefault(item => item.Id == new Guid(task.Id));
+            var entity = db.IncidentTasks.FirstOrDefault(item => item.Id == new Guid(task.Id));
             entity.PatchValues(task);
-            Db.IncidentTasks.Update(entity);
-            Db.SaveChanges();
+            db.IncidentTasks.Update(entity);
+            db.SaveChanges();
             return Task.FromResult(entity.ToViewModel());
         }
 
         public Volunteer GetVolunteerByBceidUserId(string bceidUserId)
         {
             Volunteer result = null;
-            var item = (Sqlite.Models.Volunteer)Db.People
+            var item = (Sqlite.Models.Volunteer)db.People
                 .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
                 .FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).BceidAccountNumber == bceidUserId);
             if (item != null)
@@ -256,7 +213,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public Volunteer GetVolunteerByExternalId(string externalId)
         {
             Volunteer result = null;
-            var item = (Sqlite.Models.Volunteer)Db.People
+            var item = (Sqlite.Models.Volunteer)db.People
                 .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
                 .FirstOrDefault(x => ((Sqlite.Models.Volunteer)x).Externaluseridentifier == externalId);
             if (item != null)
@@ -269,7 +226,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public Volunteer GetVolunteerByName(string firstName, string lastName)
         {
             Volunteer result = null;
-            var item = (Sqlite.Models.Volunteer)Db.People
+            var item = (Sqlite.Models.Volunteer)db.People
                 .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
                 .FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
             if (item != null)
@@ -283,7 +240,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             Volunteer result = null;
             Guid guid = new Guid(id);
-            var item = (Sqlite.Models.Volunteer)Db.People
+            var item = (Sqlite.Models.Volunteer)db.People
                 .Include(x => ((Sqlite.Models.Volunteer)x).Organization)
                 .FirstOrDefault(x => x.Id == guid);
             if (item != null)
@@ -297,7 +254,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<List<Organization>> GetOrganizationsAsync()
         {
-            var db = ctx();
             var entities = await db.Organizations.ToListAsync();
             var result = new List<Organization>();
             foreach (var item in entities)
@@ -307,21 +263,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public async Task<Organization> GetOrganizationAsync(string id)
-        {
-            var db = ctx();
-            if (Guid.TryParse(id, out var guid))
-            {
-                var entity = await db.Organizations.FirstOrDefaultAsync(x => x.Id == guid);
-                var result = entity.ToViewModel();
-                return entity.ToViewModel();
-            }
-            return null;
-        }
-
         public Organization GetOrganizationByLegalName(string name)
         {
-            var db = ctx();
             var item = db.Organizations.FirstOrDefault(x => x.Name == name);
             var result = item.ToViewModel();
 
@@ -330,7 +273,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public Organization GetOrganizationByExternalId(string externalId)
         {
-            var db = ctx();
             var item = db.Organizations.FirstOrDefault(x => x.Externaluseridentifier == externalId);
             var result = item.ToViewModel();
 
@@ -339,7 +281,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<Organization> CreateOrganizationAsync(Organization item)
         {
-            var db = ctx();
             var entity = item.ToModel();
             await db.Organizations.AddAsync(entity);
             await db.SaveChangesAsync();
@@ -349,7 +290,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<Organization> UpdateOrganizationAsync(Organization item)
         {
-            var db = ctx();
             var entity = await db.Organizations.FirstOrDefaultAsync(x => x.Id == new Guid(item.Id));
             entity.PatchValues(item);
             db.Organizations.Update(entity);
@@ -360,7 +300,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<bool> DeactivateOrganizationAsync(string id)
         {
-            var db = ctx();
             var entity = await db.Organizations.FirstOrDefaultAsync(x => x.Id == new Guid(id));
             if (entity == null)
             {
@@ -379,7 +318,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         private IQueryable<Sqlite.Models.Person> GetAllPeopleAsync(string type)
         {
-            var db = ctx();
             IQueryable<Sqlite.Models.Person> result = null;
             if (type == Sqlite.Models.Person.VOLUNTEER)
             {
@@ -395,7 +333,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         private async Task<Sqlite.Models.Person> GetSinglePersonByIdAsync(string type, string id)
         {
-            var db = ctx();
             Sqlite.Models.Person result = null;
             if (type == Sqlite.Models.Person.VOLUNTEER)
             {
@@ -412,7 +349,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task UpdatePersonAsync(Person person)
         {
-            var db = ctx();
             db.People.Update(person.ToModel());
             await db.SaveChangesAsync();
         }
@@ -431,7 +367,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<Person> CreatePersonAsync(Person person)
         {
-            var db = ctx();
             var newPerson = await db.People.AddAsync(person.ToModel());
             await db.SaveChangesAsync();
             return newPerson.Entity.ToViewModel();
@@ -439,7 +374,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<bool> DeactivatePersonAsync(string type, string id)
         {
-            var db = ctx();
             var person = await GetSinglePersonByIdAsync(type, id);
             if (person == null) return false;
             person.Active = false;
