@@ -9,7 +9,7 @@ using Gov.Jag.Embc.Public.Sqlite.Models;
 
 namespace Gov.Embc.Public.Seeders
 {
-    public class FamilyRelationshipTypeSeeder : Seeder<SqliteContext>
+    public class FamilyRelationshipTypeSeeder : Seeder<EmbcDbContext>
     {
         private readonly string[] _profileTriggers = { AllProfiles };
 
@@ -19,14 +19,14 @@ namespace Gov.Embc.Public.Seeders
 
         protected override IEnumerable<string> TriggerProfiles => _profileTriggers;
 
-        protected override void Invoke(SqliteContext context)
+        protected override void Invoke(EmbcDbContext context)
         {
             UpdateEntities(context);
         }
 
         public override int InvokeOrder => 5;
 
-        private void UpdateEntities(SqliteContext context)
+        private void UpdateEntities(EmbcDbContext context)
         {
             List<FamilyRelationshipType> seedEntities = GetSeedFamilyRelationshipTypes();
 
@@ -38,7 +38,7 @@ namespace Gov.Embc.Public.Seeders
             AddInitialFamilyRelationshipTypes(context);
         }
 
-        private void AddInitialFamilyRelationshipTypes(SqliteContext context)
+        private void AddInitialFamilyRelationshipTypes(EmbcDbContext context)
         {
             string FamilyRelationshipTypeInitializationFilename = Configuration["FamilyRelationshipTypeInitializationFilename"];
             if (string.IsNullOrEmpty(FamilyRelationshipTypeInitializationFilename))

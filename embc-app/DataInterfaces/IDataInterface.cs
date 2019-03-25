@@ -44,10 +44,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         //Organizations
         Task<List<Organization>> GetOrganizationsAsync();
 
-        Task<Organization> GetOrganizationAsync(string id);
-
-        Task<Organization> GetOrganizationByBceidGuidAsync(string bceidGuid);
-
         Organization GetOrganizationByLegalName(string name);
 
         Organization GetOrganizationByExternalId(string externalId);
@@ -63,10 +59,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
 
         #region People
-
-        Person GetPersonByBceidGuid(string bceidGuid);
-
-        Person CreatePerson(Person person);
 
         Task<IEnumerable<Person>> GetPeopleAsync(string type);
 

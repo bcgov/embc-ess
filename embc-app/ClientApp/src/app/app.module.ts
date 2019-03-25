@@ -22,6 +22,7 @@ import { SharedModule } from './shared/shared.module';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { VolunteerNavbarComponent } from './volunteer-navbar/volunteer-navbar.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
+import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { VolunteerUsefulInformationComponent } from './volunteer-useful-informat
     VolunteerTeamDashboardComponent,
     VolunteerNavbarComponent,
     VolunteerUsefulInformationComponent,
+    EvacueeSummaryComponent,
   ],
   imports: [
     // angular

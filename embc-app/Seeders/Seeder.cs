@@ -1,5 +1,3 @@
-
-using Gov.Jag.Embc.Public.DataInterfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +8,7 @@ using System.Linq;
 
 namespace Gov.Embc.Public.Seeders
 {
-    public abstract class Seeder<T> where T : SqliteContext
+    public abstract class Seeder<T> where T : DbContext
     {
         public const string AllProfiles = "all";
 
