@@ -77,7 +77,7 @@ const routes: Routes = [
     component: VolunteerTeamDashboardComponent
   },
   {
-    path: 'evacuee-summary',
+    path: 'evacuee-summary/:essFileNumber',
     component: EvacueeSummaryComponent
   },
   {
