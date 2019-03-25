@@ -118,7 +118,7 @@ const routes: Routes = [
         component: EssEditorOneComponent
       },
       {
-        path: 'fill/:essUser',
+        path: 'fill/:id',
         component: EssEditorOneComponent
       },
       {
