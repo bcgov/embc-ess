@@ -13,10 +13,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             var created = await db.Registrations.AddAsync(registration.ToModel());
             await db.SaveChangesAsync();
-
-            created.Entity.EssFileNumber = Math.Abs(created.Entity.Id.GetHashCode()); //TODO: replace with DB based sequence
-            await db.SaveChangesAsync();
-
             return await GetRegistrationAsync(created.Entity.Id.ToString());
         }
 
@@ -31,13 +27,33 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var q = queryParameters.Query;
 
             IQueryable<Models.Db.Registration> registrations = db.Registrations
+                .AsNoTracking()
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.FamilyMembers)
+                    .ThenInclude(fmbr => fmbr.RelationshipToEvacuee)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.PrimaryResidence)
+                    .ThenInclude(addr => (addr as Models.Db.BcAddress).Community)
+                    .ThenInclude(c => c.RegionalDistrict)
+                    .ThenInclude(d => d.Region)
+               .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.PrimaryResidence)
+                    .ThenInclude(addr => (addr as Models.Db.OtherAddress).Country)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.MailingAddress)
+                    .ThenInclude(addr => (addr as Models.Db.BcAddress).Community)
+                    .ThenInclude(c => c.RegionalDistrict)
+                    .ThenInclude(d => d.Region)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.MailingAddress)
+                    .ThenInclude(addr => (addr as Models.Db.OtherAddress).Country)
                  .Where(r => !queryParameters.HasQuery() ||
                 (
                     //TODO: see if it is possible to move this into a method, right now EF refuses to work with lazy loading enabled
                     // and the search criteria in a method, consider switching the search to raw sql for better control of the query
                     r.HeadOfHousehold.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
                     r.HeadOfHousehold.FamilyMembers.Any(fm => fm.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
-                    (r.EssFileNumber.HasValue && r.EssFileNumber.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
+                    r.EssFileNumber.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
                     (r.IncidentTask != null && r.IncidentTask.TaskNumber.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
                     (r.HeadOfHousehold.PrimaryResidence is Models.Db.BcAddress) &&
                     ((Models.Db.BcAddress)r.HeadOfHousehold.PrimaryResidence).Community.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase))
@@ -61,22 +77,44 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<Registration> GetRegistrationAsync(string id)
         {
+            var entity = await GetRegistrationInternalAsync(id);
+            return entity?.ToViewModel();
+        }
+
+        private async Task<Models.Db.Registration> GetRegistrationInternalAsync(string id)
+        {
             if (Guid.TryParse(id, out var guid))
             {
-                var entity = await db.Registrations.FirstOrDefaultAsync(reg => reg.Id == guid);
-                return entity?.ToViewModel();
+                return await db.Registrations
+                    .AsNoTracking()
+                    .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.FamilyMembers)
+                    .ThenInclude(fmbr => fmbr.RelationshipToEvacuee)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.PrimaryResidence)
+                    .ThenInclude(addr => (addr as Models.Db.BcAddress).Community)
+                    .ThenInclude(c => c.RegionalDistrict)
+                    .ThenInclude(d => d.Region)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.PrimaryResidence)
+                    .ThenInclude(addr => (addr as Models.Db.OtherAddress).Country)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.MailingAddress)
+                    .ThenInclude(addr => (addr as Models.Db.BcAddress).Community)
+                    .ThenInclude(c => c.RegionalDistrict)
+                    .ThenInclude(d => d.Region)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.MailingAddress)
+                    .ThenInclude(addr => (addr as Models.Db.OtherAddress).Country)
+                    .FirstOrDefaultAsync(reg => reg.Id == guid);
             }
             return null;
         }
 
         public async Task<RegistrationSummary> GetRegistrationSummaryAsync(string id)
         {
-            if (Guid.TryParse(id, out var guid))
-            {
-                var entity = await db.Registrations.FirstOrDefaultAsync(reg => reg.Id == guid);
-                return entity?.ToSummaryViewModel();
-            }
-            return null;
+            var entity = await GetRegistrationInternalAsync(id);
+            return entity?.ToSummaryViewModel();
         }
 
         public async Task<bool> DeactivateRegistration(string id)

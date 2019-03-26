@@ -23,7 +23,9 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public bool? RestrictedAccess { get; set; }
 
         public bool? DeclarationAndConsent { get; set; }
-        public long? EssFileNumber { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public long EssFileNumber { get; set; }
 
         // registration record
         public bool? DietaryNeeds { get; set; }

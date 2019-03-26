@@ -89,10 +89,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<Registration> Registrations { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Organization> Organizations { get; set; }
-        // public DbSet<HeadOfHousehold> HeadOfHouseholds { get; set; }
-        // public DbSet<FamilyMember> FamilyMembers { get; set; }
-
-        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -121,7 +117,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .HasValue<HeadOfHousehold>(Person.HOH)
                 .HasValue<FamilyMember>(Person.FAMILY_MEMBER);
 
-            // TODO: Specify any additional inheritance hierarchies here!
+            modelBuilder.HasSequence<long>("ESSFileNumbers")
+                .StartsAt(100000)
+                .IncrementsBy(1);
+
+            modelBuilder.Entity<Registration>()
+                .Property(r => r.EssFileNumber)
+                .HasDefaultValueSql("NEXT VALUE FOR ESSFileNumbers");
         }
     }
 }
