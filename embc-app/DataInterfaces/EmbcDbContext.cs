@@ -1,14 +1,82 @@
 using Gov.Jag.Embc.Public.Models.Db;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
+    /// <summary>
+    /// Database Context Factory Interface
+    /// </summary>
+    public interface IEmbcDbContextFactory
+    {
+        /// <summary>
+        /// Create new database context
+        /// </summary>
+        /// <returns></returns>
+        EmbcDbContext Create();
+    }
+
+    /// <summary>
+    /// Database Context Factory
+    /// </summary>
+    public class EmbcDbContextFactory : IEmbcDbContextFactory
+    {
+        private readonly DbContextOptions<EmbcDbContext> _options;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        /// <summary>
+        /// Database Context Factory Constructor
+        /// </summary>
+        /// <param name="httpContextAccessor"></param>
+        /// <param name="options"></param>
+        public EmbcDbContextFactory(IHttpContextAccessor httpContextAccessor, DbContextOptions<EmbcDbContext> options)
+        {
+            _options = options;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        /// <summary>
+        /// Create new database context
+        /// </summary>
+        /// <returns></returns>
+        public EmbcDbContext Create()
+        {
+            return new EmbcDbContext(_httpContextAccessor, _options);
+        }
+    }
+
     public class EmbcDbContext : DbContext
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         public EmbcDbContext(DbContextOptions<EmbcDbContext> options) : base(options)
         {
             // override the default timeout as some operations are time intensive
             Database?.SetCommandTimeout(180);
+        }
+
+        public EmbcDbContext(IHttpContextAccessor httpContextAccessor, DbContextOptions<EmbcDbContext> options) : base(options)
+        {
+            _httpContextAccessor = httpContextAccessor;
+
+            // override the default timeout as some operations are time intensive
+            Database?.SetCommandTimeout(180);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                   .SetBasePath(Directory.GetCurrentDirectory())
+                   .AddJsonFile("appsettings.json")
+                   .AddEnvironmentVariables()
+                   .Build();
+                string connectionString = DatabaseTools.GetConnectionString(configuration);
+                optionsBuilder.UseSqlServer(connectionString);
+            }
         }
 
         public DbSet<Address> Addresses { get; set; }
@@ -24,15 +92,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         // public DbSet<HeadOfHousehold> HeadOfHouseholds { get; set; }
         // public DbSet<FamilyMember> FamilyMembers { get; set; }
 
-        /*
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite();
-        }
-        */
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // this line is required so ef migrations will work.
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<FamilyRelationshipType>().HasKey(k => k.Code);
 
             // Address hierarchy
