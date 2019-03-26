@@ -5,85 +5,86 @@ import { catchError, retry } from 'rxjs/operators';
 import { CoreModule } from '../core.module';
 import { Volunteer } from '../models';
 import { RestService } from './rest.service';
+import { HttpResponse } from '@angular/common/http';
 
-const VOLUNTEERS: Volunteer[] = [
-  {
-    personType: 'VOLN',
-    id: 'none',
-    bceidAccountNumber: 'TESTBCEIDNUMBER',
-    isAdministrator: true,
-    isPrimaryContact: true,
-    canAccessRestrictedFiles: true,
-    firstName: 'Fonzie',
-    initials: 'D',
-    lastName: 'Delphon',
-    nickname: 'Fando',
-    gender: 'Male',
-    dob: new Date(),
-    organization: {
-      id: '1234',
-      name: 'Quartech',
-      bceidAccountNumber: 'BCEIDACCOUNTNUMBER'
-    }
-  },
-  {
-    personType: 'VOLN',
-    id: 'none',
-    bceidAccountNumber: 'NUMBERGOESHERE',
-    isAdministrator: false,
-    isPrimaryContact: true,
-    canAccessRestrictedFiles: false,
-    firstName: 'Beana',
-    initials: 'K',
-    lastName: 'Andervig',
-    nickname: 'Bean',
-    gender: 'female',
-    dob: new Date(),
-    organization: {
-      id: '1234',
-      name: 'Quartech',
-      bceidAccountNumber: 'BCEIDACCOUNTNUMBER'
-    }
-  },
-  {
-    personType: 'VOLN',
-    id: 'none',
-    bceidAccountNumber: 'IAMACATMEOW',
-    isAdministrator: false,
-    isPrimaryContact: false,
-    canAccessRestrictedFiles: true,
-    firstName: 'Fluffer',
-    initials: '',
-    lastName: 'Macgoodie',
-    nickname: 'Fluf',
-    gender: 'x',
-    dob: new Date(),
-    organization: {
-      id: '764',
-      name: 'Pet Store',
-      bceidAccountNumber: 'KLASHIFUAYFUISOAYDOIU'
-    }
-  },
-  {
-    personType: 'VOLN',
-    id: 'none',
-    bceidAccountNumber: 'WHATISTHISANDWHATAMIDOING',
-    isAdministrator: false,
-    isPrimaryContact: false,
-    canAccessRestrictedFiles: false,
-    firstName: 'Allan',
-    initials: '',
-    lastName: 'McGruff',
-    nickname: 'Big Al',
-    gender: 'male',
-    dob: new Date(),
-    organization: {
-      id: '6970',
-      name: 'Land Movers',
-      bceidAccountNumber: 'BCEIDACCOUNTNUMBER'
-    }
-  },
-];
+// const VOLUNTEERS: Volunteer[] = [
+//   {
+//     personType: 'VOLN',
+//     id: 'none',
+//     bceidAccountNumber: 'TESTBCEIDNUMBER',
+//     isAdministrator: true,
+//     isPrimaryContact: true,
+//     canAccessRestrictedFiles: true,
+//     firstName: 'Fonzie',
+//     initials: 'D',
+//     lastName: 'Delphon',
+//     nickname: 'Fando',
+//     gender: 'Male',
+//     dob: new Date(),
+//     organization: {
+//       id: '1234',
+//       name: 'Quartech',
+//       bceidAccountNumber: 'BCEIDACCOUNTNUMBER'
+//     }
+//   },
+//   {
+//     personType: 'VOLN',
+//     id: 'none',
+//     bceidAccountNumber: 'NUMBERGOESHERE',
+//     isAdministrator: false,
+//     isPrimaryContact: true,
+//     canAccessRestrictedFiles: false,
+//     firstName: 'Beana',
+//     initials: 'K',
+//     lastName: 'Andervig',
+//     nickname: 'Bean',
+//     gender: 'female',
+//     dob: new Date(),
+//     organization: {
+//       id: '1234',
+//       name: 'Quartech',
+//       bceidAccountNumber: 'BCEIDACCOUNTNUMBER'
+//     }
+//   },
+//   {
+//     personType: 'VOLN',
+//     id: 'none',
+//     bceidAccountNumber: 'IAMACATMEOW',
+//     isAdministrator: false,
+//     isPrimaryContact: false,
+//     canAccessRestrictedFiles: true,
+//     firstName: 'Fluffer',
+//     initials: '',
+//     lastName: 'Macgoodie',
+//     nickname: 'Fluf',
+//     gender: 'x',
+//     dob: new Date(),
+//     organization: {
+//       id: '764',
+//       name: 'Pet Store',
+//       bceidAccountNumber: 'KLASHIFUAYFUISOAYDOIU'
+//     }
+//   },
+//   {
+//     personType: 'VOLN',
+//     id: 'none',
+//     bceidAccountNumber: 'WHATISTHISANDWHATAMIDOING',
+//     isAdministrator: false,
+//     isPrimaryContact: false,
+//     canAccessRestrictedFiles: false,
+//     firstName: 'Allan',
+//     initials: '',
+//     lastName: 'McGruff',
+//     nickname: 'Big Al',
+//     gender: 'male',
+//     dob: new Date(),
+//     organization: {
+//       id: '6970',
+//       name: 'Land Movers',
+//       bceidAccountNumber: 'BCEIDACCOUNTNUMBER'
+//     }
+//   },
+// ];
 
 @Injectable({
   providedIn: CoreModule
@@ -117,10 +118,10 @@ export class VolunteerService extends RestService {
         catchError(this.handleError)
       );
   }
-  updateVolunteer(data: Volunteer): Observable<Volunteer> {
+  updateVolunteer(data: Volunteer): Observable<HttpResponse<any>> {
     // this will return a response string of 200. This may need to become a Response eventually
     // return of('200');
-    return this.http.put<Volunteer>(this.apiRoute, data, { headers: this.headers })
+    return this.http.put<HttpResponse<any>>(this.apiRoute + '/' + data.id, data, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError)

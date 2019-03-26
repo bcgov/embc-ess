@@ -50,8 +50,7 @@ export class EssEditorConfirmationComponent implements OnInit {
 
       // if the volunteer has an ID we need to update
       this.volunteerService.updateVolunteer(this.volunteer)
-        .subscribe(v => {
-          alert(JSON.stringify(v));
+        .subscribe(() => {
           // if addAnother route back to the add page else route back to the volunteer-team-editor
           if (addAnother) alert('Need to route to add another.');
         });
