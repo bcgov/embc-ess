@@ -94,14 +94,14 @@ import { MetaVolunteers } from '../models/meta-volunteers';
 export class VolunteerService extends RestService {
   apiRoute = 'api/volunteers';
 
-  getVolunteers(props: SearchQueryParameters = {}): Observable<MetaVolunteers> {
-    const { limit = 100, offset = 0, q, sort } = props;
+  getVolunteers(limit?: number, offset?: number, q?: string, sort?: string): Observable<MetaVolunteers> {
     const params = {
-      limit: limit.toString(), // query params are strings
-      offset: offset.toString(),
-      q,
-      sort
+      limit: (limit || 100).toString(), // query params are strings
+      offset: (offset || 0).toString(),
+      q: q || '',
+      sort: sort || 'name'
     };
+
     // get a list of all volunteers back from the api
     return this.http.get<MetaVolunteers>(this.apiRoute, { headers: this.headers, params })
       .pipe(

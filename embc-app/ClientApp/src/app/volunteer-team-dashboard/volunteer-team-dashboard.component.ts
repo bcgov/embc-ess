@@ -27,16 +27,9 @@ export class VolunteerTeamDashboardComponent implements OnInit {
         // TODO: this seems like bad practive but fix when we have time
         this.router.navigate(['volunteer-edit/fill/' + bceidAccountNumber]);
     }
-    getVolunteers(query?: string, offset?: number, limit?: number, sort?: string) {
-        const queryParams: SearchQueryParameters = {};
-        // add all the parameters supplied to the function
-        if (query) { queryParams.q = query; }
-        if (offset) { queryParams.offset = offset; }
-        if (limit) { queryParams.limit = limit; }
-        if (sort) { queryParams.sort = sort; }
-
+    getVolunteers(limit?: number, offset?: number, query?: string, sort?: string) {
         // get volunteers with supplied params defaults defined in
-        this.volunteerService.getVolunteers(queryParams).subscribe((v: MetaVolunteers) => {
+        this.volunteerService.getVolunteers(limit, offset, query, sort).subscribe((v: MetaVolunteers) => {
             // save the metaVolunteers
             this.metaVolunteers = v;
         });
