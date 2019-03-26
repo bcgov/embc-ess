@@ -16,9 +16,9 @@ import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-reg
 import { TesterPageComponent } from './tester-page/tester-page.component';
 import { EvacueeRegistrationOneComponent } from './evacuee-registration/evacuee-registration-one/evacuee-registration-one.component';
 import { EvacueeRegistrationConfirmationComponent } from './evacuee-registration';
-import { EssEditorComponent } from './ess-editor/ess-editor.component';
-import { EssEditorOneComponent } from './ess-editor/ess-editor-one/ess-editor-one.component';
-import { EssEditorConfirmationComponent } from './ess-editor/ess-editor-confirmation/ess-editor-confirmation.component';
+import { VolunteerEditorComponent } from './volunteer-editor/volunteer-editor.component';
+import { VolunteerEditorOneComponent } from './volunteer-editor/volunteer-editor-one/volunteer-editor-one.component';
+import { VolunteerEditorConfirmationComponent } from './volunteer-editor/volunteer-editor-confirmation/volunteer-editor-confirmation.component';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
@@ -106,7 +106,7 @@ const routes: Routes = [
   },
   {
     path: 'user-edit',
-    component: EssEditorComponent,
+    component: VolunteerEditorComponent,
     children: [
       {
         path: '',
@@ -115,15 +115,15 @@ const routes: Routes = [
       },
       {
         path: 'fill',
-        component: EssEditorOneComponent
+        component: VolunteerEditorOneComponent
       },
       {
         path: 'fill/:id',
-        component: EssEditorOneComponent
+        component: VolunteerEditorOneComponent
       },
       {
         path: 'confirmation',
-        component: EssEditorConfirmationComponent
+        component: VolunteerEditorConfirmationComponent
       }
     ]
   },

@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-ess-editor',
-  templateUrl: './ess-editor.component.html',
-  styleUrls: ['./ess-editor.component.scss']
+  selector: 'app-volunteer-editor',
+  templateUrl: './volunteer-editor.component.html',
+  styleUrls: ['./volunteer-editor.component.scss']
 })
-export class EssEditorComponent implements OnInit {
+export class VolunteerEditorComponent implements OnInit {
   editMode = false;
   constructor() { }
 

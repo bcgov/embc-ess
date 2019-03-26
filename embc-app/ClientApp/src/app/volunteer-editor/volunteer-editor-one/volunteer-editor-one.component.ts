@@ -8,11 +8,11 @@ import { Store } from '@ngrx/store';
 import { UpdateVolunteer } from 'src/app/store/volunteer/volunteer.actions';
 
 @Component({
-  selector: 'app-ess-editor-one',
-  templateUrl: './ess-editor-one.component.html',
-  styleUrls: ['./ess-editor-one.component.scss']
+  selector: 'app-volunteer-editor-one',
+  templateUrl: './volunteer-editor-one.component.html',
+  styleUrls: ['./volunteer-editor-one.component.scss']
 })
-export class EssEditorOneComponent implements OnInit {
+export class VolunteerEditorOneComponent implements OnInit {
   editMode = false;
   constructor(
     private route: ActivatedRoute,

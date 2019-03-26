@@ -8,11 +8,11 @@ import { UpdateVolunteer } from 'src/app/store/volunteer/volunteer.actions';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-ess-editor-confirmation',
-  templateUrl: './ess-editor-confirmation.component.html',
-  styleUrls: ['./ess-editor-confirmation.component.scss']
+  selector: 'app-volunteer-editor-confirmation',
+  templateUrl: './volunteer-editor-confirmation.component.html',
+  styleUrls: ['./volunteer-editor-confirmation.component.scss']
 })
-export class EssEditorConfirmationComponent implements OnInit {
+export class VolunteerEditorConfirmationComponent implements OnInit {
   componentActive = true;
   currentVolunteer$ = this.store.select(s => s.volunteers.currentVolunteer);
   volunteer: Volunteer;
