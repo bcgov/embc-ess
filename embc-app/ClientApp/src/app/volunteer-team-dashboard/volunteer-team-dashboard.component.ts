@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { VolunteerService } from '../core/services/volunteer.service';
-import { Volunteer } from '../core/models';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { SearchQueryParameters } from '../shared/components/search';
+import { MetaVolunteers } from '../core/models/meta-volunteers';
 // import { }
 @Component({
     selector: 'app-volunteer-team-dashboard',
@@ -12,7 +12,7 @@ import { SearchQueryParameters } from '../shared/components/search';
 })
 export class VolunteerTeamDashboardComponent implements OnInit {
     // simple server response
-    volunteers: Volunteer[];
+    metaVolunteers: MetaVolunteers;
 
     constructor(
         private volunteerService: VolunteerService,
@@ -36,9 +36,9 @@ export class VolunteerTeamDashboardComponent implements OnInit {
         if (sort) { queryParams.sort = sort; }
 
         // get volunteers with supplied params defaults defined in
-        this.volunteerService.getVolunteers(queryParams).subscribe((v: Volunteer[]) => {
-            this.volunteers = v;
-
+        this.volunteerService.getVolunteers(queryParams).subscribe((v: MetaVolunteers) => {
+            // save the metaVolunteers
+            this.metaVolunteers = v;
         });
     }
 }

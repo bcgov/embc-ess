@@ -7,6 +7,7 @@ import { Volunteer } from '../models';
 import { RestService } from './rest.service';
 import { HttpResponse } from '@angular/common/http';
 import { SearchQueryParameters } from 'src/app/shared/components/search';
+import { MetaVolunteers } from '../models/meta-volunteers';
 
 // const VOLUNTEERS: Volunteer[] = [
 //   {
@@ -93,7 +94,7 @@ import { SearchQueryParameters } from 'src/app/shared/components/search';
 export class VolunteerService extends RestService {
   apiRoute = 'api/volunteers';
 
-  getVolunteers(props: SearchQueryParameters = {}): Observable<Volunteer[]> {
+  getVolunteers(props: SearchQueryParameters = {}): Observable<MetaVolunteers> {
     const { limit = 100, offset = 0, q, sort } = props;
     const params = {
       limit: limit.toString(), // query params are strings
@@ -102,7 +103,7 @@ export class VolunteerService extends RestService {
       sort
     };
     // get a list of all volunteers back from the api
-    return this.http.get<Volunteer[]>(this.apiRoute, { headers: this.headers, params })
+    return this.http.get<MetaVolunteers>(this.apiRoute, { headers: this.headers, params })
       .pipe(
         retry(3),
         catchError(this.handleError)
