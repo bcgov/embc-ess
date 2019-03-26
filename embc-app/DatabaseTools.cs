@@ -22,12 +22,12 @@ namespace Gov.Jag.Embc.Public
             return $"Server={server};Database={db};{auth};MultipleActiveResultSets=true;";
         }
 
-        public static string GetSaConnectionString(IConfiguration Configuration)
+        public static string GetSaConnectionString(IConfiguration Configuration, string toDatabase = null)
         {
             if (string.IsNullOrEmpty(Configuration["DB_ADMIN_PASSWORD"])) return GetConnectionString(Configuration);
             var server = string.IsNullOrEmpty(Configuration["DATABASE_SERVICE_NAME"]) ? "(localdb)\\mssqllocaldb" : Configuration["DATABASE_SERVICE_NAME"];
 
-            var db = string.IsNullOrEmpty(Configuration["DB_DATABASE"]) ? "ESS" : Configuration["DB_DATABASE"];
+            var db = toDatabase ?? (string.IsNullOrEmpty(Configuration["DB_DATABASE"]) ? "ESS" : Configuration["DB_DATABASE"]);
 
             var auth = string.IsNullOrEmpty(Configuration["DB_USER"])
                 ? "Trusted_Connection=True"
