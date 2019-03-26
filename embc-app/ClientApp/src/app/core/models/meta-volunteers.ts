@@ -1,6 +1,6 @@
 import { Volunteer } from './volunteer.model';
 
-export interface MetaRegistration {
+export interface MetaVounteers {
     data: Volunteer[];
     metadata: {
         page: number;

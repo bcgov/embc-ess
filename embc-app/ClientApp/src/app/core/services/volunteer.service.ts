@@ -91,7 +91,6 @@ import { SearchQueryParameters } from 'src/app/shared/components/search';
   providedIn: CoreModule
 })
 export class VolunteerService extends RestService {
-
   apiRoute = 'api/volunteers';
 
   getVolunteers(props: SearchQueryParameters = {}): Observable<Volunteer[]> {
