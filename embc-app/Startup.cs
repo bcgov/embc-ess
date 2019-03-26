@@ -48,23 +48,10 @@ namespace Gov.Jag.Embc.Public
             // add singleton to allow Controllers to query the Request object
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            /*****************************
-             * SQL Server Initialization *
-             *****************************/
-
-            string connectionString = DatabaseTools.GetConnectionString(Configuration);
-            string databaseName = DatabaseTools.GetDatabaseName(Configuration);
-
-            DatabaseTools.CreateDatabaseIfNotExists(Configuration);
-
             services.AddDbContext<EmbcDbContext>(
                 options => options
                     .UseLazyLoadingProxies()
-                    .UseSqlServer(connectionString));
-
-            /*****************************
-             * End of SQL Initialization *
-             *****************************/
+                    .UseSqlServer(DatabaseTools.GetConnectionString(Configuration)));
 
             // Add a memory cache
             services.AddMemoryCache();
@@ -209,25 +196,39 @@ namespace Gov.Jag.Embc.Public
 
             // DATABASE SETUP
 
+            log.LogInformation("Fetching the application's database context ...");
+
+            string adminConnectionString = DatabaseTools.GetSaConnectionString(Configuration);
+            var context = new EmbcDbContext(new DbContextOptionsBuilder<EmbcDbContext>()
+                .UseSqlServer(adminConnectionString).Options);
+
+            if (!string.IsNullOrEmpty(Configuration["DB_FULL_REFRESH"]) && Configuration["DB_FULL_REFRESH"].ToLowerInvariant() == "true")
+            {
+                log.LogWarning("DROPPING the database! ...");
+                context.Database.EnsureDeleted();
+            }
+
+            log.LogInformation("Initializing the database ...");
+            if (!string.IsNullOrEmpty(Configuration["DB_ADMIN_PASSWORD"]))
+            {
+                //For OpenShift
+                DatabaseTools.CreateDatabaseIfNotExists(adminConnectionString, Configuration["DB_DATABASE"], Configuration["DB_USER"], Configuration["DB_PASSWORD"]);
+            }
+            context.Database.EnsureCreated();
+
+            log.LogInformation("Migrating the database ...");
+            context.Database.Migrate();
+
+            log.LogInformation("The database migration is complete.");
+
             try
             {
-                using (IServiceScope serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-                {
-                    log.LogInformation("Fetching the application's database context ...");
+                // run the database seeders
+                log.LogInformation("Adding/Updating seed data ...");
 
-                    var context = serviceScope.ServiceProvider.GetService<EmbcDbContext>();
-
-                    log.LogInformation("Migrating the database ...");
-                    context.Database.Migrate();
-                    log.LogInformation("The database migration is complete.");
-
-                    // run the database seeders
-                    log.LogInformation("Adding/Updating seed data ...");
-
-                    SeedFactory<EmbcDbContext> seederFactory = new SeedFactory<EmbcDbContext>(Configuration, env, loggerFactory);
-                    seederFactory.Seed(context);
-                    log.LogInformation("Seeding operations are complete.");
-                }
+                SeedFactory<EmbcDbContext> seederFactory = new SeedFactory<EmbcDbContext>(Configuration, env, loggerFactory);
+                seederFactory.Seed(context);
+                log.LogInformation("Seeding operations are complete.");
             }
             catch (Exception e)
             {
