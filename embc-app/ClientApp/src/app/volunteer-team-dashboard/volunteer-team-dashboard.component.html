@@ -13,15 +13,18 @@
     </div>
     <div>
       <!-- The start of the table stuff. -->
-      <p>1 - 10 of 2000 <span class="font-weight-bold">ACTIVE</span> volunteers
-        <small class="ml-3">(<a href="">show deactivated</a>)</small>
-      </p>
+
 
       <div class="search-results">
         <div *ngIf="metaVolunteers && metaVolunteers.data.length>0; then searchResultsTable; else notFound"></div>
       </div>
 
       <ng-template #searchResultsTable>
+        <p> {{metaVolunteers.metadata.page*metaVolunteers.metadata.pageSize}} - {{metaVolunteers.metadata.pageSize}} of
+          {{metaVolunteers.metadata.totalCount}} <span class="font-weight-bold">ACTIVE</span>
+          volunteers
+          <small class="ml-3">(<a href="">show deactivated</a>)</small>
+        </p>
         <table class="table">
           <thead class="thead-light">
             <th scope="col">LAST NAME</th>
@@ -48,7 +51,9 @@
       </ng-template>
 
       <ng-template #notFound>
-        <!-- <p>{{notFoundMessage}}</p> -->
+        <p>
+          {{notFoundMessage}}
+        </p>
       </ng-template>
 
     </div>

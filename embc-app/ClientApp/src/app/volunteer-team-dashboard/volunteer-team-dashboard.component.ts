@@ -13,7 +13,7 @@ import { MetaVolunteers } from '../core/models/meta-volunteers';
 export class VolunteerTeamDashboardComponent implements OnInit {
     // simple server response
     metaVolunteers: MetaVolunteers;
-
+    notFoundMessage: string = 'One moment';
     constructor(
         private volunteerService: VolunteerService,
         private router: Router
