@@ -22,7 +22,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public Organization GetOrganizationByLegalName(string name)
         {
-            var item = db.Organizations.FirstOrDefault(x => x.Name == name);
+            var item = db.Organizations
+                .Include(x => x.Region)
+                .Include(x => x.RegionalDistrict)
+                .Include(x => x.Community)
+                .FirstOrDefault(x => x.Name == name);
             var result = item.ToViewModel();
 
             return result;
@@ -30,7 +34,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public Organization GetOrganizationByExternalId(string externalId)
         {
-            var item = db.Organizations.FirstOrDefault(x => x.Externaluseridentifier == externalId);
+            var item = db.Organizations
+                .Include(x => x.Region)
+                .Include(x => x.RegionalDistrict)
+                .Include(x => x.Community)
+                .FirstOrDefault(x => x.Externaluseridentifier == externalId);
             var result = item.ToViewModel();
 
             return result;
@@ -42,6 +50,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             await db.Organizations.AddAsync(entity);
             await db.SaveChangesAsync();
 
+            //Mitigate the EF cascading saving issues
+            entity.Region = item.Region.ToModel();
+            entity.RegionalDistrict = item.RegionalDistrict.ToModel();
+            entity.Community = item.Community.ToModel();
             return entity.ToViewModel();
         }
 
@@ -52,6 +64,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             db.Organizations.Update(entity);
             await db.SaveChangesAsync();
 
+            //Mitigate the EF cascading saving issues
+            entity.Region = item.Region.ToModel();
+            entity.RegionalDistrict = item.RegionalDistrict.ToModel();
+            entity.Community = item.Community.ToModel();
             return entity.ToViewModel();
         }
 

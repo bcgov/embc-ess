@@ -27,5 +27,14 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         // siteminder guid
         public string Externaluseridentifier { get; set; }
+
+        public int? RegionId { get; set; }
+        public int? RegionalDistrictId { get; set; }
+        public int? CommunityId { get; set; }
+
+        //Entities
+        public virtual Region Region { get; set; }
+        public virtual RegionalDistrict RegionalDistrict { get; set; }
+        public virtual Community Community { get; set; }
     }
 }

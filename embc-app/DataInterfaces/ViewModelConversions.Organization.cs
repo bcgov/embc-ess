@@ -15,7 +15,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     Name = source.Name,
                     BceidAccountNumber = source.BceidAccountNumber,
                     Active = source.Active,
-                    Externaluseridentifier = source.Externaluseridentifier
+                    Externaluseridentifier = source.Externaluseridentifier,
+                    RegionId = source.RegionId,
+                    Region = source.Region.ToViewModel(),
+                    RegionalDistrictId = source.RegionalDistrictId,
+                    RegionalDistrict = source.RegionalDistrict.ToViewModel(),
+                    CommunityId = source.CommunityId,
+                    Community = source.Community.ToViewModel()
                 };
             }
             return result;
@@ -31,7 +37,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     Name = source.Name,
                     BceidAccountNumber = source.BceidAccountNumber,
                     Active = source.Active,
-                    Externaluseridentifier = source.Externaluseridentifier
+                    Externaluseridentifier = source.Externaluseridentifier,
+                    RegionId = source.RegionId,
+                    RegionalDistrictId = source.RegionalDistrictId,
+                    CommunityId = source.CommunityId
                 };
                 if (source.Id != null)
                 {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -33,5 +34,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public bool? Active { get; set; }
 
         public virtual RegionalDistrict RegionalDistrict { get; set; }
+        public virtual IEnumerable<Organization> Organizations { get; set; }
+
     }
 }
