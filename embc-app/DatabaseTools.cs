@@ -24,83 +24,57 @@ namespace Gov.Jag.Embc.Public
 
         public static string GetSaConnectionString(IConfiguration Configuration)
         {
-            string result = "Server=tcp:";
+            if (string.IsNullOrEmpty(Configuration["DB_ADMIN_PASSWORD"])) return GetConnectionString(Configuration);
+            var server = string.IsNullOrEmpty(Configuration["DATABASE_SERVICE_NAME"]) ? "(localdb)\\mssqllocaldb" : Configuration["DATABASE_SERVICE_NAME"];
 
-            if (!string.IsNullOrEmpty(Configuration["DATABASE_SERVICE_NAME"]))
-            {
-                result += Configuration["DATABASE_SERVICE_NAME"];
-            }
-            else // default to a local connection.
-            {
-                result += "127.0.0.1";
-            }
+            var db = GetDatabaseName(Configuration);
 
-            //result += ";Database=";
+            var auth = string.IsNullOrEmpty(Configuration["DB_USER"])
+                ? "Trusted_Connection=True"
+                : "User Id=sa;Password=" + Configuration["DB_ADMIN_PASSWORD"];
 
-            //result += GetDatabaseName(Configuration);
-
-            result += ";Database=master;User Id=SA";
-
-            if (!string.IsNullOrEmpty(Configuration["DB_ADMIN_PASSWORD"]))
-            {
-                result += ";Password=" + Configuration["DB_ADMIN_PASSWORD"] + ";";
-            }
-
-            return result;
+            return $"Server={server};Database={db};{auth};MultipleActiveResultSets=true;";
         }
 
         /// <summary>
         /// Create database if it does not exist - used in OpenShift or other environments that do not automatically create the database.
         /// </summary>
-        public static void CreateDatabaseIfNotExists(IConfiguration Configuration)
+        public static void CreateDatabaseIfNotExists(string adminConnectionString, string database, string username, string password)
         {
-            // only do this if a sa password was supplied.
-            if (!string.IsNullOrEmpty(Configuration["DB_ADMIN_PASSWORD"]))
+            using (SqlConnection conn = new SqlConnection(adminConnectionString))
             {
-                string password = Configuration["DB_PASSWORD"].Replace("'", "''");
-                string username = Configuration["DB_USER"].Replace("'", "''");
+                conn.Open();
+                // fix for OpenShift bug where the pod reports the number of sockets / logical processors in the host computer rather than the amount available.
+                string sql = "EXEC sp_configure 'show advanced options', 1;";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
 
-                if (!string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(username))
-                {
-                    string database = GetDatabaseName(Configuration).Replace("'", "''");
+                sql = "RECONFIGURE WITH OVERRIDE;";
+                cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
 
-                    string saConnectionString = GetSaConnectionString(Configuration);
-                    using (SqlConnection conn = new SqlConnection(saConnectionString))
-                    {
-                        conn.Open();
-                        // fix for OpenShift bug where the pod reports the number of sockets / logical processors in the host computer rather than the amount available.
-                        string sql = "EXEC sp_configure 'show advanced options', 1;";
-                        SqlCommand cmd = new SqlCommand(sql, conn);
-                        cmd.ExecuteNonQuery();
+                sql = "EXEC sp_configure 'max degree of parallelism', 2;";
+                cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
 
-                        sql = "RECONFIGURE WITH OVERRIDE;";
-                        cmd = new SqlCommand(sql, conn);
-                        cmd.ExecuteNonQuery();
+                sql = "RECONFIGURE WITH OVERRIDE;";
+                cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
 
-                        sql = "EXEC sp_configure 'max degree of parallelism', 2;";
-                        cmd = new SqlCommand(sql, conn);
-                        cmd.ExecuteNonQuery();
+                // create the login if it does not exist.
+                sql = "IF NOT EXISTS (SELECT name FROM master.sys.server_principals WHERE name = '" + username + "') BEGIN\n CREATE LOGIN " + username + " WITH PASSWORD = '" + password + "';\nEND";
+                cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
 
-                        sql = "RECONFIGURE WITH OVERRIDE;";
-                        cmd = new SqlCommand(sql, conn);
-                        cmd.ExecuteNonQuery();
+                sql = "IF  NOT EXISTS(SELECT name FROM sys.databases WHERE name = N'" + database + "')\nBEGIN\nCREATE DATABASE[" + database + "]; ALTER AUTHORIZATION ON DATABASE::[" + database + "] TO " + username + "\nEND";
+                cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
 
-                        // create the login if it does not exist.
-                        sql = "IF NOT EXISTS (SELECT name FROM master.sys.server_principals    WHERE name = '" + username + "') BEGIN\n CREATE LOGIN " + username + " WITH PASSWORD = '" + password + "';\nEND";
-                        cmd = new SqlCommand(sql, conn);
-                        cmd.ExecuteNonQuery();
+                sql = "USE " + database + "; IF NOT EXISTS (SELECT su.name as DatabaseUser FROM sys.sysusers su join sys.syslogins sl on sl.sid = su.sid where sl.name = '" + username + "')\nBEGIN\nCREATE USER " + username + " FOR LOGIN " + username + ";END";
+                cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
 
-                        sql = "IF  NOT EXISTS(SELECT name FROM sys.databases WHERE name = N'" + database + "')\nBEGIN\nCREATE DATABASE[" + database + "]; ALTER AUTHORIZATION ON DATABASE::[" + database + "] TO " + username + "\nEND";
-                        cmd = new SqlCommand(sql, conn);
-                        cmd.ExecuteNonQuery();
-
-                        sql = "USE " + database + "; IF NOT EXISTS (SELECT su.name as DatabaseUser FROM sys.sysusers su join sys.syslogins sl on sl.sid = su.sid where sl.name = '" + username + "')\nBEGIN\nCREATE USER " + username + " FOR LOGIN " + username + ";END";
-                        cmd = new SqlCommand(sql, conn);
-                        cmd.ExecuteNonQuery();
-
-                        conn.Close();
-                    }
-                }
+                conn.Close();
             }
         }
 
@@ -108,7 +82,7 @@ namespace Gov.Jag.Embc.Public
         /// Returns the name of the database, as set in the environment.
         /// </summary>
         /// <returns></returns>
-        public static string GetDatabaseName(IConfiguration Configuration)
+        private static string GetDatabaseName(IConfiguration Configuration)
         {
             string result = "";
             if (!string.IsNullOrEmpty(Configuration["DB_DATABASE"]))
