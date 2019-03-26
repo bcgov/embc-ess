@@ -1,0 +1,13 @@
+version: "3.6"
+services:
+  embc-app-database:
+    build:
+      context: .
+      dockerfile: Dockerfile.centos
+    image: embc-app-database
+    container_name: embc-app-database
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Test@123
