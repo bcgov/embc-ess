@@ -15,7 +15,7 @@ import { TesterPageComponent } from './tester-page/tester-page.component';
 
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
-import { EssEditorModule } from './ess-editor';
+import { VolunteerEditorModule } from './volunteer-editor';
 import { EvacueeRegistrationModule } from './evacuee-registration';
 import { SelfRegistrationModule } from './self-registration';
 import { SharedModule } from './shared/shared.module';
@@ -54,7 +54,7 @@ import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.compo
     AppRoutingModule,
     SelfRegistrationModule,
     EvacueeRegistrationModule,
-    EssEditorModule
+    VolunteerEditorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

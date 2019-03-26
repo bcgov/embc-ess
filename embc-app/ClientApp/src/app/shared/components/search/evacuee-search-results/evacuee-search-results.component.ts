@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from
 
 import { EvacueeSearchResults } from '../interfaces';
 import { Registration } from 'src/app/core/models';
+import { Router } from '@angular/router';
 
 // TODO: Rename this
 interface RowItem {
@@ -58,6 +59,9 @@ export class EvacueeSearchResultsComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.rows = this.processSearchResults(this.searchResults);
   }
+  constructor(
+    private router: Router
+  ) { }
 
   onResultSelected(rowItem: RowItem, event: MouseEvent) {
     this.resultSelected.emit(rowItem);
@@ -176,5 +180,15 @@ export class EvacueeSearchResultsComponent implements OnChanges {
       }
     });
     return listItems;
+  }
+  finalize(r: RowItem) {
+    // alert(JSON.stringify(r.rowData.essFileNumber));
+    // look up the registration correctly for the context
+    // alert('register-evacuee/fill/' + r.essfileNumber);
+    this.router.navigate(['register-evacuee/fill/' + r.rowData.id]);
+  }
+  view(r: RowItem) {
+    // look up the registration correctly for the context
+    this.router.navigate(['evacuee-summary/' + r.rowData.id]);
   }
 }

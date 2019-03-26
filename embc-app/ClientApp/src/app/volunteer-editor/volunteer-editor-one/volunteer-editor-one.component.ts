@@ -8,11 +8,11 @@ import { Store } from '@ngrx/store';
 import { UpdateVolunteer } from 'src/app/store/volunteer/volunteer.actions';
 
 @Component({
-  selector: 'app-ess-editor-one',
-  templateUrl: './ess-editor-one.component.html',
-  styleUrls: ['./ess-editor-one.component.scss']
+  selector: 'app-volunteer-editor-one',
+  templateUrl: './volunteer-editor-one.component.html',
+  styleUrls: ['./volunteer-editor-one.component.scss']
 })
-export class EssEditorOneComponent implements OnInit {
+export class VolunteerEditorOneComponent implements OnInit {
   editMode = false;
   constructor(
     private route: ActivatedRoute,
@@ -45,9 +45,9 @@ export class EssEditorOneComponent implements OnInit {
   ngOnInit() {
     this.initForm();
     // if there are route params we should grab them
-    if (this.route.snapshot.params.essUser) {
+    if (this.route.snapshot.params.id) {
       // there may be a user to edit because the route looks right
-      this.volunteerService.getVolunteerByBceidAccountNumber(this.route.snapshot.params.essUser).subscribe((v: Volunteer) => {
+      this.volunteerService.getVolunteerById(this.route.snapshot.params.id).subscribe((v: Volunteer) => {
         // save the volunteer for filling in information later.
         this.lastName.setValue(v.lastName);
         this.firstName.setValue(v.firstName);
@@ -76,7 +76,12 @@ export class EssEditorOneComponent implements OnInit {
   next(): void {
     // when routing to the next page we save first into the application state.
     this.onSave();
-    this.router.navigate(['user-edit/confirmation']);
+    if (this.volunteer.lastName && this.volunteer.firstName && this.volunteer.bceidAccountNumber && this.volunteer.canAccessRestrictedFiles != null) {
+      // simple check to be sure that all fields are included.
+      this.router.navigate(['volunteer-edit/confirmation']);
+    } else {
+      alert("All fields are required.");
+    }
   }
 
   onSave(): void {

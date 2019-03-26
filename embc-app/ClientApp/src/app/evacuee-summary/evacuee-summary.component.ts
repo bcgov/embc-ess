@@ -27,9 +27,9 @@ export class EvacueeSummaryComponent implements OnInit {
   loadFromRoute() {
     // try to collect the ess file number and load it
     // if there are route params we should grab them
-    if (this.route.snapshot.params.essFileNumber) {
+    if (this.route.snapshot.params.id) {
       // TODO: go get the evacuee from db eventually
-      this.registrationService.getRegistrationByEssFileNumber(this.route.snapshot.params.essFileNumber)
+      this.registrationService.getRegistrationById(this.route.snapshot.params.id)
         .subscribe(r => {
           // if there is nothing useful returned route somewhere else.
           if (!r.essFileNumber) {
@@ -41,10 +41,10 @@ export class EvacueeSummaryComponent implements OnInit {
         });
     }
   }
-  routeTo(essFileNumber: string) {
+  routeTo(id: string) {
     // TODO: this seems like bad practive but fix when we have time
     if (confirm('By clicking continue you acknowledge that all changes to this information will be collected, audited, and your administrator may contact you about them.')) {
-      this.router.navigate(['register-evacuee/fill/' + essFileNumber]);
+      this.router.navigate(['register-evacuee/fill/' + id]);
     }
   }
 }

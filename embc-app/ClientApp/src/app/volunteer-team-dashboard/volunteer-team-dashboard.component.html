@@ -14,7 +14,7 @@
     </div>
     <div>
       <!-- The start of the table stuff. -->
-      <p>1 - 10 of 2000 <span class="font-weight-bold">ACTIVE</span> evacuees
+      <p>1 - 10 of 2000 <span class="font-weight-bold">ACTIVE</span> volunteers
         <small class="ml-3">(<a href="">show deactivated</a>)</small>
       </p>
 
@@ -41,7 +41,7 @@
                 <span *ngIf="!volunteer.canAccessRestrictedFiles">No</span>
               </td>
               <td>
-                <a [routerLink]="" (click)="routeTo(volunteer.bceidAccountNumber)">Edit</a>
+                <a [routerLink]="" (click)="routeTo(volunteer.id)">Edit</a>
               </td>
             </tr>
           </tbody>
@@ -62,7 +62,7 @@
       button="Add Evacuee(s)" route="register-evacuee"></app-side-box-info>
     <app-side-box-info title="ADD A VOLUNTEER" content="
       Before adding users(s), confirm that they have been given a BCeID account with their Local Authority."
-      button="Add Volunteer(s)" route="user-edit"></app-side-box-info>
+      button="Add Volunteer(s)" route="volunteer-edit"></app-side-box-info>
 
     <app-side-box title="Useful Information">
       <section role="content">

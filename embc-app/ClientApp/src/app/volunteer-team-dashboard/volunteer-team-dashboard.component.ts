@@ -25,6 +25,6 @@ export class VolunteerTeamDashboardComponent implements OnInit {
     }
     routeTo(bceidAccountNumber: string) {
         // TODO: this seems like bad practive but fix when we have time
-        this.router.navigate(['user-edit/fill/' + bceidAccountNumber]);
+        this.router.navigate(['volunteer-edit/fill/' + bceidAccountNumber]);
     }
 }
