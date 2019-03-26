@@ -43,18 +43,23 @@ export class VolunteerEditorConfirmationComponent implements OnInit {
     this.store.dispatch(new UpdateVolunteer({ volunteer }));
   }
   submit(addAnother?: boolean) {
-    // TODO the add another flag should route the user back to the create page in the subscription
+    // the page should have all information in this page. if not this was routed to by mistake.
+    if (!(this.volunteer.lastName && this.volunteer.firstName && this.volunteer.bceidAccountNumber && this.volunteer.canAccessRestrictedFiles != null)) {
+      this.router.navigate(['volunteer-team-dashboard']);
+    } else {
+      // the information required was passed in from the state proceed with update or create
 
-    if (this.volunteer.lastName && this.volunteer.firstName && this.volunteer.bceidAccountNumber && this.volunteer.canAccessRestrictedFiles != null) {
       // check if this is an update
       if (this.volunteer.id) {
-
         // if the volunteer has an ID we need to update
         this.volunteerService.updateVolunteer(this.volunteer)
           .subscribe(() => {
             // if addAnother route back to the add page else route back to the volunteer-team-editor
             if (addAnother) {
               this.router.navigate(['volunteer-edit']);
+            } else {
+              // go back to the volunteer team dashboard
+              this.router.navigate(['volunteer-team-dashboard']);
             }
           });
       } else {
@@ -64,6 +69,9 @@ export class VolunteerEditorConfirmationComponent implements OnInit {
             // if addAnother route back to the add page else route back to the volunteer-team-editor
             if (addAnother) {
               this.router.navigate(['volunteer-edit']);
+            } else {
+              // go back to the volunteer team dashboard
+              this.router.navigate(['volunteer-team-dashboard']);
             }
           });
       }

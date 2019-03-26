@@ -76,7 +76,12 @@ export class VolunteerEditorOneComponent implements OnInit {
   next(): void {
     // when routing to the next page we save first into the application state.
     this.onSave();
-    this.router.navigate(['volunteer-edit/confirmation']);
+    if (this.volunteer.lastName && this.volunteer.firstName && this.volunteer.bceidAccountNumber && this.volunteer.canAccessRestrictedFiles != null) {
+      // simple check to be sure that all fields are included.
+      this.router.navigate(['volunteer-edit/confirmation']);
+    } else {
+      alert("All fields are required.");
+    }
   }
 
   onSave(): void {
