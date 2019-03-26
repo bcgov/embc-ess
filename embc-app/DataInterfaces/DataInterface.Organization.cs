@@ -50,6 +50,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             await db.Organizations.AddAsync(entity);
             await db.SaveChangesAsync();
 
+            //Mitigate the EF cascading saving issues
+            entity.Region = item.Region.ToModel();
+            entity.RegionalDistrict = item.RegionalDistrict.ToModel();
+            entity.Community = item.Community.ToModel();
             return entity.ToViewModel();
         }
 
@@ -60,6 +64,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             db.Organizations.Update(entity);
             await db.SaveChangesAsync();
 
+            //Mitigate the EF cascading saving issues
+            entity.Region = item.Region.ToModel();
+            entity.RegionalDistrict = item.RegionalDistrict.ToModel();
+            entity.Community = item.Community.ToModel();
             return entity.ToViewModel();
         }
 
