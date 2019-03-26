@@ -6,6 +6,7 @@ import { CoreModule } from '../core.module';
 import { Volunteer } from '../models';
 import { RestService } from './rest.service';
 import { HttpResponse } from '@angular/common/http';
+import { SearchQueryParameters } from 'src/app/shared/components/search';
 
 // const VOLUNTEERS: Volunteer[] = [
 //   {
@@ -93,14 +94,22 @@ export class VolunteerService extends RestService {
 
   apiRoute = 'api/volunteers';
 
-  getAllVolunteers(): Observable<Volunteer[]> {
+  getVolunteers(props: SearchQueryParameters = {}): Observable<Volunteer[]> {
+    const { limit = 100, offset = 0, q, sort } = props;
+    const params = {
+      limit: limit.toString(), // query params are strings
+      offset: offset.toString(),
+      q,
+      sort
+    };
     // get a list of all volunteers back from the api
-    // return of(VOLUNTEERS);
-    return this.http.get<Volunteer[]>(this.apiRoute, { headers: this.headers })
+    return this.http.get<Volunteer[]>(this.apiRoute, { headers: this.headers, params })
       .pipe(
+        retry(3),
         catchError(this.handleError)
       );
   }
+
   getVolunteerById(id: string): Observable<Volunteer> {
     // get a single volunteer by their bceidAccountNumber
     // return of(VOLUNTEERS[0]);

@@ -19,7 +19,7 @@ export class VolunteerTeamDashboardComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.volunteerService.getAllVolunteers().subscribe((v: Volunteer[]) => {
+        this.volunteerService.getVolunteers().subscribe((v: Volunteer[]) => {
             this.volunteers = v;
         });
     }
