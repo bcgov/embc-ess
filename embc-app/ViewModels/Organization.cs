@@ -8,5 +8,14 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string BceidAccountNumber { get; set; }
         public string Externaluseridentifier { get; set; }
         //public Person PrimaryContact { get; set; }
+
+
+        public int? RegionId { get; set; }
+        public int? RegionalDistrictId { get; set; }
+        public int? CommunityId { get; set; }
+
+        public virtual Region Region { get; set; }
+        public virtual RegionalDistrict RegionalDistrict { get; set; }
+        public virtual Community Community { get; set; }
     }
 }
