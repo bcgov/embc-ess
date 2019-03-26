@@ -9,6 +9,7 @@ import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { clearFormArray, invalidControl } from 'src/app/shared/utils';
 
 
 @Component({
@@ -38,6 +39,9 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   // generic validation helper
   private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
   private validationHelper: ValidationHelper;
+
+  // convenience getter so we can use utils function in Angular templates
+  invalid = invalidControl;
 
   constructor(
     private store: Store<AppState>,
@@ -320,12 +324,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   }
 
   clearFamilyMembers() {
-    this.clear(this.familyMembers);
-  }
-
-  invalid(formGroup: FormGroup, childControlName: string, errorCodes = ['required']): boolean {
-    const c = formGroup.get(childControlName);
-    return (c && errorCodes.some(error => c.hasError(error)));
+    clearFormArray(this.familyMembers);
   }
 
   next(): void {
@@ -370,12 +369,5 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     };
 
     this.store.dispatch(new UpdateRegistration({ registration }));
-  }
-
-  // TODO: Refactor into utils method
-  private clear(formArray: FormArray): void {
-    while (formArray && formArray.length !== 0) {
-      formArray.removeAt(0);
-    }
   }
 }
