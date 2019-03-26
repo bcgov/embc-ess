@@ -119,9 +119,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     RequiresTransportation = source.RequiresTransportation,
                     SelfRegisteredDate = source.SelfRegisteredDate,
                     RegistrationCompletionDate = source.RegistrationCompletionDate,
-                    HeadOfHousehold = source.HeadOfHousehold.ToViewModel() as ViewModels.HeadOfHousehold,
-                    IncidentTask = source.IncidentTask.ToViewModel(),
-                    HostCommunity = source.HostCommunity.ToViewModel()
+                    HeadOfHousehold = source?.HeadOfHousehold?.ToViewModel() as ViewModels.HeadOfHousehold,
+                    IncidentTask = source?.IncidentTask?.ToViewModel(),
+                    HostCommunity = source?.HostCommunity?.ToViewModel()
                 };
             }
 
