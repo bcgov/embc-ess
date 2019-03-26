@@ -45,23 +45,28 @@ export class VolunteerEditorConfirmationComponent implements OnInit {
   submit(addAnother?: boolean) {
     // TODO the add another flag should route the user back to the create page in the subscription
 
-    // check if this is an update
-    if (this.volunteer.id) {
+    if (this.volunteer.lastName && this.volunteer.firstName && this.volunteer.bceidAccountNumber && this.volunteer.canAccessRestrictedFiles != null) {
+      // check if this is an update
+      if (this.volunteer.id) {
 
-      // if the volunteer has an ID we need to update
-      this.volunteerService.updateVolunteer(this.volunteer)
-        .subscribe(() => {
-          // if addAnother route back to the add page else route back to the volunteer-team-editor
-          if (addAnother) alert('Need to route to add another.');
-        });
-    } else {
-      // if the volunteer has no id we need to create a new one
-      this.volunteerService.createVolunteer(this.volunteer)
-        .subscribe(v => {
-          alert(JSON.stringify(v));
-          // if addAnother route back to the add page else route back to the volunteer-team-editor
-          if (addAnother) alert('Need to route to add another.');
-        });
+        // if the volunteer has an ID we need to update
+        this.volunteerService.updateVolunteer(this.volunteer)
+          .subscribe(() => {
+            // if addAnother route back to the add page else route back to the volunteer-team-editor
+            if (addAnother) {
+              this.router.navigate(['volunteer-edit']);
+            }
+          });
+      } else {
+        // if the volunteer has no id we need to create a new one
+        this.volunteerService.createVolunteer(this.volunteer)
+          .subscribe(v => {
+            // if addAnother route back to the add page else route back to the volunteer-team-editor
+            if (addAnother) {
+              this.router.navigate(['volunteer-edit']);
+            }
+          });
+      }
     }
   }
 }
