@@ -13,7 +13,7 @@ import { MetaVolunteers } from '../core/models/meta-volunteers';
 export class VolunteerTeamDashboardComponent implements OnInit {
     // simple server response
     metaVolunteers: MetaVolunteers;
-    notFoundMessage: string = 'One moment';
+    notFoundMessage: string = '';
     constructor(
         private volunteerService: VolunteerService,
         private router: Router
@@ -34,7 +34,8 @@ export class VolunteerTeamDashboardComponent implements OnInit {
             this.metaVolunteers = v;
         });
     }
-    search(value) {
-        alert(value)
+    search(searchTerm: string) {
+        // submit and collect search
+        this.getVolunteers(null, null, searchTerm);
     }
 }
