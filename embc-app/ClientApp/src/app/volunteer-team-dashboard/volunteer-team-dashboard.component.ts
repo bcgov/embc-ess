@@ -38,6 +38,7 @@ export class VolunteerTeamDashboardComponent implements OnInit {
         // get volunteers with supplied params defaults defined in
         this.volunteerService.getVolunteers(queryParams).subscribe((v: Volunteer[]) => {
             this.volunteers = v;
+
         });
     }
 }
