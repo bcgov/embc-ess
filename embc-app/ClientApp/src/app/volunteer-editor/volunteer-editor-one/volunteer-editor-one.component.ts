@@ -76,7 +76,7 @@ export class VolunteerEditorOneComponent implements OnInit {
   next(): void {
     // when routing to the next page we save first into the application state.
     this.onSave();
-    this.router.navigate(['user-edit/confirmation']);
+    this.router.navigate(['volunteer-edit/confirmation']);
   }
 
   onSave(): void {

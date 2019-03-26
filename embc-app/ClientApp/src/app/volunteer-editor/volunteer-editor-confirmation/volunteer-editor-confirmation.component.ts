@@ -35,7 +35,7 @@ export class VolunteerEditorConfirmationComponent implements OnInit {
   }
   back() {
     this.onSave();
-    this.router.navigate(['/user-edit']);
+    this.router.navigate(['/volunteer-edit']);
   }
   onSave() {
     // update the stored version
