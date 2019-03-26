@@ -9,7 +9,7 @@ import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
-import { clearFormArray, invalidControl } from 'src/app/shared/utils';
+import { clearFormArray, hasErrors, invalidField } from 'src/app/shared/utils';
 
 
 @Component({
@@ -40,8 +40,9 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
   private validationHelper: ValidationHelper;
 
-  // convenience getter so we can use utils function in Angular templates
-  invalid = invalidControl;
+  // convenience getters so we can use helper functions in Angular templates
+  hasErrors = hasErrors;
+  invalidField = invalidField;
 
   constructor(
     private store: Store<AppState>,
@@ -156,8 +157,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       email: ['', Validators.email],
       primaryResidenceInBC: [null, Validators.required],
       primaryResidence: this.fb.group({
-        addressSubtype: '',
-        addressLine1: ['', Validators.required], // TODO: Validate nested objects
+        addressSubtype: '', // address fields are validated by sub-components (bc-address, other-address)
+        addressLine1: '',
         postalCode: '',
         community: '',
         city: '',
@@ -327,7 +328,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     clearFormArray(this.familyMembers);
   }
 
-  next(): void {
+  onSubmit() {
     this.submitted = true;
     this.validateForm();
 
@@ -339,11 +340,15 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
     // success!
     this.errorSummary = null;
-    this.onSave();
+    this.next();
+  }
+
+  next(): void {
+    this.saveState();
     this.router.navigate(['../step-2'], { relativeTo: this.route });
   }
 
-  onSave(): void {
+  saveState(): void {
     const form = this.form.value;
 
     // ensure proper sub-types are assigned
