@@ -84,9 +84,9 @@
         }
     },
     {
-        "Name": "Rich Bar",
+        "Name": "Johnson's Landing",
         "RegionalDistrict": {
-            "Name": "Cariboo Regional District"
+            "Name": "Central Kootenay Area D"
         }
     },
     {
@@ -133,6 +133,12 @@
     },
     {
         "Name": "Procter",
+        "RegionalDistrict": {
+            "Name": "Central Kootenay Area E"
+        }
+    },
+    {
+        "Name": "Queen's Bay",
         "RegionalDistrict": {
             "Name": "Central Kootenay Area E"
         }
@@ -708,6 +714,12 @@
         }
     },
     {
+        "Name": "Bummer's Flat I.R.",
+        "RegionalDistrict": {
+            "Name": "East Kootenay Area C"
+        }
+    },
+    {
         "Name": "Cassimayooks I.R.",
         "RegionalDistrict": {
             "Name": "East Kootenay Area C"
@@ -727,18 +739,6 @@
     },
     {
         "Name": "Green Bay",
-        "RegionalDistrict": {
-            "Name": "East Kootenay Area C"
-        }
-    },
-    {
-        "Name": "Queen's Bay",
-        "RegionalDistrict": {
-            "Name": "Central Kootenay Area E"
-        }
-    },
-    {
-        "Name": "Bummer's Flat I.R.",
         "RegionalDistrict": {
             "Name": "East Kootenay Area C"
         }
@@ -1112,19 +1112,19 @@
     {
         "Name": "Jaffray",
         "RegionalDistrict": {
-            "Name": "East Kootenay  Area B"
+            "Name": "East Kootenay Area B"
         }
     },
     {
-        "Name": "Tofino",
+        "Name": "Isadore's Ranch I.R.",
         "RegionalDistrict": {
-            "Name": "Alberni-Clayoquot Regional District"
+            "Name": "East Kootenay Area C"
         }
     },
     {
         "Name": "Luxor",
         "RegionalDistrict": {
-            "Name": "East Kootenay  Area G"
+            "Name": "East Kootenay Area G"
         }
     },
     {
@@ -1224,711 +1224,9 @@
         }
     },
     {
-        "Name": "Ucluelet",
+        "Name": "shishalh Nation (Sechelt First Nation)",
         "RegionalDistrict": {
-            "Name": "Alberni-Clayoquot Regional District"
-        }
-    },
-    {
-        "Name": "Central Saanich",
-        "RegionalDistrict": {
-            "Name": "Capital Regional District"
-        }
-    },
-    {
-        "Name": "Colwood",
-        "RegionalDistrict": {
-            "Name": "Capital Regional District"
-        }
-    },
-    {
-        "Name": "Esquimalt",
-        "RegionalDistrict": {
-            "Name": "Capital Regional District"
-        }
-    },
-    {
-        "Name": "Highlands",
-        "RegionalDistrict": {
-            "Name": "Capital Regional District"
-        }
-    },
-    {
-        "Name": "Langford",
-        "RegionalDistrict": {
-            "Name": "Capital Regional District"
-        }
-    },
-    {
-        "Name": "Metchosin",
-        "RegionalDistrict": {
-            "Name": "Capital Regional District"
-        }
-    },
-    {
-        "Name": "North Saanich",
-        "RegionalDistrict": {
-            "Name": "Capital Regional District"
-        }
-    },
-    {
-        "Name": "Oak Bay",
-        "RegionalDistrict": {
-            "Name": "Capital Regional District"
-        }
-    },
-    {
-        "Name": "Saanich",
-        "RegionalDistrict": {
-            "Name": "Capital Regional District"
-        }
-    },
-    {
-        "Name": "Sidney",
-        "RegionalDistrict": {
-            "Name": "Capital Regional District"
-        }
-    },
-    {
-        "Name": "Sooke",
-        "RegionalDistrict": {
-            "Name": "Capital Regional District"
-        }
-    },
-    {
-        "Name": "Victoria",
-        "RegionalDistrict": {
-            "Name": "Capital Regional District"
-        }
-    },
-    {
-        "Name": "View Royal",
-        "RegionalDistrict": {
-            "Name": "Capital Regional District"
-        }
-    },
-    {
-        "Name": "Comox",
-        "RegionalDistrict": {
-            "Name": "Comox Regional District"
-        }
-    },
-    {
-        "Name": "Courtenay",
-        "RegionalDistrict": {
-            "Name": "Comox Regional District"
-        }
-    },
-    {
-        "Name": "Cumberland",
-        "RegionalDistrict": {
-            "Name": "Comox Regional District"
-        }
-    },
-    {
-        "Name": "Duncan",
-        "RegionalDistrict": {
-            "Name": "Cowichan Valley"
-        }
-    },
-    {
-        "Name": "Ladysmith",
-        "RegionalDistrict": {
-            "Name": "Cowichan Valley"
-        }
-    },
-    {
-        "Name": "Lake Cowichan",
-        "RegionalDistrict": {
-            "Name": "Cowichan Valley"
-        }
-    },
-    {
-        "Name": "North Cowichan",
-        "RegionalDistrict": {
-            "Name": "Cowichan Valley"
-        }
-    },
-    {
-        "Name": "Alert Bay",
-        "RegionalDistrict": {
-            "Name": "Mount Waddington"
-        }
-    },
-    {
-        "Name": "Port Alice",
-        "RegionalDistrict": {
-            "Name": "Mount Waddington"
-        }
-    },
-    {
-        "Name": "Port Hardy",
-        "RegionalDistrict": {
-            "Name": "Mount Waddington"
-        }
-    },
-    {
-        "Name": "Port McNeill",
-        "RegionalDistrict": {
-            "Name": "Mount Waddington"
-        }
-    },
-    {
-        "Name": "Lantzville",
-        "RegionalDistrict": {
-            "Name": "Nanaimo"
-        }
-    },
-    {
-        "Name": "Nanaimo",
-        "RegionalDistrict": {
-            "Name": "Nanaimo"
-        }
-    },
-    {
-        "Name": "Parksville",
-        "RegionalDistrict": {
-            "Name": "Nanaimo"
-        }
-    },
-    {
-        "Name": "Qualicum Beach",
-        "RegionalDistrict": {
-            "Name": "Nanaimo"
-        }
-    },
-    {
-        "Name": "Powell River",
-        "RegionalDistrict": {
-            "Name": "Powell River"
-        }
-    },
-    {
-        "Name": "Sechelt Ind Gov Dist  (Part)",
-        "RegionalDistrict": {
-            "Name": "Powell River"
-        }
-    },
-    {
-        "Name": "Campbell River",
-        "RegionalDistrict": {
-            "Name": "Strathcona Regional Dist."
-        }
-    },
-    {
-        "Name": "Gold River",
-        "RegionalDistrict": {
-            "Name": "Strathcona Regional Dist."
-        }
-    },
-    {
-        "Name": "Sayward",
-        "RegionalDistrict": {
-            "Name": "Strathcona Regional Dist."
-        }
-    },
-    {
-        "Name": "Tahsis",
-        "RegionalDistrict": {
-            "Name": "Strathcona Regional Dist."
-        }
-    },
-    {
-        "Name": "Zeballos",
-        "RegionalDistrict": {
-            "Name": "Strathcona Regional Dist."
-        }
-    },
-    {
-        "Name": "Riske Creek",
-        "RegionalDistrict": {
-            "Name": "Cariboo Regional District"
-        }
-    },
-    {
-        "Name": "Sheridan Lake",
-        "RegionalDistrict": {
-            "Name": "Cariboo Regional District"
-        }
-    },
-    {
-        "Name": "Soda Creek",
-        "RegionalDistrict": {
-            "Name": "Cariboo Regional District"
-        }
-    },
-    {
-        "Name": "Spring House",
-        "RegionalDistrict": {
-            "Name": "Cariboo Regional District"
-        }
-    },
-    {
-        "Name": "Stanley",
-        "RegionalDistrict": {
-            "Name": "Cariboo Regional District"
-        }
-    },
-    {
-        "Name": "Lil'wat",
-        "RegionalDistrict": {
-            "Name": "Squamish Lillooet"
-        }
-    },
-    {
-        "Name": "N'Quatqua",
-        "RegionalDistrict": {
-            "Name": "Squamish Lillooet"
-        }
-    },
-    {
-        "Name": "T'it'q'et",
-        "RegionalDistrict": {
-            "Name": "Squamish Lillooet"
-        }
-    },
-    {
-        "Name": "Tsal'alh",
-        "RegionalDistrict": {
-            "Name": "Squamish Lillooet"
-        }
-    },
-    {
-        "Name": "Xaxli'p",
-        "RegionalDistrict": {
-            "Name": "Squamish Lillooet"
-        }
-    },
-    {
-        "Name": "Se'k'welwas (Cayoose Creek)",
-        "RegionalDistrict": {
-            "Name": "Squamish Lillooet"
-        }
-    },
-    {
-        "Name": "Ts'kw'aylaxw First Nation",
-        "RegionalDistrict": {
-            "Name": "Squamish Lillooet"
-        }
-    },
-    {
-        "Name": "Houston, District of",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Vanderhoof, District",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Smithers, Town of",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Burns Lake, Village of",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Fraser Lake, Village of",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Granisle, Village of",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Telkwa, Village of",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Chelsatta Carrier Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Lake Babine Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Nadleh Whut'en First Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Nee-Tahi-Buhn Band",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Saik'uz First Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Skin Tyee Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Stellat'en First Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Takla First Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Tl'azt'en Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Ts'il Kaz Koh First Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Wet'suweten First Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Yekooche First Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
-        }
-    },
-    {
-        "Name": "Terrace, City of",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "New Hazelton, District of",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Hazelton, Village of",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Kitimat, District of",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Stewart, District of",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Nisga'a Lisims Government",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Nisga'a Village of Gingolx",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Nisga'a Village of Gitlaxt'aamiks",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Nisga'a Village of Gitwinksihlkw",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Nisga'a Village of Laxgalt'sap",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Haisla First Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Iskut First Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Kitasoo/Xai'xais First Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Tahltan First Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Gitanmaax Band Council",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Gitanyow Band Council",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Gitsegukla Band Council",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Gitwangak Band Council",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Hagwilget Village Council",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Kispiox Band Council",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Kitselas First Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Kitsumkalum First Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Moricetown Band",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Sik-e-dakh First Nation",
-        "RegionalDistrict": {
-            "Name": "Regional District Kitimat-Stikine"
-        }
-    },
-    {
-        "Name": "Prince Rupert, City of",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Port Edward, City of",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Massett, Village of",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Port Clements, Village of",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Queen Charlotte, Village of",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Atlin",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Gitga'at Nation",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Gitxaala First Nation",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Lax Kw'alaams First Nation",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Metlakatla Governing Council",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Old Massett Village Council",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Skidegate Band Council",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Daylu Dena Council",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Dease River First Nation",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Taku River Tlinget First Nation",
-        "RegionalDistrict": {
-            "Name": "North Coast Regional District"
-        }
-    },
-    {
-        "Name": "Strathnaver",
-        "RegionalDistrict": {
-            "Name": "Cariboo Regional District"
-        }
-    },
-    {
-        "Name": "Tatla Lake",
-        "RegionalDistrict": {
-            "Name": "Cariboo Regional District"
-        }
-    },
-    {
-        "Name": "Tatlayoko Lake",
-        "RegionalDistrict": {
-            "Name": "Cariboo Regional District"
-        }
-    },
-    {
-        "Name": "Wells",
-        "RegionalDistrict": {
-            "Name": "Cariboo Regional District"
-        }
-    },
-    {
-        "Name": "Williams Lake",
-        "RegionalDistrict": {
-            "Name": "Cariboo Regional District"
-        }
-    },
-    {
-        "Name": "Atnarko",
-        "RegionalDistrict": {
-            "Name": "Central Coast Regional District"
-        }
-    },
-    {
-        "Name": "Bella Bella",
-        "RegionalDistrict": {
-            "Name": "Central Coast Regional District"
-        }
-    },
-    {
-        "Name": "Bella Coola",
-        "RegionalDistrict": {
-            "Name": "Central Coast Regional District"
-        }
-    },
-    {
-        "Name": "Dawson's Landing",
-        "RegionalDistrict": {
-            "Name": "Central Coast Regional District"
-        }
-    },
-    {
-        "Name": "Duncanby Landing",
-        "RegionalDistrict": {
-            "Name": "Central Coast Regional District"
-        }
-    },
-    {
-        "Name": "Firvale",
-        "RegionalDistrict": {
-            "Name": "Central Coast Regional District"
-        }
-    },
-    {
-        "Name": "Hagensborg",
-        "RegionalDistrict": {
-            "Name": "Central Coast Regional District"
+            "Name": "Sunshine Coast"
         }
     },
     {
@@ -2016,6 +1314,18 @@
         }
     },
     {
+        "Name": "Lil'wat",
+        "RegionalDistrict": {
+            "Name": "Squamish Lillooet"
+        }
+    },
+    {
+        "Name": "N'Quatqua",
+        "RegionalDistrict": {
+            "Name": "Squamish Lillooet"
+        }
+    },
+    {
         "Name": "Electoral Area A",
         "RegionalDistrict": {
             "Name": "Squamish Lillooet"
@@ -2040,7 +1350,37 @@
         }
     },
     {
+        "Name": "T'it'q'et",
+        "RegionalDistrict": {
+            "Name": "Squamish Lillooet"
+        }
+    },
+    {
+        "Name": "Tsal'alh",
+        "RegionalDistrict": {
+            "Name": "Squamish Lillooet"
+        }
+    },
+    {
+        "Name": "Xaxli'p",
+        "RegionalDistrict": {
+            "Name": "Squamish Lillooet"
+        }
+    },
+    {
+        "Name": "Se'k'welwas (Cayoose Creek)",
+        "RegionalDistrict": {
+            "Name": "Squamish Lillooet"
+        }
+    },
+    {
         "Name": "Nxwisten (Bridge River)",
+        "RegionalDistrict": {
+            "Name": "Squamish Lillooet"
+        }
+    },
+    {
+        "Name": "Ts'kw'aylaxw First Nation",
         "RegionalDistrict": {
             "Name": "Squamish Lillooet"
         }
@@ -2220,6 +1560,12 @@
         }
     },
     {
+        "Name": "Leq'a: mel First Nation",
+        "RegionalDistrict": {
+            "Name": "Fraser Valley"
+        }
+    },
+    {
         "Name": "Kwaw-kwaw-Apilt",
         "RegionalDistrict": {
             "Name": "Fraser Valley"
@@ -2274,6 +1620,18 @@
         }
     },
     {
+        "Name": "Sq'ewlets",
+        "RegionalDistrict": {
+            "Name": "Fraser Valley"
+        }
+    },
+    {
+        "Name": "Sts'ailes",
+        "RegionalDistrict": {
+            "Name": "Fraser Valley"
+        }
+    },
+    {
         "Name": "Cheam",
         "RegionalDistrict": {
             "Name": "Fraser Valley"
@@ -2293,6 +1651,12 @@
     },
     {
         "Name": "Peters First Nation",
+        "RegionalDistrict": {
+            "Name": "Fraser Valley"
+        }
+    },
+    {
+        "Name": "Shxw'ow'hamel First Nation",
         "RegionalDistrict": {
             "Name": "Fraser Valley"
         }
@@ -2424,51 +1788,21 @@
         }
     },
     {
+        "Name": "Electoral Area A",
+        "RegionalDistrict": {
+            "Name": "Metro Vancouver"
+        }
+    },
+    {
         "Name": "Semiahmoo",
         "RegionalDistrict": {
             "Name": "Metro Vancouver"
         }
     },
     {
-        "Name": "Johnson's Landing",
+        "Name": "100 Mile House",
         "RegionalDistrict": {
-            "Name": "Central Kootenay Area D"
-        }
-    },
-    {
-        "Name": "Isadore's Ranch I.R.",
-        "RegionalDistrict": {
-            "Name": "East Kootenay  Area C"
-        }
-    },
-    {
-        "Name": "Leq'a: mel First Nation",
-        "RegionalDistrict": {
-            "Name": "Fraser Valley"
-        }
-    },
-    {
-        "Name": "Sq'ewlets",
-        "RegionalDistrict": {
-            "Name": "Fraser Valley"
-        }
-    },
-    {
-        "Name": "Sts'ailes",
-        "RegionalDistrict": {
-            "Name": "Fraser Valley"
-        }
-    },
-    {
-        "Name": "Shxw’ow'hamel First Nation",
-        "RegionalDistrict": {
-            "Name": "Fraser Valley"
-        }
-    },
-    {
-        "Name": "Electoral Area A",
-        "RegionalDistrict": {
-            "Name": "Metro Vancouver"
+            "Name": "Cariboo Regional District"
         }
     },
     {
@@ -2775,6 +2109,114 @@
         "Name": "Redstone",
         "RegionalDistrict": {
             "Name": "Cariboo Regional District"
+        }
+    },
+    {
+        "Name": "Rich Bar",
+        "RegionalDistrict": {
+            "Name": "Cariboo Regional District"
+        }
+    },
+    {
+        "Name": "Riske Creek",
+        "RegionalDistrict": {
+            "Name": "Cariboo Regional District"
+        }
+    },
+    {
+        "Name": "Sheridan Lake",
+        "RegionalDistrict": {
+            "Name": "Cariboo Regional District"
+        }
+    },
+    {
+        "Name": "Soda Creek",
+        "RegionalDistrict": {
+            "Name": "Cariboo Regional District"
+        }
+    },
+    {
+        "Name": "Spring House",
+        "RegionalDistrict": {
+            "Name": "Cariboo Regional District"
+        }
+    },
+    {
+        "Name": "Stanley",
+        "RegionalDistrict": {
+            "Name": "Cariboo Regional District"
+        }
+    },
+    {
+        "Name": "Strathnaver",
+        "RegionalDistrict": {
+            "Name": "Cariboo Regional District"
+        }
+    },
+    {
+        "Name": "Tatla Lake",
+        "RegionalDistrict": {
+            "Name": "Cariboo Regional District"
+        }
+    },
+    {
+        "Name": "Tatlayoko Lake",
+        "RegionalDistrict": {
+            "Name": "Cariboo Regional District"
+        }
+    },
+    {
+        "Name": "Wells",
+        "RegionalDistrict": {
+            "Name": "Cariboo Regional District"
+        }
+    },
+    {
+        "Name": "Williams Lake",
+        "RegionalDistrict": {
+            "Name": "Cariboo Regional District"
+        }
+    },
+    {
+        "Name": "Atnarko",
+        "RegionalDistrict": {
+            "Name": "Central Coast Regional District"
+        }
+    },
+    {
+        "Name": "Bella Bella",
+        "RegionalDistrict": {
+            "Name": "Central Coast Regional District"
+        }
+    },
+    {
+        "Name": "Bella Coola",
+        "RegionalDistrict": {
+            "Name": "Central Coast Regional District"
+        }
+    },
+    {
+        "Name": "Dawson's Landing",
+        "RegionalDistrict": {
+            "Name": "Central Coast Regional District"
+        }
+    },
+    {
+        "Name": "Duncanby Landing",
+        "RegionalDistrict": {
+            "Name": "Central Coast Regional District"
+        }
+    },
+    {
+        "Name": "Firvale",
+        "RegionalDistrict": {
+            "Name": "Central Coast Regional District"
+        }
+    },
+    {
+        "Name": "Hagensborg",
+        "RegionalDistrict": {
+            "Name": "Central Coast Regional District"
         }
     },
     {
@@ -3564,6 +3006,600 @@
         }
     },
     {
+        "Name": "Fort Saint James, District of",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Houston, District of",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Vanderhoof, District",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Smithers, Town of",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Burns Lake, Village of",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Fraser Lake, Village of",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Granisle, Village of",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Telkwa, Village of",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Chelsatta Carrier Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Lake Babine Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Nadleh Whut'en First Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Nee-Tahi-Buhn Band",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Saik'uz First Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Skin Tyee Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Stellat'en First Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Takla First Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Tl'azt'en Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Ts'il Kaz Koh First Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Wet'suweten First Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Yekooche First Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Binche Whut'en",
+        "RegionalDistrict": {
+            "Name": "Regional District Bulkely-Nechako"
+        }
+    },
+    {
+        "Name": "Terrace, City of",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "New Hazelton, District of",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Hazelton, Village of",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Kitimat, District of",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Stewart, District of",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Nisga'a Lisims Government",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Nisga'a Village of Gingolx",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Nisga'a Village of Gitlaxt'aamiks",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Nisga'a Village of Gitwinksihlkw",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Nisga'a Village of Laxgalt'sap",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Haisla First Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Iskut First Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Kitasoo/Xai'xais First Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Tahltan First Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Gitanmaax Band Council",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Gitanyow Band Council",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Gitsegukla Band Council",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Gitwangak Band Council",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Hagwilget Village Council",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Kispiox Band Council",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Kitselas First Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Kitsumkalum First Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Moricetown Band",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Sik-e-dakh First Nation",
+        "RegionalDistrict": {
+            "Name": "Regional District Kitimat-Stikine"
+        }
+    },
+    {
+        "Name": "Prince Rupert, City of",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Port Edward, City of",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Massett, Village of",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Port Clements, Village of",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Queen Charlotte, Village of",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Atlin",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Gitga'at Nation",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Gitxaala First Nation",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Lax Kw'alaams First Nation",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Metlakatla Governing Council",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Old Massett Village Council",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Skidegate Band Council",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Daylu Dena Council",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Dease River First Nation",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Taku River Tlinget First Nation",
+        "RegionalDistrict": {
+            "Name": "North Coast Regional District"
+        }
+    },
+    {
+        "Name": "Port Alberni",
+        "RegionalDistrict": {
+            "Name": "Alberni-Clayoquot Regional District"
+        }
+    },
+    {
+        "Name": "Tofino",
+        "RegionalDistrict": {
+            "Name": "Alberni-Clayoquot Regional District"
+        }
+    },
+    {
+        "Name": "Ucluelet",
+        "RegionalDistrict": {
+            "Name": "Alberni-Clayoquot Regional District"
+        }
+    },
+    {
+        "Name": "Central Saanich",
+        "RegionalDistrict": {
+            "Name": "Capital Regional District"
+        }
+    },
+    {
+        "Name": "Colwood",
+        "RegionalDistrict": {
+            "Name": "Capital Regional District"
+        }
+    },
+    {
+        "Name": "Esquimalt",
+        "RegionalDistrict": {
+            "Name": "Capital Regional District"
+        }
+    },
+    {
+        "Name": "Highlands",
+        "RegionalDistrict": {
+            "Name": "Capital Regional District"
+        }
+    },
+    {
+        "Name": "Langford",
+        "RegionalDistrict": {
+            "Name": "Capital Regional District"
+        }
+    },
+    {
+        "Name": "Metchosin",
+        "RegionalDistrict": {
+            "Name": "Capital Regional District"
+        }
+    },
+    {
+        "Name": "North Saanich",
+        "RegionalDistrict": {
+            "Name": "Capital Regional District"
+        }
+    },
+    {
+        "Name": "Oak Bay",
+        "RegionalDistrict": {
+            "Name": "Capital Regional District"
+        }
+    },
+    {
+        "Name": "Saanich",
+        "RegionalDistrict": {
+            "Name": "Capital Regional District"
+        }
+    },
+    {
+        "Name": "Sidney",
+        "RegionalDistrict": {
+            "Name": "Capital Regional District"
+        }
+    },
+    {
+        "Name": "Sooke",
+        "RegionalDistrict": {
+            "Name": "Capital Regional District"
+        }
+    },
+    {
+        "Name": "Victoria",
+        "RegionalDistrict": {
+            "Name": "Capital Regional District"
+        }
+    },
+    {
+        "Name": "View Royal",
+        "RegionalDistrict": {
+            "Name": "Capital Regional District"
+        }
+    },
+    {
+        "Name": "Comox",
+        "RegionalDistrict": {
+            "Name": "Comox Regional District "
+        }
+    },
+    {
+        "Name": "Courtenay",
+        "RegionalDistrict": {
+            "Name": "Comox Regional District "
+        }
+    },
+    {
+        "Name": "Cumberland",
+        "RegionalDistrict": {
+            "Name": "Comox Regional District "
+        }
+    },
+    {
+        "Name": "Duncan",
+        "RegionalDistrict": {
+            "Name": "Cowichan Valley"
+        }
+    },
+    {
+        "Name": "Ladysmith",
+        "RegionalDistrict": {
+            "Name": "Cowichan Valley"
+        }
+    },
+    {
+        "Name": "Lake Cowichan",
+        "RegionalDistrict": {
+            "Name": "Cowichan Valley"
+        }
+    },
+    {
+        "Name": "North Cowichan",
+        "RegionalDistrict": {
+            "Name": "Cowichan Valley"
+        }
+    },
+    {
+        "Name": "Alert Bay",
+        "RegionalDistrict": {
+            "Name": "Mount Waddington"
+        }
+    },
+    {
+        "Name": "Port Alice",
+        "RegionalDistrict": {
+            "Name": "Mount Waddington"
+        }
+    },
+    {
+        "Name": "Port Hardy",
+        "RegionalDistrict": {
+            "Name": "Mount Waddington"
+        }
+    },
+    {
+        "Name": "Port McNeill",
+        "RegionalDistrict": {
+            "Name": "Mount Waddington"
+        }
+    },
+    {
+        "Name": "Lantzville",
+        "RegionalDistrict": {
+            "Name": "Nanaimo"
+        }
+    },
+    {
+        "Name": "Nanaimo",
+        "RegionalDistrict": {
+            "Name": "Nanaimo"
+        }
+    },
+    {
+        "Name": "Parksville",
+        "RegionalDistrict": {
+            "Name": "Nanaimo"
+        }
+    },
+    {
+        "Name": "Qualicum Beach",
+        "RegionalDistrict": {
+            "Name": "Nanaimo"
+        }
+    },
+    {
+        "Name": "Powell River",
+        "RegionalDistrict": {
+            "Name": "Powell River"
+        }
+    },
+    {
+        "Name": "Sechelt Ind Gov Dist  (Part)",
+        "RegionalDistrict": {
+            "Name": "Powell River"
+        }
+    },
+    {
+        "Name": "Campbell River",
+        "RegionalDistrict": {
+            "Name": "Strathcona Regional Dist."
+        }
+    },
+    {
+        "Name": "Gold River",
+        "RegionalDistrict": {
+            "Name": "Strathcona Regional Dist."
+        }
+    },
+    {
+        "Name": "Sayward",
+        "RegionalDistrict": {
+            "Name": "Strathcona Regional Dist."
+        }
+    },
+    {
+        "Name": "Tahsis",
+        "RegionalDistrict": {
+            "Name": "Strathcona Regional Dist."
+        }
+    },
+    {
+        "Name": "Zeballos",
+        "RegionalDistrict": {
+            "Name": "Strathcona Regional Dist."
+        }
+    },
+    {
+        "Name": "Kelowna",
+        "RegionalDistrict": {
+            "Name": "Central Okanagan"
+        }
+    },
+    {
         "Name": "Lake Country",
         "RegionalDistrict": {
             "Name": "Central Okanagan"
@@ -3777,12 +3813,6 @@
         "Name": "Sun Peaks Mountain",
         "RegionalDistrict": {
             "Name": "Thompson-Nicola"
-        }
-    },
-    {
-        "Name": "Binche Whut'en",
-        "RegionalDistrict": {
-            "Name": "Regional District Bulkely-Nechako"
         }
     }
 ]
