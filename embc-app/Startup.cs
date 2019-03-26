@@ -48,11 +48,23 @@ namespace Gov.Jag.Embc.Public
             // add singleton to allow Controllers to query the Request object
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            // determine if we wire up Dynamics.
-            if (!string.IsNullOrEmpty(Configuration["DYNAMICS_ODATA_URI"]))
-            {
-                SetupDynamics(services);
-            }
+            /*****************************
+             * SQL Server Initialization *
+             *****************************/
+
+            string connectionString = DatabaseTools.GetConnectionString(Configuration);
+            string databaseName = DatabaseTools.GetDatabaseName(Configuration);
+
+            DatabaseTools.CreateDatabaseIfNotExists(Configuration);
+
+            services.AddDbContext<EmbcDbContext>(
+                options => options
+                    .UseLazyLoadingProxies()
+                    .UseSqlServer(connectionString));
+
+            /*****************************
+             * End of SQL Initialization *
+             *****************************/
 
             // Add a memory cache
             services.AddMemoryCache();
@@ -136,21 +148,13 @@ namespace Gov.Jag.Embc.Public
             services.AddHealthChecks(checks =>
             {
                 checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
+
+                //checks.AddSqlCheck(DatabaseTools.GetDatabaseName(Configuration), DatabaseTools.GetConnectionString(Configuration));
             });
 
             services.AddSession();
 
             // add a data interface
-
-            string connectionString = "Data Source=embc.db";
-            if (!string.IsNullOrEmpty(Configuration["CONNECTION_STRING"]))
-            {
-                connectionString = Configuration["CONNECTION_STRING"];
-            }
-            services.AddDbContext<EmbcDbContext>(opts => opts
-                .UseLazyLoadingProxies()
-                //.UseLoggerFactory(loggingFactory)
-                .UseSqlite(connectionString));
 
             services.AddTransient<IDataInterface, DataInterface>();
 
@@ -213,13 +217,9 @@ namespace Gov.Jag.Embc.Public
 
                     var context = serviceScope.ServiceProvider.GetService<EmbcDbContext>();
 
-                    log.LogInformation("Resetting database");
-                    context.Database.CloseConnection();
-#if !DEBUG
-                    context.Database.EnsureDeleted();
-#endif
-                    context.Database.OpenConnection();
-                    context.Database.EnsureCreated();
+                    log.LogInformation("Migrating the database ...");
+                    context.Database.Migrate();
+                    log.LogInformation("The database migration is complete.");
 
                     // run the database seeders
                     log.LogInformation("Adding/Updating seed data ...");

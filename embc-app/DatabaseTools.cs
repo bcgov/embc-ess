@@ -1,9 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public
 {
@@ -15,27 +11,15 @@ namespace Gov.Jag.Embc.Public
         /// <returns></returns>
         public static string GetConnectionString(IConfiguration Configuration)
         {
-            string result = "Server=";
+            var server = string.IsNullOrEmpty(Configuration["DATABASE_SERVICE_NAME"]) ? "(localdb)\\mssqllocaldb" : Configuration["DATABASE_SERVICE_NAME"];
 
-            if (!string.IsNullOrEmpty(Configuration["DATABASE_SERVICE_NAME"]))
-            {
-                result += Configuration["DATABASE_SERVICE_NAME"];
-            }
-            else // default to a local connection.
-            {
-                result += "127.0.0.1";
-            }
+            var db = GetDatabaseName(Configuration);
 
-            result += ";Database=";
+            var auth = string.IsNullOrEmpty(Configuration["DB_USER"])
+                ? "Trusted_Connection=True"
+                : "User Id=" + Configuration["DB_USER"] + ";Password=" + Configuration["DB_PASSWORD"];
 
-            result += GetDatabaseName(Configuration);
-
-            if (!string.IsNullOrEmpty(Configuration["DB_USER"]) && !string.IsNullOrEmpty(Configuration["DB_PASSWORD"]))
-            {
-                result += ";User Id=" + Configuration["DB_USER"] + ";Password=" + Configuration["DB_PASSWORD"] + ";";
-            }
-
-            return result;
+            return $"Server={server};Database={db};{auth};MultipleActiveResultSets=true;";
         }
 
         public static string GetSaConnectionString(IConfiguration Configuration)
@@ -87,7 +71,7 @@ namespace Gov.Jag.Embc.Public
                         // fix for OpenShift bug where the pod reports the number of sockets / logical processors in the host computer rather than the amount available.
                         string sql = "EXEC sp_configure 'show advanced options', 1;";
                         SqlCommand cmd = new SqlCommand(sql, conn);
-                        cmd.ExecuteNonQuery();                       
+                        cmd.ExecuteNonQuery();
 
                         sql = "RECONFIGURE WITH OVERRIDE;";
                         cmd = new SqlCommand(sql, conn);
@@ -100,7 +84,6 @@ namespace Gov.Jag.Embc.Public
                         sql = "RECONFIGURE WITH OVERRIDE;";
                         cmd = new SqlCommand(sql, conn);
                         cmd.ExecuteNonQuery();
-
 
                         // create the login if it does not exist.
                         sql = "IF NOT EXISTS (SELECT name FROM master.sys.server_principals    WHERE name = '" + username + "') BEGIN\n CREATE LOGIN " + username + " WITH PASSWORD = '" + password + "';\nEND";
@@ -134,7 +117,7 @@ namespace Gov.Jag.Embc.Public
             }
             else // default to a local connection.
             {
-                result += "Surveys";
+                result += "ESS";
             }
 
             return result;
