@@ -1,3 +1,66 @@
-<p>
-  embc-admin-dashboard works!
-</p>
+<div class="row">
+  <div class="col col-lg-8">
+    <div class="mb-4">
+      <h1>ESS Team Dashboard</h1>
+      <h3>Welcome to your Dashboard!</h3>
+      <p>As an Emergency Support Services user you'll be able to register new evacuees, complete an existing evacuee
+        self- registration, or if needed, search and edit evacuee information.</p>
+      <h3 class="blue-header">LIST OF EVACUEES</h3>
+
+      <app-search-bar #searchBar (valueChange)="doSearch($event)"
+        placeholder="Search by task number / last name / registration number / community ...">
+      </app-search-bar>
+
+      <!-- TODO: <a class="small" href="">advanced search</a> -->
+      <!-- TODO: show icons for HOH, RESTRICTED FILE -->
+    </div>
+    <div>
+      <!-- The start of the table stuff. -->
+      <p>1 - 10 of 2000 <span class="font-weight-bold">ACTIVE</span> evacuees
+        <small class="ml-3">(<a href="">show deactivated</a>)</small>
+      </p>
+      <app-evacuee-search-results #searchResultsView [searchResults]="searchResults$ | async">
+      </app-evacuee-search-results>
+    </div>
+  </div>
+
+
+  <div class="col-12 col-lg-4">
+    <app-side-box-info title="ADD AN EVACUEE"
+      content="Before starting a new registration, use the search tool on your dashboard to confirm that the evacuee hasn’t already registered."
+      button="Add Evacuee(s)" route="register-evacuee"></app-side-box-info>
+    <!--
+        TODO: Move this to the page where we add the volunteers
+        <app-side-box-info title="ADD A VOLUNTEER"
+        content="Before adding volunteers, confirm that they have been registered by the Emergency Social Services Director."
+        button="Add Volunteer(s)" route="register-volunteer"></app-side-box-info>
+            <app-side-box title="Useful Information">
+        <section role="content">
+          <p>
+            Don't forget to deactivate volunteers who are no longer active members of your team.
+          </p>
+          <p>
+            This includes deactivating convergent volunteers.
+          </p>
+        </section>
+        <section role="footer">
+          <button class="btn btn-primary" routerLink="/">Learn More</button>
+        </section>
+      </app-side-box> -->
+    <app-side-box title="Useful Information">
+      <section role="content">
+        <p>
+          Evacuees listed here that do not have a task number are self-registered and have not yet received Emergency
+          Social Services.
+        </p>
+        <p>
+          Use the “Action” column to “view” evacuee registrations as well as “finalize” evacuee self-registrations.
+        </p>
+      </section>
+      <!-- <section role="footer">
+          <button class="btn btn-primary" routerLink="/">Learn More</button>
+        </section> -->
+    </app-side-box>
+  </div>
+
+</div>
