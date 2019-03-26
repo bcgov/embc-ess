@@ -10,7 +10,6 @@
 
       <!-- TODO: <a class="small" href="">advanced search</a> -->
       <!-- TODO: show icons for HOH, RESTRICTED FILE -->
-      <!-- {{volunteers|json}} -->
     </div>
     <div>
       <!-- The start of the table stuff. -->
@@ -19,7 +18,7 @@
       </p>
 
       <div class="search-results">
-        <div *ngIf="volunteers && volunteers.length>0; then searchResultsTable; else notFound"></div>
+        <div *ngIf="metaVolunteers && metaVolunteers.data.length>0; then searchResultsTable; else notFound"></div>
       </div>
 
       <ng-template #searchResultsTable>
@@ -32,7 +31,7 @@
             <th scope="col">ACTION</th>
           </thead>
           <tbody>
-            <tr *ngFor="let volunteer of volunteers">
+            <tr *ngFor="let volunteer of metaVolunteers.data">
               <td>{{volunteer.lastName}}</td>
               <td>{{volunteer.firstName}}</td>
               <td>{{volunteer.bceidAccountNumber}}</td>
