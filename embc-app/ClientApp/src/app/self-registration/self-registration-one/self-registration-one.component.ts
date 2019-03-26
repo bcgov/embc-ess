@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { skipWhile, takeWhile } from 'rxjs/operators';
@@ -297,21 +297,21 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     }
   }
 
-  newFamilyMember(): FormGroup {
+  // family member formgroup
+  createFamilyMember(): FormGroup {
     return this.fb.group({
       sameLastNameAsEvacuee: true,
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       initials: '',
-      gender: [null, Validators.required],
-      dob: [null, [Validators.required]], // TODO: Add extra DOB validation (must be in the past)
+      gender: null,
+      dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Add date format (MM/DD/YYYY)
       relationshipToEvacuee: [null, Validators.required],
     });
   }
 
   addFamilyMember(): void {
-    const newOne = this.newFamilyMember();
-    this.familyMembers.push(newOne);
+    this.familyMembers.push(this.createFamilyMember());
   }
 
   removeFamilyMember(): void {
@@ -321,6 +321,11 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   clearFamilyMembers() {
     this.clear(this.familyMembers);
+  }
+
+  invalid(formGroup: FormGroup, childControlName: string, errorCodes = ['required']): boolean {
+    const c = formGroup.get(childControlName);
+    return (c && errorCodes.some(error => c.hasError(error)));
   }
 
   next(): void {
