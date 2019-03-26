@@ -14,7 +14,15 @@
     <div>
       <!-- The start of the table stuff. -->
 
-
+      <div role="search" class="form-row">
+        <div class="col-md-9">
+          <input #searchbox type="text" aria-label="search" class="form-control mb-2"
+            placeholder="Search for user by last name &hellip;" (keydown.enter)="search(searchbox.value)">
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-primary" (click)="search(searchbox.value)">Search</button>
+        </div>
+      </div>
       <div class="search-results">
         <div *ngIf="metaVolunteers && metaVolunteers.data.length>0; then searchResultsTable; else notFound"></div>
       </div>

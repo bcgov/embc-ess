@@ -34,4 +34,7 @@ export class VolunteerTeamDashboardComponent implements OnInit {
             this.metaVolunteers = v;
         });
     }
+    search(value) {
+        alert(value)
+    }
 }
