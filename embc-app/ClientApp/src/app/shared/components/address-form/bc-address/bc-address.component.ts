@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Directive } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 
-import { Community, Country } from 'src/app/core/models';
+import { Community } from 'src/app/core/models';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 
 @Component({
   selector: 'app-bc-address',
@@ -10,16 +11,22 @@ import { Community, Country } from 'src/app/core/models';
       <div class="row">
         <app-form-field class="col-md-6" required="true">
           <label>Apt/Suite/Building Number &amp; Street Address</label>
-          <input class="form-control" type="text" formControlName="addressLine1">
+          <input [class.is-invalid]="invalidAddressLine1" class="form-control" type="text" formControlName="addressLine1">
+          <span class="invalid-feedback">
+            Please enter your street address
+          </span>
         </app-form-field>
       </div>
       <div class="row">
         <app-form-field class="col-md-6" required="true">
           <label>Community</label>
-          <select class="form-control" formControlName="community">
+          <select [class.is-invalid]="invalidCommunity" class="form-control" formControlName="community">
             <option [ngValue]="null">-- Select community</option>
             <option [ngValue]="item" *ngFor="let item of communities">{{item.name}}</option>
           </select>
+          <span class="invalid-feedback">
+            Please enter your community
+          </span>
         </app-form-field>
         <app-form-field class="col-md-3" required="true">
           <label>Province</label>
@@ -27,7 +34,10 @@ import { Community, Country } from 'src/app/core/models';
         </app-form-field>
         <app-form-field class="col-md-3">
           <label>Postal Code</label>
-          <input class="form-control" type="text" formControlName="postalCode">
+          <input [class.is-invalid]="invalidPostalCode" class="form-control" type="text" formControlName="postalCode">
+          <span class="invalid-feedback">
+            Format: A1A 1A1
+          </span>
         </app-form-field>
       </div>
       <div class="row">
@@ -44,17 +54,27 @@ import { Community, Country } from 'src/app/core/models';
 export class BcAddressComponent implements OnInit {
   @Input() parent: FormGroup;
   @Input() communities: Community[] = [];
+  @Input() touched = false;
+
+  // convenience getter for easy access to form fields
+  get f() { return this.parent.controls; }
+
+  get invalidAddressLine1() { return this.f.addressLine1.hasError('required') && this.touched; }
+  get invalidCommunity() { return this.f.community.hasError('required') && this.touched; }
+  get invalidPostalCode() { return this.f.postalCode.hasError('postalCodeCanada') && this.touched; }
 
   ngOnInit() {
     this.parent.controls.addressSubtype.setValue('BCAD');
+    this.setupValidation();
   }
 
-  get invalid() {
-    return false;
-    // TODO: Implement Form VALIDATION
-    //   return (
-    //     this.parent.get('name').hasError('required') &&
-    //     this.parent.get('name').touched
-    //   );
+  private setupValidation(): void {
+    this.f.addressLine1.setValidators([Validators.required]);
+    this.f.postalCode.setValidators([CustomValidators.postalCodeCanada]);
+    this.f.community.setValidators([Validators.required]);
+    this.f.city.setValidators(null);
+    this.f.province.setValidators([Validators.required]);
+    this.f.country.setValidators([Validators.required]);
+    this.parent.updateValueAndValidity();
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { skipWhile, takeWhile } from 'rxjs/operators';
@@ -8,6 +8,8 @@ import { Registration, FamilyMember, isBcAddress } from 'src/app/core/models';
 import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { clearFormArray, hasErrors, invalidField } from 'src/app/shared/utils';
 
 
 @Component({
@@ -28,13 +30,19 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   componentActive = true;
   registration: Registration | null;
 
-  // Use with the generic validation message class
-  invalidFeedback: { [key: string]: any } = {};
+  // `validationErrors` represents an object with field-level validation errors to display in the form
+  validationErrors: { [key: string]: any } = {};
+
+  // error summary to display; i.e. 'Some required fields have not been completed.'
   errorSummary = '';
 
   // generic validation helper
-  private validationMessages: { [key: string]: { [key: string]: string | { [key: string]: string } } };
+  private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
   private validationHelper: ValidationHelper;
+
+  // convenience getters so we can use helper functions in Angular templates
+  hasErrors = hasErrors;
+  invalidField = invalidField;
 
   constructor(
     private store: Store<AppState>,
@@ -44,7 +52,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   ) {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
-    this.validationMessages = {
+    this.constraints = {
       headOfHousehold: {
         firstName: {
           required: 'Please enter your first name.',
@@ -54,6 +62,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         },
         dob: {
           required: 'Please enter your date of birth.',
+          dateInThePast: 'Date of birth must be today or in the past.',
         },
       },
       registeringFamilyMembers: {
@@ -68,11 +77,20 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       mailingAddressInBC: {
         required: 'Please make a selection regarding your mailing address.',
       },
+      phoneNumber: {
+        phone: 'Must be 10 digits, no spaces allowed.',
+      },
+      phoneNumberAlt: {
+        phone: 'Must be 10 digits, no spaces allowed.',
+      },
+      email: {
+        email: 'Please enter a valid email address.',
+      }
     };
 
     // Define an instance of the validator for use with this form,
     // passing in this form's set of validation messages.
-    this.validationHelper = new ValidationHelper(this.validationMessages);
+    this.validationHelper = new ValidationHelper(this.constraints);
   }
 
   // Form UI logic; i.e. show additional form fields when a checkbox is checked
@@ -106,7 +124,9 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Create form controls
     this.initForm();
-    this.onFormChanges();
+
+    // Watch for value changes
+    this.onFormChange();
 
     // Update form values based on the state
     this.currentRegistration$
@@ -128,17 +148,17 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         nickname: '',
         initials: '',
         gender: null,
-        dob: [null, [Validators.required]], // TODO: Add extra DOB validation (must be in the past)
+        dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Add date format (MM/DD/YYYY)
       }),
       registeringFamilyMembers: [null, Validators.required],
       familyMembers: this.fb.array([]),
-      phoneNumber: '',
+      phoneNumber: '', // only BC phones will be validates so keep validators out of here...
       phoneNumberAlt: '',
       email: ['', Validators.email],
       primaryResidenceInBC: [null, Validators.required],
       primaryResidence: this.fb.group({
-        addressSubtype: '',
-        addressLine1: ['', Validators.required], // TODO: Validate nested objects
+        addressSubtype: '', // address fields are validated by sub-components (bc-address, other-address)
+        addressLine1: '',
         postalCode: '',
         community: '',
         city: '',
@@ -146,7 +166,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         country: '',
       }),
       mailingAddressSameAsPrimary: [null, Validators.required],
-      mailingAddressInBC: [null, Validators.required],
+      mailingAddressInBC: null, // this will be validated when 'mailingAddressSameAsPrimary == false'
       mailingAddress: this.fb.group({
         addressSubtype: '',
         addressLine1: '',
@@ -159,10 +179,38 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Watch for value changes
-  onFormChanges(): void {
-    // validate as we go
+  onFormChange(): void {
+    // validate the whole form as we capture data
     this.form.valueChanges.subscribe(() => this.validateForm());
+
+    // validate phone numbers, for BC residents ONLY!
+    // NOTE - international numbers are not validated due to variance in formats, etc.
+    this.f.primaryResidenceInBC.valueChanges
+      .pipe(skipWhile(() => this.f.primaryResidenceInBC.pristine))
+      .subscribe((checked: boolean) => {
+        if (checked) {
+          this.f.phoneNumber.setValidators([CustomValidators.phone]);
+          this.f.phoneNumberAlt.setValidators([CustomValidators.phone]);
+        } else {
+          this.f.phoneNumber.setValidators(null);
+          this.f.phoneNumberAlt.setValidators(null);
+        }
+        this.f.phoneNumber.updateValueAndValidity();
+        this.f.phoneNumberAlt.updateValueAndValidity();
+      });
+
+    // validate mailing address selection (BC address vs out-of-BC)
+    // NOTE - this depends on mailingAddressSameAsPrimary being `false`
+    this.f.mailingAddressSameAsPrimary.valueChanges
+      .pipe(skipWhile(() => this.f.mailingAddressSameAsPrimary.pristine))
+      .subscribe((checked: boolean) => {
+        if (checked) {
+          this.f.mailingAddressInBC.setValidators(null);
+        } else {
+          this.f.mailingAddressInBC.setValidators([Validators.required]);
+        }
+        this.f.mailingAddressInBC.updateValueAndValidity();
+      });
 
     // show/hide family members section based on the "family info" radio button
     this.f.registeringFamilyMembers.valueChanges
@@ -187,7 +235,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   }
 
   validateForm(): void {
-    this.invalidFeedback = this.validationHelper.processMessages(this.form);
+    this.validationErrors = this.validationHelper.processMessages(this.form);
   }
 
   displayRegistration(registration: Registration | null): void {
@@ -254,21 +302,21 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     }
   }
 
-  newFamilyMember(): FormGroup {
+  // family member formgroup
+  createFamilyMember(): FormGroup {
     return this.fb.group({
       sameLastNameAsEvacuee: true,
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       initials: '',
-      gender: [null, Validators.required],
-      dob: [null, [Validators.required]], // TODO: Add extra DOB validation (must be in the past)
+      gender: null,
+      dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Add date format (MM/DD/YYYY)
       relationshipToEvacuee: [null, Validators.required],
     });
   }
 
   addFamilyMember(): void {
-    const newOne = this.newFamilyMember();
-    this.familyMembers.push(newOne);
+    this.familyMembers.push(this.createFamilyMember());
   }
 
   removeFamilyMember(): void {
@@ -277,10 +325,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   }
 
   clearFamilyMembers() {
-    this.clear(this.familyMembers);
+    clearFormArray(this.familyMembers);
   }
 
-  next(): void {
+  onSubmit() {
     this.submitted = true;
     this.validateForm();
 
@@ -292,11 +340,15 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
     // success!
     this.errorSummary = null;
-    this.onSave();
+    this.next();
+  }
+
+  next(): void {
+    this.saveState();
     this.router.navigate(['../step-2'], { relativeTo: this.route });
   }
 
-  onSave(): void {
+  saveState(): void {
     const form = this.form.value;
 
     // ensure proper sub-types are assigned
@@ -322,12 +374,5 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     };
 
     this.store.dispatch(new UpdateRegistration({ registration }));
-  }
-
-  // TODO: Refactor into utils method
-  private clear(formArray: FormArray): void {
-    while (formArray && formArray.length !== 0) {
-      formArray.removeAt(0);
-    }
   }
 }

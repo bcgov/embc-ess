@@ -9,14 +9,15 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-address-selector',
   template: `
-    <app-bc-address *ngIf="withinBC" [parent]="parent" [communities]="communities$ | async"></app-bc-address>
-    <app-other-address *ngIf="!withinBC" [parent]="parent" [countries]="countries$ | async"></app-other-address>
+    <app-bc-address *ngIf="withinBC" [parent]="parent" [touched]="touched" [communities]="communities$ | async"></app-bc-address>
+    <app-other-address *ngIf="!withinBC" [parent]="parent" [touched]="touched" [countries]="countries$ | async"></app-other-address>
   `,
   styles: []
 })
 export class AddressSelectorComponent implements OnInit, OnChanges {
   @Input() parent: FormGroup;
   @Input() withinBC = true;
+  @Input() touched = false;
 
   communities$ = this.store.select(state => state.lookups.communities.communities);
   countries$ = this.store.select(state => state.lookups.countries.countries);
@@ -31,16 +32,16 @@ export class AddressSelectorComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.withinBC != null) {
       const withinBC = changes.withinBC.currentValue;
-      this.canada$.subscribe(canada => this.toggleAddressForm(this.parent, withinBC, canada));
+      this.canada$.subscribe(canada => this.toggleAddressForm(withinBC, canada));
     }
   }
 
-  private toggleAddressForm(form: FormGroup, withinBC: boolean, homeCountry: Country) {
+  private toggleAddressForm(withinBC: boolean, homeCountry: Country): void {
     const values = withinBC
       ? { province: 'British Columbia', country: homeCountry }
       : { province: null, country: null };
-    form.reset();
-    form.enable();
-    form.patchValue(values);
+    this.parent.reset();
+    this.parent.enable();
+    this.parent.patchValue(values);
   }
 }
