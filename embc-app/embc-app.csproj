@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -26,6 +26,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.3" />
 
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.2" />
+
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="Microsoft.NETCore.TestHost" Version="2.0.8" />
     <PackageReference Include="NWebsec.AspNetCore.Middleware" Version="2.0.0" />
@@ -46,11 +48,11 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
-    <Compile Remove="Migrations\**" />
+    
 
     <Compile Remove="Test\**" />
     <Content Remove="$(SpaRoot)**" />
-    <Content Remove="Migrations\**" />
+    
 
     <Content Remove="Test\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
@@ -90,6 +92,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\app\models\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -134,7 +134,7 @@ namespace Gov.Jag.Embc.Public
             }
             else // default to a local connection.
             {
-                result += "Surveys";
+                result += "ESS";
             }
 
             return result;
