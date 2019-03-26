@@ -56,7 +56,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 result = new Models.Db.Registration()
                 {
-                    EssFileNumber = source.EssFileNumber,
                     RestrictedAccess = source.RestrictedAccess,
                     RegisteringFamilyMembers = source.RegisteringFamilyMembers,
                     DietaryNeeds = source.DietaryNeeds,

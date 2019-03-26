@@ -14,7 +14,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var created = await db.Registrations.AddAsync(registration.ToModel());
             await db.SaveChangesAsync();
 
-            created.Entity.EssFileNumber = Math.Abs(created.Entity.Id.GetHashCode()); //TODO: replace with DB based sequence
+            //created.Entity.EssFileNumber = Math.Abs(created.Entity.Id.GetHashCode()); //TODO: replace with DB based sequence
             await db.SaveChangesAsync();
 
             return await GetRegistrationAsync(created.Entity.Id.ToString());
@@ -37,7 +37,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     // and the search criteria in a method, consider switching the search to raw sql for better control of the query
                     r.HeadOfHousehold.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
                     r.HeadOfHousehold.FamilyMembers.Any(fm => fm.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
-                    (r.EssFileNumber.HasValue && r.EssFileNumber.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
+                    r.EssFileNumber.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
                     (r.IncidentTask != null && r.IncidentTask.TaskNumber.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
                     (r.HeadOfHousehold.PrimaryResidence is Models.Db.BcAddress) &&
                     ((Models.Db.BcAddress)r.HeadOfHousehold.PrimaryResidence).Community.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase))

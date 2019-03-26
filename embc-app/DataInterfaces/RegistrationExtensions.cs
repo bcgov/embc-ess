@@ -7,7 +7,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             // important
             self.RestrictedAccess = values.RestrictedAccess;
             self.DeclarationAndConsent = values.DeclarationAndConsent;
-            self.EssFileNumber = values.EssFileNumber;
             // registration record
             self.DietaryNeeds = values.DietaryNeeds;
             self.DietaryNeedsDetails = values.DietaryNeedsDetails;
