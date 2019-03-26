@@ -22,7 +22,7 @@ import { VolunteerEditorConfirmationComponent } from './volunteer-editor/volunte
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
-import { EmbcAdminDashboardComponent } from './embc-admin-dashboard/embc-admin-dashboard.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 const routes: Routes = [
   {
@@ -79,7 +79,7 @@ const routes: Routes = [
   },
   {
     path: 'admin-dashboard',
-    component: EmbcAdminDashboardComponent
+    component: AdminDashboardComponent
   },
   {
     path: 'evacuee-summary/:id',

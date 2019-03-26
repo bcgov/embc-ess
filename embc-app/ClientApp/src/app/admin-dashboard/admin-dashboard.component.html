@@ -1,26 +1,26 @@
 <div class="row">
   <div class="col col-lg-8">
     <div class="mb-4">
-      <h1>ESS Team Dashboard</h1>
+      <h1>EMBC Admin Dashboard</h1>
       <h3>Welcome to your Dashboard!</h3>
-      <p>As an Emergency Support Services user you'll be able to register new evacuees, complete an existing evacuee
-        self- registration, or if needed, search and edit evacuee information.</p>
-      <h3 class="blue-header">LIST OF EVACUEES</h3>
+      <p>Here you'll be able to add task numbers, organizations and users, as well as register and maintain evacuees.
+      </p>
+      <h3 class="blue-header">ALL EVACUEES</h3>
 
-      <app-search-bar #searchBar (valueChange)="doSearch($event)"
+      <!-- <app-search-bar #searchBar (valueChange)="doSearch($event)"
         placeholder="Search by task number / last name / registration number / community ...">
-      </app-search-bar>
+      </app-search-bar> -->
 
       <!-- TODO: <a class="small" href="">advanced search</a> -->
       <!-- TODO: show icons for HOH, RESTRICTED FILE -->
     </div>
     <div>
       <!-- The start of the table stuff. -->
-      <p>1 - 10 of 2000 <span class="font-weight-bold">ACTIVE</span> evacuees
+      <!-- <p>1 - 10 of 2000 <span class="font-weight-bold">ACTIVE</span> evacuees
         <small class="ml-3">(<a href="">show deactivated</a>)</small>
       </p>
       <app-evacuee-search-results #searchResultsView [searchResults]="searchResults$ | async">
-      </app-evacuee-search-results>
+      </app-evacuee-search-results> -->
     </div>
   </div>
 
@@ -29,6 +29,12 @@
     <app-side-box-info title="ADD AN EVACUEE"
       content="Before starting a new registration, use the search tool on your dashboard to confirm that the evacuee hasn’t already registered."
       button="Add Evacuee(s)" route="register-evacuee"></app-side-box-info>
+    <app-side-box-info title="
+    ADD ORGANIZATION(S)"
+      content="In order to add an organization, you will need the Business BCeID User ID of the admin user for the organization.&#13;An organization refers to a Regional District, Local Authority, First Nations Community, or NGO that your Emergency Support Services (ESS) Team is responsible to."
+      button="Add Organization(s)" route="edit-organization"></app-side-box-info>
+
+
     <!--
         TODO: Move this to the page where we add the volunteers
         <app-side-box-info title="ADD A VOLUNTEER"

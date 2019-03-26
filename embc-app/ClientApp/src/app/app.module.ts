@@ -23,7 +23,7 @@ import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volu
 import { VolunteerNavbarComponent } from './volunteer-navbar/volunteer-navbar.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
-import { EmbcAdminDashboardComponent } from './embc-admin-dashboard/embc-admin-dashboard.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,7 @@ import { EmbcAdminDashboardComponent } from './embc-admin-dashboard/embc-admin-d
     VolunteerNavbarComponent,
     VolunteerUsefulInformationComponent,
     EvacueeSummaryComponent,
-    EmbcAdminDashboardComponent,
+    AdminDashboardComponent,
   ],
   imports: [
     // angular
