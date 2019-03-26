@@ -1,23 +1,21 @@
-﻿using Gov.Jag.Embc.Public.Sqlite.Models;
+using Gov.Jag.Embc.Public.Models.Db;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static class CountryExtensions
     {
-        public static void AddCountry(this SqliteContext context, Country Country)
+        public static void AddCountry(this EmbcDbContext context, Country Country)
         {
-            // create a new Country.           
+            // create a new Country.
             context.Countries.Add(Country);
             context.SaveChanges();
         }
 
-        public static void UpdateCountry(this SqliteContext context, Country Country)
+        public static void UpdateCountry(this EmbcDbContext context, Country Country)
         {
             Country _Country = context.Countries.FirstOrDefault<Country>(x => x.Id == Country.Id);
             _Country.Name = Country.Name;
@@ -25,7 +23,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             context.SaveChanges();
         }
 
-        public static List<Country> GetCountries(this SqliteContext context)
+        public static List<Country> GetCountries(this EmbcDbContext context)
         {
             List<Country> Countries =
                 context.Countries.ToList<Country>();
@@ -37,20 +35,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         /// <param name="name">The name of the Country</param>
         /// <returns>The Country, or null if it does not exist.</returns>
-        public static Country GetCountryByName(this SqliteContext context, string name)
+        public static Country GetCountryByName(this EmbcDbContext context, string name)
         {
             Country Country = context.Countries.FirstOrDefault(x => x.Name == name);
             return Country;
         }
-
-
 
         /// <summary>
         /// Create Countries from a (json) file
         /// </summary>
         /// <param name="context"></param>
         /// <param name="CountryJsonPath"></param>
-        public static void AddInitialCountriesFromFile(this SqliteContext context, string CountryJsonPath)
+        public static void AddInitialCountriesFromFile(this EmbcDbContext context, string CountryJsonPath)
         {
             if (!string.IsNullOrEmpty(CountryJsonPath) && File.Exists(CountryJsonPath))
             {
@@ -59,7 +55,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        private static void AddInitialCountries(this SqliteContext context, string CountryJson)
+        private static void AddInitialCountries(this EmbcDbContext context, string CountryJson)
         {
             List<Country> Countries = JsonConvert.DeserializeObject<List<Country>>(CountryJson);
 
@@ -69,7 +65,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        private static void AddInitialCountries(this SqliteContext context, List<Country> Countries)
+        private static void AddInitialCountries(this EmbcDbContext context, List<Country> Countries)
         {
             Countries.ForEach(context.AddInitialCountry);
         }
@@ -77,14 +73,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <summary>
         /// Adds a Country to the system, only if it does not exist.
         /// </summary>
-        private static void AddInitialCountry(this SqliteContext context, Country initialCountry)
+        private static void AddInitialCountry(this EmbcDbContext context, Country initialCountry)
         {
             Country Country = context.GetCountryByName(initialCountry.Name);
             if (Country != null)
             {
                 return;
             }
-            
+
             Country = new Country
             ()
             {
@@ -96,13 +92,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             context.AddCountry(Country);
         }
 
-
         /// <summary>
         /// Update Country
         /// </summary>
         /// <param name="context"></param>
         /// <param name="CountryInfo"></param>
-        public static void UpdateSeedCountryInfo(this SqliteContext context, Country CountryInfo)
+        public static void UpdateSeedCountryInfo(this EmbcDbContext context, Country CountryInfo)
         {
             Country Country = context.GetCountryByName(CountryInfo.Name);
             if (Country == null)
@@ -112,7 +107,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             else
             {
                 Country.Name = CountryInfo.Name;
-                Country.Active = CountryInfo.Active;                
+                Country.Active = CountryInfo.Active;
                 context.UpdateCountry(Country);
             }
         }

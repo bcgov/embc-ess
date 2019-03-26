@@ -1,16 +1,14 @@
-using Gov.Jag.Embc.Public.Sqlite.Models;
+using Gov.Jag.Embc.Public.Models.Db;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static class IncidentTaskExtensions
     {
-        public static void PatchValues(this Sqlite.Models.IncidentTask self, ViewModels.IncidentTask values)
+        public static void PatchValues(this Models.Db.IncidentTask self, ViewModels.IncidentTask values)
         {
             self.TaskNumber = values.TaskNumber;
             self.Details = values.Details;
@@ -21,7 +19,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             self.Community = values.Community != null ? values.Community.ToModel() : null;
         }
 
-        public static void PatchValues(this Sqlite.Models.IncidentTask self, Sqlite.Models.IncidentTask values)
+        public static void PatchValues(this Models.Db.IncidentTask self, Models.Db.IncidentTask values)
         {
             self.TaskNumber = values.TaskNumber;
             self.Details = values.Details;
@@ -32,14 +30,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             self.Community = values.Community;
         }
 
-        public static void AddIncidentTask(this SqliteContext context, IncidentTask IncidentTask)
+        public static void AddIncidentTask(this EmbcDbContext context, IncidentTask IncidentTask)
         {
             // create a new IncidentTask.
             context.IncidentTasks.Add(IncidentTask);
             context.SaveChanges();
         }
 
-        public static void UpdateIncidentTask(this SqliteContext context, IncidentTask IncidentTask)
+        public static void UpdateIncidentTask(this EmbcDbContext context, IncidentTask IncidentTask)
         {
             IncidentTask _IncidentTask = context.IncidentTasks.FirstOrDefault<IncidentTask>(x => x.Id == IncidentTask.Id);
             _IncidentTask.PatchValues(IncidentTask);
@@ -47,7 +45,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             context.SaveChanges();
         }
 
-        public static List<IncidentTask> GetIncidentTasks(this SqliteContext context)
+        public static List<IncidentTask> GetIncidentTasks(this EmbcDbContext context)
         {
             List<IncidentTask> IncidentTasks =
                 context.IncidentTasks.ToList<IncidentTask>();
@@ -59,7 +57,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         /// <param name="taskNumber">The task number of the IncidentTask</param>
         /// <returns>The IncidentTask, or null if it does not exist.</returns>
-        public static IncidentTask GetIncidentTaskByTaskNumber(this SqliteContext context, string taskNumber)
+        public static IncidentTask GetIncidentTaskByTaskNumber(this EmbcDbContext context, string taskNumber)
         {
             IncidentTask IncidentTask = context.IncidentTasks.FirstOrDefault(x => x.TaskNumber == taskNumber);
             return IncidentTask;
@@ -70,7 +68,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         /// <param name="context"></param>
         /// <param name="IncidentTaskJsonPath"></param>
-        public static void AddInitialIncidentTasksFromFile(this SqliteContext context, string IncidentTaskJsonPath)
+        public static void AddInitialIncidentTasksFromFile(this EmbcDbContext context, string IncidentTaskJsonPath)
         {
             if (!string.IsNullOrEmpty(IncidentTaskJsonPath) && File.Exists(IncidentTaskJsonPath))
             {
@@ -79,7 +77,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        private static void AddInitialIncidentTasks(this SqliteContext context, string IncidentTaskJson)
+        private static void AddInitialIncidentTasks(this EmbcDbContext context, string IncidentTaskJson)
         {
             List<IncidentTask> IncidentTasks = JsonConvert.DeserializeObject<List<IncidentTask>>(IncidentTaskJson);
 
@@ -89,7 +87,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        private static void AddInitialIncidentTasks(this SqliteContext context, List<IncidentTask> IncidentTasks)
+        private static void AddInitialIncidentTasks(this EmbcDbContext context, List<IncidentTask> IncidentTasks)
         {
             IncidentTasks.ForEach(context.AddInitialIncidentTask);
         }
@@ -97,7 +95,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <summary>
         /// Adds a IncidentTask to the system, only if it does not exist.
         /// </summary>
-        private static void AddInitialIncidentTask(this SqliteContext context, IncidentTask initialIncidentTask)
+        private static void AddInitialIncidentTask(this EmbcDbContext context, IncidentTask initialIncidentTask)
         {
             IncidentTask IncidentTask = context.GetIncidentTaskByTaskNumber(initialIncidentTask.Details);
             if (IncidentTask != null)
@@ -145,7 +143,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         /// <param name="context"></param>
         /// <param name="IncidentTaskInfo"></param>
-        public static void UpdateSeedIncidentTaskInfo(this SqliteContext context, IncidentTask IncidentTaskInfo)
+        public static void UpdateSeedIncidentTaskInfo(this EmbcDbContext context, IncidentTask IncidentTaskInfo)
         {
             IncidentTask IncidentTask = context.GetIncidentTaskByTaskNumber(IncidentTaskInfo.TaskNumber);
             if (IncidentTask == null)

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Gov.Jag.Embc.Public.Sqlite.Models
+namespace Gov.Jag.Embc.Public.Models.Db
 {
     /// <summary>
     /// Database Model

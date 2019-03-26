@@ -94,6 +94,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
             return Json(result);
         }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] ViewModels.Registration item)
@@ -104,7 +105,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
             try
             {
-                if (item != null && item.Id != null) item.Id = null;
+                item.Id = null;
+                item.Active = true;
                 var result = await dataInterface.CreateRegistrationAsync(item);
                 if (!string.IsNullOrWhiteSpace(result.HeadOfHousehold.Email))
                 {
@@ -160,6 +162,24 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 logger.LogError(e.ToString());
                 return BadRequest(e.ToString());
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return BadRequest();
+
+            try
+            {
+                var result = await dataInterface.DeactivateRegistration(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e.ToString());
+                return BadRequest(e);
             }
         }
     }

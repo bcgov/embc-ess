@@ -7,21 +7,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public interface IDataInterface
     {
-        Person GetPersonByBceidGuid(string bceidGuid);
-
-        Volunteer GetVolunteerByName(string firstName, string lastName);
-
-        Person CreatePerson(Person person);
-
         // Registrations
         Task<PaginatedList<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters);
 
         Task<Registration> GetRegistrationAsync(string id);
+
         Task<RegistrationSummary> GetRegistrationSummaryAsync(string id);
 
         Task<Registration> CreateRegistrationAsync(Registration registration);
 
         Task UpdateRegistrationAsync(Registration registration);
+
+        Task<bool> DeactivateRegistration(string id);
 
         // Incident Tasks
         Task<List<IncidentTask>> GetIncidentTasks();
@@ -47,10 +44,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         //Organizations
         Task<List<Organization>> GetOrganizationsAsync();
 
-        Task<Organization> GetOrganizationAsync(string id);
-
-        Task<Organization> GetOrganizationByBceidGuidAsync(string bceidGuid);
-
         Organization GetOrganizationByLegalName(string name);
 
         Organization GetOrganizationByExternalId(string externalId);
@@ -63,9 +56,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         #endregion Organization
 
-        Volunteer GetVolunteerByExternalId(string externalId);
 
-        Volunteer GetVolunteerById(string Id);
+
+        #region People
 
         Task<IEnumerable<Person>> GetPeopleAsync(string type);
 
@@ -76,5 +69,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<Person> CreatePersonAsync(Person person);
 
         Task<bool> DeactivatePersonAsync(string type, string id);
+
+        #endregion People
+
+        #region Volunteer
+
+        Volunteer GetVolunteerByName(string firstName, string lastName);
+
+        Volunteer GetVolunteerByExternalId(string externalId);
+
+        Volunteer GetVolunteerByBceidUserId(string bceidUserId);
+
+        Volunteer GetVolunteerById(string Id);
+
+        #endregion Volunteer
     }
 }

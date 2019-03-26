@@ -11,6 +11,7 @@ const initialState: State = {
   registrations: [],
   currentRegistration: {
     id: null,
+    active: null,
     essFileNumber: null,
     restrictedAccess: false,
     declarationAndConsent: null,

@@ -36,7 +36,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             try
             {
-                return Json(await dataInterface.GetPeopleAsync(Sqlite.Models.Person.VOLUNTEER));
+                return Json(await dataInterface.GetPeopleAsync(Models.Db.Person.VOLUNTEER));
             }
             catch (Exception e)
             {
@@ -50,7 +50,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             try
             {
-                return Json(await dataInterface.GetPersonByIdAsync(Sqlite.Models.Person.VOLUNTEER, id));
+                return Json(await dataInterface.GetPersonByIdAsync(Models.Db.Person.VOLUNTEER, id));
             }
             catch (Exception e)
             {
@@ -62,7 +62,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Volunteer item)
         {
-            if (!item.PersonType.Equals(Sqlite.Models.Person.VOLUNTEER, StringComparison.OrdinalIgnoreCase))
+            if (!item.PersonType.Equals(Models.Db.Person.VOLUNTEER, StringComparison.OrdinalIgnoreCase))
             {
                 ModelState.AddModelError("PersonType", "Must be a volunteer");
             }
@@ -90,7 +90,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest();
             }
-            if (!item.PersonType.Equals(Sqlite.Models.Person.VOLUNTEER, StringComparison.OrdinalIgnoreCase))
+            if (!item.PersonType.Equals(Models.Db.Person.VOLUNTEER, StringComparison.OrdinalIgnoreCase))
             {
                 ModelState.AddModelError("PersonType", "Must be a volunteer");
             }
@@ -117,7 +117,7 @@ namespace Gov.Jag.Embc.Public.Controllers
 
             try
             {
-                var result = await dataInterface.DeactivatePersonAsync(Sqlite.Models.Person.VOLUNTEER, id);
+                var result = await dataInterface.DeactivatePersonAsync(Models.Db.Person.VOLUNTEER, id);
                 return Ok();
             }
             catch (Exception e)

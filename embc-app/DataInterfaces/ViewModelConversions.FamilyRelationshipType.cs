@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static partial class ViewModelConversions
     {
-        public static ViewModels.FamilyRelationshipType ToViewModel(this Sqlite.Models.FamilyRelationshipType source)
+        public static ViewModels.FamilyRelationshipType ToViewModel(this Models.Db.FamilyRelationshipType source)
         {
             ViewModels.FamilyRelationshipType result = null;
             if (source != null)
@@ -20,12 +17,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public static Sqlite.Models.FamilyRelationshipType ToModel(this ViewModels.FamilyRelationshipType source)
+        public static Models.Db.FamilyRelationshipType ToModel(this ViewModels.FamilyRelationshipType source)
         {
-            Sqlite.Models.FamilyRelationshipType result = null;
+            Models.Db.FamilyRelationshipType result = null;
             if (source != null)
             {
-                result = new Sqlite.Models.FamilyRelationshipType()
+                result = new Models.Db.FamilyRelationshipType()
                 {
                     Code = source.Code,
                     Description = source.Description,

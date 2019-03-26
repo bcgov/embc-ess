@@ -1,4 +1,4 @@
-namespace Gov.Jag.Embc.Public.Sqlite.Models
+namespace Gov.Jag.Embc.Public.Models.Db
 {
     /// <summary>
     /// Person Database Model

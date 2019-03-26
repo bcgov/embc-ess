@@ -1,15 +1,15 @@
+using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.Models.Db;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using Gov.Jag.Embc.Public.DataInterfaces;
-using Gov.Jag.Embc.Public.Sqlite.Models;
 
 namespace Gov.Embc.Public.Seeders
 {
-    public class CountrySeeder : Seeder<SqliteContext>
+    public class CountrySeeder : Seeder<EmbcDbContext>
     {
         private readonly string[] _profileTriggers = { AllProfiles };
 
@@ -19,14 +19,14 @@ namespace Gov.Embc.Public.Seeders
 
         protected override IEnumerable<string> TriggerProfiles => _profileTriggers;
 
-        protected override void Invoke(SqliteContext context)
+        protected override void Invoke(EmbcDbContext context)
         {
             UpdateCountries(context);
         }
 
         public override int InvokeOrder => 6;
 
-        private void UpdateCountries(SqliteContext context)
+        private void UpdateCountries(EmbcDbContext context)
         {
             List<Country> seedCountries = GetSeedCountries();
 
@@ -38,7 +38,7 @@ namespace Gov.Embc.Public.Seeders
             AddInitialCountries(context);
         }
 
-        private void AddInitialCountries(SqliteContext context)
+        private void AddInitialCountries(EmbcDbContext context)
         {
             string CountryInitializationFilename = Configuration["CountryInitializationFilename"];
             if (string.IsNullOrEmpty(CountryInitializationFilename))

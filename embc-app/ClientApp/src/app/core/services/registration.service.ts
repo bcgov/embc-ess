@@ -11,6 +11,7 @@ import { SearchQueryParameters } from 'src/app/shared/components/search';
 const TEST: Registration[] = [
   {
     id: '3dd31180-8d58-4f6c-95c2-102186b936e3',
+    active: true,
     restrictedAccess: false,
     declarationAndConsent: true,
     essFileNumber: 1234,

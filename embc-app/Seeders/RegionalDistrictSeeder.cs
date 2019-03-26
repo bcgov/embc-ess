@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Hosting;
+using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.Models.Db;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using Gov.Jag.Embc.Public.DataInterfaces;
-using Gov.Jag.Embc.Public.Sqlite.Models;
 
 namespace Gov.Embc.Public.Seeders
 {
-    public class RegionalDistrictSeeder : Seeder<SqliteContext>
+    public class RegionalDistrictSeeder : Seeder<EmbcDbContext>
     {
         private readonly string[] _profileTriggers = { AllProfiles };
 
@@ -19,14 +19,14 @@ namespace Gov.Embc.Public.Seeders
 
         protected override IEnumerable<string> TriggerProfiles => _profileTriggers;
 
-        protected override void Invoke(SqliteContext context)
+        protected override void Invoke(EmbcDbContext context)
         {
             UpdateRegionalDistricts(context);
         }
 
         public override int InvokeOrder => 1;
 
-        private void UpdateRegionalDistricts(SqliteContext context)
+        private void UpdateRegionalDistricts(EmbcDbContext context)
         {
             List<RegionalDistrict> seedRegionalDistricts = GetSeedRegionalDistricts();
 
@@ -38,7 +38,7 @@ namespace Gov.Embc.Public.Seeders
             AddInitialRegionalDistricts(context);
         }
 
-        private void AddInitialRegionalDistricts(SqliteContext context)
+        private void AddInitialRegionalDistricts(EmbcDbContext context)
         {
             string RegionalDistrictInitializationFilename = Configuration["RegionalDistrictInitializationFilename"];
             if (string.IsNullOrEmpty(RegionalDistrictInitializationFilename))

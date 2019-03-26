@@ -1,15 +1,15 @@
+using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.Models.Db;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using Gov.Jag.Embc.Public.DataInterfaces;
-using Gov.Jag.Embc.Public.Sqlite.Models;
 
 namespace Gov.Embc.Public.Seeders
 {
-    public class CommunitySeeder : Seeder<SqliteContext>
+    public class CommunitySeeder : Seeder<EmbcDbContext>
     {
         private readonly string[] _profileTriggers = { AllProfiles };
 
@@ -19,14 +19,14 @@ namespace Gov.Embc.Public.Seeders
 
         protected override IEnumerable<string> TriggerProfiles => _profileTriggers;
 
-        protected override void Invoke(SqliteContext context)
+        protected override void Invoke(EmbcDbContext context)
         {
             UpdateCommunities(context);
         }
 
         public override int InvokeOrder => 2;
 
-        private void UpdateCommunities(SqliteContext context)
+        private void UpdateCommunities(EmbcDbContext context)
         {
             List<Community> seedCommunities = GetSeedCommunities();
 
@@ -38,7 +38,7 @@ namespace Gov.Embc.Public.Seeders
             AddInitialCommunities(context);
         }
 
-        private void AddInitialCommunities(SqliteContext context)
+        private void AddInitialCommunities(EmbcDbContext context)
         {
             string CommunityInitializationFilename = Configuration["CommunityInitializationFilename"];
             if (string.IsNullOrEmpty(CommunityInitializationFilename))

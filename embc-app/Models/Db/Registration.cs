@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Gov.Jag.Embc.Public.Sqlite.Models
+namespace Gov.Jag.Embc.Public.Models.Db
 {
     /// <summary>
     /// Evacuee Registration Database Model
@@ -16,6 +16,8 @@ namespace Gov.Jag.Embc.Public.Sqlite.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
+
+        public bool Active { get; set; }
 
         // important
         public bool? RestrictedAccess { get; set; }

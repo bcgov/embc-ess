@@ -1,23 +1,21 @@
-using Gov.Jag.Embc.Public.Sqlite.Models;
+using Gov.Jag.Embc.Public.Models.Db;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static class CommunityExtensions
     {
-        public static void AddCommunity(this SqliteContext context, Community Community)
+        public static void AddCommunity(this EmbcDbContext context, Community Community)
         {
-            // create a new Community.           
+            // create a new Community.
             context.Communities.Add(Community);
             context.SaveChanges();
         }
 
-        public static void UpdateCommunity(this SqliteContext context, Community Community)
+        public static void UpdateCommunity(this EmbcDbContext context, Community Community)
         {
             Community _Community = context.Communities.FirstOrDefault<Community>(x => x.Id == Community.Id);
             _Community.Name = Community.Name;
@@ -25,7 +23,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             context.SaveChanges();
         }
 
-        public static List<Community> GetCommunities(this SqliteContext context)
+        public static List<Community> GetCommunities(this EmbcDbContext context)
         {
             List<Community> Communities =
                 context.Communities.ToList<Community>();
@@ -37,20 +35,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         /// <param name="name">The name of the Community</param>
         /// <returns>The Community, or null if it does not exist.</returns>
-        public static Community GetCommunityByName(this SqliteContext context, string name)
+        public static Community GetCommunityByName(this EmbcDbContext context, string name)
         {
             Community Community = context.Communities.FirstOrDefault(x => x.Name == name);
             return Community;
         }
-
-
 
         /// <summary>
         /// Create Communities from a (json) file
         /// </summary>
         /// <param name="context"></param>
         /// <param name="CommunityJsonPath"></param>
-        public static void AddInitialCommunitiesFromFile(this SqliteContext context, string CommunityJsonPath)
+        public static void AddInitialCommunitiesFromFile(this EmbcDbContext context, string CommunityJsonPath)
         {
             if (!string.IsNullOrEmpty(CommunityJsonPath) && File.Exists(CommunityJsonPath))
             {
@@ -59,7 +55,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        private static void AddInitialCommunities(this SqliteContext context, string CommunityJson)
+        private static void AddInitialCommunities(this EmbcDbContext context, string CommunityJson)
         {
             List<Community> Communities = JsonConvert.DeserializeObject<List<Community>>(CommunityJson);
 
@@ -69,7 +65,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        private static void AddInitialCommunities(this SqliteContext context, List<Community> Communities)
+        private static void AddInitialCommunities(this EmbcDbContext context, List<Community> Communities)
         {
             Communities.ForEach(context.AddInitialCommunity);
         }
@@ -77,7 +73,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <summary>
         /// Adds a Community to the system, only if it does not exist.
         /// </summary>
-        private static void AddInitialCommunity(this SqliteContext context, Community initialCommunity)
+        private static void AddInitialCommunity(this EmbcDbContext context, Community initialCommunity)
         {
             Community Community = context.GetCommunityByName(initialCommunity.Name);
             if (Community != null)
@@ -94,7 +90,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 regionalDistrict = context.GetRegionalDistrictByName(initialCommunity.RegionalDistrict.Name);
             }
 
-
             Community = new Community
             ()
             {
@@ -102,18 +97,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 Name = initialCommunity.Name,
                 Active = true,
                 RegionalDistrict = regionalDistrict
-            };            
+            };
 
             context.AddCommunity(Community);
         }
-
 
         /// <summary>
         /// Update Community
         /// </summary>
         /// <param name="context"></param>
         /// <param name="CommunityInfo"></param>
-        public static void UpdateSeedCommunityInfo(this SqliteContext context, Community CommunityInfo)
+        public static void UpdateSeedCommunityInfo(this EmbcDbContext context, Community CommunityInfo)
         {
             Community Community = context.GetCommunityByName(CommunityInfo.Name);
             if (Community == null)

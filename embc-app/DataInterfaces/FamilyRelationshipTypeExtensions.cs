@@ -1,10 +1,8 @@
-﻿using Gov.Jag.Embc.Public.Sqlite.Models;
+using Gov.Jag.Embc.Public.Models.Db;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -17,14 +15,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             self.Active = other.Active;
         }
 
-        public static void AddFamilyRelationshipType(this SqliteContext context, FamilyRelationshipType entity)
+        public static void AddFamilyRelationshipType(this EmbcDbContext context, FamilyRelationshipType entity)
         {
             // create a new FamilyRelationshipType.
             context.FamilyRelationshipTypes.Add(entity);
             context.SaveChanges();
         }
 
-        public static void UpdateFamilyRelationshipType(this SqliteContext context, FamilyRelationshipType value)
+        public static void UpdateFamilyRelationshipType(this EmbcDbContext context, FamilyRelationshipType value)
         {
             FamilyRelationshipType entityFound = context.GetFamilyRelationshipTypeByCode(value.Code);
             if (entityFound != null)
@@ -35,7 +33,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        public static List<FamilyRelationshipType> GetFamilyRelationshipTypes(this SqliteContext context)
+        public static List<FamilyRelationshipType> GetFamilyRelationshipTypes(this EmbcDbContext context)
         {
             List<FamilyRelationshipType> FamilyRelationshipTypes =
                 context.FamilyRelationshipTypes.ToList<FamilyRelationshipType>();
@@ -47,19 +45,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         /// <param name="code">The name of the FamilyRelationshipType</param>
         /// <returns>The FamilyRelationshipType, or null if it does not exist.</returns>
-        public static FamilyRelationshipType GetFamilyRelationshipTypeByCode(this SqliteContext context, string code)
+        public static FamilyRelationshipType GetFamilyRelationshipTypeByCode(this EmbcDbContext context, string code)
         {
             FamilyRelationshipType entity = context.FamilyRelationshipTypes.FirstOrDefault(x => x.Code == code);
             return entity;
         }
-
 
         /// <summary>
         /// Create FamilyRelationshipTypes from a (json) file
         /// </summary>
         /// <param name="context"></param>
         /// <param name="jsonFilePath"></param>
-        public static void AddInitialFamilyRelationshipTypesFromFile(this SqliteContext context, string jsonFilePath)
+        public static void AddInitialFamilyRelationshipTypesFromFile(this EmbcDbContext context, string jsonFilePath)
         {
             if (!string.IsNullOrEmpty(jsonFilePath) && File.Exists(jsonFilePath))
             {
@@ -68,7 +65,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        private static void AddInitialFamilyRelationshipTypes(this SqliteContext context, string json)
+        private static void AddInitialFamilyRelationshipTypes(this EmbcDbContext context, string json)
         {
             List<FamilyRelationshipType> values = JsonConvert.DeserializeObject<List<FamilyRelationshipType>>(json);
 
@@ -78,7 +75,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        private static void AddInitialFamilyRelationshipTypes(this SqliteContext context, List<FamilyRelationshipType> values)
+        private static void AddInitialFamilyRelationshipTypes(this EmbcDbContext context, List<FamilyRelationshipType> values)
         {
             values.ForEach(context.AddInitialFamilyRelationshipType);
         }
@@ -86,7 +83,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <summary>
         /// Adds a FamilyRelationshipType to the system, only if it does not exist.
         /// </summary>
-        private static void AddInitialFamilyRelationshipType(this SqliteContext context, FamilyRelationshipType value)
+        private static void AddInitialFamilyRelationshipType(this EmbcDbContext context, FamilyRelationshipType value)
         {
             FamilyRelationshipType entity = context.GetFamilyRelationshipTypeByCode(value.Code);
             if (entity != null)
@@ -99,13 +96,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             context.AddFamilyRelationshipType(entity);
         }
 
-
         /// <summary>
         /// Update FamilyRelationshipType
         /// </summary>
         /// <param name="context"></param>
         /// <param name="value"></param>
-        public static void UpdateSeedFamilyRelationshipTypeInfo(this SqliteContext context, FamilyRelationshipType value)
+        public static void UpdateSeedFamilyRelationshipTypeInfo(this EmbcDbContext context, FamilyRelationshipType value)
         {
             FamilyRelationshipType foundEntity = context.GetFamilyRelationshipTypeByCode(value.Code);
             if (foundEntity == null)

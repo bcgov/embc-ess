@@ -1,11 +1,11 @@
-using Gov.Jag.Embc.Public.Sqlite.Models;
+using Gov.Jag.Embc.Public.Models.Db;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
-    public class SqliteContext : DbContext
+    public class EmbcDbContext : DbContext
     {
-        public SqliteContext(DbContextOptions<SqliteContext> options) : base(options)
+        public EmbcDbContext(DbContextOptions<EmbcDbContext> options) : base(options)
         {
             // override the default timeout as some operations are time intensive
             Database?.SetCommandTimeout(180);

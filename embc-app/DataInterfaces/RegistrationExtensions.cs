@@ -1,16 +1,8 @@
-using Gov.Jag.Embc.Public.Sqlite.Models;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static class RegistrationExtensions
     {
-        public static void PatchValues(this Sqlite.Models.Registration self, ViewModels.Registration values)
+        public static void PatchValues(this Models.Db.Registration self, ViewModels.Registration values)
         {
             // important
             self.RestrictedAccess = values.RestrictedAccess;
@@ -46,14 +38,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             self.RequiresTransportation = values.RequiresTransportation;
             self.RequiresSupport = values.RequiresSupport;
             // related entities
-            self.HeadOfHousehold = values.HeadOfHousehold.ToModel() as Sqlite.Models.HeadOfHousehold;
+            self.HeadOfHousehold = values.HeadOfHousehold.ToModel() as Models.Db.HeadOfHousehold;
 
             // TODO: Add these viewmodels in!
             // self.IncidentTask = values.IncidentTask.ToModel();
             // self.HostCommunity = values.HostCommunity.ToModel();
         }
 
-        public static void PatchValues(this Sqlite.Models.Registration self, Sqlite.Models.Registration values)
+        public static void PatchValues(this Models.Db.Registration self, Models.Db.Registration values)
         {
             // important
             self.RestrictedAccess = values.RestrictedAccess;

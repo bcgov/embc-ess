@@ -1,17 +1,16 @@
+using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.Models.Db;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using Gov.Jag.Embc.Public.DataInterfaces;
-using Gov.Jag.Embc.Public.Sqlite.Models;
-using Newtonsoft.Json;
 using System.Linq;
 
 namespace Gov.Embc.Public.Seeders
 {
-    public class IncidentTaskSeeder : Seeder<SqliteContext>
+    public class IncidentTaskSeeder : Seeder<EmbcDbContext>
     {
         private readonly string[] _profileTriggers = { AllProfiles };
 
@@ -21,14 +20,14 @@ namespace Gov.Embc.Public.Seeders
 
         protected override IEnumerable<string> TriggerProfiles => _profileTriggers;
 
-        protected override void Invoke(SqliteContext context)
+        protected override void Invoke(EmbcDbContext context)
         {
             UpdateIncidentTasks(context);
         }
 
         public override int InvokeOrder => 3;
 
-        private void UpdateIncidentTasks(SqliteContext context)
+        private void UpdateIncidentTasks(EmbcDbContext context)
         {
             List<IncidentTask> seedEntities = GetSeedIncidentTasks();
 
@@ -40,7 +39,7 @@ namespace Gov.Embc.Public.Seeders
             AddInitialIncidentTasks(context);
         }
 
-        private void CreateOrUpdateFromSeedEntity(SqliteContext context, IncidentTask seedData)
+        private void CreateOrUpdateFromSeedEntity(EmbcDbContext context, IncidentTask seedData)
         {
             IncidentTask existing = context.IncidentTasks.FirstOrDefault(x => x.TaskNumber == seedData.TaskNumber);
             if (existing == null)
@@ -60,7 +59,7 @@ namespace Gov.Embc.Public.Seeders
             context.SaveChanges();
         }
 
-        private void AddInitialIncidentTasks(SqliteContext context)
+        private void AddInitialIncidentTasks(EmbcDbContext context)
         {
             string filename = Configuration["IncidentTaskInitializationFilename"];
             if (string.IsNullOrEmpty(filename))

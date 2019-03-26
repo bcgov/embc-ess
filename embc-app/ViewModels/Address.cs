@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 namespace Gov.Jag.Embc.Public.ViewModels
@@ -7,6 +6,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
     {
         // base props
         public string Id { get; set; }
+
         public string AddressSubtype { get; set; }  // one of ['BCAD', 'OTAD'] for BC vs non-BC addresses
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
@@ -18,13 +18,14 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
         // other address props
         public string City { get; set; }
+
         public string Province { get; set; }
         public Country Country { get; set; }
 
         [JsonIgnore]
-        public bool isBcAddress => this.AddressSubtype == Sqlite.Models.Address.BC_ADDRESS;  // omitted from response
+        public bool isBcAddress => this.AddressSubtype == Models.Db.Address.BC_ADDRESS;  // omitted from response
 
         [JsonIgnore]
-        public bool isOtherAddress => this.AddressSubtype == Sqlite.Models.Address.OTHER_ADDRESS;  // omitted from response
+        public bool isOtherAddress => this.AddressSubtype == Models.Db.Address.OTHER_ADDRESS;  // omitted from response
     }
 }

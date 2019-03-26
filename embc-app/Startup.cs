@@ -147,8 +147,12 @@ namespace Gov.Jag.Embc.Public
             {
                 connectionString = Configuration["CONNECTION_STRING"];
             }
+            services.AddDbContext<EmbcDbContext>(opts => opts
+                .UseLazyLoadingProxies()
+                //.UseLoggerFactory(loggingFactory)
+                .UseSqlite(connectionString));
 
-            services.AddSingleton<IDataInterface>(sp => new SqliteDataInterface(sp.GetService<ILoggerFactory>(), connectionString));
+            services.AddTransient<IDataInterface, DataInterface>();
 
             // Enable the IURLHelper to be able to build links within Controllers
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -206,9 +210,8 @@ namespace Gov.Jag.Embc.Public
                 using (IServiceScope serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {
                     log.LogInformation("Fetching the application's database context ...");
-                    IDataInterface iDataInterface = serviceScope.ServiceProvider.GetService<IDataInterface>();
 
-                    SqliteContext context = ((SqliteDataInterface)iDataInterface).Db;
+                    var context = serviceScope.ServiceProvider.GetService<EmbcDbContext>();
 
                     log.LogInformation("Resetting database");
                     context.Database.CloseConnection();
@@ -221,8 +224,8 @@ namespace Gov.Jag.Embc.Public
                     // run the database seeders
                     log.LogInformation("Adding/Updating seed data ...");
 
-                    SeedFactory<SqliteContext> seederFactory = new SeedFactory<SqliteContext>(Configuration, env, loggerFactory);
-                    seederFactory.Seed((SqliteContext)context);
+                    SeedFactory<EmbcDbContext> seederFactory = new SeedFactory<EmbcDbContext>(Configuration, env, loggerFactory);
+                    seederFactory.Seed(context);
                     log.LogInformation("Seeding operations are complete.");
                 }
             }
