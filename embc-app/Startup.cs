@@ -66,7 +66,6 @@ namespace Gov.Jag.Embc.Public
              * End of SQL Initialization *
              *****************************/
 
-
             // Add a memory cache
             services.AddMemoryCache();
 
@@ -157,8 +156,6 @@ namespace Gov.Jag.Embc.Public
 
             // add a data interface
 
-           
-
             services.AddTransient<IDataInterface, DataInterface>();
 
             // Enable the IURLHelper to be able to build links within Controllers
@@ -219,13 +216,6 @@ namespace Gov.Jag.Embc.Public
                     log.LogInformation("Fetching the application's database context ...");
 
                     var context = serviceScope.ServiceProvider.GetService<EmbcDbContext>();
-
-                    log.LogInformation("Resetting database");
-                    context.Database.CloseConnection();
-#if !DEBUG
-                    context.Database.EnsureDeleted();
-#endif
-                    context.Database.OpenConnection();                    
 
                     log.LogInformation("Migrating the database ...");
                     context.Database.Migrate();
