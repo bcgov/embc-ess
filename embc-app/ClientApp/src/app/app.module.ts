@@ -24,6 +24,7 @@ import { VolunteerNavbarComponent } from './volunteer-navbar/volunteer-navbar.co
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminAddTaskNumberComponent } from './admin-add-task-number/admin-add-task-number.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     VolunteerUsefulInformationComponent,
     EvacueeSummaryComponent,
     AdminDashboardComponent,
+    AdminAddTaskNumberComponent,
   ],
   imports: [
     // angular
