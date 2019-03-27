@@ -14,7 +14,7 @@
       </div>
       <div class="col mb-4">
         <label>Community</label>
-        <select class="form-control">
+        <select class="form-control" [formControl]="community">
           <option [ngValue]="null">-- Select community</option>
           <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
         </select>
@@ -36,8 +36,10 @@
     </div>
     <!-- TODO Need yellow horizontal rule -->
     <div class="col mb-4">
-      Task:
-      <pre>{{task|json}}</pre>
+      Task:<button (click)="submit()">asdf</button>
+      <pre>{{taskNumber.value|json}}</pre>
+      <pre>{{community.value|json}}</pre>
+      <pre>{{details.value}}</pre>
     </div>
 
 
