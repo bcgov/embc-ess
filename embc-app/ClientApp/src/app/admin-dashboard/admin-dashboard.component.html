@@ -26,41 +26,18 @@
 
 
   <div class="col-12 col-lg-4">
-    <app-side-box-info title="ADD AN EVACUEE"
-      content="Before starting a new registration, use the search tool on your dashboard to confirm that the evacuee hasn’t already registered."
-      button="Add Evacuee(s)" route="register-evacuee"></app-side-box-info>
-    <app-side-box-info title="
-    ADD ORGANIZATION(S)"
-      content="In order to add an organization, you will need the Business BCeID User ID of the admin user for the organization.&#13;An organization refers to a Regional District, Local Authority, First Nations Community, or NGO that your Emergency Support Services (ESS) Team is responsible to."
-      button="Add Organization(s)" route="edit-organization"></app-side-box-info>
-
-
-    <!--
-        TODO: Move this to the page where we add the volunteers
-        <app-side-box-info title="ADD A VOLUNTEER"
-        content="Before adding volunteers, confirm that they have been registered by the Emergency Social Services Director."
-        button="Add Volunteer(s)" route="register-volunteer"></app-side-box-info>
-            <app-side-box title="Useful Information">
-        <section role="content">
-          <p>
-            Don't forget to deactivate volunteers who are no longer active members of your team.
-          </p>
-          <p>
-            This includes deactivating convergent volunteers.
-          </p>
-        </section>
-        <section role="footer">
-          <button class="btn btn-primary" routerLink="/">Learn More</button>
-        </section>
-      </app-side-box> -->
+    <app-add-task-number></app-add-task-number>
+    <app-add-organization></app-add-organization>
+    <app-add-user></app-add-user>
+    <app-add-evacuee></app-add-evacuee>
     <app-side-box title="Useful Information">
       <section role="content">
         <p>
-          Evacuees listed here that do not have a task number are self-registered and have not yet received Emergency
-          Social Services.
+          A BCeID will be needed if an organization and/or a user is accessing this system.
         </p>
         <p>
-          Use the “Action” column to “view” evacuee registrations as well as “finalize” evacuee self-registrations.
+          If you have any questions regarding your BCeID, please read the <a
+            href="https://www.bceid.ca/aboutbceid/faqs.aspx">Frequently Asked Questions</a>.
         </p>
       </section>
       <!-- <section role="footer">

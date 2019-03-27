@@ -20,10 +20,7 @@ import { SearchBarComponent, EvacueeSearchResultsComponent } from './components/
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { ByIdPipe } from './pipes/by-id.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
-import { AddEvacueeComponent } from './components/side-boxes/add-evacuee/add-evacuee.component';
-import { AddOrganizationComponent } from './components/side-boxes/add-organization/add-organization.component';
-import { AddTaskNumberComponent } from './components/side-boxes/add-task-number/add-task-number.component';
-import { AddUserComponent } from './components/side-boxes/add-user/add-user.component';
+import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent } from './components/side-boxes';
 
 @NgModule({
   declarations: [
@@ -79,6 +76,10 @@ import { AddUserComponent } from './components/side-boxes/add-user/add-user.comp
     YesNoPipe,
     ByIdPipe,
     PluckPipe,
+    AddEvacueeComponent,
+    AddOrganizationComponent,
+    AddTaskNumberComponent,
+    AddUserComponent,
   ]
 })
 export class SharedModule { }
