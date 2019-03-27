@@ -30,6 +30,10 @@ export class IncidentTaskService extends RestService {
 
   getIncident(id: string): Observable<IncidentTask> {
     // return a single matching incident
-    return of(null);
+    return this.http.get<IncidentTask>('api/incidenttasks/' + id, { headers: this.headers })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
   }
 }
