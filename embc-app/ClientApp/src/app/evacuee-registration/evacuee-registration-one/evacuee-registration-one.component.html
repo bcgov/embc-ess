@@ -33,7 +33,7 @@
       <label>Task Number</label>
       <select class="form-control" formControlName="incidentTask">
         <option [ngValue]="null">-- Select Incident</option>
-        <option [ngValue]="incident" *ngFor="let incident of incidentTasks">
+        <option [ngValue]="incident" *ngFor="let incident of incidentTasks.data">
           {{incident.taskNumber}}<span *ngIf="incident.community"> - {{incident.community.name}}</span>
         </option>
       </select>

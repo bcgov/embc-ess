@@ -39,11 +39,7 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
     // go back
     this.router.navigate(['add-task-number']);
   }
-  submit(addAnother?: boolean) {
-    // the page should have all information in this page. if not this was routed to by mistake.
-
-    // the information required was passed in from the state proceed with update or create
-
+  submit() {
     // check if this is an update
     if (this.incidentTask.id) {
       // if the volunteer has an ID we need to update
