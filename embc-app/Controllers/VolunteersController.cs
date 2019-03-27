@@ -33,29 +33,22 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters queryParameters)
+        public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters searchQuery)
         {
             try
             {
-                var results = new PaginatedList<Person>(await dataInterface.GetPeopleAsync(Models.Db.Person.VOLUNTEER), 0, queryParameters.Offset, queryParameters.Limit);
-                var paginationMetadata = new PaginationMetadata()
-                {
-                    CurrentPage = results.GetCurrentPage(),
-                    PageSize = results.Limit,
-                    TotalCount = results.TotalItemCount,
-                    TotalPages = results.GetTotalPages()
-                };
+                var items = await dataInterface.GetPeopleAsync(searchQuery);
 
                 return Json(new
                 {
-                    data = results,
-                    metadata = paginationMetadata
+                    data = items.Items,
+                    metadata = items.Pagination
                 });
             }
             catch (Exception e)
             {
                 logger.LogError(e.ToString());
-                return BadRequest(e);
+                return BadRequest(e.ToString());
             }
         }
 
@@ -64,7 +57,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             try
             {
-                return Json(await dataInterface.GetPersonByIdAsync(Models.Db.Person.VOLUNTEER, id));
+                return Json(await dataInterface.GetPersonByIdAsync(id));
             }
             catch (Exception e)
             {
@@ -78,7 +71,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             if (!item.PersonType.Equals(Models.Db.Person.VOLUNTEER, StringComparison.OrdinalIgnoreCase))
             {
-                ModelState.AddModelError("PersonType", "Must be a volunteer");
+                ModelState.AddModelError("PersonType", $"Must be {Models.Db.Person.VOLUNTEER}");
             }
             if (!ModelState.IsValid)
             {
@@ -106,7 +99,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
             if (!item.PersonType.Equals(Models.Db.Person.VOLUNTEER, StringComparison.OrdinalIgnoreCase))
             {
-                ModelState.AddModelError("PersonType", "Must be a volunteer");
+                ModelState.AddModelError("PersonType", $"Must be {Models.Db.Person.VOLUNTEER}");
             }
             if (!ModelState.IsValid)
             {
@@ -131,7 +124,7 @@ namespace Gov.Jag.Embc.Public.Controllers
 
             try
             {
-                var result = await dataInterface.DeactivatePersonAsync(Models.Db.Person.VOLUNTEER, id);
+                var result = await dataInterface.DeactivatePersonAsync(id);
                 return Ok();
             }
             catch (Exception e)
