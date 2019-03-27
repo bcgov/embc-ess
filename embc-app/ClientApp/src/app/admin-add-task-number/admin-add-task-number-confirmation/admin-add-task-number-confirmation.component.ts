@@ -39,9 +39,27 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
     // go back
     this.router.navigate(['add-task-number']);
   }
-  submit() {
-    // this.incidentTaskService.
-    // this.router.navigate()
-    alert(JSON.stringify(this.incidentTask));
+  submit(addAnother?: boolean) {
+    // the page should have all information in this page. if not this was routed to by mistake.
+
+    // the information required was passed in from the state proceed with update or create
+
+    // check if this is an update
+    if (this.incidentTask.id) {
+      // if the volunteer has an ID we need to update
+      this.incidentTaskService.updateIncidentTask(this.incidentTask)
+        .subscribe(() => {
+          // go back to the volunteer team dashboard
+          this.router.navigate(['admin-dashboard']);
+        });
+    } else {
+      // if the volunteer has no id we need to create a new one
+      this.incidentTaskService.createIncidentTask(this.incidentTask)
+        .subscribe(i => {
+          // go back to the volunteer team dashboard
+          this.router.navigate(['admin-dashboard']);
+        });
+    }
   }
+
 }
