@@ -95,7 +95,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             // this line is required so ef migrations will work.
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<FamilyRelationshipType>().HasKey(k => k.Code);
+            //modelBuilder.Entity<FamilyRelationshipType>().HasKey(k => k.Code);
 
             // Address hierarchy
             modelBuilder.Entity<BcAddress>().HasBaseType<Address>();
