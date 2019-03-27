@@ -22,4 +22,4 @@ import { AdminAddTaskNumberConfirmationComponent } from './admin-add-task-number
         AdminAddTaskNumberComponent
     ]
 })
-export class VolunteerEditorModule { }
+export class AdminAddTaskNumberModule { }

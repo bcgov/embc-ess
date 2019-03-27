@@ -24,9 +24,7 @@ import { VolunteerNavbarComponent } from './volunteer-navbar/volunteer-navbar.co
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
-import { AdminAddTaskNumberComponent } from './admin-add-task-number/admin-add-task-number.component';
-import { AdminAddTaskNumberOneComponent } from './admin-add-task-number/admin-add-task-number-one/admin-add-task-number-one.component';
-import { AdminAddTaskNumberConfirmationComponent } from './admin-add-task-number/admin-add-task-number-confirmation/admin-add-task-number-confirmation.component';
+import { AdminAddTaskNumberModule } from './admin-add-task-number';
 
 @NgModule({
   declarations: [
@@ -40,9 +38,6 @@ import { AdminAddTaskNumberConfirmationComponent } from './admin-add-task-number
     VolunteerUsefulInformationComponent,
     EvacueeSummaryComponent,
     AdminDashboardComponent,
-    AdminAddTaskNumberComponent,
-    AdminAddTaskNumberOneComponent,
-    AdminAddTaskNumberConfirmationComponent,
   ],
   imports: [
     // angular
@@ -62,7 +57,8 @@ import { AdminAddTaskNumberConfirmationComponent } from './admin-add-task-number
     AppRoutingModule,
     SelfRegistrationModule,
     EvacueeRegistrationModule,
-    VolunteerEditorModule
+    VolunteerEditorModule,
+    AdminAddTaskNumberModule
   ],
   providers: [],
   bootstrap: [AppComponent]
