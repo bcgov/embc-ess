@@ -21,7 +21,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<bool> DeactivateRegistration(string id);
 
         // Incident Tasks
-        Task<List<IncidentTask>> GetIncidentTasks();
+        Task<IEnumerable<IncidentTask>> GetIncidentTasks();
 
         Task<IncidentTask> GetIncidentTask(string id);
 
