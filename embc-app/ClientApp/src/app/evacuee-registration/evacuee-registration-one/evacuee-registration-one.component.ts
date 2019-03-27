@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../store';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
+
+import { AppState } from '../../store';
 import { RegistrationService } from '../../core/services/registration.service';
 import {
   Registration, FamilyMember, isBcAddress, Community, Country,
@@ -27,7 +29,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   regions$ = this.store.select(s => s.lookups.regions);
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
   communities$ = this.store.select(s => s.lookups.communities.communities);
-  incidentTasks$ = this.incidentTaskService.getAllIncidentTasks();
+  incidentTasks$ = this.incidentTaskService.getAllIncidentTasks().pipe(map(x => x.data));
 
   pageTitle = 'Add an Evacuee';
 
@@ -71,6 +73,15 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
     this.constraints = {
+      incidentTask: {
+        required: 'Please select a task number from the dropdown list.'
+      },
+      facility: {
+        required: 'Please enter a facility name.'
+      },
+      hostCommunity: {
+        required: 'Please select a host community from the dropdown list.'
+      },
       headOfHousehold: {
         firstName: {
           required: 'Please enter your first name.',
@@ -589,6 +600,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         mailingAddress: values.mailingAddressSameAsPrimary ? null : { ...values.mailingAddress },
       },
 
+      // Registration Record
       restrictedAccess: values.restrictedAccess,
       dietaryNeeds: values.dietaryNeeds as boolean,
       dietaryNeedsDetails: values.dietaryNeedsDetails as string,
@@ -600,6 +612,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       insuranceCode: values.insuranceCode as string,
       medicationNeeds: values.medicationNeeds as boolean,
       registeringFamilyMembers: values.registeringFamilyMembers as string, // 'yes' or 'no'
+
+      // Family state flags
       hasThreeDayMedicationSupply: values.hasThreeDayMedicationSupply as boolean,
       hasInquiryReferral: values.hasInquiryReferral as boolean,
       hasHealthServicesReferral: values.hasHealthServicesReferral as boolean,
@@ -608,6 +622,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       hasPersonalServicesReferral: values.hasPersonalServicesReferral as boolean,
       hasPetCareReferral: values.hasPetCareReferral as boolean,
       hasPets: values.hasPets as boolean,
+
+      // requirements
       requiresAccommodation: values.requiresAccommodation as boolean,
       requiresClothing: values.requiresClothing as boolean,
       requiresFood: values.requiresFood as boolean,

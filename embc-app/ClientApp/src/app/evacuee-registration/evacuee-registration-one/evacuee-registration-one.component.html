@@ -18,32 +18,62 @@
 </div>
 
 <form novalidate [formGroup]="form" (ngSubmit)="onSubmit()">
-
-  <!-- TODO: These need to have the task number and host community populated -->
   <div class="mb-4">
     <h3 class="blue-header">
       TASK NUMBER & PLACE OF REGISTRATION
     </h3>
-    <app-form-field required="true">
-      <label>Task Number</label>
-      <select class="form-control" formControlName="incidentTask">
-        <option [ngValue]="null">-- Select Incident</option>
-        <option [ngValue]="incident" *ngFor="let incident of incidentTasks$ | async">
-          {{incident.taskNumber}}<span *ngIf="incident.community"> - {{incident.community.name}}</span>
-        </option>
-      </select>
-    </app-form-field>
-    <app-form-field required="true">
-      <label>Facility Name / Registration Location</label>
-      <input class="form-control" type="text" formControlName="facility">
-    </app-form-field>
-    <app-form-field required="true">
-      <label>Community</label>
-      <select class="form-control">
-        <option [ngValue]="null">-- Select community</option>
-        <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
-      </select>
-    </app-form-field>
+    <div class="form-row">
+      <app-font-awesome-icon class="attention col-md-auto" icon="exclamation-triangle" color="#FF9900" size="lg">
+      </app-font-awesome-icon>
+      <app-form-field required="true" class="col">
+        <label>Task Number</label>
+        <select [class.is-invalid]="invalidField(form, 'incidentTask', submitted)" class="form-control"
+          formControlName="incidentTask">
+          <option [ngValue]="null">-- Select task number</option>
+          <option [ngValue]="incident" *ngFor="let incident of incidentTasks$ | async">
+            {{incident.taskNumber}}<span *ngIf="incident.community"> - {{incident.community.name}}</span>
+          </option>
+        </select>
+        <span *ngIf="submitted" class="invalid-feedback">
+          {{validationErrors['incidentTask']}}
+        </span>
+      </app-form-field>
+      <div class="col-md-7">
+        <small class="align-middle text-muted">
+          If the task number you’re looking for is not listed, please contact your supervisor or the Emergency
+          Coordination Centre at 1-800-663-3456.
+        </small>
+      </div>
+    </div>
+    <div class="form-row">
+      <app-font-awesome-icon class="attention col-md-auto" icon="exclamation-triangle" color="#FF9900" size="lg">
+      </app-font-awesome-icon>
+      <app-form-field class="col-md-8" required="true"
+        tooltip="Tool Tip: The location where you are registering the evacuees.">
+        <label>Facility Name / Registration Location</label>
+        <input [class.is-invalid]="invalidField(form, 'facility', submitted)" class="form-control" type="text"
+          formControlName="facility">
+        <span *ngIf="submitted" class="invalid-feedback">
+          {{validationErrors['facility']}}
+        </span>
+      </app-form-field>
+    </div>
+    <div class="form-row">
+      <app-font-awesome-icon class="attention col-md-auto" icon="exclamation-triangle" color="#FF9900" size="lg">
+      </app-font-awesome-icon>
+      <app-form-field class="col-md-8" required="true"
+        tooltip="Tool Tip: A host community is the community where the registration is taking place and the Reception Centre is located.">
+        <label>Community</label>
+        <select [class.is-invalid]="invalidField(form, 'hostCommunity', submitted)" class="form-control"
+          formControlName="hostCommunity">
+          <option [ngValue]="null">-- Select community</option>
+          <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
+        </select>
+        <span *ngIf="submitted" class="invalid-feedback">
+          {{validationErrors['hostCommunity']}}
+        </span>
+      </app-form-field>
+    </div>
   </div> <!-- Restricted access to this file? -->
   <div class="mb-4">
     <h3 class="blue-header">

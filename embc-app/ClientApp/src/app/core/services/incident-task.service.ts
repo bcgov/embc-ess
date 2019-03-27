@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { of, Observable } from 'rxjs';
-import { IncidentTask } from '../models';
+import { Observable } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
+
+import { IncidentTask, IncidentTaskList } from '../models';
 import { CoreModule } from '../core.module';
 import { RestService } from './rest.service';
 import { SearchQueryParameters } from 'src/app/shared/components/search';
