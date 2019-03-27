@@ -29,7 +29,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return Organizations.FirstOrDefault(x => x.Externaluseridentifier == externalId).ToViewModel();
         }
 
-        private async Task<Models.Db.Organization> GetOrganizationAsync(Guid id)
+        public async Task<Organization> GetOrganizationAsync(string id)
+        {
+            var result = await GetOrganizationInternalAsync(Guid.Parse(id));
+            return result?.ToViewModel();
+        }
+
+        private async Task<Models.Db.Organization> GetOrganizationInternalAsync(Guid id)
         {
             return await Organizations.FirstOrDefaultAsync(x => x.Id == id);
         }
@@ -39,7 +45,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var newItem = await db.Organizations.AddAsync(item.ToModel());
             await db.SaveChangesAsync();
 
-            return (await GetOrganizationAsync(newItem.Entity.Id)).ToViewModel();
+            return (await GetOrganizationInternalAsync(newItem.Entity.Id)).ToViewModel();
         }
 
         public async Task UpdateOrganizationAsync(Organization item)

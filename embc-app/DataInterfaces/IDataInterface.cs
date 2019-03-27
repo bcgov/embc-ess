@@ -80,6 +80,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Volunteer GetVolunteerById(string Id);
 
+        Task<Organization> GetOrganizationAsync(string id);
+
         #endregion Volunteer
     }
 }

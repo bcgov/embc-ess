@@ -39,11 +39,6 @@ namespace Gov.Jag.Embc.Public.Controllers
             _dataInterface = dataInterface;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet()]
         [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
@@ -58,15 +53,10 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOne(string id)
         {
-            var result = await Task.FromResult(_dataInterface.GetOrganizationByExternalId(id));
+            var result = await _dataInterface.GetOrganizationAsync(id);
 
             if (result == null)
             {
@@ -76,11 +66,6 @@ namespace Gov.Jag.Embc.Public.Controllers
             return Json(result);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="viewModel"></param>
-        /// <returns></returns>
         [HttpPost()]
         public async Task<IActionResult> Create([FromBody] Organization item)
         {
@@ -103,12 +88,6 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
         }
 
-        /// <summary>
-        /// Update
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpPut("{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> Update([FromBody] ViewModels.Organization item, string id)
