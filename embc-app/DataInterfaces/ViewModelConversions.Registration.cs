@@ -43,6 +43,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     SelfRegisteredDate = source.SelfRegisteredDate,
                     RegistrationCompletionDate = source.RegistrationCompletionDate,
                     HeadOfHousehold = source.HeadOfHousehold.ToViewModel() as ViewModels.HeadOfHousehold,
+                    HostCommunity = source.HostCommunity?.ToViewModel(),
+                    CompletedBy = source.CompletedBy == null ? null : ((Models.Db.Person)source.CompletedBy).ToViewModel() as ViewModels.Volunteer,
+                    IncidentTask = source.IncidentTask?.ToViewModel(),
+                    DeclarationAndConsent = source.DeclarationAndConsent
                 };
             }
 
@@ -56,7 +60,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 result = new Models.Db.Registration()
                 {
-                    EssFileNumber = source.EssFileNumber,
                     RestrictedAccess = source.RestrictedAccess,
                     RegisteringFamilyMembers = source.RegisteringFamilyMembers,
                     DietaryNeeds = source.DietaryNeeds,
@@ -85,7 +88,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     HasPetCareReferral = source.HasPetCareReferral,
                     SelfRegisteredDate = source.SelfRegisteredDate,
                     RegistrationCompletionDate = source.RegistrationCompletionDate,
+                    DeclarationAndConsent = source.DeclarationAndConsent,
+                    HeadOfHouseholdId = source.HeadOfHousehold.Id == null ? (Guid?)null : Guid.Parse(source.HeadOfHousehold.Id),
                     HeadOfHousehold = source.HeadOfHousehold.ToModel() as Models.Db.HeadOfHousehold,
+                    CompletedById = source.CompletedBy == null ? (Guid?)null : Guid.Parse(source.CompletedBy.Id),
+                    HostCommunityId = source.HostCommunity == null ? (Guid?)null : Guid.Parse(source.HostCommunity.Id),
+                    IncidentTaskId = source.IncidentTask == null ? (Guid?)null : Guid.Parse(source.IncidentTask.Id),
                 };
                 if (source.Id != null)
                 {

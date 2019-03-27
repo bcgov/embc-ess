@@ -8,48 +8,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static class IncidentTaskExtensions
     {
-        public static void PatchValues(this Models.Db.IncidentTask self, ViewModels.IncidentTask values)
-        {
-            self.TaskNumber = values.TaskNumber;
-            self.Details = values.Details;
-            self.Active = values.Active;
-
-            self.Region = values.Region != null ? values.Region.ToModel() : null;
-            self.RegionalDistrict = values.RegionalDistrict != null ? values.RegionalDistrict.ToModel() : null;
-            self.Community = values.Community != null ? values.Community.ToModel() : null;
-        }
-
-        public static void PatchValues(this Models.Db.IncidentTask self, Models.Db.IncidentTask values)
-        {
-            self.TaskNumber = values.TaskNumber;
-            self.Details = values.Details;
-            self.Active = values.Active;
-
-            self.Region = values.Region;
-            self.RegionalDistrict = values.RegionalDistrict;
-            self.Community = values.Community;
-        }
-
         public static void AddIncidentTask(this EmbcDbContext context, IncidentTask IncidentTask)
         {
             // create a new IncidentTask.
             context.IncidentTasks.Add(IncidentTask);
             context.SaveChanges();
-        }
-
-        public static void UpdateIncidentTask(this EmbcDbContext context, IncidentTask IncidentTask)
-        {
-            IncidentTask _IncidentTask = context.IncidentTasks.FirstOrDefault<IncidentTask>(x => x.Id == IncidentTask.Id);
-            _IncidentTask.PatchValues(IncidentTask);
-            context.IncidentTasks.Update(_IncidentTask);
-            context.SaveChanges();
-        }
-
-        public static List<IncidentTask> GetIncidentTasks(this EmbcDbContext context)
-        {
-            List<IncidentTask> IncidentTasks =
-                context.IncidentTasks.ToList<IncidentTask>();
-            return IncidentTasks;
         }
 
         /// <summary>
@@ -136,27 +99,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             };
 
             context.AddIncidentTask(IncidentTask);
-        }
-
-        /// <summary>
-        /// Update IncidentTask
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="IncidentTaskInfo"></param>
-        public static void UpdateSeedIncidentTaskInfo(this EmbcDbContext context, IncidentTask IncidentTaskInfo)
-        {
-            IncidentTask IncidentTask = context.GetIncidentTaskByTaskNumber(IncidentTaskInfo.TaskNumber);
-            if (IncidentTask == null)
-            {
-                context.AddIncidentTask(IncidentTaskInfo);
-            }
-            else
-            {
-                IncidentTask.Details = IncidentTaskInfo.Details;
-                IncidentTask.Active = IncidentTaskInfo.Active;
-                IncidentTask.TaskNumber = IncidentTaskInfo.TaskNumber;
-                context.UpdateIncidentTask(IncidentTask);
-            }
         }
     }
 }

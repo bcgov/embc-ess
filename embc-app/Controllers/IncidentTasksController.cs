@@ -1,32 +1,26 @@
-﻿using Gov.Jag.Embc.Interfaces;
-
-using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
-using Gov.Jag.Embc.Public.Models;
 using Gov.Jag.Embc.Public.Utils;
+using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Rest;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
+    [AllowAnonymous]
     public class IncidentTasksController : Controller
     {
         private readonly IConfiguration Configuration;
-        private readonly IDataInterface _dataInterface;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ILogger _logger;
-        private readonly IHostingEnvironment _env;
+        private readonly IDataInterface dataInterface;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly ILogger logger;
+        private readonly IHostingEnvironment env;
 
         public IncidentTasksController(
             IConfiguration configuration,
@@ -37,57 +31,61 @@ namespace Gov.Jag.Embc.Public.Controllers
         )
         {
             Configuration = configuration;
-            _httpContextAccessor = httpContextAccessor;
-            _logger = loggerFactory.CreateLogger(typeof(IncidentTasksController));
-            this._env = env;
-            _dataInterface = dataInterface;
+            this.httpContextAccessor = httpContextAccessor;
+            logger = loggerFactory.CreateLogger(typeof(IncidentTasksController));
+            this.env = env;
+            this.dataInterface = dataInterface;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet()]
+        [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get([FromQuery] SearchQueryParameters queryParameters)
         {
             try
             {
-                List<ViewModels.IncidentTask> result = await _dataInterface.GetIncidentTasks();
+                var results = new PaginatedList<IncidentTask>(await dataInterface.GetIncidentTasksAsync(), 0, queryParameters.Offset, queryParameters.Limit);
+                var paginationMetadata = new PaginationMetadata()
+                {
+                    CurrentPage = results.GetCurrentPage(),
+                    PageSize = results.Limit,
+                    TotalCount = results.TotalItemCount,
+                    TotalPages = results.GetTotalPages()
+                };
+
+                return Json(new
+                {
+                    data = results,
+                    metadata = paginationMetadata
+                });
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e.ToString());
+                return BadRequest(e.ToString());
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            try
+            {
+                var result = await dataInterface.GetIncidentTaskAsync(id);
+                if (result == null)
+                {
+                    return NotFound();
+                }
                 return Json(result);
             }
-            catch (RestException error)
+            catch (Exception e)
             {
-                // TODO: Remove error payload when live in PROD
-                return BadRequest(error);
+                logger.LogError(e.ToString());
+                return BadRequest(e.ToString());
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet("{id}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetOne(string id)
-        {
-            var result = await _dataInterface.GetIncidentTask(id);
-            if (result == null)
-            {
-                return NotFound();
-            }
-            return Json(result);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="viewModel"></param>
-        /// <returns></returns>
-        [HttpPost()]
-        [AllowAnonymous]
-        public async Task<IActionResult> Create([FromBody] ViewModels.IncidentTask item)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] IncidentTask item)
         {
             if (!ModelState.IsValid)
             {
@@ -96,38 +94,56 @@ namespace Gov.Jag.Embc.Public.Controllers
             try
             {
                 item.Id = null;
-                var result = await _dataInterface.CreateIncidentTask(item);
+                item.Active = true;
+                var result = await dataInterface.CreateIncidentTaskAsync(item);
                 return Json(result);
             }
-            catch (RestException error)
+            catch (Exception e)
             {
-                return BadRequest(error);
+                logger.LogError(e.ToString());
+                return BadRequest(e.ToString());
             }
         }
 
-        /// <summary>
-        /// Update
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpPut("{id}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Update([FromBody] ViewModels.IncidentTask item, string id)
+        public async Task<IActionResult> Update([FromBody] IncidentTask item, string id)
         {
-            if (id != null && item.Id != null && id == item.Id)
+            if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id)
             {
-                try
-                {
-                    var result = await _dataInterface.UpdateIncidentTask(item);
-                    return Json(result);
-                }
-                catch (RestException error)
-                {
-                    return BadRequest(error);
-                }
+                return BadRequest();
             }
-            return BadRequest();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await dataInterface.UpdateIncidentTaskAsync(item);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e.ToString());
+                return BadRequest(e.ToString());
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return BadRequest();
+
+            try
+            {
+                var result = await dataInterface.DeactivateIncidentTaskAsync(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e.ToString());
+                return BadRequest(e);
+            }
         }
     }
 }

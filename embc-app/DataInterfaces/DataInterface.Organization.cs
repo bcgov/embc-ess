@@ -9,50 +9,49 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public partial class DataInterface
     {
-        public async Task<List<Organization>> GetOrganizationsAsync()
+        private IQueryable<Models.Db.Organization> Organizations => db.Organizations
+                .Include(x => x.Region)
+                .Include(x => x.RegionalDistrict)
+                .Include(x => x.Community);
+
+        public async Task<IEnumerable<Organization>> GetOrganizationsAsync()
         {
-            var entities = await db.Organizations.ToListAsync();
-            var result = new List<Organization>();
-            foreach (var item in entities)
-            {
-                result.Add(item.ToViewModel());
-            }
-            return result;
+            return (await Organizations.ToArrayAsync()).Select(o => o.ToViewModel());
         }
 
         public Organization GetOrganizationByLegalName(string name)
         {
-            var item = db.Organizations.FirstOrDefault(x => x.Name == name);
-            var result = item.ToViewModel();
-
-            return result;
+            return Organizations.FirstOrDefault(x => x.Name == name).ToViewModel();
         }
 
         public Organization GetOrganizationByExternalId(string externalId)
         {
-            var item = db.Organizations.FirstOrDefault(x => x.Externaluseridentifier == externalId);
-            var result = item.ToViewModel();
+            return Organizations.FirstOrDefault(x => x.Externaluseridentifier == externalId).ToViewModel();
+        }
 
-            return result;
+        public async Task<Organization> GetOrganizationAsync(string id)
+        {
+            var result = await GetOrganizationInternalAsync(Guid.Parse(id));
+            return result?.ToViewModel();
+        }
+
+        private async Task<Models.Db.Organization> GetOrganizationInternalAsync(Guid id)
+        {
+            return await Organizations.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Organization> CreateOrganizationAsync(Organization item)
         {
-            var entity = item.ToModel();
-            await db.Organizations.AddAsync(entity);
+            var newItem = await db.Organizations.AddAsync(item.ToModel());
             await db.SaveChangesAsync();
 
-            return entity.ToViewModel();
+            return (await GetOrganizationInternalAsync(newItem.Entity.Id)).ToViewModel();
         }
 
-        public async Task<Organization> UpdateOrganizationAsync(Organization item)
+        public async Task UpdateOrganizationAsync(Organization item)
         {
-            var entity = await db.Organizations.FirstOrDefaultAsync(x => x.Id == new Guid(item.Id));
-            entity.PatchValues(item);
-            db.Organizations.Update(entity);
+            db.Organizations.Update(item.ToModel());
             await db.SaveChangesAsync();
-
-            return entity.ToViewModel();
         }
 
         public async Task<bool> DeactivateOrganizationAsync(string id)
