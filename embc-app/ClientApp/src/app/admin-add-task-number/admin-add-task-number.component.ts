@@ -29,7 +29,12 @@ export class AdminAddTaskNumberComponent implements OnInit {
     this.community = new FormControl(null);
     this.details = new FormControl(null);
   }
+  next() {
+    // this will eventually go to the next page instead of a simple submit
+    this.submit();
+  }
+
   submit() {
-    alert(this.taskNumber);
+    alert(this.taskNumber.value);
   }
 }
