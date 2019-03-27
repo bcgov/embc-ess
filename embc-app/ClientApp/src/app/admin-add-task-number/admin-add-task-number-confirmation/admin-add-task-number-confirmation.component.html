@@ -1,1 +1,29 @@
-<pre>{{incidentTask|json}}</pre>
+<div class="mb-4">
+  <h1 class="mt-3">Review Details</h1>
+  <p>Please confirm that all details you entered are correct by reading through the summary below.</p>
+  <section class="p-3">
+    <h3>Task Details</h3>
+    <ul class="summary">
+      <li>
+        <span class="name">Task Number:</span>
+        <span class="value">{{incidentTask.taskNumber}}</span>
+      </li>
+      <li>
+        <span class="name">Incident Location:</span>
+        <span class="value">{{incidentTask.community.name}}</span>
+      </li>
+      <li>
+        <span class="name">Details of Incident:</span>
+        <span class="value">{{incidentTask.details}}</span>
+      </li>
+    </ul>
+  </section>
+</div>
+<div class="mt-5 space-between">
+  <section>
+    <button class="btn btn-secondary" (click)="back()">Edit Task Details</button>
+  </section>
+  <section>
+    <button class="btn btn-primary" (click)="submit()">SAVE</button>
+  </section>
+</div>
