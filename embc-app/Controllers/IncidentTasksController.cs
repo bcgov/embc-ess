@@ -1,20 +1,13 @@
-﻿using Gov.Jag.Embc.Interfaces;
-
-using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
-using Gov.Jag.Embc.Public.Models;
 using Gov.Jag.Embc.Public.Utils;
+using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Rest;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -49,12 +42,24 @@ namespace Gov.Jag.Embc.Public.Controllers
         /// <returns></returns>
         [HttpGet()]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters queryParameters)
         {
             try
             {
-                List<ViewModels.IncidentTask> result = await _dataInterface.GetIncidentTasks();
-                return Json(result);
+                var results = new PaginatedList<IncidentTask>(await _dataInterface.GetIncidentTasks(), 0, queryParameters.Offset, queryParameters.Limit);
+                var paginationMetadata = new PaginationMetadata()
+                {
+                    CurrentPage = results.GetCurrentPage(),
+                    PageSize = results.Limit,
+                    TotalCount = results.TotalItemCount,
+                    TotalPages = results.GetTotalPages()
+                };
+
+                return Json(new
+                {
+                    data = results,
+                    metadata = paginationMetadata
+                });
             }
             catch (RestException error)
             {

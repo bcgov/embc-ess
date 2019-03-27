@@ -9,10 +9,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public partial class DataInterface
     {
-        public Task<List<IncidentTask>> GetIncidentTasks()
+        public async Task<IEnumerable<IncidentTask>> GetIncidentTasks()
         {
-            var all = db.IncidentTasks.Select(task => task.ToViewModel()).ToListAsync();
-            return all;
+            var all = await db.IncidentTasks
+                .Include(t => t.Region)
+                .Include(t => t.RegionalDistrict)
+                    .ThenInclude(d => d.Region)
+                .Include(t => t.Community)
+                    .ThenInclude(c => c.RegionalDistrict)
+                        .ThenInclude(d => d.Region)
+                .ToArrayAsync();
+
+            return all.Select(task => task.ToViewModel());
         }
 
         public Task<IncidentTask> GetIncidentTask(string id)

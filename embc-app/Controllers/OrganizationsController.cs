@@ -1,5 +1,6 @@
 using Gov.Jag.Embc.Interfaces;
 using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -40,11 +41,24 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters queryParameters)
         {
             try
             {
-                return Json(await _dataInterface.GetOrganizationsAsync());
+                var results = new PaginatedList<Organization>(await _dataInterface.GetOrganizationsAsync(), 0, queryParameters.Offset, queryParameters.Limit);
+                var paginationMetadata = new PaginationMetadata()
+                {
+                    CurrentPage = results.GetCurrentPage(),
+                    PageSize = results.Limit,
+                    TotalCount = results.TotalItemCount,
+                    TotalPages = results.GetTotalPages()
+                };
+
+                return Json(new
+                {
+                    data = results,
+                    metadata = paginationMetadata
+                });
             }
             catch (Exception e)
             {
