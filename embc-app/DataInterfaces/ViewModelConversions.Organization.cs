@@ -16,12 +16,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     BceidAccountNumber = source.BceidAccountNumber,
                     Active = source.Active,
                     Externaluseridentifier = source.Externaluseridentifier,
-                    RegionId = source.RegionId,
-                    Region = source.Region.ToViewModel(),
-                    RegionalDistrictId = source.RegionalDistrictId,
-                    RegionalDistrict = source.RegionalDistrict.ToViewModel(),
-                    CommunityId = source.CommunityId,
-                    Community = source.Community.ToViewModel()
+                    Region = source.Region?.ToViewModel(),
+                    RegionalDistrict = source.RegionalDistrict?.ToViewModel(),
+                    Community = source.Community?.ToViewModel()
                 };
             }
             return result;
@@ -36,15 +33,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 {
                     Name = source.Name,
                     BceidAccountNumber = source.BceidAccountNumber,
-                    Active = source.Active,
                     Externaluseridentifier = source.Externaluseridentifier,
-                    RegionId = source.RegionId,
-                    RegionalDistrictId = source.RegionalDistrictId,
-                    CommunityId = source.CommunityId
+                    RegionId = source.Region == null ? (Guid?)null : Guid.Parse(source.Region.Id),
+                    RegionalDistrictId = source.RegionalDistrict == null ? (Guid?)null : Guid.Parse(source.RegionalDistrict?.Id),
+                    CommunityId = source.Community == null ? (Guid?)null : Guid.Parse(source.Community?.Id)
                 };
                 if (source.Id != null)
                 {
                     result.Id = Guid.Parse(source.Id);
+                }
+                if (source.Active.HasValue)
+                {
+                    result.Active = source.Active.Value;
                 }
             }
             return result;

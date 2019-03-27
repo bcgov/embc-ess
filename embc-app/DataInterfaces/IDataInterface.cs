@@ -42,7 +42,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         #region Organization
 
         //Organizations
-        Task<List<Organization>> GetOrganizationsAsync();
+        Task<IEnumerable<Organization>> GetOrganizationsAsync();
 
         Organization GetOrganizationByLegalName(string name);
 
@@ -50,13 +50,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<Organization> CreateOrganizationAsync(Organization item);
 
-        Task<Organization> UpdateOrganizationAsync(Organization item);
+        Task UpdateOrganizationAsync(Organization item);
 
         Task<bool> DeactivateOrganizationAsync(string id);
 
         #endregion Organization
-
-
 
         #region People
 

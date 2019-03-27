@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -22,6 +21,7 @@ namespace Gov.Jag.Embc.Public.Controllers
 
         //private readonly SharePointFileManager _sharePointFileManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
+
         private readonly ILogger _logger;
         private readonly IDataInterface _dataInterface;
 
@@ -32,13 +32,12 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             Configuration = configuration;
             //_bceid = bceid;
-            
+
             _httpContextAccessor = httpContextAccessor;
             //_sharePointFileManager = sharePointFileManager;
             _logger = loggerFactory.CreateLogger(typeof(OrganizationsController));
             _dataInterface = dataInterface;
         }
-
 
         /// <summary>
         ///
@@ -50,8 +49,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             try
             {
-                List<ViewModels.Organization> result = await _dataInterface.GetOrganizationsAsync();
-                return Json(result);
+                return Json(await _dataInterface.GetOrganizationsAsync());
             }
             catch (Exception e)
             {
@@ -60,9 +58,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
         }
 
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -71,7 +68,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             var result = await Task.FromResult(_dataInterface.GetOrganizationByExternalId(id));
 
-            if(result == null)
+            if (result == null)
             {
                 return NotFound();
             }
@@ -80,14 +77,14 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="viewModel"></param>
         /// <returns></returns>
         [HttpPost()]
         public async Task<IActionResult> Create([FromBody] Organization item)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -95,6 +92,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             try
             {
                 item.Id = null;
+                item.Active = true;
                 var result = await _dataInterface.CreateOrganizationAsync(item);
                 return Json(result);
             }
@@ -104,8 +102,6 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest(e.ToString());
             }
         }
-
-
 
         /// <summary>
         /// Update
@@ -117,13 +113,12 @@ namespace Gov.Jag.Embc.Public.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Update([FromBody] ViewModels.Organization item, string id)
         {
-
             if (string.IsNullOrWhiteSpace(id))
             {
                 return BadRequest();
             }
 
-            if(!item.Id.Equals(id, StringComparison.OrdinalIgnoreCase))
+            if (!item.Id.Equals(id, StringComparison.OrdinalIgnoreCase))
             {
                 ModelState.AddModelError("Id", "id does not match Organization Id");
             }
@@ -135,30 +130,7 @@ namespace Gov.Jag.Embc.Public.Controllers
 
             try
             {
-                var result = await _dataInterface.UpdateOrganizationAsync(item);
-                if (result != null)
-                {
-                    return Ok();
-                }
-                return NotFound();
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
-        }
-
-
-        [HttpDelete("{id}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (string.IsNullOrWhiteSpace(id)) return BadRequest();
-
-            try
-            {
-                var result = await  _dataInterface.DeactivateOrganizationAsync(id);
+                await _dataInterface.UpdateOrganizationAsync(item);
                 return Ok();
             }
             catch (Exception e)
@@ -168,5 +140,22 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
         }
 
+        [HttpDelete("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return BadRequest();
+
+            try
+            {
+                var result = await _dataInterface.DeactivateOrganizationAsync(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                return BadRequest(e.ToString());
+            }
+        }
     }
 }
