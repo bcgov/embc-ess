@@ -25,6 +25,8 @@ import { VolunteerUsefulInformationComponent } from './volunteer-useful-informat
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminAddTaskNumberComponent } from './admin-add-task-number/admin-add-task-number.component';
+import { AdminAddTaskNumberOneComponent } from './admin-add-task-number/admin-add-task-number-one/admin-add-task-number-one.component';
+import { AdminAddTaskNumberConfirmationComponent } from './admin-add-task-number/admin-add-task-number-confirmation/admin-add-task-number-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { AdminAddTaskNumberComponent } from './admin-add-task-number/admin-add-t
     EvacueeSummaryComponent,
     AdminDashboardComponent,
     AdminAddTaskNumberComponent,
+    AdminAddTaskNumberOneComponent,
+    AdminAddTaskNumberConfirmationComponent,
   ],
   imports: [
     // angular
