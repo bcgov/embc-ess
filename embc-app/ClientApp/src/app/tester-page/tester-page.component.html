@@ -1,71 +1,9 @@
 <div class="row">
   <div class="col">
-    Registration
-    <pre>{{registration|json}}</pre>
+    Communities
+    <pre>{{communities$ | async | json}}</pre>
 
   </div>
-  <!-- <div class="col">
-    Volunteer
-    <pre>{{volunteer|json}}</pre>
-  </div> -->
-  <!-- <div class="col">
-    <h4>Volunteers</h4>
-    <pre>{{volunteers | json}}</pre>
-  </div> -->
-  <!-- <div class="col">
-    <h4>Volunteer by bceideNumber</h4>
-    <pre>{{volunteer | json}}</pre>
-  </div> -->
-  <!-- <div class="col" (click)="submit()">
-    <h4>Countries</h4>
-    <pre>{{countries$ | async | json}}</pre>
-  </div>
-  <div class="col">
-    <h4>Regional Districts</h4>
-    <pre>{{regionalDistricts$ | async | json}}</pre>
-  </div> -->
-  <!-- <div class="col">
-    <h4>Regions</h4>
-    <pre>{{ regions$ | async | json}}</pre>
-  </div> -->
-  <!-- <div class="col">
-    <div>
-      <label required="true">Country</label>
-      <select class="form-control" formControlName="country">
-        <option [ngValue]="null">-- Select Country</option>
-        <option [ngValue]="country" *ngFor="let country of countries$ | async">
-          {{country.name}}
-        </option>
-      </select>
-    </div>
-    <div>
-      <label required="true">Region</label>
-      <select class="form-control" formControlName="country">
-        <option [ngValue]="null">-- Select Country</option>
-        <option [ngValue]="region" *ngFor="let region of regions">
-          {{region.name}}
-        </option>
-      </select>
-    </div>
-    <div>
-      <label required="true">Incident Tasks</label>
-      <select class="form-control" formControlName="incidentTask">
-        <option [ngValue]="null">-- Select Incident</option>
-        <option [ngValue]="incident" *ngFor="let incident of incidentTasks">
-          {{incident.taskNumber}}<span *ngIf="incident.community"> - {{incident.community.name}}</span>
-        </option>
-      </select>
-    </div>
-  </div>
-  <div class="col">
-    <h4>Incident Task</h4>
-    <pre>{{ incidentTasks | json}}</pre>
-  </div> -->
-  <!--
-  <div class="col">
-    <h4>Registrations</h4>
-    <pre>{{registrations | json}}</pre>
-  </div> -->
   <div class="col">
     <ul>
       <li>
