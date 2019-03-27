@@ -3,6 +3,8 @@ import { AppState } from '../store';
 import { Store } from '@ngrx/store';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { takeWhile } from 'rxjs/operators';
+import { IncidentTask } from '../core/models';
 
 @Component({
   selector: 'app-admin-add-task-number',
@@ -10,7 +12,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin-add-task-number.component.scss']
 })
 export class AdminAddTaskNumberComponent implements OnInit {
+  // current community list in the application state
   communities$ = this.store.select(s => s.lookups.communities.communities);
+  // whatever is in the application state
+  currentIncidentTask$ = this.store.select(i => i.incidentTasks.currentIncidentTask);
+
+  // Keep the component alive
+  componentActive: boolean = true;
 
   // three fields to collect
   taskNumber: FormControl;
@@ -24,8 +32,18 @@ export class AdminAddTaskNumberComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+    this.currentIncidentTask$
+      .pipe(takeWhile(() => this.componentActive))
+      .subscribe(i => {
+        alert(JSON.stringify(i));
+        // this.initForm(i)
+      });
+    // Update form values based on the state
+    // this.currentRegistration$
+    //   .pipe(takeWhile(() => this.componentActive))
+    //   .subscribe(value => this.displayRegistration(value));
   }
-  initForm() {
+  initForm(incidentTask?: IncidentTask) {
     // initialize form
     this.taskNumber = new FormControl(null);
     this.community = new FormControl(null);
@@ -35,8 +53,8 @@ export class AdminAddTaskNumberComponent implements OnInit {
     // this will eventually go to the next page instead of a simple submit
     this.submit();
   }
-
   submit() {
     alert(this.taskNumber.value);
   }
+
 }

@@ -33,5 +33,8 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
         }
       });
   }
-
+  back() {
+    // go back
+    this.router.navigate(['add-task-number']);
+  }
 }
