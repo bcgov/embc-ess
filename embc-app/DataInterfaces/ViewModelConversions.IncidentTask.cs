@@ -28,11 +28,22 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             Models.Db.IncidentTask result = null;
             if (source != null)
             {
-                result = new Models.Db.IncidentTask();
-                result.PatchValues(source);
+                result = new Models.Db.IncidentTask
+                {
+                    TaskNumber = source.TaskNumber,
+                    Details = source.Details,
+                    RegionId = source.Region != null ? Guid.Parse(source.Region.Id) : (Guid?)null,
+                    RegionalDistrictId = source.RegionalDistrict != null ? Guid.Parse(source.RegionalDistrict.Id) : (Guid?)null,
+                    CommunityId = source.Community != null ? Guid.Parse(source.Community.Id) : (Guid?)null
+                };
+
                 if (source.Id != null)
                 {
                     result.Id = Guid.Parse(source.Id);
+                }
+                if (source.Active.HasValue)
+                {
+                    result.Active = source.Active.Value;
                 }
             }
             return result;
