@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store';
 import { takeWhile } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
 
 @Component({
   selector: 'app-admin-add-task-number-confirmation',
@@ -19,6 +20,7 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private router: Router,
+    private incidentTaskService: IncidentTaskService,
   ) { }
 
   ngOnInit() {
@@ -36,5 +38,10 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
   back() {
     // go back
     this.router.navigate(['add-task-number']);
+  }
+  submit() {
+    // this.incidentTaskService.
+    // this.router.navigate()
+    alert(JSON.stringify(this.incidentTask));
   }
 }
