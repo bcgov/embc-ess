@@ -5,12 +5,13 @@ import { CoreModule } from '../core.module';
 import { RestService } from './rest.service';
 import { SearchQueryParameters } from 'src/app/shared/components/search';
 import { retry, catchError } from 'rxjs/operators';
+import { MetaIncidentTask } from '../models/meta-incident-task';
 
 @Injectable({
   providedIn: CoreModule
 })
 export class IncidentTaskService extends RestService {
-  getIncidentTasks(props: SearchQueryParameters = {}): Observable<any> {
+  getIncidentTasks(props: SearchQueryParameters = {}): Observable<MetaIncidentTask> {
     // return a list of all incident task numbers for use in the application
     // return of(INCIDENTTASKS);
     const { limit = 100, offset = 0, q, sort } = props;
@@ -20,7 +21,7 @@ export class IncidentTaskService extends RestService {
       q,
       sort
     };
-    return this.http.get<any>('api/incidenttasks', { headers: this.headers, params })
+    return this.http.get<MetaIncidentTask>('api/incidenttasks', { headers: this.headers, params })
       .pipe(
         retry(3),
         catchError(this.handleError)
