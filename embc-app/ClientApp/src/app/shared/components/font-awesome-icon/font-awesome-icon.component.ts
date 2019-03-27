@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-type IconSizes = 'lg'
+export type IconSizes = 'lg'
   | 'xs'
   | 'sm'
   | '1x'
@@ -21,7 +21,7 @@ type IconSizes = 'lg'
   `,
   styles: []
 })
-export class FontAwesomeIconComponent implements OnInit {
+export class FontAwesomeIconComponent {
 
   // Required
   @Input() icon: string;
@@ -44,9 +44,6 @@ export class FontAwesomeIconComponent implements OnInit {
       [this.className]: this.className !== null,  // extra classes (if provided)
     };
     return cssClasses;
-  }
-
-  ngOnInit() {
   }
 
 }
