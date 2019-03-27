@@ -37,21 +37,25 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
     this.details = new FormControl(null);
   }
   next(): void {
-    // when routing to the next page we save first into the application state.
-    this.onSave();
-    // information saved in state. Navigate to confirm page
-    this.router.navigate(['add-task-number/confirmation']);
+    // only go next if all fields are non null
+    if (this.taskNumber.value && this.community.value && this.details.value) {
+      const incidentTask: IncidentTask = {
+        id: null,
+        taskNumber: this.taskNumber.value,
+        community: this.community.value,
+        details: this.details.value,
+      };
+      // when routing to the next page we save first into the application state.
+      this.onSave(incidentTask);
+      // information saved in state. Navigate to confirm page
+      this.router.navigate(['add-task-number/confirmation']);
+    } else {
+      alert("All fields are required to continue.");
+    }
   }
 
-  onSave(): void {
+  onSave(incidentTask: IncidentTask): void {
     // stuff the data into an incidentTask object
-    const incidentTask: IncidentTask = {
-      id: null,
-      taskNumber: this.taskNumber.value,
-      community: this.community.value,
-      details: this.details.value,
-    };
-    this.incidentTask = incidentTask;
     this.store.dispatch(new UpdateIncidentTask({ incidentTask }));
   }
 }
