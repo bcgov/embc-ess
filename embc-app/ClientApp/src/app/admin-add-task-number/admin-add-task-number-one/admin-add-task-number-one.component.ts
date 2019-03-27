@@ -27,7 +27,8 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private store: Store<AppState>, ) { }
+    private store: Store<AppState>,
+  ) { }
 
   ngOnInit() {
     // initialize form for collection
