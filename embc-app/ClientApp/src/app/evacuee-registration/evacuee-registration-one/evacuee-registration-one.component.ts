@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store';
-import { state } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RegistrationService } from '../../core/services/registration.service';
 import {
@@ -11,7 +10,9 @@ import {
 } from 'src/app/core/models';
 import { IncidentTaskService } from '../../core/services/incident-task.service';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
-import { MetaIncidentTask } from 'src/app/core/models/meta-incident-task';
+import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
+import { hasErrors, invalidField, clearFormArray } from 'src/app/shared/utils';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 
 
 @Component({
@@ -26,18 +27,38 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   regions$ = this.store.select(s => s.lookups.regions);
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
   communities$ = this.store.select(s => s.lookups.communities.communities);
-  incidentTasks: MetaIncidentTask;
+  incidentTasks$ = this.incidentTaskService.getAllIncidentTasks();
+
+  pageTitle = 'Add an Evacuee';
 
   // The model for the form data collected
   form: FormGroup;
+  submitted = false;
+  componentActive = true;
 
-  // EditMode
+  // Flags for the different modes this form supports
+  createMode = true;
+  finalizeMode = false;
   editMode = false;
 
   registration: Registration;
   submission: any;
   // the ess file number on its own is useful for looking up information from the DB
   // essFileNumber: string;
+
+  // convenience getters so we can use helper functions in Angular templates
+  hasErrors = hasErrors;
+  invalidField = invalidField;
+
+  // `validationErrors` represents an object with field-level validation errors to display in the form
+  validationErrors: { [key: string]: any } = {};
+
+  // error summary to display; i.e. 'Some required fields have not been completed.'
+  errorSummary = '';
+
+  // generic validation helper
+  private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
+  private validationHelper: ValidationHelper;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,10 +68,47 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     private incidentTaskService: IncidentTaskService,
     private router: Router
   ) {
-    // build the form with formbuilder
-    this.initForm();
-    this.incidentTaskService.getIncidentTasks()
-      .subscribe(i => this.incidentTasks = i);
+    // Defines all of the validation messages for the form.
+    // These could instead be retrieved from a file or database.
+    this.constraints = {
+      headOfHousehold: {
+        firstName: {
+          required: 'Please enter your first name.',
+        },
+        lastName: {
+          required: 'Please enter your last name.',
+        },
+        dob: {
+          required: 'Please enter your date of birth.',
+          dateInThePast: 'Date of birth must be today or in the past.',
+        },
+      },
+      registeringFamilyMembers: {
+        required: 'Please register any immediate family members who live within the same household as you.',
+      },
+      primaryResidenceInBC: {
+        required: 'Please make a selection regarding your primary residence.',
+      },
+      mailingAddressSameAsPrimary: {
+        required: 'Please select whether your mailing address is the same as your primary residence.',
+      },
+      mailingAddressInBC: {
+        required: 'Please make a selection regarding your mailing address.',
+      },
+      phoneNumber: {
+        phone: 'Must be 10 digits, no spaces allowed.',
+      },
+      phoneNumberAlt: {
+        phone: 'Must be 10 digits, no spaces allowed.',
+      },
+      email: {
+        email: 'Please enter a valid email address.',
+      }
+    };
+
+    // Define an instance of the validator for use with this form,
+    // passing in this form's set of validation messages.
+    this.validationHelper = new ValidationHelper(this.constraints);
   }
 
   // convenience getter for easy access to form fields
@@ -63,135 +121,101 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     // this is a way to grab the familymembers in a typed way
     return this.f.familyMembers as FormArray;
   }
-  isBcAddress(a: Address): boolean {
-    if (a.province === 'BC') {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
-  setHohPrimaryResidenceProvince() {
-    // if the unset flag is true or a value it clears the values
-    const patch = { hohPrimaryResidence: { province: 'BC', country: { name: 'Canada' } } };
-    this.form.patchValue(patch);
-  }
-  setHohMailingAddressProvince() {
-    const patch = { hohMailingAddress: { province: 'BC', country: { name: 'Canada' } } };
-    this.form.patchValue(patch);
-  }
+  // isBcAddress(a: Address): boolean {
+  //   if (a.province === 'BC') {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
+
+  // TODO: Review these...
+  // setHohPrimaryResidenceProvince() {
+  //   // if the unset flag is true or a value it clears the values
+  //   const patch = { hohPrimaryResidence: { province: 'BC', country: { name: 'Canada' } } };
+  //   this.form.patchValue(patch);
+  // }
+  // setHohMailingAddressProvince() {
+  //   const patch = { hohMailingAddress: { province: 'BC', country: { name: 'Canada' } } };
+  //   this.form.patchValue(patch);
+  // }
 
   ngOnInit() {
+    // Create form controls
+    this.initForm();
+
+    // Watch for value changes
+    this.onFormChange();
+
     // if there are route params we should grab them
-    if (this.route.snapshot.params.id) {
-      // TODO: go get the evacuee from db eventually
-      this.registrationService.getRegistrationById(this.route.snapshot.params.id)
-        .subscribe(r => {
-          // TODO: get first registration for now
-          // alert(JSON.stringify(r));
-          this.registration = r;
-          // this is a form with data flowing in.
-          this.editMode = true;
-          // alert(JSON.stringify(r));
-          this.displayRegistration(r);
-        });
+    const id = this.route.snapshot.params.id;
+
+    if (id) {
+      // this is a form with data flowing in.
+      // TODO: Redirect to error page if we fail to fetch the registration
+      this.registrationService.getRegistrationById(id).subscribe(r => this.displayRegistration(r));
     } else {
       // this is a fresh form
-      this.editMode = false;
       this.displayRegistration();
     }
   }
 
   addFamilyMember(fmbr?: FamilyMember): void {
-    // get the existing family members
-    const familyMembers = this.familyMembers;
-    if (fmbr) {
-      // push the new family member into the array
-      familyMembers.push(this.createFamilyMember(fmbr));
-      // set the value for familymembers
-      // this.form.setValue(familyMembers);
-    } else {
-      // push the new family member into the array
-      familyMembers.push(this.createFamilyMember());
-      // set the value for familymembers
-      // this.form.setValue(familyMembers);
-    }
+    this.familyMembers.push(this.createFamilyMember(fmbr));
   }
+
   removeFamilyMember(i: number): void {
-    // get the existing family members
-    const familyMembers = this.familyMembers;
-    familyMembers.removeAt(i);
-    // this.form.setValue(familyMembers);
+    this.familyMembers.removeAt(i);
   }
+
+  // reset the list of family members
+  clearFamilyMembers(): void {
+    clearFormArray(this.familyMembers);
+  }
+
+  // family member formgroup
   createFamilyMember(fmbr?: FamilyMember): FormGroup {
     if (fmbr) {
       return this.formBuilder.group({
-        firstName: fmbr.firstName as string,
-        lastName: fmbr.lastName as string,
-        nickname: fmbr.nickname as string,
-        initials: fmbr.initials as string,
-        relationshipToEvacuee: fmbr.relationshipToEvacuee as RelationshipType,
-        sameLastNameAsEvacuee: fmbr.sameLastNameAsEvacuee as boolean,
-        personType: 'FMBR',
-        gender: fmbr.gender as string,
-        dob: new Date(fmbr.dob) as Date,
+        sameLastNameAsEvacuee: fmbr.sameLastNameAsEvacuee,
+        firstName: [fmbr.firstName, Validators.required],
+        lastName: [fmbr.lastName, Validators.required],
+        initials: fmbr.initials,
+        gender: fmbr.gender,
+        dob: [new Date(fmbr.dob).toString(), [Validators.required, CustomValidators.dateInThePast()]], // TODO: check this!!
+        relationshipToEvacuee: [fmbr.relationshipToEvacuee, Validators.required],
       });
     } else {
       // make a new family member blank and return it.
       return this.formBuilder.group({
-        firstName: '',
-        lastName: '',
-        nickname: '',
+        sameLastNameAsEvacuee: true,
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
         initials: '',
-        relationshipToEvacuee: '',
-        sameLastNameAsEvacuee: null,
-        personType: 'FMBR',
         gender: null,
-        dob: null,
+        dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Split into [DD] [MM] [YYYY]
+        relationshipToEvacuee: [null, Validators.required],
       });
-    }
-  }
-  clearFamilyMembers(): void {
-    // reset the list of family members
-    this.clear(this.familyMembers);
-  }
-  // TODO: Refactor into utils method
-  private clear(formArray: FormArray): void {
-    while (formArray && formArray.length !== 0) {
-      formArray.removeAt(0);
-    }
-  }
-
-
-  getBoolean(booleanString: string): boolean {
-    // convert boolean strings into actual boolean values
-    if (booleanString === 'false') {
-      return false;
-    } else if (booleanString === 'true') {
-      return true;
-    } else {
-      return null;
     }
   }
 
   initForm(): void {
     this.form = this.formBuilder.group({
-      id: '',
-      restrictedAccess: null,
-      declarationAndConsent: null,
+      restrictedAccess: false,
       essFileNumber: null,
-      dietaryNeeds: null,
+      dietaryNeeds: [null, Validators.required],
       dietaryNeedsDetails: '',
       disasterAffectDetails: null,
       externalReferralsDetails: '',
-      facility: '',
+      facility: [null, Validators.required],
       familyRecoveryPlan: '',
       followUpDetails: '',
-      insuranceCode: '',
-      medicationNeeds: null,
+      insuranceCode: [null, Validators.required],  // one of ['yes', 'yes-unsure', 'no', 'unsure']
+      medicationNeeds: [null, Validators.required],
       selfRegisteredDate: null,
       registrationCompletionDate: null,
-      registeringFamilyMembers: null,
+      registeringFamilyMembers: [null, Validators.required],
       hasThreeDayMedicationSupply: null,
       hasInquiryReferral: null,
       hasHealthServicesReferral: null,
@@ -199,93 +223,116 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       hasChildCareReferral: null,
       hasPersonalServicesReferral: null,
       hasPetCareReferral: null,
-      hasPets: null,
+      hasPets: [null, Validators.required],
       requiresAccommodation: null,
       requiresClothing: null,
       requiresFood: null,
       requiresIncidentals: null,
       requiresTransportation: null,
-      requiresSupport: null,
+      requiresSupport: [null, Validators.required],
 
-      hohPrimaryResidence: this.formBuilder.group({
-        id: '',
-        addressSubtype: null,
+      // HOH fields that we decided to put at the parent form level to simplify things
+      phoneNumber: '', // only BC phones will be validates so keep validators out of here...
+      phoneNumberAlt: '',
+      email: ['', Validators.email],
+
+      primaryResidence: this.formBuilder.group({
+        addressSubtype: null, // address fields are validated by sub-components (bc-address, other-address)
         addressLine1: '',
-        addressLine2: null,
-        addressLine3: null,
+        postalCode: '',
+        community: '',
         city: '',
         province: '',
-        postalCode: '',
-        country: this.formBuilder.group({
-          id: '',
-          name: ''
-        }),
-        community: null
+        country: '',
       }),
-      hohMailingAddress: this.formBuilder.group({
-        id: null,
-        addressSubtype: null,
+
+      mailingAddress: this.formBuilder.group({
+        addressSubtype: null, // address fields are validated by sub-components (bc-address, other-address)
         addressLine1: '',
-        addressLine2: null,
-        addressLine3: null,
         postalCode: '',
-        community: null,
+        community: '',
         city: '',
         province: '',
-        country: this.formBuilder.group({
-          id: '',
-          name: ''
-        }),
+        country: '',
       }),
+
       headOfHousehold: this.formBuilder.group({
-        id: '',
-        active: null,
-        phoneNumber: '',
-        phoneNumberAlt: '',
-        email: '',
-        firstName: '',
-        lastName: '',
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
         nickname: '',
         initials: '',
         gender: null,
-        dob: null,
-        bcServicesNumber: '',
-        personType: '',
+        dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Split into [DD] [MM] [YYYY]
       }),
+
       familyMembers: this.formBuilder.array([]), // array of formGroups
-      incidentTask: null, // which task is this from
-      hostCommunity: null, // which community is hosting
-      completedBy: null,
-      // UI bools
-      primaryResidenceInBc: null,
-      mailingAddressInBc: null,
-      mailingAddressSameAsPrimary: null,
+
+      incidentTask: [null, Validators.required], // which task is this from
+      hostCommunity: [null, Validators.required], // which community is hosting
+      completedBy: null, // TODO: the volunteer completing this form (we need AUTH in place to do know who you are)
+
+      // UI booleans
+      primaryResidenceInBc: [null, Validators.required],
+      mailingAddressInBc: null, // this will be validated when 'mailingAddressSameAsPrimary == false'
+      mailingAddressSameAsPrimary: [null, Validators.required],
     });
   }
 
+  onFormChange(): void {
+    // validate the whole form as we capture data
+    this.form.valueChanges.subscribe(() => this.validateForm());
+  }
+
+  validateForm(): void {
+    this.validationErrors = this.validationHelper.processMessages(this.form);
+  }
+
   displayRegistration(r?: Registration | null): void {
-    if (r) {
+    // Set the local registration property
+    this.registration = r;
+
+    // Display the appropriate page title and form state
+    if (r == null) {
+      this.pageTitle = 'Add an Evacuee';
+      this.createMode = true;
+      this.finalizeMode = this.editMode = false; // turn off these
+    } else {
+      if (r.incidentTask == null) {
+        this.pageTitle = 'Finalize Evacuee Registration';
+        this.finalizeMode = true;
+        this.createMode = this.editMode = false; // turn off these
+      } else {
+        this.pageTitle = 'Edit Evacuee Registration';
+        this.editMode = true;
+        this.createMode = this.finalizeMode = false; // turn off these
+      }
+    }
+
+    if (r && this.form) {
+      // Reset the form back to pristine
+      this.form.reset();
+
       const familyMembers: FamilyMember[] = r.headOfHousehold.familyMembers;
       const primaryResidence: Address = r.headOfHousehold.primaryResidence;
       const mailingAddress: Address = r.headOfHousehold.mailingAddress;
       const incidentTask: IncidentTask = r.incidentTask;
       const hostCommunity: Community = r.hostCommunity;
+
       // If the evacuee is here now then the defer to later of the registration of family members is now currently yes.
       if (r.registeringFamilyMembers === 'yes-later') {
         r.registeringFamilyMembers = 'yes';
       }
 
       // some form fields for showing or hiding UI elements
-      const primaryResidenceInBc: boolean = this.isBcAddress(primaryResidence);
-      const mailingAddressInBc: boolean = this.isBcAddress(mailingAddress);
+      const primaryResidenceInBc: boolean = isBcAddress(primaryResidence);
+      const mailingAddressInBc: boolean = isBcAddress(mailingAddress);
       const mailingAddressSameAsPrimary: boolean = (mailingAddress == null);
 
       // Update the data on the form from the data included from the API
       this.form.patchValue({
-        id: r.id as string,
+        // id: r.id as string,
         restrictedAccess: r.restrictedAccess as boolean,
         essFileNumber: r.essFileNumber as number,
-        declarationAndConsent: r.declarationAndConsent as boolean,
         dietaryNeeds: r.dietaryNeeds as boolean,
         dietaryNeedsDetails: r.dietaryNeedsDetails as string,
         disasterAffectDetails: r.disasterAffectDetails as string,
@@ -318,31 +365,34 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         requiresSupport: r.requiresSupport as boolean,
 
         headOfHousehold: {
-          id: r.headOfHousehold.id as string,
-          active: r.headOfHousehold.active as boolean,
-          phoneNumber: r.headOfHousehold.phoneNumber as string,
-          phoneNumberAlt: r.headOfHousehold.phoneNumberAlt as string,
-          email: r.headOfHousehold.email as string,
+          // id: r.headOfHousehold.id as string,
+          // active: r.headOfHousehold.active as boolean,
           firstName: r.headOfHousehold.firstName as string,
           lastName: r.headOfHousehold.lastName as string,
           nickname: r.headOfHousehold.nickname as string,
           initials: r.headOfHousehold.initials as string,
           gender: r.headOfHousehold.gender as string,
           dob: r.headOfHousehold.dob as Date,
-          bcServicesNumber: r.headOfHousehold.bcServicesNumber as string,
-          personType: r.headOfHousehold.personType,
+          // bcServicesNumber: r.headOfHousehold.bcServicesNumber as string,
+          // personType: r.headOfHousehold.personType,
         },
-        hohPrimaryResidence: r.headOfHousehold.primaryResidence as Address,
-        hohMailingAddress: r.headOfHousehold.mailingAddress as Address,
+
+        // these belong to the HOH but we placed them here to simplify the HTML markup...
+        phoneNumber: r.headOfHousehold.phoneNumber as string,
+        phoneNumberAlt: r.headOfHousehold.phoneNumberAlt as string,
+        email: r.headOfHousehold.email as string,
+
+        // primaryResidence: r.headOfHousehold.primaryResidence as Address,
+        // mailingAddress: r.headOfHousehold.mailingAddress as Address,
         completedBy: r.completedBy as Volunteer,
         hostCommunity: hostCommunity as Community,
         incidentTask: incidentTask as IncidentTask,
-        // UI bools
+
+        // UI booleans
         primaryResidenceInBc: primaryResidenceInBc as boolean,
         mailingAddressInBc: mailingAddressInBc as boolean,
         mailingAddressSameAsPrimary: mailingAddressSameAsPrimary as boolean,
       });
-      // alert(JSON.stringify(primaryResidence.province));
 
       // iterate over the array and collect each family member as a formgroup and put them into a form array
       if (familyMembers != null) {
@@ -350,6 +400,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
           this.addFamilyMember(m);
         });
       }
+
+      // TODO: Review the following:
 
       // // These are switches that will be handy maybe.
       // // incident task
@@ -363,39 +415,29 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
       // add the primary residence back into the form
       if (primaryResidence != null) {
-        // alert('Primary not null!');
         this.form.patchValue({
-          hohPrimaryResidence: {
-            id: r.headOfHousehold.primaryResidence.id as string,
-            addressSubtype: r.headOfHousehold.primaryResidence.addressSubtype as string,
-            addressLine1: r.headOfHousehold.primaryResidence.addressLine1 as string,
-            postalCode: r.headOfHousehold.primaryResidence.postalCode as string,
-            city: r.headOfHousehold.primaryResidence.city as string,
-            province: r.headOfHousehold.primaryResidence.province as string,
-            // TODO: why not submitting community information?
-            community: r.headOfHousehold.primaryResidence.community as Community,
-            country: r.headOfHousehold.primaryResidence.country as Country,
-            isBcAddress: primaryResidenceInBc as boolean,
-            // this line should call itself but unfortunately it calls itself infinitely.
-            // isOtherAddress: isOtherAddress(primaryResidence) as boolean,
+          primaryResidence: {
+            addressSubtype: primaryResidence.addressSubtype as string,
+            addressLine1: primaryResidence.addressLine1 as string,
+            postalCode: primaryResidence.postalCode as string,
+            community: primaryResidence.community as Community,
+            city: primaryResidence.city as string,
+            province: primaryResidence.province as string,
+            country: primaryResidence.country as Country,
           },
         });
       }
       // add the mailing address back into the form
       if (mailingAddress != null) {
         this.form.patchValue({
-          hohMailingAddress: {
-            id: mailingAddress.id as string,
+          mailingAddress: {
             addressSubtype: mailingAddress.addressSubtype as string,
             addressLine1: mailingAddress.addressLine1 as string,
-            addressLine2: mailingAddress.addressLine2 as string,
-            addressLine3: mailingAddress.addressLine3 as string,
             postalCode: mailingAddress.postalCode as string,
             community: mailingAddress.community as Community,
             city: mailingAddress.city as string,
             province: mailingAddress.province as string,
             country: mailingAddress.country as Country,
-            isBcAddress: mailingAddressInBc as boolean,
           },
         });
       }
@@ -409,7 +451,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     const reg: any = {
       id: r.id as string,
       restrictedAccess: r.restrictedAccess as boolean,
-      declarationAndConsent: r.declarationAndConsent as boolean,
       essFileNumber: r.essFileNumber as number,
 
       dietaryNeeds: r.dietaryNeeds as boolean,
@@ -423,7 +464,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       medicationNeeds: r.medicationNeeds as boolean,
       selfRegisteredDate: r.selfRegisteredDate as Date,
       registrationCompletionDate: new Date() as Date, // this stamps whenever the data is cleaned up
-      registeringFamilyMembers: r.registeringFamilyMembers as string, // 'yes'or'no'
+      registeringFamilyMembers: r.registeringFamilyMembers as string, // 'yes' or 'no'
       hasThreeDayMedicationSupply: r.hasThreeDayMedicationSupply as boolean,
       hasInquiryReferral: r.hasInquiryReferral as boolean,
       hasHealthServicesReferral: r.hasHealthServicesReferral as boolean,
@@ -465,54 +506,126 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     return reg as Registration;
   }
 
-  submit() {
-    // assume that the registration data is dirty or unformatted
-    const reg = this.formCleanup();
-    // Submit the registration
-    if (this.registration) {
-      // update
-      this.submission = reg;
-      this.registrationService.updateRegistration(reg)
-        .subscribe(() => { });
-    } else {
-      // post new
-      this.submission = reg;
-      this.registrationService.createRegistration(reg)
-        .subscribe(r => {
-          alert(JSON.stringify(r));
-        });
-    }
-  }
-  next() {
-    const registration: Registration = {
-      ...this.registration,
-      ...this.form.value
-    };
-    // update client-side state
-    this.onSave(registration);
+  onSubmit() {
+    this.submitted = true;
+    this.validateForm();
 
-    this.registrationService.createRegistration(registration).subscribe(
-      data => {
-        console.log('NEW REGISTRATION ==>');
-        console.log(data);
-        this.router.navigate(['register-evacuee/confirmation']);
-      },
-      err => {
-        // this.router.navigate(['../error'], { relativeTo: this.route });
-      }
-    );
+    // stop here if form is invalid
+    if (this.form.invalid) {
+      this.errorSummary = 'Some required fields have not been completed.';
+      return;
+    }
+
+    // success!
+    this.errorSummary = null;
+    this.next();
+
+    // TODO: Review code below...
+
+    // // assume that the registration data is dirty or unformatted
+    // const reg = this.formCleanup();
+    // // Submit the registration
+    // if (this.registration) {
+    //   // update
+    //   this.submission = reg;
+    //   this.registrationService.updateRegistration(reg)
+    //     .subscribe(() => { });
+    // } else {
+    //   // post new
+    //   this.submission = reg;
+    //   this.registrationService.createRegistration(reg)
+    //     .subscribe(r => {
+    //       alert(JSON.stringify(r));
+    //     });
+    // }
+  }
+
+  next() {
+    // const registration: Registration = {
+    //   ...this.registration,
+    //   ...this.form.value
+    // };
+
+    // update client-side state
+    this.saveState();
+
     // navigate to the next page.
     // TODO flow to the next element
-    // this.router.navigate(['../confirmation'], { relativeTo: this.route });
+    this.router.navigate(['../confirmation'], { relativeTo: this.route });
+
+    // this.registrationService.createRegistration(registration).subscribe(
+    //   data => {
+    //     console.log('NEW REGISTRATION ==>');
+    //     console.log(data);
+    //     this.router.navigate(['register-evacuee/confirmation']);
+    //   },
+    //   err => {
+    //     // this.router.navigate(['../error'], { relativeTo: this.route });
+    //   }
+    // );
 
   }
-  // back() {
-  // there is no place to go back to on this page. 
-  // If it is useful we can look at how the back button works in the self-registration components
-  // }
 
-  onSave(registration: Registration) {
-    // save the registration in the application state
+  saveState() {
+    const values = this.form.value;
+
+    // ensure proper sub-types are assigned to people entities
+    const personType: 'FMBR' = 'FMBR';
+    const familyMembers: FamilyMember[] = (values.familyMembers as FamilyMember[]).map(fmr => ({ ...fmr, personType }));
+
+    // Use form values to create evacuee registration
+    const registration: Registration = {
+      ...this.registration,
+
+      headOfHousehold: {
+        ...this.registration.headOfHousehold,
+        ...values.headOfHousehold,
+        personType: 'HOH',
+        phoneNumber: values.phoneNumber,
+        phoneNumberAlt: values.phoneNumberAlt,
+        email: values.email,
+        familyMembers,
+        primaryResidence: { ...values.primaryResidence },
+        mailingAddress: values.mailingAddressSameAsPrimary ? null : { ...values.mailingAddress },
+      },
+
+      restrictedAccess: values.restrictedAccess,
+      dietaryNeeds: values.dietaryNeeds as boolean,
+      dietaryNeedsDetails: values.dietaryNeedsDetails as string,
+      disasterAffectDetails: values.disasterAffectDetails as string,
+      externalReferralsDetails: values.externalReferralsDetails as string,
+      facility: values.facility as string,
+      familyRecoveryPlan: values.familyRecoveryPlan as string,
+      followUpDetails: values.followUpDetails as string,
+      insuranceCode: values.insuranceCode as string,
+      medicationNeeds: values.medicationNeeds as boolean,
+      registeringFamilyMembers: values.registeringFamilyMembers as string, // 'yes' or 'no'
+      hasThreeDayMedicationSupply: values.hasThreeDayMedicationSupply as boolean,
+      hasInquiryReferral: values.hasInquiryReferral as boolean,
+      hasHealthServicesReferral: values.hasHealthServicesReferral as boolean,
+      hasFirstAidReferral: values.hasFirstAidReferral as boolean,
+      hasChildCareReferral: values.hasChildCareReferral as boolean,
+      hasPersonalServicesReferral: values.hasPersonalServicesReferral as boolean,
+      hasPetCareReferral: values.hasPetCareReferral as boolean,
+      hasPets: values.hasPets as boolean,
+      requiresAccommodation: values.requiresAccommodation as boolean,
+      requiresClothing: values.requiresClothing as boolean,
+      requiresFood: values.requiresFood as boolean,
+      requiresIncidentals: values.requiresIncidentals as boolean,
+      requiresTransportation: values.requiresTransportation as boolean,
+      requiresSupport: values.requiresSupport as boolean,
+
+      // dates we care about
+      selfRegisteredDate: values.selfRegisteredDate as Date,
+      registrationCompletionDate: new Date() as Date, // this stamps whenever the registration was completed
+
+      // related entities
+      incidentTask: values.incidentTask,
+      hostCommunity: values.hostCommunity,
+      completedBy: values.completedBy,
+    };
+
+    // save the registration to the application state
     this.store.dispatch(new UpdateRegistration({ registration }));
   }
 }

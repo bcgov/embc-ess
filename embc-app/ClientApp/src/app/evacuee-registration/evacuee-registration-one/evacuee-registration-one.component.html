@@ -7,22 +7,17 @@
 
 
 <div class="mb-4">
-  <h1 *ngIf="!editMode">Add an Evacuee</h1>
-  <h1 *ngIf="editMode">Edit an Evacuee</h1>
-  <p>Before starting a new evacuee registration, use the search tool on your dashboard to confirm that the evacuee
-    hasn’t already registered.</p>
+  <h1>{{pageTitle}}</h1>
+  <p *ngIf="createMode">
+    Before starting a new evacuee registration, use the search tool on your dashboard to confirm that the evacuee hasn’t
+    already registered.
+  </p>
   <small>
     All required fields are marked with an asterisk *
   </small>
 </div>
 
-<!-- <p>incidentTask$: {{incidentTask$|async|json}}</p> -->
-<!-- <p>countries$: {{countries$ | async | json}}</p> -->
-<!-- <p>regions$: {{regions$ | async | json}}</p> -->
-<!-- <p>regionalDistricts$: {{regionalDistricts$ | async | json}}</p> -->
-<!-- <p>relationshipTypes$: {{relationshipTypes$ | async | json}}</p> -->
-
-<form [formGroup]="form" (ngSubmit)="submit()">
+<form novalidate [formGroup]="form" (ngSubmit)="onSubmit()">
 
   <!-- TODO: These need to have the task number and host community populated -->
   <div class="mb-4">
@@ -33,7 +28,7 @@
       <label>Task Number</label>
       <select class="form-control" formControlName="incidentTask">
         <option [ngValue]="null">-- Select Incident</option>
-        <option [ngValue]="incident" *ngFor="let incident of incidentTasks.data">
+        <option [ngValue]="incident" *ngFor="let incident of incidentTasks$ | async">
           {{incident.taskNumber}}<span *ngIf="incident.community"> - {{incident.community.name}}</span>
         </option>
       </select>
@@ -225,12 +220,6 @@
         <input class="form-check-input" type="radio" [value]="false" formControlName="primaryResidenceInBc">
         <label class="form-check-label"> No</label>
       </div>
-    </div>
-    <div *ngIf="form.value.primaryResidenceInBc===false" class="alert alert-danger" role="alert">
-      <h4 class="alert-heading">
-        This Evacuee is a Stranded Traveller.
-      </h4>
-      <!-- <p>Relevant procedure and lorem ipsum dolor sit amet...</p> -->
     </div>
   </div>
   <!-- primary residence in BC -->
@@ -428,7 +417,7 @@
               <input type="text" class="form-control" formControlName="addressLine1">
             </div>
           </div>
-          <div class="row mb-2" formGroupName="hohMailingAddress">
+          <div class="row mb-2">
             <div class="col">
               <div required="true">
                 <label>City</label>
@@ -708,15 +697,27 @@
     <textarea class="form-control" placeholder="Details" rows="4" formControlName="externalReferralsDetails"></textarea>
   </div>
 
-  <!-- Submit button! -->
-  <div class="mb-4">
-    <button class="btn btn-primary" (click)="next()">Confirmation</button>
+  <div *ngIf="errorSummary" class="mt-5 pl-5 text-danger">
+    <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon> {{ errorSummary }}
+  </div>
+
+  <div class="mt-5 mb-4 space-between">
+    <section>
+      <a [routerLink]="">
+        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+        <span class="ml-2">Cancel &amp; Close</span>
+      </a>
+    </section>
+    <section>
+      <!-- Submit button! -->
+      <button class="btn btn-primary" type="submit">NEXT</button>
+    </section>
   </div>
 </form>
 
 <!-- Only for debugging. Three boxes with the three data representations. -->
-<div class="row">
-  <div class="col" (click)="submit()">
+<!-- <div class="row">
+  <div class="col">
     <h4>Input State</h4>
     <pre>{{registration | json}}</pre>
   </div>
@@ -728,4 +729,4 @@
     <h4>Form State</h4>
     <pre>{{ this.form.value | json}}</pre>
   </div>
-</div>
+</div> -->

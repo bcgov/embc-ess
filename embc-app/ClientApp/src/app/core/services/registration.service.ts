@@ -13,6 +13,7 @@ import { HttpResponse } from '@angular/common/http';
   providedIn: CoreModule
 })
 export class RegistrationService extends RestService {
+
   getRegistrations(props: SearchQueryParameters = {}): Observable<MetaRegistration> {
     const { limit = 100, offset = 0, q, sort } = props;
     const params = {
@@ -35,8 +36,9 @@ export class RegistrationService extends RestService {
         catchError(this.handleError)
       );
   }
+
   updateRegistration(data: Registration): Observable<HttpResponse<any>> {
-    return this.http.put<HttpResponse<any>>('api/registrations/' + data.id, data, { headers: this.headers })
+    return this.http.put<HttpResponse<any>>(`api/registrations/${data.id}`, data, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -44,7 +46,7 @@ export class RegistrationService extends RestService {
   }
 
   getRegistrationById(id: string): Observable<Registration> {
-    return this.http.get<Registration>('api/registrations/' + id)
+    return this.http.get<Registration>(`api/registrations/${id}`)
       .pipe(
         retry(3),
         catchError(this.handleError),

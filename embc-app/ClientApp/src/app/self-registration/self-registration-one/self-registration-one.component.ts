@@ -149,7 +149,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         nickname: '',
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Add date format (MM/DD/YYYY)
+        dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Split into [DD] [MM] [YYYY]
       }),
       registeringFamilyMembers: [null, Validators.required],
       familyMembers: this.fb.array([]),
@@ -311,7 +311,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       lastName: ['', Validators.required],
       initials: '',
       gender: null,
-      dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Add date format (MM/DD/YYYY)
+      dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Split into [DD] [MM] [YYYY]
       relationshipToEvacuee: [null, Validators.required],
     });
   }
@@ -352,7 +352,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   saveState(): void {
     const form = this.form.value;
 
-    // ensure proper sub-types are assigned
+    // ensure proper sub-types are assigned to people entities
     const personType: 'FMBR' = 'FMBR';
     const familyMembers: FamilyMember[] = (form.familyMembers as FamilyMember[]).map(fmr => ({ ...fmr, personType }));
 
