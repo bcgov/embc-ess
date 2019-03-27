@@ -52,9 +52,8 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public HeadOfHousehold HeadOfHousehold { get; set; }
 
         public IncidentTask IncidentTask { get; set; }
-        // public Community HostCommunity { get; set; }
+        public Community HostCommunity { get; set; }
 
-        // TODO: Should we link to the full User record for an interviewer or just capture basic info (name + last name initial)?
-        // public Volunteer CompletedBy { get; set; }
+        public Volunteer CompletedBy { get; set; }
     }
 }
