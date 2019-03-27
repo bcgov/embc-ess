@@ -6,6 +6,7 @@ import { RestService } from './rest.service';
 import { SearchQueryParameters } from 'src/app/shared/components/search';
 import { retry, catchError } from 'rxjs/operators';
 import { MetaIncidentTask } from '../models/meta-incident-task';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: CoreModule
@@ -31,6 +32,20 @@ export class IncidentTaskService extends RestService {
   getIncident(id: string): Observable<IncidentTask> {
     // return a single matching incident
     return this.http.get<IncidentTask>('api/incidenttasks/' + id, { headers: this.headers })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
+  }
+  createIncidentTask(data: IncidentTask): Observable<IncidentTask> {
+    return this.http.post<IncidentTask>('api/incidenttasks/', data, { headers: this.headers })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
+  }
+  updateIncidentTask(data: IncidentTask): Observable<HttpResponse<any>> {
+    return this.http.put<HttpResponse<any>>('api/incidenttasks/' + data.id, data, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError)
