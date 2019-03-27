@@ -9,11 +9,46 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public partial class DataInterface
     {
+        private IQueryable<Models.Db.Registration> Registrations => db.Registrations
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.FamilyMembers)
+                        .ThenInclude(fmbr => fmbr.RelationshipToEvacuee)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.PrimaryResidence)
+                        .ThenInclude(addr => (addr as Models.Db.BcAddress).Community)
+                            .ThenInclude(c => c.RegionalDistrict)
+                                .ThenInclude(d => d.Region)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.PrimaryResidence)
+                        .ThenInclude(addr => (addr as Models.Db.OtherAddress).Country)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.MailingAddress)
+                        .ThenInclude(addr => (addr as Models.Db.BcAddress).Community)
+                            .ThenInclude(c => c.RegionalDistrict)
+                                .ThenInclude(d => d.Region)
+                .Include(reg => reg.HeadOfHousehold)
+                    .ThenInclude(hoh => hoh.MailingAddress)
+                        .ThenInclude(addr => (addr as Models.Db.OtherAddress).Country)
+                .Include(reg => reg.HostCommunity)
+                    .ThenInclude(c => c.RegionalDistrict)
+                        .ThenInclude(c => c.Region)
+                .Include(reg => reg.CompletedBy)
+                .Include(reg => reg.IncidentTask)
+                    .ThenInclude(t => t.Region)
+                .Include(reg => reg.IncidentTask)
+                    .ThenInclude(t => t.RegionalDistrict)
+                        .ThenInclude(d => d.Region)
+                .Include(reg => reg.IncidentTask)
+                    .ThenInclude(t => t.Community)
+                        .ThenInclude(c => c.RegionalDistrict)
+                            .ThenInclude(d => d.Region)
+           ;
+
         public async Task<Registration> CreateRegistrationAsync(Registration registration)
         {
             var created = await db.Registrations.AddAsync(registration.ToModel());
             await db.SaveChangesAsync();
-            return await GetRegistrationAsync(created.Entity.Id.ToString());
+            return (await Registrations.FirstAsync(r => r.Id == created.Entity.Id)).ToViewModel();
         }
 
         public async Task UpdateRegistrationAsync(Registration registration)
@@ -26,27 +61,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             var q = queryParameters.Query;
 
-            IQueryable<Models.Db.Registration> registrations = db.Registrations
-                .AsNoTracking()
-                .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.FamilyMembers)
-                    .ThenInclude(fmbr => fmbr.RelationshipToEvacuee)
-                .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.PrimaryResidence)
-                    .ThenInclude(addr => (addr as Models.Db.BcAddress).Community)
-                    .ThenInclude(c => c.RegionalDistrict)
-                    .ThenInclude(d => d.Region)
-               .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.PrimaryResidence)
-                    .ThenInclude(addr => (addr as Models.Db.OtherAddress).Country)
-                .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.MailingAddress)
-                    .ThenInclude(addr => (addr as Models.Db.BcAddress).Community)
-                    .ThenInclude(c => c.RegionalDistrict)
-                    .ThenInclude(d => d.Region)
-                .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.MailingAddress)
-                    .ThenInclude(addr => (addr as Models.Db.OtherAddress).Country)
+            IQueryable<Models.Db.Registration> registrations = Registrations
                  .Where(r => !queryParameters.HasQuery() ||
                 (
                     //TODO: see if it is possible to move this into a method, right now EF refuses to work with lazy loading enabled
@@ -57,8 +72,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     (r.IncidentTask != null && r.IncidentTask.TaskNumber.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
                     (r.HeadOfHousehold.PrimaryResidence is Models.Db.BcAddress) &&
                     ((Models.Db.BcAddress)r.HeadOfHousehold.PrimaryResidence).Community.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase))
-                )
-                ;
+                );
 
             if (queryParameters.HasSortBy())
             {
@@ -85,28 +99,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             if (Guid.TryParse(id, out var guid))
             {
-                return await db.Registrations
-                    .AsNoTracking()
-                    .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.FamilyMembers)
-                    .ThenInclude(fmbr => fmbr.RelationshipToEvacuee)
-                .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.PrimaryResidence)
-                    .ThenInclude(addr => (addr as Models.Db.BcAddress).Community)
-                    .ThenInclude(c => c.RegionalDistrict)
-                    .ThenInclude(d => d.Region)
-                .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.PrimaryResidence)
-                    .ThenInclude(addr => (addr as Models.Db.OtherAddress).Country)
-                .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.MailingAddress)
-                    .ThenInclude(addr => (addr as Models.Db.BcAddress).Community)
-                    .ThenInclude(c => c.RegionalDistrict)
-                    .ThenInclude(d => d.Region)
-                .Include(reg => reg.HeadOfHousehold)
-                    .ThenInclude(hoh => hoh.MailingAddress)
-                    .ThenInclude(addr => (addr as Models.Db.OtherAddress).Country)
-                    .FirstOrDefaultAsync(reg => reg.Id == guid);
+                return await Registrations.FirstOrDefaultAsync(reg => reg.Id == guid);
             }
             return null;
         }
