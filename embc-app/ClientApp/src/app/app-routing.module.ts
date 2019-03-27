@@ -23,6 +23,7 @@ import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volu
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminAddTaskNumberComponent } from './admin-add-task-number/admin-add-task-number.component';
 
 const routes: Routes = [
   {
@@ -80,6 +81,10 @@ const routes: Routes = [
   {
     path: 'admin-dashboard',
     component: AdminDashboardComponent
+  },
+  {
+    path: 'add-task-number',
+    component: AdminAddTaskNumberComponent
   },
   {
     path: 'evacuee-summary/:id',
