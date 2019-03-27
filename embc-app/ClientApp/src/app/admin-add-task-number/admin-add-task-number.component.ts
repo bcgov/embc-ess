@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppState } from '../store';
 import { Store } from '@ngrx/store';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-add-task-number',
@@ -18,6 +19,7 @@ export class AdminAddTaskNumberComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>, // ngrx app state
+    private router: Router,
   ) { }
 
   ngOnInit() {

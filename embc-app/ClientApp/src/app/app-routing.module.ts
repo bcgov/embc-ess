@@ -24,6 +24,7 @@ import { VolunteerUsefulInformationComponent } from './volunteer-useful-informat
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminAddTaskNumberComponent } from './admin-add-task-number/admin-add-task-number.component';
+import { AdminAddTaskNumberOneComponent, AdminAddTaskNumberConfirmationComponent } from './admin-add-task-number';
 
 const routes: Routes = [
   {
@@ -84,7 +85,26 @@ const routes: Routes = [
   },
   {
     path: 'add-task-number',
-    component: AdminAddTaskNumberComponent
+    component: AdminAddTaskNumberComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'fill',
+        pathMatch: 'full'
+      },
+      {
+        path: 'fill',
+        component: AdminAddTaskNumberOneComponent
+      },
+      {
+        path: 'fill/:id',
+        component: AdminAddTaskNumberOneComponent
+      },
+      {
+        path: 'confirmation',
+        component: AdminAddTaskNumberConfirmationComponent
+      }
+    ]
   },
   {
     path: 'evacuee-summary/:id',

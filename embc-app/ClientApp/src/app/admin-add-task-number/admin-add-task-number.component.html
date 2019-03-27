@@ -1,51 +1,6 @@
 <div class="row">
   <div class="col col-lg-8">
-    <div class="mb-4">
-      <h1>Add ESS User</h1>
-      <p>The Emergency Coordination Centre is responsible for adding task numbers to the system. If you need a new task
-        number, contact the ECC at 1 800-663-3456.</p>
-      <small>All fields are required</small>
-      <h3 class="blue-header">
-        Task Details
-      </h3>
-      <div class="col mb-4">
-        <label>Task Number</label>
-        <input class="form-control" type="text" [formControl]="taskNumber">
-      </div>
-      <div class="col mb-4">
-        <label>Community</label>
-        <select class="form-control" [formControl]="community">
-          <option [ngValue]="null">-- Select community</option>
-          <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
-        </select>
-      </div>
-      <div class="col mb-4">
-        <label>Details of Incident</label>
-        <input class="form-control" type="text" placeholder="Please specify" [formControl]="details">
-      </div>
-    </div>
-    <div class="col mb-4">
-      <!-- <button class="btn btn-primary">Cancel</button> -->
-      <!-- <button class="btn btn-primary" (click)="submit()">Submit</button> -->
-
-      <button class="btn btn-primary float-right" (click)="next()">Next</button>
-      <a [routerLink]="">
-        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
-        <span class="ml-2">Cancel &amp; Close</span>
-      </a>
-    </div>
-    <!-- TODO Need yellow horizontal rule -->
-
-    <!-- <div class="col mb-4">
-      Task:
-      <pre>{{taskNumber.value}}</pre>
-      <pre>{{community.value|json}}</pre>
-      <pre>{{details.value}}</pre>
-    </div> -->
-
-
-
-
+    <router-outlet></router-outlet>
   </div>
   <!-- Information side bar -->
   <div class="col-12 col-lg-4">
