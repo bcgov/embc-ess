@@ -20,14 +20,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<bool> DeactivateRegistration(string id);
 
-        // Incident Tasks
-        Task<List<IncidentTask>> GetIncidentTasks();
+        #region Incident task
 
-        Task<IncidentTask> GetIncidentTask(string id);
+        Task<IEnumerable<IncidentTask>> GetIncidentTasksAsync();
 
-        Task<IncidentTask> CreateIncidentTask(IncidentTask task);
+        Task<IncidentTask> GetIncidentTaskAsync(string id);
 
-        Task<IncidentTask> UpdateIncidentTask(IncidentTask task);
+        Task<IncidentTask> CreateIncidentTaskAsync(IncidentTask task);
+
+        Task UpdateIncidentTaskAsync(IncidentTask task);
+
+        Task<bool> DeactivateIncidentTaskAsync(string id);
+
+        #endregion Incident task
 
         List<Community> GetCommunities();
 
@@ -42,7 +47,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         #region Organization
 
         //Organizations
-        Task<List<Organization>> GetOrganizationsAsync();
+        Task<IEnumerable<Organization>> GetOrganizationsAsync();
 
         Organization GetOrganizationByLegalName(string name);
 
@@ -50,13 +55,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<Organization> CreateOrganizationAsync(Organization item);
 
-        Task<Organization> UpdateOrganizationAsync(Organization item);
+        Task UpdateOrganizationAsync(Organization item);
 
         Task<bool> DeactivateOrganizationAsync(string id);
 
+        Task<Organization> GetOrganizationAsync(string id);
+
         #endregion Organization
-
-
 
         #region People
 

@@ -17,7 +17,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         [Key]
         public Guid Id { get; set; }
 
-        public bool? Active { get; set; }  // no deletions from DB this is a soft delete.
+        public bool Active { get; set; }  // no deletions from DB this is a soft delete.
 
         [MaxLength(255)]
         public string Name { get; set; }
@@ -27,5 +27,14 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         // siteminder guid
         public string Externaluseridentifier { get; set; }
+
+        public Guid? RegionId { get; set; }
+        public Guid? RegionalDistrictId { get; set; }
+        public Guid? CommunityId { get; set; }
+
+        public virtual Region Region { get; set; }
+
+        public virtual RegionalDistrict RegionalDistrict { get; set; }
+        public virtual Community Community { get; set; }
     }
 }

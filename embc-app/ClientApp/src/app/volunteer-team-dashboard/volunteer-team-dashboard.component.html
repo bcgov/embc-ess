@@ -14,15 +14,26 @@
     </div>
     <div>
       <!-- The start of the table stuff. -->
-      <p>1 - 10 of 2000 <span class="font-weight-bold">ACTIVE</span> volunteers
-        <small class="ml-3">(<a href="">show deactivated</a>)</small>
-      </p>
 
+      <div role="search" class="form-row">
+        <div class="col-md-9">
+          <input #searchbox type="text" aria-label="search" class="form-control mb-2"
+            placeholder="Search for user by last name &hellip;" (keydown.enter)="search(searchbox.value)">
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-primary" (click)="search(searchbox.value)">Search</button>
+        </div>
+      </div>
       <div class="search-results">
-        <div *ngIf="volunteers && volunteers.length>0; then searchResultsTable; else notFound"></div>
+        <div *ngIf="metaVolunteers && metaVolunteers.data.length>0; then searchResultsTable; else notFound"></div>
       </div>
 
       <ng-template #searchResultsTable>
+        <p> {{metaVolunteers.metadata.page*metaVolunteers.metadata.pageSize}} - {{metaVolunteers.metadata.pageSize}} of
+          {{metaVolunteers.metadata.totalCount}} <span class="font-weight-bold">ACTIVE</span>
+          volunteers
+          <small class="ml-3">(<a href="">show deactivated</a>)</small>
+        </p>
         <table class="table">
           <thead class="thead-light">
             <th scope="col">LAST NAME</th>
@@ -32,7 +43,7 @@
             <th scope="col">ACTION</th>
           </thead>
           <tbody>
-            <tr *ngFor="let volunteer of volunteers">
+            <tr *ngFor="let volunteer of metaVolunteers.data">
               <td>{{volunteer.lastName}}</td>
               <td>{{volunteer.firstName}}</td>
               <td>{{volunteer.bceidAccountNumber}}</td>
@@ -49,7 +60,9 @@
       </ng-template>
 
       <ng-template #notFound>
-        <!-- <p>{{notFoundMessage}}</p> -->
+        <p>
+          {{notFoundMessage}}
+        </p>
       </ng-template>
 
     </div>
