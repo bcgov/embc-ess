@@ -3,6 +3,8 @@ import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IncidentTask } from 'src/app/core/models';
+import { UpdateIncidentTask } from 'src/app/store/incident-tasks/incident-tasks.actions';
 
 @Component({
   selector: 'app-admin-add-task-number-one',
@@ -17,6 +19,7 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
   taskNumber: FormControl;
   community: FormControl;
   details: FormControl;
+  incidentTask: IncidentTask;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,6 +27,7 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
     private store: Store<AppState>, ) { }
 
   ngOnInit() {
+    // initialize form for collection
     this.initForm();
   }
   initForm() {
@@ -35,21 +39,19 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
   next(): void {
     // when routing to the next page we save first into the application state.
     this.onSave();
-    // if (this.volunteer.lastName && this.volunteer.firstName && this.volunteer.bceidAccountNumber && this.volunteer.canAccessRestrictedFiles != null) {
-    //   // simple check to be sure that all fields are included.
-    //   this.router.navigate(['volunteer-edit/confirmation']);
-    // } else {
-    //   alert("All fields are required.");
-    // }
+    // information saved in state. Navigate to confirm page
+    this.router.navigate(['add-task-number/confirmation']);
   }
 
   onSave(): void {
-    // stuff the data back into the volunteer object
-    //   const volunteer: Volunteer = this.volunteer;
-    //   volunteer.lastName = this.lastName.value;
-    //   volunteer.firstName = this.firstName.value;
-    //   volunteer.bceidAccountNumber = this.bceid.value;
-    //   volunteer.canAccessRestrictedFiles = this.restrictedAccess.value;
-    //   this.store.dispatch(new UpdateVolunteer({ volunteer }))
+    // stuff the data into an incidentTask object
+    const incidentTask: IncidentTask = {
+      id: null,
+      taskNumber: this.taskNumber.value,
+      community: this.community.value,
+      details: this.details.value,
+    };
+    this.incidentTask = incidentTask;
+    this.store.dispatch(new UpdateIncidentTask({ incidentTask }));
   }
 }

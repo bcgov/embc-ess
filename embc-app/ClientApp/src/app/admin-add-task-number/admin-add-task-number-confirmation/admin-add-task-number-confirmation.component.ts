@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IncidentTask } from 'src/app/core/models';
 
 @Component({
   selector: 'app-admin-add-task-number-confirmation',
@@ -6,9 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin-add-task-number-confirmation.component.scss']
 })
 export class AdminAddTaskNumberConfirmationComponent implements OnInit {
-
   constructor() { }
-
   ngOnInit() {
   }
 
