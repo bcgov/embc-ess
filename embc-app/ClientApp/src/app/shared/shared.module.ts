@@ -20,6 +20,10 @@ import { SearchBarComponent, EvacueeSearchResultsComponent } from './components/
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { ByIdPipe } from './pipes/by-id.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
+import { AddEvacueeComponent } from './components/side-boxes/add-evacuee/add-evacuee.component';
+import { AddOrganizationComponent } from './components/side-boxes/add-organization/add-organization.component';
+import { AddTaskNumberComponent } from './components/side-boxes/add-task-number/add-task-number.component';
+import { AddUserComponent } from './components/side-boxes/add-user/add-user.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +43,10 @@ import { PluckPipe } from './pipes/pluck.pipe';
     YesNoPipe,
     ByIdPipe,
     PluckPipe,
+    AddEvacueeComponent,
+    AddOrganizationComponent,
+    AddTaskNumberComponent,
+    AddUserComponent,
   ],
   imports: [
     CommonModule,
