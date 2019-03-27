@@ -6,7 +6,10 @@
       <p>Here you'll be able to add task numbers, organizations and users, as well as register and maintain evacuees.
       </p>
       <h3 class="blue-header">ALL EVACUEES</h3>
-
+      <!-- <p *ngFor="let i of incidentTasks.data.details">{{i|json}}</p> -->
+      <pre>
+        {{incidentTasks.data|json}}
+      </pre>
       <!-- <app-search-bar #searchBar (valueChange)="doSearch($event)"
         placeholder="Search by task number / last name / registration number / community ...">
       </app-search-bar> -->
