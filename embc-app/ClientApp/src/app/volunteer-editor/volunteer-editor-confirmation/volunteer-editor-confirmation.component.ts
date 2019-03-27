@@ -17,9 +17,6 @@ export class VolunteerEditorConfirmationComponent implements OnInit {
   currentVolunteer$ = this.store.select(s => s.volunteers.currentVolunteer);
   volunteer: Volunteer;
 
-  // whatever came back from the service
-  results: any;
-
   constructor(
     private store: Store<AppState>,
     private volunteerService: VolunteerService,
