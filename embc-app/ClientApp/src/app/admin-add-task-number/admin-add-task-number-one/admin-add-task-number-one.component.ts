@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-add-task-number-one',
@@ -18,8 +19,9 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
   details: FormControl;
 
   constructor(
-    private store: Store<AppState>, // ngrx app state
-  ) { }
+    private route: ActivatedRoute,
+    private router: Router,
+    private store: Store<AppState>, ) { }
 
   ngOnInit() {
     this.initForm();
@@ -30,8 +32,24 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
     this.community = new FormControl(null);
     this.details = new FormControl(null);
   }
-  next() {
-    // this will eventually go to the next page instead of a simple submit
-    alert("next please")
+  next(): void {
+    // when routing to the next page we save first into the application state.
+    this.onSave();
+    // if (this.volunteer.lastName && this.volunteer.firstName && this.volunteer.bceidAccountNumber && this.volunteer.canAccessRestrictedFiles != null) {
+    //   // simple check to be sure that all fields are included.
+    //   this.router.navigate(['volunteer-edit/confirmation']);
+    // } else {
+    //   alert("All fields are required.");
+    // }
+  }
+
+  onSave(): void {
+    // stuff the data back into the volunteer object
+    //   const volunteer: Volunteer = this.volunteer;
+    //   volunteer.lastName = this.lastName.value;
+    //   volunteer.firstName = this.firstName.value;
+    //   volunteer.bceidAccountNumber = this.bceid.value;
+    //   volunteer.canAccessRestrictedFiles = this.restrictedAccess.value;
+    //   this.store.dispatch(new UpdateVolunteer({ volunteer }))
   }
 }
