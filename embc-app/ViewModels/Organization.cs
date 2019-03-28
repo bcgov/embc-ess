@@ -9,8 +9,8 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string Externaluseridentifier { get; set; }
         //public Person PrimaryContact { get; set; }
 
-        public virtual Region Region { get; set; }
-        public virtual RegionalDistrict RegionalDistrict { get; set; }
-        public virtual Community Community { get; set; }
+        public Region Region { get; set; }
+        public RegionalDistrict RegionalDistrict { get; set; }
+        public Community Community { get; set; }
     }
 }

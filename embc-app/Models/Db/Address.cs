@@ -49,7 +49,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
     {
         public Guid CommunityId { get; set; }
 
-        public virtual Community Community { get; set; }
+        public Community Community { get; set; }
 
         public BcAddress()
         {
@@ -65,7 +65,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public Guid CountryId { get; set; }
 
-        public virtual Country Country { get; set; }
+        public Country Country { get; set; }
 
         public OtherAddress()
         {

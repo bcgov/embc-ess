@@ -50,7 +50,6 @@ namespace Gov.Jag.Embc.Public
 
             services.AddDbContext<EmbcDbContext>(
                 options => options
-                    .UseLazyLoadingProxies()
                     .UseSqlServer(DatabaseTools.GetConnectionString(Configuration)));
 
             // Add a memory cache

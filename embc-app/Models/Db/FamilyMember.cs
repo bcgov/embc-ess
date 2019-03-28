@@ -10,7 +10,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         // related entities
         public string RelationshipToEvacueeCode { get; set; }
 
-        public virtual FamilyRelationshipType RelationshipToEvacuee { get; set; }
+        public FamilyRelationshipType RelationshipToEvacuee { get; set; }
 
         public FamilyMember()
         {
