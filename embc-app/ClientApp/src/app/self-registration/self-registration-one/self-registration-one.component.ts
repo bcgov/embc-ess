@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl } from '
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { skipWhile, takeWhile } from 'rxjs/operators';
+import * as moment from 'moment';
 
 import { Registration, FamilyMember, isBcAddress } from 'src/app/core/models';
 import { AppState } from 'src/app/store';
@@ -10,7 +11,6 @@ import { UpdateRegistration } from 'src/app/store/registration/registration.acti
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { clearFormArray, hasErrors, invalidField } from 'src/app/shared/utils';
-
 
 @Component({
   selector: 'app-self-registration-one',
@@ -63,7 +63,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         },
         dob: {
           required: 'Please enter your date of birth.',
-          dateInThePast: 'Date of birth must be today or in the past.',
+          maxDate: 'Date of birth must be today or in the past.',
         },
       },
       registeringFamilyMembers: {
@@ -149,7 +149,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         nickname: '',
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
       }),
       registeringFamilyMembers: [null, Validators.required],
       familyMembers: this.fb.array([]),
@@ -311,7 +311,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       lastName: ['', Validators.required],
       initials: '',
       gender: null,
-      dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Split into [DD] [MM] [YYYY]
+      dob: [null, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
       relationshipToEvacuee: [null, Validators.required],
     });
   }

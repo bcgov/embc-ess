@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 
 import { AppState } from '../../store';
 import { RegistrationService } from '../../core/services/registration.service';
@@ -74,13 +75,13 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     // These could instead be retrieved from a file or database.
     this.constraints = {
       incidentTask: {
-        required: 'Please select a task number from the dropdown list.'
+        required: 'Please select a task number from the list.'
       },
       facility: {
-        required: 'Please enter a facility name.'
+        required: 'Please state the Facility Name / Registration Location.'
       },
       hostCommunity: {
-        required: 'Please select a host community from the dropdown list.'
+        required: 'Please select the host community from the list.'
       },
       headOfHousehold: {
         firstName: {
@@ -91,7 +92,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         },
         dob: {
           required: 'Please enter your date of birth.',
-          dateInThePast: 'Date of birth must be today or in the past.',
+          maxDate: 'Date of birth must be today or in the past.',
         },
       },
       registeringFamilyMembers: {
@@ -114,7 +115,25 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       },
       email: {
         email: 'Please enter a valid email address.',
-      }
+      },
+      dietaryNeeds: {
+        required: 'Please make a selection regarding dietary requirements.',
+      },
+      dietaryNeedsDetails: {
+        required: 'Please specify details regarding dietary requirements.',
+      },
+      medicationNeeds: {
+        required: 'Please make a selection regarding medication.',
+      },
+      hasPets: {
+        required: 'Please make a selection regarding pets.',
+      },
+      insuranceCode: {
+        required: 'Please make a selection regarding insurance coverage.',
+      },
+      requiresSupport: {
+        required: 'Please select whether supports are required.',
+      },
     };
 
     // Define an instance of the validator for use with this form,
@@ -132,25 +151,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     // this is a way to grab the familymembers in a typed way
     return this.f.familyMembers as FormArray;
   }
-
-  // isBcAddress(a: Address): boolean {
-  //   if (a.province === 'BC') {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
-  // TODO: Review these...
-  // setHohPrimaryResidenceProvince() {
-  //   // if the unset flag is true or a value it clears the values
-  //   const patch = { hohPrimaryResidence: { province: 'BC', country: { name: 'Canada' } } };
-  //   this.form.patchValue(patch);
-  // }
-  // setHohMailingAddressProvince() {
-  //   const patch = { hohMailingAddress: { province: 'BC', country: { name: 'Canada' } } };
-  //   this.form.patchValue(patch);
-  // }
 
   ngOnInit() {
     // Create form controls
@@ -194,7 +194,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         lastName: [fmbr.lastName, Validators.required],
         initials: fmbr.initials,
         gender: fmbr.gender,
-        dob: [new Date(fmbr.dob).toString(), [Validators.required, CustomValidators.dateInThePast()]], // TODO: check this!!
+        dob: [new Date(fmbr.dob).toString(), [Validators.required, CustomValidators.maxDate(moment())]], // TODO: check this!!
         relationshipToEvacuee: [fmbr.relationshipToEvacuee, Validators.required],
       });
     } else {
@@ -205,7 +205,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         lastName: ['', Validators.required],
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
         relationshipToEvacuee: [null, Validators.required],
       });
     }
@@ -216,7 +216,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       restrictedAccess: false,
       essFileNumber: null,
       dietaryNeeds: [null, Validators.required],
-      dietaryNeedsDetails: '',
+      dietaryNeedsDetails: [null, CustomValidators.requiredWhenTrue('dietaryNeeds')],
       disasterAffectDetails: null,
       externalReferralsDetails: '',
       facility: [null, Validators.required],
@@ -273,7 +273,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         nickname: '',
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
       }),
 
       familyMembers: this.formBuilder.array([]), // array of formGroups
@@ -455,67 +455,67 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     }
   }
 
-  formCleanup() {
-    // TODO: make sure this is sent back to the api in a well formed way.
-    // freeze the form values into a constant
-    const r = this.form.value;
-    const reg: any = {
-      id: r.id as string,
-      restrictedAccess: r.restrictedAccess as boolean,
-      essFileNumber: r.essFileNumber as number,
+  // formCleanup() {
+  //   // TODO: make sure this is sent back to the api in a well formed way.
+  //   // freeze the form values into a constant
+  //   const r = this.form.value;
+  //   const reg: any = {
+  //     id: r.id as string,
+  //     restrictedAccess: r.restrictedAccess as boolean,
+  //     essFileNumber: r.essFileNumber as number,
 
-      dietaryNeeds: r.dietaryNeeds as boolean,
-      dietaryNeedsDetails: r.dietaryNeedsDetails as string,
-      disasterAffectDetails: r.disasterAffectDetails as string,
-      externalReferralsDetails: r.externalReferralsDetails as string,
-      facility: r.facility as string,
-      familyRecoveryPlan: r.familyRecoveryPlan as string,
-      followUpDetails: r.followUpDetails as string,
-      insuranceCode: r.insuranceCode as string,
-      medicationNeeds: r.medicationNeeds as boolean,
-      selfRegisteredDate: r.selfRegisteredDate as Date,
-      registrationCompletionDate: new Date() as Date, // this stamps whenever the data is cleaned up
-      registeringFamilyMembers: r.registeringFamilyMembers as string, // 'yes' or 'no'
-      hasThreeDayMedicationSupply: r.hasThreeDayMedicationSupply as boolean,
-      hasInquiryReferral: r.hasInquiryReferral as boolean,
-      hasHealthServicesReferral: r.hasHealthServicesReferral as boolean,
-      hasFirstAidReferral: r.hasFirstAidReferral as boolean,
-      hasChildCareReferral: r.hasChildCareReferral as boolean,
-      hasPersonalServicesReferral: r.hasPersonalServicesReferral as boolean,
-      hasPetCareReferral: r.hasPetCareReferral as boolean,
-      hasPets: r.hasPets as boolean,
-      requiresAccomodation: r.requiresAccomodation as boolean,
-      requiresClothing: r.requiresClothing as boolean,
-      requiresFood: r.requiresFood as boolean,
-      requiresIncidentals: r.requiresIncidentals as boolean,
-      requiresTransportation: r.requiresTransportation as boolean,
-      requiresSupport: r.requiresSupport as boolean,
+  //     dietaryNeeds: r.dietaryNeeds as boolean,
+  //     dietaryNeedsDetails: r.dietaryNeedsDetails as string,
+  //     disasterAffectDetails: r.disasterAffectDetails as string,
+  //     externalReferralsDetails: r.externalReferralsDetails as string,
+  //     facility: r.facility as string,
+  //     familyRecoveryPlan: r.familyRecoveryPlan as string,
+  //     followUpDetails: r.followUpDetails as string,
+  //     insuranceCode: r.insuranceCode as string,
+  //     medicationNeeds: r.medicationNeeds as boolean,
+  //     selfRegisteredDate: r.selfRegisteredDate as Date,
+  //     registrationCompletionDate: new Date() as Date, // this stamps whenever the data is cleaned up
+  //     registeringFamilyMembers: r.registeringFamilyMembers as string, // 'yes' or 'no'
+  //     hasThreeDayMedicationSupply: r.hasThreeDayMedicationSupply as boolean,
+  //     hasInquiryReferral: r.hasInquiryReferral as boolean,
+  //     hasHealthServicesReferral: r.hasHealthServicesReferral as boolean,
+  //     hasFirstAidReferral: r.hasFirstAidReferral as boolean,
+  //     hasChildCareReferral: r.hasChildCareReferral as boolean,
+  //     hasPersonalServicesReferral: r.hasPersonalServicesReferral as boolean,
+  //     hasPetCareReferral: r.hasPetCareReferral as boolean,
+  //     hasPets: r.hasPets as boolean,
+  //     requiresAccomodation: r.requiresAccomodation as boolean,
+  //     requiresClothing: r.requiresClothing as boolean,
+  //     requiresFood: r.requiresFood as boolean,
+  //     requiresIncidentals: r.requiresIncidentals as boolean,
+  //     requiresTransportation: r.requiresTransportation as boolean,
+  //     requiresSupport: r.requiresSupport as boolean,
 
-      headOfHousehold: {
-        id: r.headOfHousehold.id as string,
-        active: r.headOfHousehold.active as boolean,
-        phoneNumber: r.headOfHousehold.phoneNumber as string,
-        phoneNumberAlt: r.headOfHousehold.phoneNumberAlt as string,
-        email: r.headOfHousehold.email as string,
-        firstName: r.headOfHousehold.firstName as string,
-        lastName: r.headOfHousehold.lastName as string,
-        nickname: r.headOfHousehold.nickname as string,
-        initials: r.headOfHousehold.initials as string,
-        gender: r.headOfHousehold.gender as string,
-        dob: r.headOfHousehold.dob as Date,
-        bcServicesNumber: r.headOfHousehold.bcServicesNumber as string,
-        primaryResidence: r.hohPrimaryResidence as Address,
-        mailingAddress: r.hohMailingAddress as Address,
-        familyMembers: r.familyMembers as FamilyMember[],
-        personType: r.headOfHousehold.personType as string,
-      },
-      incidentTask: r.incidentTask as IncidentTask,
-      hostCommunity: r.hostCommunity as Community,
-    };
+  //     headOfHousehold: {
+  //       id: r.headOfHousehold.id as string,
+  //       active: r.headOfHousehold.active as boolean,
+  //       phoneNumber: r.headOfHousehold.phoneNumber as string,
+  //       phoneNumberAlt: r.headOfHousehold.phoneNumberAlt as string,
+  //       email: r.headOfHousehold.email as string,
+  //       firstName: r.headOfHousehold.firstName as string,
+  //       lastName: r.headOfHousehold.lastName as string,
+  //       nickname: r.headOfHousehold.nickname as string,
+  //       initials: r.headOfHousehold.initials as string,
+  //       gender: r.headOfHousehold.gender as string,
+  //       dob: r.headOfHousehold.dob as Date,
+  //       bcServicesNumber: r.headOfHousehold.bcServicesNumber as string,
+  //       primaryResidence: r.hohPrimaryResidence as Address,
+  //       mailingAddress: r.hohMailingAddress as Address,
+  //       familyMembers: r.familyMembers as FamilyMember[],
+  //       personType: r.headOfHousehold.personType as string,
+  //     },
+  //     incidentTask: r.incidentTask as IncidentTask,
+  //     hostCommunity: r.hostCommunity as Community,
+  //   };
 
 
-    return reg as Registration;
-  }
+  //   return reg as Registration;
+  // }
 
   onSubmit() {
     this.submitted = true;

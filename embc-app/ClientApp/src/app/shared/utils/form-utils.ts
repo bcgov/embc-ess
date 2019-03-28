@@ -7,7 +7,8 @@ export function clearFormArray(formArray: FormArray): void {
 }
 
 export function invalidField(parent: FormGroup, field: string, submitted = false): boolean {
-  return parent.get(field).invalid && submitted;
+  const c = parent.get(field);
+  return c && c.invalid && submitted;
 }
 
 export function hasErrors(parent: FormGroup, field: string, errorCodes = ['required']): boolean {
