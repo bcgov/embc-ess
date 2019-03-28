@@ -5,6 +5,7 @@ using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
@@ -17,41 +18,51 @@ namespace Gov.Jag.Embc.Public.Controllers
     public class OrganizationsController : Controller
     {
         private readonly BCeIDBusinessQuery _bceid;
+        private readonly IConfiguration Configuration;
 
         //private readonly SharePointFileManager _sharePointFileManager;
-        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private readonly ILogger logger;
-        private readonly IDataInterface dataInterface;
+        private readonly ILogger _logger;
+        private readonly IDataInterface _dataInterface;
 
-        public OrganizationsController(
+        public OrganizationsController(IConfiguration configuration,
             IHttpContextAccessor httpContextAccessor,
             //BCeIDBusinessQuery bceid, //TODO: Need to restore when BCeIDBusinessQuery is working
             ILoggerFactory loggerFactory, IDataInterface dataInterface)
         {
+            Configuration = configuration;
             //_bceid = bceid;
 
-            this.httpContextAccessor = httpContextAccessor;
+            _httpContextAccessor = httpContextAccessor;
             //_sharePointFileManager = sharePointFileManager;
-            logger = loggerFactory.CreateLogger(typeof(OrganizationsController));
-            this.dataInterface = dataInterface;
+            _logger = loggerFactory.CreateLogger(typeof(OrganizationsController));
+            _dataInterface = dataInterface;
         }
 
-        public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters searchQuery)
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters queryParameters)
         {
             try
             {
-                var items = await dataInterface.GetOrganizationsAsync(searchQuery);
+                var results = new PaginatedList<Organization>(await _dataInterface.GetOrganizationsAsync(), 0, queryParameters.Offset, queryParameters.Limit);
+                var paginationMetadata = new PaginationMetadata()
+                {
+                    CurrentPage = results.GetCurrentPage(),
+                    PageSize = results.Limit,
+                    TotalCount = results.TotalItemCount,
+                    TotalPages = results.GetTotalPages()
+                };
 
                 return Json(new
                 {
-                    data = items.Items,
-                    metadata = items.Pagination
+                    data = results,
+                    metadata = paginationMetadata
                 });
             }
             catch (Exception e)
             {
-                logger.LogError(e.ToString());
+                _logger.LogError(e.ToString());
                 return BadRequest(e.ToString());
             }
         }
@@ -59,7 +70,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOne(string id)
         {
-            var result = await dataInterface.GetOrganizationAsync(id);
+            var result = await _dataInterface.GetOrganizationAsync(id);
 
             if (result == null)
             {
@@ -81,17 +92,18 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 item.Id = null;
                 item.Active = true;
-                var result = await dataInterface.CreateOrganizationAsync(item);
+                var result = await _dataInterface.CreateOrganizationAsync(item);
                 return Json(result);
             }
             catch (Exception e)
             {
-                logger.LogError(e.ToString());
+                _logger.LogError(e.ToString());
                 return BadRequest(e.ToString());
             }
         }
 
         [HttpPut("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Update([FromBody] ViewModels.Organization item, string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -111,29 +123,30 @@ namespace Gov.Jag.Embc.Public.Controllers
 
             try
             {
-                await dataInterface.UpdateOrganizationAsync(item);
+                await _dataInterface.UpdateOrganizationAsync(item);
                 return Ok();
             }
             catch (Exception e)
             {
-                logger.LogError(e.ToString());
+                _logger.LogError(e.ToString());
                 return BadRequest(e.ToString());
             }
         }
 
         [HttpDelete("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Delete(string id)
         {
             if (string.IsNullOrWhiteSpace(id)) return BadRequest();
 
             try
             {
-                var result = await dataInterface.DeactivateOrganizationAsync(id);
+                var result = await _dataInterface.DeactivateOrganizationAsync(id);
                 return Ok();
             }
             catch (Exception e)
             {
-                logger.LogError(e.ToString());
+                _logger.LogError(e.ToString());
                 return BadRequest(e.ToString());
             }
         }

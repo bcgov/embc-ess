@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Gov.Jag.Embc.Public.Models.Db
@@ -14,8 +13,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
         [MaxLength(255)]
         public string Email { get; set; }
 
-        public bool Active { get; set; }  // no deletions from DB this is a soft delete.
-
         public string BceidAccountNumber { get; set; }
         public bool? IsNewUser { get; set; }
         public bool? IsAdministrator { get; set; }
@@ -26,8 +23,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string Externaluseridentifier { get; set; }
 
         // related entities
-        public Guid? OrganizationId { get; set; }
-
         public virtual Organization Organization { get; set; }
 
         public Volunteer()

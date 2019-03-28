@@ -1,7 +1,7 @@
-using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,25 +12,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         private IQueryable<Models.Db.Organization> Organizations => db.Organizations
                 .Include(x => x.Region)
                 .Include(x => x.RegionalDistrict)
-                    .ThenInclude(x => x.Region)
-                .Include(x => x.Community)
-                    .ThenInclude(x => x.RegionalDistrict)
-                        .ThenInclude(x => x.Region);
+                .Include(x => x.Community);
 
-        public async Task<IPagedResults<Organization>> GetOrganizationsAsync(SearchQueryParameters searchQuery)
+        public async Task<IEnumerable<Organization>> GetOrganizationsAsync()
         {
-            Guid? searchEntityId = searchQuery.HasQuery() ? Guid.Parse(searchQuery.Query) : (Guid?)null;
-            var items = await Organizations
-                .Where(o => !searchEntityId.HasValue ||
-                    o.Community.Id == searchEntityId ||
-                    o.RegionalDistrict.Id == searchEntityId ||
-                    o.Region.Id == searchEntityId
-                )
-                .Where(t => searchQuery.IncludeDeactivated || t.Active)
-                .Sort(searchQuery.SortBy ?? "id")
-                .ToArrayAsync();
-
-            return new PaginatedList<Organization>(items.Select(o => o.ToViewModel()), searchQuery.Offset, searchQuery.Limit);
+            return (await Organizations.ToArrayAsync()).Select(o => o.ToViewModel());
         }
 
         public Organization GetOrganizationByLegalName(string name)
@@ -51,7 +37,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         private async Task<Models.Db.Organization> GetOrganizationInternalAsync(Guid id)
         {
-            return await Organizations.SingleOrDefaultAsync(x => x.Id == id);
+            return await Organizations.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Organization> CreateOrganizationAsync(Organization item)
@@ -70,7 +56,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<bool> DeactivateOrganizationAsync(string id)
         {
-            var entity = await db.Organizations.SingleOrDefaultAsync(x => x.Id == new Guid(id));
+            var entity = await db.Organizations.FirstOrDefaultAsync(x => x.Id == new Guid(id));
             if (entity == null)
             {
                 return false;

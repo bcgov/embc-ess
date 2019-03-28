@@ -1,7 +1,7 @@
-using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,22 +17,16 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     .ThenInclude(c => c.RegionalDistrict)
                         .ThenInclude(d => d.Region);
 
-        public async Task<IPagedResults<IncidentTask>> GetIncidentTasksAsync(SearchQueryParameters searchQuery)
+        public async Task<IEnumerable<IncidentTask>> GetIncidentTasksAsync()
         {
-            var items = await IncidentTasks
-                .Where(t => !searchQuery.HasQuery() || t.Community.Id == Guid.Parse(searchQuery.Query))
-                .Where(t => searchQuery.IncludeDeactivated || t.Active)
-                .Sort(searchQuery.SortBy ?? "id")
-                .ToArrayAsync();
-
-            return new PaginatedList<IncidentTask>(items.Select(t => t.ToViewModel()), searchQuery.Offset, searchQuery.Limit);
+            return (await IncidentTasks.ToArrayAsync()).Select(task => task.ToViewModel());
         }
 
         public async Task<IncidentTask> GetIncidentTaskAsync(string id)
         {
             if (Guid.TryParse(id, out var guid))
             {
-                var entity = await IncidentTasks.SingleOrDefaultAsync(task => task.Id == guid);
+                var entity = await IncidentTasks.FirstOrDefaultAsync(task => task.Id == guid);
                 return entity?.ToViewModel();
             }
             return null;
@@ -42,7 +36,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             var newItem = db.IncidentTasks.Add(task.ToModel());
             await db.SaveChangesAsync();
-            return (await IncidentTasks.SingleAsync(t => t.Id == newItem.Entity.Id)).ToViewModel();
+            return (await IncidentTasks.FirstAsync(t => t.Id == newItem.Entity.Id)).ToViewModel();
         }
 
         public async Task UpdateIncidentTaskAsync(IncidentTask task)
@@ -53,7 +47,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<bool> DeactivateIncidentTaskAsync(string id)
         {
-            var entity = await db.IncidentTasks.SingleAsync(x => x.Id == Guid.Parse(id));
+            var entity = await db.IncidentTasks.FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
             if (entity == null)
             {
                 return false;

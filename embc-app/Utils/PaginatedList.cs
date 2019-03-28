@@ -1,37 +1,47 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Gov.Jag.Embc.Public.Utils
 {
-    public interface IPagedResults<T>
-    {
-        PaginationMetadata Pagination { get; }
-        IEnumerable<T> Items { get; }
-    }
-
     /// <summary>
     /// A list that supports pagination in the form of Limit/Offset
     /// </summary>
-    public class PaginatedList<T> : IPagedResults<T>
+    public class PaginatedList<T> : List<T>
     {
-        public PaginationMetadata Pagination { get; }
-        public IEnumerable<T> Items { get; }
+        // Have a sensible maximum for the limit parameter...
+        private const int maxLimit = 500;
 
-        public PaginatedList(IEnumerable<T> items, int offset, int limit)
+        public int Limit { get; private set; }
+        public int Offset { get; private set; }
+        public int TotalItemCount { get; private set; }
+
+        public bool HasPreviousPage()
         {
-            var itemCount = items.Count();
-            double pageSize = limit;
-            Pagination = new PaginationMetadata()
-            {
-                CurrentPage = (int)Math.Floor(offset / pageSize) + 1,
-                PageSize = limit,
-                TotalCount = itemCount,
-                TotalPages = (int)Math.Ceiling(itemCount / pageSize)
-            };
-            Items = items.Skip(offset)
-                .Take(limit)
-                .ToArray();
+            return GetCurrentPage() > 1;
+        }
+
+        public bool HasNextPage()
+        {
+            return GetCurrentPage() < this.GetTotalPages();
+        }
+
+        public int GetCurrentPage()
+        {
+            double pageSize = (double)this.Limit;
+            return (int)Math.Floor(this.Offset / pageSize) + 1;
+        }
+
+        public int GetTotalPages()
+        {
+            double pageSize = (double)this.Limit;
+            return (int)Math.Ceiling(this.TotalItemCount / pageSize);
+        }
+
+        public PaginatedList(IEnumerable<T> items, int count, int offset, int limit) : base(items)
+        {
+            Offset = offset;
+            Limit = (limit > maxLimit ? maxLimit : limit);
+            TotalItemCount = count;
         }
     }
 }

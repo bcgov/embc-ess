@@ -1,8 +1,7 @@
-using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
-using Gov.Jag.Embc.Public.ViewModels.Search;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,18 +9,36 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public partial class DataInterface
     {
-        private IQueryable<Models.Db.Volunteer> Volunteers => db.People
-            .Where(p => p is Models.Db.Volunteer)
-            .Cast<Models.Db.Volunteer>()
-            .Include(v => v.Organization)
-                .ThenInclude(x => x.Region)
-            .Include(v => v.Organization)
-                .ThenInclude(x => x.RegionalDistrict)
-            .Include(v => v.Organization)
-                .ThenInclude(x => x.Community)
-                    .ThenInclude(x => x.RegionalDistrict)
-                        .ThenInclude(x => x.Region)
-        ;
+        private IQueryable<Models.Db.Person> GetAllPeopleAsync(string type)
+        {
+            IQueryable<Models.Db.Person> result = null;
+            if (type == Models.Db.Person.VOLUNTEER)
+            {
+                result = db.People.Include(x => ((Models.Db.Volunteer)x).Organization)
+                    .Where(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase));
+            }
+            else
+            {
+                result = db.People.Where(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase));
+            }
+            return result;
+        }
+
+        private async Task<Models.Db.Person> GetSinglePersonByIdAsync(string type, string id)
+        {
+            Models.Db.Person result = null;
+            if (type == Models.Db.Person.VOLUNTEER)
+            {
+                result = await db.People
+                    .Include(x => ((Models.Db.Volunteer)x).Organization)
+                    .FirstOrDefaultAsync(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase) && p.Id == Guid.Parse(id));
+            }
+            else
+            {
+                result = await db.People.FirstOrDefaultAsync(p => p.PersonType.Equals(type, StringComparison.OrdinalIgnoreCase) && p.Id == Guid.Parse(id));
+            }
+            return result;
+        }
 
         public async Task UpdatePersonAsync(Person person)
         {
@@ -29,42 +46,31 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             await db.SaveChangesAsync();
         }
 
-        public async Task<IPagedResults<Person>> GetVolunteersAsync(VolunteersSearchQueryParameters searchQuery)
+        public async Task<IEnumerable<Person>> GetPeopleAsync(string type)
         {
-            var items = await Volunteers
-                 .Where(v => !searchQuery.HasQuery() || v.LastName.Contains(searchQuery.Query, StringComparison.InvariantCultureIgnoreCase))
-                 .Where(v => !searchQuery.OnlyEssUsers.HasValue || v.IsAdministrator != searchQuery.OnlyEssUsers.Value)
-                 .Where(v => !searchQuery.OnlyAdminUsers.HasValue || v.IsAdministrator == searchQuery.OnlyAdminUsers.Value)
-                 .Where(v => searchQuery.OrganizationId == null || v.Organization.Id == Guid.Parse(searchQuery.OrganizationId))
-                 .Where(t => searchQuery.IncludeDeactivated || t.Active)
-                 .Sort(searchQuery.SortBy ?? "id")
-                 .ToArrayAsync();
-
-            return new PaginatedList<Person>(items.Select(o => ((Models.Db.Person)o).ToViewModel()), searchQuery.Offset, searchQuery.Limit);
+            return await GetAllPeopleAsync(type).Select(p => p.ToViewModel()).ToArrayAsync();
         }
 
-        public async Task<Person> GetPersonByIdAsync(string id)
+        public async Task<Person> GetPersonByIdAsync(string type, string id)
         {
-            var person = await Volunteers.SingleOrDefaultAsync(v => v.Id == Guid.Parse(id));
-            return (person as Models.Db.Person)?.ToViewModel();
+            var person = await GetSinglePersonByIdAsync(type, id);
+            if (person == null) return null;
+            return person.ToViewModel();
         }
 
         public async Task<Person> CreatePersonAsync(Person person)
         {
-            if (!(person is Volunteer)) throw new InvalidOperationException($"Can only create volunteers, but received {person.GetType().Name}");
-
             var newPerson = await db.People.AddAsync(person.ToModel());
             await db.SaveChangesAsync();
-            return ((Models.Db.Person)await Volunteers.SingleOrDefaultAsync(v => v.Id == newPerson.Entity.Id)).ToViewModel();
+            return newPerson.Entity.ToViewModel();
         }
 
-        public async Task<bool> DeactivatePersonAsync(string id)
+        public async Task<bool> DeactivatePersonAsync(string type, string id)
         {
-            var person = await db.People.SingleOrDefaultAsync(p => p.Id == Guid.Parse(id)) as Models.Db.Volunteer;
+            var person = await GetSinglePersonByIdAsync(type, id);
             if (person == null) return false;
-
             person.Active = false;
-            db.People.Update(person);
+            db.Update(person);
             await db.SaveChangesAsync();
             return true;
         }
