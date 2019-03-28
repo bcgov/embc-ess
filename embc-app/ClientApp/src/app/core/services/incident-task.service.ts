@@ -17,7 +17,7 @@ export class IncidentTaskService extends RestService {
   getIncidentTasks(props: SearchQueryParameters = {}): Observable<MetaIncidentTask> {
     // return a list of all incident task numbers for use in the application
     // return of(INCIDENTTASKS);
-    const { limit = 100, offset = 0, q, sort } = props;
+    const { limit = 100, offset = 0, q = '', sort = '' } = props;
     const params = {
       limit: limit.toString(), // query params are strings
       offset: offset.toString(),

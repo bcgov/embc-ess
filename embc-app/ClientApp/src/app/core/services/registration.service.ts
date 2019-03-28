@@ -15,7 +15,7 @@ import { HttpResponse } from '@angular/common/http';
 export class RegistrationService extends RestService {
 
   getRegistrations(props: SearchQueryParameters = {}): Observable<MetaRegistration> {
-    const { limit = 100, offset = 0, q, sort } = props;
+    const { limit = 100, offset = 0, q = '', sort = '' } = props;
     const params = {
       limit: limit.toString(), // query params are strings
       offset: offset.toString(),
