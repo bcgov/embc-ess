@@ -26,6 +26,9 @@ import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.compo
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminAddTaskNumberModule } from './admin-add-task-number';
 import { AdminNavbarComponent } from './admin-navbar/admin-navbar.component';
+import { AdminTaskNumbersComponent } from './admin-dashboard/admin-task-numbers/admin-task-numbers.component';
+import { AdminEvacueesComponent } from './admin-dashboard/admin-evacuees/admin-evacuees.component';
+import { AdminOrganizationsComponent } from './admin-dashboard/admin-organizations/admin-organizations.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +42,9 @@ import { AdminNavbarComponent } from './admin-navbar/admin-navbar.component';
     VolunteerUsefulInformationComponent,
     EvacueeSummaryComponent,
     AdminDashboardComponent,
+    AdminTaskNumbersComponent,
+    AdminEvacueesComponent,
+    AdminOrganizationsComponent,
   ],
   imports: [
     // angular
