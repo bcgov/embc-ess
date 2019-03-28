@@ -11,11 +11,15 @@ function isPresent(obj: any): boolean {
   return obj !== undefined && obj !== null;
 }
 
+function isDate(obj: any): boolean {
+  return moment(obj).isValid();
+}
+
 // US/Canadian phones - spaces (and other separators) allowed in the phone number
-const PHONE_WITH_SPACES_REGEXP = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+const FORGIVING_PHONE_REGEXP = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
 // US/Canadian phones - max 10 numbers, no spaces allowed
-const PHONE_NO_SPACES_REGEXP = /^([0-9]{3})([0-9]{3})([0-9]{4})$/;
+const STRICT_PHONE_REGEXP = /^([0-9]{3})([0-9]{3})([0-9]{4})$/;
 
 // Canadian Postal Codes
 const POSTALCODE_REGEXP = /^[A-Za-z][0-9][A-Za-z][ ]?[0-9][A-Za-z][0-9]$/;
@@ -32,26 +36,49 @@ export class CustomValidators {
 
   static date(format = 'YYYY-MM-DD'): ValidatorFn {
     return (c: AbstractControl): ValidationErrors | null => {
-      const val = moment(c.value, format, true);
-      if (!val.isValid()) {
-        return { date: true };
+      if (isEmptyInputValue(c.value)) {
+        return null;  // don't validate empty values to allow optional controls
       }
-      return null;
+      const val = moment(c.value, format, true);
+      return val.isValid() ? null : { date: true };
     };
   }
 
-  static dateInThePast(format = 'YYYY-MM-DD'): ValidatorFn {
-    return (c: AbstractControl): { [key: string]: boolean } | null => {
-      const val = moment(c.value, format, true);
-      const today = moment();
-      if (val.isAfter(today, 'day')) {
-        return { dateInThePast: true };
+  static minDate(minDate: any): ValidatorFn {
+    if (!isDate(minDate)) {
+      throw Error('minDate value must be or return a formatted date');
+    }
+
+    return (c: AbstractControl): ValidationErrors | null => {
+      if (isEmptyInputValue(c.value)) {
+        return null;  // don't validate empty values to allow optional controls
       }
-      return null;
+      const d = moment(c.value);
+      if (isDate(d)) {
+        return d.isSameOrAfter(moment(minDate), 'days') ? null : { minDate: true };
+      }
+      return { minDate: true };
     };
   }
 
-  static isAnAdult(ageLimit = 18, format = 'YYYY-MM-DD'): ValidatorFn {
+  static maxDate(maxDate: any): ValidatorFn {
+    if (!isDate(maxDate)) {
+      throw Error('maxDate value must be or return a formatted date');
+    }
+
+    return (c: AbstractControl): ValidationErrors | null => {
+      if (isEmptyInputValue(c.value)) {
+        return null;  // don't validate empty values to allow optional controls
+      }
+      const d = moment(c.value);
+      if (isDate(d)) {
+        return d.isSameOrBefore(moment(maxDate), 'days') ? null : { maxDate: true };
+      }
+      return { maxDate: true };
+    };
+  }
+
+  static isAnAdult(ageLimit = 18, format = 'MM-DD-YYYY'): ValidatorFn {
     return (c: AbstractControl): ValidationErrors | null => {
       const val = moment(c.value, format, true);
       const today = moment();
@@ -84,7 +111,7 @@ export class CustomValidators {
     if (isEmptyInputValue(c.value)) {
       return null;  // don't validate empty values to allow optional controls
     }
-    return PHONE_NO_SPACES_REGEXP.test(c.value) ? null : { phone: true };
+    return STRICT_PHONE_REGEXP.test(c.value) ? null : { phone: true };
   }
 
   static postalCodeCanada(c: AbstractControl): ValidationErrors | null {
