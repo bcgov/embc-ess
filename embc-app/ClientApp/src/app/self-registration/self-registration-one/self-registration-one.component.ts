@@ -358,7 +358,9 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // Use form values to create evacuee registration
     const registration: Registration = {
       ...this.registration,
-      restrictedAccess: form.restrictedAccess,
+      // restrictedAccess: form.restrictedAccess ,
+      restrictedAccess: false,
+      // Todo: restrictedAccess should never be true because we do not handle sensitive information with it
       registeringFamilyMembers: form.registeringFamilyMembers,
       headOfHousehold: {
         ...this.registration.headOfHousehold,
@@ -372,7 +374,11 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         mailingAddress: form.mailingAddressSameAsPrimary ? null : { ...form.mailingAddress },
       }
     };
-
+    alert(registration.restrictedAccess);
     this.store.dispatch(new UpdateRegistration({ registration }));
+  }
+  stop() {
+    // if the user clicks the access restrict we stop them in their tracks.
+    alert('Halt');
   }
 }
