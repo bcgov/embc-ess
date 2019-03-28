@@ -93,32 +93,32 @@ const routes: Routes = [
     path: 'admin-dashboard',
     component: AdminDashboardComponent,
     canActivate: [RoleGuardService],
-    data: { expectedRole: '' },
+    data: { expectedRole: 'provincial_admin' },
     children: [
       {
         path: '',
         redirectTo: 'evacuees',
         pathMatch: 'full',
         canActivate: [RoleGuardService],
-        data: { expectedRole: '' }
+        data: { expectedRole: 'provincial_admin' }
       },
       {
         path: 'task-numbers',
         component: AdminTaskNumbersComponent,
         canActivate: [RoleGuardService],
-        data: { expectedRole: '' }
+        data: { expectedRole: 'provincial_admin' }
       },
       {
         path: 'evacuees',
         component: AdminEvacueesComponent,
         canActivate: [RoleGuardService],
-        data: { expectedRole: '' }
+        data: { expectedRole: 'provincial_admin' }
       },
       {
         path: 'organizations',
         component: AdminOrganizationsComponent,
         canActivate: [RoleGuardService],
-        data: { expectedRole: '' }
+        data: { expectedRole: 'provincial_admin' }
       },
     ]
   },
@@ -126,32 +126,32 @@ const routes: Routes = [
     path: 'add-task-number',
     component: AdminAddTaskNumberComponent,
     canActivate: [RoleGuardService],
-    data: { expectedRole: '' },
+    data: { expectedRole: 'provincial_admin' },
     children: [
       {
         path: '',
         redirectTo: 'fill',
         pathMatch: 'full',
         canActivate: [RoleGuardService],
-        data: { expectedRole: '' }
+        data: { expectedRole: 'provincial_admin' }
       },
       {
         path: 'fill',
         component: AdminAddTaskNumberOneComponent,
         canActivate: [RoleGuardService],
-        data: { expectedRole: '' }
+        data: { expectedRole: 'provincial_admin' }
       },
       {
         path: 'fill/:id',
         component: AdminAddTaskNumberOneComponent,
         canActivate: [RoleGuardService],
-        data: { expectedRole: '' }
+        data: { expectedRole: 'provincial_admin' }
       },
       {
         path: 'confirmation',
         component: AdminAddTaskNumberConfirmationComponent,
         canActivate: [RoleGuardService],
-        data: { expectedRole: '' }
+        data: { expectedRole: 'provincial_admin' }
       }
     ]
   },
@@ -159,7 +159,7 @@ const routes: Routes = [
     path: 'evacuee-summary/:id',
     component: EvacueeSummaryComponent,
     canActivate: [RoleGuardService],
-    data: { expectedRole: '' }
+    data: { expectedRole: 'volunteer' }
   },
   {
     // TODO: naming: this should be changed to be "evacuee-registration"
@@ -201,26 +201,26 @@ const routes: Routes = [
         path: '',
         redirectTo: 'fill',
         canActivate: [RoleGuardService],
-        data: { expectedRole: '' },
+        data: { expectedRole: 'local_authority' },
         pathMatch: 'full'
       },
       {
         path: 'fill',
         component: VolunteerEditorOneComponent,
         canActivate: [RoleGuardService],
-        data: { expectedRole: '' }
+        data: { expectedRole: 'local_authority' }
       },
       {
         path: 'fill/:id',
         component: VolunteerEditorOneComponent,
         canActivate: [RoleGuardService],
-        data: { expectedRole: '' }
+        data: { expectedRole: 'local_authority' }
       },
       {
         path: 'confirmation',
         component: VolunteerEditorConfirmationComponent,
         canActivate: [RoleGuardService],
-        data: { expectedRole: '' }
+        data: { expectedRole: 'local_authority' }
       }
     ]
   },
