@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { VolunteerService } from '../core/services/volunteer.service';
-import { Volunteer, Registration } from '../core/models';
+import { Volunteer, Registration, User } from '../core/models';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store';
 import { takeWhile } from 'rxjs/operators';
 import { state } from '@angular/animations';
-import { CurrentUser } from '../core/models/current-user.model';
 import { CurrentUserService } from '../core/services/current-user.service';
 // import { Store } from '@ngrx/store';
 
@@ -40,7 +39,7 @@ export class TesterPageComponent implements OnInit {
   // user: User;
   // registration: Registration;
   // volunteer: Volunteer;
-  currentUser: CurrentUser;
+  currentUser: User;
 
   constructor(
     private store: Store<AppState>,
@@ -65,7 +64,7 @@ export class TesterPageComponent implements OnInit {
     // this.incidentTaskService.getIncidentTasks().subscribe(i => this.incidentTasks = i);
     // this.registrationService.getRegistrations().subscribe(r => this.registrations = r.data);
   }
-  setUser() {
-    this.currentUserService.currentUser.next({ role: 'volunteer' });
+  setUser(userType: string) {
+    this.currentUserService.currentUser.next({ role: userType });
   }
 }
