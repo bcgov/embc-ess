@@ -23,13 +23,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             context.SaveChanges();
         }
 
-        public static List<Country> GetCountries(this EmbcDbContext context)
-        {
-            List<Country> Countries =
-                context.Countries.ToList<Country>();
-            return Countries;
-        }
-
         /// <summary>
         /// Returns a specific Country
         /// </summary>

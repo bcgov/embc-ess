@@ -23,13 +23,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             context.SaveChanges();
         }
 
-        public static List<RegionalDistrict> GetRegionalDistricts(this EmbcDbContext context)
-        {
-            List<RegionalDistrict> RegionalDistricts =
-                context.RegionalDistricts.ToList<RegionalDistrict>();
-            return RegionalDistricts;
-        }
-
         /// <summary>
         /// Returns a specific RegionalDistrict
         /// </summary>

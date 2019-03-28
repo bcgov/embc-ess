@@ -33,13 +33,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        public static List<FamilyRelationshipType> GetFamilyRelationshipTypes(this EmbcDbContext context)
-        {
-            List<FamilyRelationshipType> FamilyRelationshipTypes =
-                context.FamilyRelationshipTypes.ToList<FamilyRelationshipType>();
-            return FamilyRelationshipTypes;
-        }
-
         /// <summary>
         /// Returns a specific FamilyRelationshipType
         /// </summary>
