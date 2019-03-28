@@ -39,23 +39,16 @@ namespace Gov.Jag.Embc.Public.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Get([FromQuery] SearchQueryParameters queryParameters)
+        public async Task<IActionResult> Get([FromQuery] SearchQueryParameters searchQuery)
         {
             try
             {
-                var results = new PaginatedList<IncidentTask>(await dataInterface.GetIncidentTasksAsync(), 0, queryParameters.Offset, queryParameters.Limit);
-                var paginationMetadata = new PaginationMetadata()
-                {
-                    CurrentPage = results.GetCurrentPage(),
-                    PageSize = results.Limit,
-                    TotalCount = results.TotalItemCount,
-                    TotalPages = results.GetTotalPages()
-                };
+                var items = await dataInterface.GetIncidentTasksAsync(searchQuery);
 
                 return Json(new
                 {
-                    data = results,
-                    metadata = paginationMetadata
+                    data = items.Items,
+                    metadata = items.Pagination
                 });
             }
             catch (Exception e)
