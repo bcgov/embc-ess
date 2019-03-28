@@ -26,6 +26,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
 
   form: FormGroup;
+  disableForm = false;
   submitted = false;
   componentActive = true;
   registration: Registration | null;
@@ -377,8 +378,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     alert(registration.restrictedAccess);
     this.store.dispatch(new UpdateRegistration({ registration }));
   }
-  stop() {
-    // if the user clicks the access restrict we stop them in their tracks.
-    alert('Do not fill out this registration. Please proceed to the nearest open pilot community Emergency Support Services reception centre to initiate registration.');
+  disableInput(state: boolean) {
+    this.disableForm = state;
   }
 }
