@@ -10,15 +10,28 @@
   <div class="mt-3 feature-block">
     <h3>Restriction</h3>
     <p>Concerned family and friends may inquire about you and your family because of the emergency. We would like to
-      provide these people with some information about you. Please check "Yes" if you <u>do not</u> want EMBC to
-      disclose your
-      location and the contact information for you and your family members?</p>
+      provide these people with some information about you. May we disclose your location and the contact information
+      for you and your family members?
+    </p>
     <div class="form-check">
+      <input class="form-check-input" type="radio" name="dummy" [value]="false" checked>
+      <label class="form-check-label" for="exampleRadios1">
+        Yes - (Continue with self-serve registration)
+      </label>
+    </div>
+    <div class="form-check" (click)="stop()">
+      <input class="form-check-input" type="radio" name="dummy" [value]="true" disabled>
+      <label class="form-check-label" for="exampleRadios2">
+        No - Please proceed to the nearest open pilot community Emergency Support Services reception centre to initiate
+        your registration and recieve supports.
+      </label>
+    </div>
+    <!-- <div class="form-check">
       <input class="form-check-input" type="checkbox" formControlName="restrictedAccess">
       <label class="form-check-label">
         Yes, I <u>do not</u> want EMBC to disclose my personal information to concerned family and friends.
       </label>
-    </div>
+    </div> -->
   </div>
 
   <h3 class="blue-header">EVACUEE DETAILS</h3>

@@ -379,6 +379,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   }
   stop() {
     // if the user clicks the access restrict we stop them in their tracks.
-    alert('Halt');
+    alert('Do not fill out this registration. Please proceed to the nearest open pilot community Emergency Support Services reception centre to initiate registration.');
   }
 }
