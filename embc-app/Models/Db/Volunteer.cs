@@ -28,7 +28,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         // related entities
         public Guid? OrganizationId { get; set; }
 
-        public virtual Organization Organization { get; set; }
+        public Organization Organization { get; set; }
 
         public Volunteer()
         {

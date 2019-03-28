@@ -33,7 +33,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         /// </summary>
         public bool? Active { get; set; }
 
-        public virtual Region Region { get; set; }
-        public virtual IEnumerable<Organization> Organizations { get; set; }
+        public Region Region { get; set; }
+        public IEnumerable<Organization> Organizations { get; set; }
     }
 }

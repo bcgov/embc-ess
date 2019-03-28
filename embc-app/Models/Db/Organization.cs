@@ -32,9 +32,9 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public Guid? RegionalDistrictId { get; set; }
         public Guid? CommunityId { get; set; }
 
-        public virtual Region Region { get; set; }
+        public Region Region { get; set; }
 
-        public virtual RegionalDistrict RegionalDistrict { get; set; }
-        public virtual Community Community { get; set; }
+        public RegionalDistrict RegionalDistrict { get; set; }
+        public Community Community { get; set; }
     }
 }

@@ -65,18 +65,18 @@ namespace Gov.Jag.Embc.Public.Models.Db
         // related entities
         public Guid? HeadOfHouseholdId { get; set; }
 
-        public virtual HeadOfHousehold HeadOfHousehold { get; set; }
+        public HeadOfHousehold HeadOfHousehold { get; set; }
 
         public Guid? IncidentTaskId { get; set; }
 
-        public virtual IncidentTask IncidentTask { get; set; }
+        public IncidentTask IncidentTask { get; set; }
 
         public Guid? HostCommunityId { get; set; }
 
-        public virtual Community HostCommunity { get; set; }
+        public Community HostCommunity { get; set; }
 
         public Guid? CompletedById { get; set; }
 
-        public virtual Volunteer CompletedBy { get; set; }
+        public Volunteer CompletedBy { get; set; }
     }
 }

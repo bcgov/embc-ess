@@ -16,10 +16,10 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string Email { get; set; }
 
         // related entities
-        public virtual Address PrimaryResidence { get; set; }
+        public Address PrimaryResidence { get; set; }
 
-        public virtual Address MailingAddress { get; set; }
-        public virtual List<FamilyMember> FamilyMembers { get; set; }
+        public Address MailingAddress { get; set; }
+        public List<FamilyMember> FamilyMembers { get; set; }
 
         public HeadOfHousehold()
         {
