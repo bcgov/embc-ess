@@ -28,7 +28,36 @@ import { AdminAddTaskNumberOneComponent, AdminAddTaskNumberConfirmationComponent
 import { AdminTaskNumbersComponent, AdminEvacueesComponent, AdminOrganizationsComponent } from './admin-dashboard';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { RoleGuardService } from './core/services/role-guard.service';
+/**
+  /
+    self-registration
+    login
+  /volunteer
+    evacuees
+    edit-evacuee
+    edit-evacuee/:id
+    useful-info
 
+  /local-authority
+    evacuees
+    edit-registration
+    edit-registration/:id
+    ess-team
+    edit-volunteer
+    edit-volunteer/:id
+    useful-info
+
+  /provincial-admin
+    edit-task-numbers
+    evacuees
+    edit-registration
+    edit-registration/:id
+    organizations
+    edit-volunteer
+    edit-organization
+    ess-team
+    useful-info
+*/
 const routes: Routes = [
   {
     path: '',
