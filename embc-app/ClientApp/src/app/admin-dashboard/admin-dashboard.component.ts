@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { IncidentTaskService } from '../core/services/incident-task.service';
-import { MetaIncidentTask } from '../core/models/meta-incident-task';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { MetaRegistration } from '../core/models/meta-registration';
+import { EvacueeSearchResults, SearchQueryParameters } from '../shared/components/search';
+import { RegistrationService } from '../core/services/registration.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -8,14 +12,6 @@ import { MetaIncidentTask } from '../core/models/meta-incident-task';
   styleUrls: ['./admin-dashboard.component.scss']
 })
 export class AdminDashboardComponent implements OnInit {
-  incidentTasks: MetaIncidentTask;
-
-  constructor(
-    private incidentTaskService: IncidentTaskService
-  ) { }
-
-  ngOnInit() {
-    this.incidentTaskService.getIncidentTasks().subscribe(i => this.incidentTasks = i);
-  }
-
+  constructor() { }
+  ngOnInit() { }
 }
