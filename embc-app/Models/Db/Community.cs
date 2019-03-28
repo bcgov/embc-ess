@@ -14,7 +14,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         [MaxLength(255)]
         public string Name { get; set; }
 
-        public bool? Active { get; set; }
+        public bool Active { get; set; }
         public RegionalDistrict RegionalDistrict { get; set; }
         public IEnumerable<Organization> Organizations { get; set; }
     }

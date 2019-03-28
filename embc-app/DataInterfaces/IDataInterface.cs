@@ -54,7 +54,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         #region Organization
 
-        //Organizations
         Task<IPagedResults<Organization>> GetOrganizationsAsync(SearchQueryParameters searchQuery);
 
         Organization GetOrganizationByLegalName(string name);
@@ -92,8 +91,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Volunteer GetVolunteerByExternalId(string externalId);
 
         Volunteer GetVolunteerByBceidUserId(string bceidUserId);
-
-        Volunteer GetVolunteerById(string Id);
 
         #endregion Volunteer
     }
