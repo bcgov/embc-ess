@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
@@ -15,7 +14,6 @@ namespace Gov.Jag.Embc.Public.Controllers
     [Route("api/[controller]")]
     public class RegistrationsController : Controller
     {
-        private readonly IConfiguration Configuration;
         private readonly IDataInterface dataInterface;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly ILogger logger;
@@ -24,7 +22,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         private readonly IEmailSender emailSender;
 
         public RegistrationsController(
-            IConfiguration configuration,
             IHttpContextAccessor httpContextAccessor,
             ILoggerFactory loggerFactory,
             IHostingEnvironment env,
@@ -34,7 +31,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         )
         {
             this.emailSender = emailSender;
-            Configuration = configuration;
             this.dataInterface = dataInterface;
             this.httpContextAccessor = httpContextAccessor;
             logger = loggerFactory.CreateLogger(typeof(RegistrationsController));
@@ -44,24 +40,16 @@ namespace Gov.Jag.Embc.Public.Controllers
 
         [HttpGet(Name = nameof(GetAll))]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters queryParameters)
+        public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters searchQuery)
         {
             try
             {
-                var results = await dataInterface.GetRegistrationsAsync(queryParameters);
-
-                var paginationMetadata = new PaginationMetadata()
-                {
-                    CurrentPage = results.GetCurrentPage(),
-                    PageSize = results.Limit,
-                    TotalCount = results.TotalItemCount,
-                    TotalPages = results.GetTotalPages()
-                };
+                var items = await dataInterface.GetRegistrationsAsync(searchQuery);
 
                 return Json(new
                 {
-                    data = results,
-                    metadata = paginationMetadata
+                    data = items.Items,
+                    metadata = items.Pagination
                 });
             }
             catch (Exception e)

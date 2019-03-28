@@ -48,7 +48,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             var created = await db.Registrations.AddAsync(registration.ToModel());
             await db.SaveChangesAsync();
-            return (await Registrations.FirstAsync(r => r.Id == created.Entity.Id)).ToViewModel();
+            return (await Registrations.SingleAsync(r => r.Id == created.Entity.Id)).ToViewModel();
         }
 
         public async Task UpdateRegistrationAsync(Registration registration)
@@ -57,36 +57,23 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             await db.SaveChangesAsync();
         }
 
-        public async Task<PaginatedList<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters)
+        public async Task<IPagedResults<Registration>> GetRegistrationsAsync(SearchQueryParameters searchQuery)
         {
-            var q = queryParameters.Query;
+            var q = searchQuery.Query;
 
-            IQueryable<Models.Db.Registration> registrations = Registrations
-                 .Where(r => !queryParameters.HasQuery() ||
-                (
-                    //TODO: see if it is possible to move this into a method, right now EF refuses to work with lazy loading enabled
-                    // and the search criteria in a method, consider switching the search to raw sql for better control of the query
+            var items = await Registrations
+                 .Where(r => !searchQuery.HasQuery() ||
                     r.HeadOfHousehold.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
                     r.HeadOfHousehold.FamilyMembers.Any(fm => fm.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
                     r.EssFileNumber.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
                     (r.IncidentTask != null && r.IncidentTask.TaskNumber.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
                     (r.HeadOfHousehold.PrimaryResidence is Models.Db.BcAddress) &&
                     ((Models.Db.BcAddress)r.HeadOfHousehold.PrimaryResidence).Community.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase))
-                );
+                .Where(t => searchQuery.IncludeDeactivated || t.Active)
+                .Sort(searchQuery.SortBy ?? "id")
+                 .ToArrayAsync();
 
-            if (queryParameters.HasSortBy())
-            {
-                // sort using dynamic linq extension method
-                registrations = registrations.Sort(queryParameters.SortBy);
-            }
-
-            var items = await registrations
-                .Skip(queryParameters.Offset)
-                .Take(queryParameters.Limit)
-                .ToArrayAsync();
-
-            var allItemCount = await registrations.CountAsync();
-            return new PaginatedList<Registration>(items.Select(r => r.ToViewModel()), allItemCount, queryParameters.Offset, queryParameters.Limit);
+            return new PaginatedList<Registration>(items.Select(r => r.ToViewModel()), searchQuery.Offset, searchQuery.Limit);
         }
 
         public async Task<Registration> GetRegistrationAsync(string id)
@@ -97,11 +84,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         private async Task<Models.Db.Registration> GetRegistrationInternalAsync(string id)
         {
-            if (Guid.TryParse(id, out var guid))
-            {
-                return await Registrations.FirstOrDefaultAsync(reg => reg.Id == guid);
-            }
-            return null;
+            return await Registrations.SingleOrDefaultAsync(reg => reg.Id == Guid.Parse(id));
         }
 
         public async Task<RegistrationSummary> GetRegistrationSummaryAsync(string id)
@@ -114,7 +97,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             if (!Guid.TryParse(id, out var guid)) return false;
 
-            var item = await db.Registrations.FirstOrDefaultAsync(reg => reg.Id == guid);
+            var item = await db.Registrations.SingleOrDefaultAsync(reg => reg.Id == guid);
             if (item == null) return false;
             item.Active = false;
             db.Update(item);
