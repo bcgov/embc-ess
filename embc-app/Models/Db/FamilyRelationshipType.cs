@@ -3,32 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
-    /// <summary>
-    /// Database Model
-    /// </summary>
     public class FamilyRelationshipType
     {
-        /// <summary>
-        /// A system-generated unique identifier
-        /// </summary>
-        /// <value>The short character string, such as an acronym or abbreviation, which identifies the instance.</value>
-
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         public string Code { get; set; }
 
-        /// <summary>
-        /// The word or phrase that identifies the instance. e.g. "Immediate Family"
-        /// </summary>
         [MaxLength(255)]
         public string Description { get; set; }
 
-        /// <summary>
-        /// true if active
-        /// </summary>
-        public bool? Active { get; set; }
-
-        public FamilyRelationshipType()
-        { }
+        public bool Active { get; set; }
     }
 }

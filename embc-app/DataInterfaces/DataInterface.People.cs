@@ -71,55 +71,26 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public Volunteer GetVolunteerByBceidUserId(string bceidUserId)
         {
-            Volunteer result = null;
-            var item = (Models.Db.Volunteer)db.People
-                .Include(x => ((Models.Db.Volunteer)x).Organization)
-                .FirstOrDefault(x => ((Models.Db.Volunteer)x).BceidAccountNumber == bceidUserId);
-            if (item != null)
-            {
-                result = item.ToViewModel();
-            }
-            return result;
+            var volunteer = Volunteers.FirstOrDefault(x => x.BceidAccountNumber == bceidUserId);
+            if (volunteer == null) return null;
+
+            return (Volunteer)volunteer.ToViewModel();
         }
 
         public Volunteer GetVolunteerByExternalId(string externalId)
         {
-            Volunteer result = null;
-            var item = (Models.Db.Volunteer)db.People
-                .Include(x => ((Models.Db.Volunteer)x).Organization)
-                .FirstOrDefault(x => ((Models.Db.Volunteer)x).Externaluseridentifier == externalId);
-            if (item != null)
-            {
-                result = item.ToViewModel();
-            }
-            return result;
+            var volunteer = Volunteers.FirstOrDefault(x => x.Externaluseridentifier == externalId);
+            if (volunteer == null) return null;
+
+            return (Volunteer)volunteer.ToViewModel();
         }
 
         public Volunteer GetVolunteerByName(string firstName, string lastName)
         {
-            Volunteer result = null;
-            var item = (Models.Db.Volunteer)db.People
-                .Include(x => ((Models.Db.Volunteer)x).Organization)
-                .FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
-            if (item != null)
-            {
-                result = item.ToViewModel();
-            }
-            return result;
-        }
+            var volunteer = Volunteers.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
+            if (volunteer == null) return null;
 
-        public Volunteer GetVolunteerById(string id)
-        {
-            Volunteer result = null;
-            Guid guid = new Guid(id);
-            var item = (Models.Db.Volunteer)db.People
-                .Include(x => ((Models.Db.Volunteer)x).Organization)
-                .FirstOrDefault(x => x.Id == guid);
-            if (item != null)
-            {
-                result = item.ToViewModel();
-            }
-            return result;
+            return (Volunteer)volunteer.ToViewModel();
         }
     }
 }
