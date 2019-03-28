@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col col-lg-8">
+    <div class="mb-4">
+      <h1>EMBC Admin Dashboard</h1>
+      <h3>Welcome to your Dashboard!</h3>
+      <p>Here you'll be able to add task numbers, organizations and users, as well as register and maintain evacuees.
+      </p>
+      <h3 class="blue-header">ALL EVACUEES</h3>
+      <!-- <p *ngFor="let i of incidentTasks.data.details">{{i|json}}</p> -->
+      <pre>
+        {{incidentTasks.data|json}}
+      </pre>
+      <!-- <app-search-bar #searchBar (valueChange)="doSearch($event)"
+        placeholder="Search by task number / last name / registration number / community ...">
+      </app-search-bar> -->
+
+      <!-- TODO: <a class="small" href="">advanced search</a> -->
+      <!-- TODO: show icons for HOH, RESTRICTED FILE -->
+    </div>
+    <div>
+      <!-- The start of the table stuff. -->
+      <!-- <p>1 - 10 of 2000 <span class="font-weight-bold">ACTIVE</span> evacuees
+        <small class="ml-3">(<a href="">show deactivated</a>)</small>
+      </p>
+      <app-evacuee-search-results #searchResultsView [searchResults]="searchResults$ | async">
+      </app-evacuee-search-results> -->
+    </div>
+  </div>
+
+
+  <div class="col-12 col-lg-4">
+    <app-add-task-number></app-add-task-number>
+    <app-add-organization></app-add-organization>
+    <app-add-user></app-add-user>
+    <app-add-evacuee></app-add-evacuee>
+    <app-side-box title="Useful Information">
+      <section role="content">
+        <p>
+          A BCeID will be needed if an organization and/or a user is accessing this system.
+        </p>
+        <p>
+          If you have any questions regarding your BCeID, please read the <a
+            href="https://www.bceid.ca/aboutbceid/faqs.aspx">Frequently Asked Questions</a>.
+        </p>
+      </section>
+      <!-- <section role="footer">
+          <button class="btn btn-primary" routerLink="/">Learn More</button>
+        </section> -->
+    </app-side-box>
+  </div>
+
+</div>

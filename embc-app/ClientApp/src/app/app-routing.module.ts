@@ -22,6 +22,9 @@ import { VolunteerEditorConfirmationComponent } from './volunteer-editor/volunte
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminAddTaskNumberComponent } from './admin-add-task-number/admin-add-task-number.component';
+import { AdminAddTaskNumberOneComponent, AdminAddTaskNumberConfirmationComponent } from './admin-add-task-number';
 
 const routes: Routes = [
   {
@@ -75,6 +78,33 @@ const routes: Routes = [
   {
     path: 'volunteer-team-dashboard',
     component: VolunteerTeamDashboardComponent
+  },
+  {
+    path: 'admin-dashboard',
+    component: AdminDashboardComponent
+  },
+  {
+    path: 'add-task-number',
+    component: AdminAddTaskNumberComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'fill',
+        pathMatch: 'full'
+      },
+      {
+        path: 'fill',
+        component: AdminAddTaskNumberOneComponent
+      },
+      {
+        path: 'fill/:id',
+        component: AdminAddTaskNumberOneComponent
+      },
+      {
+        path: 'confirmation',
+        component: AdminAddTaskNumberConfirmationComponent
+      }
+    ]
   },
   {
     path: 'evacuee-summary/:id',

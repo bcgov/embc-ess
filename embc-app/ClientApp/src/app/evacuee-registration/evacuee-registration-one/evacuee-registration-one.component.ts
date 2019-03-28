@@ -11,6 +11,7 @@ import {
 } from 'src/app/core/models';
 import { IncidentTaskService } from '../../core/services/incident-task.service';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
+import { MetaIncidentTask } from 'src/app/core/models/meta-incident-task';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   regions$ = this.store.select(s => s.lookups.regions);
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
   communities$ = this.store.select(s => s.lookups.communities.communities);
-  incidentTasks: IncidentTask[];
+  incidentTasks: MetaIncidentTask;
 
   // The model for the form data collected
   form: FormGroup;

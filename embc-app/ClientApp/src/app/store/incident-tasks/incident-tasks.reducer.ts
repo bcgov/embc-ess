@@ -22,8 +22,6 @@ const initialState: State = {
     id: null, // as string
     taskNumber: null, // as string
     details: null, // as string
-    region: null, // as Region
-    regionalDistrict: null, // as RegionalDistrict
     community: null // as Community
   },
   loading: false,

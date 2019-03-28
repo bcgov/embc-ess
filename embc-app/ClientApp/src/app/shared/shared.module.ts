@@ -20,6 +20,7 @@ import { SearchBarComponent, EvacueeSearchResultsComponent } from './components/
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { ByIdPipe } from './pipes/by-id.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
+import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent } from './components/side-boxes';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,10 @@ import { PluckPipe } from './pipes/pluck.pipe';
     YesNoPipe,
     ByIdPipe,
     PluckPipe,
+    AddEvacueeComponent,
+    AddOrganizationComponent,
+    AddTaskNumberComponent,
+    AddUserComponent,
   ],
   imports: [
     CommonModule,
@@ -71,6 +76,10 @@ import { PluckPipe } from './pipes/pluck.pipe';
     YesNoPipe,
     ByIdPipe,
     PluckPipe,
+    AddEvacueeComponent,
+    AddOrganizationComponent,
+    AddTaskNumberComponent,
+    AddUserComponent,
   ]
 })
 export class SharedModule { }

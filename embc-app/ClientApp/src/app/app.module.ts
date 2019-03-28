@@ -23,6 +23,8 @@ import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volu
 import { VolunteerNavbarComponent } from './volunteer-navbar/volunteer-navbar.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminAddTaskNumberModule } from './admin-add-task-number';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,7 @@ import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.compo
     VolunteerNavbarComponent,
     VolunteerUsefulInformationComponent,
     EvacueeSummaryComponent,
+    AdminDashboardComponent,
   ],
   imports: [
     // angular
@@ -54,7 +57,8 @@ import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.compo
     AppRoutingModule,
     SelfRegistrationModule,
     EvacueeRegistrationModule,
-    VolunteerEditorModule
+    VolunteerEditorModule,
+    AdminAddTaskNumberModule
   ],
   providers: [],
   bootstrap: [AppComponent]
