@@ -73,10 +73,8 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'volunteer-info',
+    path: 'useful-info',
     component: VolunteerUsefulInformationComponent,
-    canActivate: [RoleGuardService],
-    data: { expectedRole: 'volunteer' }
   },
   {
     path: 'volunteer-dashboard',
@@ -120,6 +118,10 @@ const routes: Routes = [
         canActivate: [RoleGuardService],
         data: { expectedRole: 'provincial_admin' }
       },
+      {
+        path: 'useful-info',
+        component: VolunteerUsefulInformationComponent,
+      },
     ]
   },
   {
@@ -144,6 +146,12 @@ const routes: Routes = [
       {
         path: 'fill/:id',
         component: AdminAddTaskNumberOneComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: 'provincial_admin' }
+      },
+      {
+        path: 'confirmation',
+        component: AdminAddTaskNumberConfirmationComponent,
         canActivate: [RoleGuardService],
         data: { expectedRole: 'provincial_admin' }
       },

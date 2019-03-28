@@ -1,7 +1,7 @@
 <!-- No navbar (default state) -->
 
 <!-- Volunteer navbar -->
-<nav *ngIf="currentUser.role==='volunteer'||currentUser.role==='local_authority'"
+<nav *ngIf="currentUser.role==='volunteer' || currentUser.role==='local_authority'"
   class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
   <ul class="navbar-nav">
     <li class="mr-4">
@@ -18,7 +18,7 @@
 
     <!-- TODO: The  link goes to the useful information page. Can be uncommented when the useful information pull request is accepted-->
     <li class="mr-4">
-      <a routerLink="volunteer-info" title="Go to useful information">Useful Information</a>
+      <a routerLink="useful-info" title="Go to useful information">Useful Information</a>
     </li>
   </ul>
 </nav>
@@ -45,7 +45,7 @@
     </li>
     <!-- TODO: The  link goes to the useful information page. Can be uncommented when the useful information pull request is accepted-->
     <li class="mr-4">
-      <a routerLink="volunteer-info" title="Go to useful information">Useful Information</a>
+      <a routerLink="useful-info" title="Go to useful information">Useful Information</a>
     </li>
   </ul>
 </nav>
