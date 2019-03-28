@@ -1,0 +1,49 @@
+<!-- No navbar -->
+
+<!-- Volunteer navbar -->
+<nav class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
+  <ul class="navbar-nav">
+    <li class="mr-4">
+      <a routerLink="/" title="Go Home">Home</a>
+    </li>
+    <li class="mr-4">
+      <a routerLink="volunteer-dashboard" title="Go to Evacuees Area">Evacuees</a>
+    </li>
+
+    <!-- Only visible by local authority -->
+    <li *ngIf="true" class="mr-4">
+      <a routerLink="" title="Go to ESS Team page">ESS Team</a>
+    </li>
+
+    <!-- TODO: The  link goes to the useful information page. Can be uncommented when the useful information pull request is accepted-->
+    <li class="mr-4">
+      <a routerLink="volunteer-info" title="Go to useful information">Useful Information</a>
+    </li>
+  </ul>
+</nav>
+
+<!-- Administrator navbar -->
+<nav class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
+  <ul class="navbar-nav">
+    <li class="mr-4">
+      <a routerLink="" title="Go Home">Home</a>
+    </li>
+    <li class="mr-4">
+      <a routerLink="../admin-dashboard/task-numbers" title="Manage Task Numbers">Task-Numbers</a>
+    </li>
+    <li class="mr-4">
+      <a routerLink="../admin-dashboard/evacuees" title="Go to Evacuees Area">Evacuees</a>
+    </li>
+    <li class="mr-4">
+      <a routerLink="../admin-dashboard/organizations" title="Manage Organizations">Organizations &amp; Users</a>
+    </li>
+    <!-- The link should go to the page of volunteer users for the administrator?? -->
+    <li class="mr-4">
+      <a routerLink="" title="Go to ESS Team page">ESS Team</a>
+    </li>
+    <!-- TODO: The  link goes to the useful information page. Can be uncommented when the useful information pull request is accepted-->
+    <li class="mr-4">
+      <a routerLink="volunteer-info" title="Go to useful information">Useful Information</a>
+    </li>
+  </ul>
+</nav>
