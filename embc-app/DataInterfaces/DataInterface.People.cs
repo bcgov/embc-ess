@@ -36,6 +36,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                  .Where(v => !searchQuery.OnlyEssUsers.HasValue || v.IsAdministrator != searchQuery.OnlyEssUsers.Value)
                  .Where(v => !searchQuery.OnlyAdminUsers.HasValue || v.IsAdministrator == searchQuery.OnlyAdminUsers.Value)
                  .Where(v => searchQuery.IncludeDeactivated.HasValue && searchQuery.IncludeDeactivated.Value || v.Active == true)
+                 .Where(v => searchQuery.OrganizationId == null || v.Organization.Id == Guid.Parse(searchQuery.OrganizationId))
                  .Sort(searchQuery.SortBy ?? "id")
                  .ToArrayAsync();
 
