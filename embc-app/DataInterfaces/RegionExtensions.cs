@@ -23,13 +23,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             context.SaveChanges();
         }
 
-        public static List<Region> GetRegions(this EmbcDbContext context)
-        {
-            List<Region> Regions =
-                context.Regions.ToList<Region>();
-            return Regions;
-        }
-
         /// <summary>
         /// Returns a specific Region
         /// </summary>

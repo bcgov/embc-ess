@@ -23,13 +23,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             context.SaveChanges();
         }
 
-        public static List<Community> GetCommunities(this EmbcDbContext context)
-        {
-            List<Community> Communities =
-                context.Communities.ToList<Community>();
-            return Communities;
-        }
-
         /// <summary>
         /// Returns a specific Community
         /// </summary>

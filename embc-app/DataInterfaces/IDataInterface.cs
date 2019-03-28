@@ -38,15 +38,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         #endregion Incident task
 
-        List<Community> GetCommunities();
+        #region Lookup data
 
-        List<Country> GetCountries();
+        Task<IEnumerable<Community>> GetCommunitiesAsync();
 
-        List<Region> GetRegions();
+        Task<IEnumerable<Country>> GetCountriesAsync();
 
-        List<RegionalDistrict> GetRegionalDistricts();
+        Task<IEnumerable<Region>> GetRegionsAsync();
 
-        List<FamilyRelationshipType> GetFamilyRelationshipTypes();
+        Task<IEnumerable<RegionalDistrict>> GetRegionalDistrictsAsync();
+
+        Task<IEnumerable<FamilyRelationshipType>> GetFamilyRelationshipTypesAsync();
+
+        #endregion Lookup data
 
         #region Organization
 
