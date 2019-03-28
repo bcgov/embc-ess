@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Gov.Jag.Embc.Public.Models.Db
@@ -23,6 +24,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string Externaluseridentifier { get; set; }
 
         // related entities
+        public Guid? OrganizationId { get; set; }
+
         public virtual Organization Organization { get; set; }
 
         public Volunteer()

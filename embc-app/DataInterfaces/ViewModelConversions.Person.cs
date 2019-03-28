@@ -119,108 +119,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     resultVol.IsPrimaryContact = sourceVol.IsPrimaryContact;
                     resultVol.CanAccessRestrictedFiles = sourceVol.CanAccessRestrictedFiles;
                     // related entities
-                    resultVol.Organization = sourceVol.Organization.ToModel();
+                    resultVol.OrganizationId = sourceVol.Organization == null ? (Guid?)null : Guid.Parse(sourceVol.Organization.Id);
                 }
             }
             return result;
         }
-
-        // public static Models.Db.FamilyMember ToModel(this ViewModels.FamilyMember source)
-        // {
-        //     Models.Db.FamilyMember result = null;
-        //     if (source != null)
-        //     {
-        //         result = new Models.Db.FamilyMember()
-        //         {
-        //             FirstName = source.FirstName,
-        //             LastName = source.LastName,
-        //             Nickname = source.Nickname,
-        //             Initials = source.Initials,
-        //             Gender = source.Gender,
-        //             Dob = source.Dob,
-        //             RelationshipToEvacuee = source.RelationshipToEvacuee,
-        //             SameLastNameAsEvacuee = source.SameLastNameAsEvacuee,
-        //         };
-        //         if (source.Id != null)
-        //         {
-        //             result.Id = Guid.Parse(source.Id);
-        //         }
-        //     }
-        //     return result;
-        // }
-
-        // public static ViewModels.FamilyMember ToViewModel(this Models.Db.FamilyMember source)
-        // {
-        //     ViewModels.FamilyMember result = null;
-        //     if (source != null)
-        //     {
-        //         result = new ViewModels.FamilyMember()
-        //         {
-        //             Id = source.Id.ToString(),
-        //             FirstName = source.FirstName,
-        //             LastName = source.LastName,
-        //             Nickname = source.Nickname,
-        //             Initials = source.Initials,
-        //             Gender = source.Gender,
-        //             Dob = source.Dob,
-        //             RelationshipToEvacuee = source.RelationshipToEvacuee,
-        //             SameLastNameAsEvacuee = source.SameLastNameAsEvacuee,
-        //         };
-        //     }
-        //     return result;
-        // }
-
-        // public static ViewModels.HeadOfHousehold ToViewModel(this Models.Db.HeadOfHousehold source)
-        // {
-        //     ViewModels.HeadOfHousehold result = null;
-        //     if (source != null)
-        //     {
-        //         result = new ViewModels.HeadOfHousehold()
-        //         {
-        //             Id = source.Id.ToString(),
-        //             FirstName = source.FirstName,
-        //             LastName = source.LastName,
-        //             Nickname = source.Nickname,
-        //             Initials = source.Initials,
-        //             Gender = source.Gender,
-        //             Dob = source.Dob,
-        //             PhoneNumber = source.PhoneNumber,
-        //             PhoneNumberAlt = source.PhoneNumberAlt,
-        //             Email = source.Email,
-
-        //             PrimaryResidence = source.PrimaryResidence.ToViewModel(),
-        //             MailingAddress = source.MailingAddress.ToViewModel()
-        //         };
-        //     }
-        //     return result;
-        // }
-
-        // public static Models.Db.HeadOfHousehold ToModel(this ViewModels.HeadOfHousehold source)
-        // {
-        //     Models.Db.HeadOfHousehold result = null;
-        //     if (source != null)
-        //     {
-        //         result = new Models.Db.HeadOfHousehold()
-        //         {
-        //             FirstName = source.FirstName,
-        //             LastName = source.LastName,
-        //             Nickname = source.Nickname,
-        //             Initials = source.Initials,
-        //             Gender = source.Gender,
-        //             Dob = source.Dob,
-        //             PhoneNumber = source.PhoneNumber,
-        //             PhoneNumberAlt = source.PhoneNumberAlt,
-        //             Email = source.Email,
-
-        //             PrimaryResidence = source.PrimaryResidence.ToModel(),
-        //             MailingAddress = source.MailingAddress.ToModel()
-        //         };
-        //         if (source.Id != null)
-        //         {
-        //             result.Id = Guid.Parse(source.Id);
-        //         }
-        //     }
-        //     return result;
-        // }
     }
 }

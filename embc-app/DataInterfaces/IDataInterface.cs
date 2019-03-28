@@ -1,5 +1,6 @@
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
+using Gov.Jag.Embc.Public.ViewModels.Search;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -68,7 +69,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         #region People
 
-        Task<IPagedResults<Person>> GetPeopleAsync(SearchQueryParameters searchQuery);
+        Task<IPagedResults<Person>> GetVolunteersAsync(VolunteersSearchQueryParameters searchQuery);
 
         Task<Person> GetPersonByIdAsync(string id);
 

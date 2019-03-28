@@ -1,6 +1,6 @@
 using Gov.Jag.Embc.Public.DataInterfaces;
-using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
+using Gov.Jag.Embc.Public.ViewModels.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,11 +33,11 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters searchQuery)
+        public async Task<IActionResult> GetAll([FromQuery] VolunteersSearchQueryParameters searchQuery)
         {
             try
             {
-                var items = await dataInterface.GetPeopleAsync(searchQuery);
+                var items = await dataInterface.GetVolunteersAsync(searchQuery);
 
                 return Json(new
                 {
@@ -80,6 +80,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             try
             {
                 item.Id = null;
+                item.Active = true;
                 var result = await dataInterface.CreatePersonAsync(item);
                 return Json(result);
             }

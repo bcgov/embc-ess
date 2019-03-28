@@ -1,5 +1,6 @@
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
+using Gov.Jag.Embc.Public.ViewModels.Search;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -28,10 +29,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             await db.SaveChangesAsync();
         }
 
-        public async Task<IPagedResults<Person>> GetPeopleAsync(SearchQueryParameters searchQuery)
+        public async Task<IPagedResults<Person>> GetVolunteersAsync(VolunteersSearchQueryParameters searchQuery)
         {
             var items = await Volunteers
-                 //TODO: add search criteria
+                 .Where(v => !searchQuery.HasQuery() || v.LastName.Contains(searchQuery.Query, StringComparison.InvariantCultureIgnoreCase))
+                 .Where(v => !searchQuery.OnlyEssUsers.HasValue || v.IsAdministrator != searchQuery.OnlyEssUsers.Value)
+                 .Where(v => !searchQuery.OnlyAdminUsers.HasValue || v.IsAdministrator == searchQuery.OnlyAdminUsers.Value)
+                 .Where(v => searchQuery.IncludeDeactivated.HasValue && searchQuery.IncludeDeactivated.Value || v.Active == true)
                  .Sort(searchQuery.SortBy ?? "id")
                  .ToArrayAsync();
 
