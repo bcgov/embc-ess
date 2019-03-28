@@ -55,7 +55,7 @@ const routes: Routes = [
         component: SelfRegistrationThreeComponent
       },
       {
-        path: 'step-4',
+        path: 'step-4/:id',
         component: SelfRegistrationFourComponent
       },
       {
