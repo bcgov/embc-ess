@@ -3,6 +3,10 @@
     Current User
     <pre>{{currentUser | json}}</pre>
     <button (click)="setUser()">Set User</button>
+    <span *ngIf="currentUser.role==='none'">This is a nobody.</span>
+    <span *ngIf="currentUser.role==='volunteer'">Voluntary!</span>
+    <span *ngIf="currentUser.role==='local_authority'">Local auth.</span>
+    <span *ngIf="currentUser.role==='provincial_admin'">This is admin territory.</span>
   </div>
   <div class="col">
     <ul>

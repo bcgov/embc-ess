@@ -66,7 +66,6 @@ export class TesterPageComponent implements OnInit {
     // this.registrationService.getRegistrations().subscribe(r => this.registrations = r.data);
   }
   setUser() {
-    alert("")
-    this.currentUserService.currentUser.next({ role: 'Volunteer' });
+    this.currentUserService.currentUser.next({ role: 'volunteer' });
   }
 }
