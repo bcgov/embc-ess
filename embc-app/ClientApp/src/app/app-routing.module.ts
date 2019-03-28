@@ -27,6 +27,7 @@ import { AdminAddTaskNumberComponent } from './admin-add-task-number/admin-add-t
 import { AdminAddTaskNumberOneComponent, AdminAddTaskNumberConfirmationComponent } from './admin-add-task-number';
 import { AdminTaskNumbersComponent, AdminEvacueesComponent, AdminOrganizationsComponent } from './admin-dashboard';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
+import { RoleGuardService } from './core/services/role-guard.service';
 
 const routes: Routes = [
   {
@@ -67,19 +68,23 @@ const routes: Routes = [
   },
   {
     path: 'volunteer-login',
-    component: VolunteerLoginComponent
+    component: VolunteerLoginComponent,
+    canActivate: [RoleGuardService]
   },
   {
     path: 'volunteer-info',
-    component: VolunteerUsefulInformationComponent
+    component: VolunteerUsefulInformationComponent,
+    canActivate: [RoleGuardService]
   },
   {
     path: 'volunteer-dashboard',
-    component: VolunteerDashboardComponent
+    component: VolunteerDashboardComponent,
+    canActivate: [RoleGuardService]
   },
   {
     path: 'volunteer-team-dashboard',
-    component: VolunteerTeamDashboardComponent
+    component: VolunteerTeamDashboardComponent,
+    canActivate: [RoleGuardService]
   },
   {
     path: 'admin-dashboard',
