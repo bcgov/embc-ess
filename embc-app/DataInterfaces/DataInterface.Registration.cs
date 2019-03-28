@@ -62,14 +62,15 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var q = searchQuery.Query;
 
             var items = await Registrations
-                 .Where(r => !searchQuery.HasQuery() || (
+                 .Where(r => !searchQuery.HasQuery() ||
                     r.HeadOfHousehold.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
                     r.HeadOfHousehold.FamilyMembers.Any(fm => fm.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
                     r.EssFileNumber.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
                     (r.IncidentTask != null && r.IncidentTask.TaskNumber.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
                     (r.HeadOfHousehold.PrimaryResidence is Models.Db.BcAddress) &&
                     ((Models.Db.BcAddress)r.HeadOfHousehold.PrimaryResidence).Community.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase))
-                ).Sort(searchQuery.SortBy ?? "id")
+                .Where(t => searchQuery.IncludeDeactivated || t.Active)
+                .Sort(searchQuery.SortBy ?? "id")
                  .ToArrayAsync();
 
             return new PaginatedList<Registration>(items.Select(r => r.ToViewModel()), searchQuery.Offset, searchQuery.Limit);

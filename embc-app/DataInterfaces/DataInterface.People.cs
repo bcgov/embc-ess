@@ -35,8 +35,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                  .Where(v => !searchQuery.HasQuery() || v.LastName.Contains(searchQuery.Query, StringComparison.InvariantCultureIgnoreCase))
                  .Where(v => !searchQuery.OnlyEssUsers.HasValue || v.IsAdministrator != searchQuery.OnlyEssUsers.Value)
                  .Where(v => !searchQuery.OnlyAdminUsers.HasValue || v.IsAdministrator == searchQuery.OnlyAdminUsers.Value)
-                 .Where(v => searchQuery.IncludeDeactivated.HasValue && searchQuery.IncludeDeactivated.Value || v.Active == true)
                  .Where(v => searchQuery.OrganizationId == null || v.Organization.Id == Guid.Parse(searchQuery.OrganizationId))
+                 .Where(t => searchQuery.IncludeDeactivated || t.Active)
                  .Sort(searchQuery.SortBy ?? "id")
                  .ToArrayAsync();
 
@@ -60,7 +60,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<bool> DeactivatePersonAsync(string id)
         {
-            var person = await db.People.SingleOrDefaultAsync(p => p.Id == Guid.Parse(id));
+            var person = await db.People.SingleOrDefaultAsync(p => p.Id == Guid.Parse(id)) as Models.Db.Volunteer;
             if (person == null) return false;
 
             person.Active = false;

@@ -19,7 +19,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result.Initials = source.Initials;
                 result.Gender = source.Gender;
                 result.Dob = source.Dob;
-                result.Active = source.Active;
 
                 // TODO: Add fields for HOH, FMBR, VOLN
                 if (source is Models.Db.HeadOfHousehold sourceHoh)
@@ -58,6 +57,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     resultVol.CanAccessRestrictedFiles = sourceVol.CanAccessRestrictedFiles;
                     // related entities
                     resultVol.Organization = sourceVol.Organization.ToViewModel();
+                    result.Active = sourceVol.Active;
                 }
             }
             return result;
@@ -76,7 +76,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result.Initials = source.Initials;
                 result.Gender = source.Gender;
                 result.Dob = source.Dob;
-                result.Active = source.Active;
 
                 if (source.Id != null)
                 {
@@ -120,6 +119,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     resultVol.CanAccessRestrictedFiles = sourceVol.CanAccessRestrictedFiles;
                     // related entities
                     resultVol.OrganizationId = sourceVol.Organization == null ? (Guid?)null : Guid.Parse(sourceVol.Organization.Id);
+                    if (sourceVol.Active.HasValue)
+                    {
+                        resultVol.Active = sourceVol.Active.Value;
+                    }
                 }
             }
             return result;

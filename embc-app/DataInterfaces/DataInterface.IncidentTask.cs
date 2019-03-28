@@ -21,6 +21,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             var items = await IncidentTasks
                 .Where(t => !searchQuery.HasQuery() || t.Community.Id == Guid.Parse(searchQuery.Query))
+                .Where(t => searchQuery.IncludeDeactivated || t.Active)
                 .Sort(searchQuery.SortBy ?? "id")
                 .ToArrayAsync();
 

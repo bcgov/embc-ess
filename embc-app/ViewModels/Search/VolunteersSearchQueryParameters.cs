@@ -11,9 +11,6 @@ namespace Gov.Jag.Embc.Public.ViewModels.Search
         [FromQuery(Name = "admin")]
         public bool? OnlyAdminUsers { get; set; }
 
-        [FromQuery(Name = "notactive")]
-        public bool? IncludeDeactivated { get; set; }
-
         [FromQuery(Name = "orgid")]
         public string OrganizationId { get; set; }
     }

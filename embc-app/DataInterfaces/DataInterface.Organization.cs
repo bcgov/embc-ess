@@ -26,6 +26,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     o.RegionalDistrict.Id == searchEntityId ||
                     o.Region.Id == searchEntityId
                 )
+                .Where(t => searchQuery.IncludeDeactivated || t.Active)
                 .Sort(searchQuery.SortBy ?? "id")
                 .ToArrayAsync();
 
