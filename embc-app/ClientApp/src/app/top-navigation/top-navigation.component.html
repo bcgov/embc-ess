@@ -1,7 +1,8 @@
 <!-- No navbar (default state) -->
 
 <!-- Volunteer navbar -->
-<nav class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
+<nav *ngIf="currentUser.role==='volunteer'||currentUser.role==='local_authority'"
+  class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
   <ul class="navbar-nav">
     <li class="mr-4">
       <a routerLink="/" title="Go Home">Home</a>
@@ -11,8 +12,8 @@
     </li>
 
     <!-- Only visible by local authority -->
-    <li *ngIf="true" class="mr-4">
-      <a routerLink="" title="Go to ESS Team page">ESS Team</a>
+    <li *ngIf="currentUser.role==='local_authority'" class="mr-4">
+      <a routerLink="volunteer-team-dashboard" title="Go to ESS Team page">ESS Team</a>
     </li>
 
     <!-- TODO: The  link goes to the useful information page. Can be uncommented when the useful information pull request is accepted-->
@@ -23,7 +24,8 @@
 </nav>
 
 <!-- Administrator navbar -->
-<nav class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
+<nav *ngIf="currentUser.role==='provincial_admin'"
+  class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
   <ul class="navbar-nav">
     <li class="mr-4">
       <a routerLink="" title="Go Home">Home</a>

@@ -1,8 +1,26 @@
 <div class="row">
   <div class="col">
-    Communities
-    <pre>{{communities$ | async | json}}</pre>
-
+    Current User
+    <pre>{{currentUser | json}}</pre>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label class="btn btn-secondary active" (click)="setUser('none')">
+        <input type="radio" name="options" id="option1" autocomplete="off" checked>
+        none
+      </label>
+      <label class="btn btn-secondary" (click)="setUser('volunteer')">
+        <input type="radio" name="options" id="option2" autocomplete="off"> volunteer
+      </label>
+      <label class="btn btn-secondary" (click)="setUser('local_authority')">
+        <input type="radio" name="options" id="option3" autocomplete="off"> local_authority
+      </label>
+      <label class="btn btn-secondary" (click)="setUser('provincial_admin')">
+        <input type="radio" name="options" id="option4" autocomplete="off"> provincial_admin
+      </label>
+    </div>
+    <span *ngIf="currentUser.role==='none'">Signed out</span>
+    <span *ngIf="currentUser.role==='volunteer'">Volunteer</span>
+    <span *ngIf="currentUser.role==='local_authority'">Local authority</span>
+    <span *ngIf="currentUser.role==='provincial_admin'">Provincial admin</span>
   </div>
   <div class="col">
     <ul>
