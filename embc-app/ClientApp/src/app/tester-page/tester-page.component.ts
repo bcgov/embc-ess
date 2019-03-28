@@ -5,6 +5,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../store';
 import { takeWhile } from 'rxjs/operators';
 import { state } from '@angular/animations';
+import { CurrentUser } from '../core/models/current-user.model';
+import { CurrentUserService } from '../core/services/current-user.service';
 // import { Store } from '@ngrx/store';
 
 // import { IncidentTaskService } from '../core/services/incident-task.service';
@@ -30,17 +32,19 @@ export class TesterPageComponent implements OnInit {
   // regions$ = this.store.select(s => s.lookups.regions);
   // relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
   // incidentTask$ = this.store.select(s => s.incidentTasks.incidentTasks);
-  communities$ = this.store.select(s => s.lookups.communities);
+  // communities$ = this.store.select(s => s.lookups.communities);
 
   // regions: Region[];
   // incidentTasks: IncidentTask[];
   // registrations: Registration[];
   // user: User;
-  registration: Registration;
-  volunteer: Volunteer;
+  // registration: Registration;
+  // volunteer: Volunteer;
+  currentUser: CurrentUser;
 
   constructor(
     private store: Store<AppState>,
+    private currentUserService: CurrentUserService,
     // private incidentTaskService: IncidentTaskService,
     // private registrationService: RegistrationService,
     // private userDataService: UserDataService,
@@ -49,6 +53,7 @@ export class TesterPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.currentUserService.currentUser.subscribe((u) => this.currentUser = u);
     // this.volunteerService.getVolunteers().subscribe(v => this.volunteers = v);
     // this.volunteerService.getVolunteerById('BCEIDACCOUNT').subscribe(v => this.volunteer = v);
 
@@ -60,5 +65,8 @@ export class TesterPageComponent implements OnInit {
     // this.incidentTaskService.getIncidentTasks().subscribe(i => this.incidentTasks = i);
     // this.registrationService.getRegistrations().subscribe(r => this.registrations = r.data);
   }
-
+  setUser() {
+    alert("")
+    this.currentUserService.currentUser.next({ role: 'Volunteer' });
+  }
 }

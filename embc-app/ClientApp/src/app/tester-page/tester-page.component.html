@@ -1,8 +1,8 @@
 <div class="row">
   <div class="col">
-    Communities
-    <pre>{{communities$ | async | json}}</pre>
-
+    Current User
+    <pre>{{currentUser | json}}</pre>
+    <button (click)="setUser()">Set User</button>
   </div>
   <div class="col">
     <ul>

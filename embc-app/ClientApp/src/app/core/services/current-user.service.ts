@@ -7,7 +7,7 @@ import { CurrentUser } from '../models/current-user.model';
 })
 export class CurrentUserService {
   // this is the current user object
-  currentUser: BehaviorSubject<CurrentUser> = new BehaviorSubject(null);
+  currentUser: BehaviorSubject<CurrentUser> = new BehaviorSubject({ role: 'none' });
 
   constructor() { }
 
