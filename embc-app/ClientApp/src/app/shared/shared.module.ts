@@ -21,6 +21,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
 import { ByIdPipe } from './pipes/by-id.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
 import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent } from './components/side-boxes';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, 
     AddOrganizationComponent,
     AddTaskNumberComponent,
     AddUserComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     CommonModule,

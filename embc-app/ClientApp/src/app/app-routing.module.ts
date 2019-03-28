@@ -26,6 +26,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { AdminAddTaskNumberComponent } from './admin-add-task-number/admin-add-task-number.component';
 import { AdminAddTaskNumberOneComponent, AdminAddTaskNumberConfirmationComponent } from './admin-add-task-number';
 import { AdminTaskNumbersComponent, AdminEvacueesComponent, AdminOrganizationsComponent } from './admin-dashboard';
+import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -180,7 +181,8 @@ const routes: Routes = [
   {
     path: 'test',
     component: TesterPageComponent
-  }
+  },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
