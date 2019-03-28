@@ -1,5 +1,6 @@
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
+using Gov.Jag.Embc.Public.ViewModels.Search;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,8 +8,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public interface IDataInterface
     {
-        // Registrations
-        Task<PaginatedList<Registration>> GetRegistrationsAsync(SearchQueryParameters queryParameters);
+        #region Registration
+
+        Task<IPagedResults<Registration>> GetRegistrationsAsync(SearchQueryParameters searchQuery);
 
         Task<Registration> GetRegistrationAsync(string id);
 
@@ -20,9 +22,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<bool> DeactivateRegistration(string id);
 
+        #endregion Registration
+
         #region Incident task
 
-        Task<IEnumerable<IncidentTask>> GetIncidentTasksAsync();
+        Task<IPagedResults<IncidentTask>> GetIncidentTasksAsync(SearchQueryParameters searchQuery);
 
         Task<IncidentTask> GetIncidentTaskAsync(string id);
 
@@ -47,7 +51,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         #region Organization
 
         //Organizations
-        Task<IEnumerable<Organization>> GetOrganizationsAsync();
+        Task<IPagedResults<Organization>> GetOrganizationsAsync(SearchQueryParameters searchQuery);
 
         Organization GetOrganizationByLegalName(string name);
 
@@ -65,15 +69,15 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         #region People
 
-        Task<IEnumerable<Person>> GetPeopleAsync(string type);
+        Task<IPagedResults<Person>> GetVolunteersAsync(VolunteersSearchQueryParameters searchQuery);
 
-        Task<Person> GetPersonByIdAsync(string type, string id);
+        Task<Person> GetPersonByIdAsync(string id);
 
         Task UpdatePersonAsync(Person person);
 
         Task<Person> CreatePersonAsync(Person person);
 
-        Task<bool> DeactivatePersonAsync(string type, string id);
+        Task<bool> DeactivatePersonAsync(string id);
 
         #endregion People
 
