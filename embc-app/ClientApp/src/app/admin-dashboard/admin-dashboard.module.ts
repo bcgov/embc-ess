@@ -10,6 +10,7 @@ import { AdminTaskNumbersComponent } from './admin-task-numbers/admin-task-numbe
 
 @NgModule({
     declarations: [
+        AdminDashboardComponent,
         AdminEvacueesComponent,
         AdminOrganizationsComponent,
         AdminTaskNumbersComponent,
