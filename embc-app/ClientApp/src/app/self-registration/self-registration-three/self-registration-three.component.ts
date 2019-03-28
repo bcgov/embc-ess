@@ -124,7 +124,8 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
       data => {
         console.log('NEW REGISTRATION ==>')
         console.log(data);
-        this.router.navigate(['../step-4'], { relativeTo: this.route });
+        // alert(JSON.stringify(data));
+        this.router.navigate(['../step-4/' + data.id], { relativeTo: this.route });
       },
       err => {
         this.router.navigate(['../error'], { relativeTo: this.route });
