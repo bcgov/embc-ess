@@ -22,21 +22,15 @@
     <input class="form-control" type="text" placeholder="Please specify" [formControl]="details">
   </div>
 </div>
-<div class="col mb-4">
-  <!-- <button class="btn btn-primary">Cancel</button> -->
-  <!-- <button class="btn btn-primary" (click)="submit()">Submit</button> -->
-
-  <button class="btn btn-primary float-right" (click)="next()">Next</button>
-  <a [routerLink]="">
-    <app-font-awesome-icon icon="times"></app-font-awesome-icon>
-    <span class="ml-2">Cancel &amp; Close</span>
-  </a>
+<div class="mt-5 space-between">
+  <section>
+    <a [routerLink]="">
+      <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+      <span class="ml-2">Cancel &amp; Close</span>
+    </a>
+  </section>
+  <section>
+    <button class="btn btn-primary float-right" (click)="next()">Next</button>
+  </section>
 </div>
 <!-- TODO Need yellow horizontal rule -->
-
-<!-- <div class="col mb-4">
-  Task:
-  <pre>{{taskNumber.value}}</pre>
-  <pre>{{community.value|json}}</pre>
-  <pre>{{details.value}}</pre>
-</div> -->

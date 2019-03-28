@@ -1,4 +1,4 @@
-import { Registration } from 'src/app/core/models';
+import { Registration, Volunteer } from 'src/app/core/models';
 
 /**
  * The search results to be displayed on an "<evacuee-search-results>" component
@@ -6,6 +6,10 @@ import { Registration } from 'src/app/core/models';
 export interface EvacueeSearchResults {
   query: string;
   results: Registration[];
+}
+export interface VolunteerSearchResults {
+  query: string;
+  results: Volunteer[];
 }
 
 /**
