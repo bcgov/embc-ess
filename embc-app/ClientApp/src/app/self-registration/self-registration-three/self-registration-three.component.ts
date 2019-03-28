@@ -122,10 +122,9 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     // TODO: POST to server, then go the "thank you" OR "error"
     this.service.createRegistration(registration).subscribe(
       data => {
-        console.log('NEW REGISTRATION ==>')
+        console.log('NEW REGISTRATION ==>');
         console.log(data);
-        // alert(JSON.stringify(data));
-        this.router.navigate(['../step-4/' + data.id], { relativeTo: this.route });
+        this.router.navigate(['../step-4/' + data.essFileNumber], { relativeTo: this.route });
       },
       err => {
         this.router.navigate(['../error'], { relativeTo: this.route });

@@ -18,15 +18,6 @@ export class SelfRegistrationFourComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.fetchRegistration()
-    //   .subscribe(reg => {
-    //     this.registrationNumber = reg.registrationNumber;
-    //   });
     this.registrationNumber = this.route.snapshot.params.id;
-  }
-
-  // TODO: Get this from backend server
-  fetchRegistration() {
-    // return of(mockResponse);
   }
 }
