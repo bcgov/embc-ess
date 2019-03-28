@@ -6,12 +6,12 @@ export function clearFormArray(formArray: FormArray): void {
   }
 }
 
-export function invalidField(parent: FormGroup, field: string, submitted = false): boolean {
+export function invalidField(field: string, parent: FormGroup, submitted = false): boolean {
   const c = parent.get(field);
   return c && c.invalid && submitted;
 }
 
-export function hasErrors(parent: FormGroup, field: string, errorCodes = ['required']): boolean {
+export function hasErrors(field: string, parent: FormGroup, errorCodes = ['required']): boolean {
   const c = parent.get(field);
   return (c && errorCodes.some(error => c.hasError(error)));
 }

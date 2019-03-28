@@ -43,7 +43,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   // convenience getters so we can use helper functions in Angular templates
   hasErrors = hasErrors;
-  invalidField = invalidField;
 
   constructor(
     private store: Store<AppState>,
@@ -109,6 +108,11 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     return this.form.controls;
   }
 
+  // convenience getter for easy access to validation errors within the HTML template
+  get e(): any {
+    return this.validationErrors;
+  }
+
   // Shortcuts for this.form.get(...)
   get familyMembers() {
     return this.f.familyMembers as FormArray;
@@ -137,6 +141,15 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.componentActive = false;
+  }
+
+  invalid(field: string, parent: FormGroup = this.form): boolean {
+    return invalidField(field, parent, this.submitted);
+  }
+
+  // TODO: fix after merge
+  invalidField(parent: FormGroup, field: string): boolean {
+    return invalidField(field, parent, this.submitted);
   }
 
   // Define the form group
@@ -320,9 +333,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     this.familyMembers.push(this.createFamilyMember());
   }
 
-  removeFamilyMember(): void {
-    const last = this.familyMembers.length - 1;
-    this.familyMembers.removeAt(last);
+  removeFamilyMember(i: number): void {
+    this.familyMembers.removeAt(i);
   }
 
   clearFamilyMembers() {

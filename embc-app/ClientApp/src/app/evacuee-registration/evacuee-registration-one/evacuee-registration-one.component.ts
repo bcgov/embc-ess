@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs/operators';
+import { map, skipWhile } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { AppState } from '../../store';
@@ -51,7 +51,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
   // convenience getters so we can use helper functions in Angular templates
   hasErrors = hasErrors;
-  invalidField = invalidField;
 
   // `validationErrors` represents an object with field-level validation errors to display in the form
   validationErrors: { [key: string]: any } = {};
@@ -85,21 +84,30 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       },
       headOfHousehold: {
         firstName: {
-          required: 'Please enter your first name.',
+          required: 'Please enter a first name.',
         },
         lastName: {
-          required: 'Please enter your last name.',
+          required: 'Please enter a last name.',
         },
         dob: {
-          required: 'Please enter your date of birth.',
+          required: 'Please enter date of birth.',
           maxDate: 'Date of birth must be today or in the past.',
         },
       },
       registeringFamilyMembers: {
-        required: 'Please register any immediate family members who live within the same household as you.',
+        required: 'Please register any immediate family members who live within the same household as the evacuee.',
       },
       primaryResidenceInBC: {
         required: 'Please make a selection regarding your primary residence.',
+      },
+      phoneNumber: {
+        phone: 'Please enter a valid telephone number.',
+      },
+      phoneNumberAlt: {
+        phone: 'Please enter a valid telephone number.',
+      },
+      email: {
+        email: 'Please enter a valid email address.',
       },
       mailingAddressSameAsPrimary: {
         required: 'Please select whether your mailing address is the same as your primary residence.',
@@ -107,14 +115,11 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       mailingAddressInBC: {
         required: 'Please make a selection regarding your mailing address.',
       },
-      phoneNumber: {
-        phone: 'Must be 10 digits, no spaces allowed.',
+      disasterAffectDetails: {
+        required: 'Please enter a brief statement of how the evacuee/family were affected by the disaster.',
       },
-      phoneNumberAlt: {
-        phone: 'Must be 10 digits, no spaces allowed.',
-      },
-      email: {
-        email: 'Please enter a valid email address.',
+      insuranceCode: {
+        required: 'Please make a selection regarding insurance coverage.',
       },
       dietaryNeeds: {
         required: 'Please make a selection regarding dietary requirements.',
@@ -125,14 +130,17 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       medicationNeeds: {
         required: 'Please make a selection regarding medication.',
       },
+      hasThreeDayMedicationSupply: {
+        required: 'Please make a selection regarding medication supply.',
+      },
       hasPets: {
         required: 'Please make a selection regarding pets.',
       },
-      insuranceCode: {
-        required: 'Please make a selection regarding insurance coverage.',
-      },
       requiresSupport: {
         required: 'Please select whether supports are required.',
+      },
+      familyRecoveryPlan: {
+        required: 'Please enter details of the evacuee(s) long term plans.',
       },
     };
 
@@ -141,9 +149,14 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     this.validationHelper = new ValidationHelper(this.constraints);
   }
 
-  // convenience getter for easy access to form fields
-  get f() {
+  // convenience getter for easy access to form fields within the HTML template
+  get f(): any {
     return this.form.controls;
+  }
+
+  // convenience getter for easy access to validation errors within the HTML template
+  get e(): any {
+    return this.validationErrors;
   }
 
   // Shortcuts for this.form.get(...)
@@ -170,6 +183,10 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       // this is a fresh form
       this.displayRegistration();
     }
+  }
+
+  invalid(field: string, parent: FormGroup = this.form): boolean {
+    return invalidField(field, parent, this.submitted);
   }
 
   addFamilyMember(fmbr?: FamilyMember): void {
@@ -217,17 +234,17 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       essFileNumber: null,
       dietaryNeeds: [null, Validators.required],
       dietaryNeedsDetails: [null, CustomValidators.requiredWhenTrue('dietaryNeeds')],
-      disasterAffectDetails: null,
+      disasterAffectDetails: [null, Validators.required],
       externalReferralsDetails: '',
       facility: [null, Validators.required],
-      familyRecoveryPlan: '',
+      familyRecoveryPlan: [null, Validators.required],
       followUpDetails: '',
       insuranceCode: [null, Validators.required],  // one of ['yes', 'yes-unsure', 'no', 'unsure']
       medicationNeeds: [null, Validators.required],
       selfRegisteredDate: null,
       registrationCompletionDate: null,
       registeringFamilyMembers: [null, Validators.required],
-      hasThreeDayMedicationSupply: null,
+      hasThreeDayMedicationSupply: [null, CustomValidators.requiredWhenTrue('medicationNeeds')],
       hasInquiryReferral: null,
       hasHealthServicesReferral: null,
       hasFirstAidReferral: null,
@@ -283,8 +300,9 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       completedBy: null, // TODO: the volunteer completing this form (we need AUTH in place to do know who you are)
 
       // UI booleans
-      primaryResidenceInBc: [null, Validators.required],
-      mailingAddressInBc: null, // this will be validated when 'mailingAddressSameAsPrimary == false'
+      primaryResidenceInBC: [null, Validators.required],
+      // this will be validated when 'mailingAddressSameAsPrimary == false'
+      mailingAddressInBC: [null, CustomValidators.requiredWhenFalse('mailingAddressSameAsPrimary')],
       mailingAddressSameAsPrimary: [null, Validators.required],
     });
   }
@@ -292,6 +310,43 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   onFormChange(): void {
     // validate the whole form as we capture data
     this.form.valueChanges.subscribe(() => this.validateForm());
+
+    // validate phone numbers, for BC residents ONLY!
+    // NOTE - international numbers are not validated due to variance in formats, etc.
+    this.f.primaryResidenceInBC.valueChanges
+      .pipe(skipWhile(() => this.f.primaryResidenceInBC.pristine))
+      .subscribe((checked: boolean) => {
+        if (checked) {
+          this.f.phoneNumber.setValidators([CustomValidators.phone]);
+          this.f.phoneNumberAlt.setValidators([CustomValidators.phone]);
+        } else {
+          this.f.phoneNumber.setValidators(null);
+          this.f.phoneNumberAlt.setValidators(null);
+        }
+        this.f.phoneNumber.updateValueAndValidity();
+        this.f.phoneNumberAlt.updateValueAndValidity();
+      });
+
+    // show/hide family members section based on the "family info" radio button
+    this.f.registeringFamilyMembers.valueChanges
+      .pipe(skipWhile(() => this.f.registeringFamilyMembers.pristine))
+      .subscribe((value: string) => {
+        if (value === 'yes') {
+          this.addFamilyMember();
+        } else {
+          this.clearFamilyMembers();
+        }
+      });
+
+    // set "family info" radio to "No family" when all members have been removed from the form
+    this.familyMembers.valueChanges
+      .pipe(skipWhile(() => this.f.registeringFamilyMembers.pristine))
+      .subscribe((family: any[]) => {
+        const radio = this.f.registeringFamilyMembers;
+        if (radio.value === 'yes' && family.length === 0) {
+          radio.setValue('no');
+        }
+      });
   }
 
   validateForm(): void {
@@ -335,8 +390,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       }
 
       // some form fields for showing or hiding UI elements
-      const primaryResidenceInBc: boolean = isBcAddress(primaryResidence);
-      const mailingAddressInBc: boolean = isBcAddress(mailingAddress);
+      const primaryResidenceInBC: boolean = isBcAddress(primaryResidence);
+      const mailingAddressInBC: boolean = isBcAddress(mailingAddress);
       const mailingAddressSameAsPrimary: boolean = (mailingAddress == null);
 
       // Update the data on the form from the data included from the API
@@ -400,8 +455,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         incidentTask: incidentTask as IncidentTask,
 
         // UI booleans
-        primaryResidenceInBc: primaryResidenceInBc as boolean,
-        mailingAddressInBc: mailingAddressInBc as boolean,
+        primaryResidenceInBC: primaryResidenceInBC as boolean,
+        mailingAddressInBC: mailingAddressInBC as boolean,
         mailingAddressSameAsPrimary: mailingAddressSameAsPrimary as boolean,
       });
 
