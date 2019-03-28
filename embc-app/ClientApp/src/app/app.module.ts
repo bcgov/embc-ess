@@ -20,12 +20,11 @@ import { EvacueeRegistrationModule } from './evacuee-registration';
 import { SelfRegistrationModule } from './self-registration';
 import { SharedModule } from './shared/shared.module';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
-import { VolunteerNavbarComponent } from './volunteer-navbar/volunteer-navbar.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
 import { AdminAddTaskNumberModule } from './admin-add-task-number';
-import { AdminNavbarComponent } from './admin-navbar/admin-navbar.component';
 import { AdminDashboardModule } from './admin-dashboard';
+import { TopNavigationComponent } from './top-navigation/top-navigation.component';
 
 @NgModule({
   declarations: [
@@ -35,10 +34,9 @@ import { AdminDashboardModule } from './admin-dashboard';
     VolunteerDashboardComponent,
     TesterPageComponent,
     VolunteerTeamDashboardComponent,
-    VolunteerNavbarComponent,
-    AdminNavbarComponent,
     VolunteerUsefulInformationComponent,
     EvacueeSummaryComponent,
+    TopNavigationComponent,
   ],
   imports: [
     // angular
