@@ -42,99 +42,124 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'step-1',
-        pathMatch: 'full'
+        pathMatch: 'full',
+
       },
       {
         path: 'step-1',
-        component: SelfRegistrationOneComponent
+        component: SelfRegistrationOneComponent,
+
       },
       {
         path: 'step-2',
-        component: SelfRegistrationTwoComponent
+        component: SelfRegistrationTwoComponent,
+
       },
       {
         path: 'step-3',
-        component: SelfRegistrationThreeComponent
+        component: SelfRegistrationThreeComponent,
+
       },
       {
         path: 'step-4/:id',
-        component: SelfRegistrationFourComponent
+        component: SelfRegistrationFourComponent,
+
       },
       {
         path: 'error',
-        component: SelfRegistrationErrorComponent
+        component: SelfRegistrationErrorComponent,
+
       },
     ]
   },
   {
-    path: 'volunteer-login',
-    component: VolunteerLoginComponent,
-    canActivate: [RoleGuardService]
-  },
-  {
     path: 'volunteer-info',
     component: VolunteerUsefulInformationComponent,
-    canActivate: [RoleGuardService]
+    canActivate: [RoleGuardService],
+    data: { expectedRole: 'volunteer' }
   },
   {
     path: 'volunteer-dashboard',
     component: VolunteerDashboardComponent,
-    canActivate: [RoleGuardService]
+    canActivate: [RoleGuardService],
+    data: { expectedRole: 'volunteer' }
   },
   {
     path: 'volunteer-team-dashboard',
     component: VolunteerTeamDashboardComponent,
-    canActivate: [RoleGuardService]
+    data: { expectedRole: 'local_authority' }
   },
   {
     path: 'admin-dashboard',
     component: AdminDashboardComponent,
+    canActivate: [RoleGuardService],
+    data: { expectedRole: '' },
     children: [
       {
         path: '',
         redirectTo: 'evacuees',
-        pathMatch: 'full'
+        pathMatch: 'full',
+        canActivate: [RoleGuardService],
+        data: { expectedRole: '' }
       },
       {
         path: 'task-numbers',
-        component: AdminTaskNumbersComponent
+        component: AdminTaskNumbersComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: '' }
       },
       {
         path: 'evacuees',
-        component: AdminEvacueesComponent
+        component: AdminEvacueesComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: '' }
       },
       {
         path: 'organizations',
-        component: AdminOrganizationsComponent
+        component: AdminOrganizationsComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: '' }
       },
     ]
   },
   {
     path: 'add-task-number',
     component: AdminAddTaskNumberComponent,
+    canActivate: [RoleGuardService],
+    data: { expectedRole: '' },
     children: [
       {
         path: '',
         redirectTo: 'fill',
-        pathMatch: 'full'
+        pathMatch: 'full',
+        canActivate: [RoleGuardService],
+        data: { expectedRole: '' }
       },
       {
         path: 'fill',
-        component: AdminAddTaskNumberOneComponent
+        component: AdminAddTaskNumberOneComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: '' }
       },
       {
         path: 'fill/:id',
-        component: AdminAddTaskNumberOneComponent
+        component: AdminAddTaskNumberOneComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: '' }
       },
       {
         path: 'confirmation',
-        component: AdminAddTaskNumberConfirmationComponent
+        component: AdminAddTaskNumberConfirmationComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: '' }
       }
     ]
   },
   {
     path: 'evacuee-summary/:id',
-    component: EvacueeSummaryComponent
+    component: EvacueeSummaryComponent,
+    canActivate: [RoleGuardService],
+    data: { expectedRole: '' }
   },
   {
     // TODO: naming: this should be changed to be "evacuee-registration"
@@ -144,19 +169,27 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'fill',
+        canActivate: [RoleGuardService],
+        data: { expectedRole: 'volunteer' },
         pathMatch: 'full'
       },
       {
         path: 'fill/:id',
-        component: EvacueeRegistrationOneComponent
+        component: EvacueeRegistrationOneComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: 'volunteer' },
       },
       {
         path: 'fill',
-        component: EvacueeRegistrationOneComponent
+        component: EvacueeRegistrationOneComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: 'volunteer' },
       },
       {
         path: 'confirmation',
-        component: EvacueeRegistrationConfirmationComponent
+        component: EvacueeRegistrationConfirmationComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: 'volunteer' },
       }
     ]
   },
@@ -167,19 +200,27 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'fill',
+        canActivate: [RoleGuardService],
+        data: { expectedRole: '' },
         pathMatch: 'full'
       },
       {
         path: 'fill',
-        component: VolunteerEditorOneComponent
+        component: VolunteerEditorOneComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: '' }
       },
       {
         path: 'fill/:id',
-        component: VolunteerEditorOneComponent
+        component: VolunteerEditorOneComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: '' }
       },
       {
         path: 'confirmation',
-        component: VolunteerEditorConfirmationComponent
+        component: VolunteerEditorConfirmationComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: '' }
       }
     ]
   },
