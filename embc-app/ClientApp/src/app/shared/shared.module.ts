@@ -15,12 +15,15 @@ import { BcAddressComponent } from './components/address-form/bc-address/bc-addr
 import { OtherAddressComponent } from './components/address-form/other-address/other-address.component';
 import { DisableControlDirective } from './directives/disable-control.directive';
 import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
+import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
+import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
 import { SearchBarComponent, EvacueeSearchResultsComponent } from './components/search/';
 
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { ByIdPipe } from './pipes/by-id.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
 import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent } from './components/side-boxes';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,8 @@ import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, 
     OtherAddressComponent,
     DisableControlDirective,
     FontAwesomeIconComponent,
+    FontAwesomeLinkComponent,
+    AttentionIconComponent,
     SearchBarComponent,
     EvacueeSearchResultsComponent,
     YesNoPipe,
@@ -44,6 +49,7 @@ import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, 
     AddOrganizationComponent,
     AddTaskNumberComponent,
     AddUserComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     CommonModule,
@@ -71,6 +77,8 @@ import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, 
     OtherAddressComponent,
     DisableControlDirective,
     FontAwesomeIconComponent,
+    FontAwesomeLinkComponent,
+    AttentionIconComponent,
     SearchBarComponent,
     EvacueeSearchResultsComponent,
     YesNoPipe,

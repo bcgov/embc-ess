@@ -3,9 +3,8 @@ import { Observable, of } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 import { CoreModule } from '../core.module';
-import { Registration } from '../models';
+import { Registration, ListResult } from '../models';
 import { RestService } from './rest.service';
-import { MetaRegistration } from '../models/meta-registration';
 import { SearchQueryParameters } from 'src/app/shared/components/search';
 import { HttpResponse } from '@angular/common/http';
 
@@ -13,15 +12,16 @@ import { HttpResponse } from '@angular/common/http';
   providedIn: CoreModule
 })
 export class RegistrationService extends RestService {
-  getRegistrations(props: SearchQueryParameters = {}): Observable<MetaRegistration> {
-    const { limit = 100, offset = 0, q, sort } = props;
+
+  getRegistrations(props: SearchQueryParameters = {}): Observable<ListResult<Registration>> {
+    const { limit = 100, offset = 0, q = '', sort = '' } = props;
     const params = {
       limit: limit.toString(), // query params are strings
       offset: offset.toString(),
       q,
       sort
     };
-    return this.http.get<MetaRegistration>('api/registrations', { headers: this.headers, params })
+    return this.http.get<ListResult<Registration>>('api/registrations', { headers: this.headers, params })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -35,8 +35,9 @@ export class RegistrationService extends RestService {
         catchError(this.handleError)
       );
   }
+
   updateRegistration(data: Registration): Observable<HttpResponse<any>> {
-    return this.http.put<HttpResponse<any>>('api/registrations/' + data.id, data, { headers: this.headers })
+    return this.http.put<HttpResponse<any>>(`api/registrations/${data.id}`, data, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -44,7 +45,7 @@ export class RegistrationService extends RestService {
   }
 
   getRegistrationById(id: string): Observable<Registration> {
-    return this.http.get<Registration>('api/registrations/' + id)
+    return this.http.get<Registration>(`api/registrations/${id}`, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError),

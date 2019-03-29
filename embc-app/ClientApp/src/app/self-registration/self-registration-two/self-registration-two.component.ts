@@ -38,7 +38,6 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
 
   // convenience getters so we can use helper functions in Angular templates
   hasErrors = hasErrors;
-  invalidField = invalidField;
 
   constructor(
     private store: Store<AppState>,
@@ -99,6 +98,10 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.componentActive = false;
+  }
+
+  invalid(field: string, parent: FormGroup = this.form): boolean {
+    return invalidField(field, parent, this.submitted);
   }
 
   // Define the form group

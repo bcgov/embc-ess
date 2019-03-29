@@ -3,11 +3,10 @@ import { Observable, of } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 import { CoreModule } from '../core.module';
-import { Volunteer } from '../models';
+import { Volunteer, ListResult } from '../models';
 import { RestService } from './rest.service';
 import { HttpResponse } from '@angular/common/http';
 import { SearchQueryParameters } from 'src/app/shared/components/search';
-import { MetaVolunteers } from '../models/meta-volunteers';
 
 // const VOLUNTEERS: Volunteer[] = [
 //   {
@@ -94,7 +93,7 @@ import { MetaVolunteers } from '../models/meta-volunteers';
 export class VolunteerService extends RestService {
   apiRoute = 'api/volunteers';
 
-  getVolunteers(limit?: number, offset?: number, q?: string, sort?: string): Observable<MetaVolunteers> {
+  getVolunteers(limit?: number, offset?: number, q?: string, sort?: string): Observable<ListResult<Volunteer>> {
     const params = {
       limit: (limit || 100).toString(), // query params are strings
       offset: (offset || 0).toString(),
@@ -103,7 +102,7 @@ export class VolunteerService extends RestService {
     };
 
     // get a list of all volunteers back from the api
-    return this.http.get<MetaVolunteers>(this.apiRoute, { headers: this.headers, params })
+    return this.http.get<ListResult<Volunteer>>(this.apiRoute, { headers: this.headers, params })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -118,6 +117,7 @@ export class VolunteerService extends RestService {
         catchError(this.handleError)
       );
   }
+
   createVolunteer(data: Volunteer): Observable<Volunteer> {
     // this will return a response string of 200. This may need to become a Response eventually
     // return of('200');
@@ -127,6 +127,7 @@ export class VolunteerService extends RestService {
         catchError(this.handleError)
       );
   }
+
   updateVolunteer(data: Volunteer): Observable<HttpResponse<any>> {
     // this will return a response string of 200. This may need to become a Response eventually
     // return of('200');

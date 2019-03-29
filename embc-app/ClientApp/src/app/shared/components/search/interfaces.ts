@@ -7,6 +7,7 @@ export interface EvacueeSearchResults {
   query: string;
   results: Registration[];
 }
+
 export interface VolunteerSearchResults {
   query: string;
   results: Volunteer[];

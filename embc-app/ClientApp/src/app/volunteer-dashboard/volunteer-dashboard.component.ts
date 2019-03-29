@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Registration } from '../core/models';
+import { Registration, ListResult } from '../core/models';
 import { RegistrationService } from '../core/services/registration.service';
-import { MetaRegistration } from '../core/models/meta-registration';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -29,7 +28,7 @@ interface Stub {
 export class VolunteerDashboardComponent implements OnInit {
 
   // server response
-  resultsAndPagination$: Observable<MetaRegistration>;
+  resultsAndPagination$: Observable<ListResult<Registration>>;
 
   // search related
   isLoadingResults = false;

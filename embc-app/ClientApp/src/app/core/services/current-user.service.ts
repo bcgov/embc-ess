@@ -9,7 +9,9 @@ export class CurrentUserService {
   // this is the current user object
   currentUser: BehaviorSubject<User> = new BehaviorSubject(null);
 
-  constructor() { }
+  constructor() {
+    this.setCurrentUser({ role: 'none' });
+  }
 
   setCurrentUser(user: User) {
     // this sets a current user to a value to test the current user observable all subscribers should update.
