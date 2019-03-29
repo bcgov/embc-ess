@@ -57,7 +57,7 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
       // when routing to the next page we save first into the application state.
       this.onSave(incidentTask);
       // information saved in state. Navigate to confirm page
-      this.router.navigate(['add-task-number/confirmation']);
+      this.router.navigate(['task-number-edit/confirmation']);
     } else {
       alert("All fields are required to continue.");
     }

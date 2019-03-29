@@ -46,14 +46,14 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
       this.incidentTaskService.updateIncidentTask(this.incidentTask)
         .subscribe(() => {
           // go back to the volunteer team dashboard
-          this.router.navigate(['admin-dashboard']);
+          this.router.navigate(['provincial-admin/edit-task-numbers']);
         });
     } else {
       // if the volunteer has no id we need to create a new one
       this.incidentTaskService.createIncidentTask(this.incidentTask)
         .subscribe(i => {
           // go back to the volunteer team dashboard
-          this.router.navigate(['admin-dashboard']);
+          this.router.navigate(['provincial-admin/edit-task-numbers']);
         });
     }
   }
