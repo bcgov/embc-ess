@@ -174,7 +174,7 @@
               <span *ngIf="submitted" class="invalid-feedback">Please enter a first name.</span>
             </div>
             <div class="col">
-              <label required="true">Middle Initial</label>
+              <label>Middle Initial</label>
               <input type="text" class="form-control" formControlName="initials">
             </div>
           </div>
@@ -206,7 +206,7 @@
               <span *ngIf="submitted && hasErrors('dob', entry, ['required'])" class="invalid-feedback">
                 Please enter a date of birth.
               </span>
-              <span *ngIf="submitted && hasErrors('dob', entry, ['dateInThePast'])" class="invalid-feedback">
+              <span *ngIf="submitted && hasErrors('dob', entry, ['maxDate'])" class="invalid-feedback">
                 Date of birth must be today or in the past.
               </span>
             </div>

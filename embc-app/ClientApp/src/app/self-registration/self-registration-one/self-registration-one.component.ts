@@ -78,10 +78,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         required: 'Please make a selection regarding your mailing address.',
       },
       phoneNumber: {
-        phone: 'Must be 10 digits, no spaces allowed.',
+        phone: 'Please enter a valid telephone number.',
       },
       phoneNumberAlt: {
-        phone: 'Must be 10 digits, no spaces allowed.',
+        phone: 'Please enter a valid telephone number.',
       },
       email: {
         email: 'Please enter a valid email address.',
@@ -144,11 +144,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   }
 
   invalid(field: string, parent: FormGroup = this.form): boolean {
-    return invalidField(field, parent, this.submitted);
-  }
-
-  // TODO: fix after merge
-  invalidField(parent: FormGroup, field: string): boolean {
     return invalidField(field, parent, this.submitted);
   }
 
