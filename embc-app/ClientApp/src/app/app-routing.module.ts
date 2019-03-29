@@ -42,7 +42,7 @@ import { RoleGuardService } from './core/services/role-guard.service';
     evacuees
     edit-registration
     edit-registration/:id
-    ess-team
+    volunteers
     edit-volunteer
     edit-volunteer/:id
     useful-info
@@ -106,18 +106,23 @@ const routes: Routes = [
     component: VolunteerUsefulInformationComponent,
   },
   {
-    path: 'volunteer-dashboard',
+    path: 'volunteer/useful-info',
+    component: VolunteerUsefulInformationComponent,
+  },
+  {
+    path: 'volunteer/evacuees',
     component: VolunteerDashboardComponent,
     canActivate: [RoleGuardService],
     data: { expectedRole: 'volunteer' }
   },
   {
-    path: 'volunteer-team-dashboard',
+    path: 'local-authority/volunteers',
     component: VolunteerTeamDashboardComponent,
+    canActivate: [RoleGuardService],
     data: { expectedRole: 'local_authority' }
   },
   {
-    path: 'admin-dashboard',
+    path: 'provincial-admin',
     component: AdminDashboardComponent,
     canActivate: [RoleGuardService],
     data: { expectedRole: 'provincial_admin' },
@@ -130,14 +135,44 @@ const routes: Routes = [
         data: { expectedRole: 'provincial_admin' }
       },
       {
-        path: 'task-numbers',
+        path: 'evacuees',
+        component: AdminEvacueesComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: 'provincial_admin' }
+      },
+      {
+        path: 'edit-task-numbers',
         component: AdminTaskNumbersComponent,
         canActivate: [RoleGuardService],
         data: { expectedRole: 'provincial_admin' }
       },
       {
-        path: 'evacuees',
-        component: AdminEvacueesComponent,
+        path: 'edit-task-numbers/:id',
+        component: AdminTaskNumbersComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: 'provincial_admin' }
+      },
+      {
+        path: 'edit-registration',
+        component: AdminTaskNumbersComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: 'provincial_admin' }
+      },
+      {
+        path: 'edit-registration/:id',
+        component: AdminTaskNumbersComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: 'provincial_admin' }
+      },
+      {
+        path: 'edit-volunteer',
+        component: AdminTaskNumbersComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: 'provincial_admin' }
+      },
+      {
+        path: 'edit-volunteer/:id',
+        component: AdminTaskNumbersComponent,
         canActivate: [RoleGuardService],
         data: { expectedRole: 'provincial_admin' }
       },
@@ -148,13 +183,25 @@ const routes: Routes = [
         data: { expectedRole: 'provincial_admin' }
       },
       {
+        path: 'edit-organization',
+        component: AdminTaskNumbersComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: 'provincial_admin' }
+      },
+      {
+        path: 'edit-organization/:id',
+        component: AdminTaskNumbersComponent,
+        canActivate: [RoleGuardService],
+        data: { expectedRole: 'provincial_admin' }
+      },
+      {
         path: 'useful-info',
-        component: VolunteerUsefulInformationComponent,
+        redirectTo: '/useful-info'
       },
     ]
   },
   {
-    path: 'add-task-number',
+    path: 'provincial-admin/',
     component: AdminAddTaskNumberComponent,
     canActivate: [RoleGuardService],
     data: { expectedRole: 'provincial_admin' },
@@ -199,7 +246,6 @@ const routes: Routes = [
     data: { expectedRole: 'volunteer' }
   },
   {
-    // TODO: naming: this should be changed to be "evacuee-registration"
     path: 'register-evacuee',
     component: EvacueeRegistrationComponent,
     children: [
