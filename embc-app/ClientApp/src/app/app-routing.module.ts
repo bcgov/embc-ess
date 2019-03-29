@@ -116,6 +116,24 @@ const routes: Routes = [
     data: { expectedRole: 'volunteer' }
   },
   {
+    path: 'volunteer-dashboard',
+    component: VolunteerDashboardComponent,
+    canActivate: [RoleGuardService],
+    data: { expectedRole: 'volunteer' }
+  },
+  {
+    path: 'local-authority/evacuees',
+    component: VolunteerDashboardComponent,
+    canActivate: [RoleGuardService],
+    data: { expectedRole: 'local_authority' }
+  },
+  {
+    path: 'volunteer-team-dashboard',
+    component: VolunteerTeamDashboardComponent,
+    canActivate: [RoleGuardService],
+    data: { expectedRole: 'local_authority' }
+  },
+  {
     path: 'local-authority/volunteers',
     component: VolunteerTeamDashboardComponent,
     canActivate: [RoleGuardService],
