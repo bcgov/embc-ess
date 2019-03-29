@@ -29,13 +29,13 @@ namespace Gov.Jag.Embc.Public.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult Login(string path = "")
+        public ActionResult Login(string path = null)
         {
             // check to see if we have a local path. (do not allow a redirect to another website)
             //if (!string.IsNullOrEmpty(path) && (Url.IsLocalUrl(path) || (!_env.IsProduction() && path.Equals("headers"))))
             //{
             // diagnostic feature for development - echo headers back.
-            if ((!env.IsProduction()) && path.Equals("headers"))
+            if ((!env.IsProduction()) && path == "headers")
             {
                 StringBuilder html = new StringBuilder();
                 html.AppendLine("<html>");
@@ -54,11 +54,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                 contentResult.ContentType = "text/html";
                 return contentResult;
             }
-            //return LocalRedirect(path);
-            //}
 
-            string basePath = configuration["BASE_PATH"] ?? "/";
-            return Redirect(Url.Content($"{basePath}/{path}"));
+            path = path ?? configuration["BASE_PATH"] ?? "/";
+            return LocalRedirect(path);
         }
 
         /// <summary>
@@ -71,13 +69,8 @@ namespace Gov.Jag.Embc.Public.Controllers
         public IActionResult LoginDev(string userId)
         {
             if (env.IsProduction()) return Unauthorized();
-
             if (string.IsNullOrEmpty(userId)) return BadRequest("Missing required userid query parameter.");
 
-            //if (userId.ToLower() == "default")
-            //    userId = _options.DevDefaultUserId;
-
-            // clear session
             HttpContext.Session.Clear();
 
             var siteMinderToken = new SiteMinderToken
@@ -87,40 +80,12 @@ namespace Gov.Jag.Embc.Public.Controllers
                 smgov_userdisplayname = "user 1234",
                 smgov_usertype = "type",
                 sm_universalid = "1234",
-                sm_user = "user12"
+                sm_user = "user12",
+                smgov_userguid = "guid123"
             };
 
-            siteMinderToken.AddHeadersToResponse(Response);
-
-            // expire "dev" user cookie
-            //string temp = HttpContext.Request.Cookies[_options.DevBCSCAuthenticationTokenKey];
-            //if (temp == null)
-            //{
-            //    temp = "";
-            //}
-            //Response.Cookies.Append(
-            //    _options.DevBCSCAuthenticationTokenKey,
-            //    temp,
-            //    new CookieOptions
-            //    {
-            //        Path = "/",
-            //        SameSite = SameSiteMode.None,
-            //        Expires = DateTime.UtcNow.AddDays(-1)
-            //    }
-            //);
-            //// create new "dev" user cookie
-            //Response.Cookies.Append(
-            //    _options.DevAuthenticationTokenKey,
-            //    userId,
-            //    new CookieOptions
-            //    {
-            //        Path = "/",
-            //        SameSite = SameSiteMode.None,
-            //        Expires = DateTime.UtcNow.AddDays(7)
-            //    }
-            //);
-
-            return Login("");
+            siteMinderToken.AddToResponse(Response);
+            return Login();
         }
     }
 }

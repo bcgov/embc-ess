@@ -1,11 +1,13 @@
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
@@ -49,15 +51,31 @@ namespace Gov.Jag.Embc.Public.Authentication
             };
         }
 
-        public void AddHeadersToResponse(HttpResponse res)
+        public static SiteMinderToken CreateFromHttpCookie(HttpRequest req)
         {
-            res.Headers.Add("smgov_userguid", smgov_userguid);
-            res.Headers.Add("smgov_userdisplayname", smgov_userdisplayname);
-            res.Headers.Add("smgov_businesslegalname", smgov_businesslegalname);
-            res.Headers.Add("sm_universalid", sm_universalid);
-            res.Headers.Add("sm_user", sm_user);
-            res.Headers.Add("smgov_businessguid", smgov_businessguid);
-            res.Headers.Add("smgov_usertype", smgov_usertype);
+            var str = req.Cookies["sm_token"];
+            if (string.IsNullOrWhiteSpace(str)) return new SiteMinderToken();
+            var dict = str.Split(';').Select(p => p.Split('=')).ToDictionary(v => v[0], v => v[1]);
+            return new SiteMinderToken
+            {
+                smgov_userguid = dict["smgov_userguid"],
+                sm_universalid = dict["sm_universalid"],
+                smgov_businessguid = dict["smgov_businessguid"],
+                sm_user = dict["sm_user"],
+                smgov_userdisplayname = dict["smgov_userdisplayname"],
+                smgov_businesslegalname = dict["smgov_businesslegalname"],
+                smgov_usertype = dict["smgov_usertype"],
+            };
+        }
+
+        public void AddToResponse(HttpResponse res)
+        {
+            res.Cookies.Append("sm_token", this.ToString(), new CookieOptions()
+            {
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.Now.AddMinutes(15),
+                HttpOnly = true
+            });
         }
 
         public bool IsValid()
@@ -85,10 +103,17 @@ namespace Gov.Jag.Embc.Public.Authentication
     {
         private readonly IDataInterface dataService;
         private readonly ILogger<SiteminderAuthenticationHandler2> logger;
+        private readonly IHostingEnvironment env;
 
-        public SiteminderAuthenticationHandler2(IOptionsMonitor<SiteMinderAuthOptions2> options, ILoggerFactory loggerFactory, UrlEncoder encoder, ISystemClock clock, IDataInterface dataService)
+        public SiteminderAuthenticationHandler2(IOptionsMonitor<SiteMinderAuthOptions2> options,
+            ILoggerFactory loggerFactory,
+            UrlEncoder encoder,
+            ISystemClock clock,
+            IDataInterface dataService,
+            IHostingEnvironment env)
             : base(options, loggerFactory, encoder, clock)
         {
+            this.env = env;
             this.dataService = dataService;
             logger = loggerFactory.CreateLogger<SiteminderAuthenticationHandler2>();
         }
@@ -101,8 +126,10 @@ namespace Gov.Jag.Embc.Public.Authentication
             var userSettings = UserSettings.ReadUserSettings(Request.HttpContext);
             if (!userSettings.UserAuthenticated)
             {
-                var token = SiteMinderToken.CreateFromHttpHeaders(Request);
-                if (token == null || !token.IsValid())
+                var token = !env.IsDevelopment()
+                    ? SiteMinderToken.CreateFromHttpHeaders(Request)
+                    : SiteMinderToken.CreateFromHttpCookie(Request);
+                if (!token.IsValid())
                 {
                     logger.LogError($"token is invalid: {token.ToString()}");
                     return AuthenticateResult.Fail("Not authenticated by SiteMinder");
