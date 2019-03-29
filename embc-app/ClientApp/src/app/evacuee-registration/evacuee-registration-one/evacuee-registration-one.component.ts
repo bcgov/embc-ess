@@ -8,8 +8,7 @@ import * as moment from 'moment';
 import { AppState } from '../../store';
 import { RegistrationService } from '../../core/services/registration.service';
 import {
-  Registration, FamilyMember, isBcAddress, Community, Country,
-  RelationshipType, HeadOfHousehold, Address, Volunteer, IncidentTask
+  Registration, FamilyMember, isBcAddress, Community, Country, Volunteer, IncidentTask, Address
 } from 'src/app/core/models';
 import { IncidentTaskService } from '../../core/services/incident-task.service';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
@@ -36,8 +35,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
   // The model for the form data collected
   form: FormGroup;
-  submitted = false;
   componentActive = true;
+  submitted = false;
 
   // Flags for the different modes this form supports
   createMode = true;
@@ -150,20 +149,14 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   }
 
   // convenience getter for easy access to form fields within the HTML template
-  get f(): any {
-    return this.form.controls;
-  }
+  get f(): any { return this.form.controls; }
 
   // convenience getter for easy access to validation errors within the HTML template
-  get e(): any {
-    return this.validationErrors;
-  }
+  get e(): any { return this.validationErrors; }
 
   // Shortcuts for this.form.get(...)
-  get familyMembers() {
-    // this is a way to grab the familymembers in a typed way
-    return this.f.familyMembers as FormArray;
-  }
+  // this is a way to grab the familymembers in a typed way
+  get familyMembers() { return this.f.familyMembers as FormArray; }
 
   ngOnInit() {
     // Create form controls
@@ -467,18 +460,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         });
       }
 
-      // TODO: Review the following:
-
-      // // These are switches that will be handy maybe.
-      // // incident task
-      // if (incidentTask != null) {
-      //   alert('There is an incident.');
-      // }
-      // // host community
-      // if (hostCommunity != null) {
-      //   alert('host community set');
-      // }
-
       // add the primary residence back into the form
       if (primaryResidence != null) {
         this.form.patchValue({
@@ -510,68 +491,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     }
   }
 
-  // formCleanup() {
-  //   // TODO: make sure this is sent back to the api in a well formed way.
-  //   // freeze the form values into a constant
-  //   const r = this.form.value;
-  //   const reg: any = {
-  //     id: r.id as string,
-  //     restrictedAccess: r.restrictedAccess as boolean,
-  //     essFileNumber: r.essFileNumber as number,
-
-  //     dietaryNeeds: r.dietaryNeeds as boolean,
-  //     dietaryNeedsDetails: r.dietaryNeedsDetails as string,
-  //     disasterAffectDetails: r.disasterAffectDetails as string,
-  //     externalReferralsDetails: r.externalReferralsDetails as string,
-  //     facility: r.facility as string,
-  //     familyRecoveryPlan: r.familyRecoveryPlan as string,
-  //     followUpDetails: r.followUpDetails as string,
-  //     insuranceCode: r.insuranceCode as string,
-  //     medicationNeeds: r.medicationNeeds as boolean,
-  //     selfRegisteredDate: r.selfRegisteredDate as Date,
-  //     registrationCompletionDate: new Date() as Date, // this stamps whenever the data is cleaned up
-  //     registeringFamilyMembers: r.registeringFamilyMembers as string, // 'yes' or 'no'
-  //     hasThreeDayMedicationSupply: r.hasThreeDayMedicationSupply as boolean,
-  //     hasInquiryReferral: r.hasInquiryReferral as boolean,
-  //     hasHealthServicesReferral: r.hasHealthServicesReferral as boolean,
-  //     hasFirstAidReferral: r.hasFirstAidReferral as boolean,
-  //     hasChildCareReferral: r.hasChildCareReferral as boolean,
-  //     hasPersonalServicesReferral: r.hasPersonalServicesReferral as boolean,
-  //     hasPetCareReferral: r.hasPetCareReferral as boolean,
-  //     hasPets: r.hasPets as boolean,
-  //     requiresAccomodation: r.requiresAccomodation as boolean,
-  //     requiresClothing: r.requiresClothing as boolean,
-  //     requiresFood: r.requiresFood as boolean,
-  //     requiresIncidentals: r.requiresIncidentals as boolean,
-  //     requiresTransportation: r.requiresTransportation as boolean,
-  //     requiresSupport: r.requiresSupport as boolean,
-
-  //     headOfHousehold: {
-  //       id: r.headOfHousehold.id as string,
-  //       active: r.headOfHousehold.active as boolean,
-  //       phoneNumber: r.headOfHousehold.phoneNumber as string,
-  //       phoneNumberAlt: r.headOfHousehold.phoneNumberAlt as string,
-  //       email: r.headOfHousehold.email as string,
-  //       firstName: r.headOfHousehold.firstName as string,
-  //       lastName: r.headOfHousehold.lastName as string,
-  //       nickname: r.headOfHousehold.nickname as string,
-  //       initials: r.headOfHousehold.initials as string,
-  //       gender: r.headOfHousehold.gender as string,
-  //       dob: r.headOfHousehold.dob as Date,
-  //       bcServicesNumber: r.headOfHousehold.bcServicesNumber as string,
-  //       primaryResidence: r.hohPrimaryResidence as Address,
-  //       mailingAddress: r.hohMailingAddress as Address,
-  //       familyMembers: r.familyMembers as FamilyMember[],
-  //       personType: r.headOfHousehold.personType as string,
-  //     },
-  //     incidentTask: r.incidentTask as IncidentTask,
-  //     hostCommunity: r.hostCommunity as Community,
-  //   };
-
-
-  //   return reg as Registration;
-  // }
-
   onSubmit() {
     this.submitted = true;
     this.validateForm();
@@ -585,51 +504,14 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     // success!
     this.errorSummary = null;
     this.next();
-
-    // TODO: Review code below...
-
-    // // assume that the registration data is dirty or unformatted
-    // const reg = this.formCleanup();
-    // // Submit the registration
-    // if (this.registration) {
-    //   // update
-    //   this.submission = reg;
-    //   this.registrationService.updateRegistration(reg)
-    //     .subscribe(() => { });
-    // } else {
-    //   // post new
-    //   this.submission = reg;
-    //   this.registrationService.createRegistration(reg)
-    //     .subscribe(r => {
-    //       alert(JSON.stringify(r));
-    //     });
-    // }
   }
 
   next() {
-    // const registration: Registration = {
-    //   ...this.registration,
-    //   ...this.form.value
-    // };
-
     // update client-side state
     this.saveState();
 
     // navigate to the next page.
-    // TODO flow to the next element
     this.router.navigate(['../confirmation'], { relativeTo: this.route });
-
-    // this.registrationService.createRegistration(registration).subscribe(
-    //   data => {
-    //     console.log('NEW REGISTRATION ==>');
-    //     console.log(data);
-    //     this.router.navigate(['register-evacuee/confirmation']);
-    //   },
-    //   err => {
-    //     // this.router.navigate(['../error'], { relativeTo: this.route });
-    //   }
-    // );
-
   }
 
   saveState() {
