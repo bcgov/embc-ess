@@ -21,26 +21,24 @@ export class EvacueeSummaryComponent implements OnInit {
 
   ngOnInit() {
     // collect ess file from activated route
-    this.loadFromRoute();
-  }
-
-  loadFromRoute() {
     // try to collect the ess file number and load it
     // if there are route params we should grab them
     if (this.route.snapshot.params.id) {
+      const snapshot = this.route.snapshot.params.id;
       // TODO: go get the evacuee from db eventually
-      this.registrationService.getRegistrationById(this.route.snapshot.params.id)
+      this.registrationService.getRegistrationById(snapshot)
         .subscribe(r => {
           // if there is nothing useful returned route somewhere else.
           if (!r.essFileNumber) {
             this.router.navigate(['volunteer-dashboard']);
+          } else {
+            // Save the registration into the
+            this.registration = r;
           }
-
-          // Save the registration into the
-          this.registration = r;
         });
     }
   }
+
   routeTo(id: string) {
     // TODO: this seems like bad practive but fix when we have time
     if (confirm('By clicking continue you acknowledge that all changes to this information will be collected, audited, and your administrator may contact you about them.')) {
