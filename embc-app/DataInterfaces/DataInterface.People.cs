@@ -71,7 +71,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public Volunteer GetVolunteerByBceidUserId(string bceidUserId)
         {
-            var volunteer = Volunteers.FirstOrDefault(x => x.BceidAccountNumber == bceidUserId);
+            var volunteer = Volunteers.SingleOrDefault(x => x.BceidAccountNumber.Equals(bceidUserId, StringComparison.InvariantCultureIgnoreCase));
             if (volunteer == null) return null;
 
             return (Volunteer)volunteer.ToViewModel();
