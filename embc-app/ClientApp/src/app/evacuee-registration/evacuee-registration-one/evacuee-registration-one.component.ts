@@ -32,6 +32,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   incidentTasks$ = this.incidentTaskService.getIncidentTasks().pipe(map(x => x.data));
 
   pageTitle = 'Add an Evacuee';
+  activeForm = true; // this lets the user fill things out
 
   // The model for the form data collected
   form: FormGroup;
@@ -157,6 +158,11 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   // Shortcuts for this.form.get(...)
   // this is a way to grab the familymembers in a typed way
   get familyMembers() { return this.f.familyMembers as FormArray; }
+
+  disableInput(disabled: boolean) {
+    // hide the form TODO: V1 shouldn't handle sensitive information. This is a workaround toggle.
+    this.activeForm = !disabled;
+  }
 
   ngOnInit() {
     // Create form controls
