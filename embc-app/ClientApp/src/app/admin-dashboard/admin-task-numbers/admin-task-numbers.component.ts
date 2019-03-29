@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { IncidentTask, ListResult } from 'src/app/core/models';
+import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-task-numbers',
@@ -7,9 +10,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminTaskNumbersComponent implements OnInit {
 
-  constructor() { }
+  // simple server response
+  metaIncidentTasks: ListResult<IncidentTask>;
+  notFoundMessage: string = '';
+  constructor(
+    private incidentTaskService: IncidentTaskService,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
+    // collect all volunteers
+    this.getIncidentTasks();
   }
-
+  routeTo(id: string) {
+    // TODO: this seems like bad practive but fix when we have time
+    this.router.navigate(['task-number-edit/fill/' + id]);
+  }
+  getIncidentTasks(limit?: number, offset?: number, query?: string, sort?: string) {
+    // get volunteers with supplied params defaults defined in
+    this.incidentTaskService.getIncidentTasks().subscribe((v: ListResult<IncidentTask>) => {
+      // save the metaVolunteers
+      this.metaIncidentTasks = v;
+    });
+  }
+  search(searchTerm: string) {
+    // submit and collect search
+    this.getIncidentTasks(null, null, searchTerm);
+  }
 }
