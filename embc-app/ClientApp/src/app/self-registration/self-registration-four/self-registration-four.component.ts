@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 // mocking server-side API for now
 const mockResponse = { registrationNumber: '1234 5678' };
@@ -12,17 +13,11 @@ const mockResponse = { registrationNumber: '1234 5678' };
 export class SelfRegistrationFourComponent implements OnInit {
   registrationNumber: string;
 
-  constructor() { }
+  constructor(
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
-    this.fetchRegistration()
-      .subscribe(reg => {
-        this.registrationNumber = reg.registrationNumber;
-      });
-  }
-
-  // TODO: Get this from backend server
-  fetchRegistration() {
-    return of(mockResponse);
+    this.registrationNumber = this.route.snapshot.params.id;
   }
 }
