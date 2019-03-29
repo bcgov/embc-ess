@@ -1,10 +1,4 @@
 .family-members__list {
   margin: 0;
   padding: 0;
-
-  > .family-members__item {
-    + .family-members__item {
-      margin-top: 3rem;
-    }
-  }
 }
