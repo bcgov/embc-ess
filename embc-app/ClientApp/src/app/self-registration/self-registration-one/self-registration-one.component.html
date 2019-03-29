@@ -41,30 +41,25 @@
       unseen except by people that are trained to handle sensitive information.
     </p>
     <p>
-      Please proceed to the nearest open pilot community Emergency Support Services reception centre to initiate your
-      registration and recieve supports.
+      Please proceed to the nearest open pilot community Emergency Support Services reception centre to initiate your registration and recieve supports. Your nearest Reception Centre is listed at <a href="https://www.emergencyinfobc.gov.bc.ca/">EmergencyInfoBC</a>
     </p>
   </div>
   <div *ngIf="!disableForm">
     <h3 class="blue-header">EVACUEE DETAILS</h3>
     <section class="padded-section" formGroupName="headOfHousehold">
       <div class="row">
-        <app-form-field class="col-md-9" required="true"
-          tooltip="Tool Tip: Please ensure you use the legal last name of the person registering the family.">
+        <app-form-field class="col-md-9" required="true" tooltip="Tool Tip: Please ensure you use the legal last name of the person registering the family.">
           <label>Last Name</label>
-          <input [class.is-invalid]="invalidField(form, 'headOfHousehold.lastName', submitted)" class="form-control"
-            type="text" formControlName="lastName">
+          <input [class.is-invalid]="invalidField(form, 'headOfHousehold.lastName', submitted)" class="form-control" type="text" formControlName="lastName">
           <span *ngIf="submitted" class="invalid-feedback">
             {{validationErrors['headOfHousehold'].lastName}}
           </span>
         </app-form-field>
       </div>
       <div class="row">
-        <app-form-field class="col-md-9" required="true"
-          tooltip="Tool Tip: Please ensure you use the legal first name of the person registering the family.">
+        <app-form-field class="col-md-9" required="true" tooltip="Tool Tip: Please ensure you use the legal first name of the person registering the family.">
           <label>First Name</label>
-          <input [class.is-invalid]="invalidField(form, 'headOfHousehold.firstName', submitted)" class="form-control"
-            type="text" formControlName="firstName">
+          <input [class.is-invalid]="invalidField(form, 'headOfHousehold.firstName', submitted)" class="form-control" type="text" formControlName="firstName">
           <span *ngIf="submitted" class="invalid-feedback">
             {{validationErrors['headOfHousehold'].firstName}}
           </span>
@@ -93,8 +88,7 @@
         <app-form-field class="col-md-4" required="true">
           <!-- TODO: Split DOB into 3 inputs [MM] [DD] [YYYY] -->
           <label>Date of Birth</label>
-          <input [class.is-invalid]="invalidField(form, 'headOfHousehold.dob', submitted)" class="form-control"
-            type="date" formControlName="dob">
+          <input [class.is-invalid]="invalidField(form, 'headOfHousehold.dob', submitted)" class="form-control" type="date" formControlName="dob">
           <small>For example: 31 12 1970</small>
           <span *ngIf="submitted" class="invalid-feedback">
             {{validationErrors['headOfHousehold'].dob}}
@@ -105,27 +99,23 @@
 
     <h3 class="blue-header">EVACUEE FAMILY INFORMATION
       <!-- TODO: Implement animation for info circle on-hover -->
-      <app-font-awesome-icon icon="info-circle" className="ml-3 text-white"
-        title="Each additional immediate family member needs to be added to the Evacuee Registration if they reside in the same household. Roommates or tenants of the same address need to be registered separately.">
+      <app-font-awesome-icon icon="info-circle" className="ml-3 text-white" title="Each additional immediate family member needs to be added to the Evacuee Registration if they reside in the same household. Roommates or tenants of the same address need to be registered separately.">
       </app-font-awesome-icon>
     </h3>
     <section class="padded-section">
       <p class="required">Are you registering immediate family members who live in the same household with you?</p>
       <div class="form-group">
         <div class="form-check">
-          <input [class.is-invalid]="invalidField(form, 'registeringFamilyMembers', submitted)" class="form-check-input"
-            type="radio" value="yes" formControlName="registeringFamilyMembers">
+          <input [class.is-invalid]="invalidField(form, 'registeringFamilyMembers', submitted)" class="form-check-input" type="radio" value="yes" formControlName="registeringFamilyMembers">
           <label class="form-check-label">Yes</label>
         </div>
         <div class="form-check">
-          <input [class.is-invalid]="invalidField(form, 'registeringFamilyMembers', submitted)" class="form-check-input"
-            type="radio" value="yes-later" formControlName="registeringFamilyMembers">
+          <input [class.is-invalid]="invalidField(form, 'registeringFamilyMembers', submitted)" class="form-check-input" type="radio" value="yes-later" formControlName="registeringFamilyMembers">
           <label class="form-check-label">Yes, but I'd like to register them when I get to the
             Reception Center</label>
         </div>
         <div class="form-check">
-          <input [class.is-invalid]="invalidField(form, 'registeringFamilyMembers', submitted)" class="form-check-input"
-            type="radio" value="no" formControlName="registeringFamilyMembers">
+          <input [class.is-invalid]="invalidField(form, 'registeringFamilyMembers', submitted)" class="form-check-input" type="radio" value="no" formControlName="registeringFamilyMembers">
           <label class="form-check-label">No</label>
           <span *ngIf="submitted" class="invalid-feedback">
             {{validationErrors['registeringFamilyMembers']}}
@@ -134,14 +124,12 @@
       </div>
       <div *ngIf="ui.showFamilyMembers()" class="feature-block">
         <div class="family-members__list" formArrayName="familyMembers">
-          <div class="family-members__item" *ngFor="let entry of familyMembers.controls; index as i;"
-            [formGroupName]="i">
+          <div class="family-members__item" *ngFor="let entry of familyMembers.controls; index as i;" [formGroupName]="i">
             <!-- TODO: Refactor into sub-component -->
             <div class="row">
               <app-form-field class="col-md-5" required="true">
                 <label>Last Name</label>
-                <input [class.is-invalid]="invalidField(entry, 'lastName', submitted)" class="form-control" type="text"
-                  formControlName="lastName">
+                <input [class.is-invalid]="invalidField(entry, 'lastName', submitted)" class="form-control" type="text" formControlName="lastName">
                 <span *ngIf="submitted" class="invalid-feedback">Please enter a last name.</span>
               </app-form-field>
               <div class="form-check col-md-5">
@@ -152,8 +140,7 @@
             <div class="row">
               <app-form-field class="col-md-5" required="true">
                 <label>First Name</label>
-                <input [class.is-invalid]="invalidField(entry, 'firstName', submitted)" class="form-control" type="text"
-                  formControlName="firstName">
+                <input [class.is-invalid]="invalidField(entry, 'firstName', submitted)" class="form-control" type="text" formControlName="firstName">
                 <span *ngIf="submitted" class="invalid-feedback">Please enter a first name.</span>
               </app-form-field>
               <app-form-field class="col-md-2">
@@ -164,8 +151,7 @@
             <div class="row">
               <app-form-field class="col-md-5" required="true">
                 <label>Relationship</label>
-                <select [class.is-invalid]="invalidField(entry, 'relationshipToEvacuee', submitted)"
-                  class="form-control" formControlName="relationshipToEvacuee">
+                <select [class.is-invalid]="invalidField(entry, 'relationshipToEvacuee', submitted)" class="form-control" formControlName="relationshipToEvacuee">
                   <option [ngValue]="null">Please select--</option>
                   <option [ngValue]="item" *ngFor="let item of relationshipTypes$ | async">{{item.description}}
                   </option>
@@ -183,8 +169,7 @@
               </app-form-field>
               <app-form-field class="col-md-4" required="true">
                 <label>Date of Birth</label>
-                <input [class.is-invalid]="invalidField(entry, 'dob', submitted)" class="form-control" type="date"
-                  formControlName="dob">
+                <input [class.is-invalid]="invalidField(entry, 'dob', submitted)" class="form-control" type="date" formControlName="dob">
                 <span *ngIf="submitted && hasErrors(entry, 'dob', ['required'])" class="invalid-feedback">
                   Please enter a date of birth.
                 </span>
@@ -212,13 +197,11 @@
       <div class="d-flex flex-row">
         <p class="m-0 mr-4 required">Is your primary residence within BC</p>
         <div class="form-check form-check-inline">
-          <input [class.is-invalid]="invalidField(form, 'primaryResidenceInBC', submitted)" class="form-check-input"
-            type="radio" formControlName="primaryResidenceInBC" [value]="true">
+          <input [class.is-invalid]="invalidField(form, 'primaryResidenceInBC', submitted)" class="form-check-input" type="radio" formControlName="primaryResidenceInBC" [value]="true">
           <label class="form-check-label">Yes</label>
         </div>
         <div class="form-check form-check-inline">
-          <input [class.is-invalid]="invalidField(form, 'primaryResidenceInBC', submitted)" class="form-check-input"
-            type="radio" formControlName="primaryResidenceInBC" [value]="false">
+          <input [class.is-invalid]="invalidField(form, 'primaryResidenceInBC', submitted)" class="form-check-input" type="radio" formControlName="primaryResidenceInBC" [value]="false">
           <label class="form-check-label">No</label>
         </div>
       </div>
@@ -226,23 +209,20 @@
         {{validationErrors['primaryResidenceInBC']}}
       </span>
       <section *ngIf="ui.showPrimaryAddressSection()" class="mt-4 feature-block">
-        <app-address-selector [parent]="primaryResidence" [touched]="submitted"
-          [withinBC]="f['primaryResidenceInBC'].value">
+        <app-address-selector [parent]="primaryResidence" [touched]="submitted" [withinBC]="f['primaryResidenceInBC'].value">
         </app-address-selector>
         <section>
           <div class="row">
             <app-form-field class="col-md-6">
               <label>Telephone / Mobile Number</label>
-              <input [class.is-invalid]="invalidField(form, 'phoneNumber', submitted)" class="form-control" type="text"
-                placeholder="" formControlName="phoneNumber">
+              <input [class.is-invalid]="invalidField(form, 'phoneNumber', submitted)" class="form-control" type="text" placeholder="" formControlName="phoneNumber">
               <span *ngIf="submitted" class="invalid-feedback">
                 {{validationErrors['phoneNumber']}}
               </span>
             </app-form-field>
             <app-form-field class="col-md-6">
               <label>Alternate Telephone / Mobile Number</label>
-              <input [class.is-invalid]="invalidField(form, 'phoneNumberAlt', submitted)" class="form-control"
-                type="text" placeholder="" formControlName="phoneNumberAlt">
+              <input [class.is-invalid]="invalidField(form, 'phoneNumberAlt', submitted)" class="form-control" type="text" placeholder="" formControlName="phoneNumberAlt">
               <span *ngIf="submitted" class="invalid-feedback">
                 {{validationErrors['phoneNumberAlt']}}
               </span>
@@ -251,8 +231,7 @@
           <div class="row">
             <app-form-field class="col-md-8">
               <label>Email Address</label>
-              <input [class.is-invalid]="invalidField(form, 'email', submitted)" class="form-control" type="text"
-                autocomplete="email" spellcheck="false" formControlName="email">
+              <input [class.is-invalid]="invalidField(form, 'email', submitted)" class="form-control" type="text" autocomplete="email" spellcheck="false" formControlName="email">
               <small>Your email address will be used to communicate with you about your registration.</small>
               <span *ngIf="submitted" class="invalid-feedback">
                 {{validationErrors['email']}}
@@ -268,13 +247,11 @@
       <p class="required">Is your mailing address the same as your primary residence?</p>
       <div class="form-group">
         <div class="form-check">
-          <input [class.is-invalid]="invalidField(form, 'mailingAddressSameAsPrimary', submitted)"
-            class="form-check-input" type="radio" formControlName="mailingAddressSameAsPrimary" [value]="true">
+          <input [class.is-invalid]="invalidField(form, 'mailingAddressSameAsPrimary', submitted)" class="form-check-input" type="radio" formControlName="mailingAddressSameAsPrimary" [value]="true">
           <label class="form-check-label">Yes</label>
         </div>
         <div class="form-check">
-          <input [class.is-invalid]="invalidField(form, 'mailingAddressSameAsPrimary', submitted)"
-            class="form-check-input" type="radio" formControlName="mailingAddressSameAsPrimary" [value]="false">
+          <input [class.is-invalid]="invalidField(form, 'mailingAddressSameAsPrimary', submitted)" class="form-check-input" type="radio" formControlName="mailingAddressSameAsPrimary" [value]="false">
           <label class="form-check-label">No</label>
           <span *ngIf="submitted" class="invalid-feedback">
             {{validationErrors['mailingAddressSameAsPrimary']}}
@@ -296,8 +273,7 @@
         <span [class.d-block]="invalidField(form, 'mailingAddressInBC', submitted)" class="invalid-feedback">
           {{validationErrors['mailingAddressInBC']}}
         </span>
-        <app-address-selector class="mt-4" *ngIf="ui.showMailingAddressSection()" [parent]="mailingAddress"
-          [withinBC]="f['mailingAddressInBC'].value"></app-address-selector>
+        <app-address-selector class="mt-4" *ngIf="ui.showMailingAddressSection()" [parent]="mailingAddress" [withinBC]="f['mailingAddressInBC'].value"></app-address-selector>
       </section>
     </section>
 
