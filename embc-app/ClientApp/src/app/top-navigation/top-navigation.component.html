@@ -1,24 +1,40 @@
 <!-- No navbar (default state) -->
 
 <!-- Volunteer navbar -->
-<nav *ngIf="currentUser.role==='volunteer'||currentUser.role==='local_authority'"
+<nav *ngIf="currentUser.role==='volunteer'"
+  class=" navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
+  <ul class="navbar-nav">
+    <li class="mr-4">
+      <a routerLink="/" title="Go Home">Home</a>
+    </li>
+    <li class="mr-4">
+      <a routerLink="volunteer/evacuees" title="Go to Evacuees Area">Evacuees</a>
+    </li>
+    <li class="mr-4">
+      <a routerLink="volunteer/useful-info" title="Go to useful information">Useful Information</a>
+    </li>
+  </ul>
+</nav>
+
+<!-- Local authority navbar -->
+<nav *ngIf="currentUser.role==='local_authority'"
   class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
   <ul class="navbar-nav">
     <li class="mr-4">
       <a routerLink="/" title="Go Home">Home</a>
     </li>
     <li class="mr-4">
-      <a routerLink="volunteer-dashboard" title="Go to Evacuees Area">Evacuees</a>
+      <a routerLink="local-authority/evacuees" title="Go to Evacuees Area">Evacuees</a>
     </li>
 
     <!-- Only visible by local authority -->
     <li *ngIf="currentUser.role==='local_authority'" class="mr-4">
-      <a routerLink="volunteer-team-dashboard" title="Go to ESS Team page">ESS Team</a>
+      <a routerLink="local-authority/volunteers" title="Go to ESS Team page">ESS Team</a>
     </li>
 
     <!-- TODO: The  link goes to the useful information page. Can be uncommented when the useful information pull request is accepted-->
     <li class="mr-4">
-      <a routerLink="volunteer-info" title="Go to useful information">Useful Information</a>
+      <a routerLink="useful-info" title="Go to useful information">Useful Information</a>
     </li>
   </ul>
 </nav>
@@ -28,24 +44,21 @@
   class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
   <ul class="navbar-nav">
     <li class="mr-4">
-      <a routerLink="" title="Go Home">Home</a>
+      <a routerLink="/" title="Go Home">Home</a>
     </li>
     <li class="mr-4">
-      <a routerLink="../admin-dashboard/task-numbers" title="Manage Task Numbers">Task-Numbers</a>
+      <a routerLink="provincial-admin/edit-task-numbers" title="Manage Task Numbers">Task-Numbers</a>
     </li>
     <li class="mr-4">
-      <a routerLink="../admin-dashboard/evacuees" title="Go to Evacuees Area">Evacuees</a>
+      <a routerLink="provincial-admin/evacuees" title="Go to Evacuees Area">Evacuees</a>
     </li>
     <li class="mr-4">
-      <a routerLink="../admin-dashboard/organizations" title="Manage Organizations">Organizations &amp; Users</a>
+      <a routerLink="provincial-admin/organizations" title="Manage Organizations">Organizations &amp; Users</a>
     </li>
     <!-- The link should go to the page of volunteer users for the administrator?? -->
-    <li class="mr-4">
-      <a routerLink="" title="Go to ESS Team page">ESS Team</a>
-    </li>
     <!-- TODO: The  link goes to the useful information page. Can be uncommented when the useful information pull request is accepted-->
     <li class="mr-4">
-      <a routerLink="volunteer-info" title="Go to useful information">Useful Information</a>
+      <a routerLink="provincial-admin/useful-info" title="Go to useful information">Useful Information</a>
     </li>
   </ul>
 </nav>
