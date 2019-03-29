@@ -325,6 +325,37 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'task-number-edit',
+    component: AdminAddTaskNumberComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'fill',
+        // canActivate: [RoleGuardService],
+        // data: { expectedRole: 'local_authority' },
+        pathMatch: 'full'
+      },
+      {
+        path: 'fill',
+        component: AdminAddTaskNumberOneComponent,
+        // canActivate: [RoleGuardService],
+        // data: { expectedRole: 'local_authority' }
+      },
+      {
+        path: 'fill/:id',
+        component: AdminAddTaskNumberOneComponent,
+        // canActivate: [RoleGuardService],
+        // data: { expectedRole: 'local_authority' }
+      },
+      {
+        path: 'confirmation',
+        component: AdminAddTaskNumberConfirmationComponent,
+        // canActivate: [RoleGuardService],
+        // data: { expectedRole: 'local_authority' }
+      }
+    ]
+  },
+  {
     path: 'test',
     component: TesterPageComponent
   },
