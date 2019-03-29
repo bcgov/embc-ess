@@ -375,7 +375,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         mailingAddress: form.mailingAddressSameAsPrimary ? null : { ...form.mailingAddress },
       }
     };
-    alert(registration.restrictedAccess);
+    // alert(registration.restrictedAccess);
     this.store.dispatch(new UpdateRegistration({ registration }));
   }
   disableInput(state: boolean) {
