@@ -264,7 +264,7 @@ const routes: Routes = [
     data: { expectedRole: 'volunteer' }
   },
   {
-    path: 'register-evacuee',
+    path: 'evacuee-registration',
     component: EvacueeRegistrationComponent,
     children: [
       {

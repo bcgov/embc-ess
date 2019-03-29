@@ -15,6 +15,8 @@ import { BcAddressComponent } from './components/address-form/bc-address/bc-addr
 import { OtherAddressComponent } from './components/address-form/other-address/other-address.component';
 import { DisableControlDirective } from './directives/disable-control.directive';
 import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
+import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
+import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
 import { SearchBarComponent, EvacueeSearchResultsComponent } from './components/search/';
 
 import { YesNoPipe } from './pipes/yes-no.pipe';
@@ -36,6 +38,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     OtherAddressComponent,
     DisableControlDirective,
     FontAwesomeIconComponent,
+    FontAwesomeLinkComponent,
+    AttentionIconComponent,
     SearchBarComponent,
     EvacueeSearchResultsComponent,
     YesNoPipe,
@@ -73,6 +77,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     OtherAddressComponent,
     DisableControlDirective,
     FontAwesomeIconComponent,
+    FontAwesomeLinkComponent,
+    AttentionIconComponent,
     SearchBarComponent,
     EvacueeSearchResultsComponent,
     YesNoPipe,

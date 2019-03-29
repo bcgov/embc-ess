@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl } from '
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { skipWhile, takeWhile } from 'rxjs/operators';
+import * as moment from 'moment';
 
 import { Registration, FamilyMember, isBcAddress } from 'src/app/core/models';
 import { AppState } from 'src/app/store';
@@ -10,7 +11,6 @@ import { UpdateRegistration } from 'src/app/store/registration/registration.acti
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { clearFormArray, hasErrors, invalidField } from 'src/app/shared/utils';
-
 
 @Component({
   selector: 'app-self-registration-one',
@@ -43,7 +43,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   // convenience getters so we can use helper functions in Angular templates
   hasErrors = hasErrors;
-  invalidField = invalidField;
 
   constructor(
     private store: Store<AppState>,
@@ -63,7 +62,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         },
         dob: {
           required: 'Please enter your date of birth.',
-          dateInThePast: 'Date of birth must be today or in the past.',
+          maxDate: 'Date of birth must be today or in the past.',
         },
       },
       registeringFamilyMembers: {
@@ -109,6 +108,11 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     return this.form.controls;
   }
 
+  // convenience getter for easy access to validation errors within the HTML template
+  get e(): any {
+    return this.validationErrors;
+  }
+
   // Shortcuts for this.form.get(...)
   get familyMembers() {
     return this.f.familyMembers as FormArray;
@@ -139,6 +143,15 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     this.componentActive = false;
   }
 
+  invalid(field: string, parent: FormGroup = this.form): boolean {
+    return invalidField(field, parent, this.submitted);
+  }
+
+  // TODO: fix after merge
+  invalidField(parent: FormGroup, field: string): boolean {
+    return invalidField(field, parent, this.submitted);
+  }
+
   // Define the form group
   initForm(): void {
     this.form = this.fb.group({
@@ -149,7 +162,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         nickname: '',
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Add date format (MM/DD/YYYY)
+        dob: [null, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
       }),
       registeringFamilyMembers: [null, Validators.required],
       familyMembers: this.fb.array([]),
@@ -311,7 +324,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       lastName: ['', Validators.required],
       initials: '',
       gender: null,
-      dob: [null, [Validators.required, CustomValidators.dateInThePast()]], // TODO: Add date format (MM/DD/YYYY)
+      dob: [null, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
       relationshipToEvacuee: [null, Validators.required],
     });
   }
@@ -320,9 +333,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     this.familyMembers.push(this.createFamilyMember());
   }
 
-  removeFamilyMember(): void {
-    const last = this.familyMembers.length - 1;
-    this.familyMembers.removeAt(last);
+  removeFamilyMember(i: number): void {
+    this.familyMembers.removeAt(i);
   }
 
   clearFamilyMembers() {
@@ -352,7 +364,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   saveState(): void {
     const form = this.form.value;
 
-    // ensure proper sub-types are assigned
+    // ensure proper sub-types are assigned to people entities
     const personType: 'FMBR' = 'FMBR';
     const familyMembers: FamilyMember[] = (form.familyMembers as FamilyMember[]).map(fmr => ({ ...fmr, personType }));
 
