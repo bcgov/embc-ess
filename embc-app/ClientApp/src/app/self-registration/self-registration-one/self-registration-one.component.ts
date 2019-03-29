@@ -390,6 +390,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // alert(registration.restrictedAccess);
     this.store.dispatch(new UpdateRegistration({ registration }));
   }
+
   disableInput(state: boolean) {
     this.disableForm = state;
   }
