@@ -10,7 +10,7 @@ import { CustomValidators } from 'src/app/shared/validation/custom.validators';
     <section [formGroup]="parent">
       <div class="row">
         <app-form-field class="col-md-6" required="true">
-          <label>Apt/Suite/Building Number &amp; Street Address</label>
+          <label>Apt/Suite/Building Number &amp; Street Address/PO Box</label>
           <input [class.is-invalid]="invalidAddressLine1" class="form-control" type="text" formControlName="addressLine1">
           <span class="invalid-feedback">
             Please enter your street address
