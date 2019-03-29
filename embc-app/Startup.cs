@@ -90,16 +90,17 @@ namespace Gov.Jag.Embc.Public
                     opts.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;
                     opts.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
 
-                    // ReferenceLoopHandling is set to Ignore to prevent JSON parser issues with the user / roles model.
+                    // ReferenceLoopHandling is set to Ignore to prevent JSON parser issues with the
+                    // user / roles model.
                     opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
 
             // setup siteminder authentication (core 2.0)
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
-                options.DefaultChallengeScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
-            }).AddSiteminderAuth(options =>
+                options.DefaultAuthenticateScheme = SiteMinderAuthOptions2.AuthenticationSchemeName;
+                options.DefaultChallengeScheme = SiteMinderAuthOptions2.AuthenticationSchemeName;
+            }).AddSiteminderAuth2(options =>
             {
             });
 
@@ -298,8 +299,7 @@ namespace Gov.Jag.Embc.Public
 
             app.UseSpa(spa =>
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
+                // To learn more about options for serving an Angular SPA from ASP.NET Core, see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
 
