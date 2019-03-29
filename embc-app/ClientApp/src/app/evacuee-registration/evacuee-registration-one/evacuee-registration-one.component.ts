@@ -29,7 +29,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   regions$ = this.store.select(s => s.lookups.regions);
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
   communities$ = this.store.select(s => s.lookups.communities.communities);
-  incidentTasks$ = this.incidentTaskService.getAllIncidentTasks().pipe(map(x => x.data));
+  incidentTasks$ = this.incidentTaskService.getIncidentTasks().pipe(map(x => x.data));
 
   pageTitle = 'Add an Evacuee';
 

@@ -7,13 +7,13 @@
     <p class="required">Do you have any dietary requirements?</p>
     <div class="form-group">
       <div class="form-check">
-        <input [class.is-invalid]="invalidField(form, 'dietaryNeeds', submitted)" class="form-check-input" type="radio"
-          [value]="true" formControlName="dietaryNeeds">
+        <input [class.is-invalid]="invalid('dietaryNeeds')" class="form-check-input" type="radio" [value]="true"
+          formControlName="dietaryNeeds">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input [class.is-invalid]="invalidField(form, 'dietaryNeeds', submitted)" class="form-check-input" type="radio"
-          [value]="false" formControlName="dietaryNeeds">
+        <input [class.is-invalid]="invalid('dietaryNeeds')" class="form-check-input" type="radio" [value]="false"
+          formControlName="dietaryNeeds">
         <label class="form-check-label">No</label>
         <span *ngIf="submitted" class="invalid-feedback">
           {{validationErrors['dietaryNeeds']}}
@@ -24,13 +24,13 @@
     <p class="required">Do you (or anyone registering with you) take medication?</p>
     <div class="form-group">
       <div class="form-check">
-        <input [class.is-invalid]="invalidField(form, 'medicationNeeds', submitted)" class="form-check-input"
-          type="radio" [value]="true" formControlName="medicationNeeds">
+        <input [class.is-invalid]="invalid('medicationNeeds')" class="form-check-input" type="radio" [value]="true"
+          formControlName="medicationNeeds">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input [class.is-invalid]="invalidField(form, 'medicationNeeds', submitted)" class="form-check-input"
-          type="radio" [value]="false" formControlName="medicationNeeds">
+        <input [class.is-invalid]="invalid('medicationNeeds')" class="form-check-input" type="radio" [value]="false"
+          formControlName="medicationNeeds">
         <label class="form-check-label">No</label>
         <span *ngIf="submitted" class="invalid-feedback">
           {{validationErrors['medicationNeeds']}}
@@ -41,13 +41,13 @@
     <p class="required">Do you have any pets with you?</p>
     <div class="form-group">
       <div class="form-check">
-        <input [class.is-invalid]="invalidField(form, 'hasPets', submitted)" class="form-check-input" type="radio"
-          [value]="true" formControlName="hasPets">
+        <input [class.is-invalid]="invalid('hasPets')" class="form-check-input" type="radio" [value]="true"
+          formControlName="hasPets">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input [class.is-invalid]="invalidField(form, 'hasPets', submitted)" class="form-check-input" type="radio"
-          [value]="false" formControlName="hasPets">
+        <input [class.is-invalid]="invalid('hasPets')" class="form-check-input" type="radio" [value]="false"
+          formControlName="hasPets">
         <label class="form-check-label">No</label>
         <span *ngIf="submitted" class="invalid-feedback">
           {{validationErrors['hasPets']}}
@@ -61,23 +61,23 @@
     <p class="required">Do you have insurance to cover your immediate needs?</p>
     <div class="form-group">
       <div class="form-check">
-        <input [class.is-invalid]="invalidField(form, 'insuranceCode', submitted)" class="form-check-input" type="radio"
-          value="yes" formControlName="insuranceCode">
+        <input [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" type="radio" value="yes"
+          formControlName="insuranceCode">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input [class.is-invalid]="invalidField(form, 'insuranceCode', submitted)" class="form-check-input" type="radio"
-          value="yes-unsure" formControlName="insuranceCode">
+        <input [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" type="radio" value="yes-unsure"
+          formControlName="insuranceCode">
         <label class="form-check-label">Yes, but I'm not sure if I have coverage for this event</label>
       </div>
       <div class="form-check">
-        <input [class.is-invalid]="invalidField(form, 'insuranceCode', submitted)" class="form-check-input" type="radio"
-          value="no" formControlName="insuranceCode">
+        <input [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" type="radio" value="no"
+          formControlName="insuranceCode">
         <label class="form-check-label">No</label>
       </div>
       <div class="form-check">
-        <input [class.is-invalid]="invalidField(form, 'insuranceCode', submitted)" class="form-check-input" type="radio"
-          value="unsure" formControlName="insuranceCode">
+        <input [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" type="radio" value="unsure"
+          formControlName="insuranceCode">
         <label class="form-check-label">I don't know</label>
         <span *ngIf="submitted" class="invalid-feedback">
           {{validationErrors['insuranceCode']}}
@@ -94,13 +94,13 @@
     </p>
     <div class="form-group">
       <div class="form-check">
-        <input [class.is-invalid]="invalidField(form, 'requiresSupport', submitted)" class="form-check-input"
-          type="radio" [value]="true" formControlName="requiresSupport">
+        <input [class.is-invalid]="invalid('requiresSupport')" class="form-check-input" type="radio" [value]="true"
+          formControlName="requiresSupport">
         <label class="form-check-label">Yes</label>
       </div>
       <div class="form-check">
-        <input [class.is-invalid]="invalidField(form, 'requiresSupport', submitted)" class="form-check-input"
-          type="radio" [value]="false" formControlName="requiresSupport">
+        <input [class.is-invalid]="invalid('requiresSupport')" class="form-check-input" type="radio" [value]="false"
+          formControlName="requiresSupport">
         <label class="form-check-label">No</label>
         <span *ngIf="submitted" class="invalid-feedback">
           {{validationErrors['requiresSupport']}}

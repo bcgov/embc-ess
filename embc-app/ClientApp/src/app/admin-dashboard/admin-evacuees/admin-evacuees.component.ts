@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchQueryParameters, EvacueeSearchResults } from 'src/app/shared/components/search';
-import { MetaRegistration } from 'src/app/core/models/meta-registration';
 import { Observable } from 'rxjs';
 import { RegistrationService } from 'src/app/core/services/registration.service';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { ListResult, Registration } from 'src/app/core/models';
 
 @Component({
   selector: 'app-admin-evacuees',
@@ -14,7 +14,7 @@ import { map } from 'rxjs/operators';
 export class AdminEvacueesComponent implements OnInit {
 
   // server response
-  resultsAndPagination$: Observable<MetaRegistration>;
+  resultsAndPagination$: Observable<ListResult<Registration>>;
 
   // search related
   isLoadingResults = false;

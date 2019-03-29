@@ -3,9 +3,8 @@ import { Observable, of } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 import { CoreModule } from '../core.module';
-import { Registration } from '../models';
+import { Registration, ListResult } from '../models';
 import { RestService } from './rest.service';
-import { MetaRegistration } from '../models/meta-registration';
 import { SearchQueryParameters } from 'src/app/shared/components/search';
 import { HttpResponse } from '@angular/common/http';
 
@@ -14,7 +13,7 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class RegistrationService extends RestService {
 
-  getRegistrations(props: SearchQueryParameters = {}): Observable<MetaRegistration> {
+  getRegistrations(props: SearchQueryParameters = {}): Observable<ListResult<Registration>> {
     const { limit = 100, offset = 0, q = '', sort = '' } = props;
     const params = {
       limit: limit.toString(), // query params are strings
@@ -22,7 +21,7 @@ export class RegistrationService extends RestService {
       q,
       sort
     };
-    return this.http.get<MetaRegistration>('api/registrations', { headers: this.headers, params })
+    return this.http.get<ListResult<Registration>>('api/registrations', { headers: this.headers, params })
       .pipe(
         retry(3),
         catchError(this.handleError)
