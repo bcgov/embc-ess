@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
-    [AllowAnonymous]
     public class FamilyRelationshipsController : Controller
     {
         private readonly IDataInterface dataInterface;
@@ -20,6 +19,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
             return Json(await dataInterface.GetFamilyRelationshipTypesAsync());
