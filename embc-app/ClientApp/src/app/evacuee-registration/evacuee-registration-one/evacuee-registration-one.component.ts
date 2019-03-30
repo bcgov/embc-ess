@@ -500,23 +500,18 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     this.validateForm();
-    // update client-side state
-    this.saveState();
     // stop here if form is invalid
     if (this.form.invalid) {
       this.errorSummary = 'Some required fields have not been completed.';
       return;
     } else {
-
-      // alert("Submit");
+      // update client-side state
+      this.saveState();
+      // navigate to the next page.
+      this.router.navigate(['register-evacuee/confirmation']);
     }
-
     // success!
     this.errorSummary = null;
-
-
-    // navigate to the next page.
-    this.router.navigate(['../confirmation'], { relativeTo: this.route });
   }
 
 
@@ -527,19 +522,29 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     // ensure proper sub-types are assigned to people entities
     const personType: 'FMBR' = 'FMBR';
     const familyMembers: FamilyMember[] = (values.familyMembers as FamilyMember[]).map(fmr => ({ ...fmr, personType }));
+    // alert("save");
 
     // Use form values to create evacuee registration
     const registration: Registration = {
-      ...this.registration,
+
+      id: this.registration.id || null,
+      active: this.registration.active || null,
+      declarationAndConsent: this.registration.declarationAndConsent || null,
+      essFileNumber: this.registration.essFileNumber || null,
 
       headOfHousehold: {
-        ...this.registration.headOfHousehold,
-        ...values.headOfHousehold,
-        personType: 'HOH',
-        phoneNumber: values.phoneNumber,
-        phoneNumberAlt: values.phoneNumberAlt,
-        email: values.email,
-        familyMembers,
+        id: this.registration.headOfHousehold.id || null,
+        firstName: values.headOfHousehold.firstName || null,
+        lastName: values.headOfHousehold.lastName || null,
+        initials: values.headOfHousehold.initials || null,
+        nickname: values.headOfHousehold.nickname || null,
+        gender: values.headOfHousehold.gender || null,
+        dob: values.headOfHousehold.dob || null,
+        personType: 'HOH' || null,
+        phoneNumber: values.phoneNumber || null,
+        phoneNumberAlt: values.phoneNumberAlt || null,
+        email: values.email || null,
+        familyMembers,//copy in the already parsed values for familymembers
         primaryResidence: { ...values.primaryResidence },
         mailingAddress: values.mailingAddressSameAsPrimary ? null : { ...values.mailingAddress },
       },
