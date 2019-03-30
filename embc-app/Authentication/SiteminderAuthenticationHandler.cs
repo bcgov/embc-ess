@@ -604,19 +604,19 @@ namespace Gov.Jag.Embc.Public.Authentication
                 // **************************************************
 
                 var permissions = new List<string>();
-                permissions.Add("role-everyone");
+                permissions.Add("role_everyone");
                 if (userSettings.AuthenticatedUser != null)
                 {
                     //Volunteer
-                    permissions.Add("role-volunteer");
-                    if (userSettings.AuthenticatedUser.IsAdministrator ?? false) permissions.Add("role-local_authority");
+                    permissions.Add("role_volunteer");
+                    if (userSettings.AuthenticatedUser.IsAdministrator ?? false) permissions.Add("role_local_authority");
                 }
                 else
                 {
                     //EMBC admin
-                    permissions.Add("role-volunteer");
-                    permissions.Add("role-local_authority");
-                    permissions.Add("role-provincial_admin");
+                    permissions.Add("role_volunteer");
+                    permissions.Add("role_local_authority");
+                    permissions.Add("role_provincial_admin");
                 }
                 userSettings.AppRoles = permissions.ToArray();
 
