@@ -214,7 +214,13 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     if (id) {
       // this is a form with data flowing in.
       // TODO: Redirect to error page if we fail to fetch the registration
-      this.registrationService.getRegistrationById(id).subscribe(r => this.displayRegistration(r));
+      this.registrationService.getRegistrationById(id).subscribe(r => {
+
+        // set registration mode to edit and save the previous content in an object.
+        this.registration = r;
+        this.editMode = true;
+        this.displayRegistration(r);
+      });
     } else {
       // this is a fresh form
       this.displayRegistration();
@@ -242,9 +248,13 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   createFamilyMember(fmbr?: FamilyMember): FormGroup {
     if (fmbr) {
       return this.formBuilder.group({
+        bcServicesNumber: fmbr.bcServicesNumber || null,
+        id: fmbr.id || null,
+        active: fmbr.active || null,
         sameLastNameAsEvacuee: fmbr.sameLastNameAsEvacuee,
         firstName: [fmbr.firstName, Validators.required],
         lastName: [fmbr.lastName, Validators.required],
+        nickname: fmbr.nickname,
         initials: fmbr.initials,
         gender: fmbr.gender,
         dob: [new Date(fmbr.dob).toString(), [Validators.required, CustomValidators.maxDate(moment())]], // TODO: check this!!
@@ -390,22 +400,18 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   }
 
   displayRegistration(r?: Registration | null): void {
-    // Set the local registration property
-    this.registration = r;
-
     // Display the appropriate page title and form state
     if (r == null) {
       this.pageTitle = 'Add an Evacuee';
       this.createMode = true;
-      this.finalizeMode = this.editMode = false; // turn off these
+      this.finalizeMode = false; // turn off these
     } else {
       if (r.incidentTask == null) {
         this.pageTitle = 'Finalize Evacuee Registration';
         this.finalizeMode = true;
-        this.createMode = this.editMode = false; // turn off these
+        this.createMode = false; // turn off these
       } else {
         this.pageTitle = 'Edit Evacuee Registration';
-        this.editMode = true;
         this.createMode = this.finalizeMode = false; // turn off these
       }
     }
@@ -563,13 +569,13 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     // Use form values to create evacuee registration
     const r: Registration = {
 
-      id: this.editMode ? this.registration.id : '',
-      active: this.editMode ? this.registration.active : null,
-      declarationAndConsent: this.editMode ? this.registration.declarationAndConsent : null,
-      essFileNumber: this.editMode ? this.registration.essFileNumber : null,
+      id: null,
+      active: null,
+      declarationAndConsent: null,
+      essFileNumber: null,
 
       headOfHousehold: {
-        id: this.editMode ? this.registration.headOfHousehold.id : '',
+        id: null,
         firstName: values.headOfHousehold.firstName || null,
         lastName: values.headOfHousehold.lastName || null,
         initials: values.headOfHousehold.initials || null,
@@ -625,9 +631,20 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       hostCommunity: values.hostCommunity,
       completedBy: values.completedBy,
     };
+    if (this.editMode) {
+      // if we are editing the form we assign the values collected when the form initialized and collected the registration from the api.
+      r.id = this.registration.id;
+      r.active = this.registration.active || null;
+      r.declarationAndConsent = this.registration.declarationAndConsent || null;
+      r.essFileNumber = this.registration.essFileNumber || null;
+      r.headOfHousehold.id = this.registration.headOfHousehold.id || null;
+      r.registrationCompletionDate = this.registration.registrationCompletionDate || null; // todo need to check if this date is being handled correctly
+      r.headOfHousehold.primaryResidence.id = this.registration.id || null;
+      r.completedBy = this.registration.completedBy || null;
+    }
 
-    this.registration = r; //todo: this needs to be checked
-
+    // this.registration = r; //todo: this needs to be checked
+    console.log(r);
     // save the registration to the application state
     this.store.dispatch(new UpdateRegistration({ registration: r }));
   }
