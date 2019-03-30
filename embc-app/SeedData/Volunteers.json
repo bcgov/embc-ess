@@ -1,0 +1,58 @@
+[
+    {
+        "name": "ess.developerV1",
+        "email": "dev1@ebmc",
+        "bceidAccountNumber": "ess.developerV1",
+        "isAdministrator": false,
+        "canAccessRestrictedFiles": false,
+        "organization": {
+            "BceidAccountNumber": "15F6FD8BC6C6401DB319311853FC518E"
+        },
+        "externaluseridentifier": null,
+        "personType": "VOLN",
+        "firstName": "dev",
+        "lastName": "one"
+    },
+    {
+        "name": "ess.developerV2",
+        "email": "dev2@ebmc",
+        "bceidAccountNumber": "ess.developerV2",
+        "isAdministrator": false,
+        "canAccessRestrictedFiles": false,
+        "organization": {
+            "BceidAccountNumber": "25F6FD8BC6C6401DB319311853FC518E"
+        },
+        "externaluseridentifier": null,
+        "personType": "VOLN",
+        "firstName": "dev",
+        "lastName": "two"
+    },
+    {
+        "name": "ess.developerA1",
+        "email": "adm1@ebmc",
+        "bceidAccountNumber": "ess.developerA1",
+        "isAdministrator": true,
+        "canAccessRestrictedFiles": true,
+        "organization": {
+            "BceidAccountNumber": "15F6FD8BC6C6401DB319311853FC518E"
+        },
+        "externaluseridentifier": null,
+        "personType": "VOLN",
+        "firstName": "admin",
+        "lastName": "one"
+    },
+    {
+        "name": "ess.developerA2",
+        "email": "adm2@ebmc",
+        "bceidAccountNumber": "ess.developerA2",
+        "isAdministrator": true,
+        "canAccessRestrictedFiles": false,
+        "organization": {
+            "BceidAccountNumber": "25F6FD8BC6C6401DB319311853FC518E"
+        },
+        "externaluseridentifier": null,
+        "personType": "VOLN",
+        "firstName": "admin",
+        "lastName": "two"
+    }
+]
