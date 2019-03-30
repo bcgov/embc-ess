@@ -25,6 +25,7 @@ import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.compo
 import { AdminAddTaskNumberModule } from './admin-add-task-number';
 import { AdminDashboardModule } from './admin-dashboard';
 import { TopNavigationComponent } from './top-navigation/top-navigation.component';
+import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { TopNavigationComponent } from './top-navigation/top-navigation.componen
     VolunteerUsefulInformationComponent,
     EvacueeSummaryComponent,
     TopNavigationComponent,
+    VolunteerLayoutComponent,
   ],
   imports: [
     // angular

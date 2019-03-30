@@ -26,7 +26,11 @@ import { AdminAddTaskNumberComponent } from './admin-add-task-number/admin-add-t
 import { AdminAddTaskNumberOneComponent, AdminAddTaskNumberConfirmationComponent } from './admin-add-task-number';
 import { AdminTaskNumbersComponent, AdminEvacueesComponent, AdminOrganizationsComponent } from './admin-dashboard';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
-import { RoleGuardService } from './core/services/role-guard.service';
+import { LoggedInGuard } from './core/guards/logged-in.guard';
+import { RoleGuard } from './core/guards/role.guard';
+import { VOLUNTEER } from './constants';
+import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
+
 /**
   /
     self-registration
@@ -100,6 +104,26 @@ const routes: Routes = [
       },
     ]
   },
+
+  // TODO: New naming starts HERE
+
+  {
+    path: 'volunteer',
+    component: VolunteerLayoutComponent,
+    canActivate: [LoggedInGuard],
+    children: [
+      {
+        path: 'evacuees',
+        component: VolunteerDashboardComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
+    ],
+  },
+
+
+  // TODO: Remove/review routes BELOW HERE
+
+
   {
     path: 'useful-info',
     component: VolunteerUsefulInformationComponent,
@@ -107,12 +131,6 @@ const routes: Routes = [
   {
     path: 'volunteer/useful-info',
     component: VolunteerUsefulInformationComponent,
-  },
-  {
-    path: 'volunteer/evacuees',
-    component: VolunteerDashboardComponent,
-    // canActivate: [RoleGuardService],
-    // data: { expectedRole: 'volunteer' }
   },
   {
     path: 'volunteer-dashboard',

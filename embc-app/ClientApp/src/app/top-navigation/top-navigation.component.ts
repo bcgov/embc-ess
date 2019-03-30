@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrentUserService } from '../core/services/current-user.service';
+import { AuthService } from '../core/services/auth.service';
 import { User } from '../core/models';
 
 @Component({
@@ -14,12 +14,12 @@ export class TopNavigationComponent implements OnInit {
   currentUser: User;
 
   constructor(
-    private currentUserService: CurrentUserService,
+    private currentUserService: AuthService,
   ) { }
 
   ngOnInit() {
     // watch the current user for changes.
-    this.currentUserService.currentUser.subscribe(c => this.currentUser = c);
+    this.currentUserService.currentUser$.subscribe(c => this.currentUser = c);
   }
 
 }
