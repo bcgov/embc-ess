@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Gov.Jag.Embc.Interfaces;
-
 using Gov.Jag.Embc.Public.Authentication;
-using Gov.Jag.Embc.Public.Models;
 using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Gov.Jag.Embc.Public.Controllers
 {
@@ -28,8 +20,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         private readonly SiteMinderAuthOptions _options = new SiteMinderAuthOptions();
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger _logger;
-        
-        const string BUSINESS_PROFILE_PAGE = "business-profile";
 
         public LoginController(IConfiguration configuration, IHostingEnvironment env, IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory)
         {
@@ -37,7 +27,6 @@ namespace Gov.Jag.Embc.Public.Controllers
             _env = env;
             _httpContextAccessor = httpContextAccessor;
             _logger = loggerFactory.CreateLogger(typeof(LoginController));
-            
         }
 
         [HttpGet]
@@ -71,28 +60,9 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
             else
             {
-                string basePath = string.IsNullOrEmpty(Configuration["BASE_PATH"]) ? "/" : Configuration["BASE_PATH"];
-                // we want to redirect to the dashboard if the user is a returning user.
+                string basePath = string.IsNullOrEmpty(Configuration["BASE_PATH"]) ? "" : Configuration["BASE_PATH"];
 
-                // get UserSettings from the session
-                string temp = _httpContextAccessor.HttpContext.Session.GetString("UserSettings");
-                string dashboard = "dashboard";
-
-                if (string.IsNullOrEmpty(temp))
-                {
-                    dashboard = BUSINESS_PROFILE_PAGE;
-                }
-                else
-                {
-                    UserSettings userSettings = JsonConvert.DeserializeObject<UserSettings>(temp);
-                    if (userSettings.IsNewUser || isBusinessProfileSubmitted(userSettings))
-                    {
-                        dashboard = BUSINESS_PROFILE_PAGE;
-                    }
-                }
-                
-
-                return Redirect(basePath + "/" + dashboard);
+                return base.Redirect(Configuration["BASE_PATH"] ?? "" + "/" + "dashboard");
             }
         }
 
@@ -103,7 +73,6 @@ namespace Gov.Jag.Embc.Public.Controllers
             if (userSettings.AccountId != null && userSettings.AccountId.Length > 0)
             {
                 var accountId = GuidUtility.SanitizeGuidString(userSettings.AccountId);
-
             }
 
             return isSubmitted;
@@ -130,7 +99,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         /// <summary>
-        /// Injects an authentication token cookie into the response for use with the 
+        /// Injects an authentication token cookie into the response for use with the
         /// SiteMinder authentication middleware
         /// </summary>
         [HttpGet]
@@ -138,7 +107,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         [AllowAnonymous]
         public virtual IActionResult GetDevAuthenticationCookie(string userId)
         {
-
             // if (_env.IsProduction()) return BadRequest("This API is not available outside a development environment.");
 
             if (string.IsNullOrEmpty(userId)) return BadRequest("Missing required userid query parameter.");
@@ -149,8 +117,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             // clear session
             HttpContext.Session.Clear();
 
-			// expire "dev" user cookie
-			string temp = HttpContext.Request.Cookies[_options.DevBCSCAuthenticationTokenKey];
+            // expire "dev" user cookie
+            string temp = HttpContext.Request.Cookies[_options.DevBCSCAuthenticationTokenKey];
             if (temp == null)
             {
                 temp = "";
@@ -178,12 +146,11 @@ namespace Gov.Jag.Embc.Public.Controllers
             );
 
             string basePath = string.IsNullOrEmpty(Configuration["BASE_PATH"]) ? "" : Configuration["BASE_PATH"];
-            // always send the user to the business profile.
-            string businessprofile = "business-profile";
+
+            string businessprofile = "dashboard";
             basePath += "/" + businessprofile;
 
             return Redirect(basePath);
         }
-
     }
 }
