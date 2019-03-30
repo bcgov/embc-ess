@@ -12,8 +12,7 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
-    [AllowAnonymous]
-    //[Authorize(Policy = "Business-User")]
+    [Authorize]
     public class OrganizationsController : Controller
     {
         private readonly BCeIDBusinessQuery _bceid;

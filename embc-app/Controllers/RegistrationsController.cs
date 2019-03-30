@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class RegistrationsController : Controller
     {
         private readonly IDataInterface dataInterface;
@@ -39,7 +40,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet(Name = nameof(GetAll))]
-        [AllowAnonymous]
         public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters searchQuery)
         {
             try
@@ -130,7 +130,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpPut("{id}")]
-        [AllowAnonymous]
         public async Task<IActionResult> Update([FromBody] ViewModels.Registration item, string id)
         {
             if (id != null && item.Id != null && id != item.Id)
@@ -154,7 +153,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpDelete("{id}")]
-        [AllowAnonymous]
         public async Task<IActionResult> Delete(string id)
         {
             if (string.IsNullOrWhiteSpace(id)) return BadRequest();
