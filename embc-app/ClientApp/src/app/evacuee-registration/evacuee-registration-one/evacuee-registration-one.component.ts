@@ -639,7 +639,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       r.essFileNumber = this.registration.essFileNumber || null;
       r.headOfHousehold.id = this.registration.headOfHousehold.id || null;
       r.registrationCompletionDate = this.registration.registrationCompletionDate || null; // todo need to check if this date is being handled correctly
-      r.headOfHousehold.primaryResidence.id = this.registration.id || null;
+      r.headOfHousehold.primaryResidence.id = this.registration.headOfHousehold.primaryResidence.id || null;
       r.completedBy = this.registration.completedBy || null;
     }
 
