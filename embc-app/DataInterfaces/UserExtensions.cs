@@ -141,6 +141,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             to.SiteMinderGuid = from.Externaluseridentifier;
             to.Email = from.Email;
             to.Active = true;
+            to.IsAdministrator = from.IsAdministrator;
         }
     }
 }
