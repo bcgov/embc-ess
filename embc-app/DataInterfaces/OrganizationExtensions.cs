@@ -46,17 +46,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         private static void AddInitialOrganization(this EmbcDbContext context, Organization item)
         {
-            var i = context.GetOrganizationByBceidAccountNumber(item.BceidAccountNumber);
-            if (i != null)
-            {
-                return;
-            }
+            if (context.GetOrganizationByBceidAccountNumber(item.BceidAccountNumber) != null) return;
 
             Region region = null;
 
             if (item.Region != null)
             {
-                region = context.GetRegionByName(i.Region.Name);
+                region = context.GetRegionByName(item.Region.Name);
             }
 
             RegionalDistrict regionalDistrict = null;
