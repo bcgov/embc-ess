@@ -32,6 +32,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   incidentTasks$ = this.incidentTaskService.getIncidentTasks().pipe(map(x => x.data));
 
   pageTitle = 'Add an Evacuee';
+  activeForm = true; // this lets the user fill things out
 
   // The model for the form data collected
   form: FormGroup;
@@ -142,7 +143,44 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         required: 'Please enter details of the evacuee(s) long term plans.',
       },
     };
-
+    // TODO: Wow. it sure would be nice if we could just instatiate a class instead of using interfaces
+    this.registration = {
+      id: null,
+      active: null,
+      restrictedAccess: null,
+      declarationAndConsent: null,
+      essFileNumber: null,
+      dietaryNeeds: null,
+      dietaryNeedsDetails: null,
+      disasterAffectDetails: null,
+      externalReferralsDetails: null,
+      facility: null,
+      familyRecoveryPlan: null,
+      followUpDetails: null,
+      insuranceCode: null,
+      medicationNeeds: null,
+      registrationCompletionDate: null,
+      registeringFamilyMembers: null,
+      selfRegisteredDate: null,
+      hasThreeDayMedicationSupply: null,
+      hasInquiryReferral: null,
+      hasHealthServicesReferral: null,
+      hasFirstAidReferral: null,
+      hasChildCareReferral: null,
+      hasPersonalServicesReferral: null,
+      hasPetCareReferral: null,
+      hasPets: null,
+      requiresAccommodation: null,
+      requiresClothing: null,
+      requiresFood: null,
+      requiresIncidentals: null,
+      requiresTransportation: null,
+      requiresSupport: null,
+      headOfHousehold: null,
+      incidentTask: null,
+      hostCommunity: null,
+      completedBy: null,
+    }
     // Define an instance of the validator for use with this form,
     // passing in this form's set of validation messages.
     this.validationHelper = new ValidationHelper(this.constraints);
@@ -158,6 +196,11 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   // this is a way to grab the familymembers in a typed way
   get familyMembers() { return this.f.familyMembers as FormArray; }
 
+  disableInput(disabled: boolean) {
+    // hide the form TODO: V1 shouldn't handle sensitive information. This is a workaround toggle.
+    this.activeForm = !disabled;
+  }
+
   ngOnInit() {
     // Create form controls
     this.initForm();
@@ -171,7 +214,13 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     if (id) {
       // this is a form with data flowing in.
       // TODO: Redirect to error page if we fail to fetch the registration
-      this.registrationService.getRegistrationById(id).subscribe(r => this.displayRegistration(r));
+      this.registrationService.getRegistrationById(id).subscribe(r => {
+
+        // set registration mode to edit and save the previous content in an object.
+        this.registration = r;
+        this.editMode = true;
+        this.displayRegistration(r);
+      });
     } else {
       // this is a fresh form
       this.displayRegistration();
@@ -199,9 +248,13 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   createFamilyMember(fmbr?: FamilyMember): FormGroup {
     if (fmbr) {
       return this.formBuilder.group({
+        bcServicesNumber: fmbr.bcServicesNumber || null,
+        id: fmbr.id || null,
+        active: fmbr.active || null,
         sameLastNameAsEvacuee: fmbr.sameLastNameAsEvacuee,
         firstName: [fmbr.firstName, Validators.required],
         lastName: [fmbr.lastName, Validators.required],
+        nickname: fmbr.nickname,
         initials: fmbr.initials,
         gender: fmbr.gender,
         dob: [new Date(fmbr.dob).toString(), [Validators.required, CustomValidators.maxDate(moment())]], // TODO: check this!!
@@ -347,22 +400,18 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   }
 
   displayRegistration(r?: Registration | null): void {
-    // Set the local registration property
-    this.registration = r;
-
     // Display the appropriate page title and form state
     if (r == null) {
       this.pageTitle = 'Add an Evacuee';
       this.createMode = true;
-      this.finalizeMode = this.editMode = false; // turn off these
+      this.finalizeMode = false; // turn off these
     } else {
       if (r.incidentTask == null) {
         this.pageTitle = 'Finalize Evacuee Registration';
         this.finalizeMode = true;
-        this.createMode = this.editMode = false; // turn off these
+        this.createMode = false; // turn off these
       } else {
         this.pageTitle = 'Edit Evacuee Registration';
-        this.editMode = true;
         this.createMode = this.finalizeMode = false; // turn off these
       }
     }
@@ -389,7 +438,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
       // Update the data on the form from the data included from the API
       this.form.patchValue({
-        // id: r.id as string,
+        id: r.id as string,
         restrictedAccess: r.restrictedAccess as boolean,
         essFileNumber: r.essFileNumber as number,
         dietaryNeeds: r.dietaryNeeds as boolean,
@@ -494,45 +543,50 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     this.validateForm();
-
     // stop here if form is invalid
     if (this.form.invalid) {
       this.errorSummary = 'Some required fields have not been completed.';
       return;
+    } else {
+      // update client-side state
+      this.saveState();
+      // navigate to the next page.
+      this.router.navigate(['register-evacuee/confirmation']);
     }
-
     // success!
     this.errorSummary = null;
-    this.next();
   }
 
-  next() {
-    // update client-side state
-    this.saveState();
 
-    // navigate to the next page.
-    this.router.navigate(['../confirmation'], { relativeTo: this.route });
-  }
 
   saveState() {
     const values = this.form.value;
-
     // ensure proper sub-types are assigned to people entities
     const personType: 'FMBR' = 'FMBR';
     const familyMembers: FamilyMember[] = (values.familyMembers as FamilyMember[]).map(fmr => ({ ...fmr, personType }));
+    // alert("save");
 
     // Use form values to create evacuee registration
-    const registration: Registration = {
-      ...this.registration,
+    const r: Registration = {
+
+      id: null,
+      active: null,
+      declarationAndConsent: null,
+      essFileNumber: null,
 
       headOfHousehold: {
-        ...this.registration.headOfHousehold,
-        ...values.headOfHousehold,
-        personType: 'HOH',
-        phoneNumber: values.phoneNumber,
-        phoneNumberAlt: values.phoneNumberAlt,
-        email: values.email,
-        familyMembers,
+        id: null,
+        firstName: values.headOfHousehold.firstName || null,
+        lastName: values.headOfHousehold.lastName || null,
+        initials: values.headOfHousehold.initials || null,
+        nickname: values.headOfHousehold.nickname || null,
+        gender: values.headOfHousehold.gender || null,
+        dob: values.headOfHousehold.dob || null,
+        personType: 'HOH' || null,
+        phoneNumber: values.phoneNumber || null,
+        phoneNumberAlt: values.phoneNumberAlt || null,
+        email: values.email || null,
+        familyMembers,//copy in the already parsed values for familymembers
         primaryResidence: { ...values.primaryResidence },
         mailingAddress: values.mailingAddressSameAsPrimary ? null : { ...values.mailingAddress },
       },
@@ -577,8 +631,21 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       hostCommunity: values.hostCommunity,
       completedBy: values.completedBy,
     };
+    if (this.editMode) {
+      // if we are editing the form we assign the values collected when the form initialized and collected the registration from the api.
+      r.id = this.registration.id;
+      r.active = this.registration.active || null;
+      r.declarationAndConsent = this.registration.declarationAndConsent || null;
+      r.essFileNumber = this.registration.essFileNumber || null;
+      r.headOfHousehold.id = this.registration.headOfHousehold.id || null;
+      r.registrationCompletionDate = this.registration.registrationCompletionDate || null; // todo need to check if this date is being handled correctly
+      r.headOfHousehold.primaryResidence.id = this.registration.headOfHousehold.primaryResidence.id || null;
+      r.completedBy = this.registration.completedBy || null;
+    }
 
+    // this.registration = r; //todo: this needs to be checked
+    console.log(r);
     // save the registration to the application state
-    this.store.dispatch(new UpdateRegistration({ registration }));
+    this.store.dispatch(new UpdateRegistration({ registration: r }));
   }
 }

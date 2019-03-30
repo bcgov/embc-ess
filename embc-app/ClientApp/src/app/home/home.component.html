@@ -10,11 +10,7 @@
               Emergency Social Services
             </h2>
             <p>
-              Emergency Social Services (ESS) is for British Columbians who have been evacuated from their home by fire,
-              floods, earthquakes or other emergencies and may receive support for up to 72 hours. If you have been
-              issued an Evacuation Order and are being asked to leave your home please register by using the Evacuee
-              Self Registration or proceed to your nearest Reception Centre as listed at EmergencyInfoBC or contact your
-              local authority.
+              Emergency Support Services (ESS) is for British Columbians who have been evacuated from their home by fire, floods, earthquakes or other emergencies and may receive support for up to 72 hours. If you have been issued an Evacuation Order and are being asked to leave your home, please register for Emergency Support Services by using the <a routerLink="self-registration">Evacuee Self-Registration</a> or proceed to your nearest Reception Centre as listed at <a href="https://www.emergencyinfobc.gov.bc.ca/">EmergencyInfoBC</a>. If you need further support with the Evacuee Self Registration system, please contact the Emergency Support Services team through your local government.
             </p>
             <!-- You will need to have a registered Business BCeID to access the Portal
             <div class="text-left">
@@ -36,13 +32,11 @@
           <mat-card class="picture-card">
             <mat-card-title>Evacuee Self-Registration</mat-card-title>
             <mat-card-actions align="center">
-              <img height="170" src="assets/fingerForceRectangle.png"
-                alt="A stylized finger touching a black rectangle">
+              <img height="170" src="assets/fingerForceRectangle.png" alt="A stylized finger touching a black rectangle">
             </mat-card-actions>
             <mat-card-content>
               <p>
-                Please use the Evacuee Self-Registration form to register with Emergency Social Services if you have
-                been given an Evacuation Order and have been asked to leave your home.
+                The Evacuee Self-Registration form is for evacuees to register with Emergency Support Services if you have been given an Evacuation Order and have been asked to leave your home.
               </p>
             </mat-card-content>
             <mat-card-actions align="center">
@@ -54,17 +48,18 @@
           <mat-card class="picture-card">
             <mat-card-title>Volunteer Login</mat-card-title>
             <mat-card-actions align="center">
-              <img height="170" src="assets/sittingAtTheCheckmark.png"
-                alt="A stylized finger touching a black rectangle">
+              <img height="170" src="assets/sittingAtTheCheckmark.png" alt="A stylized finger touching a black rectangle">
             </mat-card-actions>
             <mat-card-content>
               <p>
-                Please use the Volunteer Login if you are an Emergency Social Services Volunteer responding to an
-                emergency.
+                The Volunteer Login is for Emergency Support Services team members who are responding to an emergency.
               </p>
             </mat-card-content>
             <mat-card-actions align="center">
-              <a class="btn btn-primary" href="login">VOLUNTEER LOGIN</a>
+              <!-- TODO: handle the login routing -->
+              <!-- <a class="btn btn-primary" href="login">VOLUNTEER LOGIN</a> -->
+              <a class="btn btn-primary" routerLink="volunteer-dashboard">VOLUNTEER LOGIN</a>
+
             </mat-card-actions>
           </mat-card>
         </div>

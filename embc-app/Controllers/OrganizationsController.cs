@@ -94,7 +94,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] ViewModels.Organization item, string id)
         {
-            if (string.IsNullOrWhiteSpace(id))
+            if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id)
             {
                 return BadRequest();
             }

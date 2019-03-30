@@ -8,13 +8,6 @@
       <!-- <app-search-bar #searchBar (valueChange)="doSearch($event)" placeholder="Search for user by last name &#8230;">
       </app-search-bar> -->
 
-      <!-- TODO: <a class="small" href="">advanced search</a> -->
-      <!-- TODO: show icons for HOH, RESTRICTED FILE -->
-      <!-- <pre>{{volunteers|json}}</pre> -->
-    </div>
-    <div>
-      <!-- The start of the table stuff. -->
-
       <div role="search" class="form-row">
         <div class="col-md-9">
           <input #searchbox type="text" aria-label="search" class="form-control mb-2"
@@ -24,16 +17,24 @@
           <button class="btn btn-primary" (click)="search(searchbox.value)">Search</button>
         </div>
       </div>
-      <div class="search-results">
+      <div class="search-results mt-4">
         <div *ngIf="metaVolunteers && metaVolunteers.data.length>0; then searchResultsTable; else notFound"></div>
       </div>
 
+      <!-- TODO: <a class="small" href="">advanced search</a> -->
+      <!-- TODO: show icons for HOH, RESTRICTED FILE -->
+      <!-- <pre>{{volunteers|json}}</pre> -->
+    </div>
+    <div>
+      <!-- The start of the table stuff. -->
+
+
       <ng-template #searchResultsTable>
-        <p> {{metaVolunteers.metadata.page*metaVolunteers.metadata.pageSize}} - {{metaVolunteers.metadata.pageSize}} of
+        <!-- <p> {{metaVolunteers.metadata.page*metaVolunteers.metadata.pageSize}} - {{metaVolunteers.metadata.pageSize}} of
           {{metaVolunteers.metadata.totalCount}} <span class="font-weight-bold">ACTIVE</span>
           volunteers
           <small class="ml-3">(<a href="">show deactivated</a>)</small>
-        </p>
+        </p> -->
         <table class="table">
           <thead class="thead-light">
             <th scope="col">LAST NAME</th>

@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using Microsoft.AspNetCore.Http;
 using Gov.Jag.Embc.Public.Models;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
 
 namespace Gov.Jag.Embc.Public.Authentication
@@ -24,6 +24,7 @@ namespace Gov.Jag.Embc.Public.Authentication
         /// SiteMinder Guid
         /// </summary>
         public string SiteMinderGuid { get; set; }
+
         public string SiteMinderBusinessGuid { get; set; }
 
         public string UserDisplayName { get; set; }
@@ -40,13 +41,12 @@ namespace Gov.Jag.Embc.Public.Authentication
         public string ContactId { get; set; }
         public string AccountId { get; set; }
 
+        public string[] AppRoles { get; set; }
 
         /// <summary>
         /// Worker qualification requires new contact info.
         /// </summary>
         public ViewModels.Person NewContact { get; set; }
-
-        
 
         /// <summary>
         /// Check the UserSettings object and throw an exception if it is invalid.
@@ -78,9 +78,9 @@ namespace Gov.Jag.Embc.Public.Authentication
             // write metadata
             string json = JsonConvert.SerializeObject(this, Formatting.Indented,
                 new JsonSerializerSettings
-                    {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    }
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }
                 );
 
             return json;
@@ -125,4 +125,3 @@ namespace Gov.Jag.Embc.Public.Authentication
         }
     }
 }
-
