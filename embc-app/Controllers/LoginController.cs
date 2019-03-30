@@ -55,7 +55,7 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return contentResult;
             }
 
-            path = path ?? configuration["BASE_PATH"] ?? "/";
+            path = path ?? configuration["BASE_PATH"] ?? "/dashboard";
             return LocalRedirect(path);
         }
 
