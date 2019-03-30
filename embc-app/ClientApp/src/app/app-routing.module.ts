@@ -28,6 +28,7 @@ import { AdminTaskNumbersComponent, AdminEvacueesComponent, AdminOrganizationsCo
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { LoggedInGuard } from './core/guards/logged-in.guard';
 import { RoleGuard } from './core/guards/role.guard';
+import { RedirectGuard } from './core/guards/redirect.guard';
 import { VOLUNTEER } from './constants';
 import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
 
@@ -120,6 +121,13 @@ const routes: Routes = [
     ],
   },
 
+  {
+    // special route to redirect to EXTERNAL links (i.e. http://www.google.com)
+    // NOTE - we need this to redirect to the /login URL without Angular interfering
+    path: 'externalRedirect',
+    canActivate: [RedirectGuard],
+    component: PageNotFoundComponent, // We need a component here because we cannot define the route otherwise
+  },
 
   // TODO: Remove/review routes BELOW HERE
 
@@ -377,7 +385,10 @@ const routes: Routes = [
     path: 'test',
     component: TesterPageComponent
   },
-  { path: '**', component: PageNotFoundComponent },
+  {
+    path: '**',
+    component: PageNotFoundComponent
+  },
 ];
 
 @NgModule({
