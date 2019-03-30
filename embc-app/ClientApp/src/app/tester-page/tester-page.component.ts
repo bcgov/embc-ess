@@ -65,6 +65,6 @@ export class TesterPageComponent implements OnInit {
     // this.registrationService.getRegistrations().subscribe(r => this.registrations = r.data);
   }
   setUser(userType: string) {
-    this.currentUserService.currentUser$.next({ role: userType });
+    this.currentUserService.setCurrentUser({ appRoles: [userType] });
   }
 }
