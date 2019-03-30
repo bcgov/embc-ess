@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --source-map --host 0.0.0.0",
+    "start": "ng serve --source-map --host 0.0.0.0 --base-href /embcess/ --deploy-url /embcess/",
     "build": "ng build --extract-css --base-href /embcess/ --deploy-url /embcess/",
     "builduat": "ng build --extract-css --base-href /uat/embcess/ --deploy-url /uat/embcess",
     "buildprod": "ng build --extract-css --base-href /embcess/ --deploy-url /embcess/",
