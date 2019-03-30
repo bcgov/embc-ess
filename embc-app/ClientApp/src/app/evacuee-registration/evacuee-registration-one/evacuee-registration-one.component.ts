@@ -143,7 +143,44 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         required: 'Please enter details of the evacuee(s) long term plans.',
       },
     };
-
+    // TODO: Wow. it sure would be nice if we could just instatiate a class instead of using interfaces
+    this.registration = {
+      id: null,
+      active: null,
+      restrictedAccess: null,
+      declarationAndConsent: null,
+      essFileNumber: null,
+      dietaryNeeds: null,
+      dietaryNeedsDetails: null,
+      disasterAffectDetails: null,
+      externalReferralsDetails: null,
+      facility: null,
+      familyRecoveryPlan: null,
+      followUpDetails: null,
+      insuranceCode: null,
+      medicationNeeds: null,
+      registrationCompletionDate: null,
+      registeringFamilyMembers: null,
+      selfRegisteredDate: null,
+      hasThreeDayMedicationSupply: null,
+      hasInquiryReferral: null,
+      hasHealthServicesReferral: null,
+      hasFirstAidReferral: null,
+      hasChildCareReferral: null,
+      hasPersonalServicesReferral: null,
+      hasPetCareReferral: null,
+      hasPets: null,
+      requiresAccommodation: null,
+      requiresClothing: null,
+      requiresFood: null,
+      requiresIncidentals: null,
+      requiresTransportation: null,
+      requiresSupport: null,
+      headOfHousehold: null,
+      incidentTask: null,
+      hostCommunity: null,
+      completedBy: null,
+    }
     // Define an instance of the validator for use with this form,
     // passing in this form's set of validation messages.
     this.validationHelper = new ValidationHelper(this.constraints);
@@ -395,7 +432,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
       // Update the data on the form from the data included from the API
       this.form.patchValue({
-        // id: r.id as string,
+        id: r.id as string,
         restrictedAccess: r.restrictedAccess as boolean,
         essFileNumber: r.essFileNumber as number,
         dietaryNeeds: r.dietaryNeeds as boolean,
@@ -518,22 +555,21 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
   saveState() {
     const values = this.form.value;
-
     // ensure proper sub-types are assigned to people entities
     const personType: 'FMBR' = 'FMBR';
     const familyMembers: FamilyMember[] = (values.familyMembers as FamilyMember[]).map(fmr => ({ ...fmr, personType }));
     // alert("save");
 
     // Use form values to create evacuee registration
-    const registration: Registration = {
+    const r: Registration = {
 
-      id: this.registration.id || null,
-      active: this.registration.active || null,
-      declarationAndConsent: this.registration.declarationAndConsent || null,
-      essFileNumber: this.registration.essFileNumber || null,
+      id: this.editMode ? this.registration.id : '',
+      active: this.editMode ? this.registration.active : null,
+      declarationAndConsent: this.editMode ? this.registration.declarationAndConsent : null,
+      essFileNumber: this.editMode ? this.registration.essFileNumber : null,
 
       headOfHousehold: {
-        id: this.registration.headOfHousehold.id || null,
+        id: this.editMode ? this.registration.headOfHousehold.id : '',
         firstName: values.headOfHousehold.firstName || null,
         lastName: values.headOfHousehold.lastName || null,
         initials: values.headOfHousehold.initials || null,
@@ -590,9 +626,9 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       completedBy: values.completedBy,
     };
 
-    this.registration = registration; //todo: this needs to be checked
+    this.registration = r; //todo: this needs to be checked
 
     // save the registration to the application state
-    this.store.dispatch(new UpdateRegistration({ registration }));
+    this.store.dispatch(new UpdateRegistration({ registration: r }));
   }
 }
