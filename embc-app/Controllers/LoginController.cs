@@ -22,8 +22,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger _logger;
 
-        private const string BUSINESS_PROFILE_PAGE = "business-profile";
-
         public LoginController(IConfiguration configuration, IHostingEnvironment env, IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory)
         {
             Configuration = configuration;

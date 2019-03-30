@@ -613,7 +613,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                     permissions.Add("role_volunteer");
                     if (userSettings.AuthenticatedUser.IsAdministrator ?? false) permissions.Add("role_local_authority");
                 }
-                else if (userSettings.UserType.Equals("internal", StringComparison.InvariantCultureIgnoreCase))
+                else if (userSettings.UserType != null && userSettings.UserType.Equals("internal", StringComparison.InvariantCultureIgnoreCase))
                 {
                     //EMBC admin
                     permissions.Add("role_volunteer");
