@@ -38,21 +38,13 @@ namespace Gov.Jag.Embc.Public.Controllers
 
         public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters searchQuery)
         {
-            try
-            {
-                var items = await dataInterface.GetOrganizationsAsync(searchQuery);
+            var items = await dataInterface.GetOrganizationsAsync(searchQuery);
 
-                return Json(new
-                {
-                    data = items.Items,
-                    metadata = items.Pagination
-                });
-            }
-            catch (Exception e)
+            return Json(new
             {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+                data = items.Items,
+                metadata = items.Pagination
+            });
         }
 
         [HttpGet("{id}")]
@@ -76,18 +68,10 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
-                item.Id = null;
-                item.Active = true;
-                var result = await dataInterface.CreateOrganizationAsync(item);
-                return Json(result);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+            item.Id = null;
+            item.Active = true;
+            var result = await dataInterface.CreateOrganizationAsync(item);
+            return Json(result);
         }
 
         [HttpPut("{id}")]
@@ -107,17 +91,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            try
-            {
-                await dataInterface.UpdateOrganizationAsync(item);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+            await dataInterface.UpdateOrganizationAsync(item);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -125,16 +100,8 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             if (string.IsNullOrWhiteSpace(id)) return BadRequest();
 
-            try
-            {
-                var result = await dataInterface.DeactivateOrganizationAsync(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+            var result = await dataInterface.DeactivateOrganizationAsync(id);
+            return Ok();
         }
     }
 }
