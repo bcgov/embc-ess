@@ -500,25 +500,26 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     this.validateForm();
-
+    // update client-side state
+    this.saveState();
     // stop here if form is invalid
     if (this.form.invalid) {
       this.errorSummary = 'Some required fields have not been completed.';
       return;
+    } else {
+
+      // alert("Submit");
     }
 
     // success!
     this.errorSummary = null;
-    this.next();
-  }
 
-  next() {
-    // update client-side state
-    this.saveState();
 
     // navigate to the next page.
     this.router.navigate(['../confirmation'], { relativeTo: this.route });
   }
+
+
 
   saveState() {
     const values = this.form.value;
@@ -583,6 +584,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       hostCommunity: values.hostCommunity,
       completedBy: values.completedBy,
     };
+
+    this.registration = registration; //todo: this needs to be checked
 
     // save the registration to the application state
     this.store.dispatch(new UpdateRegistration({ registration }));
