@@ -26,7 +26,9 @@ import { AdminAddTaskNumberComponent } from './admin-add-task-number/admin-add-t
 import { AdminAddTaskNumberOneComponent, AdminAddTaskNumberConfirmationComponent } from './admin-add-task-number';
 import { AdminTaskNumbersComponent, AdminEvacueesComponent, AdminOrganizationsComponent } from './admin-dashboard';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
-import { RoleGuardService } from './core/services/role-guard.service';
+import { LoggedInGuard } from './core/guards/logged-in.guard';
+import { RoleGuard } from './core/guards/role.guard';
+
 /**
   /
     self-registration
@@ -111,7 +113,7 @@ const routes: Routes = [
   {
     path: 'volunteer/evacuees',
     component: VolunteerDashboardComponent,
-    // canActivate: [RoleGuardService],
+    canActivate: [LoggedInGuard],
     // data: { expectedRole: 'volunteer' }
   },
   {
