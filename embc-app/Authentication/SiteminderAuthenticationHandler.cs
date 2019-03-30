@@ -542,6 +542,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                         // add generated guids
                         userSettings.SiteMinderBusinessGuid = GuidUtility.CreateIdForDynamics("account", userSettings.BusinessLegalName).ToString();
                         userSettings.SiteMinderGuid = GuidUtility.CreateIdForDynamics("contact", userSettings.UserDisplayName).ToString();
+                        userSettings.UserType = "Business";
                     }
                     else if (isBCSCDeveloperLogin)
                     {
@@ -551,6 +552,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                         // add generated guids
                         userSettings.SiteMinderBusinessGuid = null;
                         userSettings.SiteMinderGuid = GuidUtility.CreateIdForDynamics("bcsc", userSettings.UserDisplayName).ToString();
+                        userSettings.UserType = "Internal";
                     }
 
                     if (userSettings.IsNewUser)
@@ -611,7 +613,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                     permissions.Add("role_volunteer");
                     if (userSettings.AuthenticatedUser.IsAdministrator ?? false) permissions.Add("role_local_authority");
                 }
-                else
+                else if (userSettings.UserType.Equals("internal", StringComparison.InvariantCultureIgnoreCase))
                 {
                     //EMBC admin
                     permissions.Add("role_volunteer");
