@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
-    [AllowAnonymous]
+    [Authorize]
     public class VolunteersController : Controller
     {
         private readonly IConfiguration configuration;
@@ -35,35 +35,19 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] VolunteersSearchQueryParameters searchQuery)
         {
-            try
-            {
-                var items = await dataInterface.GetVolunteersAsync(searchQuery);
+            var items = await dataInterface.GetVolunteersAsync(searchQuery);
 
-                return Json(new
-                {
-                    data = items.Items,
-                    metadata = items.Pagination
-                });
-            }
-            catch (Exception e)
+            return Json(new
             {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+                data = items.Items,
+                metadata = items.Pagination
+            });
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            try
-            {
-                return Json(await dataInterface.GetPersonByIdAsync(id));
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e);
-            }
+            return Json(await dataInterface.GetPersonByIdAsync(id));
         }
 
         [HttpPost]
@@ -77,18 +61,10 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest(ModelState);
             }
-            try
-            {
-                item.Id = null;
-                item.Active = true;
-                var result = await dataInterface.CreatePersonAsync(item);
-                return Json(result);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e);
-            }
+            item.Id = null;
+            item.Active = true;
+            var result = await dataInterface.CreatePersonAsync(item);
+            return Json(result);
         }
 
         [HttpPut("{id}")]
@@ -106,16 +82,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            try
-            {
-                await dataInterface.UpdatePersonAsync(item);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
+            await dataInterface.UpdatePersonAsync(item);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -123,16 +91,8 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             if (string.IsNullOrWhiteSpace(id)) return BadRequest();
 
-            try
-            {
-                var result = await dataInterface.DeactivatePersonAsync(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e);
-            }
+            var result = await dataInterface.DeactivatePersonAsync(id);
+            return Ok();
         }
     }
 }

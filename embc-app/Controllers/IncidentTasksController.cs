@@ -7,13 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
-    [AllowAnonymous]
+    [Authorize]
     public class IncidentTasksController : Controller
     {
         private readonly IConfiguration Configuration;
@@ -38,43 +37,26 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> Get([FromQuery] SearchQueryParameters searchQuery)
         {
-            try
-            {
-                var items = await dataInterface.GetIncidentTasksAsync(searchQuery);
+            var items = await dataInterface.GetIncidentTasksAsync(searchQuery);
 
-                return Json(new
-                {
-                    data = items.Items,
-                    metadata = items.Pagination
-                });
-            }
-            catch (Exception e)
+            return Json(new
             {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+                data = items.Items,
+                metadata = items.Pagination
+            });
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            try
+            var result = await dataInterface.GetIncidentTaskAsync(id);
+            if (result == null)
             {
-                var result = await dataInterface.GetIncidentTaskAsync(id);
-                if (result == null)
-                {
-                    return NotFound();
-                }
-                return Json(result);
+                return NotFound();
             }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+            return Json(result);
         }
 
         [HttpPost]
@@ -84,18 +66,11 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest(ModelState);
             }
-            try
-            {
-                item.Id = null;
-                item.Active = true;
-                var result = await dataInterface.CreateIncidentTaskAsync(item);
-                return Json(result);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+
+            item.Id = null;
+            item.Active = true;
+            var result = await dataInterface.CreateIncidentTaskAsync(item);
+            return Json(result);
         }
 
         [HttpPut("{id}")]
@@ -110,16 +85,8 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
-                await dataInterface.UpdateIncidentTaskAsync(item);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+            await dataInterface.UpdateIncidentTaskAsync(item);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -127,16 +94,8 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             if (string.IsNullOrWhiteSpace(id)) return BadRequest();
 
-            try
-            {
-                var result = await dataInterface.DeactivateIncidentTaskAsync(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e);
-            }
+            var result = await dataInterface.DeactivateIncidentTaskAsync(id);
+            return Ok();
         }
     }
 }
