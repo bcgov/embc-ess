@@ -37,7 +37,6 @@ export class RegistrationService extends RestService {
   }
 
   updateRegistration(data: Registration): Observable<HttpResponse<any>> {
-    console.log(JSON.stringify(data))
     return this.http.put<HttpResponse<any>>(`api/registrations/${data.id}`, data, { headers: this.headers })
       .pipe(
         retry(3),
