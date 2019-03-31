@@ -293,7 +293,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       }
 
       if (mailingAddress != null) {
-        alert('Mailing address not null.')
         this.form.patchValue({
           mailingAddressSameAsPrimary: false,
           mailingAddressInBC: isBcAddress(mailingAddress),
