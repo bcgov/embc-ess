@@ -124,9 +124,15 @@ const routes: Routes = [
   {
     // special route to redirect to EXTERNAL links (i.e. http://www.google.com)
     // NOTE - we need this to redirect to the /login URL without Angular interfering
-    path: 'externalRedirect',
-    canActivate: [RedirectGuard],
-    component: PageNotFoundComponent, // We need a component here because we cannot define the route otherwise
+    path: 'external',
+    canActivateChild: [RedirectGuard],
+    children: [
+      {
+        path: 'login',
+        component: PageNotFoundComponent, // We need a component here because we cannot define the route otherwise
+        data: { externalUrl: 'login' },
+      },
+    ]
   },
 
   // TODO: Remove/review routes BELOW HERE

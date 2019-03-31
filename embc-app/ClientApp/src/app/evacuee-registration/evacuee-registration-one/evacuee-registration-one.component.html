@@ -178,12 +178,13 @@
                 <span *ngIf="submitted" class="invalid-feedback">Please enter a last name.</span>
               </div>
               <div class="col">
-                <label>
+                <!-- not yet implemented -->
+                <!-- <label>
                   Same as main applicant.
                 </label>
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" [value]="true" formControlName="sameLastNameAsEvacuee">
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="row mb-2">
@@ -213,8 +214,8 @@
                 <label>Gender</label>
                 <select class="form-control" formControlName="gender">
                   <option [ngValue]="null">Please select--</option>
-                  <option value="male">Male</option>
                   <option value="female">Female</option>
+                  <option value="male">Male</option>
                   <option value="x">X</option>
                 </select>
               </div>
@@ -620,13 +621,13 @@
 </form>
 
 <!-- Only for debugging. Three boxes with the three data representations. -->
-<div class="row">
-  <div class="col">
+<!-- <div class="row"> -->
+<!-- <div class="col">
     <h4>Form State</h4>
     <pre>{{ this.form.value | json}}</pre>
-  </div>
-  <div class="col">
+  </div> -->
+<!-- <div class="col">
     <h4>Registration State</h4>
     <pre>{{ registration | json}}</pre>
-  </div>
-</div>
+  </div> -->
+<!-- </div> -->
