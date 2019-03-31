@@ -133,7 +133,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Update([FromBody] ViewModels.Registration item, string id)
         {
-            if (id != null && item.Id != null && id != item.Id)
+            if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id)
             {
                 return BadRequest();
             }
