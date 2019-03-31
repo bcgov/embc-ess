@@ -23,7 +23,7 @@ export class RoleGuard implements CanActivate {
     // If the user state exists and it matches the link we return true
     // else we return false
     const expectedRole: string = route.data.expectedRole;
-    return this.authService.currentUser$.pipe(map(user => this.checkAuthorization(user, expectedRole)));
+    return this.authService.getCurrentUser().pipe(map(user => this.checkAuthorization(user, expectedRole)));
 
     // TODO: list of routes and who should be able to access them
   }
@@ -31,6 +31,7 @@ export class RoleGuard implements CanActivate {
   // determines if user has a matching role
   checkAuthorization(user: User, expectedRole: string): boolean {
     if (!user || !expectedRole) {
+      this.router.navigate(['/404']);
       return false;
     }
 
@@ -39,6 +40,8 @@ export class RoleGuard implements CanActivate {
       return true;
     }
 
+    // role not authorized so redirect to home page
+    this.router.navigate(['/404']);
     return false;
   }
 }
