@@ -31,6 +31,7 @@ import { RoleGuard } from './core/guards/role.guard';
 import { RedirectGuard } from './core/guards/redirect.guard';
 import { VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from './constants';
 import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
+import { LandingPageGuard } from './core/guards/landing-page.guard';
 
 /**
   /
@@ -122,6 +123,20 @@ const routes: Routes = [
     ]
   },
 
+  // Landing Page
+  {
+    path: 'dashboard',
+    canActivate: [LandingPageGuard],
+    component: PageNotFoundComponent, // TODO: See if we can remove this component here without breaking routing
+    data: {
+      navigateByRole: {
+        'role_volunteer': 'volunteer/evacuees',
+        'role_local_authority': 'local-authority/evacuees',
+        'role_provincial_admin': 'provincial-admin/evacuees',
+      }
+    },
+  },
+
   // VOLUNTEER routes
   {
     path: 'volunteer',
@@ -131,7 +146,7 @@ const routes: Routes = [
       {
         path: 'evacuees',
         component: VolunteerDashboardComponent,
-        // canActivate: [RoleGuardService],
+        canActivate: [RoleGuard],
         data: { expectedRole: VOLUNTEER },
       },
       {
@@ -181,7 +196,7 @@ const routes: Routes = [
       {
         path: 'evacuees',
         component: VolunteerDashboardComponent,
-        // canActivate: [RoleGuardService],
+        canActivate: [RoleGuard],
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
