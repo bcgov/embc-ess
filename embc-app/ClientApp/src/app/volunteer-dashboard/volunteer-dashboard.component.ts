@@ -47,8 +47,10 @@ export class VolunteerDashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.authService.isLoggedIn$.subscribe(value => this.isLoggedIn = value);
-    this.authService.currentUser$.subscribe(user => this.currentUser = user);
+    this.authService.getCurrentUser().subscribe(user => {
+      this.currentUser = user;
+      this.isLoggedIn = !!user;
+    });
 
     // go get the data
     this.doSearch();

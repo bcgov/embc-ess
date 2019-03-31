@@ -19,7 +19,7 @@ export class TopNavigationComponent implements OnInit {
 
   ngOnInit() {
     // watch the current user for changes.
-    this.currentUserService.currentUser$.subscribe(c => this.currentUser = c);
+    this.currentUserService.getCurrentUser().subscribe(c => this.currentUser = c);
   }
 
 }

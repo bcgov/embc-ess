@@ -6,6 +6,9 @@ const PROXY_CONFIG = {
     'target': process.env.API_URL,
     'secure': false,
     'changeOrigin': true,
+    'pathRewrite': {
+      '^/embcess': ''
+    },
     'bypass': function (req, res, proxyOptions) {
       if (!process.env.API_URL) {
         return false;

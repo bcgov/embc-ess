@@ -1,49 +1,63 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { RestService } from './rest.service';
 import { User } from '../models';
+import { doesNotThrow } from 'assert';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService extends RestService {
 
-  // this is the current user object
-  currentUser$ = new BehaviorSubject<User>(null);
+  // // this is the current user object
+  // currentUser$ = new BehaviorSubject<User>(null);
 
-  // whether the user is currently logged in.
-  isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  // // whether the user is currently logged in.
+  // isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
-  login(): void {
+  currentUser: User = null; // local copy of user profile
+
+  get isLoggedIn(): boolean {
+    return !!this.currentUser;
+  }
+
+  login(): Observable<void> {
+    const done = new Subject<void>();
+
     // Code here would log into a back end service and return user information
-    this.getCurrentUser()
-      .pipe(
-        tap(user => this.setCurrentUser(user)),
-        map(user => !!user ? true : false), // if we got a user, then we are "logged in"
-        tap(logged => this.setLoggedIn(logged))
-      )
-      .subscribe(); // make it go!
+    this.getCurrentUser().subscribe(user => {
+      this.setCurrentUser(user);
+      done.next();
+    });
+
+    return done;
   }
 
   logout(): void {
     this.setCurrentUser(null);
-    this.setLoggedIn(false);
+    // this.setLoggedIn(false);
   }
 
   getCurrentUser(): Observable<User> {
+    // check local cache first
+    if (this.currentUser) {
+      return of(this.currentUser);
+    }
+
     return this.http.get<User>('api/users/current', { headers: this.headers })
       .pipe(catchError(() => of<User>(null))); // ignore errors; i.e. 401 error means "no current user available/logged in"
   }
 
   // this sets a current user to a value to test the current user observable all subscribers should update.
   setCurrentUser(user: User): void {
-    this.currentUser$.next(user);
+    // this.currentUser$.next(user);
+    this.currentUser = user;
   }
 
-  setLoggedIn(value: boolean): void {
-    this.isLoggedIn$.next(value);
-  }
+  // setLoggedIn(value: boolean): void {
+  //   this.isLoggedIn$.next(value);
+  // }
 
 }

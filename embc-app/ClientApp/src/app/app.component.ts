@@ -44,9 +44,6 @@ export class AppComponent implements OnInit {
   }
 
   initializeApp() {
-    // subscribe to changes to the current user; i.e. when a user "logs in"
-    this.authService.currentUser$.subscribe(user => this.currentUser = user);
-
     // Check for authenticated users
     this.reloadUser();
 
@@ -56,7 +53,8 @@ export class AppComponent implements OnInit {
   }
 
   reloadUser() {
-    this.authService.login();
+    this.authService.login()
+      .subscribe(() => this.currentUser = this.authService.currentUser);
   }
 
 
