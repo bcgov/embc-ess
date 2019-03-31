@@ -16,14 +16,15 @@ export class AuthService extends RestService {
   // whether the user is currently logged in.
   isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
-  login(): Observable<boolean> {
+  login(): void {
     // Code here would log into a back end service and return user information
-    return this.getCurrentUser()
+    this.getCurrentUser()
       .pipe(
         tap(user => this.setCurrentUser(user)),
         map(user => !!user ? true : false), // if we got a user, then we are "logged in"
         tap(logged => this.setLoggedIn(logged))
-      );
+      )
+      .subscribe(); // make it go!
   }
 
   logout(): void {
