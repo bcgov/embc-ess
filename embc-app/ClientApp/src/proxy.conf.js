@@ -2,7 +2,7 @@
 console.log(`Using proxy to remote API server: ${process.env.API_URL}`);
 
 const PROXY_CONFIG = {
-  '/api': {
+  '/embcess/api': {
     'target': process.env.API_URL,
     'secure': false,
     'changeOrigin': true,
