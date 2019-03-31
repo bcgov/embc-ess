@@ -124,6 +124,11 @@ const routes: Routes = [
 
   // VOLUNTEER routes
   {
+    path: 'dashboard',
+    redirectTo: 'volunteer/evacuees',
+    pathMatch: 'full'
+  },
+  {
     path: 'volunteer',
     component: VolunteerLayoutComponent,
     canActivate: [LoggedInGuard],
