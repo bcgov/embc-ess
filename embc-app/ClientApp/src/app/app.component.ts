@@ -4,7 +4,7 @@ import { concat } from 'rxjs';
 import { User } from './core/models';
 import { detectIE10orLower } from './shared/utils';
 import { ControlledListService } from './core/services/controlled-list.service';
-import { UserDataService } from './core/services/user-data.service';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private lookups: ControlledListService,
-    private userDataService: UserDataService,
+    private authService: AuthService,
 
   ) { }
 
@@ -44,28 +44,19 @@ export class AppComponent implements OnInit {
   }
 
   initializeApp() {
+    // subscribe to changes to the current user; i.e. when a user "logs in"
+    this.authService.currentUser$.subscribe(user => this.currentUser = user);
 
+    // Check for authenticated users
     this.reloadUser();
+
     // Loaded once at init time, as they do not change very often, and
     // certainly not within the app.
     this.getLookups().subscribe();
   }
 
   reloadUser() {
-    this.userDataService.getCurrentUser()
-      .subscribe((data: User) => {
-        this.currentUser = data;
-        //this.isNewUser = this.currentUser.isNewUser;
-
-        //this.store.dispatch(new CurrentUserActions.SetCurrentUserAction(data));
-        // this.isAssociate = (this.currentUser.businessname == null);
-        // if (!this.isAssociate) {
-        //   this.adoxioLegalEntityDataService.getBusinessProfileSummary().subscribe(
-        //     res => {
-        //       this.businessProfiles = res;
-        //     });
-        // }
-      });
+    this.authService.login();
   }
 
 

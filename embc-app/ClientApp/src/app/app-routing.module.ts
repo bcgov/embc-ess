@@ -29,7 +29,7 @@ import { PageNotFoundComponent } from './shared/components/page-not-found/page-n
 import { LoggedInGuard } from './core/guards/logged-in.guard';
 import { RoleGuard } from './core/guards/role.guard';
 import { RedirectGuard } from './core/guards/redirect.guard';
-import { VOLUNTEER } from './constants';
+import { VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from './constants';
 import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
 
 /**
@@ -109,19 +109,6 @@ const routes: Routes = [
   // TODO: New naming starts HERE
 
   {
-    path: 'volunteer',
-    component: VolunteerLayoutComponent,
-    canActivate: [LoggedInGuard],
-    children: [
-      {
-        path: 'evacuees',
-        component: VolunteerDashboardComponent,
-        data: { expectedRole: VOLUNTEER },
-      },
-    ],
-  },
-
-  {
     // special route to redirect to EXTERNAL links (i.e. http://www.google.com)
     // NOTE - we need this to redirect to the /login URL without Angular interfering
     path: 'external',
@@ -135,258 +122,419 @@ const routes: Routes = [
     ]
   },
 
-  // TODO: Remove/review routes BELOW HERE
+  // VOLUNTEER routes
+  {
+    path: 'volunteer',
+    component: VolunteerLayoutComponent,
+    canActivate: [LoggedInGuard],
+    children: [
+      {
+        path: 'evacuees',
+        component: VolunteerDashboardComponent,
+        // canActivate: [RoleGuardService],
+        data: { expectedRole: VOLUNTEER },
+      },
+      {
+        path: 'register-evacuee',
+        component: EvacueeRegistrationComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'fill',
+            // canActivate: [RoleGuardService],
+            // data: { expectedRole: 'volunteer' },
+            pathMatch: 'full'
+          },
+          {
+            path: 'fill/:id',
+            component: EvacueeRegistrationOneComponent,
+            // canActivate: [RoleGuardService],
+            // data: { expectedRole: 'volunteer' },
+          },
+          {
+            path: 'fill',
+            component: EvacueeRegistrationOneComponent,
+            // canActivate: [RoleGuardService],
+            // data: { expectedRole: 'volunteer' },
+          },
+          {
+            path: 'confirmation',
+            component: EvacueeRegistrationConfirmationComponent,
+            // canActivate: [RoleGuardService],
+            // data: { expectedRole: 'volunteer' },
+          }
+        ]
+      },
+      {
+        path: 'useful-info',
+        component: VolunteerUsefulInformationComponent,
+      },
+    ],
+  },
 
+  // LOCAL_AUTHORITY routes
+  {
+    path: 'local-authority',
+    component: VolunteerLayoutComponent,
+    canActivate: [LoggedInGuard],
+    children: [
+      {
+        path: 'evacuees',
+        component: VolunteerDashboardComponent,
+        // canActivate: [RoleGuardService],
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'register-evacuee',
+        component: EvacueeRegistrationComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'fill',
+            pathMatch: 'full'
+          },
+          {
+            path: 'fill/:id',
+            component: EvacueeRegistrationOneComponent,
+            // canActivate: [RoleGuardService],
+            data: { expectedRole: LOCAL_AUTHORITY },
+          },
+          {
+            path: 'fill',
+            component: EvacueeRegistrationOneComponent,
+            // canActivate: [RoleGuardService],
+            data: { expectedRole: LOCAL_AUTHORITY },
+          },
+          {
+            path: 'confirmation',
+            component: EvacueeRegistrationConfirmationComponent,
+            // canActivate: [RoleGuardService],
+            data: { expectedRole: LOCAL_AUTHORITY },
+          }
+        ]
+      },
+      {
+        path: 'volunteers',
+        component: VolunteerTeamDashboardComponent,
+        // canActivate: [RoleGuardService],
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'volunteer-edit',
+        component: VolunteerEditorComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'fill',
+            pathMatch: 'full'
+          },
+          {
+            path: 'fill',
+            component: VolunteerEditorOneComponent,
+            // canActivate: [RoleGuardService],
+            data: { expectedRole: LOCAL_AUTHORITY },
+          },
+          {
+            path: 'fill/:id',
+            component: VolunteerEditorOneComponent,
+            // canActivate: [RoleGuardService],
+            data: { expectedRole: LOCAL_AUTHORITY },
+          },
+          {
+            path: 'confirmation',
+            component: VolunteerEditorConfirmationComponent,
+            // canActivate: [RoleGuardService],
+            data: { expectedRole: LOCAL_AUTHORITY },
+          }
+        ]
+      },
+      {
+        path: 'useful-info',
+        component: VolunteerUsefulInformationComponent,
+      },
+    ],
+  },
 
-  {
-    path: 'useful-info',
-    component: VolunteerUsefulInformationComponent,
-  },
-  {
-    path: 'volunteer/useful-info',
-    component: VolunteerUsefulInformationComponent,
-  },
-  {
-    path: 'volunteer-dashboard',
-    component: VolunteerDashboardComponent,
-    // canActivate: [RoleGuardService],
-    // data: { expectedRole: 'volunteer' }
-  },
-  {
-    path: 'local-authority/evacuees',
-    component: VolunteerDashboardComponent,
-    // canActivate: [RoleGuardService],
-    // data: { expectedRole: 'local_authority' }
-  },
-  {
-    path: 'volunteer-team-dashboard',
-    component: VolunteerTeamDashboardComponent,
-    // canActivate: [RoleGuardService],
-    // data: { expectedRole: 'local_authority' }
-  },
-  {
-    path: 'local-authority/volunteers',
-    component: VolunteerTeamDashboardComponent,
-    // canActivate: [RoleGuardService],
-    // data: { expectedRole: 'local_authority' }
-  },
+  // PROVINCIAL_ADMIN routes
   {
     path: 'provincial-admin',
     component: AdminDashboardComponent,
-    // canActivate: [RoleGuardService],
-    // data: { expectedRole: 'provincial_admin' },
+    canActivate: [LoggedInGuard],
     children: [
       {
         path: '',
         redirectTo: 'evacuees',
         pathMatch: 'full',
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
       },
       {
         path: 'evacuees',
         component: AdminEvacueesComponent,
         // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
+        data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
-        path: 'edit-task-numbers',
+        path: 'task-numbers',
         component: AdminTaskNumbersComponent,
         // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
+        data: { expectedRole: PROVINCIAL_ADMIN },
       },
-      {
-        path: 'edit-task-numbers/:id',
-        component: AdminTaskNumbersComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
-      },
-      {
-        path: 'edit-registration',
-        component: AdminTaskNumbersComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
-      },
-      {
-        path: 'edit-registration/:id',
-        component: AdminTaskNumbersComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
-      },
-      {
-        path: 'edit-volunteer',
-        component: AdminTaskNumbersComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
-      },
-      {
-        path: 'edit-volunteer/:id',
-        component: AdminTaskNumbersComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
-      },
-      {
-        path: 'organizations',
-        component: AdminOrganizationsComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
-      },
-      {
-        path: 'edit-organization',
-        component: AdminTaskNumbersComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
-      },
-      {
-        path: 'edit-organization/:id',
-        component: AdminTaskNumbersComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
-      },
-      {
-        path: 'useful-info',
-        redirectTo: '/useful-info'
-      },
-    ]
+    ],
   },
-  {
-    path: 'provincial-admin/',
-    component: AdminAddTaskNumberComponent,
-    // canActivate: [RoleGuardService],
-    // data: { expectedRole: 'provincial_admin' },
-    children: [
-      {
-        path: '',
-        redirectTo: 'fill',
-        pathMatch: 'full',
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
-      },
-      {
-        path: 'fill',
-        component: AdminAddTaskNumberOneComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
-      },
-      {
-        path: 'fill/:id',
-        component: AdminAddTaskNumberOneComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
-      },
-      {
-        path: 'confirmation',
-        component: AdminAddTaskNumberConfirmationComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
-      },
-      {
-        path: 'confirmation',
-        component: AdminAddTaskNumberConfirmationComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'provincial_admin' }
-      }
-    ]
-  },
-  {
-    path: 'evacuee-summary/:id',
-    component: EvacueeSummaryComponent,
-    // canActivate: [RoleGuardService],
-    // data: { expectedRole: 'volunteer' }
-  },
-  {
-    path: 'register-evacuee',
-    component: EvacueeRegistrationComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: 'fill',
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'volunteer' },
-        pathMatch: 'full'
-      },
-      {
-        path: 'fill/:id',
-        component: EvacueeRegistrationOneComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'volunteer' },
-      },
-      {
-        path: 'fill',
-        component: EvacueeRegistrationOneComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'volunteer' },
-      },
-      {
-        path: 'confirmation',
-        component: EvacueeRegistrationConfirmationComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'volunteer' },
-      }
-    ]
-  },
-  {
-    path: 'volunteer-edit',
-    component: VolunteerEditorComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: 'fill',
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'local_authority' },
-        pathMatch: 'full'
-      },
-      {
-        path: 'fill',
-        component: VolunteerEditorOneComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'local_authority' }
-      },
-      {
-        path: 'fill/:id',
-        component: VolunteerEditorOneComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'local_authority' }
-      },
-      {
-        path: 'confirmation',
-        component: VolunteerEditorConfirmationComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'local_authority' }
-      }
-    ]
-  },
-  {
-    path: 'task-number-edit',
-    component: AdminAddTaskNumberComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: 'fill',
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'local_authority' },
-        pathMatch: 'full'
-      },
-      {
-        path: 'fill',
-        component: AdminAddTaskNumberOneComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'local_authority' }
-      },
-      {
-        path: 'fill/:id',
-        component: AdminAddTaskNumberOneComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'local_authority' }
-      },
-      {
-        path: 'confirmation',
-        component: AdminAddTaskNumberConfirmationComponent,
-        // canActivate: [RoleGuardService],
-        // data: { expectedRole: 'local_authority' }
-      }
-    ]
-  },
+
+
+  // TODO: Remove/review routes BELOW HERE
+
+
+  // {
+  //   path: 'useful-info',
+  //   component: VolunteerUsefulInformationComponent,
+  // },
+  // {
+  //   path: 'volunteer/useful-info',
+  //   component: VolunteerUsefulInformationComponent,
+  // },
+  // {
+  //   path: 'volunteer-dashboard',
+  //   component: VolunteerDashboardComponent,
+  //   // canActivate: [RoleGuardService],
+  //   // data: { expectedRole: 'volunteer' }
+  // },
+  // {
+  //   path: 'local-authority/evacuees',
+  //   component: VolunteerDashboardComponent,
+  //   // canActivate: [RoleGuardService],
+  //   // data: { expectedRole: 'local_authority' }
+  // },
+  // {
+  //   path: 'volunteer-team-dashboard',
+  //   component: VolunteerTeamDashboardComponent,
+  //   // canActivate: [RoleGuardService],
+  //   // data: { expectedRole: 'local_authority' }
+  // },
+  // {
+  //   path: 'local-authority/volunteers',
+  //   component: VolunteerTeamDashboardComponent,
+  //   // canActivate: [RoleGuardService],
+  //   // data: { expectedRole: 'local_authority' }
+  // },
+  // {
+  //   path: 'provincial-admin',
+  //   component: AdminDashboardComponent,
+  //   // canActivate: [RoleGuardService],
+  //   // data: { expectedRole: 'provincial_admin' },
+  //   children: [
+  //     {
+  //       path: '',
+  //       redirectTo: 'evacuees',
+  //       pathMatch: 'full',
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'evacuees',
+  //       component: AdminEvacueesComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'edit-task-numbers',
+  //       component: AdminTaskNumbersComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'edit-task-numbers/:id',
+  //       component: AdminTaskNumbersComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'edit-registration',
+  //       component: AdminTaskNumbersComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'edit-registration/:id',
+  //       component: AdminTaskNumbersComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'edit-volunteer',
+  //       component: AdminTaskNumbersComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'edit-volunteer/:id',
+  //       component: AdminTaskNumbersComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'organizations',
+  //       component: AdminOrganizationsComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'edit-organization',
+  //       component: AdminTaskNumbersComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'edit-organization/:id',
+  //       component: AdminTaskNumbersComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'useful-info',
+  //       redirectTo: '/useful-info'
+  //     },
+  //   ]
+  // },
+  // {
+  //   path: 'provincial-admin/',
+  //   component: AdminAddTaskNumberComponent,
+  //   // canActivate: [RoleGuardService],
+  //   // data: { expectedRole: 'provincial_admin' },
+  //   children: [
+  //     {
+  //       path: '',
+  //       redirectTo: 'fill',
+  //       pathMatch: 'full',
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'fill',
+  //       component: AdminAddTaskNumberOneComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'fill/:id',
+  //       component: AdminAddTaskNumberOneComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'confirmation',
+  //       component: AdminAddTaskNumberConfirmationComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     },
+  //     {
+  //       path: 'confirmation',
+  //       component: AdminAddTaskNumberConfirmationComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'provincial_admin' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: 'evacuee-summary/:id',
+  //   component: EvacueeSummaryComponent,
+  //   // canActivate: [RoleGuardService],
+  //   // data: { expectedRole: 'volunteer' }
+  // },
+  // {
+  //   path: 'register-evacuee',
+  //   component: EvacueeRegistrationComponent,
+  //   children: [
+  //     {
+  //       path: '',
+  //       redirectTo: 'fill',
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'volunteer' },
+  //       pathMatch: 'full'
+  //     },
+  //     {
+  //       path: 'fill/:id',
+  //       component: EvacueeRegistrationOneComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'volunteer' },
+  //     },
+  //     {
+  //       path: 'fill',
+  //       component: EvacueeRegistrationOneComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'volunteer' },
+  //     },
+  //     {
+  //       path: 'confirmation',
+  //       component: EvacueeRegistrationConfirmationComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'volunteer' },
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: 'volunteer-edit',
+  //   component: VolunteerEditorComponent,
+  //   children: [
+  //     {
+  //       path: '',
+  //       redirectTo: 'fill',
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'local_authority' },
+  //       pathMatch: 'full'
+  //     },
+  //     {
+  //       path: 'fill',
+  //       component: VolunteerEditorOneComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'local_authority' }
+  //     },
+  //     {
+  //       path: 'fill/:id',
+  //       component: VolunteerEditorOneComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'local_authority' }
+  //     },
+  //     {
+  //       path: 'confirmation',
+  //       component: VolunteerEditorConfirmationComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'local_authority' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: 'task-number-edit',
+  //   component: AdminAddTaskNumberComponent,
+  //   children: [
+  //     {
+  //       path: '',
+  //       redirectTo: 'fill',
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'local_authority' },
+  //       pathMatch: 'full'
+  //     },
+  //     {
+  //       path: 'fill',
+  //       component: AdminAddTaskNumberOneComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'local_authority' }
+  //     },
+  //     {
+  //       path: 'fill/:id',
+  //       component: AdminAddTaskNumberOneComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'local_authority' }
+  //     },
+  //     {
+  //       path: 'confirmation',
+  //       component: AdminAddTaskNumberConfirmationComponent,
+  //       // canActivate: [RoleGuardService],
+  //       // data: { expectedRole: 'local_authority' }
+  //     }
+  //   ]
+  // },
+
   {
     path: 'test',
     component: TesterPageComponent
