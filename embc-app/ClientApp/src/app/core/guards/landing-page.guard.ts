@@ -55,24 +55,5 @@ export class LandingPageGuard implements CanActivate {
           return false;
         })
       );
-
-    // TODO: list of routes and who should be able to access them
-  }
-
-  // determines if user has a matching role
-  checkAuthorization(user: User, expectedRole: string): boolean {
-    if (!user || !expectedRole) {
-      this.router.navigate(['/404']);
-      return false;
-    }
-
-    const roles = user.appRoles || [];
-    if (roles.indexOf(expectedRole) !== -1) {
-      return true;
-    }
-
-    // role not authorized so redirect to home page
-    this.router.navigate(['/404']);
-    return false;
   }
 }
