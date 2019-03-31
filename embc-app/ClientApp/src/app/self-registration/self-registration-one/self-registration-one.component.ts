@@ -170,9 +170,9 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         addressLine1: '',
         postalCode: '',
         community: '',
-        city: '',
         province: '',
         country: '',
+        city: '',
       }),
       mailingAddressSameAsPrimary: [null, Validators.required],
       mailingAddressInBC: null, // this will be validated when 'mailingAddressSameAsPrimary == false'
@@ -181,9 +181,9 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         addressLine1: '',
         postalCode: '',
         community: '',
-        city: '',
         province: '',
         country: '',
+        city: '',
       }),
     });
   }
@@ -211,7 +211,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // validate mailing address selection (BC address vs out-of-BC)
     // NOTE - this depends on mailingAddressSameAsPrimary being `false`
     this.f.mailingAddressSameAsPrimary.valueChanges
-      .pipe(skipWhile(() => this.f.mailingAddressSameAsPrimary.pristine))
       .subscribe((checked: boolean) => {
         if (checked) {
           this.f.mailingAddressInBC.setValidators(null);
@@ -388,5 +387,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   disableInput(state: boolean) {
     this.disableForm = state;
+  }
+  nullMailingAddress() {
+    this.f.mailingAddressInBC.setValidators(null);
   }
 }

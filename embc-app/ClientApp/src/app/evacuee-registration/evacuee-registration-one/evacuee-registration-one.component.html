@@ -29,7 +29,10 @@
         <select [class.is-invalid]="invalid('incidentTask')" class="form-control" formControlName="incidentTask">
           <option [ngValue]="null">-- Select task number</option>
           <option [ngValue]="incident" *ngFor="let incident of incidentTasks$ | async">
-            {{incident.taskNumber}}<span *ngIf="incident.community"> - {{incident.community.name}}</span>
+            {{incident.taskNumber}}<span *ngIf="incident.community">
+              <span *ngIf="incident.community.name"> - {{incident.community.name}}</span>
+              <span *ngIf="!incident.community.name"> - {{incident.community.regionalDistrict.name}}</span>
+            </span>
           </option>
         </select>
         <span *ngIf="submitted" class="invalid-feedback">{{e.incidentTask}}</span>
@@ -110,12 +113,12 @@
       <app-form-field required="true">
         <label>Last Name</label>
         <input [class.is-invalid]="invalid('headOfHousehold.lastName')" class="form-control" type="text" formControlName="lastName">
-        <span *ngIf="submitted" class="invalid-feedback">{{e.headOfHousehold.lastName}}</span>
+        <span *ngIf="submitted" class="invalid-feedback">{{e.headOfHousehold?.lastName}}</span>
       </app-form-field>
       <app-form-field required="true">
         <label>First Name</label>
         <input [class.is-invalid]="invalid('headOfHousehold.firstName')" class="form-control" type="text" formControlName="firstName">
-        <span *ngIf="submitted" class="invalid-feedback">{{e.headOfHousehold.firstName}}</span>
+        <span *ngIf="submitted" class="invalid-feedback">{{e.headOfHousehold?.firstName}}</span>
       </app-form-field>
       <div class="form-row">
         <app-form-field class="col">

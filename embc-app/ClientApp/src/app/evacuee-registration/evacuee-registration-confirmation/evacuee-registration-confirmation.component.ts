@@ -53,9 +53,6 @@ export class EvacueeRegistrationConfirmationComponent implements OnInit, OnDestr
     // Create form controls
     this.initForm();
 
-    // Watch for value changes
-    this.onFormChange();
-
     // Update form values based on the state
     this.currentRegistration$
       .pipe(takeWhile(() => this.componentActive))
@@ -86,8 +83,6 @@ export class EvacueeRegistrationConfirmationComponent implements OnInit, OnDestr
       declarationAndConsent: [null, Validators.requiredTrue],
     });
   }
-
-  onFormChange() { }
 
   displayRegistration(value: Registration | null): void {
     // Set the local registration property
