@@ -29,7 +29,10 @@
         <select [class.is-invalid]="invalid('incidentTask')" class="form-control" formControlName="incidentTask">
           <option [ngValue]="null">-- Select task number</option>
           <option [ngValue]="incident" *ngFor="let incident of incidentTasks$ | async">
-            {{incident.taskNumber}}<span *ngIf="incident.community"> - {{incident.community.name}}</span>
+            {{incident.taskNumber}}<span *ngIf="incident.community">
+              <span *ngIf="incident.community.name"> - {{incident.community.name}}</span>
+              <span *ngIf="!incident.community.name"> - {{incident.community.regionalDistrict.name}}</span>
+            </span>
           </option>
         </select>
         <span *ngIf="submitted" class="invalid-feedback">{{e.incidentTask}}</span>
@@ -110,12 +113,12 @@
       <app-form-field required="true">
         <label>Last Name</label>
         <input [class.is-invalid]="invalid('headOfHousehold.lastName')" class="form-control" type="text" formControlName="lastName">
-        <span *ngIf="submitted" class="invalid-feedback">{{e.headOfHousehold.lastName}}</span>
+        <span *ngIf="submitted" class="invalid-feedback">{{e.headOfHousehold?.lastName}}</span>
       </app-form-field>
       <app-form-field required="true">
         <label>First Name</label>
         <input [class.is-invalid]="invalid('headOfHousehold.firstName')" class="form-control" type="text" formControlName="firstName">
-        <span *ngIf="submitted" class="invalid-feedback">{{e.headOfHousehold.firstName}}</span>
+        <span *ngIf="submitted" class="invalid-feedback">{{e.headOfHousehold?.firstName}}</span>
       </app-form-field>
       <div class="form-row">
         <app-form-field class="col">
@@ -175,12 +178,13 @@
                 <span *ngIf="submitted" class="invalid-feedback">Please enter a last name.</span>
               </div>
               <div class="col">
-                <label>
+                <!-- not yet implemented -->
+                <!-- <label>
                   Same as main applicant.
                 </label>
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" [value]="true" formControlName="sameLastNameAsEvacuee">
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="row mb-2">
@@ -210,8 +214,8 @@
                 <label>Gender</label>
                 <select class="form-control" formControlName="gender">
                   <option [ngValue]="null">Please select--</option>
-                  <option value="male">Male</option>
                   <option value="female">Female</option>
+                  <option value="male">Male</option>
                   <option value="x">X</option>
                 </select>
               </div>
@@ -617,13 +621,13 @@
 </form>
 
 <!-- Only for debugging. Three boxes with the three data representations. -->
-<div class="row">
-  <div class="col">
+<!-- <div class="row"> -->
+<!-- <div class="col">
     <h4>Form State</h4>
     <pre>{{ this.form.value | json}}</pre>
-  </div>
-  <div class="col">
+  </div> -->
+<!-- <div class="col">
     <h4>Registration State</h4>
     <pre>{{ registration | json}}</pre>
-  </div>
-</div>
+  </div> -->
+<!-- </div> -->
