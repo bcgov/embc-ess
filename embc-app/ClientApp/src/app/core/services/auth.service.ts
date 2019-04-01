@@ -14,6 +14,7 @@ export class AuthService extends RestService {
 
   // this is the current user object
   user: BehaviorSubject<User> = new BehaviorSubject<User>(null);
+  public role: BehaviorSubject<string> = new BehaviorSubject<string>('role_everyone');
 
   // // whether the user is currently logged in.
   // isLoggedIn$ = new BehaviorSubject<boolean>(false);
@@ -53,7 +54,7 @@ export class AuthService extends RestService {
         tap(user => {
           // if the response worked we should move the contents to a behaviorSubject
           if (user instanceof HttpResponse) {
-            this.user.next(user);
+            this.updateBS(user);
           }
         }),
         catchError(() => of<User>(null))); // ignore errors; i.e. 401 error means "no current user available/logged in"
@@ -64,9 +65,26 @@ export class AuthService extends RestService {
     // this.currentUser$.next(user);
     this.currentUser = user;
     // update the behavioursubject
-    this.user.next(user);
+    this.updateBS(user);
   }
 
+  updateBS(user?: User) {
+    // save the user
+    this.user.next(user);
+
+    let role: string;
+    // check that the user exists and has roles
+    if (user !== null && user.appRoles.length > 0) {
+      // handle the role and save the user
+      // if there are elements in the array
+      // the most privileged comes last
+      role = user.appRoles[user.appRoles.length - 1];
+    } else {
+      role = 'role_everyone';
+    }
+    // save the role
+    this.role.next(role);
+  }
   // setLoggedIn(value: boolean): void {
   //   this.isLoggedIn$.next(value);
   // }

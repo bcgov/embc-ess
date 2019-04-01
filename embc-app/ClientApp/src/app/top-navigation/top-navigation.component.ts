@@ -23,15 +23,9 @@ export class TopNavigationComponent implements OnInit {
 
   ngOnInit() {
     // watch the current user for changes.
-    this.authService.user.subscribe(r => {
+    this.authService.role.subscribe(r => {
       // check that the user exists and has roles
-      if (r !== null && r.appRoles.length > 0) {
-        // handle the role and save the user
-        // if there are elements in the array
-        this.role = r.appRoles[r.appRoles.length - 1];
-      } else {
-        this.role = 'role_everyone';
-      }
+      this.role = r;
     });
   }
 
