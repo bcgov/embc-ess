@@ -49,14 +49,6 @@
     <None Remove="Test\**" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <None Remove="SeedData\IncidentTasks.json.ToDrop" />
-    <None Remove="SeedData\Organizations.json.todrop" />
-    <None Remove="SeedData\RegionalDistricts.json.todrop" />
-  </ItemGroup>
-
-
   <ItemGroup>
     <Content Include="SeedData\IncidentTasks.json.todrop" />
     <Content Include="SeedData\Organizations.json.todrop" />
