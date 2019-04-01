@@ -142,47 +142,50 @@ const routes: Routes = [
     path: 'volunteer',
     component: VolunteerLayoutComponent,
     canActivate: [LoggedInGuard],
+    canActivateChild: [RoleGuard],
+    data: { expectedRole: VOLUNTEER },
     children: [
       {
         path: 'evacuees',
         component: VolunteerDashboardComponent,
-        canActivate: [RoleGuard],
+        data: { expectedRole: VOLUNTEER },
+      },
+      {
+        path: 'evacuee-summary/:id',
+        component: EvacueeSummaryComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
         path: 'register-evacuee',
         component: EvacueeRegistrationComponent,
+        data: { expectedRole: VOLUNTEER },
         children: [
           {
             path: '',
             redirectTo: 'fill',
-            // canActivate: [RoleGuardService],
-            // data: { expectedRole: 'volunteer' },
             pathMatch: 'full'
           },
           {
             path: 'fill/:id',
             component: EvacueeRegistrationOneComponent,
-            // canActivate: [RoleGuardService],
-            // data: { expectedRole: 'volunteer' },
+            data: { expectedRole: VOLUNTEER },
           },
           {
             path: 'fill',
             component: EvacueeRegistrationOneComponent,
-            // canActivate: [RoleGuardService],
-            // data: { expectedRole: 'volunteer' },
+            data: { expectedRole: VOLUNTEER },
           },
           {
             path: 'confirmation',
             component: EvacueeRegistrationConfirmationComponent,
-            // canActivate: [RoleGuardService],
-            // data: { expectedRole: 'volunteer' },
+            data: { expectedRole: VOLUNTEER },
           }
         ]
       },
       {
         path: 'useful-info',
         component: VolunteerUsefulInformationComponent,
+        data: { expectedRole: VOLUNTEER },
       },
     ],
   },
@@ -192,16 +195,22 @@ const routes: Routes = [
     path: 'local-authority',
     component: VolunteerLayoutComponent,
     canActivate: [LoggedInGuard],
+    canActivateChild: [RoleGuard],
     children: [
       {
         path: 'evacuees',
         component: VolunteerDashboardComponent,
-        canActivate: [RoleGuard],
         data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'evacuee-summary/:id',
+        component: EvacueeSummaryComponent,
+        data: { expectedRole: LOCAL_AUTHORITY }
       },
       {
         path: 'register-evacuee',
         component: EvacueeRegistrationComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
         children: [
           {
             path: '',
@@ -211,19 +220,16 @@ const routes: Routes = [
           {
             path: 'fill/:id',
             component: EvacueeRegistrationOneComponent,
-            // canActivate: [RoleGuardService],
             data: { expectedRole: LOCAL_AUTHORITY },
           },
           {
             path: 'fill',
             component: EvacueeRegistrationOneComponent,
-            // canActivate: [RoleGuardService],
             data: { expectedRole: LOCAL_AUTHORITY },
           },
           {
             path: 'confirmation',
             component: EvacueeRegistrationConfirmationComponent,
-            // canActivate: [RoleGuardService],
             data: { expectedRole: LOCAL_AUTHORITY },
           }
         ]
@@ -231,12 +237,12 @@ const routes: Routes = [
       {
         path: 'volunteers',
         component: VolunteerTeamDashboardComponent,
-        // canActivate: [RoleGuardService],
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
         path: 'volunteer-edit',
         component: VolunteerEditorComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
         children: [
           {
             path: '',
@@ -246,19 +252,16 @@ const routes: Routes = [
           {
             path: 'fill',
             component: VolunteerEditorOneComponent,
-            // canActivate: [RoleGuardService],
             data: { expectedRole: LOCAL_AUTHORITY },
           },
           {
             path: 'fill/:id',
             component: VolunteerEditorOneComponent,
-            // canActivate: [RoleGuardService],
             data: { expectedRole: LOCAL_AUTHORITY },
           },
           {
             path: 'confirmation',
             component: VolunteerEditorConfirmationComponent,
-            // canActivate: [RoleGuardService],
             data: { expectedRole: LOCAL_AUTHORITY },
           }
         ]
@@ -286,6 +289,43 @@ const routes: Routes = [
         component: AdminEvacueesComponent,
         // canActivate: [RoleGuardService],
         data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'evacuee-summary/:id',
+        component: EvacueeSummaryComponent,
+        canActivate: [RoleGuard],
+        data: { expectedRole: PROVINCIAL_ADMIN }
+      },
+      {
+        path: 'register-evacuee',
+        component: EvacueeRegistrationComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'fill',
+            // canActivate: [RoleGuardService],
+            // data: { expectedRole: 'volunteer' },
+            pathMatch: 'full'
+          },
+          {
+            path: 'fill/:id',
+            component: EvacueeRegistrationOneComponent,
+            // canActivate: [RoleGuardService],
+            // data: { expectedRole: 'volunteer' },
+          },
+          {
+            path: 'fill',
+            component: EvacueeRegistrationOneComponent,
+            // canActivate: [RoleGuardService],
+            // data: { expectedRole: 'volunteer' },
+          },
+          {
+            path: 'confirmation',
+            component: EvacueeRegistrationConfirmationComponent,
+            // canActivate: [RoleGuardService],
+            // data: { expectedRole: 'volunteer' },
+          }
+        ]
       },
       {
         path: 'task-numbers',

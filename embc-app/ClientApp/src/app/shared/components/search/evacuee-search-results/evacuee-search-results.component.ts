@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from
 
 import { EvacueeSearchResults } from '../interfaces';
 import { Registration } from 'src/app/core/models';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 // TODO: Rename this
 interface RowItem {
@@ -60,7 +60,8 @@ export class EvacueeSearchResultsComponent implements OnChanges {
     this.rows = this.processSearchResults(this.searchResults);
   }
   constructor(
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   onResultSelected(rowItem: RowItem, event: MouseEvent) {
@@ -181,14 +182,12 @@ export class EvacueeSearchResultsComponent implements OnChanges {
     });
     return listItems;
   }
+
   finalize(r: RowItem) {
-    // alert(JSON.stringify(r.rowData.essFileNumber));
-    // look up the registration correctly for the context
-    // alert('register-evacuee/fill/' + r.essfileNumber);
-    this.router.navigate(['register-evacuee/fill/' + r.rowData.id]);
+    this.router.navigate(['../register-evacuee/fill/' + r.rowData.id], { relativeTo: this.route });
   }
+
   view(r: RowItem) {
-    // look up the registration correctly for the context
-    this.router.navigate(['evacuee-summary/' + r.rowData.id]);
+    this.router.navigate(['../evacuee-summary/' + r.rowData.id], { relativeTo: this.route });
   }
 }
