@@ -69,6 +69,10 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
+    path: 'test',
+    component: TesterPageComponent
+  },
+  {
     // TODO: naming this should be "evacuee-self-registration"
     path: 'self-registration',
     component: SelfRegistrationComponent,
@@ -278,8 +282,8 @@ const routes: Routes = [
   {
     path: 'provincial-admin',
     component: AdminDashboardComponent,
-    canActivate: [LoggedInGuard],
-    canActivateChild: [RoleGuard],
+    // canActivate: [LoggedInGuard],
+    // canActivateChild: [RoleGuard],
     children: [
       {
         path: '',
@@ -289,17 +293,17 @@ const routes: Routes = [
       {
         path: 'evacuees',
         component: AdminEvacueesComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
+        // data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         path: 'evacuee-summary/:id',
         component: EvacueeSummaryComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN }
+        // data: { expectedRole: PROVINCIAL_ADMIN }
       },
       {
         path: 'register-evacuee',
         component: EvacueeRegistrationComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
+        // data: { expectedRole: PROVINCIAL_ADMIN },
         children: [
           {
             path: '',
@@ -309,17 +313,17 @@ const routes: Routes = [
           {
             path: 'fill/:id',
             component: EvacueeRegistrationOneComponent,
-            data: { expectedRole: PROVINCIAL_ADMIN },
+            // data: { expectedRole: PROVINCIAL_ADMIN },
           },
           {
             path: 'fill',
             component: EvacueeRegistrationOneComponent,
-            data: { expectedRole: PROVINCIAL_ADMIN },
+            // data: { expectedRole: PROVINCIAL_ADMIN },
           },
           {
             path: 'confirmation',
             component: EvacueeRegistrationConfirmationComponent,
-            data: { expectedRole: PROVINCIAL_ADMIN },
+            // data: { expectedRole: PROVINCIAL_ADMIN },
           }
         ]
       },
@@ -653,10 +657,7 @@ const routes: Routes = [
   //     }
   //   ]
   // },
-  // {
-  //   path: 'test',
-  //   component: TesterPageComponent
-  // },
+
 ];
 
 @NgModule({
