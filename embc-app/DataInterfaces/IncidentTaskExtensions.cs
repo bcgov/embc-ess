@@ -60,7 +60,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         private static void AddInitialIncidentTask(this EmbcDbContext context, IncidentTask initialIncidentTask)
         {
-            IncidentTask IncidentTask = context.GetIncidentTaskByTaskNumber(initialIncidentTask.Details);
+            IncidentTask IncidentTask = context.GetIncidentTaskByTaskNumber(initialIncidentTask.TaskNumber);
             if (IncidentTask != null)
             {
                 return;
