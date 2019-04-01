@@ -16,7 +16,8 @@
 </nav>
 
 <!-- Local authority navbar -->
-<nav *ngIf="role==='role_local_authority'" class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
+<nav *ngIf="role==='role_local_authority'"
+  class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
   <ul class="navbar-nav">
     <li class="mr-4">
       <a routerLink="/" title="Go Home">Home</a>
@@ -38,20 +39,26 @@
 </nav>
 
 <!-- Administrator navbar -->
-<nav *ngIf="role==='provincial_admin'" class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
+<nav *ngIf="role==='role_provincial_admin'"
+  class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
   <ul class="navbar-nav">
     <li class="mr-4">
       <a routerLink="/" title="Go Home">Home</a>
     </li>
     <li class="mr-4">
-      <a routerLink="provincial-admin/edit-task-numbers" title="Manage Task Numbers">Task-Numbers</a>
+      <a routerLink="provincial-admin/task-numbers" title="Manage Task Numbers">Task Numbers</a>
     </li>
     <li class="mr-4">
       <a routerLink="provincial-admin/evacuees" title="Go to Evacuees Area">Evacuees</a>
     </li>
+
     <li class="mr-4">
-      <a routerLink="provincial-admin/organizations" title="Manage Organizations">Organizations &amp; Users</a>
+      <a routerLink="provincial-admin/volunteers" title="Go to ESS Team page">ESS Team Users</a>
     </li>
+
+    <!-- <li class="mr-4">
+      <a routerLink="provincial-admin/organizations" title="Manage Organizations">Organizations &amp; Users</a>
+    </li> -->
     <!-- The link should go to the page of volunteer users for the administrator?? -->
     <!-- TODO: The  link goes to the useful information page. Can be uncommented when the useful information pull request is accepted-->
     <li class="mr-4">

@@ -3,7 +3,7 @@ import { IncidentTask } from 'src/app/core/models';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store';
 import { takeWhile } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
 import { UpdateIncidentTask } from 'src/app/store/incident-tasks/incident-tasks.actions';
 
@@ -20,6 +20,7 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private router: Router,
+    private route: ActivatedRoute,
     private incidentTaskService: IncidentTaskService,
   ) { }
 
@@ -28,7 +29,7 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
       .subscribe(i => {
         // if there are any mandatory fields that are null route back to the main component
         if (!i.taskNumber || !i.community || !i.details) {
-          this.router.navigate(['task-number-edit/fill']);
+          this.router.navigate(['../fill'], { relativeTo: this.route });
         } else {
           // we have somethings to show so we show it.
           this.incidentTask = i;
@@ -38,7 +39,7 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
   back() {
     // go back
     this.onSave();
-    this.router.navigate(['task-number-edit/fill']);
+    this.router.navigate(['../fill'], { relativeTo: this.route });
   }
   submit() {
     if (!(this.incidentTask.community && this.incidentTask.details && this.incidentTask.taskNumber)) {
@@ -51,14 +52,14 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
         this.incidentTaskService.updateIncidentTask(this.incidentTask)
           .subscribe(() => {
             // go back to the volunteer team dashboard
-            this.router.navigate(['provincial-admin/edit-task-numbers']);
+            this.router.navigate(['../../task-numbers'], { relativeTo: this.route });
           });
       } else {
         // if the volunteer has no id we need to create a new one
         this.incidentTaskService.createIncidentTask(this.incidentTask)
           .subscribe(i => {
             // go back to the volunteer team dashboard
-            this.router.navigate(['provincial-admin/edit-task-numbers']);
+            this.router.navigate(['../../task-numbers'], { relativeTo: this.route });
           });
       }
     }
