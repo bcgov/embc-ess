@@ -52,7 +52,7 @@ export class TesterPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.currentUserService.currentUser$.subscribe((u) => this.currentUser = u);
+    this.currentUserService.getCurrentUser().subscribe((u) => this.currentUser = u);
     // this.volunteerService.getVolunteers().subscribe(v => this.volunteers = v);
     // this.volunteerService.getVolunteerById('BCEIDACCOUNT').subscribe(v => this.volunteer = v);
 

@@ -26,10 +26,10 @@ export class LoggedInGuard implements CanActivate, CanActivateChild {
   }
 
   checkLoggedIn(url: string): Observable<boolean> {
-    return this.authService.isLoggedIn$
+    return this.authService.getCurrentUser()
       .pipe(
-        map(logged => {
-          if (logged) {
+        map(user => {
+          if (user) {
             return true;
           }
 
