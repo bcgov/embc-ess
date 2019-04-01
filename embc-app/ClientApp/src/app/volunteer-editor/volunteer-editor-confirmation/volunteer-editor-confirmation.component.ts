@@ -21,7 +21,7 @@ export class VolunteerEditorConfirmationComponent implements OnInit {
     private store: Store<AppState>,
     private volunteerService: VolunteerService,
     private router: Router,
-    // private route: ActivatedRoute,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -32,7 +32,8 @@ export class VolunteerEditorConfirmationComponent implements OnInit {
   }
   back() {
     this.onSave();
-    this.router.navigate(['/volunteer-edit']);
+    const nextRoute = this.volunteer.id ? `../fill/${this.volunteer.id}` : '../fill';
+    this.router.navigate([nextRoute], { relativeTo: this.route });
   }
   onSave() {
     // update the stored version
@@ -42,7 +43,7 @@ export class VolunteerEditorConfirmationComponent implements OnInit {
   submit(addAnother?: boolean) {
     // the page should have all information in this page. if not this was routed to by mistake.
     if (!(this.volunteer.lastName && this.volunteer.firstName && this.volunteer.bceidAccountNumber && this.volunteer.canAccessRestrictedFiles != null)) {
-      this.router.navigate(['volunteer-team-dashboard']);
+      this.router.navigate(['../../volunteers'], { relativeTo: this.route });
     } else {
       // the information required was passed in from the state proceed with update or create
 
@@ -53,10 +54,10 @@ export class VolunteerEditorConfirmationComponent implements OnInit {
           .subscribe(() => {
             // if addAnother route back to the add page else route back to the volunteer-team-editor
             if (addAnother) {
-              this.router.navigate(['volunteer-edit']);
+              this.router.navigate(['../fill'], { relativeTo: this.route });
             } else {
               // go back to the volunteer team dashboard
-              this.router.navigate(['volunteer-team-dashboard']);
+              this.router.navigate(['../../volunteers'], { relativeTo: this.route });
             }
           });
       } else {
@@ -65,10 +66,10 @@ export class VolunteerEditorConfirmationComponent implements OnInit {
           .subscribe(v => {
             // if addAnother route back to the add page else route back to the volunteer-team-editor
             if (addAnother) {
-              this.router.navigate(['volunteer-edit']);
+              this.router.navigate(['../fill'], { relativeTo: this.route });
             } else {
               // go back to the volunteer team dashboard
-              this.router.navigate(['volunteer-team-dashboard']);
+              this.router.navigate(['../../volunteers'], { relativeTo: this.route });
             }
           });
       }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -13,7 +13,7 @@ import { User } from '../models';
 @Injectable({
   providedIn: 'root'
 })
-export class RoleGuard implements CanActivate {
+export class RoleGuard implements CanActivate, CanActivateChild {
   constructor(
     public router: Router,
     public authService: AuthService,
@@ -26,6 +26,10 @@ export class RoleGuard implements CanActivate {
     return this.authService.getCurrentUser().pipe(map(user => this.checkAuthorization(user, expectedRole)));
 
     // TODO: list of routes and who should be able to access them
+  }
+
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    return this.canActivate(route, state);
   }
 
   // determines if user has a matching role
