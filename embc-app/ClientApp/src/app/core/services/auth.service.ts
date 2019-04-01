@@ -13,7 +13,7 @@ import { HttpResponse } from '@angular/common/http';
 export class AuthService extends RestService {
 
   // this is the current user object
-  role = new BehaviorSubject<User>(null);
+  user: BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
   // // whether the user is currently logged in.
   // isLoggedIn$ = new BehaviorSubject<boolean>(false);
@@ -53,7 +53,7 @@ export class AuthService extends RestService {
         tap(user => {
           // if the response worked we should move the contents to a behaviorSubject
           if (user instanceof HttpResponse) {
-            this.role.next(user);
+            this.user.next(user);
           }
         }),
         catchError(() => of<User>(null))); // ignore errors; i.e. 401 error means "no current user available/logged in"
@@ -64,7 +64,7 @@ export class AuthService extends RestService {
     // this.currentUser$.next(user);
     this.currentUser = user;
     // update the behavioursubject
-    this.role.next(user);
+    this.user.next(user);
   }
 
   // setLoggedIn(value: boolean): void {
