@@ -269,6 +269,7 @@ const routes: Routes = [
       {
         path: 'useful-info',
         component: VolunteerUsefulInformationComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
       },
     ],
   },
@@ -278,6 +279,7 @@ const routes: Routes = [
     path: 'provincial-admin',
     component: AdminDashboardComponent,
     canActivate: [LoggedInGuard],
+    canActivateChild: [RoleGuard],
     children: [
       {
         path: '',
@@ -287,55 +289,117 @@ const routes: Routes = [
       {
         path: 'evacuees',
         component: AdminEvacueesComponent,
-        // canActivate: [RoleGuardService],
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         path: 'evacuee-summary/:id',
         component: EvacueeSummaryComponent,
-        canActivate: [RoleGuard],
         data: { expectedRole: PROVINCIAL_ADMIN }
       },
       {
         path: 'register-evacuee',
         component: EvacueeRegistrationComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
         children: [
           {
             path: '',
             redirectTo: 'fill',
-            // canActivate: [RoleGuardService],
-            // data: { expectedRole: 'volunteer' },
             pathMatch: 'full'
           },
           {
             path: 'fill/:id',
             component: EvacueeRegistrationOneComponent,
-            // canActivate: [RoleGuardService],
-            // data: { expectedRole: 'volunteer' },
+            data: { expectedRole: PROVINCIAL_ADMIN },
           },
           {
             path: 'fill',
             component: EvacueeRegistrationOneComponent,
-            // canActivate: [RoleGuardService],
-            // data: { expectedRole: 'volunteer' },
+            data: { expectedRole: PROVINCIAL_ADMIN },
           },
           {
             path: 'confirmation',
             component: EvacueeRegistrationConfirmationComponent,
-            // canActivate: [RoleGuardService],
-            // data: { expectedRole: 'volunteer' },
+            data: { expectedRole: PROVINCIAL_ADMIN },
           }
         ]
       },
       {
+        path: 'volunteers',
+        component: VolunteerTeamDashboardComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'volunteer-edit',
+        component: VolunteerEditorComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+        children: [
+          {
+            path: '',
+            redirectTo: 'fill',
+            pathMatch: 'full'
+          },
+          {
+            path: 'fill',
+            component: VolunteerEditorOneComponent,
+            data: { expectedRole: PROVINCIAL_ADMIN },
+          },
+          {
+            path: 'fill/:id',
+            component: VolunteerEditorOneComponent,
+            data: { expectedRole: PROVINCIAL_ADMIN },
+          },
+          {
+            path: 'confirmation',
+            component: VolunteerEditorConfirmationComponent,
+            data: { expectedRole: PROVINCIAL_ADMIN },
+          }
+        ]
+      },
+      {
+        path: 'useful-info',
+        component: VolunteerUsefulInformationComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
         path: 'task-numbers',
         component: AdminTaskNumbersComponent,
-        // canActivate: [RoleGuardService],
         data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'task-number-edit',
+        component: AdminAddTaskNumberComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+        children: [
+          {
+            path: '',
+            redirectTo: 'fill',
+            pathMatch: 'full'
+          },
+          {
+            path: 'fill',
+            component: AdminAddTaskNumberOneComponent,
+            data: { expectedRole: PROVINCIAL_ADMIN },
+          },
+          {
+            path: 'fill/:id',
+            component: AdminAddTaskNumberOneComponent,
+            data: { expectedRole: PROVINCIAL_ADMIN },
+          },
+          {
+            path: 'confirmation',
+            component: AdminAddTaskNumberConfirmationComponent,
+            data: { expectedRole: PROVINCIAL_ADMIN },
+          }
+        ]
       },
     ],
   },
 
+  // 404 route (catch all default)
+  {
+    path: '**',
+    component: PageNotFoundComponent
+  },
 
   // TODO: Remove/review routes BELOW HERE
 
@@ -589,15 +653,10 @@ const routes: Routes = [
   //     }
   //   ]
   // },
-
-  {
-    path: 'test',
-    component: TesterPageComponent
-  },
-  {
-    path: '**',
-    component: PageNotFoundComponent
-  },
+  // {
+  //   path: 'test',
+  //   component: TesterPageComponent
+  // },
 ];
 
 @NgModule({
