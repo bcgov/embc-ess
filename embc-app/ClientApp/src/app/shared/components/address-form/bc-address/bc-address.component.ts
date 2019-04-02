@@ -70,11 +70,23 @@ export class BcAddressComponent implements OnInit {
 
   private setupValidation(): void {
     this.f.addressLine1.setValidators([Validators.required]);
+    this.f.addressLine1.updateValueAndValidity();
+
     this.f.postalCode.setValidators([CustomValidators.postalCodeCanada]);
+    this.f.postalCode.updateValueAndValidity();
+
     this.f.community.setValidators([Validators.required]);
-    this.f.city.setValidators(null);
+    this.f.community.updateValueAndValidity();
+
+    this.f.city.clearValidators();
+    this.f.city.updateValueAndValidity();
+
     this.f.province.setValidators([Validators.required]);
+    this.f.province.updateValueAndValidity();
+
     this.f.country.setValidators([Validators.required]);
+    this.f.country.updateValueAndValidity();
+
     this.parent.updateValueAndValidity();
   }
 }

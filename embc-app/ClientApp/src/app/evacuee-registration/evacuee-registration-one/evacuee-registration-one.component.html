@@ -1,11 +1,3 @@
-<!--
-  TODO:
-  "control.registeronchange is not a function"
-
-  this bug is seen in the console. Unfortunately by commenting things out this simply moves the error location around the code. This seems to be potentially a bug with patching formArrays. (According to stack overflow.) Maybe this will come out in the wash? Revisit this later when we have more time to spend on a single non-breaking error.
- -->
-
-
 <div class="mb-4">
   <h1>{{pageTitle}}</h1>
   <p *ngIf="createMode">
@@ -338,8 +330,7 @@
       </div>
       <div class="form-row">
         <div class="col">
-          <textarea [class.is-invalid]="invalid('disasterAffectDetails')" class="form-control" formControlName="disasterAffectDetails" placeholder="Please specify" rows="4"></textarea>
-          <span *ngIf="submitted" class="invalid-feedback">{{e.disasterAffectDetails}}</span>
+          <textarea class="form-control" formControlName="disasterAffectDetails" placeholder="Please specify" rows="4"></textarea>
         </div>
       </div>
     </div>
@@ -520,14 +511,13 @@
       </h3>
       <div class="form-row">
         <app-attention-icon [alignCenter]="false"></app-attention-icon>
-        <p class="required">
+        <p>
           ESS (Emergency Support Services) provides short term assistance to give you and your family a chance to
           recover.<br>
           Have you thought about what you will do after that time?
         </p>
       </div>
-      <textarea [class.is-invalid]="invalid('familyRecoveryPlan')" class="form-control" placeholder="Details" rows="4" formControlName="familyRecoveryPlan"></textarea>
-      <span *ngIf="submitted" class="invalid-feedback">{{e.familyRecoveryPlan}}</span>
+      <textarea class="form-control" placeholder="Details" rows="4" formControlName="familyRecoveryPlan"></textarea>
     </div>
 
     <!-- Follow up -->
