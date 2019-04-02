@@ -16,6 +16,7 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
   componentActive = true;
   currentIncidentTask$ = this.store.select(s => s.incidentTasks.currentIncidentTask);
   incidentTask: IncidentTask;
+  submitting = false;
 
   constructor(
     private store: Store<AppState>,
@@ -42,8 +43,10 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
     this.router.navigate(['../fill'], { relativeTo: this.route });
   }
   submit() {
+    this.submitting = true;
     if (!(this.incidentTask.community && this.incidentTask.details && this.incidentTask.taskNumber)) {
       // todo go somewhere useful for this provincial user after routing is fixed.
+      this.submitting = false;
       this.router.navigate(['../fill'], { relativeTo: this.route });
     } else {
       // check if this is an update
@@ -51,6 +54,7 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
         // if the volunteer has an ID we need to update
         this.incidentTaskService.updateIncidentTask(this.incidentTask)
           .subscribe(() => {
+            this.submitting = false;
             // go back to the volunteer team dashboard
             this.router.navigate(['../../task-numbers'], { relativeTo: this.route });
           });
@@ -58,6 +62,7 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
         // if the volunteer has no id we need to create a new one
         this.incidentTaskService.createIncidentTask(this.incidentTask)
           .subscribe(i => {
+            this.submitting = false;
             // go back to the volunteer team dashboard
             this.router.navigate(['../../task-numbers'], { relativeTo: this.route });
           });
