@@ -28,6 +28,7 @@ import { TopNavigationComponent } from './top-navigation/top-navigation.componen
 import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
 import { AdminTaskNumbersComponent } from './admin-task-numbers/admin-task-numbers.component';
 import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
+import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { TaskNumberListComponent } from './task-number-list/task-number-list.com
     VolunteerLayoutComponent,
     AdminTaskNumbersComponent,
     TaskNumberListComponent,
+    VolunteerListComponent,
   ],
   imports: [
     // angular
