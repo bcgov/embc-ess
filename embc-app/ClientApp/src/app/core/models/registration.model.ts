@@ -18,9 +18,9 @@ export interface Registration {
   followUpDetails: string;
   insuranceCode: string;  // one of ['yes', 'yes-unsure', 'no', 'unsure']
   medicationNeeds: boolean;
-  registrationCompletionDate: Date | null; // datetime
+  registrationCompletionDate: string | null; // datetime
   registeringFamilyMembers: string;  // one of ['yes', 'yes-later', 'no']
-  selfRegisteredDate: Date | null; // datetime
+  selfRegisteredDate: string | null; // datetime
 
   // Family state flags
   hasThreeDayMedicationSupply: boolean;
@@ -44,6 +44,6 @@ export interface Registration {
   headOfHousehold: HeadOfHousehold;
   incidentTask: IncidentTask | null;
   hostCommunity: Community | null;
-  // TODO: Should we link to the full User record for an interviewer or just capture basic info (name + last name initial)?
-  completedBy: Volunteer | null;
+  // Make this as Partial so we can don't have to send the whole volunteer object; i.e. { id: 'guid' }
+  completedBy: Partial<Volunteer> | null;
 }
