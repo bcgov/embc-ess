@@ -30,6 +30,7 @@ interface RowItem {
   personType: string; // HOH || FMBR || VOLN
   evacuatedFrom: string; // community name
   evacuatedTo: string; // community name
+  hasReferrals: boolean;
   registrationCompletionDate: Date;
 }
 
@@ -104,6 +105,7 @@ export class EvacueeSearchResultsComponent implements OnChanges {
         incidentTaskTaskNumber: null,
         evacuatedFrom: null, // community name
         evacuatedTo: null, // community name
+        hasReferrals: null,
         registrationCompletionDate: registration.registrationCompletionDate
       };
 
@@ -154,6 +156,7 @@ export class EvacueeSearchResultsComponent implements OnChanges {
           headOfHousehold: false,
           evacuatedFrom: null, // community name
           evacuatedTo: null, // community name
+          hasReferrals: this.hasReferrals(registration),
           registrationCompletionDate: registration.registrationCompletionDate
         };
 
@@ -181,6 +184,12 @@ export class EvacueeSearchResultsComponent implements OnChanges {
       }
     });
     return listItems;
+  }
+
+  hasReferrals(r: Registration): boolean {
+    // TODO we need to check business logic for this because there is deeper discussion with the client about
+    // how this becomes a meaningful flag. This also should probably be handled server-side instead of here.
+    return r.hasChildCareReferral || r.hasFirstAidReferral || r.hasHealthServicesReferral || r.hasInquiryReferral || r.hasPersonalServicesReferral || r.hasPetCareReferral
   }
 
   finalize(r: RowItem) {
