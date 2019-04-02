@@ -12,7 +12,7 @@ namespace Gov.Embc.Public.Seeders
 {
     public class OrganizationSeeder : Seeder<EmbcDbContext>
     {
-        private readonly string[] _profileTriggers = { AllProfiles };
+        private readonly string[] _profileTriggers = { "Development", "Staging", "Test" };
 
         public OrganizationSeeder(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory)
             : base(configuration, env, loggerFactory)
