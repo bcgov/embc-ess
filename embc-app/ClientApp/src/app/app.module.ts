@@ -26,6 +26,7 @@ import { AdminAddTaskNumberModule } from './admin-add-task-number';
 import { AdminDashboardModule } from './admin-dashboard';
 import { TopNavigationComponent } from './top-navigation/top-navigation.component';
 import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
+import { AdminTaskNumbersComponent } from './admin-task-numbers/admin-task-numbers.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layo
     EvacueeSummaryComponent,
     TopNavigationComponent,
     VolunteerLayoutComponent,
+    AdminTaskNumbersComponent,
   ],
   imports: [
     // angular
