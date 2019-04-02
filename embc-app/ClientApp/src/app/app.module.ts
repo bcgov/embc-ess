@@ -29,6 +29,7 @@ import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layo
 import { AdminTaskNumbersComponent } from './admin-task-numbers/admin-task-numbers.component';
 import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
+import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { VolunteerListComponent } from './volunteer-list/volunteer-list.componen
     AdminTaskNumbersComponent,
     TaskNumberListComponent,
     VolunteerListComponent,
+    EvacueeListComponent,
   ],
   imports: [
     // angular
