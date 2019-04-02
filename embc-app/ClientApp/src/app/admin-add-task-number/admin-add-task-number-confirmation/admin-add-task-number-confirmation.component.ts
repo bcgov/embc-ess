@@ -44,7 +44,7 @@ export class AdminAddTaskNumberConfirmationComponent implements OnInit {
   submit() {
     if (!(this.incidentTask.community && this.incidentTask.details && this.incidentTask.taskNumber)) {
       // todo go somewhere useful for this provincial user after routing is fixed.
-      this.router.navigate(['']);
+      this.router.navigate(['../fill'], { relativeTo: this.route });
     } else {
       // check if this is an update
       if (this.incidentTask.id) {
