@@ -30,6 +30,7 @@ import { AdminTaskNumbersComponent } from './admin-task-numbers/admin-task-numbe
 import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
 import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
+import { OrganizationListComponent } from './organization-list/organization-list.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
     TaskNumberListComponent,
     VolunteerListComponent,
     EvacueeListComponent,
+    OrganizationListComponent,
   ],
   imports: [
     // angular

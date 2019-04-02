@@ -1,0 +1,61 @@
+<div class="mb-4">
+  <h1>ESS Team Management Dashboard</h1>
+  <p>
+    Use this page to view organizations and users that are currently registered in the system. If you are unable to find an organization or a user, please add them.</p>
+  <h3 class="blue-header">ORGANIZATIONS &amp; USERS LIST</h3>
+
+  <div role="search" class="form-row">
+    <div class="col-md-9">
+      <input #searchbox type="text" aria-label="search" class="form-control mb-2" placeholder="Search for user by last name &hellip;" (keydown.enter)="search(searchbox.value)">
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-primary" (click)="search(searchbox.value)">Search</button>
+    </div>
+  </div>
+  <div class="search-results mt-4">
+    <div *ngIf="metaVolunteers && metaVolunteers.data.length>0; then searchResultsTable; else notFound"></div>
+  </div>
+
+  <!-- TODO: <a class="small" href="">advanced search</a> -->
+  <!-- TODO: show icons for HOH, RESTRICTED FILE -->
+  <!-- <pre>{{volunteers|json}}</pre> -->
+</div>
+<!-- The start of the table stuff. -->
+
+
+<ng-template #searchResultsTable>
+  <!-- <p> {{metaVolunteers.metadata.page*metaVolunteers.metadata.pageSize}} - {{metaVolunteers.metadata.pageSize}} of
+        {{metaVolunteers.metadata.totalCount}} <span class="font-weight-bold">ACTIVE</span>
+        volunteers
+        <small class="ml-3">(<a href="">show deactivated</a>)</small>
+      </p> -->
+  <table class="table">
+    <thead class="thead-light">
+      <th scope="col">LAST NAME</th>
+      <th scope="col">FIRST NAME</th>
+      <th scope="col">BCEID</th>
+      <th scope="col">RESTRICTED FILES</th>
+      <th scope="col">ACTION</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let volunteer of metaVolunteers.data">
+        <td>{{volunteer.lastName}}</td>
+        <td>{{volunteer.firstName}}</td>
+        <td>{{volunteer.bceidAccountNumber}}</td>
+        <td>
+          <span *ngIf="volunteer.canAccessRestrictedFiles">Yes</span>
+          <span *ngIf="!volunteer.canAccessRestrictedFiles">No</span>
+        </td>
+        <td>
+          <a [routerLink]="" (click)="routeTo(volunteer.id)">Edit</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
+
+<ng-template #notFound>
+  <p>
+    {{notFoundMessage}}
+  </p>
+</ng-template>
