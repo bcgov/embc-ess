@@ -31,6 +31,7 @@ import { TaskNumberListComponent } from './task-number-list/task-number-list.com
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
 import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
 import { OrganizationListComponent } from './organization-list/organization-list.component';
+import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { OrganizationListComponent } from './organization-list/organization-list
     VolunteerListComponent,
     EvacueeListComponent,
     OrganizationListComponent,
+    UsefulInformationContentComponent,
   ],
   imports: [
     // angular

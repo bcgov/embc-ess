@@ -32,6 +32,7 @@ import { RedirectGuard } from './core/guards/redirect.guard';
 import { VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from './constants';
 import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
 import { LandingPageGuard } from './core/guards/landing-page.guard';
+import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
 import { AdminTaskNumbersComponent } from './admin-task-numbers/admin-task-numbers.component';
 
 /**
@@ -111,6 +112,7 @@ const routes: Routes = [
       },
     ]
   },
+
 
   // TODO: New naming starts HERE
 
@@ -389,14 +391,14 @@ const routes: Routes = [
       },
       {
         path: 'useful-info',
-        component: VolunteerUsefulInformationComponent,
+        component: UsefulInformationContentComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
-      {
-        path: 'task-numbers',
-        component: AdminTaskNumbersComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
-      },
+      // {
+      //   path: 'task-numbers',
+      //   component: AdminTaskNumbersComponent,
+      //   data: { expectedRole: PROVINCIAL_ADMIN },
+      // },
     ],
   },
 
