@@ -34,6 +34,8 @@ import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layo
 import { LandingPageGuard } from './core/guards/landing-page.guard';
 import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
 import { AdminTaskNumbersComponent } from './admin-task-numbers/admin-task-numbers.component';
+import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
+import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
 
 /**
   /
@@ -331,6 +333,11 @@ const routes: Routes = [
         // data: { expectedRole: PROVINCIAL_ADMIN }
       },
       {
+        path: 'task-numbers',
+        component: TaskNumberListComponent,
+        // data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
         path: 'register-evacuee',
         component: EvacueeRegistrationComponent,
         // data: { expectedRole: PROVINCIAL_ADMIN },
@@ -354,12 +361,12 @@ const routes: Routes = [
             path: 'confirmation',
             component: EvacueeRegistrationConfirmationComponent,
             // data: { expectedRole: PROVINCIAL_ADMIN },
-          }
+          },
         ]
       },
       {
         path: 'volunteers',
-        component: VolunteerTeamDashboardComponent,
+        component: VolunteerListComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
