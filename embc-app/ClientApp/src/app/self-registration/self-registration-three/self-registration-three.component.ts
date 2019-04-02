@@ -37,7 +37,7 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   componentActive = true;
-
+  submitting = false;
   registration: Registration | null;
 
   constructor(
@@ -115,7 +115,7 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
       ...this.registration,
       ...this.form.value
     };
-
+    this.submitting = true;
     // update client-side state
     this.onSave(registration);
 
@@ -124,9 +124,12 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
       data => {
         console.log('NEW REGISTRATION ==>');
         console.log(data);
+        this.submitting = false; // turn off submission
         this.router.navigate(['../step-4/' + data.essFileNumber], { relativeTo: this.route });
       },
       err => {
+        // do not submit anymore
+        this.submitting = false; //turn off submission state
         this.router.navigate(['../error'], { relativeTo: this.route });
       }
     );
@@ -143,7 +146,7 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
       ...this.form.value
     };
     this.onSave(registration);
-    this.router.navigate(['../step-2'], { relativeTo: this.route });
+    this.router.navigate(['../step-1'], { relativeTo: this.route });
   }
 
   reset() {

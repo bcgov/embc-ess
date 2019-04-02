@@ -34,6 +34,7 @@ export class EvacueeRegistrationConfirmationComponent implements OnInit, OnDestr
   form: FormGroup;
   componentActive = true;
   submitted = false;
+  submitting = false;
 
   // local copy of the application state
   registration: Registration | null;
@@ -105,9 +106,11 @@ export class EvacueeRegistrationConfirmationComponent implements OnInit, OnDestr
 
   onSubmit() {
     this.submitted = true;
-
+    // in transmission
+    this.submitting = true;
     // stop here if form is invalid
     if (this.form.invalid) {
+      this.submitting = false;
       return;
     }
 
@@ -120,11 +123,17 @@ export class EvacueeRegistrationConfirmationComponent implements OnInit, OnDestr
     if (value.id == null) {
       this.service
         .createRegistration(value)
-        .subscribe(() => this.goToDashboard({ evacuee_created: true }));
+        .subscribe(() => {
+          this.submitting = false;
+          this.goToDashboard({ evacuee_created: true });
+        });
     } else {
       this.service
         .updateRegistration(value)
-        .subscribe(() => this.goToDashboard({ evacuee_updated: true }));
+        .subscribe(() => {
+          this.submitting = false;
+          this.goToDashboard({ evacuee_updated: true });
+        });
     }
     // TODO: Error handling above...
   }
