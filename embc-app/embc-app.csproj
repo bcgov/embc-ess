@@ -50,6 +50,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="SeedData\IncidentTasks.json.todrop" />
+    <Content Include="SeedData\Organizations.json.todrop" />
+    <Content Include="SeedData\RegionalDistricts.json.todrop" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\embc-interfaces\BCeID\BCeID.csproj" />
   </ItemGroup>
   <ItemGroup>

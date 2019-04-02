@@ -82,10 +82,4 @@ export class VolunteerDashboardComponent implements OnInit {
     // TODO: store the pagination metadata + links somewhere
   }
 
-
-  routeTo(essFileNumber: string) {
-    // TODO: this seems like bad practive but fix when we have time
-    this.router.navigate(['register-evacuee/fill/' + essFileNumber]);
-  }
-
 }
