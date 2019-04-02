@@ -36,6 +36,7 @@ import { UsefulInformationContentComponent } from './useful-information-content/
 import { AdminTaskNumbersComponent } from './admin-task-numbers/admin-task-numbers.component';
 import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
+import { EvacueeSummaryContainerComponent } from './evacuee-summary-container/evacuee-summary-container.component';
 
 /**
   /
@@ -280,7 +281,35 @@ const routes: Routes = [
         component: VolunteerUsefulInformationComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
+
     ],
+  },
+  {
+    path: 'volunteer-edit',
+    component: VolunteerEditorComponent,
+    data: { expectedRole: PROVINCIAL_ADMIN },
+    children: [
+      {
+        path: '',
+        redirectTo: 'fill',
+        pathMatch: 'full'
+      },
+      {
+        path: 'fill',
+        component: VolunteerEditorOneComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'fill/:id',
+        component: VolunteerEditorOneComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'confirmation',
+        component: VolunteerEditorConfirmationComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      }
+    ]
   },
   {
     path: 'provincial-admin/task-number-edit',
@@ -408,7 +437,38 @@ const routes: Routes = [
       // },
     ],
   },
-
+  {
+    path: 'evacuee-summary/:id',
+    component: EvacueeSummaryComponent,
+    // data: { expectedRole: PROVINCIAL_ADMIN }
+  },
+  {
+    path: 'register-evacuee',
+    component: EvacueeRegistrationComponent,
+    // data: { expectedRole: PROVINCIAL_ADMIN },
+    children: [
+      {
+        path: '',
+        redirectTo: 'fill',
+        pathMatch: 'full'
+      },
+      {
+        path: 'fill/:id',
+        component: EvacueeRegistrationOneComponent,
+        // data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'fill',
+        component: EvacueeRegistrationOneComponent,
+        // data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'confirmation',
+        component: EvacueeRegistrationConfirmationComponent,
+        // data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+    ]
+  },
   // 404 route (catch all default)
   {
     path: '**',
