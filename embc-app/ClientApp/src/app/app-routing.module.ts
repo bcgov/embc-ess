@@ -37,6 +37,7 @@ import { AdminTaskNumbersComponent } from './admin-task-numbers/admin-task-numbe
 import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
 import { EvacueeSummaryContainerComponent } from './evacuee-summary-container/evacuee-summary-container.component';
+import { OrganizationListComponent } from './organization-list/organization-list.component';
 
 /**
   /
@@ -365,6 +366,11 @@ const routes: Routes = [
         path: 'task-numbers',
         component: TaskNumberListComponent,
         // data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'organizations',
+        component: OrganizationListComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         path: 'register-evacuee',
