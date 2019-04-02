@@ -30,7 +30,7 @@ interface RowItem {
   personType: string; // HOH || FMBR || VOLN
   evacuatedFrom: string; // community name
   evacuatedTo: string; // community name
-  registrationCompletionDate: Date;
+  registrationCompletionDate: string | null;
 }
 
 /**
