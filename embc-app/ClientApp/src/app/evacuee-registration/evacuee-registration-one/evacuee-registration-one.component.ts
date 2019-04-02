@@ -551,7 +551,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       // update client-side state
       this.saveState();
       // navigate to the next page.
-      this.router.navigate(['register-evacuee/confirmation']);
+      const nextRoute = this.editMode ? '../../confirmation' : '../confirmation';
+      this.router.navigate([nextRoute], { relativeTo: this.route });
     }
     // success!
     this.errorSummary = null;

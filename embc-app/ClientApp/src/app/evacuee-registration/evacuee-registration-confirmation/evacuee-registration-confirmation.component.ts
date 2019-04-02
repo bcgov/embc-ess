@@ -130,6 +130,6 @@ export class EvacueeRegistrationConfirmationComponent implements OnInit, OnDestr
   }
 
   goToDashboard(params: object = {}) {
-    this.router.navigate(['/volunteer-dashboard'], { queryParams: { ...params } });
+    this.router.navigate(['../../evacuees'], { relativeTo: this.route, queryParams: { ...params } });
   }
 }

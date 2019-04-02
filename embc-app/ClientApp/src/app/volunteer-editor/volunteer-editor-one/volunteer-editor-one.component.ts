@@ -78,7 +78,7 @@ export class VolunteerEditorOneComponent implements OnInit {
     this.onSave();
     if (this.volunteer.lastName && this.volunteer.firstName && this.volunteer.bceidAccountNumber && this.volunteer.canAccessRestrictedFiles != null) {
       // simple check to be sure that all fields are included.
-      const nextRoute = this.editMode ? '../../../volunteer-edit/confirmation' : '../../volunteer-edit/confirmation';
+      const nextRoute = this.editMode ? '../../confirmation' : '../confirmation';
       this.router.navigate([nextRoute], { relativeTo: this.route });
     } else {
       alert("All fields are required.");
