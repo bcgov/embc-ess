@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ListResult, Volunteer } from '../core/models';
-import { VolunteerService } from '../core/services/volunteer.service';
+import { ListResult, Organization } from '../core/models';
 import { Router, ActivatedRoute } from '@angular/router';
+import { OrganizationService } from '../core/services/organization.service';
 
 @Component({
   selector: 'app-organization-list',
@@ -10,34 +10,34 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class OrganizationListComponent implements OnInit {
   // simple server response
-  metaVolunteers: ListResult<Volunteer>;
+  metaOrganizations: ListResult<Organization>;
   notFoundMessage: string = '';
   constructor(
-    private volunteerService: VolunteerService,
+    private organizationService: OrganizationService,
     private router: Router,
     private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    // collect all volunteers
-    this.getVolunteers();
+    // collect all organizations
+    this.getOrganizations();
   }
 
   routeTo(bceidAccountNumber: string) {
     // TODO: this seems like bad practive but fix when we have time
-    this.router.navigate(['../volunteer-edit/fill/' + bceidAccountNumber], { relativeTo: this.route });
+    this.router.navigate(['../organization-edit/fill/' + bceidAccountNumber], { relativeTo: this.route });
   }
 
-  getVolunteers(limit?: number, offset?: number, query?: string, sort?: string) {
-    // get volunteers with supplied params defaults defined in
-    this.volunteerService.getVolunteers(limit, offset, query, sort).subscribe((v: ListResult<Volunteer>) => {
-      // save the metaVolunteers
-      this.metaVolunteers = v;
+  getOrganizations(limit?: number, offset?: number, query?: string, sort?: string) {
+    // get organizations with supplied params defaults defined in
+    this.organizationService.getOrganizations(limit, offset, query, sort).subscribe((v: ListResult<Organization>) => {
+      // save the metaOrganizations
+      this.metaOrganizations = v;
     });
   }
 
   search(searchTerm: string) {
     // submit and collect search
-    this.getVolunteers(null, null, searchTerm);
+    this.getOrganizations(null, null, searchTerm);
   }
 }

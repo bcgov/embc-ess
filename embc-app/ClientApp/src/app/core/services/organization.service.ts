@@ -11,7 +11,7 @@ import { SearchQueryParameters } from 'src/app/shared/components/search';
 @Injectable({
   providedIn: CoreModule
 })
-export class OrganizationsService extends RestService {
+export class OrganizationService extends RestService {
   apiRoute = 'api/organizations';
 
   getOrganizations(limit?: number, offset?: number, q?: string, sort?: string): Observable<ListResult<Organization>> {
