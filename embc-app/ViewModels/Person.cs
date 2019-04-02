@@ -1,4 +1,7 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+using Gov.Jag.Embc.Public.Utils;
+using Newtonsoft.Json;
 
 namespace Gov.Jag.Embc.Public.ViewModels
 {
@@ -29,6 +32,9 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string Nickname { get; set; }
         public string Initials { get; set; }
         public string Gender { get; set; }
+
+        [DataType(DataType.Date)]
+        [JsonConverter(typeof(JsonDateConverter))]
         public DateTimeOffset? Dob { get; set; }
     }
 }
