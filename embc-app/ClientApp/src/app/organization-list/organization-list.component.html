@@ -13,20 +13,20 @@
     </div>
   </div>
   <div class="search-results mt-4">
-    <div *ngIf="metaVolunteers && metaVolunteers.data.length>0; then searchResultsTable; else notFound"></div>
+    <div *ngIf="metaOrganizations && metaOrganizations.data.length>0; then searchResultsTable; else notFound"></div>
   </div>
 
   <!-- TODO: <a class="small" href="">advanced search</a> -->
   <!-- TODO: show icons for HOH, RESTRICTED FILE -->
-  <!-- <pre>{{volunteers|json}}</pre> -->
+  <!-- <pre>{{metaOrganizations|json}}</pre> -->
 </div>
 <!-- The start of the table stuff. -->
 
 
 <ng-template #searchResultsTable>
-  <!-- <p> {{metaVolunteers.metadata.page*metaVolunteers.metadata.pageSize}} - {{metaVolunteers.metadata.pageSize}} of
-        {{metaVolunteers.metadata.totalCount}} <span class="font-weight-bold">ACTIVE</span>
-        volunteers
+  <!-- <p> {{metaOrganizations.metadata.page*metaOrganizations.metadata.pageSize}} - {{metaOrganizations.metadata.pageSize}} of
+        {{metaOrganizations.metadata.totalCount}} <span class="font-weight-bold">ACTIVE</span>
+        organizations
         <small class="ml-3">(<a href="">show deactivated</a>)</small>
       </p> -->
   <table class="table">
@@ -35,18 +35,17 @@
       <th scope="col">ADMIN BCeID USER ID</th>
       <th scope="col">
         REGION / COMMUNITY</th>
-      <th scope="col">PRIMARY CONTACT</th>
+      <!-- <th scope="col">PRIMARY CONTACT</th> -->
+      <th scope="col"></th>
     </thead>
     <tbody>
-      <tr *ngFor="let volunteer of metaVolunteers.data">
-        <td>{{volunteer.lastName}}</td>
-        <td>{{volunteer.bceidAccountNumber}}</td>
+      <tr *ngFor="let organization of metaOrganizations.data">
+        <td>{{organization.name}}</td>
+        <td>{{organization.bceidAccountNumber}}</td>
+        <td>{{organization.community.name}}</td>
+        <!-- <td>Primary contact name</td> -->
         <td>
-          <span *ngIf="volunteer.canAccessRestrictedFiles">Yes</span>
-          <span *ngIf="!volunteer.canAccessRestrictedFiles">No</span>
-        </td>
-        <td>
-          <a [routerLink]="" (click)="routeTo(volunteer.id)">Edit</a>
+          <a [routerLink]="" (click)="routeTo(organization.id)">Edit</a>
         </td>
       </tr>
     </tbody>
