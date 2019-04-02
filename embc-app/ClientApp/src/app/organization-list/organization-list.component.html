@@ -1,5 +1,5 @@
 <div class="mb-4">
-  <h1>ESS Team Management Dashboard</h1>
+  <h1>List of Organizations &amp; Users</h1>
   <p>
     Use this page to view organizations and users that are currently registered in the system. If you are unable to find an organization or a user, please add them.</p>
   <h3 class="blue-header">ORGANIZATIONS &amp; USERS LIST</h3>
@@ -31,16 +31,15 @@
       </p> -->
   <table class="table">
     <thead class="thead-light">
-      <th scope="col">LAST NAME</th>
-      <th scope="col">FIRST NAME</th>
-      <th scope="col">BCEID</th>
-      <th scope="col">RESTRICTED FILES</th>
-      <th scope="col">ACTION</th>
+      <th scope="col">NAME</th>
+      <th scope="col">ADMIN BCeID USER ID</th>
+      <th scope="col">
+        REGION / COMMUNITY</th>
+      <th scope="col">PRIMARY CONTACT</th>
     </thead>
     <tbody>
       <tr *ngFor="let volunteer of metaVolunteers.data">
         <td>{{volunteer.lastName}}</td>
-        <td>{{volunteer.firstName}}</td>
         <td>{{volunteer.bceidAccountNumber}}</td>
         <td>
           <span *ngIf="volunteer.canAccessRestrictedFiles">Yes</span>
