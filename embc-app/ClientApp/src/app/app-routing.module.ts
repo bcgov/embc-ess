@@ -24,7 +24,7 @@ import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.compo
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminAddTaskNumberComponent } from './admin-add-task-number/admin-add-task-number.component';
 import { AdminAddTaskNumberOneComponent, AdminAddTaskNumberConfirmationComponent } from './admin-add-task-number';
-import { AdminTaskNumbersComponent, AdminEvacueesComponent, AdminOrganizationsComponent } from './admin-dashboard';
+import { AdminEvacueesComponent, AdminOrganizationsComponent } from './admin-dashboard';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { LoggedInGuard } from './core/guards/logged-in.guard';
 import { RoleGuard } from './core/guards/role.guard';
@@ -32,6 +32,12 @@ import { RedirectGuard } from './core/guards/redirect.guard';
 import { VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from './constants';
 import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
 import { LandingPageGuard } from './core/guards/landing-page.guard';
+import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
+import { AdminTaskNumbersComponent } from './admin-task-numbers/admin-task-numbers.component';
+import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
+import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
+import { EvacueeSummaryContainerComponent } from './evacuee-summary-container/evacuee-summary-container.component';
+import { OrganizationListComponent } from './organization-list/organization-list.component';
 
 /**
   /
@@ -67,6 +73,10 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent
+  },
+  {
+    path: 'test',
+    component: TesterPageComponent
   },
   {
     // TODO: naming this should be "evacuee-self-registration"
@@ -106,6 +116,7 @@ const routes: Routes = [
       },
     ]
   },
+
 
   // TODO: New naming starts HERE
 
@@ -271,9 +282,63 @@ const routes: Routes = [
         component: VolunteerUsefulInformationComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
+
     ],
   },
-
+  {
+    path: 'volunteer-edit',
+    component: VolunteerEditorComponent,
+    data: { expectedRole: PROVINCIAL_ADMIN },
+    children: [
+      {
+        path: '',
+        redirectTo: 'fill',
+        pathMatch: 'full'
+      },
+      {
+        path: 'fill',
+        component: VolunteerEditorOneComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'fill/:id',
+        component: VolunteerEditorOneComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'confirmation',
+        component: VolunteerEditorConfirmationComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      }
+    ]
+  },
+  {
+    path: 'provincial-admin/task-number-edit',
+    component: AdminAddTaskNumberComponent,
+    data: { expectedRole: PROVINCIAL_ADMIN },
+    children: [
+      {
+        path: '',
+        redirectTo: 'fill',
+        pathMatch: 'full'
+      },
+      {
+        path: 'fill',
+        component: AdminAddTaskNumberOneComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'fill/:id',
+        component: AdminAddTaskNumberOneComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'confirmation',
+        component: AdminAddTaskNumberConfirmationComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      }
+    ]
+  },
   // PROVINCIAL_ADMIN routes
   {
     path: 'provincial-admin',
@@ -286,6 +351,7 @@ const routes: Routes = [
         redirectTo: 'evacuees',
         pathMatch: 'full',
       },
+
       {
         path: 'evacuees',
         component: AdminEvacueesComponent,
@@ -295,6 +361,16 @@ const routes: Routes = [
         path: 'evacuee-summary/:id',
         component: EvacueeSummaryComponent,
         data: { expectedRole: PROVINCIAL_ADMIN }
+      },
+      {
+        path: 'task-numbers',
+        component: TaskNumberListComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'organizations',
+        component: OrganizationListComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         path: 'register-evacuee',
@@ -320,12 +396,12 @@ const routes: Routes = [
             path: 'confirmation',
             component: EvacueeRegistrationConfirmationComponent,
             data: { expectedRole: PROVINCIAL_ADMIN },
-          }
+          },
         ]
       },
       {
         path: 'volunteers',
-        component: VolunteerTeamDashboardComponent,
+        component: VolunteerListComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
@@ -357,44 +433,48 @@ const routes: Routes = [
       },
       {
         path: 'useful-info',
-        component: VolunteerUsefulInformationComponent,
+        component: UsefulInformationContentComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
-      {
-        path: 'task-numbers',
-        component: AdminTaskNumbersComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
-      },
-      {
-        path: 'task-number-edit',
-        component: AdminAddTaskNumberComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
-        children: [
-          {
-            path: '',
-            redirectTo: 'fill',
-            pathMatch: 'full'
-          },
-          {
-            path: 'fill',
-            component: AdminAddTaskNumberOneComponent,
-            data: { expectedRole: PROVINCIAL_ADMIN },
-          },
-          {
-            path: 'fill/:id',
-            component: AdminAddTaskNumberOneComponent,
-            data: { expectedRole: PROVINCIAL_ADMIN },
-          },
-          {
-            path: 'confirmation',
-            component: AdminAddTaskNumberConfirmationComponent,
-            data: { expectedRole: PROVINCIAL_ADMIN },
-          }
-        ]
-      },
+      // {
+      //   path: 'task-numbers',
+      //   component: AdminTaskNumbersComponent,
+      //   data: { expectedRole: PROVINCIAL_ADMIN },
+      // },
     ],
   },
-
+  {
+    path: 'evacuee-summary/:id',
+    component: EvacueeSummaryComponent,
+    // data: { expectedRole: PROVINCIAL_ADMIN }
+  },
+  {
+    path: 'register-evacuee',
+    component: EvacueeRegistrationComponent,
+    // data: { expectedRole: PROVINCIAL_ADMIN },
+    children: [
+      {
+        path: '',
+        redirectTo: 'fill',
+        pathMatch: 'full'
+      },
+      {
+        path: 'fill/:id',
+        component: EvacueeRegistrationOneComponent,
+        // data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'fill',
+        component: EvacueeRegistrationOneComponent,
+        // data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'confirmation',
+        component: EvacueeRegistrationConfirmationComponent,
+        // data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+    ]
+  },
   // 404 route (catch all default)
   {
     path: '**',
@@ -653,10 +733,7 @@ const routes: Routes = [
   //     }
   //   ]
   // },
-  // {
-  //   path: 'test',
-  //   component: TesterPageComponent
-  // },
+
 ];
 
 @NgModule({

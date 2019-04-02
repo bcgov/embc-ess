@@ -1,85 +1,18 @@
-<div class="row">
+<!-- <div class="row">
   <div class="col">
-    Current User
-    <pre>{{currentUser | json}}</pre>
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-      <label class="btn btn-secondary active" (click)="setUser('none')">
-        <input type="radio" name="options" id="option1" autocomplete="off" checked>
-        none
-      </label>
-      <label class="btn btn-secondary" (click)="setUser('volunteer')">
-        <input type="radio" name="options" id="option2" autocomplete="off"> volunteer
-      </label>
-      <label class="btn btn-secondary" (click)="setUser('local_authority')">
-        <input type="radio" name="options" id="option3" autocomplete="off"> local_authority
-      </label>
-      <label class="btn btn-secondary" (click)="setUser('provincial_admin')">
-        <input type="radio" name="options" id="option4" autocomplete="off"> provincial_admin
-      </label>
-    </div>
-    <!-- <span *ngIf="currentUser.role==='none'">Signed out</span>
-    <span *ngIf="currentUser.role==='volunteer'">Volunteer</span>
-    <span *ngIf="currentUser.role==='local_authority'">Local authority</span>
-    <span *ngIf="currentUser.role==='provincial_admin'">Provincial admin</span> -->
+    <app-task-number-list></app-task-number-list>
   </div>
   <div class="col">
-    <ul>
-      <li>
-        <a routerLink="../volunteer-edit/fill">
-          volunteer-edit/fill
-        </a>
-      </li>
-      <!-- <li>
-        <a routerLink="../volunteer-edit/fill/EXAMPLE">
-          volunteer-edit/fill/:id
-        </a>
-      </li> -->
-      <li>
-        <a routerLink="../volunteer-edit/confirmation">
-          volunteer-edit/confirmation
-        </a>
-      </li>
+    <app-volunteer-list></app-volunteer-list>
+  </div>
+</div> -->
 
-      <li>
-        <a routerLink="../volunteer-team-dashboard">
-          volunteer-team-dashboard
-        </a>
-      </li>
-      <li>
-        <a routerLink="../evacuee-registration/fill">
-          evacuee-registration/fill
-        </a>
-      </li>
-      <!-- <li>
-        <a routerLink="../evacuee-registration/fill/IDNUMBER">
-          evacuee-registration/fill/IDNUMBER
-        </a>
-      </li> -->
-      <!-- <li>
-        <a routerLink="../evacuee-summary/IDNUMBER">
-          evacuee-summary/IDNUMBER
-        </a>
-      </li> -->
-      <li>
-        <a routerLink="../volunteer-info">
-          volunteer-info (useful-info)
-        </a>
-      </li>
-      <li>
-        <a routerLink="../admin-dashboard">
-          admin-dashboard
-        </a>
-      </li>
-      <li>
-        <a routerLink="../volunteer-dashboard">
-          volunteer-dashboard
-        </a>
-      </li>
-      <li>
-        <a routerLink="../add-task-number">
-          add-task-number
-        </a>
-      </li>
-    </ul>
+<div class="row">
+  <div class="col">
+    <!-- <app-evacuee-list></app-evacuee-list> -->
+    <app-organization-list></app-organization-list>
+  </div>
+  <div class="col">
+    <app-volunteer-list></app-volunteer-list>
   </div>
 </div>

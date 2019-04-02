@@ -6,14 +6,14 @@ import { SharedModule } from './../shared/shared.module';
 import { AdminDashboardComponent } from './admin-dashboard.component';
 import { AdminEvacueesComponent } from './admin-evacuees/admin-evacuees.component';
 import { AdminOrganizationsComponent } from './admin-organizations/admin-organizations.component';
-import { AdminTaskNumbersComponent } from './admin-task-numbers/admin-task-numbers.component';
+// import { AdminTaskNumbersComponent } from './admin-task-numbers/admin-task-numbers.component';
 
 @NgModule({
     declarations: [
         AdminDashboardComponent,
         AdminEvacueesComponent,
         AdminOrganizationsComponent,
-        AdminTaskNumbersComponent,
+        // AdminTaskNumbersComponent,
     ],
     imports: [
         CommonModule,

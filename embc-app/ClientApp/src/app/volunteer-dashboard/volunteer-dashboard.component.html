@@ -1,27 +1,6 @@
 <div class="row">
   <div class="col col-lg-8">
-    <div class="mb-4">
-      <h1>ESS Team Dashboard</h1>
-      <h3>Welcome to your Dashboard!</h3>
-      <p>As an Emergency Support Services user you'll be able to register new evacuees, complete an existing evacuee
-        self- registration, or if needed, search and edit evacuee information.</p>
-      <h3 class="blue-header">LIST OF EVACUEES</h3>
-
-      <app-search-bar #searchBar (valueChange)="doSearch($event)"
-        placeholder="Search by task number / last name / registration number / community ...">
-      </app-search-bar>
-
-      <!-- TODO: <a class="small" href="">advanced search</a> -->
-      <!-- TODO: show icons for HOH, RESTRICTED FILE -->
-    </div>
-    <div>
-      <!-- The start of the table stuff. -->
-      <!-- <p>1 - 10 of 2000 <span class="font-weight-bold">ACTIVE</span> evacuees
-        <small class="ml-3">(<a href="">show deactivated</a>)</small>
-      </p> -->
-      <app-evacuee-search-results #searchResultsView [searchResults]="searchResults$ | async">
-      </app-evacuee-search-results>
-    </div>
+    <app-evacuee-list></app-evacuee-list>
   </div>
 
 
