@@ -105,7 +105,7 @@ export class EvacueeSearchResultsComponent implements OnChanges {
         incidentTaskTaskNumber: null,
         evacuatedFrom: null, // community name
         evacuatedTo: null, // community name
-        hasReferrals: null,
+        hasReferrals: this.hasReferrals(registration),
         registrationCompletionDate: registration.registrationCompletionDate
       };
 
