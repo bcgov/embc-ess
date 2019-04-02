@@ -143,7 +143,7 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
       ...this.form.value
     };
     this.onSave(registration);
-    this.router.navigate(['../step-2'], { relativeTo: this.route });
+    this.router.navigate(['../step-1'], { relativeTo: this.route });
   }
 
   reset() {
