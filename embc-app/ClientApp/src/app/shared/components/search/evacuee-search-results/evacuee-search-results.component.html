@@ -1,4 +1,4 @@
-<pre>{{searchResults|json}}</pre>
+<!-- <pre>{{searchResults|json}}</pre> -->
 
 <div class="search-results">
   <div *ngIf="rows.length; then searchResultsTable; else notFound"></div>
@@ -33,9 +33,6 @@
         <td>{{rowItem.evacuatedTo}}</td>
         <td>
           <span *ngIf="rowItem.hasReferrals===true">Yes</span>
-          <span *ngIf="rowItem.hasReferrals===false">No</span>
-          <span *ngIf="rowItem.hasReferrals===false">No</span>
-
         </td>
         <td>
           <!-- TODO: These always route to the same places. I'm going to cheat and hard code for now so we don't have to re-test int the component's output -->
