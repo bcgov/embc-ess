@@ -69,11 +69,23 @@ export class OtherAddressComponent implements OnInit {
 
   private setupValidation(): void {
     this.f.addressLine1.setValidators([Validators.required]);
-    this.f.postalCode.setValidators(null);
-    this.f.community.setValidators(null);
+    this.f.addressLine1.updateValueAndValidity();
+
+    this.f.postalCode.clearValidators();
+    this.f.postalCode.updateValueAndValidity();
+
+    this.f.community.clearValidators();
+    this.f.community.updateValueAndValidity();
+
     this.f.city.setValidators([Validators.required]);
-    this.f.province.setValidators(null);
+    this.f.city.updateValueAndValidity();
+
+    this.f.province.clearValidators();
+    this.f.province.updateValueAndValidity();
+
     this.f.country.setValidators([Validators.required]);
+    this.f.country.updateValueAndValidity();
+
     this.parent.updateValueAndValidity();
   }
 }

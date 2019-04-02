@@ -115,17 +115,11 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       mailingAddressInBC: {
         required: 'Please make a selection regarding your mailing address.',
       },
-      disasterAffectDetails: {
-        required: 'Please enter a brief statement of how the evacuee/family were affected by the disaster.',
-      },
       insuranceCode: {
         required: 'Please make a selection regarding insurance coverage.',
       },
       dietaryNeeds: {
         required: 'Please make a selection regarding dietary requirements.',
-      },
-      dietaryNeedsDetails: {
-        required: 'Please specify details regarding dietary requirements.',
       },
       medicationNeeds: {
         required: 'Please make a selection regarding medication.',
@@ -138,9 +132,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       },
       requiresSupport: {
         required: 'Please select whether supports are required.',
-      },
-      familyRecoveryPlan: {
-        required: 'Please enter details of the evacuee(s) long term plans.',
       },
     };
     // TODO: Wow. it sure would be nice if we could just instatiate a class instead of using interfaces
@@ -279,12 +270,12 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       restrictedAccess: false,
       essFileNumber: null,
       dietaryNeeds: [null, Validators.required],
-      dietaryNeedsDetails: [null, CustomValidators.requiredWhenTrue('dietaryNeeds')],
-      disasterAffectDetails: [null, Validators.required],
+      dietaryNeedsDetails: [null],
+      disasterAffectDetails: [null],
       externalReferralsDetails: '',
       facility: [null, Validators.required],
-      familyRecoveryPlan: [null, Validators.required],
-      followUpDetails: '',
+      familyRecoveryPlan: [null],
+      followUpDetails: [null],
       insuranceCode: [null, Validators.required],  // one of ['yes', 'yes-unsure', 'no', 'unsure']
       medicationNeeds: [null, Validators.required],
       selfRegisteredDate: null,

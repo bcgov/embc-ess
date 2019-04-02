@@ -9,7 +9,6 @@ import { StoreModule } from '@ngrx/store';
 import { rootReducer, metaReducers } from './store';
 
 import { HomeComponent } from './home/home.component';
-import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.component';
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
 
@@ -39,7 +38,6 @@ import { VolunteerEditorContainerComponent } from './volunteer-editor-container/
   declarations: [
     AppComponent,
     HomeComponent,
-    VolunteerLoginComponent,
     VolunteerDashboardComponent,
     TesterPageComponent,
     VolunteerTeamDashboardComponent,

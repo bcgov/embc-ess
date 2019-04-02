@@ -12,7 +12,7 @@ namespace Gov.Embc.Public.Seeders
 {
     public class IncidentTaskSeeder : Seeder<EmbcDbContext>
     {
-        private readonly string[] _profileTriggers = { AllProfiles };
+        private readonly string[] _profileTriggers = { "Development", "Staging", "Test" };
 
         public IncidentTaskSeeder(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory)
             : base(configuration, env, loggerFactory)
