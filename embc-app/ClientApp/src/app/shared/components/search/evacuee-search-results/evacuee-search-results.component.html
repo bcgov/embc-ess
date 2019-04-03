@@ -14,7 +14,7 @@
       <th scope="col">ESS File #</th>
       <th scope="col">Evacuated From</th>
       <th scope="col">Evacuated To</th>
-      <th scope="col">Referrals</th>
+      <!-- <th scope="col">Referrals</th> -->
       <th scope="col">Action</th>
     </thead>
     <tbody>
@@ -31,9 +31,9 @@
         <td>{{rowItem.essFileNumber}}</td>
         <td>{{rowItem.evacuatedFrom}}</td>
         <td>{{rowItem.evacuatedTo}}</td>
-        <td>
+        <!-- <td>
           <span *ngIf="rowItem.hasReferrals===true">Yes</span>
-        </td>
+        </td> -->
         <td>
           <!-- TODO: These always route to the same places. I'm going to cheat and hard code for now so we don't have to re-test int the component's output -->
           <a *ngIf="!rowItem.incidentTaskTaskNumber" [routerLink]="" (click)="finalize(rowItem)">Finalize</a>
