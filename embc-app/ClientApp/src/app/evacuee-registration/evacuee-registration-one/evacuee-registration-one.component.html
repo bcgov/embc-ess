@@ -261,11 +261,13 @@
       <div class="row mb-2">
         <div class="col">
           <label>Telephone / Mobile Number</label>
+          <small>(Format: 9999999999)</small>
           <input type="text" [class.is-invalid]="invalid('phoneNumber')" class="form-control" formControlName="phoneNumber">
           <span *ngIf="submitted" class="invalid-feedback">{{e.phoneNumber}}</span>
         </div>
         <div class="col">
           <label>Alternate Telephone / Mobile Number</label>
+          <small>(Format: 9999999999)</small>
           <input type="text" [class.is-invalid]="invalid('phoneNumberAlt')" class="form-control" formControlName="phoneNumberAlt">
           <span *ngIf="submitted" class="invalid-feedback">{{e.phoneNumberAlt}}</span>
         </div>

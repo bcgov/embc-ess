@@ -218,6 +218,7 @@
           <div class="row">
             <app-form-field class="col-md-6">
               <label>Telephone / Mobile Number</label>
+              <small>(Format: 9999999999)</small>
               <input [class.is-invalid]="invalid('phoneNumber')" class="form-control" type="text" placeholder="" formControlName="phoneNumber">
               <span *ngIf="submitted" class="invalid-feedback">
                 {{validationErrors['phoneNumber']}}
@@ -225,6 +226,7 @@
             </app-form-field>
             <app-form-field class="col-md-6">
               <label>Alternate Telephone / Mobile Number</label>
+              <small>(Format: 9999999999)</small>
               <input [class.is-invalid]="invalid('phoneNumberAlt')" class="form-control" type="text" placeholder="" formControlName="phoneNumberAlt">
               <span *ngIf="submitted" class="invalid-feedback">
                 {{validationErrors['phoneNumberAlt']}}
