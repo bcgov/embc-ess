@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 
 import { Country } from 'src/app/core/models';
+import { compareById } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-other-address',
@@ -36,7 +37,7 @@ import { Country } from 'src/app/core/models';
       <div class="row">
         <app-form-field class="col-md-6" required="true">
           <label>Country/Region</label>
-          <select [class.is-invalid]="invalidCountry" class="form-control" formControlName="country">
+          <select [compareWith]="compareById" [class.is-invalid]="invalidCountry" class="form-control" formControlName="country">
             <option [ngValue]="null">-- Select Country</option>
             <option [ngValue]="item" *ngFor="let item of countries">{{item.name}}</option>
           </select>
@@ -54,6 +55,9 @@ export class OtherAddressComponent implements OnInit {
   @Input() parent: FormGroup;
   @Input() countries: Country[] = [];
   @Input() touched = false;
+
+  // convenience getter so we can use helper functions within Angular templates
+  compareById = compareById;
 
   // convenience getter for easy access to form fields
   get f() { return this.parent.controls; }

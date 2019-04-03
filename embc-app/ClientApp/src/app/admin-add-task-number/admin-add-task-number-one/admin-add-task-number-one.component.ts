@@ -5,8 +5,8 @@ import { AppState } from 'src/app/store';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IncidentTask } from 'src/app/core/models';
 import { UpdateIncidentTask } from 'src/app/store/incident-tasks/incident-tasks.actions';
-import { takeWhile } from 'rxjs/operators';
 import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
+import { compareById } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-admin-add-task-number-one',
@@ -31,6 +31,9 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
     details: '',
     community: null,
   };
+
+  // convenience getters so we can use helper functions in Angular templates
+  compareById = compareById;
 
   constructor(
     private route: ActivatedRoute,

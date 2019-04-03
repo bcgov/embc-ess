@@ -13,7 +13,7 @@ import {
 import { IncidentTaskService } from '../../core/services/incident-task.service';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
-import { hasErrors, invalidField, clearFormArray } from 'src/app/shared/utils';
+import { hasErrors, invalidField, clearFormArray, compareById } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 
 
@@ -50,6 +50,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
   // convenience getters so we can use helper functions in Angular templates
   hasErrors = hasErrors;
+  compareById = compareById;
 
   // `validationErrors` represents an object with field-level validation errors to display in the form
   validationErrors: { [key: string]: any } = {};
