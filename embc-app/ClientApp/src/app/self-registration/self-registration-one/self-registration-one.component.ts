@@ -26,7 +26,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
 
   form: FormGroup;
-  disableForm = false;
+  disableForm = null;
   submitted = false;
   componentActive = true;
   registration: Registration | null;
