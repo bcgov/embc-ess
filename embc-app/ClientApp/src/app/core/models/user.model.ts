@@ -5,5 +5,7 @@ export interface User {
   lastname?: string;
   email?: string;
   isNewUser?: boolean;
+  contactid?: string;
+  userType?: string;
   appRoles: string[];
 }

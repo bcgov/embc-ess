@@ -111,19 +111,28 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
   }
 
   next() {
+    // stop here if form is invalid
+    if (this.form.invalid) {
+      return;
+    }
+
+    // Copy over all of the original properties
+    // Then copy over the values from the form
+    // This ensures values not on the form, such as the Id, are retained
     const registration: Registration = {
       ...this.registration,
       ...this.form.value
     };
     this.submitting = true;
+    // process the registration record before submission to the backend
+    this.processData(registration);
+
     // update client-side state
     this.onSave(registration);
 
-    // TODO: POST to server, then go the "thank you" OR "error"
+    // push changes to backend
     this.service.createRegistration(registration).subscribe(
       data => {
-        console.log('NEW REGISTRATION ==>');
-        console.log(data);
         this.submitting = false; // turn off submission
         this.router.navigate(['../step-4/' + data.essFileNumber], { relativeTo: this.route });
       },
@@ -135,6 +144,11 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     );
 
 
+  }
+
+  // stamp the dates that we want to track for this record
+  processData(value: Registration): void {
+    value.selfRegisteredDate = new Date().toJSON();
   }
 
   back() {

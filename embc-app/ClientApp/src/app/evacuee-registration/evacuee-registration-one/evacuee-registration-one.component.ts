@@ -25,7 +25,6 @@ import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 export class EvacueeRegistrationOneComponent implements OnInit {
   // state needed by this FORM
   countries$ = this.store.select(s => s.lookups.countries.countries);
-  regionalDistrics$ = this.store.select(s => s.lookups.regionalDistricts);
   regions$ = this.store.select(s => s.lookups.regions);
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
   communities$ = this.store.select(s => s.lookups.communities.communities);
@@ -248,7 +247,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         nickname: fmbr.nickname,
         initials: fmbr.initials,
         gender: fmbr.gender,
-        dob: [new Date(fmbr.dob).toString(), [Validators.required, CustomValidators.maxDate(moment())]], // TODO: check this!!
+        dob: [fmbr.dob, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: check this!!
         relationshipToEvacuee: [fmbr.relationshipToEvacuee, Validators.required],
       });
     } else {
@@ -441,8 +440,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         followUpDetails: r.followUpDetails as string,
         insuranceCode: r.insuranceCode as string,
         medicationNeeds: r.medicationNeeds as boolean,
-        selfRegisteredDate: r.selfRegisteredDate as Date,
-        registrationCompletionDate: r.registrationCompletionDate as Date,
+        selfRegisteredDate: r.selfRegisteredDate as string,
+        registrationCompletionDate: r.registrationCompletionDate as string,
         registeringFamilyMembers: r.registeringFamilyMembers as string,
 
         hasThreeDayMedicationSupply: r.hasThreeDayMedicationSupply as boolean,
@@ -471,7 +470,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
           nickname: r.headOfHousehold.nickname as string,
           initials: r.headOfHousehold.initials as string,
           gender: r.headOfHousehold.gender as string,
-          dob: r.headOfHousehold.dob as Date,
+          dob: r.headOfHousehold.dob as string,
           // bcServicesNumber: r.headOfHousehold.bcServicesNumber as string,
           // personType: r.headOfHousehold.personType,
         },
@@ -549,14 +548,11 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     this.errorSummary = null;
   }
 
-
-
   saveState() {
     const values = this.form.value;
     // ensure proper sub-types are assigned to people entities
     const personType: 'FMBR' = 'FMBR';
     const familyMembers: FamilyMember[] = (values.familyMembers as FamilyMember[]).map(fmr => ({ ...fmr, personType }));
-    // alert("save");
 
     // Use form values to create evacuee registration
     const r: Registration = {
@@ -615,8 +611,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       requiresSupport: values.requiresSupport as boolean,
 
       // dates we care about
-      selfRegisteredDate: values.selfRegisteredDate as Date,
-      registrationCompletionDate: new Date() as Date, // this stamps whenever the registration was completed
+      selfRegisteredDate: values.selfRegisteredDate as string,
+      registrationCompletionDate: new Date().toJSON() as string, // this stamps whenever the registration was completed
 
       // related entities
       incidentTask: values.incidentTask,
@@ -635,8 +631,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       r.completedBy = this.registration.completedBy || null;
     }
 
-    // this.registration = r; //todo: this needs to be checked
-    console.log(r);
     // save the registration to the application state
     this.store.dispatch(new UpdateRegistration({ registration: r }));
   }

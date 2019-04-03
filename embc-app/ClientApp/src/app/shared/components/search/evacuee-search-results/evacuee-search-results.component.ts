@@ -31,7 +31,7 @@ interface RowItem {
   evacuatedFrom: string; // community name
   evacuatedTo: string; // community name
   hasReferrals: boolean;
-  registrationCompletionDate: Date;
+  registrationCompletionDate: string | null;
 }
 
 /**

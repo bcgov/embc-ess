@@ -47,6 +47,7 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
       this.incidentTaskService.getIncidentTask(this.route.snapshot.params.id).subscribe((i: IncidentTask) => {
         // save the volunteer for filling in information later.
         this.taskNumber.setValue(i.taskNumber);
+        // alert(JSON.stringify(i.community));
         this.community.setValue(i.community);
         this.details.setValue(i.details);
 
