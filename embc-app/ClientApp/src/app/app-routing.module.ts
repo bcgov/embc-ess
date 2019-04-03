@@ -79,6 +79,10 @@ const routes: Routes = [
     component: TesterPageComponent
   },
   {
+    path: 'test/:task-number',
+    component: TesterPageComponent
+  },
+  {
     // TODO: naming this should be "evacuee-self-registration"
     path: 'self-registration',
     component: SelfRegistrationComponent,
