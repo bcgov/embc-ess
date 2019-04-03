@@ -247,7 +247,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         nickname: fmbr.nickname,
         initials: fmbr.initials,
         gender: fmbr.gender,
-        dob: [new Date(fmbr.dob).toString(), [Validators.required, CustomValidators.maxDate(moment())]], // TODO: check this!!
+        dob: [fmbr.dob, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: check this!!
         relationshipToEvacuee: [fmbr.relationshipToEvacuee, Validators.required],
       });
     } else {
@@ -470,7 +470,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
           nickname: r.headOfHousehold.nickname as string,
           initials: r.headOfHousehold.initials as string,
           gender: r.headOfHousehold.gender as string,
-          dob: r.headOfHousehold.dob as Date,
+          dob: r.headOfHousehold.dob as string,
           // bcServicesNumber: r.headOfHousehold.bcServicesNumber as string,
           // personType: r.headOfHousehold.personType,
         },
@@ -547,8 +547,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     // success!
     this.errorSummary = null;
   }
-
-
 
   saveState() {
     const values = this.form.value;
