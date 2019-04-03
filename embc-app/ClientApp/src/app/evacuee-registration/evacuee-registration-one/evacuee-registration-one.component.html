@@ -18,7 +18,7 @@
       <app-attention-icon></app-attention-icon>
       <app-form-field required="true" class="col">
         <label>Task Number</label>
-        <select [class.is-invalid]="invalid('incidentTask')" class="form-control" formControlName="incidentTask">
+        <select [compareWith]="compareById" [class.is-invalid]="invalid('incidentTask')" class="form-control" formControlName="incidentTask">
           <option [ngValue]="null">-- Select task number</option>
           <option [ngValue]="incident" *ngFor="let incident of incidentTasks$ | async">
             {{incident.taskNumber}}<span *ngIf="incident.community">
@@ -48,7 +48,7 @@
       <app-attention-icon></app-attention-icon>
       <app-form-field class="col-md-8" required="true" tooltip="Tool Tip: A host community is the community where the registration is taking place and the Reception Centre is located.">
         <label>Community</label>
-        <select [class.is-invalid]="invalid('hostCommunity')" class="form-control" formControlName="hostCommunity">
+        <select [compareWith]="compareById" [class.is-invalid]="invalid('hostCommunity')" class="form-control" formControlName="hostCommunity">
           <option [ngValue]="null">-- Select community</option>
           <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
         </select>
@@ -94,7 +94,7 @@
     <h1>ESS Team Handling Note</h1>
     <p>Privacy is important. Please locate a volunteer that is trained to collect and handle sensitive information.</p>
     <p>This does not change the support offered but does change the process of collecting and handling information. This restricts other ESS team members from seeing the registration.</p>
-    <a routerLink="/volunteer-dashboard">Return to the ESS Team Dashboard</a>
+    <a routerLink="/dashboard">Return to the ESS Team Dashboard</a>
   </div>
   <div *ngIf="activeForm">
     <!-- Primary contact information -->
@@ -193,7 +193,7 @@
             <div class="row mb-2">
               <div class="col-6">
                 <label class="required">Relationship to evacuee</label>
-                <select [class.is-invalid]="invalid('relationshipToEvacuee', entry)" class="form-control" formControlName="relationshipToEvacuee">
+                <select [compareWith]="compareById" [class.is-invalid]="invalid('relationshipToEvacuee', entry)" class="form-control" formControlName="relationshipToEvacuee">
                   <option [ngValue]="null">Please select--</option>
                   <option *ngFor="let item of relationshipTypes$ | async" [ngValue]="item">
                     {{item.description}}

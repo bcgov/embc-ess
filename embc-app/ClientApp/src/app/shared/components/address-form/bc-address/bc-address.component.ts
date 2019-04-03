@@ -3,6 +3,7 @@ import { FormGroup, Validators } from '@angular/forms';
 
 import { Community } from 'src/app/core/models';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { compareById } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-bc-address',
@@ -20,7 +21,7 @@ import { CustomValidators } from 'src/app/shared/validation/custom.validators';
       <div class="row">
         <app-form-field class="col-md-6" required="true">
           <label>Community</label>
-          <select [class.is-invalid]="invalidCommunity" class="form-control" formControlName="community">
+          <select [compareWith]="compareById" [class.is-invalid]="invalidCommunity" class="form-control" formControlName="community">
             <option [ngValue]="null">-- Select community</option>
             <option [ngValue]="item" *ngFor="let item of communities">{{item.name}}</option>
           </select>
@@ -55,6 +56,9 @@ export class BcAddressComponent implements OnInit {
   @Input() parent: FormGroup;
   @Input() communities: Community[] = [];
   @Input() touched = false;
+
+  // convenience getter so we can use helper functions within Angular templates
+  compareById = compareById;
 
   // convenience getter for easy access to form fields
   get f() { return this.parent.controls; }

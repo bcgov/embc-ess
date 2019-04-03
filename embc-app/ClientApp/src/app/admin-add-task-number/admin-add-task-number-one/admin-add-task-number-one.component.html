@@ -12,8 +12,8 @@
   </div>
   <div class="col mb-4">
     <label>Community</label>
-    <select class="form-control" [formControl]="community">
-      <option *ngIf="this.community.value && !this.community.touched">{{this.community.value.name}}</option>
+    <select [compareWith]="compareById" class="form-control" [formControl]="community">
+      <!-- <option *ngIf="this.community.value && !this.community.touched">{{this.community.value.name}}</option> -->
       <option *ngIf="!this.community.value">-- Select community</option>
       <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
     </select>
@@ -35,5 +35,4 @@
   </section>
 </div>
 
-<!-- <pre>{{community|json}}</pre> -->
 <!-- TODO Need yellow horizontal rule -->
