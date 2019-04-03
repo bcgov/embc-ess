@@ -14,10 +14,9 @@ import { UpdateVolunteer } from '../store/volunteer/volunteer.actions';
 })
 export class VolunteerMakerComponent implements OnInit {
   maker = true;
-
   editMode = false;
   componentActive = true;
-  currentVolunteer$ = this.store.select(s => s.volunteers.currentVolunteer);
+  // currentVolunteer$ = this.store.select(s => s.volunteers.currentVolunteer);
   submitting = false; // tracks if in the process of submitting for the UI
 
   constructor(
