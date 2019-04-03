@@ -251,31 +251,14 @@ const routes: Routes = [
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
-        path: 'volunteer-edit',
-        component: VolunteerEditorComponent,
+        path: 'volunteer',
+        component: VolunteerMakerComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
-        children: [
-          {
-            path: '',
-            redirectTo: 'fill',
-            pathMatch: 'full'
-          },
-          {
-            path: 'fill',
-            component: VolunteerEditorOneComponent,
-            data: { expectedRole: LOCAL_AUTHORITY },
-          },
-          {
-            path: 'fill/:id',
-            component: VolunteerEditorOneComponent,
-            data: { expectedRole: LOCAL_AUTHORITY },
-          },
-          {
-            path: 'confirmation',
-            component: VolunteerEditorConfirmationComponent,
-            data: { expectedRole: LOCAL_AUTHORITY },
-          }
-        ]
+      },
+      {
+        path: 'volunteer/:id',
+        component: VolunteerMakerComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
         path: 'useful-info',
@@ -422,29 +405,7 @@ const routes: Routes = [
     component: EvacueeSummaryComponent,
     // data: { expectedRole: PROVINCIAL_ADMIN }
   },
-  {
-    path: 'register-evacuee',
-    component: EvacueeRegistrationComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: 'fill',
-        pathMatch: 'full'
-      },
-      {
-        path: 'fill/:id',
-        component: EvacueeRegistrationOneComponent,
-      },
-      {
-        path: 'fill',
-        component: EvacueeRegistrationOneComponent,
-      },
-      {
-        path: 'confirmation',
-        component: EvacueeRegistrationConfirmationComponent,
-      },
-    ]
-  },
+
   // 404 route (catch all default)
   {
     path: '**',
