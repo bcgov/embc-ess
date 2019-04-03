@@ -80,14 +80,15 @@
             <option value="x">X</option>
           </select>
         </app-form-field>
-        <app-form-field class="col-md-4" required="true">
+        <div class="col-md-4">
           <!-- TODO: Split DOB into 3 inputs [MM] [DD] [YYYY] -->
-          <label>Date of Birth</label>
+          <label class="required">Date of Birth</label>
           <input [class.is-invalid]="invalid('headOfHousehold.dob')" class="form-control" type="date" formControlName="dob">
+          <small>(Format: yyyy-mm-dd)</small>
           <span *ngIf="submitted" class="invalid-feedback">
             {{validationErrors['headOfHousehold'].dob}}
           </span>
-        </app-form-field>
+        </div>
       </div>
     </section>
 
@@ -173,6 +174,7 @@
                 <div class="col">
                   <label class="required">Date of Birth</label>
                   <input [class.is-invalid]="invalid('dob', entry)" class="form-control" type="date" formControlName="dob">
+                  <small>(Format: yyyy-mm-dd)</small>
                   <span *ngIf="submitted && hasErrors('dob', entry, ['required'])" class="invalid-feedback">
                     Please enter a date of birth.
                   </span>
@@ -218,7 +220,7 @@
           <div class="row">
             <app-form-field class="col-md-6">
               <label>Telephone / Mobile Number</label>
-              <small>(Format: 9999999999)</small>
+              <small class="d-block">(Format: 9999999999)</small>
               <input [class.is-invalid]="invalid('phoneNumber')" class="form-control" type="text" placeholder="" formControlName="phoneNumber">
               <span *ngIf="submitted" class="invalid-feedback">
                 {{validationErrors['phoneNumber']}}
@@ -226,7 +228,7 @@
             </app-form-field>
             <app-form-field class="col-md-6">
               <label>Alternate Telephone / Mobile Number</label>
-              <small>(Format: 9999999999)</small>
+              <small class="d-block">(Format: 9999999999)</small>
               <input [class.is-invalid]="invalid('phoneNumberAlt')" class="form-control" type="text" placeholder="" formControlName="phoneNumberAlt">
               <span *ngIf="submitted" class="invalid-feedback">
                 {{validationErrors['phoneNumberAlt']}}

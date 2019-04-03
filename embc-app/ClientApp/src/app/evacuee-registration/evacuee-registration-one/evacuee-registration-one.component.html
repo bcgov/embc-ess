@@ -135,6 +135,7 @@
         <app-form-field class="col" required="true">
           <label>Date of Birth</label>
           <input [class.is-invalid]="invalid('headOfHousehold.dob')" class="form-control" type="date" formControlName="dob">
+          <small>(Format: yyyy-mm-dd)</small>
           <span *ngIf="submitted" class="invalid-feedback">{{e.headOfHousehold.dob}}</span>
         </app-form-field>
       </div>
@@ -214,6 +215,7 @@
               <div class="col">
                 <label class="required">Date of Birth</label>
                 <input type="date" [class.is-invalid]="invalid('dob', entry)" class="form-control" formControlName="dob">
+                <small>(Format: yyyy-mm-dd)</small>
                 <span *ngIf="submitted && hasErrors('dob', entry, ['required'])" class="invalid-feedback">
                   Please enter a date of birth.
                 </span>
@@ -261,13 +263,13 @@
       <div class="row mb-2">
         <div class="col">
           <label>Telephone / Mobile Number</label>
-          <small>(Format: 9999999999)</small>
+          <small class="d-block">(Format: 9999999999)</small>
           <input type="text" [class.is-invalid]="invalid('phoneNumber')" class="form-control" formControlName="phoneNumber">
           <span *ngIf="submitted" class="invalid-feedback">{{e.phoneNumber}}</span>
         </div>
         <div class="col">
           <label>Alternate Telephone / Mobile Number</label>
-          <small>(Format: 9999999999)</small>
+          <small class="d-block">(Format: 9999999999)</small>
           <input type="text" [class.is-invalid]="invalid('phoneNumberAlt')" class="form-control" formControlName="phoneNumberAlt">
           <span *ngIf="submitted" class="invalid-feedback">{{e.phoneNumberAlt}}</span>
         </div>
