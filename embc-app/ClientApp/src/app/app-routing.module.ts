@@ -91,12 +91,10 @@ const routes: Routes = [
         path: '',
         redirectTo: 'step-1',
         pathMatch: 'full',
-
       },
       {
         path: 'step-1',
         component: SelfRegistrationOneComponent,
-
       },
       {
         path: 'step-2',
