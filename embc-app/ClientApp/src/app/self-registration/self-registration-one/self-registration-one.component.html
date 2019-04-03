@@ -14,7 +14,7 @@
       for you and your family members?
     </p>
     <div class="form-check">
-      <input class="form-check-input" type="radio" name="dummy" [value]="false" checked (click)="disableInput(false)">
+      <input class="form-check-input" type="radio" name="dummy" [value]="false" (click)="disableInput(false)">
       <label class="form-check-label" for="exampleRadios1">
         <strong>Yes</strong>
       </label>
@@ -27,7 +27,7 @@
       </label>
     </div>
   </div>
-  <div *ngIf="disableForm">
+  <div *ngIf="disableForm===true">
     <h3 class="blue-header">PROCEED TO RECEPTION CENTRE</h3>
     <h4>Your data privacy is important to us.</h4>
     <p>
@@ -39,7 +39,7 @@
       registration and receive supports. Your nearest Reception Centre is listed at <a target="_blank" href="https://www.emergencyinfobc.gov.bc.ca/">EmergencyInfoBC</a>
     </p>
   </div>
-  <div *ngIf="!disableForm">
+  <div *ngIf="disableForm===false">
     <h3 class="blue-header">EVACUEE DETAILS</h3>
     <section class="padded-section" formGroupName="headOfHousehold">
       <div class="row">
