@@ -41,6 +41,7 @@ import { OrganizationListComponent } from './organization-list/organization-list
 import { OrganizationMakerComponent } from './organization-maker/organization-maker.component';
 import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.component';
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
+import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
 
 /**
   /
@@ -356,10 +357,10 @@ const routes: Routes = [
         redirectTo: 'evacuees',
         pathMatch: 'full',
       },
-
       {
+        // Deprecation in process.
         path: 'evacuees',
-        component: AdminEvacueesComponent,
+        component: EvacueeListComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
@@ -368,13 +369,49 @@ const routes: Routes = [
         data: { expectedRole: PROVINCIAL_ADMIN }
       },
       {
+        path: 'organizations',
+        component: OrganizationListComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+
+      {
+        path: 'organization',
+        component: OrganizationMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'organization/:id',
+        component: OrganizationMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
         path: 'task-numbers',
         component: TaskNumberListComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
-        path: 'organizations',
-        component: OrganizationListComponent,
+        path: 'task-number',
+        component: TaskNumberMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'task-number/:id',
+        component: TaskNumberMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'volunteers',
+        component: VolunteerListComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'volunteer',
+        component: VolunteerMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'volunteer/:id',
+        component: VolunteerMakerComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
@@ -404,68 +441,34 @@ const routes: Routes = [
           },
         ]
       },
-      {
-        path: 'organization',
-        component: OrganizationMakerComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
-      },
-      {
-        path: 'organization/:id',
-        component: OrganizationMakerComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
-      },
-      {
-        path: 'task-number',
-        component: TaskNumberMakerComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
-      },
-      {
-        path: 'task-number/:id',
-        component: TaskNumberMakerComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
-      },
-      {
-        path: 'volunteer',
-        component: VolunteerMakerComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
-      },
-      {
-        path: 'volunteer/:id',
-        component: VolunteerMakerComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
-      },
-      {
-        path: 'volunteers',
-        component: VolunteerListComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
-      },
-      {
-        path: 'volunteer-edit',
-        component: VolunteerEditorComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
-        children: [
-          {
-            path: '',
-            redirectTo: 'fill',
-            pathMatch: 'full'
-          },
-          {
-            path: 'fill',
-            component: VolunteerEditorOneComponent,
-            data: { expectedRole: PROVINCIAL_ADMIN },
-          },
-          {
-            path: 'fill/:id',
-            component: VolunteerEditorOneComponent,
-            data: { expectedRole: PROVINCIAL_ADMIN },
-          },
-          {
-            path: 'confirmation',
-            component: VolunteerEditorConfirmationComponent,
-            data: { expectedRole: PROVINCIAL_ADMIN },
-          }
-        ]
-      },
+      // {
+      //   // deprecated route use provincial-admin/volunteer
+      //   path: 'volunteer-edit',
+      //   component: VolunteerEditorComponent,
+      //   data: { expectedRole: PROVINCIAL_ADMIN },
+      //   children: [
+      //     {
+      //       path: '',
+      //       redirectTo: 'fill',
+      //       pathMatch: 'full'
+      //     },
+      //     {
+      //       path: 'fill',
+      //       component: VolunteerEditorOneComponent,
+      //       data: { expectedRole: PROVINCIAL_ADMIN },
+      //     },
+      //     {
+      //       path: 'fill/:id',
+      //       component: VolunteerEditorOneComponent,
+      //       data: { expectedRole: PROVINCIAL_ADMIN },
+      //     },
+      //     {
+      //       path: 'confirmation',
+      //       component: VolunteerEditorConfirmationComponent,
+      //       data: { expectedRole: PROVINCIAL_ADMIN },
+      //     }
+      //   ]
+      // },
       {
         path: 'useful-info',
         component: UsefulInformationContentComponent,
