@@ -5,7 +5,7 @@ Emergency Management BC - Emergency Social Services Modernization
 Technology Stack
 -----------------
 
-| Layer   | Technology | 
+| Layer   | Technology |
 | ------- | ------------ |
 | Presentation | Angular 7 |
 | Business Logic | C# - Dotnet Core 2.1 |
@@ -50,7 +50,7 @@ Authentication
 
 ### BCeID
 
-Business BCeID may be used to login as a Volunteer.    
+Business BCeID may be used to login as a Volunteer.
 
 ### IDIR
 
@@ -66,8 +66,9 @@ Access /login/token/username to login as a test BCeID user for development purpo
 | ----------- | -------------------------------------- | ------------- |
 | DEV         | https://dev.justice.gov.bc.ca/embcess  | Yes           |
 | TEST        | https://test.justice.gov.bc.ca/embcess | Yes           |
-| PROD        | https://prod.justice.gov.bc.ca/embcess | No            |
-  
+| PROD        | https://justice.gov.bc.ca/embcess      | No            |
+
+
 Contribution
 ------------
 

@@ -33,9 +33,16 @@ export class AddressSelectorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.withinBC != null) {
-      const withinBC = changes.withinBC.currentValue;
-      this.canada$.subscribe(canada => this.toggleAddressForm(withinBC, canada));
+    const toggle = changes.withinBC;
+    if (toggle != null) {
+      const value = toggle.currentValue;
+      const previous = toggle.previousValue;
+
+      // reset the form ONLY when toggling between the two states, not upon initial loading of the component
+      const shouldReset = (value !== previous && !toggle.isFirstChange());
+
+      // look up the home country for BC addresses, then toggle the form between BC and non-BC addresses
+      this.canada$.subscribe(homeCountry => this.toggleAddressForm(value, homeCountry, shouldReset));
     }
   }
 
@@ -57,12 +64,11 @@ export class AddressSelectorComponent implements OnInit, OnChanges, OnDestroy {
     this.parent.updateValueAndValidity();
   }
 
-
-  private toggleAddressForm(withinBC: boolean, homeCountry: Country): void {
-    const values = withinBC
-      ? { province: 'British Columbia', country: homeCountry }
-      : { province: null, country: null };
-    this.parent.reset();
+  private toggleAddressForm(withinBC: boolean, homeCountry: Country, reset = false): void {
+    const values = withinBC ? { province: 'British Columbia', country: homeCountry } : {};
+    if (reset) {
+      this.parent.reset();
+    }
     this.parent.enable();
     this.parent.patchValue(values);
   }
