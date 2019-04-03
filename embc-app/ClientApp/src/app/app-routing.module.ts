@@ -38,6 +38,9 @@ import { TaskNumberListComponent } from './task-number-list/task-number-list.com
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
 import { EvacueeSummaryContainerComponent } from './evacuee-summary-container/evacuee-summary-container.component';
 import { OrganizationListComponent } from './organization-list/organization-list.component';
+import { OrganizationMakerComponent } from './organization-maker/organization-maker.component';
+import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.component';
+import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
 
 /**
   /
@@ -400,6 +403,36 @@ const routes: Routes = [
             data: { expectedRole: PROVINCIAL_ADMIN },
           },
         ]
+      },
+      {
+        path: 'organization',
+        component: OrganizationMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'organization/:id',
+        component: OrganizationMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'task-number',
+        component: TaskNumberMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'task-number/:id',
+        component: TaskNumberMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'volunteer',
+        component: VolunteerMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'volunteer/:id',
+        component: VolunteerMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         path: 'volunteers',
