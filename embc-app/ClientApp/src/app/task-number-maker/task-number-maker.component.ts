@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { IncidentTask } from '../core/models';
-import { compareById } from '../shared/utils';
+// import { compareById } from '../shared/utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store';
@@ -36,7 +36,7 @@ export class TaskNumberMakerComponent implements OnInit {
   };
 
   // convenience getters so we can use helper functions in Angular templates
-  compareById = compareById;
+  // compareById = compareById;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,56 +47,41 @@ export class TaskNumberMakerComponent implements OnInit {
 
   ngOnInit() {
     // initialize form for collection
-    this.initForm();
-    if (this.route.snapshot.params.id) {
-      // there may be a user to edit because the route looks right
-      this.incidentTaskService.getIncidentTask(this.route.snapshot.params.id).subscribe((i: IncidentTask) => {
-        // save the volunteer for filling in information later.
-        this.taskNumber.setValue(i.taskNumber);
-        // alert(JSON.stringify(i.community));
-        this.community.setValue(i.community);
-        this.details.setValue(i.details);
+    this.taskNumber = new FormControl('');
+    this.details = new FormControl('');
+    this.community = new FormControl('');
 
-        this.incidentTask = i;
-        this.editMode = true;
-      });
+    if (this.route.snapshot.params.id) {
+      // there may be a user to edit because the route has an ID for an incident task
+      this.incidentTaskService.getIncidentTask(this.route.snapshot.params.id)
+        .subscribe((i: IncidentTask) => {
+          // save the incident task for filling in information later.
+          this.taskNumber.setValue(i.taskNumber);
+          // alert(JSON.stringify(i.community));
+          this.community.setValue(i.community);
+          this.details.setValue(i.details);
+          this.incidentTask = i;
+          this.editMode = true;
+        });
     } else {
       // this is a fresh form and will be a simple add user
       this.editMode = false;
     }
   }
-  initForm() {
-    // get the current incident task
-    this.taskNumber = new FormControl('');
-    this.details = new FormControl('');
-    this.community = new FormControl('');
-    // this.currentIncidentTask$.pipe(takeWhile(() => this.componentActive))
-    //   .subscribe(i => {
-    //     this.incidentTask = i;
-    //     // initialize form
-    //     this.taskNumber = new FormControl(i.taskNumber || null);
-    //     this.community = new FormControl(i.community || null);
-    //     this.details = new FormControl(i.details || null);
-    //   });
-  }
+
   next(): void {
-    // this.onSave();
     // only go next if all fields are non null
     if (this.taskNumber.value && this.community.value && this.details.value) {
       this.maker = false;
-      // when routing to the next page we save first into the application state.
-      // this.onSave();
-      // information saved in state. Navigate to confirm page
-      // const nextRoute = this.editMode ? '../../confirmation' : '../confirmation';
-      // this.router.navigate([nextRoute], { relativeTo: this.route });
+      this.onSave();
     } else {
       alert("All fields are required to continue.");
     }
   }
 
-
-
   back() {
+    // show the editing parts of the form.
+    this.maker = true;
     // go back
     // this.onSave();
     // this.router.navigate(['../fill'], { relativeTo: this.route });
@@ -106,7 +91,7 @@ export class TaskNumberMakerComponent implements OnInit {
     if (!(this.incidentTask.community && this.incidentTask.details && this.incidentTask.taskNumber)) {
       // todo go somewhere useful for this provincial user after routing is fixed.
       this.submitting = false;
-      this.router.navigate(['../fill'], { relativeTo: this.route });
+      this.router.navigate(['/']);
     } else {
       // check if this is an update
       if (this.incidentTask.id) {
@@ -115,7 +100,7 @@ export class TaskNumberMakerComponent implements OnInit {
           .subscribe(() => {
             this.submitting = false;
             // go back to the volunteer team dashboard
-            this.router.navigate(['../../task-numbers'], { relativeTo: this.route });
+            this.router.navigate(['/']);
           });
       } else {
         // if the volunteer has no id we need to create a new one
@@ -123,7 +108,7 @@ export class TaskNumberMakerComponent implements OnInit {
           .subscribe(i => {
             this.submitting = false;
             // go back to the volunteer team dashboard
-            this.router.navigate(['../../task-numbers'], { relativeTo: this.route });
+            this.router.navigate(['/']);
           });
       }
     }
@@ -134,7 +119,8 @@ export class TaskNumberMakerComponent implements OnInit {
     incidentTask.taskNumber = this.taskNumber.value;
     incidentTask.community = this.community.value;
     incidentTask.details = this.details.value;
+    this.incidentTask = incidentTask;
     // stuff the data into an incidentTask object
-    this.store.dispatch(new UpdateIncidentTask({ incidentTask }));
+    // this.store.dispatch(new UpdateIncidentTask({ incidentTask }));
   }
 }

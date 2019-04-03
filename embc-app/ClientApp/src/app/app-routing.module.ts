@@ -79,7 +79,7 @@ const routes: Routes = [
     component: TesterPageComponent
   },
   {
-    path: 'test/:task-number',
+    path: 'test/:tasknumber',
     component: TesterPageComponent
   },
   {

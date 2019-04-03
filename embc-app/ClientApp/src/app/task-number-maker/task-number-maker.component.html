@@ -1,6 +1,7 @@
 <div *ngIf="maker">
   <div class="mb-4">
-    <h1>Add a Task Number</h1>
+    <h1 *ngIf="editMode">Edit a Task Number</h1>
+    <h1 *ngIf="!editMode">Add a Task Number</h1>
     <p>The Emergency Coordination Centre is responsible for adding task numbers to the system. If you need a new task
       number, contact the ECC at 1 800-663-3456.</p>
     <small>All fields are required</small>
@@ -13,10 +14,10 @@
     </div>
     <div class="col mb-4">
       <label>Community</label>
-      <select [compareWith]="compareById" class="form-control" [formControl]="community">
-        <!-- <option *ngIf="this.community.value && !this.community.touched">{{this.community.value.name}}</option> -->
-        <option *ngIf="!this.community.value">-- Select community</option>
-        <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
+      <select class="form-control" [formControl]="community">
+        <option [ngValue]="incidentTask?.community" *ngIf="incidentTask?.community?.name">{{incidentTask?.community?.name}}</option>
+        <option [ngValue]="null" *ngIf="!incidentTask?.community">-- Select community</option>
+        <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community?.name}}</option>
       </select>
     </div>
     <div class="col mb-4">
@@ -75,6 +76,7 @@
   </div>
 </div>
 
-<div class="mt-5 space-between">
-  <pre>{{incidentTask|json}}</pre>
-</div>
+<!-- <div class="mt-5 space-between"> -->
+<!-- <pre>{{community|json}}</pre> -->
+<!-- <pre>{{incidentTask|json}}</pre> -->
+<!-- </div> -->
