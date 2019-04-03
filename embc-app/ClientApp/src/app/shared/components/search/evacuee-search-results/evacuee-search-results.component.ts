@@ -189,7 +189,7 @@ export class EvacueeSearchResultsComponent implements OnChanges {
   hasReferrals(r: Registration): boolean {
     // TODO we need to check business logic for this because there is deeper discussion with the client about
     // how this becomes a meaningful flag. This also should probably be handled server-side instead of here.
-    return r.hasChildCareReferral || r.hasFirstAidReferral || r.hasHealthServicesReferral || r.hasInquiryReferral || r.hasPersonalServicesReferral || r.hasPetCareReferral
+    return false;
   }
 
   finalize(r: RowItem) {
