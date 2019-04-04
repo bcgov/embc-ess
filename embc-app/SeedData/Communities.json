@@ -10950,12 +10950,6 @@
         }
     },
     {
-        "Name": "Kamloops, City of ",
-        "RegionalDistrict": {
-            "Name": "Central"
-        }
-    },
-    {
         "Name": "Kanaka",
         "RegionalDistrict": {
             "Name": "Central"
@@ -11569,6 +11563,12 @@
     },
     {
         "Name": "Rayleigh",
+        "RegionalDistrict": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Regional District of Central Okanagan",
         "RegionalDistrict": {
             "Name": "Central"
         }
