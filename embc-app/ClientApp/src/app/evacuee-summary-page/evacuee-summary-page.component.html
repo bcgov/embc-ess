@@ -274,13 +274,14 @@
       </li>
     </ul>
   </section>
-
-  <h3>Family Recovery Plan</h3>
-  <ul class="summary">
-    <li>
-      <span>&nbsp;{{registration?.familyRecoveryPlan}}</span>
-    </li>
-  </ul>
+  <div *ngIf="registration.familyRecoveryPlan">
+    <h3>Family Recovery Plan</h3>
+    <ul class="summary">
+      <li>
+        <span>&nbsp;{{registration?.familyRecoveryPlan}}</span>
+      </li>
+    </ul>
+  </div>
 
   <h3>Follow-up Required</h3>
   <ul class="summary">
