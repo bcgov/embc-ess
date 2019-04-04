@@ -137,7 +137,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // Update form values based on the state
     this.currentRegistration$
       .pipe(takeWhile(() => this.componentActive))
-      .subscribe(value => this.displayRegistration(value));
+      .subscribe(value => {
+        this.displayRegistration(value);
+        this.setRestricted(value.restrictedAccess);
+      });
   }
 
   ngOnDestroy(): void {
@@ -390,10 +393,12 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // if restricted equals true then hide the form.
     // this turns on or off the form view.
     this.disableForm = state;
-    //set the value of the restricted form element
-    this.form.patchValue({ restrictedAccess: state });
-
+    if (state !== null) {
+      //set the value of the restricted form element
+      this.form.patchValue({ restrictedAccess: state });
+    }
   }
+
   nullMailingAddress() {
     this.f.mailingAddressInBC.setValidators(null);
   }
