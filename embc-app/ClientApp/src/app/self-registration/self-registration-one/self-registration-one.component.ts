@@ -386,8 +386,12 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     this.store.dispatch(new UpdateRegistration({ registration }));
   }
 
-  disableInput(state: boolean) {
+  setRestricted(state: boolean) {
+    // if restricted equals true then hide the form.
+    // this turns on or off the form view.
     this.disableForm = state;
+    //set the value of the restricted form element
+
   }
   nullMailingAddress() {
     this.f.mailingAddressInBC.setValidators(null);
