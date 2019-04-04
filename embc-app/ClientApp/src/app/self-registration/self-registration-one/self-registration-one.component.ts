@@ -139,8 +139,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       .pipe(takeWhile(() => this.componentActive))
       .subscribe(value => {
         this.displayRegistration(value);
+        // TODO: I don't know where this goes in the massive amount of code below.
         // if something is coming out of the state that is not null we should turn the restriction to true
-        // this.disableForm = value.restrictedAccess
+        this.disableForm = value.restrictedAccess;
+        this.form.patchValue({ restrictedAccess: value.restrictedAccess });
       });
   }
 
