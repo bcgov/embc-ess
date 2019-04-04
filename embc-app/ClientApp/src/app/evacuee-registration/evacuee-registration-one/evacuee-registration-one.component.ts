@@ -91,6 +91,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         },
         dob: {
           required: 'Please enter date of birth.',
+          date: 'Please enter a valid date.',
           maxDate: 'Date of birth must be today or in the past.',
         },
       },
@@ -248,7 +249,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         nickname: fmbr.nickname,
         initials: fmbr.initials,
         gender: fmbr.gender,
-        dob: [fmbr.dob, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: check this!!
+        dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: check this!!
         relationshipToEvacuee: [fmbr.relationshipToEvacuee, Validators.required],
       });
     } else {
@@ -259,7 +260,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         lastName: ['', Validators.required],
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
         relationshipToEvacuee: [null, Validators.required],
       });
     }
@@ -327,7 +328,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         nickname: '',
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
       }),
 
       familyMembers: this.formBuilder.array([]), // array of formGroups

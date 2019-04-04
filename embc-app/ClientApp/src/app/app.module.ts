@@ -33,6 +33,9 @@ import { OrganizationListComponent } from './organization-list/organization-list
 import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
 import { EvacueeSummaryContainerComponent } from './evacuee-summary-container/evacuee-summary-container.component';
 import { VolunteerEditorContainerComponent } from './volunteer-editor-container/volunteer-editor-container.component';
+import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.component';
+import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
+import { OrganizationMakerComponent } from './organization-maker/organization-maker.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +56,9 @@ import { VolunteerEditorContainerComponent } from './volunteer-editor-container/
     UsefulInformationContentComponent,
     EvacueeSummaryContainerComponent,
     VolunteerEditorContainerComponent,
+    TaskNumberMakerComponent,
+    VolunteerMakerComponent,
+    OrganizationMakerComponent,
   ],
   imports: [
     // angular
