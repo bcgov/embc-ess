@@ -181,5 +181,7 @@ export class EvacueeSummaryPageComponent implements OnInit {
     const volunteer: Partial<Volunteer> = id ? { id } : null;
     value.completedBy = value.completedBy || volunteer;
   }
-
+  routeToEditor() {
+    this.router.navigate(['/']);// todo: make this go to the edit page
+  }
 }
