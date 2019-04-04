@@ -65,9 +65,12 @@ export class ValidationHelper {
           if (controlMessages) {
             errors[controlName] = '';
             if (c.errors) {
-              Object.keys(c.errors).forEach(k => {
+              Object.keys(c.errors).some(k => {
                 if (controlMessages[k]) {
-                  errors[controlName] += controlMessages[k] + ' ';
+                  // grab the first error message and exit.
+                  // we don't want to display multiple validation error messages, just the first one.
+                  errors[controlName] = controlMessages[k];
+                  return true;
                 }
               });
             }

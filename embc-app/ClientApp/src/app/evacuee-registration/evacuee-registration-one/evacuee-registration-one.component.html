@@ -134,7 +134,7 @@
         </app-form-field>
         <app-form-field class="col" required="true">
           <label>Date of Birth</label>
-          <input [class.is-invalid]="invalid('headOfHousehold.dob')" class="form-control" type="date" formControlName="dob">
+          <input type="text" placeholder="yyyy-mm-dd" [class.is-invalid]="invalid('headOfHousehold.dob')" class="form-control" formControlName="dob">
           <small>(Format: yyyy-mm-dd)</small>
           <span *ngIf="submitted" class="invalid-feedback">{{e.headOfHousehold.dob}}</span>
         </app-form-field>
@@ -214,14 +214,21 @@
               </div>
               <div class="col">
                 <label class="required">Date of Birth</label>
-                <input type="date" [class.is-invalid]="invalid('dob', entry)" class="form-control" formControlName="dob">
+                <input type="text" placeholder="yyyy-mm-dd" [class.is-invalid]="invalid('dob', entry)" class="form-control" formControlName="dob">
                 <small>(Format: yyyy-mm-dd)</small>
                 <span *ngIf="submitted && hasErrors('dob', entry, ['required'])" class="invalid-feedback">
                   Please enter a date of birth.
                 </span>
-                <span *ngIf="submitted && hasErrors('dob', entry, ['maxDate'])" class="invalid-feedback">
-                  Date of birth must be today or in the past.
-                </span>
+                <ng-container *ngIf="submitted && hasErrors('dob', entry, ['date', 'maxDate'])">
+                  <span *ngIf="hasErrors('dob', entry, ['date']); else maxDate" class="invalid-feedback">
+                    Please enter a valid date.
+                  </span>
+                  <ng-template #maxDate>
+                    <span class="invalid-feedback">
+                      Date of birth must be today or in the past.
+                    </span>
+                  </ng-template>
+                </ng-container>
               </div>
             </div>
           </div>
@@ -263,14 +270,14 @@
       <div class="row mb-2">
         <div class="col">
           <label>Telephone / Mobile Number</label>
-          <small class="d-block">(Format: 9999999999)</small>
           <input type="text" [class.is-invalid]="invalid('phoneNumber')" class="form-control" formControlName="phoneNumber">
+          <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 9999999999)</small>
           <span *ngIf="submitted" class="invalid-feedback">{{e.phoneNumber}}</span>
         </div>
         <div class="col">
           <label>Alternate Telephone / Mobile Number</label>
-          <small class="d-block">(Format: 9999999999)</small>
           <input type="text" [class.is-invalid]="invalid('phoneNumberAlt')" class="form-control" formControlName="phoneNumberAlt">
+          <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 9999999999)</small>
           <span *ngIf="submitted" class="invalid-feedback">{{e.phoneNumberAlt}}</span>
         </div>
       </div>
