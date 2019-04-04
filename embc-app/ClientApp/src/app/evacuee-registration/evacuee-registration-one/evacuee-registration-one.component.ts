@@ -352,7 +352,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     // validate phone numbers, for BC residents ONLY!
     // NOTE - international numbers are not validated due to variance in formats, etc.
     this.f.primaryResidenceInBC.valueChanges
-      .pipe(skipWhile(() => this.f.primaryResidenceInBC.pristine))
       .subscribe((checked: boolean) => {
         if (checked) {
           this.f.phoneNumber.setValidators([CustomValidators.phone]);
@@ -367,18 +366,17 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
     // show/hide family members section based on the "family info" radio button
     this.f.registeringFamilyMembers.valueChanges
-      .pipe(skipWhile(() => this.f.registeringFamilyMembers.pristine))
       .subscribe((value: string) => {
-        if (value === 'yes') {
+        if (value === 'yes' && this.familyMembers.length === 0) {
           this.addFamilyMember();
-        } else {
+        }
+        if (value === 'no') {
           this.clearFamilyMembers();
         }
       });
 
     // set "family info" radio to "No family" when all members have been removed from the form
     this.familyMembers.valueChanges
-      .pipe(skipWhile(() => this.f.registeringFamilyMembers.pristine))
       .subscribe((family: any[]) => {
         const radio = this.f.registeringFamilyMembers;
         if (radio.value === 'yes' && family.length === 0) {
@@ -421,6 +419,14 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       // If the evacuee is here now then the defer to later of the registration of family members is now currently yes.
       if (r.registeringFamilyMembers === 'yes-later') {
         r.registeringFamilyMembers = 'yes';
+      }
+
+      // iterate over the array and collect each family member as a formgroup and put them into a form array
+      // we need to do this before we update the main form so it populates the FormArray properly
+      if (familyMembers != null) {
+        familyMembers.forEach((m: FamilyMember) => {
+          this.addFamilyMember(m);
+        });
       }
 
       // some form fields for showing or hiding UI elements
@@ -493,13 +499,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         mailingAddressInBC: mailingAddressInBC as boolean,
         mailingAddressSameAsPrimary: mailingAddressSameAsPrimary as boolean,
       });
-
-      // iterate over the array and collect each family member as a formgroup and put them into a form array
-      if (familyMembers != null) {
-        familyMembers.forEach((m: FamilyMember) => {
-          this.addFamilyMember(m);
-        });
-      }
 
       // add the primary residence back into the form
       if (primaryResidence != null) {
