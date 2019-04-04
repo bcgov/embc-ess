@@ -85,33 +85,23 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromBody] ViewModels.Organization item, string id)
+        public async Task<IActionResult> Update([FromBody] Organization item, string id)
         {
             if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id)
             {
-                return BadRequest();
+                return BadRequest(Json(id));
             }
-
-            if (!item.Id.Equals(id, StringComparison.OrdinalIgnoreCase))
-            {
-                ModelState.AddModelError("Id", "id does not match Organization Id");
-            }
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            if (!await dataInterface.OrganizationExistsAsync(id))
+            {
+                return NotFound();
+            }
 
-            try
-            {
-                await dataInterface.UpdateOrganizationAsync(item);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+            await dataInterface.UpdateOrganizationAsync(item);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -119,16 +109,8 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             if (string.IsNullOrWhiteSpace(id)) return BadRequest();
 
-            try
-            {
-                var result = await dataInterface.DeactivateOrganizationAsync(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+            var result = await dataInterface.DeactivateOrganizationAsync(id);
+            return Ok();
         }
     }
 }

@@ -10,12 +10,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     public partial class DataInterface
     {
         private IQueryable<Models.Db.Organization> Organizations => db.Organizations
-                .Include(x => x.Region)
-                .Include(x => x.RegionalDistrict)
-                    .ThenInclude(x => x.Region)
-                .Include(x => x.Community)
-                    .ThenInclude(x => x.RegionalDistrict)
-                        .ThenInclude(x => x.Region);
+            .AsNoTracking()
+            .Include(x => x.Region)
+            .Include(x => x.RegionalDistrict)
+                .ThenInclude(x => x.Region)
+            .Include(x => x.Community)
+                .ThenInclude(x => x.RegionalDistrict)
+                    .ThenInclude(x => x.Region);
 
         public async Task<IPagedResults<Organization>> GetOrganizationsAsync(SearchQueryParameters searchQuery)
         {
@@ -52,6 +53,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             org.AdminLastName = admin.LastName;
 
             return org;
+        }
+
+        public async Task<bool> OrganizationExistsAsync(string id)
+        {
+            return await Organizations.AnyAsync(x => x.Id == Guid.Parse(id));
         }
 
         private async Task<Models.Db.Volunteer> GetPrimaryContactForOrganization(Guid orgId)

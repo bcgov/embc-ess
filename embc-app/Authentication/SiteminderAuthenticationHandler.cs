@@ -464,7 +464,7 @@ namespace Gov.Jag.Embc.Public.Authentication
 
                         volunteer.Externaluseridentifier = siteMinderGuid;
 
-                        await _dataInterface.UpdatePersonAsync(volunteer);
+                        await _dataInterface.UpdateVolunteerAsync(volunteer);
 
                         userSettings.AuthenticatedUser = await _dataInterface.LoadUser(siteMinderGuid, context.Request.Headers, _logger);
 

@@ -68,29 +68,31 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<Organization> GetOrganizationAsync(string id);
 
+        Task<bool> OrganizationExistsAsync(string id);
+
         #endregion Organization
 
-        #region People
-
-        Task<IPagedResults<Person>> GetVolunteersAsync(VolunteersSearchQueryParameters searchQuery);
-
-        Task<Person> GetPersonByIdAsync(string id);
-
-        Task UpdatePersonAsync(Person person);
-
-        Task<Person> CreatePersonAsync(Person person);
-
-        Task<bool> DeactivatePersonAsync(string id);
-
-        #endregion People
-
         #region Volunteer
+
+        Task<IPagedResults<Volunteer>> GetVolunteersAsync(VolunteersSearchQueryParameters searchQuery);
+
+        Task<Volunteer> GetVolunteerByIdAsync(string id);
+
+        Task UpdateVolunteerAsync(Volunteer person);
+
+        Task<string> CreateVolunteerAsync(Volunteer person);
+
+        Task<bool> DeactivateVolunteerAsync(string id);
+
+        Task<bool> ActivateVolunteerAsync(string id);
 
         Volunteer GetVolunteerByName(string firstName, string lastName);
 
         Volunteer GetVolunteerByExternalId(string externalId);
 
         Volunteer GetVolunteerByBceidUserId(string bceidUserId);
+
+        Task<bool> VolunteerExistsAsync(string id);
 
         #endregion Volunteer
     }
