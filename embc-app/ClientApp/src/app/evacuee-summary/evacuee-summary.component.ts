@@ -42,7 +42,7 @@ export class EvacueeSummaryComponent implements OnInit {
   routeTo(id: string) {
     // TODO: this seems like bad practive but fix when we have time
     if (confirm('By clicking continue you acknowledge that all changes to this information will be collected, audited, and your administrator may contact you about them.')) {
-      this.router.navigate(['../../register-evacuee/fill/' + id], { relativeTo: this.route });
+      this.router.navigate(['../../evacuee/' + id], { relativeTo: this.route });
     }
   }
 }
