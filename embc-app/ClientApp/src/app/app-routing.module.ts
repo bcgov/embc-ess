@@ -404,7 +404,35 @@ const routes: Routes = [
     component: EvacueeSummaryComponent,
     // data: { expectedRole: PROVINCIAL_ADMIN }
   },
+  {
 
+    // exception in routing
+    path: 'register-evacuee',
+    component: EvacueeRegistrationComponent,
+    // data: { expectedRole: PROVINCIAL_ADMIN },
+    children: [
+      {
+        path: '',
+        redirectTo: 'fill',
+        pathMatch: 'full'
+      },
+      {
+        path: 'fill/:id',
+        component: EvacueeRegistrationOneComponent,
+        // data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'fill',
+        component: EvacueeRegistrationOneComponent,
+        // data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'confirmation',
+        component: EvacueeRegistrationConfirmationComponent,
+        // data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+    ]
+  },
   // 404 route (catch all default)
   {
     path: '**',
