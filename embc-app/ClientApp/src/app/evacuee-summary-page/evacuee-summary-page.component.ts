@@ -47,7 +47,7 @@ export class EvacueeSummaryPageComponent implements OnInit {
     return option ? option.value : null;
   }
   routeToEditor() {
-    this.router.navigate(['/']);// todo: make this go to the edit page
+    this.router.navigate(['../register-evacuee/fill/' + this.registration.id]);// todo: make this go to the edit page
   }
   yesNo(value: boolean) {
     if (value === true) {
