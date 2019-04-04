@@ -39,6 +39,7 @@ import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
 import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
+import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
 
 /**
   /
@@ -162,6 +163,11 @@ const routes: Routes = [
         data: { expectedRole: VOLUNTEER },
       },
       {
+        path: 'evacuee/:id',
+        component: EvacueeSummaryPageComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
+      {
         path: 'evacuee-summary/:id',
         component: EvacueeSummaryComponent,
         data: { expectedRole: VOLUNTEER },
@@ -211,6 +217,11 @@ const routes: Routes = [
       {
         path: 'evacuees',
         component: VolunteerDashboardComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'evacuee/:id',
+        component: EvacueeSummaryPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
@@ -309,9 +320,13 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        // Deprecation in process.
         path: 'evacuees',
         component: EvacueeListComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'evacuee/:id',
+        component: EvacueeSummaryPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
