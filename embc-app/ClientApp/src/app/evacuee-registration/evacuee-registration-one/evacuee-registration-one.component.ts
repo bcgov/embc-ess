@@ -268,7 +268,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
   initForm(): void {
     this.form = this.formBuilder.group({
-      restrictedAccess: false,
+      restrictedAccess: null,
       essFileNumber: null,
       dietaryNeeds: [null, Validators.required],
       dietaryNeedsDetails: [null],
