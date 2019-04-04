@@ -116,7 +116,7 @@ export class VolunteerMakerComponent implements OnInit {
             this.resetForm();
           } else {
             // go back to the volunteer team dashboard
-            this.router.navigate(['/']);
+            this.router.navigate(['../../'], { relativeTo: this.route });
           }
         });
     } else {
@@ -129,7 +129,7 @@ export class VolunteerMakerComponent implements OnInit {
             this.resetForm();
           } else {
             // go back to the volunteer team dashboard
-            this.router.navigate(['/']);
+            this.router.navigate(['../../'], { relativeTo: this.route });
           }
         });
     }

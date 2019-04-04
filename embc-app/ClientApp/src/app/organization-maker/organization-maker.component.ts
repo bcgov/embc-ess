@@ -81,7 +81,7 @@ export class OrganizationMakerComponent implements OnInit {
         .subscribe(() => {
           this.submitting = false;
           // go back to the volunteer team dashboard
-          this.router.navigate(['/']); // TODO: go somewhere that the application state can go
+          this.router.navigate(['../../'], { relativeTo: this.route });
         });
     } else {
       // if the volunteer has no id we need to create a new one
@@ -90,7 +90,7 @@ export class OrganizationMakerComponent implements OnInit {
           this.submitting = false;
           // if addAnother route back to the add page else route back to the volunteer-team-editor
           // go back to the volunteer team dashboard
-          this.router.navigate(['/']);
+          this.router.navigate(['../../'], { relativeTo: this.route });
         });
     }
   }
