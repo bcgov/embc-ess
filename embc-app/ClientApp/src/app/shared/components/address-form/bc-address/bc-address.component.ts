@@ -14,7 +14,7 @@ import { compareById } from 'src/app/shared/utils';
           <label>Apt/Suite/Building Number &amp; Street Address/PO Box</label>
           <input [class.is-invalid]="invalidAddressLine1" class="form-control" type="text" formControlName="addressLine1">
           <span class="invalid-feedback">
-            Please enter your street address
+            Please enter your street address.
           </span>
         </app-form-field>
       </div>
@@ -26,7 +26,7 @@ import { compareById } from 'src/app/shared/utils';
             <option [ngValue]="item" *ngFor="let item of communities">{{item.name}}</option>
           </select>
           <span class="invalid-feedback">
-            Please enter your community
+            Please enter your community.
           </span>
         </app-form-field>
         <app-form-field class="col-md-3" required="true">
@@ -36,8 +36,9 @@ import { compareById } from 'src/app/shared/utils';
         <app-form-field class="col-md-3">
           <label>Postal Code</label>
           <input [class.is-invalid]="invalidPostalCode" class="form-control" type="text" formControlName="postalCode">
+          <small>(Format: a1a 1a1)</small>
           <span class="invalid-feedback">
-            Format: A1A 1A1
+            Please enter a valid postal code.
           </span>
         </app-form-field>
       </div>
