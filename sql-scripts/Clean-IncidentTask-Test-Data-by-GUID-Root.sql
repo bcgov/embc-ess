@@ -1,20 +1,30 @@
--- Enter the GUID root for a range of Registrations and their associated records
+-- Enter the GUID root for a range of Incident Tasks and their associated records
 
-DECLARE @RegistrationRoot varchar(16) = '08D6B790F370'  --ex: 649189D0-5670-4690-1B9C-08D6B790F370
+DECLARE @IncidentTaskRoot varchar(16) = '08D6B3D424B5' --A34592F5-C12D-4F61-0CF9-08D6B3D424B5
 
+DECLARE @IncidentsToDrop TABLE(IncidentTaskId uniqueidentifier)
 DECLARE @RegistrationsToDrop TABLE(RegistrationId uniqueidentifier)
 DECLARE @HeadsOfHouseholds TABLE(PeopleId uniqueidentifier)
 DECLARE @PeopleToDrop TABLE(PeopleId uniqueidentifier)
 DECLARE @AddressesToDrop TABLE(AddressId uniqueidentifier)
 
+--Obtain the IncidentTasks
+INSERT INTO @IncidentsToDrop
+SELECT i.Id
+FROM
+	IncidentTasks i
+WHERE
+	i.Id LIKE '%' + @IncidentTaskRoot
+
 --Obtain the registrations
-INSERT INTO @registrationsToDrop
+INSERT INTO @RegistrationsToDrop
 SELECT r.Id
 FROM
 	Registrations r
-WHERE
-	r.Id LIKE '%' + @RegistrationRoot
-	
+INNER JOIN
+	@IncidentsToDrop i
+	ON r.IncidentTaskId = i.IncidentTaskId
+
 --Obtain the Head of House Hold
 INSERT INTO @HeadsOfHouseholds
 SELECT p.Id
@@ -53,12 +63,19 @@ INNER JOIN
 	ON p.Id = d.PeopleId
 
 BEGIN TRANSACTION
+
 -- Delete to drop registrations
 DELETE FROM Registrations
 FROM Registrations r
 INNER JOIN
 	@RegistrationsToDrop d
 	ON r.Id = d.RegistrationId
+
+DELETE FROM IncidentTasks
+FROM IncidentTasks i
+INNER JOIN
+	@IncidentsToDrop d
+	ON i.Id = d.IncidentTaskId
 
 -- Delete all people recorded
 DELETE FROM People

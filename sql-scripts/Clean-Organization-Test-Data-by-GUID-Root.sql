@@ -1,20 +1,39 @@
--- Enter the GUID root for a range of Registrations and their associated records
+-- Enter the GUID root for a range of Organization and their associated records
 
-DECLARE @RegistrationRoot varchar(16) = '08D6B790F370'  --ex: 649189D0-5670-4690-1B9C-08D6B790F370
+DECLARE @OrganizationIdRoot varchar(16) = '08D6B6EB9A3B' --010D1F87-7566-40CE-F3F7-08D6B6EB9A3B
 
+DECLARE @OrganizationsToDrop TABLE(OrganizationId uniqueidentifier)
+DECLARE @VolunteersToDrop TABLE(PeopleId uniqueidentifier)
 DECLARE @RegistrationsToDrop TABLE(RegistrationId uniqueidentifier)
 DECLARE @HeadsOfHouseholds TABLE(PeopleId uniqueidentifier)
 DECLARE @PeopleToDrop TABLE(PeopleId uniqueidentifier)
 DECLARE @AddressesToDrop TABLE(AddressId uniqueidentifier)
 
+--Obtain the Organizations
+INSERT INTO @OrganizationsToDrop
+SELECT o.Id
+FROM
+	Organizations o
+WHERE
+	o.Id LIKE '%' + @OrganizationIdRoot
+
+INSERT INTO @VolunteersToDrop
+SELECT i.Id
+FROM
+	People i
+INNER JOIN
+	@OrganizationsToDrop o
+	ON i.OrganizationId = o.OrganizationId
+
 --Obtain the registrations
-INSERT INTO @registrationsToDrop
+INSERT INTO @RegistrationsToDrop
 SELECT r.Id
 FROM
 	Registrations r
-WHERE
-	r.Id LIKE '%' + @RegistrationRoot
-	
+INNER JOIN
+	@VolunteersToDrop i
+	ON r.CompletedById = i.PeopleId
+
 --Obtain the Head of House Hold
 INSERT INTO @HeadsOfHouseholds
 SELECT p.Id
@@ -53,12 +72,24 @@ INNER JOIN
 	ON p.Id = d.PeopleId
 
 BEGIN TRANSACTION
+
 -- Delete to drop registrations
 DELETE FROM Registrations
 FROM Registrations r
 INNER JOIN
 	@RegistrationsToDrop d
 	ON r.Id = d.RegistrationId
+
+DELETE FROM People
+FROM People p
+INNER JOIN
+	@VolunteersToDrop d
+	ON p.Id = d.PeopleId
+
+DELETE FROM Organizations
+FROM Organizations o
+INNER JOIN @OrganizationsToDrop d
+	ON o.Id = d.OrganizationId
 
 -- Delete all people recorded
 DELETE FROM People
@@ -76,5 +107,5 @@ INNER JOIN
 	@AddressesToDrop d
 	ON a.Id = d.AddressId
 
---ROLLBACK;
-COMMIT TRANSACTION
+ROLLBACK;
+--COMMIT TRANSACTION
