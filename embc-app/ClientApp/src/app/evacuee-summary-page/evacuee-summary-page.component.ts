@@ -49,4 +49,13 @@ export class EvacueeSummaryPageComponent implements OnInit {
   routeToEditor() {
     this.router.navigate(['/']);// todo: make this go to the edit page
   }
+  yesNo(value: boolean) {
+    if (value === true) {
+      return "Yes";
+    } else if (value === false) {
+      return "No";
+    } else {
+      return "";
+    }
+  }
 }

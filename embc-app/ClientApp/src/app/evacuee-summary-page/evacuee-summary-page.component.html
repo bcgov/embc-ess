@@ -202,12 +202,14 @@
       </ul>
     </ng-container>
 
-    <h3>Brief statement of how the person/family were affected by the disaster</h3>
-    <ul class="summary">
-      <li>
-        <span>&nbsp;{{registration?.disasterAffectDetails}}</span>
-      </li>
-    </ul>
+    <div *ngIf="registration.disasterAffectDetails">
+      <h3>Brief statement of how the person/family were affected by the disaster</h3>
+      <ul class="summary">
+        <li>
+          <span>&nbsp;{{registration?.disasterAffectDetails}}</span>
+        </li>
+      </ul>
+    </div>
 
     <h3>Insurance</h3>
     <ul class="summary">
@@ -283,12 +285,15 @@
     </ul>
   </div>
 
-  <h3>Follow-up Required</h3>
-  <ul class="summary">
-    <li>
-      <span>&nbsp;{{registration?.followUpDetails}}</span>
-    </li>
-  </ul>
+
+  <div *ngIf="registration.familyRecoveryPlan">
+    <h3>Follow-up Required</h3>
+    <ul class="summary">
+      <li>
+        <span>&nbsp;{{registration?.followUpDetails}}</span>
+      </li>
+    </ul>
+  </div>
 
   <h3>Referrals made within Reception Centre</h3>
   <ul class="summary">
@@ -318,12 +323,14 @@
     </li>
   </ul>
 
-  <h3>Other Agency Referrals</h3>
-  <ul class="summary">
-    <li>
-      <span>&nbsp;{{registration?.externalReferralsDetails}}</span>
-    </li>
-  </ul>
+  <div *ngIf="registration.externalReferralsDetails">
+    <h3>Other Agency Referrals</h3>
+    <ul class="summary">
+      <li>
+        <span>&nbsp;{{registration?.externalReferralsDetails}}</span>
+      </li>
+    </ul>
+  </div>
 
   <div class="mt-5 space-between">
     <section>
