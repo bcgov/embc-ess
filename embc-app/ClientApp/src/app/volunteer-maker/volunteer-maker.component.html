@@ -41,7 +41,7 @@
     <!-- <button class="btn btn-primary" (click)="submit()">Submit</button> -->
 
     <button class="btn btn-primary float-right" (click)="next()">Next</button>
-    <a routerLink="/dashboard">
+    <a routerLink="" (click)="cancel()">
       <app-font-awesome-icon icon="times"></app-font-awesome-icon>
       <span class="ml-2">Cancel &amp; Close</span>
     </a>
@@ -88,9 +88,8 @@
       <button *ngIf="!submitting" class="btn btn-primary" (click)="submit()">SAVE</button>
       <button *ngIf="submitting" class="btn btn-primary" disabled>SUBMITTING</button>
 
-      <button *ngIf="!submitting" class="btn btn-primary ml-2" (click)="submit(true)">SAVE &amp; ADD ANOTHER</button>
-      <button *ngIf="submitting" class="btn btn-primary ml-2" disabled>SUBMITTING</button>
-
+      <button *ngIf="!editMode && !submitting" class="btn btn-primary ml-2" (click)="submit(true)">SAVE &amp; ADD ANOTHER</button>
+      <button *ngIf="!editMode && submitting" class="btn btn-primary ml-2" disabled>SUBMITTING</button>
     </section>
   </div>
 
