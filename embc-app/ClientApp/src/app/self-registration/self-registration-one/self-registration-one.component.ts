@@ -391,6 +391,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // this turns on or off the form view.
     this.disableForm = state;
     //set the value of the restricted form element
+    this.form.patchValue({ restrictedAccess: state });
 
   }
   nullMailingAddress() {
