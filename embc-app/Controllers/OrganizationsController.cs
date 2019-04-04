@@ -77,18 +77,11 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
-                item.Id = null;
-                item.Active = true;
-                var result = await dataInterface.CreateOrganizationAsync(item);
-                return Json(result);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+            item.Id = null;
+            item.Active = true;
+            var orgId = await dataInterface.CreateOrganizationAsync(item);
+
+            return Json(await dataInterface.GetOrganizationAsync(orgId));
         }
 
         [HttpPut("{id}")]

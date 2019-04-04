@@ -56,15 +56,15 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<IPagedResults<Organization>> GetOrganizationsAsync(SearchQueryParameters searchQuery);
 
-        Organization GetOrganizationByLegalName(string name);
+        Organization GetOrganizationBCeIDGuid(string guid);
 
-        Organization GetOrganizationByExternalId(string externalId);
-
-        Task<Organization> CreateOrganizationAsync(Organization item);
+        Task<string> CreateOrganizationAsync(Organization item);
 
         Task UpdateOrganizationAsync(Organization item);
 
         Task<bool> DeactivateOrganizationAsync(string id);
+
+        Task<bool> ActivateOrganizationAsync(string id);
 
         Task<Organization> GetOrganizationAsync(string id);
 

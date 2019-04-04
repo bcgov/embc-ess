@@ -407,14 +407,14 @@ namespace Gov.Jag.Embc.Public.Authentication
                             siteMinderGuid = GuidUtility.CreateIdForDynamics("contact", userSettings.UserDisplayName).ToString();
                         }
 
-                        var existingBusiness = _dataInterface.GetOrganizationByLegalName(userSettings.BusinessLegalName);
-                        if (existingBusiness != null)
-                        {
-                            siteMinderBusinessGuid = existingBusiness.Externaluseridentifier;
-                        }
-                        {
-                            siteMinderBusinessGuid = GuidUtility.CreateIdForDynamics("account", userSettings.BusinessLegalName).ToString();
-                        }
+                        //var existingBusiness = _dataInterface.GetOrganizationByLegalName(userSettings.BusinessLegalName);
+                        //if (existingBusiness != null)
+                        //{
+                        //    siteMinderBusinessGuid = existingBusiness.BCeIDBusinessGuid;
+                        //}
+                        //{
+                        siteMinderBusinessGuid = GuidUtility.CreateIdForDynamics("account", userSettings.BusinessLegalName).ToString();
+                        //}
                         siteMinderUserType = "Business";
                     }
                     else if (isBCSCDeveloperLogin)
@@ -517,7 +517,7 @@ namespace Gov.Jag.Embc.Public.Authentication
 
                     if (siteMinderBusinessGuid != null) // BCeID user
                     {
-                        var account = _dataInterface.GetOrganizationByExternalId(siteMinderBusinessGuid);
+                        var account = _dataInterface.GetOrganizationBCeIDGuid(siteMinderBusinessGuid);
                         if (account != null && account.Id != null)
                         {
                             userSettings.AccountId = account.Id;

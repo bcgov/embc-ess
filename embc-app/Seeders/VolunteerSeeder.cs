@@ -57,6 +57,7 @@ namespace Gov.Embc.Public.Seeders
                 existing.FirstName = seedData.FirstName;
                 existing.OrganizationId = seedData.OrganizationId;
                 existing.IsAdministrator = seedData.IsAdministrator;
+                existing.IsPrimaryContact = seedData.IsPrimaryContact;
                 context.People.Update(existing);
             }
             context.SaveChanges();
