@@ -37,9 +37,12 @@ export class AuthService extends RestService {
     return done;
   }
 
-  logout(): void {
+  logout(callServer = false): Observable<void> {
     this.setCurrentUser(null);
-    // this.setLoggedIn(false);
+    if (callServer) {
+      return this.http.get<void>('logout', { headers: this.headers });
+    }
+    return of();
   }
 
   getCurrentUser(): Observable<User> {
