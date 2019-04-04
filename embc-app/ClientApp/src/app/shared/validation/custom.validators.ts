@@ -40,11 +40,11 @@ export class CustomValidators {
         return null;  // don't validate empty values to allow optional controls
       }
       const val = moment(c.value, format, true);
-      return val.isValid() ? null : { date: true };
+      return isDate(val) ? null : { date: true };
     };
   }
 
-  static minDate(minDate: any): ValidatorFn {
+  static minDate(minDate: any, format = 'YYYY-MM-DD'): ValidatorFn {
     if (!isDate(minDate)) {
       throw Error('minDate value must be or return a formatted date');
     }
@@ -53,7 +53,7 @@ export class CustomValidators {
       if (isEmptyInputValue(c.value)) {
         return null;  // don't validate empty values to allow optional controls
       }
-      const d = moment(c.value);
+      const d = moment(c.value, format, true);
       if (isDate(d)) {
         return d.isSameOrAfter(moment(minDate), 'days') ? null : { minDate: true };
       }
@@ -61,7 +61,7 @@ export class CustomValidators {
     };
   }
 
-  static maxDate(maxDate: any): ValidatorFn {
+  static maxDate(maxDate: any, format = 'YYYY-MM-DD'): ValidatorFn {
     if (!isDate(maxDate)) {
       throw Error('maxDate value must be or return a formatted date');
     }
@@ -70,7 +70,7 @@ export class CustomValidators {
       if (isEmptyInputValue(c.value)) {
         return null;  // don't validate empty values to allow optional controls
       }
-      const d = moment(c.value);
+      const d = moment(c.value, format, true);
       if (isDate(d)) {
         return d.isSameOrBefore(moment(maxDate), 'days') ? null : { maxDate: true };
       }
@@ -78,7 +78,7 @@ export class CustomValidators {
     };
   }
 
-  static isAnAdult(ageLimit = 18, format = 'MM-DD-YYYY'): ValidatorFn {
+  static isAnAdult(ageLimit = 18, format = 'YYYY-MM-DD'): ValidatorFn {
     return (c: AbstractControl): ValidationErrors | null => {
       const val = moment(c.value, format, true);
       const today = moment();

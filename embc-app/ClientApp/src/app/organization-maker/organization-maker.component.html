@@ -1,0 +1,78 @@
+<div *ngIf="maker">
+  <div class="mb-4">
+    <h1 *ngIf="!editMode">Add Organization</h1>
+    <h1 *ngIf="editMode">Edit Organization</h1>
+    <small>
+      All fields are required
+    </small>
+    <h3 class="blue-header">
+      ORGANIZATION DETAILS
+    </h3>
+    <div class="col mb-4">
+      <label>Organization Name</label>
+      <input class="form-control" type="text" [formControl]="organizationName">
+    </div>
+    <!--
+    <div class="col mb-4">
+      <label>First Name</label>
+      <input class="form-control" type="text" [formControl]="firstName">
+    </div>
+    <div class="col mb-4">
+      <label>BCeID</label>
+      <input class="form-control" type="text" [formControl]="bceid">
+    </div> -->
+    <!-- <div class="col mb-4">
+        <p>
+          Can this user access restricted files?
+        </p>
+        <div class="form-group">
+          <div class="form-check form-check-inline">
+            <input [formControl]="restrictedAccess" class="form-check-input" type="radio" [value]="true">
+            <label class="form-check-label">Yes</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input [formControl]="restrictedAccess" class="form-check-input" type="radio" [value]="false">
+            <label class="form-check-label">No</label>
+          </div>
+        </div>
+      </div> -->
+  </div>
+  <div class="col mb-4">
+
+    <button class="btn btn-primary float-right" (click)="next()">Next</button>
+    <a routerLink="/dashboard">
+      <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+      <span class="ml-2">Cancel &amp; Close</span>
+    </a>
+  </div>
+  <!-- TODO Need yellow horizontal rule -->
+</div>
+<div *ngIf="!maker">
+  <div class="mb-4">
+    <h1 class="mt-3">Review Details</h1>
+    <p>Please confirm that all details you entered are correct by reading through the summary below.</p>
+    <section class="p-3">
+      <h3>Volunteer Information</h3>
+      <ul class="summary">
+        <li>
+          <span class="name">Organization Name:</span>
+          <span class="value">{{organization.name}}</span>
+        </li>
+        <!-- TODO Hide feature for later. -->
+      </ul>
+    </section>
+  </div>
+  <div class="mt-5 space-between">
+    <section>
+      <button (click)="back()" class="btn btn-secondary">Edit</button>
+    </section>
+    <section>
+      <button *ngIf="!submitting" class="btn btn-primary" (click)="submit()">SAVE</button>
+      <button *ngIf="submitting" class="btn btn-primary" disabled>SUBMITTING</button>
+    </section>
+  </div>
+</div>
+
+<!-- <div class="col mb-4 space-between">
+  <pre>{{organization|json}}</pre>
+</div> -->
