@@ -108,12 +108,6 @@
         }
     },
     {
-        "Name": "Arnold",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
         "Name": "Atchelitz",
         "RegionalDistrict": {
             "Name": "South West"
@@ -199,12 +193,6 @@
     },
     {
         "Name": "Blueridge",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
-        "Name": "Boothroyd",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -402,12 +390,6 @@
         }
     },
     {
-        "Name": "Burnaby",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
         "Name": "Burnaby Heights",
         "RegionalDistrict": {
             "Name": "South West"
@@ -540,19 +522,7 @@
         }
     },
     {
-        "Name": "Cheam View",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
         "Name": "Cheekye",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
-        "Name": "Chilliwack",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -577,12 +547,6 @@
     },
     {
         "Name": "Choate",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
-        "Name": "Clayburn",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -631,12 +595,6 @@
     },
     {
         "Name": "Coombe",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
-        "Name": "Coquitlam",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -738,12 +696,6 @@
         }
     },
     {
-        "Name": "Delta",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
         "Name": "Dentville",
         "RegionalDistrict": {
             "Name": "South West"
@@ -787,12 +739,6 @@
     },
     {
         "Name": "Doriston",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
-        "Name": "Douglas",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -1602,12 +1548,6 @@
         }
     },
     {
-        "Name": "Matsqui",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
         "Name": "Mayfair",
         "RegionalDistrict": {
             "Name": "South West"
@@ -1692,18 +1632,6 @@
         }
     },
     {
-        "Name": "Mission",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
-        "Name": "Mission",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
         "Name": "Moha",
         "RegionalDistrict": {
             "Name": "South West"
@@ -1759,12 +1687,6 @@
     },
     {
         "Name": "Musquem",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
-        "Name": "N'Quatqua",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -1956,12 +1878,6 @@
         }
     },
     {
-        "Name": "Pavilion",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
         "Name": "Pemberton",
         "RegionalDistrict": {
             "Name": "South West"
@@ -1998,12 +1914,6 @@
         }
     },
     {
-        "Name": "Pitt Meadows",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
         "Name": "Pleasantside",
         "RegionalDistrict": {
             "Name": "South West"
@@ -2017,12 +1927,6 @@
     },
     {
         "Name": "Pope Landing",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
-        "Name": "Popkum",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -2496,12 +2400,6 @@
         }
     },
     {
-        "Name": "Spuzzum",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
         "Name": "Sq'ewlets",
         "RegionalDistrict": {
             "Name": "South West"
@@ -2670,12 +2568,6 @@
         }
     },
     {
-        "Name": "Surrey",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
         "Name": "Surrey Centre",
         "RegionalDistrict": {
             "Name": "South West"
@@ -2766,12 +2658,6 @@
         }
     },
     {
-        "Name": "Tsawwassen",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
         "Name": "Tsawwassen Beach",
         "RegionalDistrict": {
             "Name": "South West"
@@ -2779,12 +2665,6 @@
     },
     {
         "Name": "Tsawwassen First Nation",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
-        "Name": "Ts'kw'aylaxw First Nation",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -2922,12 +2802,6 @@
         }
     },
     {
-        "Name": "West End",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
         "Name": "West Heights",
         "RegionalDistrict": {
             "Name": "South West"
@@ -2965,18 +2839,6 @@
     },
     {
         "Name": "Whalley",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
-        "Name": "Whistler",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
-        "Name": "Whistler",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -3091,18 +2953,6 @@
     },
     {
         "Name": "Yakweakwioose",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
-        "Name": "Yale",
-        "RegionalDistrict": {
-            "Name": "South West"
-        }
-    },
-    {
-        "Name": "Yale",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -6270,18 +6120,6 @@
         }
     },
     {
-        "Name": "Christian Valley",
-        "RegionalDistrict": {
-            "Name": "South East"
-        }
-    },
-    {
-        "Name": "Christina Lake",
-        "RegionalDistrict": {
-            "Name": "South East"
-        }
-    },
-    {
         "Name": "Christina Lake",
         "RegionalDistrict": {
             "Name": "South East"
@@ -7728,12 +7566,6 @@
         }
     },
     {
-        "Name": "Ross Spur",
-        "RegionalDistrict": {
-            "Name": "South East"
-        }
-    },
-    {
         "Name": "Rossland, City of",
         "RegionalDistrict": {
             "Name": "South East"
@@ -7741,12 +7573,6 @@
     },
     {
         "Name": "Round Prairie",
-        "RegionalDistrict": {
-            "Name": "South East"
-        }
-    },
-    {
-        "Name": "Rushmere",
         "RegionalDistrict": {
             "Name": "South East"
         }
@@ -9930,12 +9756,6 @@
         }
     },
     {
-        "Name": "Tachie",
-        "RegionalDistrict": {
-            "Name": "North West"
-        }
-    },
-    {
         "Name": "Tahltan",
         "RegionalDistrict": {
             "Name": "North West"
@@ -10692,12 +10512,6 @@
         }
     },
     {
-        "Name": "Chinook Cove",
-        "RegionalDistrict": {
-            "Name": "Central"
-        }
-    },
-    {
         "Name": "Chopaka",
         "RegionalDistrict": {
             "Name": "Central"
@@ -11130,12 +10944,6 @@
         }
     },
     {
-        "Name": "Kaleden",
-        "RegionalDistrict": {
-            "Name": "Central"
-        }
-    },
-    {
         "Name": "Kamloops Junction",
         "RegionalDistrict": {
             "Name": "Central"
@@ -11400,12 +11208,6 @@
         }
     },
     {
-        "Name": "Manning Park",
-        "RegionalDistrict": {
-            "Name": "Central"
-        }
-    },
-    {
         "Name": "Mara",
         "RegionalDistrict": {
             "Name": "Central"
@@ -11509,12 +11311,6 @@
     },
     {
         "Name": "Nahun",
-        "RegionalDistrict": {
-            "Name": "Central"
-        }
-    },
-    {
-        "Name": "Naramata",
         "RegionalDistrict": {
             "Name": "Central"
         }
@@ -12073,12 +11869,6 @@
     },
     {
         "Name": "Traders Cove",
-        "RegionalDistrict": {
-            "Name": "Central"
-        }
-    },
-    {
-        "Name": "Tranquille",
         "RegionalDistrict": {
             "Name": "Central"
         }
@@ -13687,12 +13477,6 @@
     },
     {
         "Name": "Lynx Creek",
-        "RegionalDistrict": {
-            "Name": "North East"
-        }
-    },
-    {
-        "Name": "Macalister",
         "RegionalDistrict": {
             "Name": "North East"
         }
