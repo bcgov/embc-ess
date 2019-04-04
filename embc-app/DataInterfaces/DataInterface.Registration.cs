@@ -10,6 +10,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     public partial class DataInterface
     {
         private IQueryable<Models.Db.Registration> Registrations => db.Registrations
+                .AsNoTracking()
                 .Include(reg => reg.HeadOfHousehold)
                     .ThenInclude(hoh => hoh.FamilyMembers)
                         .ThenInclude(fmbr => fmbr.RelationshipToEvacuee)
@@ -53,7 +54,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task UpdateRegistrationAsync(Registration registration)
         {
+            var familyMembersToKeep = registration.HeadOfHousehold.FamilyMembers.Where(fm => !string.IsNullOrWhiteSpace(fm.Id)).Select(fm => Guid.Parse(fm.Id)).ToList();
+            var familyMembersToRemove = (await Registrations.SingleAsync(x => x.Id == Guid.Parse(registration.Id)))
+                .HeadOfHousehold.FamilyMembers.Where((fm) => !familyMembersToKeep.Contains(fm.Id));
+
             db.Registrations.Update(registration.ToModel());
+            db.People.RemoveRange(familyMembersToRemove);
+
             await db.SaveChangesAsync();
         }
 
