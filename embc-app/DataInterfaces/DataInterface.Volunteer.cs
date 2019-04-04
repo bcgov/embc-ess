@@ -26,8 +26,26 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task UpdateVolunteerAsync(Volunteer person)
         {
-            db.People.Update(person.ToModel());
+            var volunteer = (Models.Db.Volunteer)person.ToModel();
+            if (volunteer.IsPrimaryContact ?? false)
+            {
+                await SetVolunteerAsPrimaryContact(volunteer);
+            }
+            db.People.Update(volunteer);
             await db.SaveChangesAsync();
+        }
+
+        private IQueryable<Models.Db.Volunteer> GetVolunteersByOrganizationId(Guid orgId)
+        {
+            return Volunteers.Where(v => v.Organization.Id == orgId);
+        }
+
+        private async Task SetVolunteerAsPrimaryContact(Models.Db.Volunteer volunteer)
+        {
+            var previousPrimaryContactsForOrg = GetVolunteersByOrganizationId(volunteer.Organization.Id).Where(v => v.IsPrimaryContact ?? false);
+            await previousPrimaryContactsForOrg.ForEachAsync(v => v.IsPrimaryContact = false);
+            db.People.UpdateRange(previousPrimaryContactsForOrg);
+            volunteer.IsPrimaryContact = true;
         }
 
         public async Task<IPagedResults<Volunteer>> GetVolunteersAsync(VolunteersSearchQueryParameters searchQuery)
@@ -57,7 +75,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<string> CreateVolunteerAsync(Volunteer person)
         {
-            var newPerson = await db.People.AddAsync(person.ToModel());
+            var volunteer = (Models.Db.Volunteer)person.ToModel();
+            if (volunteer.IsPrimaryContact ?? false)
+            {
+                await SetVolunteerAsPrimaryContact(volunteer);
+            }
+            var newPerson = await db.People.AddAsync(volunteer);
             await db.SaveChangesAsync();
             return newPerson.Entity.Id.ToString();
         }
