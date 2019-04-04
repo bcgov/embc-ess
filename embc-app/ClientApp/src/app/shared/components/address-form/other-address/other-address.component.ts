@@ -13,7 +13,7 @@ import { compareById } from 'src/app/shared/utils';
           <label>Apt/Suite/Building Number &amp; Street Address/PO Box:</label>
           <input [class.is-invalid]="invalidAddressLine1" class="form-control" type="text" formControlName="addressLine1">
           <span class="invalid-feedback">
-            Please enter your street address
+            Please enter your street address.
           </span>
         </app-form-field>
       </div>
@@ -22,7 +22,7 @@ import { compareById } from 'src/app/shared/utils';
           <label>City</label>
           <input [class.is-invalid]="invalidCity" class="form-control" type="text" formControlName="city">
           <span class="invalid-feedback">
-            Please enter your city
+            Please enter your city.
           </span>
         </app-form-field>
         <app-form-field class="col-md-3">
@@ -42,7 +42,7 @@ import { compareById } from 'src/app/shared/utils';
             <option [ngValue]="item" *ngFor="let item of countries">{{item.name}}</option>
           </select>
           <span class="invalid-feedback">
-            Please select a country from the dropdown list
+            Please select a country from the dropdown list.
           </span>
         </app-form-field>
       </div>

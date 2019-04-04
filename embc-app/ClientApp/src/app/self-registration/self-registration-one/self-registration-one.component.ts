@@ -62,6 +62,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         },
         dob: {
           required: 'Please enter your date of birth.',
+          date: 'Please enter a valid date.',
           maxDate: 'Date of birth must be today or in the past.',
         },
       },
@@ -157,7 +158,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         nickname: '',
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
       }),
       registeringFamilyMembers: [null, Validators.required],
       familyMembers: this.fb.array([]),
@@ -318,7 +319,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       lastName: ['', Validators.required],
       initials: '',
       gender: null,
-      dob: [null, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+      dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
       relationshipToEvacuee: [null, Validators.required],
     });
   }
