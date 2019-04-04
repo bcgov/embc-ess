@@ -91,7 +91,7 @@ export class TaskNumberMakerComponent implements OnInit {
     if (!(this.incidentTask.community && this.incidentTask.details && this.incidentTask.taskNumber)) {
       // todo go somewhere useful for this provincial user after routing is fixed.
       this.submitting = false;
-      this.router.navigate(['/']);
+      this.maker = true; // switch back into maker mode because information is somehow missed.
     } else {
       // check if this is an update
       if (this.incidentTask.id) {
@@ -100,7 +100,7 @@ export class TaskNumberMakerComponent implements OnInit {
           .subscribe(() => {
             this.submitting = false;
             // go back to the volunteer team dashboard
-            this.router.navigate(['/']);
+            this.router.navigate(['../../'], { relativeTo: this.route });
           });
       } else {
         // if the volunteer has no id we need to create a new one
@@ -108,7 +108,7 @@ export class TaskNumberMakerComponent implements OnInit {
           .subscribe(i => {
             this.submitting = false;
             // go back to the volunteer team dashboard
-            this.router.navigate(['/']);
+            this.router.navigate(['../../'], { relativeTo: this.route });
           });
       }
     }

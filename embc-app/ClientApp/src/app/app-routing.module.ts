@@ -265,7 +265,6 @@ const routes: Routes = [
         component: UsefulInformationContentComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
-
     ],
   },
   {
