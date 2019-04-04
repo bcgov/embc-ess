@@ -1,0 +1,82 @@
+<div *ngIf="maker">
+  <div class="mb-4">
+    <h1 *ngIf="editMode">Edit a Task Number</h1>
+    <h1 *ngIf="!editMode">Add a Task Number</h1>
+    <p>The Emergency Coordination Centre is responsible for adding task numbers to the system. If you need a new task
+      number, contact the ECC at 1 800-663-3456.</p>
+    <small>All fields are required</small>
+    <h3 class="blue-header">
+      Task Details
+    </h3>
+    <div class="col mb-4">
+      <label>Task Number</label>
+      <input class="form-control" type="text" [formControl]="taskNumber">
+    </div>
+    <div class="col mb-4">
+      <label>Community</label>
+      <select class="form-control" [formControl]="community">
+        <option [ngValue]="incidentTask?.community" *ngIf="incidentTask?.community?.name">{{incidentTask?.community?.name}}</option>
+        <option [ngValue]="null" *ngIf="!incidentTask?.community">-- Select community</option>
+        <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community?.name}}</option>
+      </select>
+    </div>
+    <div class="col mb-4">
+      <label>Details of Incident</label>
+      <input class="form-control" type="text" placeholder="Please specify" [formControl]="details">
+    </div>
+  </div>
+  <div class="mt-5 space-between">
+    <section>
+      <a routerLink="/dashboard">
+        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+        <span class="ml-2">Cancel &amp; Close</span>
+      </a>
+    </section>
+    <section>
+      <button class="btn btn-primary float-right" (click)="next()">Next</button>
+    </section>
+  </div>
+</div>
+
+<!-- TODO Need yellow horizontal rule -->
+<div *ngIf="!maker">
+  <div class="mb-4">
+    <h1>Review Details</h1>
+    <p>Please confirm that all details you entered are correct by reading through the summary below.</p>
+    <section class="p-3">
+      <h3>Task Details</h3>
+      <ul class="summary">
+        <li>
+          <span class="name">Task Number:</span>
+          <span class="value">{{incidentTask.taskNumber}}</span>
+        </li>
+        <li>
+          <span class="name">Incident Location:</span>
+          <span class="value">{{incidentTask.community.name}}</span>
+        </li>
+        <li>
+          <span class="name">Details of Incident:</span>
+          <span class="value">{{incidentTask.details}}</span>
+        </li>
+      </ul>
+    </section>
+  </div>
+  <div class="mt-5 space-between">
+    <section>
+      <button class="btn btn-secondary" (click)="back()">Edit Task Details</button>
+    </section>
+    <section>
+      <button *ngIf="submitting" class="btn btn-primary" disabled>
+        <span>SUBMITTING</span>
+      </button>
+      <button *ngIf="!submitting" class="btn btn-primary" (click)="submit()">
+        <span>SAVE</span>
+      </button>
+    </section>
+  </div>
+</div>
+
+<!-- <div class="mt-5 space-between"> -->
+<!-- <pre>{{community|json}}</pre> -->
+<!-- <pre>{{incidentTask|json}}</pre> -->
+<!-- </div> -->

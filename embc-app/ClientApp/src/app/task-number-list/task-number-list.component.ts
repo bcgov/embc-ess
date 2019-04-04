@@ -26,7 +26,7 @@ export class TaskNumberListComponent implements OnInit {
 
   routeTo(id: string) {
     // TODO: this seems like bad practive but fix when we have time
-    this.router.navigate(['../task-number-edit/fill/' + id], { relativeTo: this.route });
+    this.router.navigate(['../task-number/' + id], { relativeTo: this.route });
   }
 
   getIncidentTasks(limit?: number, offset?: number, query?: string, sort?: string) {

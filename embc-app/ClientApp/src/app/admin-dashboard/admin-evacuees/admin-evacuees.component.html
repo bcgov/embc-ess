@@ -5,8 +5,7 @@
   </p>
   <h3 class="blue-header">ALL EVACUEES</h3>
 
-  <app-search-bar #searchBar (valueChange)="doSearch($event)"
-    placeholder="Search by task number / last name / registration number / community ...">
+  <app-search-bar #searchBar (valueChange)="doSearch($event)" placeholder="Search by task number / last name / registration number / community ...">
   </app-search-bar>
 
   <!-- TODO: <a class="small" href="">advanced search</a> -->
@@ -20,3 +19,5 @@
   <app-evacuee-search-results #searchResultsView [searchResults]="searchResults$ | async">
   </app-evacuee-search-results>
 </div>
+
+<!-- TODO: THIS SHOULD BECOME DEPRECATED -->
