@@ -31,28 +31,10 @@ export class VolunteerMakerComponent implements OnInit {
   firstName: FormControl;
   bceid: FormControl;
   restrictedAccess: FormControl;
-  volunteer: Volunteer = {
-    id: '',
-    firstName: '',
-    initials: '',
-    lastName: '',
-    nickname: '',
-    gender: '',
-    dob: null,
-    bceidAccountNumber: '',
-    personType: 'VOLN',
-    canAccessRestrictedFiles: null,
-    organization: null,
-    isAdministrator: null,
-    isPrimaryContact: null,
-  };
+  volunteer: Volunteer;
 
   ngOnInit() {
-    // initialize form controls
-    this.bceid = new FormControl('');
-    this.lastName = new FormControl('');
-    this.firstName = new FormControl('');
-    this.restrictedAccess = new FormControl(false);    // if there are route params we should grab them
+    this.initVars();
 
     if (this.route.snapshot.params.id) {
       // there may be a user to edit because the route looks right
@@ -72,6 +54,30 @@ export class VolunteerMakerComponent implements OnInit {
     }
   }
 
+  private initVars(): void {
+    // initialize form controls
+    this.lastName = new FormControl('');
+    this.firstName = new FormControl('');
+    this.bceid = new FormControl('');
+    this.restrictedAccess = new FormControl(false);    // if there are route params we should grab them
+
+    this.volunteer = {
+      id: '',
+      firstName: '',
+      initials: '',
+      lastName: '',
+      nickname: '',
+      gender: '',
+      dob: null,
+      bceidAccountNumber: '',
+      personType: 'VOLN',
+      canAccessRestrictedFiles: null,
+      organization: null,
+      isAdministrator: null,
+      isPrimaryContact: null,
+    };
+  }
+
   next(): void {
     // when routing to the next page we save first into the application state.
     this.onSave();
@@ -80,7 +86,7 @@ export class VolunteerMakerComponent implements OnInit {
       // if (this.volunteer.lastName && this.volunteer.firstName && this.volunteer.bceidAccountNumber && this.volunteer.canAccessRestrictedFiles != null) {
       this.maker = false;
     } else {
-      alert("All fields are required.");
+      alert('All fields are required.');
     }
   }
 
@@ -116,7 +122,7 @@ export class VolunteerMakerComponent implements OnInit {
             this.resetForm();
           } else {
             // go back to the volunteer team dashboard
-            this.editMode ? this.router.navigate(['../../'], { relativeTo: this.route }) : this.router.navigate(['../'], { relativeTo: this.route })
+            this.editMode ? this.router.navigate(['../../volunteers'], { relativeTo: this.route }) : this.router.navigate(['../volunteers'], { relativeTo: this.route });
           }
         });
     } else {
@@ -129,19 +135,23 @@ export class VolunteerMakerComponent implements OnInit {
             this.resetForm();
           } else {
             // go back to the volunteer team dashboard
-            this.editMode ? this.router.navigate(['../../'], { relativeTo: this.route }) : this.router.navigate(['../'], { relativeTo: this.route })
+            this.editMode ? this.router.navigate(['../../volunteers'], { relativeTo: this.route }) : this.router.navigate(['../volunteers'], { relativeTo: this.route });
           }
         });
     }
   }
+
+  // FUTURE: why not just reload this page?
   resetForm() {
-    this.volunteer = null;
-    // initialize form controls
-    this.bceid = new FormControl('');
-    this.lastName = new FormControl('');
-    this.firstName = new FormControl('');
-    this.restrictedAccess = new FormControl(false);    // if there are route params we should grab them
+    this.initVars();
+
     // go back to the first page
     this.back();
+  }
+
+  cancel() {
+    // TODO: this seems like bad practive but fix when we have time
+    // go back to the volunteer team dashboard
+    this.editMode ? this.router.navigate(['../../volunteers'], { relativeTo: this.route }) : this.router.navigate(['../volunteers'], { relativeTo: this.route });
   }
 }
