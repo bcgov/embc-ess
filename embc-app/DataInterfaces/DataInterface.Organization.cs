@@ -62,7 +62,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         private async Task<Models.Db.Volunteer> GetPrimaryContactForOrganization(Guid orgId)
         {
-            return await Volunteers.SingleAsync(x => x.Organization.Id == orgId && (x.IsPrimaryContact ?? false));
+            return await Volunteers.FirstOrDefaultAsync(x => x.Organization.Id == orgId && (x.IsPrimaryContact ?? false));
         }
 
         public async Task<string> CreateOrganizationAsync(Organization item)
