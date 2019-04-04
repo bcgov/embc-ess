@@ -1,4 +1,4 @@
-<form novalidate [formGroup]="form" (ngSubmit)="onSubmit()">
+<form novalidate>
   <h1 class="mt-3">Review Details</h1>
 
   <p>Please confirm that all details you entered are correct by reading through the summary below with the evacuee.</p>
@@ -323,41 +323,14 @@
     </li>
   </ul>
 
-  <h3 class="blue-header">DECLARATIONS AND CONSENT</h3>
-  <section class="padded-section">
-    <div class="row">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" formControlName="declarationAndConsent">
-        <label class="form-check-label required">
-          <p>The Emergency Management BC (EMBC) will collect your personal
-            information for the purpose of providing you with emergency services in accordance with sections 26(a) and
-            (c)
-            of the Freedom of Information and Protection of Privacy Act (FoIPPA) and the Emergency Management Act. EMBC
-            will also collect the information as per section 26(e) of FoIPPA in order to evaluate the ESS program.
-            Should
-            you have any questions about the collection, use, or disclosure of personal information, please contact the
-            ESS Call Centre Manager at PO Box 9201, STN PROV GOVT, Victoria, BC, V8W9J1 or by phone toll free at
-            1800-585-9559.</p>
-          By submitting your email address, you authorize the Emergency Management BC to communicate with you by email
-          about your registration and to invite you to provide feedback about your experience.
-        </label>
-      </div>
-    </div>
-  </section>
-
   <div class="mt-5 space-between">
     <section>
       <!-- TODO: Implement go back to EDIT registration -->
-      <button class="btn btn-secondary">EDIT REGISTRATION</button>
+      <!-- <button class="btn btn-secondary">DEACTIVATE</button> -->
     </section>
     <section>
-      <a routerLink="/dashboard">
-        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
-        <span class="ml-2">Cancel &amp; Close</span>
-      </a>
-      <button type="submit" class="btn btn-primary ml-4" [disabled]="form.invalid || submitting">
-        <span *ngIf="submitting">SUBMITTING</span>
-        <span *ngIf="!submitting">SAVE</span>
+      <button type="submit" class="btn btn-primary ml-4">
+        <span>EDIT</span>
       </button>
     </section>
   </div>
