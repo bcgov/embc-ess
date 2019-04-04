@@ -41,16 +41,15 @@ namespace Gov.Embc.Public.Seeders
 
         private void CreateOrUpdateFromSeedEntity(EmbcDbContext context, Organization seedData)
         {
-            var existing = context.Organizations.FirstOrDefault(x => x.BceidAccountNumber == seedData.BceidAccountNumber);
+            var existing = context.Organizations.FirstOrDefault(x => x.BCeIDBusinessGuid == seedData.BCeIDBusinessGuid);
             if (existing == null)
             {
                 context.Organizations.Add(seedData);
             }
             else
             {
-                existing.BceidAccountNumber = seedData.BceidAccountNumber;
+                existing.BCeIDBusinessGuid = seedData.BCeIDBusinessGuid;
                 existing.Name = seedData.Name;
-                existing.Externaluseridentifier = seedData.Externaluseridentifier;
                 existing.Active = seedData.Active;
                 existing.Community = seedData.Community;
                 existing.RegionalDistrict = seedData.RegionalDistrict;

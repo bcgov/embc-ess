@@ -16,7 +16,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public static Organization GetOrganizationByBceidAccountNumber(this EmbcDbContext context, string bceidAccountNumber)
         {
-            var item = context.Organizations.FirstOrDefault(x => x.BceidAccountNumber == bceidAccountNumber);
+            var item = context.Organizations.FirstOrDefault(x => x.BCeIDBusinessGuid == bceidAccountNumber);
             return item;
         }
 
@@ -46,7 +46,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         private static void AddInitialOrganization(this EmbcDbContext context, Organization item)
         {
-            if (context.GetOrganizationByBceidAccountNumber(item.BceidAccountNumber) != null) return;
+            if (context.GetOrganizationByBceidAccountNumber(item.BCeIDBusinessGuid) != null) return;
 
             Region region = null;
 
@@ -71,12 +71,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             item = new Organization
             {
-                BceidAccountNumber = item.BceidAccountNumber,
+                BCeIDBusinessGuid = item.BCeIDBusinessGuid,
                 Active = true,
                 RegionId = region?.Id,
                 RegionalDistrictId = regionalDistrict?.Id,
                 CommunityId = community?.Id,
-                Externaluseridentifier = item.Externaluseridentifier,
                 Name = item.Name
             };
 

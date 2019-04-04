@@ -267,33 +267,34 @@ const routes: Routes = [
       },
     ],
   },
-  {
-    path: 'volunteer-edit',
-    component: VolunteerEditorComponent,
-    data: { expectedRole: PROVINCIAL_ADMIN },
-    children: [
-      {
-        path: '',
-        redirectTo: 'fill',
-        pathMatch: 'full'
-      },
-      {
-        path: 'fill',
-        component: VolunteerEditorOneComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
-      },
-      {
-        path: 'fill/:id',
-        component: VolunteerEditorOneComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
-      },
-      {
-        path: 'confirmation',
-        component: VolunteerEditorConfirmationComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
-      }
-    ]
-  },
+  // OLD COMPONENT
+  // {
+  //   path: 'volunteer-edit',
+  //   component: VolunteerEditorComponent,
+  //   data: { expectedRole: PROVINCIAL_ADMIN },
+  //   children: [
+  //     {
+  //       path: '',
+  //       redirectTo: 'fill',
+  //       pathMatch: 'full'
+  //     },
+  //     {
+  //       path: 'fill',
+  //       component: VolunteerEditorOneComponent,
+  //       data: { expectedRole: PROVINCIAL_ADMIN },
+  //     },
+  //     {
+  //       path: 'fill/:id',
+  //       component: VolunteerEditorOneComponent,
+  //       data: { expectedRole: PROVINCIAL_ADMIN },
+  //     },
+  //     {
+  //       path: 'confirmation',
+  //       component: VolunteerEditorConfirmationComponent,
+  //       data: { expectedRole: PROVINCIAL_ADMIN },
+  //     }
+  //   ]
+  // },
 
   // PROVINCIAL_ADMIN routes
   {
@@ -405,7 +406,6 @@ const routes: Routes = [
     // data: { expectedRole: PROVINCIAL_ADMIN }
   },
   {
-
     // exception in routing
     path: 'register-evacuee',
     component: EvacueeRegistrationComponent,
