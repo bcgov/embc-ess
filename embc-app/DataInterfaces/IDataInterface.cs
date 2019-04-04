@@ -56,41 +56,43 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<IPagedResults<Organization>> GetOrganizationsAsync(SearchQueryParameters searchQuery);
 
-        Organization GetOrganizationByLegalName(string name);
+        Organization GetOrganizationBCeIDGuid(string guid);
 
-        Organization GetOrganizationByExternalId(string externalId);
-
-        Task<Organization> CreateOrganizationAsync(Organization item);
+        Task<string> CreateOrganizationAsync(Organization item);
 
         Task UpdateOrganizationAsync(Organization item);
 
         Task<bool> DeactivateOrganizationAsync(string id);
 
+        Task<bool> ActivateOrganizationAsync(string id);
+
         Task<Organization> GetOrganizationAsync(string id);
+
+        Task<bool> OrganizationExistsAsync(string id);
 
         #endregion Organization
 
-        #region People
-
-        Task<IPagedResults<Person>> GetVolunteersAsync(VolunteersSearchQueryParameters searchQuery);
-
-        Task<Person> GetPersonByIdAsync(string id);
-
-        Task UpdatePersonAsync(Person person);
-
-        Task<Person> CreatePersonAsync(Person person);
-
-        Task<bool> DeactivatePersonAsync(string id);
-
-        #endregion People
-
         #region Volunteer
+
+        Task<IPagedResults<Volunteer>> GetVolunteersAsync(VolunteersSearchQueryParameters searchQuery);
+
+        Task<Volunteer> GetVolunteerByIdAsync(string id);
+
+        Task UpdateVolunteerAsync(Volunteer person);
+
+        Task<string> CreateVolunteerAsync(Volunteer person);
+
+        Task<bool> DeactivateVolunteerAsync(string id);
+
+        Task<bool> ActivateVolunteerAsync(string id);
 
         Volunteer GetVolunteerByName(string firstName, string lastName);
 
         Volunteer GetVolunteerByExternalId(string externalId);
 
         Volunteer GetVolunteerByBceidUserId(string bceidUserId);
+
+        Task<bool> VolunteerExistsAsync(string id);
 
         #endregion Volunteer
     }

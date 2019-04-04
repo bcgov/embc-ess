@@ -89,7 +89,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             Guid id = new Guid(guid);
             User user = null;
-            var contact = await _dataInterface.GetPersonByIdAsync(guid) as ViewModels.Volunteer;
+            var contact = await _dataInterface.GetVolunteerByIdAsync(guid) as ViewModels.Volunteer;
             if (contact != null)
             {
                 user = new User();

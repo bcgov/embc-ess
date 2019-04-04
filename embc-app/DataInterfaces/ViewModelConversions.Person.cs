@@ -5,6 +5,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static partial class ViewModelConversions
     {
+        public static ViewModels.Volunteer ToViewModel(this Models.Db.Volunteer source)
+        {
+            return (ViewModels.Volunteer)((Models.Db.Person)source).ToViewModel();
+        }
+
         public static ViewModels.Person ToViewModel(this Models.Db.Person source)
         {
             ViewModels.Person result = null;

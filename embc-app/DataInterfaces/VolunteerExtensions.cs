@@ -52,7 +52,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             if (item.Organization != null)
             {
-                org = context.GetOrganizationByBceidAccountNumber(item.Organization.BceidAccountNumber);
+                org = context.GetOrganizationByBceidAccountNumber(item.Organization.BCeIDBusinessGuid);
             }
 
             item = new Volunteer

@@ -11,6 +11,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     public partial class DataInterface
     {
         private IQueryable<Models.Db.Volunteer> Volunteers => db.People
+            .AsNoTracking()
             .Where(p => p is Models.Db.Volunteer)
             .Cast<Models.Db.Volunteer>()
             .Include(v => v.Organization)
@@ -23,13 +24,31 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         .ThenInclude(x => x.Region)
         ;
 
-        public async Task UpdatePersonAsync(Person person)
+        public async Task UpdateVolunteerAsync(Volunteer person)
         {
-            db.People.Update(person.ToModel());
+            var volunteer = (Models.Db.Volunteer)person.ToModel();
+            if (volunteer.IsPrimaryContact ?? false)
+            {
+                await SetVolunteerAsPrimaryContact(volunteer);
+            }
+            db.People.Update(volunteer);
             await db.SaveChangesAsync();
         }
 
-        public async Task<IPagedResults<Person>> GetVolunteersAsync(VolunteersSearchQueryParameters searchQuery)
+        private IQueryable<Models.Db.Volunteer> GetVolunteersByOrganizationId(Guid orgId)
+        {
+            return Volunteers.Where(v => v.Organization.Id == orgId);
+        }
+
+        private async Task SetVolunteerAsPrimaryContact(Models.Db.Volunteer volunteer)
+        {
+            var previousPrimaryContactsForOrg = GetVolunteersByOrganizationId(volunteer.Organization.Id).Where(v => v.IsPrimaryContact ?? false);
+            await previousPrimaryContactsForOrg.ForEachAsync(v => v.IsPrimaryContact = false);
+            db.People.UpdateRange(previousPrimaryContactsForOrg);
+            volunteer.IsPrimaryContact = true;
+        }
+
+        public async Task<IPagedResults<Volunteer>> GetVolunteersAsync(VolunteersSearchQueryParameters searchQuery)
         {
             var items = await Volunteers
                  .Where(v => !searchQuery.HasQuery() || v.LastName.Contains(searchQuery.Query, StringComparison.InvariantCultureIgnoreCase))
@@ -40,25 +59,33 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                  .Sort(searchQuery.SortBy ?? "id")
                  .ToArrayAsync();
 
-            return new PaginatedList<Person>(items.Select(o => ((Models.Db.Person)o).ToViewModel()), searchQuery.Offset, searchQuery.Limit);
+            return new PaginatedList<Volunteer>(items.Select(o => o.ToViewModel()), searchQuery.Offset, searchQuery.Limit);
         }
 
-        public async Task<Person> GetPersonByIdAsync(string id)
+        public async Task<Volunteer> GetVolunteerByIdAsync(string id)
         {
             var person = await Volunteers.SingleOrDefaultAsync(v => v.Id == Guid.Parse(id));
-            return (person as Models.Db.Person)?.ToViewModel();
+            return person?.ToViewModel();
         }
 
-        public async Task<Person> CreatePersonAsync(Person person)
+        public async Task<bool> VolunteerExistsAsync(string id)
         {
-            if (!(person is Volunteer)) throw new InvalidOperationException($"Can only create volunteers, but received {person.GetType().Name}");
-
-            var newPerson = await db.People.AddAsync(person.ToModel());
-            await db.SaveChangesAsync();
-            return ((Models.Db.Person)await Volunteers.SingleOrDefaultAsync(v => v.Id == newPerson.Entity.Id)).ToViewModel();
+            return await Volunteers.AnyAsync(x => x.Id == Guid.Parse(id));
         }
 
-        public async Task<bool> DeactivatePersonAsync(string id)
+        public async Task<string> CreateVolunteerAsync(Volunteer person)
+        {
+            var volunteer = (Models.Db.Volunteer)person.ToModel();
+            if (volunteer.IsPrimaryContact ?? false)
+            {
+                await SetVolunteerAsPrimaryContact(volunteer);
+            }
+            var newPerson = await db.People.AddAsync(volunteer);
+            await db.SaveChangesAsync();
+            return newPerson.Entity.Id.ToString();
+        }
+
+        public async Task<bool> DeactivateVolunteerAsync(string id)
         {
             var person = await db.People.SingleOrDefaultAsync(p => p.Id == Guid.Parse(id)) as Models.Db.Volunteer;
             if (person == null) return false;
@@ -69,12 +96,23 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return true;
         }
 
+        public async Task<bool> ActivateVolunteerAsync(string id)
+        {
+            var person = await db.People.SingleOrDefaultAsync(p => p.Id == Guid.Parse(id)) as Models.Db.Volunteer;
+            if (person == null) return false;
+
+            person.Active = true;
+            db.People.Update(person);
+            await db.SaveChangesAsync();
+            return true;
+        }
+
         public Volunteer GetVolunteerByBceidUserId(string bceidUserId)
         {
             var volunteer = Volunteers.AsNoTracking().FirstOrDefault(x => x.BceidAccountNumber == bceidUserId);
             if (volunteer == null) return null;
 
-            return (Volunteer)volunteer.ToViewModel();
+            return volunteer.ToViewModel();
         }
 
         public Volunteer GetVolunteerByExternalId(string externalId)
@@ -82,7 +120,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var volunteer = Volunteers.FirstOrDefault(x => x.Externaluseridentifier == externalId);
             if (volunteer == null) return null;
 
-            return (Volunteer)volunteer.ToViewModel();
+            return volunteer.ToViewModel();
         }
 
         public Volunteer GetVolunteerByName(string firstName, string lastName)
@@ -90,7 +128,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var volunteer = Volunteers.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
             if (volunteer == null) return null;
 
-            return (Volunteer)volunteer.ToViewModel();
+            return volunteer.ToViewModel();
         }
     }
 }

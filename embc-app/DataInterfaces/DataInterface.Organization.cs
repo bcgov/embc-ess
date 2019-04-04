@@ -10,12 +10,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     public partial class DataInterface
     {
         private IQueryable<Models.Db.Organization> Organizations => db.Organizations
-                .Include(x => x.Region)
-                .Include(x => x.RegionalDistrict)
-                    .ThenInclude(x => x.Region)
-                .Include(x => x.Community)
-                    .ThenInclude(x => x.RegionalDistrict)
-                        .ThenInclude(x => x.Region);
+            .AsNoTracking()
+            .Include(x => x.Region)
+            .Include(x => x.RegionalDistrict)
+                .ThenInclude(x => x.Region)
+            .Include(x => x.Community)
+                .ThenInclude(x => x.RegionalDistrict)
+                    .ThenInclude(x => x.Region);
 
         public async Task<IPagedResults<Organization>> GetOrganizationsAsync(SearchQueryParameters searchQuery)
         {
@@ -28,38 +29,59 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 )
                 .Where(t => searchQuery.IncludeDeactivated || t.Active)
                 .Sort(searchQuery.SortBy ?? "id")
+                .Join(Volunteers.Where(v => v.IsPrimaryContact ?? false), o => o.Id, pc => pc.Organization.Id, (org, pc) => new { org, pc })//Assume a single primary contact
                 .ToArrayAsync();
 
-            return new PaginatedList<Organization>(items.Select(o => o.ToViewModel()), searchQuery.Offset, searchQuery.Limit);
+            return new PaginatedList<Organization>(items.Select(i => i.org.ToViewModel(i.pc)), searchQuery.Offset, searchQuery.Limit);
         }
 
-        public Organization GetOrganizationByLegalName(string name)
+        public Organization GetOrganizationBCeIDGuid(string guid)
         {
-            return Organizations.FirstOrDefault(x => x.Name == name).ToViewModel();
-        }
-
-        public Organization GetOrganizationByExternalId(string externalId)
-        {
-            return Organizations.FirstOrDefault(x => x.Externaluseridentifier == externalId).ToViewModel();
+            var org = Organizations.FirstOrDefault(x => x.BCeIDBusinessGuid == guid);
+            if (org == null) return null;
+            return org.ToViewModel(GetPrimaryContactForOrganization(org.Id).GetAwaiter().GetResult());
         }
 
         public async Task<Organization> GetOrganizationAsync(string id)
         {
-            var result = await GetOrganizationInternalAsync(Guid.Parse(id));
-            return result?.ToViewModel();
+            var item = await Organizations.SingleOrDefaultAsync(x => x.Id == Guid.Parse(id));
+            if (item == null) return null;
+            var admin = await GetPrimaryContactForOrganization(item.Id);
+            var org = item.ToViewModel(admin);
+            org.AdminBCeID = admin.BceidAccountNumber;
+            org.AdminFirstName = admin.FirstName;
+            org.AdminLastName = admin.LastName;
+
+            return org;
         }
 
-        private async Task<Models.Db.Organization> GetOrganizationInternalAsync(Guid id)
+        public async Task<bool> OrganizationExistsAsync(string id)
         {
-            return await Organizations.SingleOrDefaultAsync(x => x.Id == id);
+            return await Organizations.AnyAsync(x => x.Id == Guid.Parse(id));
         }
 
-        public async Task<Organization> CreateOrganizationAsync(Organization item)
+        private async Task<Models.Db.Volunteer> GetPrimaryContactForOrganization(Guid orgId)
+        {
+            return await Volunteers.SingleAsync(x => x.Organization.Id == orgId && (x.IsPrimaryContact ?? false));
+        }
+
+        public async Task<string> CreateOrganizationAsync(Organization item)
         {
             var newItem = await db.Organizations.AddAsync(item.ToModel());
+            var admin = new Models.Db.Volunteer()
+            {
+                Active = true,
+                BceidAccountNumber = item.AdminBCeID,
+                FirstName = item.AdminFirstName,
+                LastName = item.AdminLastName,
+                IsAdministrator = true,
+                OrganizationId = newItem.Entity.Id,
+                IsPrimaryContact = true
+            };
+            var newAdmin = await db.People.AddAsync(admin);
             await db.SaveChangesAsync();
 
-            return (await GetOrganizationInternalAsync(newItem.Entity.Id)).ToViewModel();
+            return newItem.Entity.Id.ToString();
         }
 
         public async Task UpdateOrganizationAsync(Organization item)
@@ -76,6 +98,20 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 return false;
             }
             entity.Active = false;
+            db.Organizations.Update(entity);
+            await db.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> ActivateOrganizationAsync(string id)
+        {
+            var entity = await db.Organizations.SingleOrDefaultAsync(x => x.Id == new Guid(id));
+            if (entity == null)
+            {
+                return false;
+            }
+            entity.Active = true;
             db.Organizations.Update(entity);
             await db.SaveChangesAsync();
 
