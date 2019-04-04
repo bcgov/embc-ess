@@ -100,7 +100,8 @@ export class TaskNumberMakerComponent implements OnInit {
           .subscribe(() => {
             this.submitting = false;
             // go back to the volunteer team dashboard
-            this.router.navigate(['../../'], { relativeTo: this.route });
+            // TODO this needs to route in two different ways because the ID added for edit acts as a route element
+            this.editMode ? this.router.navigate(['../../'], { relativeTo: this.route }) : this.router.navigate(['../'], { relativeTo: this.route })
           });
       } else {
         // if the volunteer has no id we need to create a new one
@@ -108,7 +109,7 @@ export class TaskNumberMakerComponent implements OnInit {
           .subscribe(i => {
             this.submitting = false;
             // go back to the volunteer team dashboard
-            this.router.navigate(['../../'], { relativeTo: this.route });
+            this.editMode ? this.router.navigate(['../../'], { relativeTo: this.route }) : this.router.navigate(['../'], { relativeTo: this.route })
           });
       }
     }
