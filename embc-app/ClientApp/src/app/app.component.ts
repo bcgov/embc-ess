@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, Inject } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { concat } from 'rxjs';
 
 import { User } from './core/models';
