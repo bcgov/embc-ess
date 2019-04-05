@@ -167,5 +167,5 @@ export class EvacueeRegistrationConfirmationComponent implements OnInit, OnDestr
     const volunteer: Partial<Volunteer> = id ? { id } : null;
     value.completedBy = value.completedBy || volunteer;
   }
-
+  back() { }
 }
