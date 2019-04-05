@@ -148,45 +148,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     // passing in this form's set of validation messages.
     this.validationHelper = new ValidationHelper(this.constraints);
   }
-  blankRegistration(): Registration {
-    return {
-      id: null,
-      active: null,
-      restrictedAccess: null,
-      declarationAndConsent: null,
-      essFileNumber: null,
-      dietaryNeeds: null,
-      dietaryNeedsDetails: null,
-      disasterAffectDetails: null,
-      externalReferralsDetails: null,
-      facility: null,
-      familyRecoveryPlan: null,
-      followUpDetails: null,
-      insuranceCode: null,
-      medicationNeeds: null,
-      registrationCompletionDate: null,
-      registeringFamilyMembers: null,
-      selfRegisteredDate: null,
-      hasThreeDayMedicationSupply: null,
-      hasInquiryReferral: null,
-      hasHealthServicesReferral: null,
-      hasFirstAidReferral: null,
-      hasChildCareReferral: null,
-      hasPersonalServicesReferral: null,
-      hasPetCareReferral: null,
-      hasPets: null,
-      requiresAccommodation: null,
-      requiresClothing: null,
-      requiresFood: null,
-      requiresIncidentals: null,
-      requiresTransportation: null,
-      requiresSupport: null,
-      headOfHousehold: null,
-      incidentTask: null,
-      hostCommunity: null,
-      completedBy: null,
-    }
-  }
+
   // convenience getter for easy access to form fields within the HTML template
   get f(): any { return this.form.controls; }
 
@@ -555,16 +517,47 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       // success!
       this.errorSummary = null;
       // save the registration by copying the properties into it.
-      this.registration = this.saveState();
+      this.registration = this.collectRegistrationFromForm();
 
       // navigate to the next page. AKA show the summary part of the form.
       this.summaryMode = true;
       this.submitting = false; // reenable when we parse data
     }
   }
+  submit() {
+    // Send data to the server
 
+    this.submitted = true;
+    // in transmission
+    this.submitting = true;
+    // this function performs the "send json to server" action
+    // push changes to backend
+    // TODO: should this be editmode?
+    if (this.registration.id == null) {
+      // submit the global registration to the server
+      this.registrationService
+        .createRegistration(this.registration)
+        .subscribe(() => {
+          this.submitting = false;
+          this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
+        });
+    } else {
+      // submit the global registration to the server
+      this.registrationService
+        .updateRegistration(this.registration)
+        .subscribe(() => {
+          this.submitting = false;
+          this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
+        });
+    }
+  }
+  back() {
+    //return to the edit mode so you can change the form data
+    this.summaryMode = false;
+  }
 
-  saveState(): Registration {
+  collectRegistrationFromForm(): Registration {
+    //
     const values = this.form.value;
     // ensure proper sub-types are assigned to people entities
     const personType: 'FMBR' = 'FMBR';
@@ -658,7 +651,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     // this.store.dispatch(new UpdateRegistration({ registration: r }));
     return r;
   }
-  // ------------------------------------------------------------------------------
+  // --------------------HELPERS-----------------------------------------
 
   isBcAddress(address: Address): boolean {
     return isBcAddress(address);
@@ -667,38 +660,48 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     const option = GENDER_OPTIONS.find(item => item.key === key);
     return option ? option.value : null;
   }
-  submit() {
-    this.submitted = true;
-    // in transmission
-    this.submitting = true;
-    // this function performs the "send json to server" action
-    // push changes to backend
-    // TODO: should this be editmode?
-    if (this.registration.id == null) {
-      // submit the global registration to the server
-      this.registrationService
-        .createRegistration(this.registration)
-        .subscribe(() => {
-          this.submitting = false;
-          this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
-        });
-    } else {
-      // submit the global registration to the server
-      this.registrationService
-        .updateRegistration(this.registration)
-        .subscribe(() => {
-          this.submitting = false;
-          this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
-        });
-    }
-  }
-  back() {
-    //return to the edit mode
-    this.summaryMode = false;
-  }
-
   insuranceOption(key: string) {
     const option = INSURANCE_OPTIONS.find(item => item.key === key);
     return option ? option.value : null;
+  }
+  blankRegistration(): Registration {
+    // This is a workaround for not having an instantiable class that initializes the interface
+    return {
+      id: null,
+      active: null,
+      restrictedAccess: null,
+      declarationAndConsent: null,
+      essFileNumber: null,
+      dietaryNeeds: null,
+      dietaryNeedsDetails: null,
+      disasterAffectDetails: null,
+      externalReferralsDetails: null,
+      facility: null,
+      familyRecoveryPlan: null,
+      followUpDetails: null,
+      insuranceCode: null,
+      medicationNeeds: null,
+      registrationCompletionDate: null,
+      registeringFamilyMembers: null,
+      selfRegisteredDate: null,
+      hasThreeDayMedicationSupply: null,
+      hasInquiryReferral: null,
+      hasHealthServicesReferral: null,
+      hasFirstAidReferral: null,
+      hasChildCareReferral: null,
+      hasPersonalServicesReferral: null,
+      hasPetCareReferral: null,
+      hasPets: null,
+      requiresAccommodation: null,
+      requiresClothing: null,
+      requiresFood: null,
+      requiresIncidentals: null,
+      requiresTransportation: null,
+      requiresSupport: null,
+      headOfHousehold: null,
+      incidentTask: null,
+      hostCommunity: null,
+      completedBy: null,
+    }
   }
 }
