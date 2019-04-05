@@ -682,7 +682,7 @@
     </ul>
     <div *ngIf="registration?.headOfHousehold?.familyMembers">
       <h3>Evacuee Family Information</h3>
-      <ul class="summary" *ngFor="let fm of registration.headOfHousehold.familyMembers">
+      <ul class="summary mt-4" *ngFor="let fm of registration.headOfHousehold.familyMembers">
         <li>
           <span class="name">Last Name:</span>
           <span class="value">{{fm?.lastName}}</span>
@@ -691,17 +691,14 @@
           <span class="name">First Name:</span>
           <span class="value">{{fm?.firstName}}</span>
         </li>
-        <!-- <li>
-          <span class="name">Relationship:</span>
-          <span class="value">{{fm?.relationshipToEvacuee?.description}}</span>
-        </li> -->
-      </ul>
-      <!-- <ul class="summary" *ngFor="let fm of registration.headOfHousehold.familyMembers">
         <li>
           <span class="name">Initial:</span>
           <span class="value">{{fm?.initials}}</span>
         </li>
-
+        <li>
+          <span class="name">Relationship:</span>
+          <span class="value">{{fm?.relationshipToEvacuee?.description}}</span>
+        </li>
         <li>
           <span class="name">Gender:</span>
           <span class="value">{{genderOption(fm?.gender)}}</span>
@@ -710,7 +707,7 @@
           <span class="name">Date of Birth:</span>
           <span class="value">{{fm?.dob | date : 'MM/dd/yyyy'}}</span>
         </li>
-      </ul> -->
+      </ul>
     </div>
 
     <h3>Primary Address &amp; Contact Details</h3>
