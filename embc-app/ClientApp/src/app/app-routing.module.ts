@@ -366,32 +366,44 @@ const routes: Routes = [
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
-        path: 'register-evacuee',
-        component: EvacueeRegistrationComponent,
+        //the fill is to make it work exactly like the two components replaced.
+        path: 'register-evacuee/fill',
+        component: EvacueeRegistrationOneComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
-        children: [
-          {
-            path: '',
-            redirectTo: 'fill',
-            pathMatch: 'full'
-          },
-          {
-            path: 'fill/:id',
-            component: EvacueeRegistrationOneComponent,
-            data: { expectedRole: PROVINCIAL_ADMIN },
-          },
-          {
-            path: 'fill',
-            component: EvacueeRegistrationOneComponent,
-            data: { expectedRole: PROVINCIAL_ADMIN },
-          },
-          {
-            path: 'confirmation',
-            component: EvacueeRegistrationConfirmationComponent,
-            data: { expectedRole: PROVINCIAL_ADMIN },
-          },
-        ]
       },
+      {
+        //the fill is to make it work exactly like the two components replaced.
+        path: 'register-evacuee/fill/:id',
+        component: EvacueeRegistrationOneComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      // {
+      //   path: 'register-evacuee',
+      //   component: EvacueeRegistrationComponent,
+      //   data: { expectedRole: PROVINCIAL_ADMIN },
+      //   children: [
+      //     {
+      //       path: '',
+      //       redirectTo: 'fill',
+      //       pathMatch: 'full'
+      //     },
+      //     {
+      //       path: 'fill/:id',
+      //       component: EvacueeRegistrationOneComponent,
+      //       data: { expectedRole: PROVINCIAL_ADMIN },
+      //     },
+      //     {
+      //       path: 'fill',
+      //       component: EvacueeRegistrationOneComponent,
+      //       data: { expectedRole: PROVINCIAL_ADMIN },
+      //     },
+      //     {
+      //       path: 'confirmation',
+      //       component: EvacueeRegistrationConfirmationComponent,
+      //       data: { expectedRole: PROVINCIAL_ADMIN },
+      //     },
+      //   ]
+      // },
 
       {
         path: 'useful-info',
