@@ -2,6 +2,7 @@ using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,7 +26,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .Sort(searchQuery.SortBy ?? "id")
                 .ToArrayAsync();
 
-            return new PaginatedList<IncidentTask>(items.Select(t => t.ToViewModel()), searchQuery.Offset, searchQuery.Limit);
+            var tasks = items.Select(t => t.ToViewModel()).ToList();
+            var associatedEvacuees = await GetIncidentTaskEvacuees(tasks.Select(t => t.Id).ToList());
+
+            tasks.ToList().ForEach(t => t.TotalAssociatedEvacuees = associatedEvacuees.FirstOrDefault(a => a.IncidentTaskId == t.Id)?.TotalAssociatedEvacuees);
+
+            return new PaginatedList<IncidentTask>(tasks, searchQuery.Offset, searchQuery.Limit);
         }
 
         public async Task<IncidentTask> GetIncidentTaskAsync(string id)
@@ -63,6 +69,25 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             await db.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<IncidentTaskEvacueeSummary> GetIncidentTaskEvacuees(string incidentTaskId)
+        {
+            var result = await GetIncidentTaskEvacuees(new List<string> { incidentTaskId });
+            return result.SingleOrDefault();
+        }
+
+        public async Task<List<IncidentTaskEvacueeSummary>> GetIncidentTaskEvacuees(List<string> incidentTaskIds)
+        {
+            var items = await db.Registrations
+                .Where(r => incidentTaskIds.Contains(r.Id.ToString()))
+                .Select(r => new IncidentTaskEvacueeSummary
+                {
+                    IncidentTaskId = r.IncidentTaskId.ToString(),
+                    TotalAssociatedEvacuees = r.HeadOfHousehold.FamilyMembers.Count() + 1
+                }).ToListAsync();
+
+            return items;
         }
     }
 }
