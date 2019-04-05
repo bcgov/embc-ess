@@ -48,9 +48,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             if (item == null) return null;
             var admin = await GetPrimaryContactForOrganization(item.Id);
             var org = item.ToViewModel(admin);
-            org.AdminBCeID = admin.BceidAccountNumber;
-            org.AdminFirstName = admin.FirstName;
-            org.AdminLastName = admin.LastName;
 
             return org;
         }

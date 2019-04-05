@@ -13,6 +13,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public bool Active { get; set; }
 
         [MaxLength(150)]
+        [Required]
         public string Name { get; set; }
 
         [MaxLength(100)]

@@ -7,7 +7,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string Id { get; set; }
         public bool? Active { get; set; }
 
-        [Required]
         [MaxLength(150)]
         public string Name { get; set; }
 

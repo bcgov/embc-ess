@@ -1,9 +1,21 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
     public abstract class Evacuee : Person
     {
+        [MaxLength(255)]
+        public string Nickname { get; set; }
+
+        [MaxLength(255)]
+        public string Initials { get; set; }
+
+        [MaxLength(255)]
+        public string Gender { get; set; }
+
+        public DateTimeOffset? Dob { get; set; }
         public string BcServicesNumber { get; set; }
     }
 

@@ -26,10 +26,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task UpdateVolunteerAsync(Volunteer person)
         {
+            if (string.IsNullOrEmpty(person.Organization.Id)) throw new InvalidOperationException($"Volunteer {person.Id} is not associated with an organization");
+
             var volunteer = (Models.Db.Volunteer)person.ToModel();
+            var orgId = volunteer.OrganizationId.Value;
             if (volunteer.IsPrimaryContact ?? false)
             {
-                await SetVolunteerAsPrimaryContact(volunteer);
+                await SetVolunteerAsPrimaryContact(volunteer, orgId);
+            }
+            else
+            {
+                var numberOfPrimaryContacts = await GetNumberOfPrimaryContactsInOrganization(orgId);
+                if (numberOfPrimaryContacts <= 1) throw new InvalidOperationException("Organization must have at least 1 primary contact");
             }
             db.People.Update(volunteer);
             await db.SaveChangesAsync();
@@ -40,12 +48,21 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return Volunteers.Where(v => v.Organization.Id == orgId);
         }
 
-        private async Task SetVolunteerAsPrimaryContact(Models.Db.Volunteer volunteer)
+        private async Task SetVolunteerAsPrimaryContact(Models.Db.Volunteer volunteer, Guid organizationId)
         {
-            var previousPrimaryContactsForOrg = GetVolunteersByOrganizationId(volunteer.Organization.Id).Where(v => v.IsPrimaryContact ?? false);
-            await previousPrimaryContactsForOrg.ForEachAsync(v => v.IsPrimaryContact = false);
+            var previousPrimaryContactsForOrg = GetVolunteersByOrganizationId(organizationId).Where(v => v.Id != volunteer.Id && (v.IsPrimaryContact ?? false)).AsTracking();
+            foreach (var contact in previousPrimaryContactsForOrg)
+            {
+                contact.IsPrimaryContact = false;
+            }
             db.People.UpdateRange(previousPrimaryContactsForOrg);
             volunteer.IsPrimaryContact = true;
+            await Task.CompletedTask;
+        }
+
+        private async Task<int> GetNumberOfPrimaryContactsInOrganization(Guid organizationId)
+        {
+            return await Volunteers.CountAsync(v => v.Organization.Id == organizationId && v.IsPrimaryContact.HasValue && v.IsPrimaryContact.Value);
         }
 
         public async Task<IPagedResults<Volunteer>> GetVolunteersAsync(VolunteersSearchQueryParameters searchQuery)
@@ -75,10 +92,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<string> CreateVolunteerAsync(Volunteer person)
         {
+            if (string.IsNullOrEmpty(person.Organization.Id)) throw new InvalidOperationException($"Volunteer {person.Id} is not associated with an organization");
+
             var volunteer = (Models.Db.Volunteer)person.ToModel();
+            var orgId = volunteer.OrganizationId.Value;
             if (volunteer.IsPrimaryContact ?? false)
             {
-                await SetVolunteerAsPrimaryContact(volunteer);
+                await SetVolunteerAsPrimaryContact(volunteer, orgId);
+            }
+            else
+            {
+                var numberOfPrimaryContacts = await GetNumberOfPrimaryContactsInOrganization(orgId);
+                if (numberOfPrimaryContacts <= 1) throw new InvalidOperationException("Organization must have at least 1 primary contact");
             }
             var newPerson = await db.People.AddAsync(volunteer);
             await db.SaveChangesAsync();
