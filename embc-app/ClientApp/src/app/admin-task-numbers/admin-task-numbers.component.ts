@@ -25,7 +25,7 @@ export class AdminTaskNumbersComponent implements OnInit {
   }
 
   routeTo(id: string) {
-    // TODO: this seems like bad practive but fix when we have time
+    // TODO: this seems like bad practice but fix when we have time
     this.router.navigate(['../task-number-edit/fill/' + id], { relativeTo: this.route });
   }
 
