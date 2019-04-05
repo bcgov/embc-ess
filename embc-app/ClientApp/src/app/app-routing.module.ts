@@ -473,11 +473,11 @@ const routes: Routes = [
   {
     // exception in routing
     path: 'register-evacuee',
-    component: EvacueeRegistrationOneComponent,
+    redirectTo: 'provincial-admin/register-evacuee/fill'
   },
   {
     // exception in routing
-    path: 'register-evacuee/:id',
+    path: 'register-evacuee/register-evacuee/fill/:id',
     component: EvacueeRegistrationOneComponent,
   },
   {

@@ -539,6 +539,12 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         .createRegistration(this.registration)
         .subscribe(() => {
           this.submitting = false;
+
+          // TODO: there is an exception that if the route is ...com/embcess/register-evacuee it should only go up one instead of 2
+          // TODO: It should be fixed but will need a wider refactor for consistency
+          // It happens when the user is 
+
+          //if the parameters are on the end of the URL we need to route towards root once more.
           this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
         });
     } else {
