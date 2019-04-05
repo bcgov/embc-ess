@@ -455,7 +455,16 @@ const routes: Routes = [
   {
     path: 'evacuee-summary/:id',
     component: EvacueeSummaryComponent,
-    // data: { expectedRole: PROVINCIAL_ADMIN }
+  },
+  {
+    // exception in routing
+    path: 'register-evacuee',
+    component: EvacueeRegistrationOneComponent,
+  },
+  {
+    // exception in routing
+    path: 'register-evacuee/:id',
+    component: EvacueeRegistrationOneComponent,
   },
   {
     // exception in routing
@@ -467,7 +476,11 @@ const routes: Routes = [
     path: 'register-evacuee/fill/:id',
     component: EvacueeRegistrationComponent,
   },
-
+  {
+    // exception in routing
+    path: 'evacuees',
+    redirectTo: 'dashboard'
+  },
   // 404 route (catch all default)
   {
     path: '**',
