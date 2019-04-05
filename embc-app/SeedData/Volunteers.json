@@ -1,6 +1,5 @@
 [
     {
-        "name": "ess.developerV1",
         "email": "dev1@ebmc",
         "bceidAccountNumber": "ess.developerV1",
         "isAdministrator": false,
@@ -11,11 +10,10 @@
         },
         "externaluseridentifier": null,
         "personType": "VOLN",
-        "firstName": "dev",
-        "lastName": "one"
+        "firstName": "developerV1",
+        "lastName": "ess"
     },
     {
-        "name": "ess.developerV2",
         "email": "dev2@ebmc",
         "bceidAccountNumber": "ess.developerV2",
         "isAdministrator": false,
@@ -26,11 +24,10 @@
         },
         "externaluseridentifier": null,
         "personType": "VOLN",
-        "firstName": "dev",
-        "lastName": "two"
+        "firstName": "developerV2",
+        "lastName": "ess"
     },
     {
-        "name": "ess.developerA1",
         "email": "adm1@ebmc",
         "bceidAccountNumber": "ess.developerA1",
         "isAdministrator": true,
@@ -41,11 +38,10 @@
         },
         "externaluseridentifier": null,
         "personType": "VOLN",
-        "firstName": "admin",
-        "lastName": "one"
+        "firstName": "developerA1",
+        "lastName": "ess"
     },
     {
-        "name": "ess.developerA2",
         "email": "adm2@ebmc",
         "bceidAccountNumber": "ess.developerA2",
         "isAdministrator": true,
@@ -56,7 +52,7 @@
         },
         "externaluseridentifier": null,
         "personType": "VOLN",
-        "firstName": "admin",
-        "lastName": "two"
+        "firstName": "developerA2",
+        "lastName": "ess"
     }
 ]
