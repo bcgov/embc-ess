@@ -629,274 +629,272 @@
 
   <p>Please confirm that all details you entered are correct by reading through the summary below with the evacuee.</p>
 
-  <section class="p-3">
-    <ul class="summary">
-      <li>
-        <span class="name">Task Number:</span>
-        <span class="value">{{registration?.incidentTask?.taskNumber}}</span>
-      </li>
-      <li>
-        <span class="name">Restricted File:</span>
-        <span class="value">{{registration?.restrictedAccess | yesNo}}</span>
-      </li>
-    </ul>
+  <ul class="summary">
+    <li>
+      <span class="name">Task Number:</span>
+      <span class="value">{{registration?.incidentTask?.taskNumber}}</span>
+    </li>
+    <li>
+      <span class="name">Restricted File:</span>
+      <span class="value">{{registration?.restrictedAccess | yesNo}}</span>
+    </li>
+  </ul>
 
-    <h3>Place of Registration</h3>
-    <ul class="summary">
-      <li>
-        <span class="name">Facility Name/Registration Location:</span>
-        <span class="value">{{registration?.facility}}</span>
-      </li>
-      <li>
-        <span class="name">Host Community:</span>
-        <span class="value">{{registration?.hostCommunity?.name}}</span>
-      </li>
-    </ul>
+  <h3>Place of Registration</h3>
+  <ul class="summary">
+    <li>
+      <span class="name">Facility Name/Registration Location:</span>
+      <span class="value">{{registration?.facility}}</span>
+    </li>
+    <li>
+      <span class="name">Host Community:</span>
+      <span class="value">{{registration?.hostCommunity?.name}}</span>
+    </li>
+  </ul>
 
-    <h3>Evacuee Information</h3>
-    <ul class="summary">
+  <h3>Evacuee Information</h3>
+  <ul class="summary">
+    <li>
+      <span class="name">Last Name:</span>
+      <span class="value">{{registration?.headOfHousehold?.lastName}}</span>
+    </li>
+    <li>
+      <span class="name">First Name:</span>
+      <span class="value">{{registration?.headOfHousehold?.firstName}}</span>
+    </li>
+    <li>
+      <span class="name">Initial:</span>
+      <span class="value">{{registration?.headOfHousehold?.initials}}</span>
+    </li>
+    <li>
+      <span class="name">Preferred Name:</span>
+      <span class="value">{{registration?.headOfHousehold?.nickname}}</span>
+    </li>
+    <li>
+      <span class="name">Gender:</span>
+      <span class="value">{{genderOption(registration?.headOfHousehold?.gender)}}</span>
+    </li>
+    <li>
+      <span class="name">Date of Birth:</span>
+      <span class="value">{{registration?.headOfHousehold?.dob | date : 'MM/dd/yyyy'}}</span>
+    </li>
+  </ul>
+  <div *ngIf="registration?.headOfHousehold?.familyMembers">
+    <h3>Evacuee Family Information</h3>
+    <ul class="summary mt-4" *ngFor="let fm of registration.headOfHousehold.familyMembers">
       <li>
         <span class="name">Last Name:</span>
-        <span class="value">{{registration?.headOfHousehold?.lastName}}</span>
+        <span class="value">{{fm?.lastName}}</span>
       </li>
       <li>
         <span class="name">First Name:</span>
-        <span class="value">{{registration?.headOfHousehold?.firstName}}</span>
+        <span class="value">{{fm?.firstName}}</span>
       </li>
       <li>
         <span class="name">Initial:</span>
-        <span class="value">{{registration?.headOfHousehold?.initials}}</span>
+        <span class="value">{{fm?.initials}}</span>
       </li>
       <li>
-        <span class="name">Preferred Name:</span>
-        <span class="value">{{registration?.headOfHousehold?.nickname}}</span>
+        <span class="name">Relationship:</span>
+        <span class="value">{{fm?.relationshipToEvacuee?.description}}</span>
       </li>
       <li>
         <span class="name">Gender:</span>
-        <span class="value">{{genderOption(registration?.headOfHousehold?.gender)}}</span>
+        <span class="value">{{genderOption(fm?.gender)}}</span>
       </li>
       <li>
         <span class="name">Date of Birth:</span>
-        <span class="value">{{registration?.headOfHousehold?.dob | date : 'MM/dd/yyyy'}}</span>
+        <span class="value">{{fm?.dob | date : 'MM/dd/yyyy'}}</span>
       </li>
     </ul>
-    <div *ngIf="registration?.headOfHousehold?.familyMembers">
-      <h3>Evacuee Family Information</h3>
-      <ul class="summary mt-4" *ngFor="let fm of registration.headOfHousehold.familyMembers">
-        <li>
-          <span class="name">Last Name:</span>
-          <span class="value">{{fm?.lastName}}</span>
-        </li>
-        <li>
-          <span class="name">First Name:</span>
-          <span class="value">{{fm?.firstName}}</span>
-        </li>
-        <li>
-          <span class="name">Initial:</span>
-          <span class="value">{{fm?.initials}}</span>
-        </li>
-        <li>
-          <span class="name">Relationship:</span>
-          <span class="value">{{fm?.relationshipToEvacuee?.description}}</span>
-        </li>
-        <li>
-          <span class="name">Gender:</span>
-          <span class="value">{{genderOption(fm?.gender)}}</span>
-        </li>
-        <li>
-          <span class="name">Date of Birth:</span>
-          <span class="value">{{fm?.dob | date : 'MM/dd/yyyy'}}</span>
-        </li>
-      </ul>
-    </div>
+  </div>
 
-    <h3>Primary Address &amp; Contact Details</h3>
+  <h3>Primary Address &amp; Contact Details</h3>
+  <ul class="summary">
+
+    <ng-container *ngIf="isBcAddress(registration?.headOfHousehold?.primaryResidence); then content else other_content">
+    </ng-container>
+    <ng-template #content>
+      <li>
+        <span class="name">Apt/Suite/Building Number &amp; Street Address/PO Box:</span>
+        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.addressLine1}}</span>
+      </li>
+      <li>
+        <span class="name">Community:</span>
+        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.community?.name}}</span>
+      </li>
+      <li>
+        <span class="name">Province:</span>
+        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.province}}</span>
+      </li>
+      <li>
+        <span class="name">Postal Code:</span>
+        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.postalCode}}</span>
+      </li>
+      <li>
+        <span class="name">Country:</span>
+        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.country?.name }}</span>
+      </li>
+    </ng-template>
+    <ng-template #other_content>
+      <li>
+        <span class="name">Apt/Suite/Building Number &amp; Street Address/PO Box:</span>
+        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.addressLine1}}</span>
+      </li>
+      <li>
+        <span class="name">City:</span>
+        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.city}}</span>
+      </li>
+      <li>
+        <span class="name">Region/Province/State:</span>
+        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.province}}</span>
+      </li>
+      <li>
+        <span class="name">Postal /ZIP Code:</span>
+        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.postalCode}}</span>
+      </li>
+      <li>
+        <span class="name">Country/Region:</span>
+        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.country?.name }}</span>
+      </li>
+    </ng-template>
+    <li>
+      <span class="name">Telephone/Mobile:</span>
+      <span class="value">{{registration?.headOfHousehold?.phoneNumber}}</span>
+    </li>
+    <li>
+      <span class="name">Alternate Telephone/Mobile:</span>
+      <span class="value">{{registration?.headOfHousehold?.phoneNumberAlt}}</span>
+    </li>
+    <li>
+      <span class="name">Email Address:</span>
+      <span class="value">{{registration?.headOfHousehold?.email}}</span>
+    </li>
+  </ul>
+
+  <ng-container *ngIf="registration?.headOfHousehold?.mailingAddress">
+    <h3>Mailing Address</h3>
     <ul class="summary">
-
-      <ng-container *ngIf="isBcAddress(registration?.headOfHousehold?.primaryResidence); then content else other_content">
+      <ng-container *ngIf="isBcAddress(registration?.headOfHousehold?.mailingAddress); then content else other_content">
       </ng-container>
       <ng-template #content>
         <li>
           <span class="name">Apt/Suite/Building Number &amp; Street Address/PO Box:</span>
-          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.addressLine1}}</span>
+          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.addressLine1}}</span>
         </li>
         <li>
           <span class="name">Community:</span>
-          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.community?.name}}</span>
+          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.community?.name}}</span>
         </li>
         <li>
           <span class="name">Province:</span>
-          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.province}}</span>
+          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.province}}</span>
         </li>
         <li>
           <span class="name">Postal Code:</span>
-          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.postalCode}}</span>
+          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.postalCode}}</span>
         </li>
         <li>
           <span class="name">Country:</span>
-          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.country?.name }}</span>
+          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.country?.name }}</span>
         </li>
       </ng-template>
       <ng-template #other_content>
         <li>
           <span class="name">Apt/Suite/Building Number &amp; Street Address/PO Box:</span>
-          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.addressLine1}}</span>
+          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.addressLine1}}</span>
         </li>
         <li>
           <span class="name">City:</span>
-          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.city}}</span>
+          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.city}}</span>
         </li>
         <li>
           <span class="name">Region/Province/State:</span>
-          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.province}}</span>
+          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.province}}</span>
         </li>
         <li>
           <span class="name">Postal /ZIP Code:</span>
-          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.postalCode}}</span>
+          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.postalCode}}</span>
         </li>
         <li>
           <span class="name">Country/Region:</span>
-          <span class="value">{{registration?.headOfHousehold?.primaryResidence?.country?.name }}</span>
+          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.country?.name }}</span>
         </li>
       </ng-template>
-      <li>
-        <span class="name">Telephone/Mobile:</span>
-        <span class="value">{{registration?.headOfHousehold?.phoneNumber}}</span>
-      </li>
-      <li>
-        <span class="name">Alternate Telephone/Mobile:</span>
-        <span class="value">{{registration?.headOfHousehold?.phoneNumberAlt}}</span>
-      </li>
-      <li>
-        <span class="name">Email Address:</span>
-        <span class="value">{{registration?.headOfHousehold?.email}}</span>
-      </li>
     </ul>
+  </ng-container>
 
-    <ng-container *ngIf="registration?.headOfHousehold?.mailingAddress">
-      <h3>Mailing Address</h3>
-      <ul class="summary">
-        <ng-container *ngIf="isBcAddress(registration?.headOfHousehold?.mailingAddress); then content else other_content">
-        </ng-container>
-        <ng-template #content>
-          <li>
-            <span class="name">Apt/Suite/Building Number &amp; Street Address/PO Box:</span>
-            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.addressLine1}}</span>
-          </li>
-          <li>
-            <span class="name">Community:</span>
-            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.community?.name}}</span>
-          </li>
-          <li>
-            <span class="name">Province:</span>
-            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.province}}</span>
-          </li>
-          <li>
-            <span class="name">Postal Code:</span>
-            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.postalCode}}</span>
-          </li>
-          <li>
-            <span class="name">Country:</span>
-            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.country?.name }}</span>
-          </li>
-        </ng-template>
-        <ng-template #other_content>
-          <li>
-            <span class="name">Apt/Suite/Building Number &amp; Street Address/PO Box:</span>
-            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.addressLine1}}</span>
-          </li>
-          <li>
-            <span class="name">City:</span>
-            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.city}}</span>
-          </li>
-          <li>
-            <span class="name">Region/Province/State:</span>
-            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.province}}</span>
-          </li>
-          <li>
-            <span class="name">Postal /ZIP Code:</span>
-            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.postalCode}}</span>
-          </li>
-          <li>
-            <span class="name">Country/Region:</span>
-            <span class="value">{{registration?.headOfHousehold?.mailingAddress?.country?.name }}</span>
-          </li>
-        </ng-template>
-      </ul>
-    </ng-container>
+  <h3>Brief statement of how the person/family were affected by the disaster</h3>
+  <ul class="summary">
+    <li>
+      <span>&nbsp;{{registration?.disasterAffectDetails}}</span>
+    </li>
+  </ul>
 
-    <h3>Brief statement of how the person/family were affected by the disaster</h3>
-    <ul class="summary">
-      <li>
-        <span>&nbsp;{{registration?.disasterAffectDetails}}</span>
-      </li>
-    </ul>
+  <h3>Insurance</h3>
+  <ul class="summary">
+    <li>
+      <span class="name">Do you have insurance:</span>
+      <span class="value">{{insuranceOption(registration?.insuranceCode)}}</span>
+    </li>
+  </ul>
 
-    <h3>Insurance</h3>
-    <ul class="summary">
-      <li>
-        <span class="name">Do you have insurance:</span>
-        <span class="value">{{insuranceOption(registration?.insuranceCode)}}</span>
-      </li>
-    </ul>
+  <h3>Additional Information</h3>
+  <ul class="summary">
+    <li>
+      <span class="name">Dietary Requirements:</span>
+      <span class="value">{{registration?.dietaryNeeds | yesNo}}</span>
+    </li>
+    <li>
+      <span class="name">Dietary Details:</span>
+      <span class="value">{{registration?.dietaryNeedsDetails}}</span>
+    </li>
+    <li>
+      <span class="name">Medication:</span>
+      <span class="value">{{registration?.medicationNeeds | yesNo}}</span>
+    </li>
+    <li>
+      <span class="name">Medication for 72hrs:</span>
+      <span class="value">{{registration?.hasThreeDayMedicationSupply | yesNo}}</span>
+    </li>
+    <li>
+      <span class="name">Pets:</span>
+      <span class="value">{{registration?.hasPets | yesNo}}</span>
+    </li>
+  </ul>
 
-    <h3>Additional Information</h3>
-    <ul class="summary">
-      <li>
-        <span class="name">Dietary Requirements:</span>
-        <span class="value">{{registration?.dietaryNeeds | yesNo}}</span>
-      </li>
-      <li>
-        <span class="name">Dietary Details:</span>
-        <span class="value">{{registration?.dietaryNeedsDetails}}</span>
-      </li>
-      <li>
-        <span class="name">Medication:</span>
-        <span class="value">{{registration?.medicationNeeds | yesNo}}</span>
-      </li>
-      <li>
-        <span class="name">Medication for 72hrs:</span>
-        <span class="value">{{registration?.hasThreeDayMedicationSupply | yesNo}}</span>
-      </li>
-      <li>
-        <span class="name">Pets:</span>
-        <span class="value">{{registration?.hasPets | yesNo}}</span>
-      </li>
-    </ul>
-
-    <h3>Next Steps</h3>
-    <ul class="summary">
-      <li>
-        <span class="name">Supports:</span>
-        <span class="value">{{registration?.requiresSupport | yesNo}}</span>
-      </li>
-      <li>
-        <span class="name">Supports Requested:</span>
-        <span class="value">
-          <div class="form-check mt-2">
-            <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresFood">
-            <label class="form-check-label">Food</label>
-          </div>
-          <div class="form-check mt-2">
-            <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresClothing">
-            <label class="form-check-label">Clothing</label>
-          </div>
-          <div class="form-check mt-2">
-            <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresAccommodation">
-            <label class="form-check-label">Accommodation</label>
-          </div>
-          <div class="form-check mt-2">
-            <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresIncidentals">
-            <label class="form-check-label">Incidentals</label>
-          </div>
-          <div class="form-check mt-2">
-            <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresTransportation">
-            <label class="form-check-label">Transportation</label>
-          </div>
-        </span>
-      </li>
-    </ul>
-  </section>
+  <h3>Next Steps</h3>
+  <ul class="summary">
+    <li>
+      <span class="name">Supports:</span>
+      <span class="value">{{registration?.requiresSupport | yesNo}}</span>
+    </li>
+    <li>
+      <span class="name">Supports Requested:</span>
+      <span class="value">
+        <div class="form-check mt-2">
+          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresFood">
+          <label class="form-check-label">Food</label>
+        </div>
+        <div class="form-check mt-2">
+          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresClothing">
+          <label class="form-check-label">Clothing</label>
+        </div>
+        <div class="form-check mt-2">
+          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresAccommodation">
+          <label class="form-check-label">Accommodation</label>
+        </div>
+        <div class="form-check mt-2">
+          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresIncidentals">
+          <label class="form-check-label">Incidentals</label>
+        </div>
+        <div class="form-check mt-2">
+          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresTransportation">
+          <label class="form-check-label">Transportation</label>
+        </div>
+      </span>
+    </li>
+  </ul>
 
   <h3>Family Recovery Plan</h3>
   <ul class="summary">
