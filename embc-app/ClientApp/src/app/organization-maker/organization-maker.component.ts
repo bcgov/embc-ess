@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Organization } from '../core/models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from '../store';
@@ -11,7 +11,7 @@ import { FormControl } from '@angular/forms';
   templateUrl: './organization-maker.component.html',
   styleUrls: ['./organization-maker.component.scss']
 })
-export class OrganizationMakerComponent implements OnInit {
+export class OrganizationMakerComponent implements OnInit, AfterViewInit {
   maker: boolean;
   editMode: boolean;
   submitting = false; // tracks if in the process of submitting for the UI
@@ -43,6 +43,7 @@ export class OrganizationMakerComponent implements OnInit {
 
     if (this.route.snapshot.params.id) {
       // there may be an organization to edit because the route looks right
+      // TODO: error checking if org not found
       this.organizationService.getOrganizationById(this.route.snapshot.params.id)
         .subscribe(o => {
           console.log('o =', o);
@@ -50,6 +51,9 @@ export class OrganizationMakerComponent implements OnInit {
           this.maker = true;
           this.organization = o;
           this.organizationName.setValue(o.name);
+          this.adminBceid.setValue(o.adminBCeID);
+          this.adminLastName.setValue(o.adminLastName);
+          this.adminFirstName.setValue(o.adminFirstName);
           this.community.setValue(o.community);
         });
     } else {
@@ -68,14 +72,24 @@ export class OrganizationMakerComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    // focus the first input
+    const elements = document.getElementsByTagName('input');
+    if (elements.length > 0) {
+      elements[0].focus();
+    }
+  }
+
   next(): void {
     // only go next if all fields are non null
     if (this.editMode && this.organizationName.value && this.community.value) {
       this.maker = false;
       this.onSave();
+      window.scrollTo(0, 0); // scroll to top
     } else if (!this.editMode && this.organizationName.value && this.adminBceid.value && this.adminLastName.value && this.adminFirstName.value && this.community.value) {
       this.maker = false;
       this.onSave();
+      window.scrollTo(0, 0); // scroll to top
     } else {
       alert('All fields are required.');
     }
@@ -84,46 +98,61 @@ export class OrganizationMakerComponent implements OnInit {
   back() {
     // show the editing parts of the form
     this.maker = true;
+    window.scrollTo(0, 0); // scroll to top
   }
 
-  onSave(): void {
+  private onSave(): void {
     // stuff the data back into the organization object
     const organization: Organization = this.organization;
     organization.id = this.organization.id || null; // keep the id for updates
     // save content from the form
     organization.name = this.organizationName.value;
+    organization.legalName = '-'; // TODO: query API for this
     organization.adminBCeID = this.adminBceid.value;
     organization.adminLastName = this.adminLastName.value;
     organization.adminFirstName = this.adminFirstName.value;
     organization.community = this.community.value;
-    console.log('organization =', organization);
   }
 
   submit(addUsers?: boolean) {
     this.submitting = true;
+    // check if this is an update
     if (this.organization.id) {
-      // if the organization has an ID we need to update
+      // if the organization has an ID then we need to update
       this.organizationService.updateOrganization(this.organization)
         .subscribe(() => {
           this.submitting = false;
-          // go back to the organization team dashboard
-          this.router.navigate(['/']); // TODO: go somewhere that the application state can go
+          // if addUsers then route to the add users page
+          // else route back to the org team dashboard
+          if (addUsers) {
+            this.router.navigate(['../../volunteer'], { relativeTo: this.route });
+          } else {
+            this.router.navigate(['../../organizations'], { relativeTo: this.route });
+          }
         });
     } else {
-      // if the volunteer has no id we need to create a new one
+      // if the organization has no id then we need to create a new one
       this.organizationService.createOrganization(this.organization)
         .subscribe(o => {
           this.submitting = false;
-          // if addAnother route back to the add page else route back to the volunteer-team-editor
-          // go back to the volunteer team dashboard
-          this.router.navigate(['/']);
+          // if addUsers then route to the add users page
+          // else route back to the org team dashboard
+          if (addUsers) {
+            this.router.navigate(['../volunteer'], { relativeTo: this.route });
+          } else {
+            this.router.navigate(['../organizations'], { relativeTo: this.route });
+          }
         });
     }
   }
 
   cancel() {
-    // TODO: this seems like bad practive but fix when we have time
+    // TODO: this seems like bad practice but fix when we have time
     // go back to the volunteer team dashboard
-    this.editMode ? this.router.navigate(['../../organizations'], { relativeTo: this.route }) : this.router.navigate(['../organizations'], { relativeTo: this.route });
+    if (this.editMode) {
+      this.router.navigate(['../../organizations'], { relativeTo: this.route });
+    } else {
+      this.router.navigate(['../organizations'], { relativeTo: this.route });
+    }
   }
 }
