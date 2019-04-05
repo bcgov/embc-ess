@@ -24,7 +24,7 @@ export class OrganizationListComponent implements OnInit {
   }
 
   routeTo(bceidAccountNumber: string) {
-    // TODO: this seems like bad practive but fix when we have time
+    // TODO: this seems like bad practice but fix when we have time
     this.router.navigate(['../organization/' + bceidAccountNumber], { relativeTo: this.route });
   }
 

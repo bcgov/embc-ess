@@ -150,7 +150,7 @@ export class VolunteerMakerComponent implements OnInit {
   }
 
   cancel() {
-    // TODO: this seems like bad practive but fix when we have time
+    // TODO: this seems like bad practice but fix when we have time
     // go back to the volunteer team dashboard
     this.editMode ? this.router.navigate(['../../volunteers'], { relativeTo: this.route }) : this.router.navigate(['../volunteers'], { relativeTo: this.route });
   }

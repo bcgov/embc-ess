@@ -26,7 +26,7 @@ export class VolunteerListComponent implements OnInit {
   }
 
   routeTo(bceidAccountNumber: string) {
-    // TODO: this seems like bad practive but fix when we have time
+    // TODO: this seems like bad practice but fix when we have time
     this.router.navigate(['../volunteer/' + bceidAccountNumber], { relativeTo: this.route });
   }
 
