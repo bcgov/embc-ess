@@ -2,7 +2,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
 {
     public class Volunteer : Person
     {
-        public string Name { get; set; } // TODO: What's this? Their display name? full name?
         public string Email { get; set; }
         public string BceidAccountNumber { get; set; }
         public bool? IsAdministrator { get; set; }
