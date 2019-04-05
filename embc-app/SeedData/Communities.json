@@ -10944,6 +10944,12 @@
         }
     },
     {
+        "Name": "Kamloops",
+        "RegionalDistrict": {
+            "Name": "Central"
+        }
+    },
+    {
         "Name": "Kamloops Junction",
         "RegionalDistrict": {
             "Name": "Central"
