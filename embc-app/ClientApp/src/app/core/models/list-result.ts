@@ -4,11 +4,13 @@
  */
 export interface ListResult<T> {
   data: T[];
-  metadata: {
-    page: number;
-    pageSize: number;
-    totalCount: number;
-    totalPages: number;
-    links: object[];
-  };
+  metadata: PaginationSummary;
+}
+
+export interface PaginationSummary {
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+  links?: object[];
 }

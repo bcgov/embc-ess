@@ -6,10 +6,10 @@ export interface Organization {
   adminFirstName: string; // in view model only
   adminLastName: string; // in view model only
   bCeIDBusinessGuid?: string;
-  community: Community;
+  community: Community | null;
   id?: string | null;
   legalName?: string;
   name: string;
-  region: Region;
-  regionalDistrict: RegionalDistrict;
+  region: Region | null;
+  regionalDistrict: RegionalDistrict | null;
 }
