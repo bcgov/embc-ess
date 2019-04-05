@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
@@ -44,6 +44,9 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   editMode = false;
   summaryMode = false; // just show the summary
   submitting = false;
+
+  // DECLARATION AND CONSENT MUST BE CHECKED BEFORE SUBMIT
+  declarationAndConsent: FormControl = new FormControl(null);
 
   // this is the "final copy" or version of the content in the form that will be updated or refreshed.
   registration: Registration;
@@ -704,5 +707,4 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     const option = INSURANCE_OPTIONS.find(item => item.key === key);
     return option ? option.value : null;
   }
-
 }
