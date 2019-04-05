@@ -167,6 +167,16 @@ const routes: Routes = [
         data: { expectedRole: VOLUNTEER },
       },
       {
+        path: 'register-evacuee',
+        component: EvacueeRegistrationComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
+      {
+        path: 'register-evacuee/:id',
+        component: EvacueeRegistrationComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
+      {
         path: 'register-evacuee/fill',
         component: EvacueeRegistrationComponent,
         data: { expectedRole: VOLUNTEER },
