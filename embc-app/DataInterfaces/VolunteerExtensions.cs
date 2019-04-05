@@ -61,11 +61,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 Active = true,
                 OrganizationId = org?.Id,
                 Externaluseridentifier = item.Externaluseridentifier,
-                Name = item.Name,
-                IsAdministrator = item.IsAdministrator,
-                CanAccessRestrictedFiles = item.CanAccessRestrictedFiles,
                 FirstName = item.FirstName,
                 LastName = item.LastName,
+                IsAdministrator = item.IsAdministrator,
+                CanAccessRestrictedFiles = item.CanAccessRestrictedFiles,
                 IsPrimaryContact = item.IsPrimaryContact,
                 Email = item.Email
             };

@@ -38,27 +38,12 @@ namespace Gov.Jag.Embc.Public.Models.Db
         [Key]
         public Guid Id { get; set; }
 
-        public string PersonType { get; set; }  // one of "VOLN" (volunteer), "HOH" (head of household), "FMBR" (family member)
-
-        /// <summary>
-        /// The name of the Community
-        /// </summary>
-        /// <value>The name of the Community</value>
         [MaxLength(255)]
         public string FirstName { get; set; }
 
         [MaxLength(255)]
         public string LastName { get; set; }
 
-        [MaxLength(255)]
-        public string Nickname { get; set; }
-
-        [MaxLength(255)]
-        public string Initials { get; set; }
-
-        [MaxLength(255)]
-        public string Gender { get; set; }
-
-        public DateTimeOffset? Dob { get; set; }
+        public string PersonType { get; set; }  // one of "VOLN" (volunteer), "HOH" (head of household), "FMBR" (family member)
     }
 }

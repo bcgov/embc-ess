@@ -39,35 +39,61 @@ import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
 import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
+import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
 
-/**
+/*
   /
     self-registration
-    login
+      /
+      step-1
+      step-2
+      step-3
+      step-4/:id
+      error
+    external
+      login
+
   /volunteer
     evacuees
-    edit-evacuee
-    edit-evacuee/:id
+    evacuee-summary/:id
+    register-evacuee
+      /
+      fill/:id
+      fill
+      confirmation
     useful-info
 
   /local-authority
     evacuees
-    edit-registration
-    edit-registration/:id
+    evacuee-summary/:id
+    register-evacuee
+      /
+      fill/:id
+      fill
+      confirmation
     volunteers
-    edit-volunteer
-    edit-volunteer/:id
+    volunteer
+    volunteer/:id
     useful-info
 
   /provincial-admin
-    edit-task-numbers
+    /
     evacuees
-    edit-registration
-    edit-registration/:id
+    evacuee-summary/:id
     organizations
-    edit-volunteer
-    edit-organization
-    ess-team
+    organization
+    organization/:id
+    task-numbers
+    task-number
+    task-number/:id
+    volunteers
+    volunteer
+    volunteer/:id
+    register-evacuee
+      /
+      fill/:id
+      fill
+      confirmation
     useful-info
 */
 const routes: Routes = [
@@ -141,9 +167,9 @@ const routes: Routes = [
     component: PageNotFoundComponent, // TODO: See if we can remove this component here without breaking routing
     data: {
       navigateByRole: {
-        'role_volunteer': 'volunteer/evacuees',
-        'role_local_authority': 'local-authority/evacuees',
-        'role_provincial_admin': 'provincial-admin/evacuees',
+        role_volunteer: 'volunteer/evacuees',
+        role_local_authority: 'local-authority/evacuees',
+        role_provincial_admin: 'provincial-admin/evacuees',
       }
     },
   },
@@ -159,6 +185,11 @@ const routes: Routes = [
       {
         path: 'evacuees',
         component: VolunteerDashboardComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
+      {
+        path: 'evacuee/:id',
+        component: EvacueeSummaryPageComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
@@ -231,6 +262,11 @@ const routes: Routes = [
       {
         path: 'evacuees',
         component: VolunteerDashboardComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'evacuee/:id',
+        component: EvacueeSummaryPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
@@ -307,34 +343,6 @@ const routes: Routes = [
       },
     ],
   },
-  // OLD COMPONENT
-  // {
-  //   path: 'volunteer-edit',
-  //   component: VolunteerEditorComponent,
-  //   data: { expectedRole: PROVINCIAL_ADMIN },
-  //   children: [
-  //     {
-  //       path: '',
-  //       redirectTo: 'fill',
-  //       pathMatch: 'full'
-  //     },
-  //     {
-  //       path: 'fill',
-  //       component: VolunteerEditorOneComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'fill/:id',
-  //       component: VolunteerEditorOneComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'confirmation',
-  //       component: VolunteerEditorConfirmationComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     }
-  //   ]
-  // },
 
   // PROVINCIAL_ADMIN routes
   {
@@ -349,9 +357,13 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        // Deprecation in process.
         path: 'evacuees',
         component: EvacueeListComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'evacuee/:id',
+        component: EvacueeSummaryPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
@@ -452,10 +464,12 @@ const routes: Routes = [
       },
     ],
   },
+
   {
     path: 'evacuee-summary/:id',
     component: EvacueeSummaryComponent,
   },
+
   {
     // exception in routing
     path: 'register-evacuee',
@@ -481,6 +495,7 @@ const routes: Routes = [
     path: 'evacuees',
     redirectTo: 'dashboard'
   },
+
   // 404 route (catch all default)
   {
     path: '**',

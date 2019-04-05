@@ -36,7 +36,7 @@ export class OrganizationListComponent implements OnInit {
     });
   }
 
-  search(searchTerm: string) {
+  filter(searchTerm: string) {
     // submit and collect search
     this.getOrganizations(null, null, searchTerm);
   }

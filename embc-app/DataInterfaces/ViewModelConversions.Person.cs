@@ -20,10 +20,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result.Id = source.Id.ToString();
                 result.FirstName = source.FirstName;
                 result.LastName = source.LastName;
-                result.Nickname = source.Nickname;
-                result.Initials = source.Initials;
-                result.Gender = source.Gender;
-                result.Dob = source.Dob;
 
                 // TODO: Add fields for HOH, FMBR, VOLN
                 if (source is Models.Db.HeadOfHousehold sourceHoh)
@@ -44,6 +40,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         }
                     }
                 }
+                if (source is Models.Db.Evacuee evacuee)
+                {
+                    var resultEvacuee = result as ViewModels.Evacuee;
+                    resultEvacuee.Nickname = evacuee.Nickname;
+                    resultEvacuee.Initials = evacuee.Initials;
+                    resultEvacuee.Gender = evacuee.Gender;
+                    resultEvacuee.Dob = evacuee.Dob;
+                }
                 if (source is Models.Db.FamilyMember sourceFm)
                 {
                     var resultFm = result as ViewModels.FamilyMember;
@@ -53,7 +57,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 if (source is Models.Db.Volunteer sourceVol)
                 {
                     var resultVol = result as ViewModels.Volunteer;
-                    resultVol.Name = sourceVol.Name;
                     resultVol.Email = sourceVol.Email;
                     resultVol.BceidAccountNumber = sourceVol.BceidAccountNumber;
                     resultVol.Externaluseridentifier = sourceVol.Externaluseridentifier;
@@ -75,19 +78,21 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 result = Models.Db.Person.Create(source.PersonType);
 
-                result.FirstName = source.FirstName;
-                result.LastName = source.LastName;
-                result.Nickname = source.Nickname;
-                result.Initials = source.Initials;
-                result.Gender = source.Gender;
-                result.Dob = source.Dob;
-
                 if (source.Id != null)
                 {
                     result.Id = Guid.Parse(source.Id);
                 }
+                result.FirstName = source.FirstName;
+                result.LastName = source.LastName;
 
-                // TODO: Add fields for HOH, FMBR, VOLN
+                if (source is ViewModels.Evacuee sourceEvacuee)
+                {
+                    var resultEvacuee = result as Models.Db.Evacuee;
+                    resultEvacuee.Nickname = sourceEvacuee.Nickname;
+                    resultEvacuee.Initials = sourceEvacuee.Initials;
+                    resultEvacuee.Gender = source.Gender;
+                    resultEvacuee.Dob = sourceEvacuee.Dob;
+                }
                 if (source is ViewModels.HeadOfHousehold sourceHoh)
                 {
                     var resultHoh = result as Models.Db.HeadOfHousehold;
@@ -115,7 +120,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 if (source is ViewModels.Volunteer sourceVol)
                 {
                     var resultVol = result as Models.Db.Volunteer;
-                    resultVol.Name = sourceVol.Name;
                     resultVol.Email = sourceVol.Email;
                     resultVol.BceidAccountNumber = sourceVol.BceidAccountNumber;
                     resultVol.Externaluseridentifier = sourceVol.Externaluseridentifier;
