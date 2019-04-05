@@ -615,8 +615,10 @@
           </a>
         </section>
         <section>
-          <!-- Submit button! -->
-          <button type="button" class="btn btn-primary" (click)="next()">NEXT</button>
+          <button type="button" class="btn btn-primary ml-4" [disabled]="submitting" (click)="next()">
+            <span *ngIf="submitting">WORKING</span>
+            <span *ngIf="!submitting">NEXT</span>
+          </button>
         </section>
       </div>
     </div>

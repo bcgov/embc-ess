@@ -41,9 +41,9 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   // Flags for the different modes this form supports
   createMode = true;
   finalizeMode = false;
-  editMode = false;
+  editMode = false; // edit mode is the mode where the form is fed data from the api. (Changes text and etc.)
   summaryMode = false; // just show the summary
-  submitting = false;
+  submitting = false; // this is what disables buttons on submit
 
   // DECLARATION AND CONSENT MUST BE CHECKED BEFORE SUBMIT
   declarationAndConsent: FormControl = new FormControl(null);
@@ -544,27 +544,22 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   }
 
   next() {
-    this.submitted = true;
+    this.submitting = true; // this disables buttons while we process the form. 
+    this.submitted = true; // TODO: Unsure what this is.
     this.validateForm();
     // stop here if form is invalid
     if (this.form.invalid) {
       this.errorSummary = 'Some required fields have not been completed.';
-      return;
+      this.submitting = false; // reenable so they can try again
     } else {
       // success!
       this.errorSummary = null;
-
-      // navigate to the next page.
-      this.summaryMode = true;
-      // const nextRoute = this.editMode ? '../../confirmation' : '../confirmation';
-      // this.router.navigate([nextRoute], { relativeTo: this.route });
-
-      // Copy over all of the original properties
-      // Then copy over the values from the form
-      // This ensures values not on the form, such as the Id, are retained
-      // process the registration record before submission to the backend
-      // stamp the dates that we want to track for this record
+      // save the registration by copying the properties into it.
       this.registration = this.saveState();
+
+      // navigate to the next page. AKA show the summary part of the form.
+      this.summaryMode = true;
+      this.submitting = false; // reenable when we parse data
     }
   }
 
