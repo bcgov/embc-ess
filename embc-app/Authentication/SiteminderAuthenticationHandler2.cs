@@ -172,7 +172,7 @@ namespace Gov.Jag.Embc.Public.Authentication
             if (volunteer == null) return false;
 
             volunteer.Externaluseridentifier = bceIdGuid;
-            await dataService.UpdatePersonAsync(volunteer);
+            await dataService.UpdateVolunteerAsync(volunteer);
             return true;
         }
     }
