@@ -634,16 +634,17 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       hostCommunity: values.hostCommunity,
       completedBy: values.completedBy,
     };
+    const registration = this.registration;
     if (this.editMode) {
       // if we are editing the form we assign the values collected when the form initialized and collected the registration from the api.
-      r.id = this.registration.id;
-      r.active = this.registration.active || null;
-      r.declarationAndConsent = this.registration.declarationAndConsent || null;
-      r.essFileNumber = this.registration.essFileNumber || null;
-      r.headOfHousehold.id = this.registration.headOfHousehold.id || null;
-      r.registrationCompletionDate = this.registration.registrationCompletionDate || null; // todo need to check if this date is being handled correctly
-      r.headOfHousehold.primaryResidence.id = this.registration.headOfHousehold.primaryResidence.id || null;
-      r.completedBy = this.registration.completedBy || null;
+      r.id = registration.id;
+      r.active = registration.active || null;
+      r.declarationAndConsent = registration.declarationAndConsent || null;
+      r.essFileNumber = registration.essFileNumber || null;
+      r.headOfHousehold.id = registration.headOfHousehold.id || null;
+      r.registrationCompletionDate = registration.registrationCompletionDate || null; // todo need to check if this date is being handled correctly
+      r.headOfHousehold.primaryResidence.id = registration.headOfHousehold.primaryResidence.id || null;
+      r.completedBy = registration.completedBy || null;
     }
     // timestamp the completion date on
     r.registrationCompletionDate = r.registrationCompletionDate || new Date().toJSON();
