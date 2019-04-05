@@ -239,6 +239,16 @@ const routes: Routes = [
         data: { expectedRole: LOCAL_AUTHORITY }
       },
       {
+        path: 'register-evacuee',
+        component: EvacueeRegistrationComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'register-evacuee/:id',
+        component: EvacueeRegistrationComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
         path: 'register-evacuee/fill',
         component: EvacueeRegistrationComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
