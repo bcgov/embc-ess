@@ -678,13 +678,14 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     this.submitting = true;
     // this function performs the "send json to server" action
     // push changes to backend
+    // TODO: should this be editmode?
     if (this.registration.id == null) {
       // submit the global registration to the server
       this.registrationService
         .createRegistration(this.registration)
         .subscribe(() => {
           this.submitting = false;
-          this.goToDashboard({ evacuee_created: true });
+          this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
         });
     } else {
       // submit the global registration to the server
@@ -692,7 +693,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         .updateRegistration(this.registration)
         .subscribe(() => {
           this.submitting = false;
-          this.goToDashboard({ evacuee_updated: true });
+          this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
         });
     }
   }
@@ -700,9 +701,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     //return to the edit mode
     this.summaryMode = false;
   }
-  goToDashboard(params: object = {}) {
-    this.router.navigate(['../../evacuees'], { relativeTo: this.route, queryParams: { ...params } });
-  }
+
   insuranceOption(key: string) {
     const option = INSURANCE_OPTIONS.find(item => item.key === key);
     return option ? option.value : null;
