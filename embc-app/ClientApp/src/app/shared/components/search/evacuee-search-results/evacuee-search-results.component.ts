@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from
 
 import { EvacueeSearchResults } from '../interfaces';
 import { Registration } from 'src/app/core/models';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 // TODO: Rename this
 interface RowItem {
@@ -30,7 +30,8 @@ interface RowItem {
   personType: string; // HOH || FMBR || VOLN
   evacuatedFrom: string; // community name
   evacuatedTo: string; // community name
-  registrationCompletionDate: Date;
+  hasReferrals: boolean;
+  registrationCompletionDate: string | null;
 }
 
 /**
@@ -60,7 +61,8 @@ export class EvacueeSearchResultsComponent implements OnChanges {
     this.rows = this.processSearchResults(this.searchResults);
   }
   constructor(
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   onResultSelected(rowItem: RowItem, event: MouseEvent) {
@@ -103,6 +105,7 @@ export class EvacueeSearchResultsComponent implements OnChanges {
         incidentTaskTaskNumber: null,
         evacuatedFrom: null, // community name
         evacuatedTo: null, // community name
+        hasReferrals: this.hasReferrals(registration),
         registrationCompletionDate: registration.registrationCompletionDate
       };
 
@@ -153,6 +156,7 @@ export class EvacueeSearchResultsComponent implements OnChanges {
           headOfHousehold: false,
           evacuatedFrom: null, // community name
           evacuatedTo: null, // community name
+          hasReferrals: this.hasReferrals(registration),
           registrationCompletionDate: registration.registrationCompletionDate
         };
 
@@ -181,14 +185,18 @@ export class EvacueeSearchResultsComponent implements OnChanges {
     });
     return listItems;
   }
-  finalize(r: RowItem) {
-    // alert(JSON.stringify(r.rowData.essFileNumber));
-    // look up the registration correctly for the context
-    // alert('register-evacuee/fill/' + r.essfileNumber);
-    this.router.navigate(['register-evacuee/fill/' + r.rowData.id]);
+
+  hasReferrals(r: Registration): boolean {
+    // TODO we need to check business logic for this because there is deeper discussion with the client about
+    // how this becomes a meaningful flag. This also should probably be handled server-side instead of here.
+    return false;
   }
+
+  finalize(r: RowItem) {
+    this.router.navigate(['../register-evacuee/fill/' + r.rowData.id], { relativeTo: this.route });
+  }
+
   view(r: RowItem) {
-    // look up the registration correctly for the context
-    this.router.navigate(['evacuee-summary/' + r.rowData.id]);
+    this.router.navigate(['../evacuee-summary/' + r.rowData.id], { relativeTo: this.route });
   }
 }

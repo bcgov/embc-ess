@@ -12,7 +12,8 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    [AllowAnonymous]
+    //[Authorize(Policy = "Business-User")]
     public class OrganizationsController : Controller
     {
         private readonly BCeIDBusinessQuery _bceid;
@@ -38,13 +39,21 @@ namespace Gov.Jag.Embc.Public.Controllers
 
         public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters searchQuery)
         {
-            var items = await dataInterface.GetOrganizationsAsync(searchQuery);
-
-            return Json(new
+            try
             {
-                data = items.Items,
-                metadata = items.Pagination
-            });
+                var items = await dataInterface.GetOrganizationsAsync(searchQuery);
+
+                return Json(new
+                {
+                    data = items.Items,
+                    metadata = items.Pagination
+                });
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e.ToString());
+                return BadRequest(e.ToString());
+            }
         }
 
         [HttpGet("{id}")]
@@ -70,27 +79,27 @@ namespace Gov.Jag.Embc.Public.Controllers
 
             item.Id = null;
             item.Active = true;
-            var result = await dataInterface.CreateOrganizationAsync(item);
-            return Json(result);
+            var orgId = await dataInterface.CreateOrganizationAsync(item);
+
+            return Json(await dataInterface.GetOrganizationAsync(orgId));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromBody] ViewModels.Organization item, string id)
+        public async Task<IActionResult> Update([FromBody] Organization item, string id)
         {
             if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id)
             {
-                return BadRequest();
+                return BadRequest(Json(id));
             }
-
-            if (!item.Id.Equals(id, StringComparison.OrdinalIgnoreCase))
-            {
-                ModelState.AddModelError("Id", "id does not match Organization Id");
-            }
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            if (!await dataInterface.OrganizationExistsAsync(id))
+            {
+                return NotFound();
+            }
+
             await dataInterface.UpdateOrganizationAsync(item);
             return Ok();
         }

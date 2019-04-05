@@ -16,12 +16,13 @@ export class VolunteerEditorConfirmationComponent implements OnInit {
   componentActive = true;
   currentVolunteer$ = this.store.select(s => s.volunteers.currentVolunteer);
   volunteer: Volunteer;
+  submitting = false; // tracks if in the process of submitting for the UI
 
   constructor(
     private store: Store<AppState>,
     private volunteerService: VolunteerService,
     private router: Router,
-    // private route: ActivatedRoute,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -32,7 +33,8 @@ export class VolunteerEditorConfirmationComponent implements OnInit {
   }
   back() {
     this.onSave();
-    this.router.navigate(['/volunteer-edit']);
+    const nextRoute = this.volunteer.id ? `../fill/${this.volunteer.id}` : '../fill';
+    this.router.navigate([nextRoute], { relativeTo: this.route });
   }
   onSave() {
     // update the stored version
@@ -40,9 +42,10 @@ export class VolunteerEditorConfirmationComponent implements OnInit {
     this.store.dispatch(new UpdateVolunteer({ volunteer }));
   }
   submit(addAnother?: boolean) {
+    this.submitting = true;
     // the page should have all information in this page. if not this was routed to by mistake.
     if (!(this.volunteer.lastName && this.volunteer.firstName && this.volunteer.bceidAccountNumber && this.volunteer.canAccessRestrictedFiles != null)) {
-      this.router.navigate(['volunteer-team-dashboard']);
+      this.router.navigate(['../../volunteers'], { relativeTo: this.route });
     } else {
       // the information required was passed in from the state proceed with update or create
 
@@ -51,24 +54,26 @@ export class VolunteerEditorConfirmationComponent implements OnInit {
         // if the volunteer has an ID we need to update
         this.volunteerService.updateVolunteer(this.volunteer)
           .subscribe(() => {
+            this.submitting = false;
             // if addAnother route back to the add page else route back to the volunteer-team-editor
             if (addAnother) {
-              this.router.navigate(['volunteer-edit']);
+              this.router.navigate(['../fill'], { relativeTo: this.route });
             } else {
               // go back to the volunteer team dashboard
-              this.router.navigate(['volunteer-team-dashboard']);
+              this.router.navigate(['../../volunteers'], { relativeTo: this.route });
             }
           });
       } else {
         // if the volunteer has no id we need to create a new one
         this.volunteerService.createVolunteer(this.volunteer)
           .subscribe(v => {
+            this.submitting = false;
             // if addAnother route back to the add page else route back to the volunteer-team-editor
             if (addAnother) {
-              this.router.navigate(['volunteer-edit']);
+              this.router.navigate(['../fill'], { relativeTo: this.route });
             } else {
               // go back to the volunteer team dashboard
-              this.router.navigate(['volunteer-team-dashboard']);
+              this.router.navigate(['../../volunteers'], { relativeTo: this.route });
             }
           });
       }

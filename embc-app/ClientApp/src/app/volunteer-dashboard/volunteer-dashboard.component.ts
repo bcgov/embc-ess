@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Registration, ListResult } from '../core/models';
+import { Registration, ListResult, User } from '../core/models';
 import { RegistrationService } from '../core/services/registration.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EvacueeSearchResults, SearchQueryParameters } from '../shared/components/search';
+import { AuthService } from '../core/services/auth.service';
 
 interface Stub {
   id?: string; // the guid to link them to their file
@@ -27,6 +28,9 @@ interface Stub {
 })
 export class VolunteerDashboardComponent implements OnInit {
 
+  currentUser: User;
+  isLoggedIn = false;
+
   // server response
   resultsAndPagination$: Observable<ListResult<Registration>>;
 
@@ -38,10 +42,16 @@ export class VolunteerDashboardComponent implements OnInit {
   constructor(
     private registrationService: RegistrationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
+    this.authService.getCurrentUser().subscribe(user => {
+      this.currentUser = user;
+      this.isLoggedIn = !!user;
+    });
+
     // go get the data
     this.doSearch();
   }
@@ -70,12 +80,6 @@ export class VolunteerDashboardComponent implements OnInit {
     );
 
     // TODO: store the pagination metadata + links somewhere
-  }
-
-
-  routeTo(essFileNumber: string) {
-    // TODO: this seems like bad practive but fix when we have time
-    this.router.navigate(['register-evacuee/fill/' + essFileNumber]);
   }
 
 }

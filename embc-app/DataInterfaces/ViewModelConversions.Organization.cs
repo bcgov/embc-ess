@@ -4,7 +4,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static partial class ViewModelConversions
     {
-        public static ViewModels.Organization ToViewModel(this Models.Db.Organization source)
+        public static ViewModels.Organization ToViewModel(this Models.Db.Organization source, Models.Db.Volunteer primaryContact = null)
         {
             ViewModels.Organization result = null;
             if (source != null)
@@ -13,12 +13,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 {
                     Id = source.Id.ToString(),
                     Name = source.Name,
-                    BceidAccountNumber = source.BceidAccountNumber,
                     Active = source.Active,
-                    Externaluseridentifier = source.Externaluseridentifier,
+                    BCeIDBusinessGuid = source.BCeIDBusinessGuid,
                     Region = source.Region?.ToViewModel(),
                     RegionalDistrict = source.RegionalDistrict?.ToViewModel(),
-                    Community = source.Community?.ToViewModel()
+                    Community = source.Community?.ToViewModel(),
+                    AdminBCeID = primaryContact?.BceidAccountNumber,
+                    AdminFirstName = primaryContact?.FirstName,
+                    AdminLastName = primaryContact?.LastName
                 };
             }
             return result;
@@ -32,8 +34,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result = new Models.Db.Organization()
                 {
                     Name = source.Name,
-                    BceidAccountNumber = source.BceidAccountNumber,
-                    Externaluseridentifier = source.Externaluseridentifier,
+                    BCeIDBusinessGuid = source.BCeIDBusinessGuid,
                     RegionId = source.Region == null ? (Guid?)null : Guid.Parse(source.Region.Id),
                     RegionalDistrictId = source.RegionalDistrict == null ? (Guid?)null : Guid.Parse(source.RegionalDistrict?.Id),
                     CommunityId = source.Community == null ? (Guid?)null : Guid.Parse(source.Community?.Id)

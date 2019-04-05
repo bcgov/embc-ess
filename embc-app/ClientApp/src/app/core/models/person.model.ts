@@ -7,5 +7,5 @@ export interface Person {
   nickname: string;
   initials: string;
   gender: string;
-  dob: Date | null;
+  dob: string | null;
 }

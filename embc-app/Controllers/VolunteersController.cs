@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    [AllowAnonymous]
     public class VolunteersController : Controller
     {
         private readonly IConfiguration configuration;
@@ -47,7 +47,9 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            return Json(await dataInterface.GetPersonByIdAsync(id));
+            var item = await dataInterface.GetVolunteerByIdAsync(id);
+            if (item == null) return NotFound(Json(id));
+            return Json(item);
         }
 
         [HttpPost]
@@ -61,10 +63,11 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             item.Id = null;
             item.Active = true;
-            var result = await dataInterface.CreatePersonAsync(item);
-            return Json(result);
+            var result = await dataInterface.CreateVolunteerAsync(item);
+            return Json(await dataInterface.GetVolunteerByIdAsync(result));
         }
 
         [HttpPut("{id}")]
@@ -72,7 +75,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id)
             {
-                return BadRequest();
+                return BadRequest(Json(id));
             }
             if (!item.PersonType.Equals(Models.Db.Person.VOLUNTEER, StringComparison.OrdinalIgnoreCase))
             {
@@ -82,7 +85,11 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest(ModelState);
             }
-            await dataInterface.UpdatePersonAsync(item);
+            if (!await dataInterface.VolunteerExistsAsync(id))
+            {
+                return NotFound();
+            }
+            await dataInterface.UpdateVolunteerAsync(item);
             return Ok();
         }
 
@@ -91,7 +98,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             if (string.IsNullOrWhiteSpace(id)) return BadRequest();
 
-            var result = await dataInterface.DeactivatePersonAsync(id);
+            var result = await dataInterface.DeactivateVolunteerAsync(id);
             return Ok();
         }
     }

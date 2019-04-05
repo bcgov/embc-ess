@@ -76,9 +76,13 @@ export class VolunteerEditorOneComponent implements OnInit {
   next(): void {
     // when routing to the next page we save first into the application state.
     this.onSave();
-    if (this.volunteer.lastName && this.volunteer.firstName && this.volunteer.bceidAccountNumber && this.volunteer.canAccessRestrictedFiles != null) {
+    // TODO: Enable restricted files later.
+    if (this.volunteer.lastName && this.volunteer.firstName && this.volunteer.bceidAccountNumber) {
+      // if (this.volunteer.lastName && this.volunteer.firstName && this.volunteer.bceidAccountNumber && this.volunteer.canAccessRestrictedFiles != null) {
+
       // simple check to be sure that all fields are included.
-      this.router.navigate(['volunteer-edit/confirmation']);
+      const nextRoute = this.editMode ? '../../confirmation' : '../confirmation';
+      this.router.navigate([nextRoute], { relativeTo: this.route });
     } else {
       alert("All fields are required.");
     }
@@ -90,7 +94,9 @@ export class VolunteerEditorOneComponent implements OnInit {
     volunteer.lastName = this.lastName.value;
     volunteer.firstName = this.firstName.value;
     volunteer.bceidAccountNumber = this.bceid.value;
-    volunteer.canAccessRestrictedFiles = this.restrictedAccess.value;
+    // nobody should be grandfathered into restricted files.
+    volunteer.canAccessRestrictedFiles = null; // TODO this should be a choice when we show the form info.
+    // volunteer.canAccessRestrictedFiles = this.restrictedAccess.value;
     this.store.dispatch(new UpdateVolunteer({ volunteer }))
   }
 }

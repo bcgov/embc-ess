@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-side-box-info',
@@ -11,15 +11,20 @@ export class SideBoxInfoComponent implements OnInit {
   @Input() content = 'Content can be added using the content input.';
   @Input() button = 'Ok';
   @Input() route = '/'; //home by default
+  @Input() absoluteRouting = true;
 
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private current: ActivatedRoute) { }
 
   ngOnInit() {
   }
 
-  continue(){
+  continue() {
     //send the user along to the next page submitted
-    this.router.navigateByUrl(this.route);
+    if (this.absoluteRouting) {
+      this.router.navigateByUrl(this.route);
+    } else {
+      this.router.navigate([this.route], { relativeTo: this.current });
+    }
   }
 }

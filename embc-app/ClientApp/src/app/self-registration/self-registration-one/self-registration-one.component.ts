@@ -25,8 +25,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   relationshipTypes$ = this.store.select(state => state.lookups.relationshipTypes.relationshipTypes);
   currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
 
+  disableForm = null; // if this is true the form is hidden
   form: FormGroup;
-  disableForm = false;
   submitted = false;
   componentActive = true;
   registration: Registration | null;
@@ -62,6 +62,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         },
         dob: {
           required: 'Please enter your date of birth.',
+          date: 'Please enter a valid date.',
           maxDate: 'Date of birth must be today or in the past.',
         },
       },
@@ -136,7 +137,13 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // Update form values based on the state
     this.currentRegistration$
       .pipe(takeWhile(() => this.componentActive))
-      .subscribe(value => this.displayRegistration(value));
+      .subscribe(value => {
+        this.displayRegistration(value);
+        // TODO: I don't know where this goes in the massive amount of code below.
+        // if something is coming out of the state that is not null we should turn the restriction to true
+        this.disableForm = value.restrictedAccess;
+        this.form.patchValue({ restrictedAccess: value.restrictedAccess });
+      });
   }
 
   ngOnDestroy(): void {
@@ -150,14 +157,14 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   // Define the form group
   initForm(): void {
     this.form = this.fb.group({
-      restrictedAccess: false,
+      restrictedAccess: null,
       headOfHousehold: this.fb.group({
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
         nickname: '',
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
       }),
       registeringFamilyMembers: [null, Validators.required],
       familyMembers: this.fb.array([]),
@@ -170,9 +177,9 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         addressLine1: '',
         postalCode: '',
         community: '',
-        city: '',
         province: '',
         country: '',
+        city: '',
       }),
       mailingAddressSameAsPrimary: [null, Validators.required],
       mailingAddressInBC: null, // this will be validated when 'mailingAddressSameAsPrimary == false'
@@ -181,9 +188,9 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         addressLine1: '',
         postalCode: '',
         community: '',
-        city: '',
         province: '',
         country: '',
+        city: '',
       }),
     });
   }
@@ -211,7 +218,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // validate mailing address selection (BC address vs out-of-BC)
     // NOTE - this depends on mailingAddressSameAsPrimary being `false`
     this.f.mailingAddressSameAsPrimary.valueChanges
-      .pipe(skipWhile(() => this.f.mailingAddressSameAsPrimary.pristine))
       .subscribe((checked: boolean) => {
         if (checked) {
           this.f.mailingAddressInBC.setValidators(null);
@@ -248,16 +254,27 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   }
 
   displayRegistration(registration: Registration | null): void {
+    if (registration !== null) this.disableForm = null;
     // Set the local registration property
     this.registration = registration;
 
-    if (this.registration && this.form) {
+    // if there is a registration that is not null and the form is initialized
+    // clear the form and patch the valuse back into it.
+    if (this.registration && this.form && !this.registration.restrictedAccess) {
       // Reset the form back to pristine
       this.form.reset();
 
       const hoh = this.registration.headOfHousehold;
       const primaryResidence = hoh.primaryResidence;
       const mailingAddress = hoh.mailingAddress;
+
+      // set the page state and value for the restricted access
+      // if (this.registration.restrictedAccess === null) { 
+      // } else if (this.registration.restrictedAccess === true) {
+      //   this.setRestricted(true);
+      // } else if (this.registration.restrictedAccess === false) {
+      //   this.setRestricted(false);
+      // }
 
       // Update the data on the form
       this.form.patchValue({
@@ -319,7 +336,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       lastName: ['', Validators.required],
       initials: '',
       gender: null,
-      dob: [null, [Validators.required, CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+      dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
       relationshipToEvacuee: [null, Validators.required],
     });
   }
@@ -366,8 +383,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // Use form values to create evacuee registration
     const registration: Registration = {
       ...this.registration,
-      // restrictedAccess: form.restrictedAccess ,
-      restrictedAccess: false,
+      restrictedAccess: form.restrictedAccess,
       // Todo: restrictedAccess should never be true because we do not handle sensitive information with it
       registeringFamilyMembers: form.registeringFamilyMembers,
       headOfHousehold: {
@@ -386,7 +402,14 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     this.store.dispatch(new UpdateRegistration({ registration }));
   }
 
-  disableInput(state: boolean) {
+  setRestricted(state: boolean) {
+    // if restricted equals true then hide the form.
+    // this turns on or off the form view.
     this.disableForm = state;
+    //set the value of the restricted form element
+    this.form.patchValue({ restrictedAccess: state });
+  }
+  nullMailingAddress() {
+    this.f.mailingAddressInBC.setValidators(null);
   }
 }

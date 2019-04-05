@@ -12,8 +12,9 @@
   </div>
   <div class="col mb-4">
     <label>Community</label>
-    <select class="form-control" [formControl]="community">
-      <option [ngValue]="null">-- Select community</option>
+    <select [compareWith]="compareById" class="form-control" [formControl]="community">
+      <!-- <option *ngIf="this.community.value && !this.community.touched">{{this.community.value.name}}</option> -->
+      <option *ngIf="!this.community.value">-- Select community</option>
       <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
     </select>
   </div>
@@ -24,7 +25,7 @@
 </div>
 <div class="mt-5 space-between">
   <section>
-    <a [routerLink]="">
+    <a routerLink="/dashboard">
       <app-font-awesome-icon icon="times"></app-font-awesome-icon>
       <span class="ml-2">Cancel &amp; Close</span>
     </a>
@@ -33,5 +34,5 @@
     <button class="btn btn-primary float-right" (click)="next()">Next</button>
   </section>
 </div>
-<!-- <pre>{{communities$|async|json}}</pre> -->
+
 <!-- TODO Need yellow horizontal rule -->

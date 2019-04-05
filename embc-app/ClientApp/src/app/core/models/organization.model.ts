@@ -1,6 +1,15 @@
+import { Community, Region, RegionalDistrict } from './';
+
 export interface Organization {
-  id: string | null;
-  name: string;
   active?: boolean;
-  bceidAccountNumber: string;
+  adminBCeID: string;
+  adminFirstName: string;
+  adminLastName: string;
+  bCeIDBusinessGuid?: string;
+  community: Community;
+  id?: string | null;
+  legalName?: string;
+  name: string;
+  region: Region;
+  regionalDistrict: RegionalDistrict;
 }

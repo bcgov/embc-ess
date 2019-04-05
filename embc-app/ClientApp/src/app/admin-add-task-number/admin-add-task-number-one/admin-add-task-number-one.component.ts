@@ -5,8 +5,8 @@ import { AppState } from 'src/app/store';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IncidentTask } from 'src/app/core/models';
 import { UpdateIncidentTask } from 'src/app/store/incident-tasks/incident-tasks.actions';
-import { takeWhile } from 'rxjs/operators';
 import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
+import { compareById } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-admin-add-task-number-one',
@@ -32,6 +32,9 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
     community: null,
   };
 
+  // convenience getters so we can use helper functions in Angular templates
+  compareById = compareById;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -47,6 +50,7 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
       this.incidentTaskService.getIncidentTask(this.route.snapshot.params.id).subscribe((i: IncidentTask) => {
         // save the volunteer for filling in information later.
         this.taskNumber.setValue(i.taskNumber);
+        // alert(JSON.stringify(i.community));
         this.community.setValue(i.community);
         this.details.setValue(i.details);
 
@@ -79,7 +83,8 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
       // when routing to the next page we save first into the application state.
       this.onSave();
       // information saved in state. Navigate to confirm page
-      this.router.navigate(['task-number-edit/confirmation']);
+      const nextRoute = this.editMode ? '../../confirmation' : '../confirmation';
+      this.router.navigate([nextRoute], { relativeTo: this.route });
     } else {
       alert("All fields are required to continue.");
     }

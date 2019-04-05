@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SearchQueryParameters, EvacueeSearchResults } from 'src/app/shared/components/search';
 import { Observable } from 'rxjs';
 import { RegistrationService } from 'src/app/core/services/registration.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { ListResult, Registration } from 'src/app/core/models';
 
@@ -24,7 +24,7 @@ export class AdminEvacueesComponent implements OnInit {
   constructor(
     private registrationService: RegistrationService,
     private router: Router,
-
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -55,10 +55,5 @@ export class AdminEvacueesComponent implements OnInit {
     );
 
     // TODO: store the pagination metadata + links somewhere
-  }
-
-  routeTo(essFileNumber: string) {
-    // TODO: this seems like bad practive but fix when we have time
-    this.router.navigate(['register-evacuee/fill/' + essFileNumber]);
   }
 }

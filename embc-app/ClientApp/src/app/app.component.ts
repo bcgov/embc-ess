@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { concat } from 'rxjs';
 
 import { User } from './core/models';
 import { detectIE10orLower } from './shared/utils';
 import { ControlledListService } from './core/services/controlled-list.service';
-import { UserDataService } from './core/services/user-data.service';
+import { AuthService } from './core/services/auth.service';
+import { CookieService } from './core/services/cookie.service';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +19,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private lookups: ControlledListService,
-    private userDataService: UserDataService,
-
+    private authService: AuthService,
+    private cookies: CookieService,
   ) { }
 
   ngOnInit() {
@@ -44,30 +45,36 @@ export class AppComponent implements OnInit {
   }
 
   initializeApp() {
-
+    // Check for authenticated users
     this.reloadUser();
+
     // Loaded once at init time, as they do not change very often, and
     // certainly not within the app.
     this.getLookups().subscribe();
   }
 
-  reloadUser() {
-    this.userDataService.getCurrentUser()
-      .subscribe((data: User) => {
-        this.currentUser = data;
-        //this.isNewUser = this.currentUser.isNewUser;
-
-        //this.store.dispatch(new CurrentUserActions.SetCurrentUserAction(data));
-        // this.isAssociate = (this.currentUser.businessname == null);
-        // if (!this.isAssociate) {
-        //   this.adoxioLegalEntityDataService.getBusinessProfileSummary().subscribe(
-        //     res => {
-        //       this.businessProfiles = res;
-        //     });
-        // }
-      });
+  // TODO: Let's do a shotgun blast here, will improve later...
+  @HostListener('window:beforeunload', ['$event'])
+  onWindowClose(event: any): void {
+    this.logout(event);
   }
 
+  logout(event?: any): void {
+    // Remove all saved data from sessionStorage
+    sessionStorage.clear();
+
+    // clear all cookies
+    this.cookies.clear();
+
+    // let's also try to get to the logout endpoint on the server...
+    this.authService.logout(true)
+      .subscribe(() => console.log('Current user logged out'));
+  }
+
+  reloadUser() {
+    this.authService.login()
+      .subscribe(() => this.currentUser = this.authService.currentUser);
+  }
 
   getLookups() {
     return concat(

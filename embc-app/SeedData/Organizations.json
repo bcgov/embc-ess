@@ -1,9 +1,7 @@
 [
     {
         "Name": "Corporation of the Township of EMBC Test Local Authority 1",
-        "BceidAccountNumber": "15F6FD8BC6C6401DB319311853FC518E",
-
-        "Externaluseridentifier": null,
+        "BCeIDBusinessGuid": "15F6FD8BC6C6401DB319311853FC518E",
         "active": true,
         "community": {
             "name": "Victoria"
@@ -11,9 +9,7 @@
     },
     {
         "Name": "Corporation of the Township of EMBC Test Local Authority 2",
-        "BceidAccountNumber": "25F6FD8BC6C6401DB319311853FC518E",
-
-        "Externaluseridentifier": null,
+        "BCeIDBusinessGuid": "25F6FD8BC6C6401DB319311853FC518E",
         "active": true,
         "community": {
             "name": "Nanaimo"

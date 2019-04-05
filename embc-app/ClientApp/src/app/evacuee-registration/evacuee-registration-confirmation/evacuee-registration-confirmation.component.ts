@@ -4,9 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { takeWhile, map } from 'rxjs/operators';
 
-import { AppState } from 'src/app/store';
 import { RegistrationService } from 'src/app/core/services/registration.service';
-import { Registration, Address, isBcAddress } from 'src/app/core/models';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { VolunteerService } from 'src/app/core/services/volunteer.service';
+import { AppState } from 'src/app/store';
+import { Registration, Address, isBcAddress, User, Volunteer } from 'src/app/core/models';
 import { normalize } from 'src/app/shared/utils';
 import { INSURANCE_OPTIONS, GENDER_OPTIONS } from 'src/app/constants/lookups';
 
@@ -18,7 +20,9 @@ import { INSURANCE_OPTIONS, GENDER_OPTIONS } from 'src/app/constants/lookups';
 export class EvacueeRegistrationConfirmationComponent implements OnInit, OnDestroy {
 
   // current application state
-  currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
+  currentRegistration$ = this.store
+    .select(state => state.registrations.currentRegistration);
+
   countries$ = this.store
     .select(state => state.lookups.countries.countries)
     .pipe(map(arr => normalize(arr)));
@@ -34,27 +38,32 @@ export class EvacueeRegistrationConfirmationComponent implements OnInit, OnDestr
   form: FormGroup;
   componentActive = true;
   submitted = false;
+  submitting = false;
 
   // local copy of the application state
   registration: Registration | null;
+
+  // who's completing/editing this evacuee registration
+  currentUser: User;
 
   constructor(
     private store: Store<AppState>, // ngrx app state
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private service: RegistrationService,
+    private registrations: RegistrationService,
+    private volunteers: VolunteerService,
+    private auth: AuthService,
   ) { }
 
   // convenience getter for easy access to form fields
   get f() { return this.form.controls; }
 
   ngOnInit() {
+    this.auth.getCurrentUser().subscribe(u => this.currentUser = u);
+
     // Create form controls
     this.initForm();
-
-    // Watch for value changes
-    this.onFormChange();
 
     // Update form values based on the state
     this.currentRegistration$
@@ -87,8 +96,6 @@ export class EvacueeRegistrationConfirmationComponent implements OnInit, OnDestr
     });
   }
 
-  onFormChange() { }
-
   displayRegistration(value: Registration | null): void {
     // Set the local registration property
     this.registration = value;
@@ -110,9 +117,11 @@ export class EvacueeRegistrationConfirmationComponent implements OnInit, OnDestr
 
   onSubmit() {
     this.submitted = true;
-
+    // in transmission
+    this.submitting = true;
     // stop here if form is invalid
     if (this.form.invalid) {
+      this.submitting = false;
       return;
     }
 
@@ -121,20 +130,41 @@ export class EvacueeRegistrationConfirmationComponent implements OnInit, OnDestr
     // This ensures values not on the form, such as the Id, are retained
     const value: Registration = { ...this.registration, ...this.form.value };
 
+    // process the registration record before submission to the backend
+    this.processData(value);
+
     // push changes to backend
     if (value.id == null) {
-      this.service
+      this.registrations
         .createRegistration(value)
-        .subscribe(() => this.goToDashboard({ evacuee_created: true }));
+        .subscribe(() => {
+          this.submitting = false;
+          this.goToDashboard({ evacuee_created: true });
+        });
     } else {
-      this.service
+      this.registrations
         .updateRegistration(value)
-        .subscribe(() => this.goToDashboard({ evacuee_updated: true }));
+        .subscribe(() => {
+          this.submitting = false;
+          this.goToDashboard({ evacuee_updated: true });
+        });
     }
     // TODO: Error handling above...
   }
 
   goToDashboard(params: object = {}) {
-    this.router.navigate(['/volunteer-dashboard'], { queryParams: { ...params } });
+    this.router.navigate(['../../evacuees'], { relativeTo: this.route, queryParams: { ...params } });
+  }
+
+  processData(value: Registration): void {
+    // stamp the dates that we want to track for this record
+    value.registrationCompletionDate = value.registrationCompletionDate || new Date().toJSON();
+
+    // TODO: IMPORTANT - how do we want to track provincial staff?
+
+    // track who completed the registration for reporting purposes
+    const id = this.currentUser.contactid;
+    const volunteer: Partial<Volunteer> = id ? { id } : null;
+    value.completedBy = value.completedBy || volunteer;
   }
 }

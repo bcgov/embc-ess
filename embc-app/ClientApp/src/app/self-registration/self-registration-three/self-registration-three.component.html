@@ -127,7 +127,7 @@
       </li>
       <li>
         <span class="name">Alternate Telephone/Mobile:</span>
-        <span class="value">{{registration?.headOfHousehold?.phoneNumber}}</span>
+        <span class="value">{{registration?.headOfHousehold?.phoneNumberAlt}}</span>
       </li>
       <li>
         <span class="name">Email Address:</span>
@@ -261,11 +261,14 @@
       <button class="btn btn-secondary" (click)="back()">EDIT SELF-REGISTRATION</button>
     </section>
     <section>
-      <a [routerLink]="">
+      <a routerLink="/dashboard">
         <app-font-awesome-icon icon="times"></app-font-awesome-icon>
         <span class="ml-2">Cancel &amp; Close</span>
       </a>
-      <button class="btn btn-primary ml-4" [disabled]="form.invalid" (click)="next()">NEXT</button>
+      <button class="btn btn-primary ml-4" [disabled]="form.invalid || submitting" (click)="next()">
+        <span *ngIf="submitting">SUBMITTING</span>
+        <span *ngIf="!submitting">SAVE</span>
+      </button>
     </section>
   </div>
 </div>

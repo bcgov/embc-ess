@@ -9,7 +9,6 @@ import { StoreModule } from '@ngrx/store';
 import { rootReducer, metaReducers } from './store';
 
 import { HomeComponent } from './home/home.component';
-import { VolunteerLoginComponent } from './volunteer-login/volunteer-login.component';
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
 
@@ -26,12 +25,23 @@ import { AdminAddTaskNumberModule } from './admin-add-task-number';
 import { AdminDashboardModule } from './admin-dashboard';
 import { TopNavigationComponent } from './top-navigation/top-navigation.component';
 import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
+import { AdminTaskNumbersComponent } from './admin-task-numbers/admin-task-numbers.component';
+import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
+import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
+import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
+import { OrganizationListComponent } from './organization-list/organization-list.component';
+import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
+import { EvacueeSummaryContainerComponent } from './evacuee-summary-container/evacuee-summary-container.component';
+import { VolunteerEditorContainerComponent } from './volunteer-editor-container/volunteer-editor-container.component';
+import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.component';
+import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
+import { OrganizationMakerComponent } from './organization-maker/organization-maker.component';
+import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    VolunteerLoginComponent,
     VolunteerDashboardComponent,
     TesterPageComponent,
     VolunteerTeamDashboardComponent,
@@ -39,6 +49,18 @@ import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layo
     EvacueeSummaryComponent,
     TopNavigationComponent,
     VolunteerLayoutComponent,
+    AdminTaskNumbersComponent,
+    TaskNumberListComponent,
+    VolunteerListComponent,
+    EvacueeListComponent,
+    OrganizationListComponent,
+    UsefulInformationContentComponent,
+    EvacueeSummaryContainerComponent,
+    VolunteerEditorContainerComponent,
+    TaskNumberMakerComponent,
+    VolunteerMakerComponent,
+    OrganizationMakerComponent,
+    EvacueeSummaryPageComponent,
   ],
   imports: [
     // angular

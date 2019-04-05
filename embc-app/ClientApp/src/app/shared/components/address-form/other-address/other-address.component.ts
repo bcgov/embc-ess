@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 
 import { Country } from 'src/app/core/models';
+import { compareById } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-other-address',
@@ -12,7 +13,7 @@ import { Country } from 'src/app/core/models';
           <label>Apt/Suite/Building Number &amp; Street Address/PO Box:</label>
           <input [class.is-invalid]="invalidAddressLine1" class="form-control" type="text" formControlName="addressLine1">
           <span class="invalid-feedback">
-            Please enter your street address
+            Please enter your street address.
           </span>
         </app-form-field>
       </div>
@@ -21,7 +22,7 @@ import { Country } from 'src/app/core/models';
           <label>City</label>
           <input [class.is-invalid]="invalidCity" class="form-control" type="text" formControlName="city">
           <span class="invalid-feedback">
-            Please enter your city
+            Please enter your city.
           </span>
         </app-form-field>
         <app-form-field class="col-md-3">
@@ -36,12 +37,12 @@ import { Country } from 'src/app/core/models';
       <div class="row">
         <app-form-field class="col-md-6" required="true">
           <label>Country/Region</label>
-          <select [class.is-invalid]="invalidCountry" class="form-control" formControlName="country">
+          <select [compareWith]="compareById" [class.is-invalid]="invalidCountry" class="form-control" formControlName="country">
             <option [ngValue]="null">-- Select Country</option>
             <option [ngValue]="item" *ngFor="let item of countries">{{item.name}}</option>
           </select>
           <span class="invalid-feedback">
-            Please select a country from the dropdown list
+            Please select a country from the dropdown list.
           </span>
         </app-form-field>
       </div>
@@ -54,6 +55,9 @@ export class OtherAddressComponent implements OnInit {
   @Input() parent: FormGroup;
   @Input() countries: Country[] = [];
   @Input() touched = false;
+
+  // convenience getter so we can use helper functions within Angular templates
+  compareById = compareById;
 
   // convenience getter for easy access to form fields
   get f() { return this.parent.controls; }
@@ -69,11 +73,23 @@ export class OtherAddressComponent implements OnInit {
 
   private setupValidation(): void {
     this.f.addressLine1.setValidators([Validators.required]);
-    this.f.postalCode.setValidators(null);
-    this.f.community.setValidators(null);
+    this.f.addressLine1.updateValueAndValidity();
+
+    this.f.postalCode.clearValidators();
+    this.f.postalCode.updateValueAndValidity();
+
+    this.f.community.clearValidators();
+    this.f.community.updateValueAndValidity();
+
     this.f.city.setValidators([Validators.required]);
-    this.f.province.setValidators(null);
+    this.f.city.updateValueAndValidity();
+
+    this.f.province.clearValidators();
+    this.f.province.updateValueAndValidity();
+
     this.f.country.setValidators([Validators.required]);
+    this.f.country.updateValueAndValidity();
+
     this.parent.updateValueAndValidity();
   }
 }

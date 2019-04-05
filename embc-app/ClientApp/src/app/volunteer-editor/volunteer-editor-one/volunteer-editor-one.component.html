@@ -19,7 +19,7 @@
     <label>BCeID</label>
     <input class="form-control" type="text" [formControl]="bceid">
   </div>
-  <div class="col mb-4">
+  <!-- <div class="col mb-4">
     <p>
       Can this user access restricted files?
     </p>
@@ -33,14 +33,14 @@
         <label class="form-check-label">No</label>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>
 <div class="col mb-4">
   <!-- <button class="btn btn-primary">Cancel</button> -->
   <!-- <button class="btn btn-primary" (click)="submit()">Submit</button> -->
 
   <button class="btn btn-primary float-right" (click)="next()">Next</button>
-  <a [routerLink]="">
+  <a routerLink="/dashboard">
     <app-font-awesome-icon icon="times"></app-font-awesome-icon>
     <span class="ml-2">Cancel &amp; Close</span>
   </a>
