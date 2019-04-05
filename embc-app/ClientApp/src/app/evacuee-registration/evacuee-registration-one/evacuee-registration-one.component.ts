@@ -8,13 +8,14 @@ import * as moment from 'moment';
 import { AppState } from '../../store';
 import { RegistrationService } from '../../core/services/registration.service';
 import {
-  Registration, FamilyMember, isBcAddress, Community, Country, Volunteer, IncidentTask, Address
+  Registration, FamilyMember, isBcAddress, Community, Country, Volunteer, IncidentTask, Address, User
 } from 'src/app/core/models';
 import { IncidentTaskService } from '../../core/services/incident-task.service';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { hasErrors, invalidField, clearFormArray, compareById } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
-import { GENDER_OPTIONS } from 'src/app/constants';
+import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 
 @Component({
@@ -42,11 +43,13 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   finalizeMode = false;
   editMode = false;
   summaryMode = false; // just show the summary
+  submitting = false;
 
+  // this is the "final copy" or version of the content in the form that will be updated or refreshed.
   registration: Registration;
+  // who's completing/editing this evacuee registration
+  currentUser: User;
   submission: any;
-  // the ess file number on its own is useful for looking up information from the DB
-  // essFileNumber: string;
 
   // convenience getters so we can use helper functions in Angular templates
   hasErrors = hasErrors;
@@ -68,7 +71,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     private route: ActivatedRoute,
     private registrationService: RegistrationService,
     private incidentTaskService: IncidentTaskService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
   ) {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
@@ -201,6 +205,9 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
     // Watch for value changes
     this.onFormChange();
+
+    // Know the current user
+    this.authService.getCurrentUser().subscribe(u => this.currentUser = u);
 
     // if there are route params we should grab them
     const id = this.route.snapshot.params.id;
@@ -533,7 +540,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  next() {
     this.submitted = true;
     this.validateForm();
     // stop here if form is invalid
@@ -541,19 +548,25 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       this.errorSummary = 'Some required fields have not been completed.';
       return;
     } else {
-      // update client-side state
-      this.saveState();
+      // success!
+      this.errorSummary = null;
+
       // navigate to the next page.
       this.summaryMode = true;
       // const nextRoute = this.editMode ? '../../confirmation' : '../confirmation';
       // this.router.navigate([nextRoute], { relativeTo: this.route });
 
-      // success!
-      this.errorSummary = null;
+      // Copy over all of the original properties
+      // Then copy over the values from the form
+      // This ensures values not on the form, such as the Id, are retained
+      // process the registration record before submission to the backend
+      // stamp the dates that we want to track for this record
+      this.registration = this.saveState();
     }
   }
 
-  saveState() {
+
+  saveState(): Registration {
     const values = this.form.value;
     // ensure proper sub-types are assigned to people entities
     const personType: 'FMBR' = 'FMBR';
@@ -635,10 +648,17 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       r.headOfHousehold.primaryResidence.id = this.registration.headOfHousehold.primaryResidence.id || null;
       r.completedBy = this.registration.completedBy || null;
     }
+    // timestamp the completion date on
+    r.registrationCompletionDate = r.registrationCompletionDate || new Date().toJSON();
+
+    // track who completed the registration for reporting purposes
+    const volunteer: Partial<Volunteer> = this.currentUser.contactid ? { id: this.currentUser.contactid } : null;
+    // the initial completed by volunteer is preserved unless there is a new volunteer
+    r.completedBy = r.completedBy || volunteer;
 
     // save the registration to the application state
     // this.store.dispatch(new UpdateRegistration({ registration: r }));
-    this.registration = r;
+    return r;
   }
   // ------------------------------------------------------------------------------
 
@@ -649,4 +669,40 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     const option = GENDER_OPTIONS.find(item => item.key === key);
     return option ? option.value : null;
   }
+  submit() {
+    this.submitted = true;
+    // in transmission
+    this.submitting = true;
+    // this function performs the "send json to server" action
+    // push changes to backend
+    if (this.registration.id == null) {
+      // submit the global registration to the server
+      this.registrationService
+        .createRegistration(this.registration)
+        .subscribe(() => {
+          this.submitting = false;
+          this.goToDashboard({ evacuee_created: true });
+        });
+    } else {
+      // submit the global registration to the server
+      this.registrationService
+        .updateRegistration(this.registration)
+        .subscribe(() => {
+          this.submitting = false;
+          this.goToDashboard({ evacuee_updated: true });
+        });
+    }
+  }
+  back() {
+    //return to the edit mode
+    this.summaryMode = false;
+  }
+  goToDashboard(params: object = {}) {
+    this.router.navigate(['../../evacuees'], { relativeTo: this.route, queryParams: { ...params } });
+  }
+  insuranceOption(key: string) {
+    const option = INSURANCE_OPTIONS.find(item => item.key === key);
+    return option ? option.value : null;
+  }
+
 }
