@@ -45,5 +45,16 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string LastName { get; set; }
 
         public string PersonType { get; set; }  // one of "VOLN" (volunteer), "HOH" (head of household), "FMBR" (family member)
+
+        [MaxLength(255)]
+        public string Nickname { get; set; }
+
+        [MaxLength(255)]
+        public string Initials { get; set; }
+
+        [MaxLength(255)]
+        public string Gender { get; set; }
+
+        public DateTimeOffset? Dob { get; set; }
     }
 }
