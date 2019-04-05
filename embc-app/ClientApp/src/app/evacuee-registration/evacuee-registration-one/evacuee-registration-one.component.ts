@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, skipWhile } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { AppState } from '../../store';
@@ -11,10 +11,10 @@ import {
   Registration, FamilyMember, isBcAddress, Community, Country, Volunteer, IncidentTask, Address
 } from 'src/app/core/models';
 import { IncidentTaskService } from '../../core/services/incident-task.service';
-import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { hasErrors, invalidField, clearFormArray, compareById } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { GENDER_OPTIONS } from 'src/app/constants';
 
 
 @Component({
@@ -32,7 +32,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
   pageTitle = 'Add an Evacuee';
   activeForm = true; // this lets the user fill things out
-
   // The model for the form data collected
   form: FormGroup;
   componentActive = true;
@@ -42,6 +41,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   createMode = true;
   finalizeMode = false;
   editMode = false;
+  summaryMode = false; // just show the summary
 
   registration: Registration;
   submission: any;
@@ -136,7 +136,13 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       },
     };
     // TODO: Wow. it sure would be nice if we could just instatiate a class instead of using interfaces
-    this.registration = {
+    this.registration = this.blankRegistration();
+    // Define an instance of the validator for use with this form,
+    // passing in this form's set of validation messages.
+    this.validationHelper = new ValidationHelper(this.constraints);
+  }
+  blankRegistration(): Registration {
+    return {
       id: null,
       active: null,
       restrictedAccess: null,
@@ -173,11 +179,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       hostCommunity: null,
       completedBy: null,
     }
-    // Define an instance of the validator for use with this form,
-    // passing in this form's set of validation messages.
-    this.validationHelper = new ValidationHelper(this.constraints);
   }
-
   // convenience getter for easy access to form fields within the HTML template
   get f(): any { return this.form.controls; }
 
@@ -542,11 +544,13 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       // update client-side state
       this.saveState();
       // navigate to the next page.
-      const nextRoute = this.editMode ? '../../confirmation' : '../confirmation';
-      this.router.navigate([nextRoute], { relativeTo: this.route });
+      this.summaryMode = true;
+      // const nextRoute = this.editMode ? '../../confirmation' : '../confirmation';
+      // this.router.navigate([nextRoute], { relativeTo: this.route });
+
+      // success!
+      this.errorSummary = null;
     }
-    // success!
-    this.errorSummary = null;
   }
 
   saveState() {
@@ -633,6 +637,16 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     }
 
     // save the registration to the application state
-    this.store.dispatch(new UpdateRegistration({ registration: r }));
+    // this.store.dispatch(new UpdateRegistration({ registration: r }));
+    this.registration = r;
+  }
+  // ------------------------------------------------------------------------------
+
+  isBcAddress(address: Address): boolean {
+    return isBcAddress(address);
+  }
+  genderOption(key: string) {
+    const option = GENDER_OPTIONS.find(item => item.key === key);
+    return option ? option.value : null;
   }
 }
