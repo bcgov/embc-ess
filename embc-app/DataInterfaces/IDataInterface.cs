@@ -36,10 +36,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<bool> DeactivateIncidentTaskAsync(string id);
 
-        Task<IncidentTaskEvacueeSummary> GetIncidentTaskEvacuees(string incidentTaskId);
-
-        Task<List<IncidentTaskEvacueeSummary>> GetIncidentTaskEvacuees(List<string> incidentTaskIds);
-
         #endregion Incident task
 
         #region Lookup data
