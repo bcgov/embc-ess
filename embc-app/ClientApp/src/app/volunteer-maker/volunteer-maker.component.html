@@ -1,57 +1,111 @@
 <div *ngIf="maker">
   <div class="mb-4">
-    <h1 *ngIf="!editMode">Add ESS User</h1>
-    <h1 *ngIf="editMode">Edit ESS User</h1>
-    <small>
-      All fields are required
-    </small>
-    <h3 class="blue-header">
-      USER DETAILS
-    </h3>
-    <div class="col mb-4">
-      <label>Last Name</label>
-      <input class="form-control" type="text" [formControl]="lastName">
-    </div>
-    <div class="col mb-4">
-      <label>First Name</label>
-      <input class="form-control" type="text" [formControl]="firstName">
-    </div>
-    <div class="col mb-4">
-      <label>BCeID</label>
-      <input class="form-control" type="text" [formControl]="bceid">
-    </div>
-    <!-- <div class="col mb-4">
-      <p>
-        Can this user access restricted files?
-      </p>
-      <div class="form-group">
-        <div class="form-check form-check-inline">
-          <input [formControl]="restrictedAccess" class="form-check-input" type="radio" [value]="true">
-          <label class="form-check-label">Yes</label>
+    <h1 *ngIf="!isProvincialAdmin && editMode === false">Add ESS User(s)</h1>
+    <h1 *ngIf="!isProvincialAdmin && editMode === true">Edit ESS User</h1>
+    <h1 *ngIf="isProvincialAdmin && editMode === false">Add User(s)</h1>
+    <h1 *ngIf="isProvincialAdmin && editMode === true">Edit User</h1>
+
+    <p class="pb-3" *ngIf="isProvincialAdmin">
+      Administrators can add users within an organization if they have their first name, last name, role, and BCeID.
+    </p>
+
+    <small>All fields are required</small>
+    <h3 class="blue-header mt-0">User Details</h3>
+
+    <div class="row pt-5" *ngIf="isProvincialAdmin && editMode === false">
+      <div class="col-md-9">
+        <label class="required" for="organization">Organization</label>
+        <div *ngIf="isChangeOrg">
+          <select class="form-control" [formControl]="organizationName" id="organization">
+            <option [ngValue]="volunteer.organization" *ngIf="volunteer?.organization">{{volunteer.organization.name}}</option>
+            <option [ngValue]="null" *ngIf="!volunteer?.organization">-- Select organization</option>
+            <option [ngValue]="organization" *ngFor="let organization of metaOrganizations.data">{{organization?.name}}</option>
+          </select>
         </div>
-        <div class="form-check form-check-inline">
-          <input [formControl]="restrictedAccess" class="form-check-input" type="radio" [value]="false">
-          <label class="form-check-label">No</label>
+
+        <div *ngIf="!isChangeOrg">
+          <input class="form-control" type="text" id="organization" [value]="volunteer?.organization?.name" readonly>
+          <button class="btn btn-link float-right" (click)="changeOrganization()">
+            <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+            <span class="ml-2">Change Organization</span>
+          </button>
         </div>
       </div>
-    </div> -->
-  </div>
-  <div class="col mb-4">
-    <!-- <button class="btn btn-primary">Cancel</button> -->
-    <!-- <button class="btn btn-primary" (click)="submit()">Submit</button> -->
+    </div>
 
-    <button class="btn btn-primary float-right" (click)="next()">Next</button>
+    <div class="row pt-5">
+      <div class="col-md-9">
+        <label class="required" for="lastName">Last Name</label>
+        <input class="form-control" type="text" id="lastName" [formControl]="lastName" maxlength="50" required>
+      </div>
+    </div>
+
+    <div class="row pt-5">
+      <div class="col-md-9">
+        <label class="required" for="firstName">First Name</label>
+        <input class="form-control" type="text" id="firstName" [formControl]="firstName" maxlength="50" required>
+      </div>
+    </div>
+
+    <div class="row pt-5">
+      <div class="col-md-9">
+        <label class="required" for="bceid">BCeID</label>
+        <input class="form-control" type="text" id="bceid" [formControl]="bceid" required>
+      </div>
+    </div>
+
+    <div class="row pt-5" *ngIf="isProvincialAdmin">
+      <div class="col-md-9">
+        <label class="required">Role</label>
+        <fieldset class="form-group">
+          <legend class="sr-only">Role</legend>
+          <div class="form-check">
+            <label class="form-check-label" for="isAdministratorFalse">
+              <input class="form-check-input" type="radio" [formControl]="isAdministrator" id="isAdministratorFalse" [value]="false">
+              <span class="pl-3">ESS User</span>
+            </label>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label" for="isAdministratorTrue">
+              <input class="form-check-input" type="radio" [formControl]="isAdministrator" id="isAdministratorTrue" [value]="true">
+              <span class="pl-3">Admin</span>
+            </label>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="row pt-5" *ngIf="isProvincialAdmin && isAdministrator.value === true">
+      <div class="col-md-9">
+        <label class="required">Primary Contact for Organization</label>
+        <fieldset class="form-group">
+          <legend class="sr-only">Primary Contact for Organization</legend>
+          <div class="form-check">
+            <label class="form-check-label" for="isPrimaryContactTrue">
+              <input class="form-check-input" type="radio" [formControl]="isPrimaryContact" id="isPrimaryContactTrue" [value]="true">
+              <span class="pl-3">Yes</span>
+            </label>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label" for="isPrimaryContactFalse">
+              <input class="form-check-input" type="radio" [formControl]="isPrimaryContact" id="isPrimaryContactFalse" [value]="false">
+              <span class="pl-3">No</span>
+            </label>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5 space-between">
     <a routerLink="" (click)="cancel()">
       <app-font-awesome-icon icon="times"></app-font-awesome-icon>
       <span class="ml-2">Cancel &amp; Close</span>
     </a>
+    <button class="btn btn-primary float-right" (click)="next()">Next</button>
   </div>
-  <!-- TODO Need yellow horizontal rule -->
-  <!-- <div class="col mb-4">
-    Volunteer:
-    <pre>{{volunteer|json}}</pre>
-  </div> -->
 </div>
+
 <div *ngIf="!maker">
   <div class="mb-4">
     <h1 class="mt-3">Review Details</h1>
@@ -59,6 +113,10 @@
     <section class="p-3">
       <h3>Evacuee Information</h3>
       <ul class="summary">
+        <li *ngIf="isProvincialAdmin">
+          <span class="name">Organization:</span>
+          <span class="value">{{volunteer.organization.name}}</span>
+        </li>
         <li>
           <span class="name">Last Name:</span>
           <span class="value">{{volunteer.lastName}}</span>
@@ -71,15 +129,18 @@
           <span class="name">BCeID:</span>
           <span class="value">{{volunteer.bceidAccountNumber}}</span>
         </li>
-        <!-- TODO Hide feature for later. -->
-        <!-- <li>
-              <span class="name">Access Restricted Files:</span>
-              <span *ngIf="volunteer.canAccessRestrictedFiles" class="value">Yes</span>
-              <span *ngIf="!volunteer.canAccessRestrictedFiles" class="value">No</span>
-            </li> -->
+        <li *ngIf="isProvincialAdmin">
+          <span class="name">Role:</span>
+          <span class="value">{{volunteer.isAdministrator ? 'Admin' : 'ESS User'}}</span>
+        </li>
+        <li *ngIf="isProvincialAdmin && volunteer.isAdministrator">
+          <span class="name">Primary Contact for Organization:</span>
+          <span class="value">{{volunteer.isPrimaryContact ? 'Yes' : 'No'}}</span>
+        </li>
       </ul>
     </section>
   </div>
+
   <div class="mt-5 space-between">
     <section>
       <button (click)="back()" class="btn btn-secondary">Edit</button>
@@ -88,13 +149,8 @@
       <button *ngIf="!submitting" class="btn btn-primary" (click)="submit()">SAVE</button>
       <button *ngIf="submitting" class="btn btn-primary" disabled>SUBMITTING</button>
 
-      <button *ngIf="!editMode && !submitting" class="btn btn-primary ml-2" (click)="submit(true)">SAVE &amp; ADD ANOTHER</button>
-      <button *ngIf="!editMode && submitting" class="btn btn-primary ml-2" disabled>SUBMITTING</button>
+      <button *ngIf="editMode === false && !submitting" class="btn btn-primary ml-2" (click)="submit(true)">SAVE &amp;ADD ANOTHER</button>
+      <button *ngIf="editMode === false && submitting" class="btn btn-primary ml-2" disabled>SUBMITTING</button>
     </section>
   </div>
-
-
 </div>
-<!-- <div class="col mb-4 space-between">
-  <pre>{{volunteer|json}}</pre>
-</div> -->

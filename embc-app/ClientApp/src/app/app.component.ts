@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   }
 
   get isAuthenticated(): boolean {
-    return this.currentUser != undefined;
+    return this.currentUser !== undefined;
   }
 
   get isNewUser(): boolean {
