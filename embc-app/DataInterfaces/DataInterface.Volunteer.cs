@@ -67,10 +67,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<IPagedResults<Volunteer>> GetVolunteersAsync(VolunteersSearchQueryParameters searchQuery)
         {
+            var onlyEssUsers = searchQuery.OnlyEssUsers ?? false;
+            var onlyAdmins = searchQuery.OnlyAdminUsers ?? false;
             var items = await Volunteers
                  .Where(v => !searchQuery.HasQuery() || v.LastName.Contains(searchQuery.Query, StringComparison.InvariantCultureIgnoreCase))
-                 .Where(v => !searchQuery.OnlyEssUsers.HasValue || v.IsAdministrator != searchQuery.OnlyEssUsers.Value)
-                 .Where(v => !searchQuery.OnlyAdminUsers.HasValue || v.IsAdministrator == searchQuery.OnlyAdminUsers.Value)
+                 .Where(v => !onlyEssUsers || !v.IsAdministrator.Value)
+                 .Where(v => !onlyAdmins || v.IsAdministrator.Value)
                  .Where(v => searchQuery.OrganizationId == null || v.Organization.Id == Guid.Parse(searchQuery.OrganizationId))
                  .Where(t => searchQuery.IncludeDeactivated || t.Active)
                  .Sort(searchQuery.SortBy ?? "id")
