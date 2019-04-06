@@ -50,7 +50,7 @@
           <td>{{organization?.community?.name}}</td>
           <td>{{organization?.adminLastName}}, {{organization?.adminFirstName}}</td>
           <td>
-            <a [routerLink]="">View / Add Users</a>
+            <a [routerLink]="['../volunteers']" [queryParams]="{orgId: organization.id}">View / Add Users</a>
             <br>
             <a [routerLink]="['../organization/', organization.id]">Edit Details</a>
           </td>

@@ -8,18 +8,27 @@ import { RestService } from './rest.service';
 import { HttpResponse } from '@angular/common/http';
 import { SearchQueryParameters } from 'src/app/shared/components/search';
 
+export interface VolunteerSearchQueryParameters extends SearchQueryParameters {
+  org_id?: string;
+  ess_only?: boolean;
+  admin_only?: boolean;
+}
+
 @Injectable({
   providedIn: CoreModule
 })
 export class VolunteerService extends RestService {
   apiRoute = 'api/volunteers';
 
-  getVolunteers(limit?: number, offset?: number, q?: string, sort?: string): Observable<ListResult<Volunteer>> {
+  getVolunteers({ limit, offset, q, sort, org_id, ess_only, admin_only }: VolunteerSearchQueryParameters = {}): Observable<ListResult<Volunteer>> {
     const params = {
       limit: (limit || 100).toString(), // query params are strings
       offset: (offset || 0).toString(),
       q: q || '',
-      sort: sort || 'name'
+      sort: sort || 'name',
+      org_id: org_id || '',
+      ess_only: (!!ess_only).toString(),
+      admin_only: (!!admin_only).toString(),
     };
 
     // get a list of all volunteers back from the api

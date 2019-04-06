@@ -325,6 +325,13 @@ const routes: Routes = [
         path: 'volunteers',
         component: VolunteerTeamDashboardComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
+        children: [
+          {
+            path: '',
+            component: VolunteerListComponent,
+            data: { expectedRole: LOCAL_AUTHORITY },
+          }
+        ]
       },
       {
         path: 'volunteer',
@@ -376,7 +383,6 @@ const routes: Routes = [
         component: OrganizationListComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
-
       {
         path: 'organization',
         component: OrganizationMakerComponent,
