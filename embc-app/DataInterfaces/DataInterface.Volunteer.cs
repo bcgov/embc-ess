@@ -33,19 +33,22 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             if (volunteer.IsPrimaryContact ?? false)
             {
                 await SetVolunteerAsPrimaryContact(volunteer, orgId);
+                volunteer.IsPrimaryContact = true;
             }
             else
             {
-                var numberOfPrimaryContacts = await GetNumberOfPrimaryContactsInOrganization(orgId);
-                if (numberOfPrimaryContacts <= 1) throw new InvalidOperationException("Organization must have at least 1 primary contact");
+                volunteer.IsPrimaryContact = false;
             }
             db.People.Update(volunteer);
+            //var numberOfPrimaryContacts = await GetNumberOfPrimaryContactsInOrganization(orgId);
+            //if (numberOfPrimaryContacts < 1) throw new InvalidOperationException("Organization must have at least 1 primary contact");
+
             await db.SaveChangesAsync();
         }
 
         private IQueryable<Models.Db.Volunteer> GetVolunteersByOrganizationId(Guid orgId)
         {
-            return Volunteers.Where(v => v.Organization.Id == orgId);
+            return Volunteers.Where(v => v.Organization.Id == orgId || v.OrganizationId == orgId);
         }
 
         private async Task SetVolunteerAsPrimaryContact(Models.Db.Volunteer volunteer, Guid organizationId)
@@ -56,13 +59,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 contact.IsPrimaryContact = false;
             }
             db.People.UpdateRange(previousPrimaryContactsForOrg);
-            volunteer.IsPrimaryContact = true;
             await Task.CompletedTask;
         }
 
         private async Task<int> GetNumberOfPrimaryContactsInOrganization(Guid organizationId)
         {
-            return await Volunteers.CountAsync(v => v.Organization.Id == organizationId && v.IsPrimaryContact.HasValue && v.IsPrimaryContact.Value);
+            return await Volunteers.CountAsync(v => (v.Organization.Id == organizationId || v.OrganizationId == organizationId)
+                 && v.IsPrimaryContact.HasValue && v.IsPrimaryContact.Value);
         }
 
         public async Task<IPagedResults<Volunteer>> GetVolunteersAsync(VolunteersSearchQueryParameters searchQuery)
@@ -101,11 +104,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             if (volunteer.IsPrimaryContact ?? false)
             {
                 await SetVolunteerAsPrimaryContact(volunteer, orgId);
+                volunteer.IsPrimaryContact = true;
             }
             else
             {
-                var numberOfPrimaryContacts = await GetNumberOfPrimaryContactsInOrganization(orgId);
-                if (numberOfPrimaryContacts <= 1) throw new InvalidOperationException("Organization must have at least 1 primary contact");
+                volunteer.IsPrimaryContact = false;
             }
             var newPerson = await db.People.AddAsync(volunteer);
             await db.SaveChangesAsync();
