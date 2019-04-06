@@ -97,7 +97,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<string> CreateVolunteerAsync(Volunteer person)
         {
-            if (string.IsNullOrEmpty(person.Organization.Id)) throw new InvalidOperationException($"Volunteer {person.Id} is not associated with an organization");
+            if (person.Organization == null || string.IsNullOrEmpty(person.Organization.Id)) throw new InvalidOperationException($"Volunteer {person.Id} is not associated with an organization");
 
             var volunteer = (Models.Db.Volunteer)person.ToModel();
             var orgId = volunteer.OrganizationId.Value;
