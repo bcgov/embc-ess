@@ -15,7 +15,7 @@ import { CookieService } from './core/services/cookie.service';
 export class AppComponent implements OnInit {
   title = '';
   isIE = false;
-  currentUser: User;
+  currentUser: User = null;
 
   constructor(
     private lookups: ControlledListService,
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   }
 
   get isAuthenticated(): boolean {
-    return this.currentUser !== undefined;
+    return !!this.currentUser;
   }
 
   get isNewUser(): boolean {
