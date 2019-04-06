@@ -33,7 +33,7 @@ export class VolunteerTeamDashboardComponent implements OnInit {
 
   getVolunteers(limit?: number, offset?: number, query?: string, sort?: string) {
     // get volunteers with supplied params defaults defined in
-    this.volunteerService.getVolunteers(limit, offset, query, sort).subscribe((v: ListResult<Volunteer>) => {
+    this.volunteerService.getVolunteers({ limit, offset, q: query, sort }).subscribe((v: ListResult<Volunteer>) => {
       // save the metaVolunteers
       this.metaVolunteers = v;
     });
