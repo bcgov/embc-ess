@@ -383,7 +383,6 @@ const routes: Routes = [
         component: OrganizationListComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
-
       {
         path: 'organization',
         component: OrganizationMakerComponent,
