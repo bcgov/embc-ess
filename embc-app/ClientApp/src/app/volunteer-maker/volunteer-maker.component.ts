@@ -163,8 +163,8 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
       personType: 'VOLN',
       canAccessRestrictedFiles: null,
       organization: null,
-      isAdministrator: (this.isProvincialAdmin ? null : false), // init false if not Prov Admin
-      isPrimaryContact: (this.isProvincialAdmin ? null : false), // init false if not Prov Admin
+      isAdministrator: null,
+      isPrimaryContact: null
     };
   }
 
@@ -228,8 +228,8 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
     this.volunteer.lastName = this.lastName.value;
     this.volunteer.firstName = this.firstName.value;
     this.volunteer.bceidAccountNumber = this.bceid.value;
-    this.volunteer.isAdministrator = this.isAdministrator.value;
-    this.volunteer.isPrimaryContact = this.isPrimaryContact.value;
+    this.volunteer.isAdministrator = this.isAdministrator.value || false; // if null then set to false
+    this.volunteer.isPrimaryContact = this.isPrimaryContact.value || false; // if null then set to false
     // console.log('volunteer =', this.volunteer);
   }
 
@@ -240,7 +240,7 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
   }
 
   submit(addAnother?: boolean) {
-    console.log('volunteer =', this.volunteer);
+    // console.log('volunteer =', this.volunteer);
     this.submitting = true;
     // check if this is an update
     if (this.volunteer.id) {
