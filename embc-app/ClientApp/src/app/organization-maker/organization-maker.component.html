@@ -14,34 +14,43 @@
     <small>All fields are required</small>
     <h3 class="blue-header mt-0">Organization Details</h3>
 
-    <div class="col pt-4 mb-4">
-      <label class="required" for="organizationName">Name of Organization</label>
-      <input class="form-control" type="text" [formControl]="organizationName" id="organizationName" maxlength="150" required>
+    <div class="row">
+      <div class="col-md-9 pt-4 mb-4">
+        <label class="required" for="organizationName">Name of Organization</label>
+        <input class="form-control" type="text" [formControl]="organizationName" id="organizationName" maxlength="150" required>
+      </div>
     </div>
 
-    <div class="col pt-4 mb-4" *ngIf="editMode === false">
-      <label class="required" for="adminBceid">Admin BCeID User ID</label>
-      <input class="form-control" type="text" [formControl]="adminBceid" id="adminBceid" required>
+    <div class="row" *ngIf="editMode === false">
+      <div class="col-md-9 pt-4 mb-4">
+        <label class="required" for="adminBceid">Admin BCeID User ID</label>
+        <input class="form-control" type="text" [formControl]="adminBceid" id="adminBceid" required>
+      </div>
     </div>
 
-    <div class="col pt-4 mb-4" *ngIf="editMode === false">
-      <label class="required" for="adminLastName">Admin Last Name</label>
-      <input class="form-control" type="text" [formControl]="adminLastName" id="adminLastName" required>
+    <div class="row" *ngIf="editMode === false">
+      <div class="col-md-9 pt-4 mb-4">
+        <label class="required" for="adminLastName">Admin Last Name</label>
+        <input class="form-control" type="text" [formControl]="adminLastName" id="adminLastName" required>
+      </div>
     </div>
 
-    <div class="col pt-4 mb-4" *ngIf="editMode === false">
-      <label class="required" for="adminFirstName">Admin First Name</label>
-      <input class="form-control" type="text" [formControl]="adminFirstName" id="adminFirstName" required>
+    <div class="row" *ngIf="editMode === false">
+      <div class="col-md-9 pt-4 mb-4">
+        <label class="required" for="adminFirstName">Admin First Name</label>
+        <input class="form-control" type="text" [formControl]="adminFirstName" id="adminFirstName" required>
+      </div>
     </div>
 
-    <div class="col pt-4 mb-4">
-      <label class="required" for="community">Associated EMBC Region / Regional District / Community</label>
-      <select class="form-control" [formControl]="community" id="community">
-        <option [ngValue]="organization?.community" *ngIf="organization?.community?.name">
-          {{organization?.community?.name}}</option>
-        <option [ngValue]="null" *ngIf="!organization?.community">-- Select community</option>
-        <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community?.name}}</option>
-      </select>
+    <div class="row">
+      <div class="col-md-9 pt-4 mb-4">
+        <label class="required" for="community">Associated EMBC Region / Regional District / Community</label>
+        <select class="form-control" [formControl]="community" id="community">
+          <option [ngValue]="organization.community" *ngIf="organization?.community">{{organization.community.name}}</option>
+          <option [ngValue]="null" *ngIf="!organization?.community">-- Select community</option>
+          <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community?.name}}</option>
+        </select>
+      </div>
     </div>
   </div>
 
@@ -50,7 +59,6 @@
       <app-font-awesome-icon icon="times"></app-font-awesome-icon>
       <span class="ml-2">Cancel &amp; Close</span>
     </a>
-
     <button class="btn btn-primary float-right" (click)="next()">Next</button>
   </div>
 </div>

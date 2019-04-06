@@ -30,11 +30,11 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private organizationService: OrganizationService,
-    private store: Store<AppState>,
+    private store: Store<AppState>
   ) { }
 
   ngOnInit() {
-    // initialize form for collection
+    // initialize form controls
     this.organizationName = new FormControl('');
     this.adminBceid = new FormControl('');
     this.adminLastName = new FormControl('');
@@ -46,10 +46,11 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
       // TODO: error checking if org not found
       this.organizationService.getOrganizationById(this.route.snapshot.params.id)
         .subscribe(o => {
-          console.log('o =', o);
           this.editMode = true;
           this.maker = true;
           this.organization = o;
+
+          // set form fields
           this.organizationName.setValue(o.name);
           this.adminBceid.setValue(o.adminBCeID);
           this.adminLastName.setValue(o.adminLastName);
@@ -81,15 +82,17 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
   }
 
   next(): void {
-    // only go next if all fields are non null
+    // only go to next page if all fields are non null
     if (this.editMode && this.organizationName.value && this.community.value) {
       this.maker = false;
       this.onSave();
       window.scrollTo(0, 0); // scroll to top
+
     } else if (!this.editMode && this.organizationName.value && this.adminBceid.value && this.adminLastName.value && this.adminFirstName.value && this.community.value) {
       this.maker = false;
       this.onSave();
       window.scrollTo(0, 0); // scroll to top
+
     } else {
       alert('All fields are required.');
     }
@@ -123,9 +126,10 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
         .subscribe(() => {
           this.submitting = false;
           // if addUsers then route to the add users page
-          // else route back to the org team dashboard
+          // else route back to the organizations list
           if (addUsers) {
-            this.router.navigate(['../../volunteer'], { relativeTo: this.route });
+            // TODO: use Store to save organization globally
+            this.router.navigate(['../../volunteer'], { queryParams: { orgId: this.organization.id }, relativeTo: this.route });
           } else {
             this.router.navigate(['../../organizations'], { relativeTo: this.route });
           }
@@ -136,9 +140,10 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
         .subscribe(o => {
           this.submitting = false;
           // if addUsers then route to the add users page
-          // else route back to the org team dashboard
+          // else route back to the organizations list
           if (addUsers) {
-            this.router.navigate(['../volunteer'], { relativeTo: this.route });
+            // TODO: use Store to save organization globally
+            this.router.navigate(['../volunteer'], { queryParams: { orgId: this.organization.id }, relativeTo: this.route });
           } else {
             this.router.navigate(['../organizations'], { relativeTo: this.route });
           }
@@ -148,11 +153,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
 
   cancel() {
     // TODO: this seems like bad practice but fix when we have time
-    // go back to the volunteer team dashboard
-    if (this.editMode) {
-      this.router.navigate(['../../organizations'], { relativeTo: this.route });
-    } else {
-      this.router.navigate(['../organizations'], { relativeTo: this.route });
-    }
+    // go back to the organizations list
+    this.editMode ? this.router.navigate(['../../organizations'], { relativeTo: this.route }) : this.router.navigate(['../organizations'], { relativeTo: this.route });
   }
 }
