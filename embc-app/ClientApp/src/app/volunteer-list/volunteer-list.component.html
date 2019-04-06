@@ -1,10 +1,10 @@
 <ng-container *ngIf="!!isProvincialAdmin">
   <!-- Provincial Staff -->
   <div class="mb-4">
-    <h1>Users for {{ currentOrganization?.name }}</h1>
+    <h1>Users for {{ currentOrganization?.name || 'all organizations' }}</h1>
     <p>Use this page to view active ESS users & administrative users associated with your organization, as well as add users, and edit profiles & permissions.</p>
 
-    <section class="p-3">
+    <section class="p-3" *ngIf="currentOrganization?.name">
       <h3>Organization Details</h3>
       <ul class="summary">
         <li>
@@ -64,7 +64,7 @@
           </app-pagination-summary>
         </section>
         <section>
-          <button class="btn btn-primary" routerLink="../volunteer">ADD USERS</button>
+          <button class="btn btn-primary" routerLink="../volunteer" [queryParams]="{orgId: currentOrganization?.id}">ADD USERS</button>
         </section>
       </div>
       <table class="table">
@@ -89,13 +89,13 @@
             <td>{{!!volunteer.isAdministrator ? 'Admin' : 'ESS User'}}</td>
             <td>{{!!volunteer.isAdministrator ? (!!volunteer.isPrimaryContact | yesNo) : 'n/a'}}</td>
             <td>
-              <a [routerLink]="['../volunteer/', volunteer.id]">Edit</a>
+              <a [routerLink]="['../volunteer/', volunteer.id]" [queryParams]="{orgId: currentOrganization?.id}">Edit</a>
             </td>
           </tr>
         </tbody>
       </table>
       <div>
-        <button class="btn btn-primary float-right" routerLink="../volunteer">ADD USERS</button>
+        <button class="btn btn-primary float-right" routerLink="../volunteer" [queryParams]="{orgId: currentOrganization?.id}">ADD USERS</button>
       </div>
     </ng-template>
 

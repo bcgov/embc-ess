@@ -253,7 +253,10 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
           if (addAnother) {
             this.resetForm();
           } else {
-            this.editMode ? this.router.navigate(['../../volunteers'], { relativeTo: this.route }) : this.router.navigate(['../volunteers'], { relativeTo: this.route });
+            // TODO: preserveQueryParams is deprecated, use queryParamsHandling instead
+            this.editMode
+              ? this.router.navigate(['../../volunteers'], { relativeTo: this.route, preserveQueryParams: true })
+              : this.router.navigate(['../volunteers'], { relativeTo: this.route, preserveQueryParams: true });
           }
         });
     } else {
@@ -266,7 +269,10 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
           if (addAnother) {
             this.resetForm();
           } else {
-            this.editMode ? this.router.navigate(['../../volunteers'], { relativeTo: this.route }) : this.router.navigate(['../volunteers'], { relativeTo: this.route });
+            // TODO: preserveQueryParams is deprecated, use queryParamsHandling instead
+            this.editMode
+              ? this.router.navigate(['../../volunteers'], { relativeTo: this.route, preserveQueryParams: true })
+              : this.router.navigate(['../volunteers'], { relativeTo: this.route, preserveQueryParams: true });
           }
         });
     }
@@ -287,6 +293,8 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
   cancel() {
     // TODO: this seems like bad practice but fix when we have time
     // go back to the volunteers list
-    this.editMode ? this.router.navigate(['../../volunteers'], { relativeTo: this.route }) : this.router.navigate(['../volunteers'], { relativeTo: this.route });
+    this.editMode
+      ? this.router.navigate(['../../volunteers'], { relativeTo: this.route, preserveQueryParams: true })
+      : this.router.navigate(['../volunteers'], { relativeTo: this.route, preserveQueryParams: true });
   }
 }
