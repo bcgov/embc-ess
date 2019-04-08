@@ -46,9 +46,9 @@ export class EvacueeSummaryPageComponent implements OnInit {
     const option = INSURANCE_OPTIONS.find(item => item.key === key);
     return option ? option.value : null;
   }
-  routeToEditor() {
-    this.router.navigate(['../register-evacuee/fill/' + this.registration.id]);// todo: make this go to the edit page
-  }
+  // routeToEditor() {
+  //   this.router.navigate(['../register-evacuee/fill/' + this.registration.id]);// todo: make this go to the edit page
+  // }
   yesNo(value: boolean) {
     if (value === true) {
       return "Yes";
