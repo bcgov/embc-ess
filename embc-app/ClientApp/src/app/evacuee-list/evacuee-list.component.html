@@ -21,14 +21,14 @@
   </p>
   <app-evacuee-search-results #searchResultsView [searchResults]="searchResults$ | async">
   </app-evacuee-search-results>
-  <!-- <ul>
+  <ul>
     <li>page:{{page|json}}</li>
     <li>totalPages:{{totalPages|json}}</li>
     <li>collectionSize:{{collectionSize|json}}</li>
     <li>maxSize:{{maxSize|json}}</li>
     <li>previousQuery:{{previousQuery|json}}</li>
     <li>sort:{{sort|json}}</li>
-  </ul> -->
+  </ul>
   <span *ngIf="this.totalPages>1">
     <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
   </span>

@@ -29,9 +29,9 @@ export class EvacueeListComponent implements OnInit {
   page: number; // the current displayed page
   totalPages: number; // how many pages are returned?
   pageSize: number; // how many entries are on the page
-  collectionSize: number; // how large is the collection?
   previousQuery: string; // a place to save the last query parameters
-  sort: string; // how do we sort the list
+  sort: string = ''; // how do we sort the list
+  collectionSize: number = 0; // how large is the collection?
   maxSize = 10; // how many pages of results shoudl the UI show before collapsing?
   boundaryLinks = true; // do we show the jump to first and last page links?
 
@@ -45,51 +45,50 @@ export class EvacueeListComponent implements OnInit {
     // go get the data
     this.doSearch();
   }
-
-  onPageChange(page: number) {
-    // change the page that we want
-    this.page = page - 1;
-    // search again on whatever the last query was
-    this.doSearch(this.previousQuery);
-  }
-
-  doSearch(query: string = '') {
-    // how do we know when this is a new query?
-
-    // perform a search. This is triggered from an event in the searchBar
-    // or it is triggered by an event in the pagination.
+  search(query: string = '', page: number = 1, maxSize: number = this.maxSize) {
     // update form state
     this.isLoadingResults = true;
 
     // go get a fresh list of registrations from the service
     const queryParams: SearchQueryParameters = {
-      offset: this.page * this.pageSize,
-      limit: this.maxSize,
+      offset: (page * maxSize) - maxSize,
+      limit: maxSize,
       sort: this.sort || '',
       q: query
     };
 
+    // go get the collection of meta and data
     this.resultsAndPagination$ = this.registrationService.getRegistrations(queryParams);
-
 
     // process server response into something we can display in the UI
     this.searchResults$ = this.resultsAndPagination$.pipe(
       map(x => {
         // Flip flag to show that loading has finished.
         this.isLoadingResults = false;
+
         // collect all of the meta into variables
         this.page = x.metadata.page;
         this.totalPages = x.metadata.totalPages;
         this.collectionSize = x.metadata.totalCount;
         this.pageSize = x.metadata.pageSize;
         this.previousQuery = query;
+
+        // the search results need to be in this special format
         return { results: x.data, query } as EvacueeSearchResults;
       })
     );
-
-    // TODO: store the pagination metadata + links somewhere
   }
 
+  onPageChange(page: number = this.page) {
+    // change the page that we want
+    // search again on whatever the last query was (or blank)
+    this.search(this.previousQuery || '', page)
+  }
+
+  doSearch(query: string = this.previousQuery) {
+    // only search
+    this.search(query);
+  }
 
   routeTo(essFileNumber: string) {
     // TODO: this seems like bad practice but fix when we have time
