@@ -14738,25 +14738,25 @@
     {
         "Name": "Metro Vancouver Regional District",
         "RegionalDistrict": {
-            "Name": "South West Region"
+            "Name": "South West"
         }
     },
     {
         "Name": "Fraser Valley Regional District",
         "RegionalDistrict": {
-            "Name": "South West Region"
+            "Name": "South West"
         }
     },
     {
         "Name": "Squamish Lillooet Regional District",
         "RegionalDistrict": {
-            "Name": "South West Region"
+            "Name": "South West"
         }
     },
     {
         "Name": "Sunshine Coast Regional District",
         "RegionalDistrict": {
-            "Name": "South West Region"
+            "Name": "South West"
         }
     },
     {
@@ -14852,67 +14852,67 @@
     {
         "Name": "Central Okanagan Regional District",
         "RegionalDistrict": {
-            "Name": "Central Region"
+            "Name": "Central"
         }
     },
     {
         "Name": "North Okanagan Regional District",
         "RegionalDistrict": {
-            "Name": "Central Region"
+            "Name": "Central"
         }
     },
     {
         "Name": "Columbia-Shuswap Regional District",
         "RegionalDistrict": {
-            "Name": "Central Region"
+            "Name": "Central"
         }
     },
     {
         "Name": "North Okanagan Regional District",
         "RegionalDistrict": {
-            "Name": "Central Region"
+            "Name": "Central"
         }
     },
     {
         "Name": "Okanagan-Similkameen Regional District",
         "RegionalDistrict": {
-            "Name": "Central Region"
+            "Name": "Central"
         }
     },
     {
         "Name": "Thompson-Nicola Regional District",
         "RegionalDistrict": {
-            "Name": "Central Region"
+            "Name": "Central"
         }
     },
     {
         "Name": "Cariboo Regional District",
         "RegionalDistrict": {
-            "Name": "North East Region"
+            "Name": "North East"
         }
     },
     {
         "Name": "Central Coast Regional District",
         "RegionalDistrict": {
-            "Name": "North East Region"
+            "Name": "North East"
         }
     },
     {
         "Name": "Regional District of Fraser Fort George",
         "RegionalDistrict": {
-            "Name": "North East Region"
+            "Name": "North East"
         }
     },
     {
         "Name": "Northern Rockies Regional Municipality",
         "RegionalDistrict": {
-            "Name": "North East Region"
+            "Name": "North East"
         }
     },
     {
         "Name": "Peace River Regional District",
         "RegionalDistrict": {
-            "Name": "North East Region"
+            "Name": "North East"
         }
     }
 ]
