@@ -1,0 +1,4 @@
+<input class="form-control" type="text" [formControl]="myFormControl" placeholder="Type or click to search..."
+  [ngbTypeahead]="search" [inputFormatter]="inputFormatter" [resultFormatter]="resultFormatter"
+  (click)="click$.next($event.target.value)" #instance="ngbTypeahead" [required]="myRequired">
+<a class="sr-only" href="javascript:void(0);" (click)="click$.next($event.target.value)" tabindex="-1">Show list</a>

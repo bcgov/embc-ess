@@ -1,0 +1,5 @@
+// allow list to scroll
+::ng-deep ngb-typeahead-window {
+  overflow-y: auto;
+  max-height: 300px;
+}

@@ -44,12 +44,8 @@
 
     <div class="row">
       <div class="col-md-9 pt-4 mb-4">
-        <label class="required" for="community">Associated EMBC Region / Regional District / Community</label>
-        <select class="form-control" [formControl]="community" id="community">
-          <option [ngValue]="organization.community" *ngIf="organization?.community">{{organization.community.name}}</option>
-          <option [ngValue]="null" *ngIf="!organization?.community">-- Select community</option>
-          <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community?.name}}</option>
-        </select>
+          <label class="required" for="community">Associated Regional District / Community</label>
+          <app-communities-select [myFormControl]="community" id="community" [myRequired]="true"></app-communities-select>
       </div>
     </div>
   </div>
