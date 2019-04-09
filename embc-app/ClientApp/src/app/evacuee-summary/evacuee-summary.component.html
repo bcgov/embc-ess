@@ -20,7 +20,7 @@
           <tr>
             <td>Task #: {{registration?.incidentTask?.taskNumber}}</td>
             <td class="pr-2 pl-2" colspan="2">Self Registration Date & Time:
-              {{registration?.selfRegisteredDate | date}}
+              {{registration?.selfRegisteredDate | date : 'MM/dd/yyyy, HH:mm'}}
             </td>
             <td>File Status:
               <span *ngIf="registration?.active">Active</span>
@@ -30,7 +30,7 @@
           <tr>
             <td>ESS File #: {{registration?.essFileNumber}}</td>
             <td class="pr-2 pl-2" colspan="2">Registration Completed Date & Time:
-              {{registration?.registrationCompletionDate | date}}
+              {{registration?.registrationCompletionDate | date : 'MM/dd/yyyy, HH:mm'}}
             </td>
             <td>Restricted File:
               <span *ngIf="registration?.restrictedAccess">Yes</span>
@@ -42,7 +42,7 @@
 
     </li>
     <li>
-      <span class="name">Facility Name/Registration Location</span>
+      <span class="name">Facility Name/Registration Location:</span>
       <span class="value">{{registration?.facility}}</span>
     </li>
     <li>
@@ -52,10 +52,11 @@
     <li>
       <span class="name"> Family Members:</span>
       <span class="value">
-        {{registration?.headOfHousehold.lastName}}, {{registration?.headOfHousehold.firstName}}<br>
-        <span *ngFor="let familyMember of registration?.headOfHousehold.familyMembers">{{familyMember.lastName}},
-          {{familyMember.firstName}}<br>
-        </span>
+        {{registration?.headOfHousehold.lastName}}, {{registration?.headOfHousehold.firstName}}
+        <br>
+        <ng-container *ngFor="let familyMember of registration?.headOfHousehold.familyMembers">
+          {{familyMember.lastName}}, {{familyMember.firstName}}<br>
+        </ng-container>
       </span>
     </li>
     <li>
@@ -67,13 +68,6 @@
     </li>
     <li>
       <span class="name">Supports Requested:</span>
-      <!-- "requiresAccommodation": true,
-          "requiresClothing": true,
-          "requiresFood": true,
-          "requiresIncidentals": false,
-          "requiresTransportation": true,
-          "requiresSupport": true, -->
-      <!-- {{registration.requiresFood}} -->
       <span class="value">
         <div class="form-check mt-2">
           <input class="form-check-input" [checked]="registration?.requiresFood" type="checkbox" disabled>
@@ -99,10 +93,6 @@
     </li>
   </ul>
   <div class="mt-5">
-    <button class="btn btn-primary float-right" (click)="routeTo(registration?.id)">VIEW FULL
-      PROFILE</button>
+    <button class="btn btn-primary float-right" (click)="routeTo(registration?.id)">VIEW FULL PROFILE</button>
   </div>
 </section>
-<!-- <div class="mt-5">
-    <pre>{{registration|json}}</pre>
-  </div> -->
