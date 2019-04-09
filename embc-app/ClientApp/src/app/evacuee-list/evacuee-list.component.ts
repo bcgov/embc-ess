@@ -54,8 +54,10 @@ export class EvacueeListComponent implements OnInit {
   }
 
   doSearch(query: string = '') {
-    // perform a search.
+    // how do we know when this is a new query?
 
+    // perform a search. This is triggered from an event in the searchBar
+    // or it is triggered by an event in the pagination.
     // update form state
     this.isLoadingResults = true;
 
@@ -69,20 +71,18 @@ export class EvacueeListComponent implements OnInit {
 
     this.resultsAndPagination$ = this.registrationService.getRegistrations(queryParams);
 
-    this.resultsAndPagination$.subscribe(x => {
-      // collect all of the meta into variables
-      this.page = x.metadata.page;
-      this.totalPages = x.metadata.totalPages;
-      this.collectionSize = x.metadata.totalCount;
-      this.pageSize = x.metadata.pageSize;
-      this.previousQuery = query;
-    });
 
     // process server response into something we can display in the UI
     this.searchResults$ = this.resultsAndPagination$.pipe(
       map(x => {
         // Flip flag to show that loading has finished.
         this.isLoadingResults = false;
+        // collect all of the meta into variables
+        this.page = x.metadata.page;
+        this.totalPages = x.metadata.totalPages;
+        this.collectionSize = x.metadata.totalCount;
+        this.pageSize = x.metadata.pageSize;
+        this.previousQuery = query;
         return { results: x.data, query } as EvacueeSearchResults;
       })
     );
