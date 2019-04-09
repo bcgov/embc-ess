@@ -70,7 +70,9 @@ export class EvacueeListComponent implements OnInit {
         this.page = x.metadata.page;
         this.totalPages = x.metadata.totalPages;
         this.collectionSize = x.metadata.totalCount;
-        this.pageSize = x.metadata.pageSize;
+        this.maxSize = x.metadata.pageSize;
+
+        //save the last query performed
         this.previousQuery = query;
 
         // the search results need to be in this special format
