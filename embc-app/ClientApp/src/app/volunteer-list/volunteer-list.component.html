@@ -163,9 +163,14 @@
           </tr>
         </tbody>
       </table>
-      <div>
+      <!-- Pagination area -->
+      <span *ngIf="this.totalPages>1">
+        <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
+      </span>
+      <!-- <div>
         <button class="btn btn-primary float-right" routerLink="../../volunteer">ADD USERS</button>
-      </div>
+      </div> -->
+
     </ng-template>
 
     <ng-template #notFound>

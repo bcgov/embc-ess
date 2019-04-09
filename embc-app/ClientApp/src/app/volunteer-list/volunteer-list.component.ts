@@ -32,6 +32,19 @@ export class VolunteerListComponent implements OnInit {
   readonly SHOW_ADMINS_ONLY = 2;
   readonly SHOW_ESS_USERS_ONLY = 3;
 
+  // collection of pagination parameters for UI pagination
+  // display and pagination
+  increments: number[] = [5, 10, 25, 50, 100, 1000];
+  // doesn't need to be an object besides it provides a visual seper
+  page: number; // the current displayed page
+  totalPages: number; // how many pages are returned?
+  pageSize: number; // how many entries are on the page
+  previousQuery: string; // a place to save the last query parameters
+  sort: string = ''; // how do we sort the list
+  collectionSize: number = 0; // how large is the collection?
+  maxSize = 10; // how many pages of results shoudl the UI show before collapsing?
+  boundaryLinks = true; // do we show the jump to first and last page links?
+
   // the search form and associated toggles (show all, show only admins, show only regular users)
   form: FormGroup;
 
@@ -46,24 +59,29 @@ export class VolunteerListComponent implements OnInit {
 
   // convenience getters
   get results(): Volunteer[] {
+    // if there are non null results in the global variable to contain the volunteers return the collection of data otherwise return null
     return this.resultsAndPagination ? this.resultsAndPagination.data : null;
   }
 
   get pagination(): PaginationSummary {
+    // if there are non null results in the global pagination summary to contain the results and pagination return the metadata otherwise return null
     return this.resultsAndPagination ? this.resultsAndPagination.metadata : null;
   }
 
   ngOnInit() {
+    // initialize the form component
     this.initSearchForm();
-
-    // collect all volunteers
+    // initialize the global variables. When done get volunteers associated with the organization
     this.initVars()
       .subscribe(org => this.getVolunteers({ org_id: org ? org.id : null }));
   }
 
   initSearchForm(): void {
+    // instantiate the form builder group
     this.form = this.fb.group({
+      // clear the search box
       searchbox: null,
+      // set the user toggle to a constant integer that defines the view for the user
       userToggle: this.SHOW_ALL,
     });
   }
@@ -102,16 +120,22 @@ export class VolunteerListComponent implements OnInit {
   }
 
   getAnyOrganization(orgId: string): Observable<Organization> {
+    // get an organization by its ID
     if (!orgId) {
+      // if there is no organization ID included return null
       return of(null as Organization);
     }
+    // if there is an organization id included look up the organization in the service by its ID
     return this.organizations.getOrganizationById(orgId);
   }
 
   getVolunteerOrganization(volunteerId: string): Observable<Organization> {
+    // get the organization associated with the volunteer
     if (!volunteerId) {
+      // if there is no volunteer ID included return null because a null volunteer cannot have an organization
       return of(null as Organization);
     }
+    // get a volunteer by their ID and collect their organization by its ID
     return this.volunteers
       .getVolunteerById(volunteerId)
       .pipe(switchMap(v => this.organizations.getOrganizationById(v.organization.id)));
@@ -119,9 +143,12 @@ export class VolunteerListComponent implements OnInit {
 
   // get volunteers with supplied params defaults defined in
   getVolunteers(params: VolunteerSearchQueryParameters = {}) {
+    // get the volunteers using the parameters supplied
     this.volunteers.getVolunteers(params)
       .subscribe((v: ListResult<Volunteer>) => {
+        // save the result of the service into an object with both the result and service
         this.resultsAndPagination = v;
+        // Set the not found result message. It should be hidden when results flow into the form
         this.notFoundMessage = 'No results found.';
       });
   }
@@ -129,12 +156,14 @@ export class VolunteerListComponent implements OnInit {
   // submit and collect search
   search() {
     if (!this.currentOrganization || !this.currentOrganization.id) {
+      // do not get all volunteers in the system
       return;
     }
     this.getVolunteers(this.createQueryParams());
   }
 
   createQueryParams(): VolunteerSearchQueryParameters {
+
     const essOnly = this.form.value.userToggle == this.SHOW_ESS_USERS_ONLY;
     const adminOnly = this.form.value.userToggle == this.SHOW_ADMINS_ONLY;
     return {
@@ -142,6 +171,7 @@ export class VolunteerListComponent implements OnInit {
       org_id: this.currentOrganization.id,
       ess_only: essOnly,
       admin_only: adminOnly,
+
     };
   }
 }
