@@ -317,7 +317,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
             country: primaryResidence.country,
           },
           // if we got a primary address and no mailing address, it means they are the same.
-          mailingAddressSameAsPrimary: mailingAddress == null,
+          mailingAddressSameAsPrimary: (mailingAddress == null),
         });
       }
 
