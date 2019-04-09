@@ -12,13 +12,17 @@
   <!-- TODO: show icons for HOH, RESTRICTED FILE -->
 
   <!-- The start of the table stuff. -->
-  <p>{{(maxSize * page)-maxSize}} - {{maxSize * page}} of {{collectionSize}}
+  <p *ngIf="collectionSize>0">{{(maxSize * page)-maxSize}} - {{maxSize * page}} of {{collectionSize}}
     <!-- <span class="font-weight-bold">ACTIVE</span> evacuees
     <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
   </p>
   <app-evacuee-search-results #searchResultsView [searchResults]="searchResults$ | async">
   </app-evacuee-search-results>
+
+  <!-- <select class="form-control" [(ngModel)]="maxSize">
+    <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option>
+  </select> -->
   <span *ngIf="this.totalPages>1">
-    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
+    <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
   </span>
 </div>

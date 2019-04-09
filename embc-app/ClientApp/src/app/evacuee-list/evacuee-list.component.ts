@@ -13,17 +13,14 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./evacuee-list.component.scss']
 })
 export class EvacueeListComponent implements OnInit {
-
   isLoggedIn = false;
-
-
   // server response
   resultsAndPagination$: Observable<ListResult<Registration>>;
 
   // search related
   isLoadingResults = false;
   searchResults$: Observable<EvacueeSearchResults>;
-
+  increments: number[] = [5, 10, 25, 50, 100, 1000];
   // collection of pagination parameters for UI pagination
   // doesn't need to be an object besides it provides a visual seper
   page: number; // the current displayed page
@@ -85,6 +82,9 @@ export class EvacueeListComponent implements OnInit {
     // change the page that we want
     // search again on whatever the last query was (or blank)
     this.search(this.previousQuery || '', page)
+  }
+  onIncrementChange() {
+    // this is a placeholder for handling a change to the maxSize
   }
 
   doSearch(query: string = this.previousQuery) {
