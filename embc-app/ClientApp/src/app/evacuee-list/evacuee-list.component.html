@@ -15,7 +15,7 @@
 
   <!-- The start of the table stuff. -->
   <!-- TODO: make sure this shows the right numbers after we start getting the results -->
-  <p>{{(page-1)*pageSize+1}} - {{pageSize}} of {{collectionSize}}
+  <p>{{(this.pageSize * this.page) - this.pageSize}} - {{(this.pageSize * this.page)}} of {{collectionSize}}
     <!-- <span class="font-weight-bold">ACTIVE</span> evacuees
     <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
   </p>
@@ -29,5 +29,5 @@
     <li>previousQuery:{{previousQuery|json}}</li>
     <li>sort:{{sort|json}}</li>
   </ul>
-  <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
+  <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
 </div>

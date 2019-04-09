@@ -48,23 +48,20 @@ export class EvacueeListComponent implements OnInit {
 
   onPageChange(page: number) {
     // change the page that we want
-    this.page = page;
+    this.page = page - 1;
     // search again on whatever the last query was
-    this.doSearch();
+    this.doSearch(this.previousQuery);
   }
 
   doSearch(query: string = '') {
     // perform a search.
-
-    // save the previous query for later.
-    this.previousQuery = query || '';
 
     // update form state
     this.isLoadingResults = true;
 
     // go get a fresh list of registrations from the service
     const queryParams: SearchQueryParameters = {
-      offset: this.page,
+      offset: this.page * this.pageSize,
       limit: this.maxSize,
       sort: this.sort || '',
       q: query
@@ -78,6 +75,7 @@ export class EvacueeListComponent implements OnInit {
       this.totalPages = x.metadata.totalPages;
       this.collectionSize = x.metadata.totalCount;
       this.pageSize = x.metadata.pageSize;
+      this.previousQuery = query;
     });
 
     // process server response into something we can display in the UI
