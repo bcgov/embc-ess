@@ -1,0 +1,237 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "annotations": {
+            "description": "Defines how to deploy embcess"
+        },
+        "name": "embcess-develop"
+    },
+    "objects": [
+        {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+                "annotations": {
+                    "description": "Exposes and load balances the application pods."
+                },
+                "creationTimestamp": null,
+                "labels": {
+                    "template": "embcess-develop-deployment"
+                },
+                "name": "embcess-develop",
+                "selfLink": "/api/v1/namespaces/jhnamn-dev/services/embcess"
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "8080-tcp",
+                        "port": 8080,
+                        "protocol": "TCP",
+                        "targetPort": 8080
+                    }
+                ],
+                "selector": {
+                    "name": "embcess-develop"
+                },
+                "sessionAffinity": "None",
+                "type": "ClusterIP"
+            },
+            "status": {
+                "loadBalancer": {}
+            }
+        },
+        {
+            "apiVersion": "apps.openshift.io/v1",
+            "kind": "DeploymentConfig",
+            "metadata": {
+                "annotations": {
+                    "description": "Defines how to deploy embcess"
+                },
+                "creationTimestamp": null,
+                "generation": 1,
+                "labels": {
+                    "template": "embcess-develop-deployment"
+                },
+                "name": "embcess-develop",
+                "selfLink": "/apis/apps.openshift.io/v1/namespaces/jhnamn-dev/deploymentconfigs/embcess-develop"
+            },
+            "spec": {
+                "replicas": 2,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "name": "embcess-develop"
+                },
+                "strategy": {
+                    "activeDeadlineSeconds": 21600,
+                    "resources": {},
+                    "rollingParams": {
+                        "intervalSeconds": 1,
+                        "maxSurge": "25%",
+                        "maxUnavailable": "25%",
+                        "timeoutSeconds": 600,
+                        "updatePeriodSeconds": 1
+                    },
+                    "type": "Rolling"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "name": "embcess-develop"
+                        },
+                        "name": "embcess-develop"
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "env": [
+                                    {
+                                        "name": "ASPNETCORE_ENVIRONMENT",
+                                        "value": "Staging"
+                                    },
+                                    {
+                                        "name": "BASE_PATH",
+                                        "value": "/embcess"
+                                    },
+                                    {
+                                        "name": "SITEMINDER_LOGOUT_URL",
+                                        "value": "https://logontest.gov.bc.ca/clp-cgi/logoff.cgi"
+                                    },
+                                    {
+                                        "name": "BASE_URI",
+                                        "value": "https://dev.justice.gov.bc.ca"
+                                    },
+                                    {
+                                        "name": "SMTP_HOST",
+                                        "value": "apps.smtp.gov.bc.ca"
+                                    },
+                                    {
+                                        "name": "SMTP_DEFAULT_SENDER",
+                                        "value": "no-reply@gov.bc.ca"
+                                    },
+                                    {
+                                        "name": "DATABASE_SERVICE_NAME",
+                                        "value": "mssql.jhnamn-dev.svc"
+                                    },
+                                    {
+                                        "name": "DB_DATABASE",
+                                        "value": "ess"
+                                    },
+                                    {
+                                        "name": "DB_PASSWORD",
+                                        "value": "gaFCCLgxMPp2tkR7"
+                                    },
+                                    {
+                                        "name": "DB_USER",
+                                        "value": "ess"
+                                    },
+                                    {
+                                        "name": "DB_ADMIN_PASSWORD",
+                                        "value": "gaFCCLgxMPp2tkR7"
+                                    },
+                                    {
+                                        "name": "DB_FULL_REFRESH",
+                                        "value": "false"
+                                    }
+                                ],
+                                "image": "docker-registry.default.svc:5000/jhnamn-tools/embcess@sha256:57b221834a1e1eea5d228b991b752c262de226a6558216842f42b92d8609a516",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "embcess-develop",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/hc",
+                                        "port": 8080,
+                                        "scheme": "HTTP"
+                                    },
+                                    "initialDelaySeconds": 10,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "1",
+                                        "memory": "4Gi"
+                                    },
+                                    "requests": {
+                                        "cpu": "100m",
+                                        "memory": "2Gi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                },
+                "test": false,
+                "triggers": [
+                    {
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "embcess-develop"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "embcess:dev",
+                                "namespace": "jhnamn-tools"
+                            }
+                        },
+                        "type": "ImageChange"
+                    },
+                    {
+                        "type": "ConfigChange"
+                    }
+                ]
+            },
+            "status": {
+                "availableReplicas": 0,
+                "latestVersion": 0,
+                "observedGeneration": 0,
+                "replicas": 0,
+                "unavailableReplicas": 0,
+                "updatedReplicas": 0
+            }
+        },
+        {
+            "kind": "Route",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "embcess-develop",
+                "creationTimestamp": null,
+                "labels": {"frontend": "true"  }
+            },
+            "spec": {
+                "host": "embcess-develop-jhnamn-dev.pathfinder.gov.bc.ca",
+                "to": {
+                    "kind": "Service",
+                    "name": "embcess-develop",
+                    "weight": 100
+                },
+                "port": {
+                    "targetPort": "web"
+                },
+                "tls": {
+                    "termination": "edge",
+                    "insecureEdgeTerminationPolicy": "Redirect"
+                },
+                "wildcardPolicy": "None"
+            }
+        }
+    ]
+}
+
