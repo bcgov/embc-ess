@@ -94,9 +94,13 @@
           </tr>
         </tbody>
       </table>
-      <div>
+      <!-- Pagination area -->
+      <span class="space-between" *ngIf="totalPages>1">
+        <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
+      </span>
+      <!-- <div class="space-between">
         <button class="btn btn-primary float-right" routerLink="../volunteer" [queryParams]="{orgId: currentOrganization?.id}">ADD USERS</button>
-      </div>
+      </div> -->
     </ng-template>
 
     <ng-template #adminNotFound>
@@ -131,10 +135,12 @@
     <ng-template #searchResultsTable>
       <div class="space-between align-items-center my-3">
         <section>
-          <app-pagination-summary [value]="pagination">
+          {{(maxSize * page)-maxSize}} - {{maxSize * page}} of {{collectionSize}} users
+          <!-- TODO: make this work with the component-->
+          <!-- <app-pagination-summary [value]="pagination">
             <span class="font-weight-bold">ACTIVE</span> users
-            <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
-          </app-pagination-summary>
+            TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small>
+          </app-pagination-summary> -->
         </section>
         <section>
           <button class="btn btn-primary" routerLink="../../volunteer">ADD USERS</button>
@@ -164,9 +170,9 @@
         </tbody>
       </table>
       <!-- Pagination area -->
-      <!-- <span *ngIf="this.totalPages>1"> -->
-      <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
-      <!-- </span> -->
+      <span *ngIf="totalPages>1">
+        <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
+      </span>
 
       <!-- <div>
         <button class="btn btn-primary float-right" routerLink="../../volunteer">ADD USERS</button>
@@ -182,11 +188,11 @@
   </div>
 </ng-container>
 
-<ul>
+<!-- <ul>
   <li>page:{{page|json}}</li>
   <li>totalPages:{{totalPages|json}}</li>
   <li>collectionSize:{{collectionSize|json}}</li>
   <li>maxSize:{{maxSize|json}}</li>
   <li>previousQuery:{{previousQuery|json}}</li>
   <li>sort:{{sort|json}}</li>
-</ul>
+</ul> -->

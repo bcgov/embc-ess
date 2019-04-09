@@ -42,7 +42,7 @@ export class VolunteerListComponent implements OnInit {
   previousQuery: string; // a place to save the last query parameters
   sort: string = ''; // how do we sort the list
   collectionSize: number = 0; // how large is the collection?
-  maxSize = 10; // how many pages of results shoudl the UI show before collapsing?
+  maxSize = 4; // how many pages of results shoudl the UI show before collapsing?
   boundaryLinks = true; // do we show the jump to first and last page links?
 
   // the search form and associated toggles (show all, show only admins, show only regular users)
@@ -144,7 +144,8 @@ export class VolunteerListComponent implements OnInit {
   // get volunteers with supplied params defaults defined in
   getVolunteers(params: VolunteerSearchQueryParameters = {}) {
     // collect pagination parameters and add them into the supplied params
-
+    params.offset = (this.page * this.maxSize) - this.maxSize; // pagination
+    params.limit = this.maxSize; // pagination
     // go get the collection of meta and data
     // get the volunteers using the parameters supplied
     this.volunteers.getVolunteers(params)
@@ -156,6 +157,7 @@ export class VolunteerListComponent implements OnInit {
         this.totalPages = v.metadata.totalPages;
         this.collectionSize = v.metadata.totalCount;
         this.maxSize = v.metadata.pageSize;
+        // alert(v.metadata.pageSize)
         //save the last query performed
         this.previousQuery = params.q || '';
 
@@ -170,6 +172,7 @@ export class VolunteerListComponent implements OnInit {
     // search again on whatever the last query was (or blank)
     this.getVolunteers(this.createQueryParams());
   }
+
   // submit and collect search
   search() {
     if (!this.currentOrganization || !this.currentOrganization.id) {
@@ -189,8 +192,6 @@ export class VolunteerListComponent implements OnInit {
       org_id: this.currentOrganization.id,
       ess_only: essOnly,
       admin_only: adminOnly,
-      offset: this.page * this.maxSize, // pagination
-      limit: this.maxSize, // pagination
     };
   }
 }
