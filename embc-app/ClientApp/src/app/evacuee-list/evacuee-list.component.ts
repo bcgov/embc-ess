@@ -46,9 +46,15 @@ export class EvacueeListComponent implements OnInit {
     this.doSearch();
   }
 
+  onPageChange(page: number) {
+    // change the page that we want
+    this.page = page;
+    // search again on whatever the last query was
+    this.doSearch();
+  }
+
   doSearch(query: string = '') {
     // perform a search.
-    // get the results back and show 
 
     // save the previous query for later.
     this.previousQuery = query || '';
