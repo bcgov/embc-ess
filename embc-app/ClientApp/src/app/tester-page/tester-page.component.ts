@@ -21,6 +21,7 @@ import { AuthService } from '../core/services/auth.service';
   styleUrls: ['./tester-page.component.scss']
 })
 export class TesterPageComponent implements OnInit {
+  page = 1;
 
   constructor(
 
