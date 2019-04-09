@@ -143,16 +143,33 @@ export class VolunteerListComponent implements OnInit {
 
   // get volunteers with supplied params defaults defined in
   getVolunteers(params: VolunteerSearchQueryParameters = {}) {
+    // collect pagination parameters and add them into the supplied params
+
+    // go get the collection of meta and data
     // get the volunteers using the parameters supplied
     this.volunteers.getVolunteers(params)
       .subscribe((v: ListResult<Volunteer>) => {
         // save the result of the service into an object with both the result and service
         this.resultsAndPagination = v;
+        // collect all of the meta into variables
+        this.page = v.metadata.page;
+        this.totalPages = v.metadata.totalPages;
+        this.collectionSize = v.metadata.totalCount;
+        this.maxSize = v.metadata.pageSize;
+        //save the last query performed
+        this.previousQuery = params.q || '';
+
         // Set the not found result message. It should be hidden when results flow into the form
         this.notFoundMessage = 'No results found.';
       });
   }
 
+  onPageChange(page: number = this.page) {
+    // change the page that we want
+    this.page = page;
+    // search again on whatever the last query was (or blank)
+    this.getVolunteers(this.createQueryParams());
+  }
   // submit and collect search
   search() {
     if (!this.currentOrganization || !this.currentOrganization.id) {
@@ -163,7 +180,8 @@ export class VolunteerListComponent implements OnInit {
   }
 
   createQueryParams(): VolunteerSearchQueryParameters {
-
+    // helper function that collects the form values
+    // the check if the numeric value of the toggle matches the global constant for view
     const essOnly = this.form.value.userToggle == this.SHOW_ESS_USERS_ONLY;
     const adminOnly = this.form.value.userToggle == this.SHOW_ADMINS_ONLY;
     return {
@@ -171,7 +189,8 @@ export class VolunteerListComponent implements OnInit {
       org_id: this.currentOrganization.id,
       ess_only: essOnly,
       admin_only: adminOnly,
-
+      offset: this.page * this.maxSize, // pagination
+      limit: this.maxSize, // pagination
     };
   }
 }

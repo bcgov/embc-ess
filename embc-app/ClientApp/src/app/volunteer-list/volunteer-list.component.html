@@ -164,9 +164,10 @@
         </tbody>
       </table>
       <!-- Pagination area -->
-      <span *ngIf="this.totalPages>1">
-        <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
-      </span>
+      <!-- <span *ngIf="this.totalPages>1"> -->
+      <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
+      <!-- </span> -->
+
       <!-- <div>
         <button class="btn btn-primary float-right" routerLink="../../volunteer">ADD USERS</button>
       </div> -->
@@ -180,3 +181,12 @@
     </ng-template>
   </div>
 </ng-container>
+
+<ul>
+  <li>page:{{page|json}}</li>
+  <li>totalPages:{{totalPages|json}}</li>
+  <li>collectionSize:{{collectionSize|json}}</li>
+  <li>maxSize:{{maxSize|json}}</li>
+  <li>previousQuery:{{previousQuery|json}}</li>
+  <li>sort:{{sort|json}}</li>
+</ul>
