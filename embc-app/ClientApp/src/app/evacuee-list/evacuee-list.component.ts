@@ -16,13 +16,24 @@ export class EvacueeListComponent implements OnInit {
 
   isLoggedIn = false;
 
+
   // server response
   resultsAndPagination$: Observable<ListResult<Registration>>;
 
   // search related
   isLoadingResults = false;
-  searchState = { offset: 0, limit: 100, sort: '', query: '' };
   searchResults$: Observable<EvacueeSearchResults>;
+
+  // collection of pagination parameters for UI pagination
+  // doesn't need to be an object besides it provides a visual seper
+  page: number; // the current displayed page
+  totalPages: number; // how many pages are returned?
+  pageSize: number; // how many entries are on the page
+  collectionSize: number; // how large is the collection?
+  previousQuery: string; // a place to save the last query parameters
+  sort: string; // how do we sort the list
+  maxSize = 10; // how many pages of results shoudl the UI show before collapsing?
+  boundaryLinks = true; // do we show the jump to first and last page links?
 
   constructor(
     private registrationService: RegistrationService,
@@ -36,18 +47,32 @@ export class EvacueeListComponent implements OnInit {
   }
 
   doSearch(query: string = '') {
+    // perform a search.
+    // get the results back and show 
+
+    // save the previous query for later.
+    this.previousQuery = query || '';
+
     // update form state
-    this.searchState.query = query || '';
     this.isLoadingResults = true;
 
     // go get a fresh list of registrations from the service
     const queryParams: SearchQueryParameters = {
-      offset: this.searchState.offset,
-      limit: this.searchState.limit,
-      sort: this.searchState.sort || '',
-      q: this.searchState.query
+      offset: this.page,
+      limit: this.maxSize,
+      sort: this.sort || '',
+      q: query
     };
+
     this.resultsAndPagination$ = this.registrationService.getRegistrations(queryParams);
+
+    this.resultsAndPagination$.subscribe(x => {
+      // collect all of the meta into variables
+      this.page = x.metadata.page;
+      this.totalPages = x.metadata.totalPages;
+      this.collectionSize = x.metadata.totalCount;
+      this.pageSize = x.metadata.pageSize;
+    });
 
     // process server response into something we can display in the UI
     this.searchResults$ = this.resultsAndPagination$.pipe(
