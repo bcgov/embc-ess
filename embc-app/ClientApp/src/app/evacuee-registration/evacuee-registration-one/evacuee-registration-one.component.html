@@ -967,7 +967,7 @@
         <app-font-awesome-icon icon="times"></app-font-awesome-icon>
         <span class="ml-2">Cancel &amp; Close</span>
       </a>
-      <button type="button" class="btn btn-primary ml-4" [disabled]="!declarationAndConsent.value || submitting" (click)="submit()">
+      <button type="button" class="btn btn-primary ml-4" [disabled]="submitting" (click)="submit()">
         <span *ngIf="submitting">SUBMITTING</span>
         <span *ngIf="!submitting">SAVE</span>
       </button>
