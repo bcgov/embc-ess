@@ -43,7 +43,7 @@ export class VolunteerOrganizationListComponent implements OnInit {
   previousQuery: string; // a place to save the last query parameters
   sort: string = ''; // how do we sort the list
   collectionSize: number = 0; // how large is the collection?
-  maxSize = 5; // how many pages of results shoudl the UI show before collapsing?
+  maxSize = 5; // how many records should the UI show?
   boundaryLinks = true; // do we show the jump to first and last page links?
 
   // the search form and associated toggles (show all, show only admins, show only regular users)
@@ -161,10 +161,12 @@ export class VolunteerOrganizationListComponent implements OnInit {
       ess_only: this.form.value.userToggle == this.SHOW_ESS_USERS_ONLY,
       // if the user toggle is set to the admin users only set to true
       admin_only: this.form.value.userToggle == this.SHOW_ADMINS_ONLY,
+
+      // TODO: SUPPORT PAGINATION IN THIS COMPONENT. Show all users by default
       // pagination is calculated
-      offset: (this.page * this.maxSize) - this.maxSize,
+      // offset: (this.page * this.maxSize) - this.maxSize,
       // how many records we want
-      limit: this.maxSize,
+      // limit: this.maxSize,
     };
 
     // go get the collection of meta and data
