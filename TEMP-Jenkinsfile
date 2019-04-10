@@ -128,7 +128,7 @@ def notifyError(title, description) {
   }
 }
 
-node('develop') {
+node('master') {
 
     stage('Startup') {
         // stop pending builds.
