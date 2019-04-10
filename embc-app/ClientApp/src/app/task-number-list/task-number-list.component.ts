@@ -13,6 +13,20 @@ export class TaskNumberListComponent implements OnInit {
   // simple server response
   metaIncidentTasks: ListResult<IncidentTask>;
   notFoundMessage: string = '';
+
+  // collection of pagination parameters for UI pagination
+  // display and pagination
+  increments: number[] = [5, 10, 25, 50, 100, 1000];
+  // doesn't need to be an object besides it provides a visual seper
+  page: number; // the current displayed page
+  totalPages: number; // how many pages are returned?
+  pageSize: number; // how many entries are on the page
+  previousQuery: string; // a place to save the last query parameters
+  sort: string = ''; // how do we sort the list
+  collectionSize: number = 0; // how large is the collection?
+  maxSize = 100; // how many results should the UI show?
+  boundaryLinks = true; // do we show the jump to first and last page links?
+
   constructor(
     private incidentTaskService: IncidentTaskService,
     private router: Router,
@@ -34,6 +48,14 @@ export class TaskNumberListComponent implements OnInit {
     this.incidentTaskService.getIncidentTasks().subscribe((v: ListResult<IncidentTask>) => {
       // save the metaVolunteers
       this.metaIncidentTasks = v;
+      // collect all of the meta into variables
+      this.page = v.metadata.page;
+      this.totalPages = v.metadata.totalPages;
+      this.collectionSize = v.metadata.totalCount;
+      this.maxSize = v.metadata.pageSize;
+      // alert(v.metadata.pageSize)
+      //save the last query performed
+      this.previousQuery = query || '';
     });
   }
 

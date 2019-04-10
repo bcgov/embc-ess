@@ -42,7 +42,7 @@ export class VolunteerListComponent implements OnInit {
   previousQuery: string; // a place to save the last query parameters
   sort: string = ''; // how do we sort the list
   collectionSize: number = 0; // how large is the collection?
-  maxSize = 5; // how many results should the UI show?
+  maxSize = 20; // how many results should the UI show?
   boundaryLinks = true; // do we show the jump to first and last page links?
 
   // the search form and associated toggles (show all, show only admins, show only regular users)

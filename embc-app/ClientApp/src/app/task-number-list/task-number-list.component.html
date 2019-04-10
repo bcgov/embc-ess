@@ -16,6 +16,18 @@
   </div>
 
   <ng-template #searchResultsTable>
+    <div class="space-between align-items-center my-3">
+      <section>
+        {{(maxSize * page)-maxSize+1}} - {{maxSize * page}} of {{collectionSize}} Tasks
+        <!-- <app-pagination-summary [value]="pagination">
+          <span class="font-weight-bold">ACTIVE</span> organizations
+          TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small>
+        </app-pagination-summary> -->
+      </section>
+      <section>
+        <button class="btn btn-primary" routerLink="../task-number">ADD TASK NUMBER</button>
+      </section>
+    </div>
     <table class="table">
       <thead class="thead-light">
         <th scope="col">TASK NUMBER</th>
@@ -34,6 +46,10 @@
         </tr>
       </tbody>
     </table>
+    <!-- Pagination area -->
+    <span *ngIf="totalPages>1">
+      <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
+    </span>
   </ng-template>
 
   <ng-template #notFound>
