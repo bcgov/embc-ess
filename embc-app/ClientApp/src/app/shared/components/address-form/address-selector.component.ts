@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-address-selector',
   template: `
-    <app-bc-address *ngIf="withinBC" [parent]="parent" [touched]="touched" [communities]="communities$ | async"></app-bc-address>
+    <app-bc-address *ngIf="withinBC" [parent]="parent" [touched]="touched"></app-bc-address>
     <app-other-address *ngIf="!withinBC" [parent]="parent" [touched]="touched" [countries]="countries$ | async"></app-other-address>
   `,
   styles: []
@@ -19,7 +19,6 @@ export class AddressSelectorComponent implements OnInit, OnChanges, OnDestroy {
   @Input() withinBC = true;
   @Input() touched = false;
 
-  communities$ = this.store.select(state => state.lookups.communities.communities);
   countries$ = this.store.select(state => state.lookups.countries.countries);
   // Find out the country ID for Canada as it is hard-coded for BC addresses...
   canada$ = this.countries$.pipe(map(countries => countries.find(x => x.name === 'Canada')));
