@@ -24,7 +24,7 @@ import { CommunitiesSelectComponent } from './components/communities-select/comm
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { ByIdPipe } from './pipes/by-id.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
-import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent } from './components/side-boxes';
+import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent, CollectionNoticeComponent } from './components/side-boxes';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 
@@ -53,6 +53,7 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     AddOrganizationComponent,
     AddTaskNumberComponent,
     AddUserComponent,
+    CollectionNoticeComponent,
     PageNotFoundComponent,
     PaginationSummaryComponent,
   ],
@@ -95,6 +96,7 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     AddOrganizationComponent,
     AddTaskNumberComponent,
     AddUserComponent,
+    CollectionNoticeComponent,
     PaginationSummaryComponent,
   ]
 })
