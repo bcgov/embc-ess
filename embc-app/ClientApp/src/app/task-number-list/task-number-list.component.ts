@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ListResult, IncidentTask, PaginationSummary, Community } from '../core/models';
 import { IncidentTaskService } from '../core/services/incident-task.service';
+import { SearchQueryParameters } from '../shared/components/search';
 
 @Component({
   selector: 'app-task-number-list',
@@ -11,21 +12,10 @@ import { IncidentTaskService } from '../core/services/incident-task.service';
 })
 export class TaskNumberListComponent implements OnInit {
   // simple server response
-  metaIncidentTasks: ListResult<IncidentTask>;
-  notFoundMessage: string = '';
+  resultsAndPagination: ListResult<IncidentTask>;
+  notFoundMessage = 'Searching ...';
 
-  // collection of pagination parameters for UI pagination
-  // display and pagination
-  increments: number[] = [5, 10, 25, 50, 100, 1000];
-  // doesn't need to be an object besides it provides a visual seper
-  page: number; // the current displayed page
-  totalPages: number; // how many pages are returned?
-  pageSize: number; // how many entries are on the page
-  previousQuery: string; // a place to save the last query parameters
-  sort: string = ''; // how do we sort the list
-  collectionSize: number = 0; // how large is the collection?
-  maxSize = 5; // how many results should the UI show?
-  boundaryLinks = true; // do we show the jump to first and last page links?
+  form: FormGroup;
 
   constructor(
     private incidentTaskService: IncidentTaskService,
@@ -34,26 +24,35 @@ export class TaskNumberListComponent implements OnInit {
     private fb: FormBuilder,
   ) { }
 
+  // convenience getters
+  get results(): IncidentTask[] {
+    return this.resultsAndPagination ? this.resultsAndPagination.data : null;
+  }
+
+  get pagination(): PaginationSummary {
+    return this.resultsAndPagination ? this.resultsAndPagination.metadata : null;
+  }
+
   ngOnInit() {
+    this.initSearchForm();
+
     // collect all volunteers
     this.getIncidentTasks();
   }
 
-  routeTo(id: string) {
-    // TODO: this seems like bad practice but fix when we have time
-    this.router.navigate(['../task-number/' + id], { relativeTo: this.route });
+  initSearchForm(): void {
+    this.form = this.fb.group({ searchbox: null });
   }
 
-  getIncidentTasks(limit?: number, offset?: number, query?: string, sort?: string) {
-    // get volunteers with supplied params defaults defined in
-    this.incidentTaskService.getIncidentTasks().subscribe((v: ListResult<IncidentTask>) => {
-      // save the metaVolunteers
-      this.metaIncidentTasks = v;
+  getIncidentTasks(params: SearchQueryParameters = {}) {
+    this.incidentTaskService.getIncidentTasks(params).subscribe((v: ListResult<IncidentTask>) => {
+      this.resultsAndPagination = v;
+      this.notFoundMessage = 'No results found.';
     });
   }
 
-  search(searchTerm: string) {
+  filter(community: Community) {
     // submit and collect search
-    this.getIncidentTasks(null, null, searchTerm);
+    this.getIncidentTasks({ q: community ? community.id : '' });
   }
 }
