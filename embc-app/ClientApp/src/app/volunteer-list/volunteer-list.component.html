@@ -20,6 +20,7 @@
 
   <ng-template #searchResultsTable>
     <div class="space-between align-items-center my-3">
+      <!-- TODO: need to fix... "x - y of z users"... z should not exceed y -->
       <section>
         {{(maxSize * page)-maxSize+1}} - {{maxSize * page}} of {{collectionSize}} users
         <!-- TODO: make this work with the component-->
