@@ -20,7 +20,7 @@
                     "template": "embcess-develop-deployment"
                 },
                 "name": "embcess-develop",
-                "selfLink": "/api/v1/namespaces/jhnamn-dev/services/embcess"
+                "selfLink": "/api/v1/namespaces/jhnamn-dev/services/embcess-develop"
             },
             "spec": {
                 "ports": [

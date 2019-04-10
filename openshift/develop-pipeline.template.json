@@ -1,0 +1,49 @@
+{
+    "apiVersion": "build.openshift.io/v1",
+    "kind": "BuildConfig",
+    "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+            "app": "develop-pipeline",
+            "name": "develop-pipeline",
+            "template": "develop-pipeline"
+        },
+        "name": "develop-pipeline",
+        "selfLink": "/apis/build.openshift.io/v1/namespaces/jhnamn-tools/buildconfigs/develop-pipeline"
+    },
+    "spec": {
+        "failedBuildsHistoryLimit": 5,
+        "nodeSelector": {},
+        "output": {},
+        "postCommit": {},
+        "resources": {},
+        "runPolicy": "Parallel",
+        "source": {
+            "git": {
+                "ref": "develop",
+                "uri": "https://github.com/bcgov/embc-ess.git"
+            },
+            "type": "Git"
+        },
+        "strategy": {
+            "jenkinsPipelineStrategy": {
+                "jenkinsfilePath": "TEMP-Jenkinsfile"
+            },
+            "type": "JenkinsPipeline"
+        },
+        "successfulBuildsHistoryLimit": 5,
+        "triggers": [
+            {
+                "github": {
+                    "secretReference": {
+                        "name": "embcess-build-secret"
+                    }
+                },
+                "type": "GitHub"
+            }
+        ]
+    },
+    "status": {
+        "lastVersion": 0
+    }
+}
