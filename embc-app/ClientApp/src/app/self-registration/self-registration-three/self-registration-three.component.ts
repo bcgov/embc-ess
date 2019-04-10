@@ -66,7 +66,7 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     this.registration = props.registration;
   }
 
-  next() {
+  submit() {
     this.submitting = true;
     // process the registration record before submission to the backend
 
