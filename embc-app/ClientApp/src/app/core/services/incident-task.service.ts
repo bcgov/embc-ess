@@ -15,10 +15,10 @@ export class IncidentTaskService extends RestService {
   getIncidentTasks(props: SearchQueryParameters = {}): Observable<ListResult<IncidentTask>> {
     const { limit = 100, offset = 0, q = '', sort = '' } = props;
     const params = {
-      limit: limit.toString(), // query params are strings
-      offset: offset.toString(),
-      q,
-      sort
+      limit: (limit || 100).toString(), // query params are strings
+      offset: (offset || 0).toString(),
+      q: q || '',
+      sort: sort || '',
     };
     return this.http.get<ListResult<IncidentTask>>('api/incidenttasks', { headers: this.headers, params })
       .pipe(

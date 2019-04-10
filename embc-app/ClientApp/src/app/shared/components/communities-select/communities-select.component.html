@@ -1,0 +1,17 @@
+<!-- TODO: fix forms that use this component and change this to child form control only -->
+<div *ngIf="myFormControl">
+  <input class="form-control" type="text" [formControl]="myFormControl" placeholder="{{myPlaceHolder}}"
+    [ngbTypeahead]="search" [inputFormatter]="inputFormatter" [resultFormatter]="resultFormatter"
+    (click)="click$.next($event.target.value)" #instance="ngbTypeahead" [required]="myRequired">
+  <button class="btn btn-icon" (click)="click$.next($event.target.value)" title="Show list">
+    <app-font-awesome-icon icon="caret-down"></app-font-awesome-icon>
+  </button>
+</div>
+<div *ngIf="myParent && myFormControlName" [formGroup]="myParent">
+  <input class="form-control" type="text" formControlName="{{myFormControlName}}" placeholder="{{myPlaceHolder}}"
+    [ngbTypeahead]="search" [inputFormatter]="inputFormatter" [resultFormatter]="resultFormatter"
+    (click)="click$.next($event.target.value)" #instance="ngbTypeahead" [required]="myRequired">
+  <button class="btn btn-icon" (click)="click$.next($event.target.value)" title="Show list">
+    <app-font-awesome-icon icon="caret-down"></app-font-awesome-icon>
+  </button>
+</div>

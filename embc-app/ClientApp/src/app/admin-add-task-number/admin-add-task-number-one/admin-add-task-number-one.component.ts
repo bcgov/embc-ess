@@ -6,7 +6,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IncidentTask } from 'src/app/core/models';
 import { UpdateIncidentTask } from 'src/app/store/incident-tasks/incident-tasks.actions';
 import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
-import { compareById } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-admin-add-task-number-one',
@@ -16,7 +15,6 @@ import { compareById } from 'src/app/shared/utils';
 export class AdminAddTaskNumberOneComponent implements OnInit {
   editMode = false;
 
-  communities$ = this.store.select(s => s.lookups.communities.communities);
   // whatever is in the application state
   currentIncidentTask$ = this.store.select(i => i.incidentTasks.currentIncidentTask);
   componentActive = true;
@@ -31,9 +29,6 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
     details: '',
     community: null,
   };
-
-  // convenience getters so we can use helper functions in Angular templates
-  compareById = compareById;
 
   constructor(
     private route: ActivatedRoute,
@@ -62,6 +57,7 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
       this.editMode = false;
     }
   }
+
   initForm() {
     // get the current incident task
     this.taskNumber = new FormControl('');
@@ -76,6 +72,7 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
     //     this.details = new FormControl(i.details || null);
     //   });
   }
+
   next(): void {
     this.onSave();
     // only go next if all fields are non null
@@ -86,7 +83,7 @@ export class AdminAddTaskNumberOneComponent implements OnInit {
       const nextRoute = this.editMode ? '../../confirmation' : '../confirmation';
       this.router.navigate([nextRoute], { relativeTo: this.route });
     } else {
-      alert("All fields are required to continue.");
+      alert('All fields are required to continue.');
     }
   }
 
