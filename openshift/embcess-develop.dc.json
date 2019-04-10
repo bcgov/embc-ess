@@ -96,43 +96,39 @@
                               },
                               {
                                 "name": "SITEMINDER_LOGOUT_URL",
-                                "value": "https://logontest.gov.bc.ca/clp-cgi/logoff.cgi"
+                                "value": ""
                               },
                               {
                                 "name": "BASE_URI",
-                                "value": "https://dev.justice.gov.bc.ca"
+                                "value": ""
                               },
                               {
                                 "name": "SMTP_HOST",
-                                "value": "apps.smtp.gov.bc.ca"
+                                "value": ""
                               },
                               {
                                 "name": "SMTP_DEFAULT_SENDER",
-                                "value": "no-reply@gov.bc.ca"
+                                "value": ""
                               },
                               {
                                 "name": "DATABASE_SERVICE_NAME",
-                                "value": "mssql.jhnamn-dev.svc"
+                                "value": ""
                               },
                               {
                                 "name": "DB_DATABASE",
-                                "value": "ess"
+                                "value": ""
                               },
                               {
                                 "name": "DB_PASSWORD",
-                                "value": "gaFCCLgxMPp2tkR7"
+                                "value": ""
                               },
                               {
                                 "name": "DB_USER",
-                                "value": "ess"
+                                "value": ""
                               },
                               {
                                 "name": "DB_ADMIN_PASSWORD",
-                                "value": "gaFCCLgxMPp2tkR7"
-                              },
-                              {
-                                "name": "DB_FULL_REFRESH",
-                                "value": "false"
+                                "value": ""
                               }
                             ],
                             "image": "docker-registry.default.svc:5000/jhnamn-tools/embcess-develop@sha256:562f34b6732a6d79a5ceeb576962ebb689cf42da29394b50a3a9154dc4d99c99",
