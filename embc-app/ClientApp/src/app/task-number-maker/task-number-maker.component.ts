@@ -45,6 +45,11 @@ export class TaskNumberMakerComponent implements OnInit {
     private incidentTaskService: IncidentTaskService,
   ) { }
 
+  // convenience getters
+  get taskNumbersRoute() {
+    return this.editMode ? '../../task-numbers' : '../task-numbers';
+  }
+
   ngOnInit() {
     // initialize form for collection
     this.taskNumber = new FormControl('');
@@ -82,10 +87,8 @@ export class TaskNumberMakerComponent implements OnInit {
   back() {
     // show the editing parts of the form.
     this.maker = true;
-    // go back
-    // this.onSave();
-    // this.router.navigate(['../fill'], { relativeTo: this.route });
   }
+
   submit() {
     this.submitting = true;
     if (!(this.incidentTask.community && this.incidentTask.details && this.incidentTask.taskNumber)) {
@@ -100,8 +103,8 @@ export class TaskNumberMakerComponent implements OnInit {
           .subscribe(() => {
             this.submitting = false;
             // go back to the volunteer team dashboard
-            // TODO this needs to route in two different ways because the ID added for edit acts as a route element
-            this.editMode ? this.router.navigate(['../../'], { relativeTo: this.route }) : this.router.navigate(['../'], { relativeTo: this.route })
+            // this needs to route in two different ways because the ID added for edit acts as a route element
+            this.router.navigate([this.taskNumbersRoute], { relativeTo: this.route });
           });
       } else {
         // if the volunteer has no id we need to create a new one
@@ -109,11 +112,12 @@ export class TaskNumberMakerComponent implements OnInit {
           .subscribe(i => {
             this.submitting = false;
             // go back to the volunteer team dashboard
-            this.editMode ? this.router.navigate(['../../'], { relativeTo: this.route }) : this.router.navigate(['../'], { relativeTo: this.route })
+            this.router.navigate([this.taskNumbersRoute], { relativeTo: this.route });
           });
       }
     }
   }
+
   onSave(): void {
     const incidentTask: IncidentTask = this.incidentTask;
     incidentTask.id = this.incidentTask.id || null; // keep the id for updates
