@@ -21,6 +21,7 @@ export class CommunitiesSelectComponent {
   @Input() myParent: FormGroup = null;
   @Input() myFormControlName: string = null;
   @Input() myRequired = false;
+  @Input() myPlaceHolder = 'Type or click to search...';
   @ViewChild('instance') instance: NgbTypeahead;
 
   // the observable
