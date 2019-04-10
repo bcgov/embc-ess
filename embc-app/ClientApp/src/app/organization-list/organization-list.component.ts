@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, concat } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-
-import { AppState } from '../store';
+// import { Store } from '@ngrx/store';
+// import { AppState } from '../store';
 import { ListResult, Organization, Community, PaginationSummary } from '../core/models';
 import { OrganizationService } from '../core/services/organization.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -26,14 +25,13 @@ export class OrganizationListComponent implements OnInit {
 
   // TODO: We need the full aggregated list of communities + districts + regions here
   // TODO: This is for V2
+  // TODO: May need to move this to communities-select component
   // locations$ = combineLatest(
   //   this.store.select(s => s.lookups.communities.communities.map<SearchFilter>(x => ({ id: x.id, name: x.name, isRegion: false }))),
   //   this.store.select(s => s.lookups.regions.regions.map<SearchFilter>(x => ({ id: x.id, name: `${x.name} (Region)`, isRegion: true }))),
   // ).pipe(
   //   map(([communities, regions]) => communities.concat(regions))
   // );
-
-  communities$ = this.store.select(s => s.lookups.communities.communities);
 
   // simple server response
   resultsAndPagination: ListResult<Organization>;
@@ -45,7 +43,7 @@ export class OrganizationListComponent implements OnInit {
     private organizationService: OrganizationService,
     private router: Router,
     private route: ActivatedRoute,
-    private store: Store<AppState>,
+    // private store: Store<AppState>,
     private fb: FormBuilder,
   ) { }
 
@@ -59,14 +57,10 @@ export class OrganizationListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initSearchForm();
+    this.form = this.fb.group({ searchbox: null });
 
     // collect all organizations
     this.getOrganizations();
-  }
-
-  initSearchForm(): void {
-    this.form = this.fb.group({ searchbox: null });
   }
 
   // get organizations with supplied params defaults defined in
