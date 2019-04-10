@@ -1416,13 +1416,13 @@
         }
     },
     {
-        "Name": "Leq’a: mel First Nation",
+        "Name": "Leq'a: mel First Nation",
         "RegionalDistrict": {
             "Name": "South West"
         }
     },
     {
-        "Name": "Lil’wat",
+        "Name": "Lil'wat",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -1704,7 +1704,7 @@
         }
     },
     {
-        "Name": "N’Quatqua",
+        "Name": "N'Quatqua",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -2154,7 +2154,7 @@
         }
     },
     {
-        "Name": "Se’k’welwas (Cayoose Creek)",
+        "Name": "Se'k'welwas (Cayoose Creek)",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -2262,7 +2262,7 @@
         }
     },
     {
-        "Name": "Shxw’ow’hamel First Nation",
+        "Name": "Shxw'ow'hamel First Nation",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -2412,7 +2412,7 @@
         }
     },
     {
-        "Name": "Sq’ewlets",
+        "Name": "Sq'ewlets",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -2658,7 +2658,7 @@
         }
     },
     {
-        "Name": "Ts’kw’aylaxw First Nation",
+        "Name": "Ts'kw'aylaxw First Nation",
         "RegionalDistrict": {
             "Name": "South West"
         }
@@ -6072,7 +6072,7 @@
         }
     },
     {
-        "Name": "Bummer’s Flat I.R.",
+        "Name": "Bummer's Flat I.R.",
         "RegionalDistrict": {
             "Name": "South East"
         }
@@ -6864,7 +6864,7 @@
         }
     },
     {
-        "Name": "Isadore’s Ranch I.R.",
+        "Name": "Isadore's Ranch I.R.",
         "RegionalDistrict": {
             "Name": "South East"
         }
@@ -8196,12 +8196,6 @@
         }
     },
     {
-        "Name": "",
-        "RegionalDistrict": {
-            "Name": ""
-        }
-    },
-    {
         "Name": "12 Mile",
         "RegionalDistrict": {
             "Name": "North West"
@@ -8298,7 +8292,7 @@
         }
     },
     {
-        "Name": "Binche Whut’en",
+        "Name": "Binche Whut'en",
         "RegionalDistrict": {
             "Name": "North West"
         }
@@ -11922,7 +11916,7 @@
         }
     },
     {
-        "Name": "T’it’q’et First Nation",
+        "Name": "T'it'q'et First Nation",
         "RegionalDistrict": {
             "Name": "Central"
         }
@@ -11970,7 +11964,7 @@
         }
     },
     {
-        "Name": "Tk’emlúps te Secwépemc",
+        "Name": "Tk'emlúps te Secwépemc",
         "RegionalDistrict": {
             "Name": "Central"
         }
@@ -12018,7 +12012,7 @@
         }
     },
     {
-        "Name": "Ts’kw’aylaxw First Nation",
+        "Name": "Ts'kw'aylaxw First Nation",
         "RegionalDistrict": {
             "Name": "Central"
         }
@@ -12186,7 +12180,7 @@
         }
     },
     {
-        "Name": "Xaxli’p First Nation",
+        "Name": "Xaxli'p First Nation",
         "RegionalDistrict": {
             "Name": "Central"
         }
@@ -12978,7 +12972,7 @@
         }
     },
     {
-        "Name": "Esk’etemc First Nations",
+        "Name": "Esk'etemc First Nations",
         "RegionalDistrict": {
             "Name": "North East"
         }
