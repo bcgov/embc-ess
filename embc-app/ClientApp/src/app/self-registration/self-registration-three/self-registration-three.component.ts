@@ -70,6 +70,9 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     this.submitting = true;
     // process the registration record before submission to the backend
 
+    // by clicking submit this has to be true because submit is consent
+    this.registration.declarationAndConsent = true;
+
     // update client-side state
     this.onSave(this.registration);
 
