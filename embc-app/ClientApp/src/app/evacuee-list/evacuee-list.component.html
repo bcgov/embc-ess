@@ -16,6 +16,14 @@
     <!-- <span class="font-weight-bold">ACTIVE</span> evacuees
     <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
   </p>
+  <select class="form-control" [(ngModel)]="sort">
+    <!-- <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option> -->
+    <option [value]="'-registrationCompletionDate'">Sort by: Latest (default)</option>
+    <option [value]="'headOfHousehold.lastName'">Last Name</option>
+    <option [value]="'hostCommunity.name'">Community Evacuated to</option>
+    <option [value]="'incidentTask.community.name'">Community Evacuated from</option>
+  </select>
+  SORT:{{sort}}
   <app-evacuee-search-results #searchResultsView [searchResults]="searchResults$ | async">
   </app-evacuee-search-results>
 
