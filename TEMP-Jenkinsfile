@@ -1,4 +1,4 @@
-APP_NAME = "embcess"
+APP_NAME = "develop-embcess"
 PROJECT_NAMESPACE = "jhnamn"
 
 class AppEnvironment {
@@ -128,7 +128,7 @@ def notifyError(title, description) {
   }
 }
 
-node('master') {
+node('develop') {
 
     stage('Startup') {
         // stop pending builds.
