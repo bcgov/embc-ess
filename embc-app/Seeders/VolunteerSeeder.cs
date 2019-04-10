@@ -49,14 +49,15 @@ namespace Gov.Embc.Public.Seeders
             else
             {
                 existing.BceidAccountNumber = seedData.BceidAccountNumber;
-                existing.Name = seedData.Name;
+                existing.FirstName = seedData.FirstName;
+                existing.LastName = seedData.LastName;
                 existing.Externaluseridentifier = seedData.Externaluseridentifier;
                 existing.Active = seedData.Active;
                 existing.CanAccessRestrictedFiles = seedData.CanAccessRestrictedFiles;
                 existing.Email = seedData.Email;
-                existing.FirstName = seedData.FirstName;
                 existing.OrganizationId = seedData.OrganizationId;
                 existing.IsAdministrator = seedData.IsAdministrator;
+                existing.IsPrimaryContact = seedData.IsPrimaryContact;
                 context.People.Update(existing);
             }
             context.SaveChanges();

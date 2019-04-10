@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { concat } from 'rxjs';
 
 import { User } from './core/models';
 import { detectIE10orLower } from './shared/utils';
 import { ControlledListService } from './core/services/controlled-list.service';
 import { AuthService } from './core/services/auth.service';
+import { CookieService } from './core/services/cookie.service';
 
 @Component({
   selector: 'app-root',
@@ -14,12 +15,12 @@ import { AuthService } from './core/services/auth.service';
 export class AppComponent implements OnInit {
   title = '';
   isIE = false;
-  currentUser: User;
+  currentUser: User = null;
 
   constructor(
     private lookups: ControlledListService,
     private authService: AuthService,
-
+    private cookies: CookieService,
   ) { }
 
   ngOnInit() {
@@ -32,7 +33,7 @@ export class AppComponent implements OnInit {
   }
 
   get isAuthenticated(): boolean {
-    return this.currentUser != undefined;
+    return !!this.currentUser;
   }
 
   get isNewUser(): boolean {
@@ -52,11 +53,28 @@ export class AppComponent implements OnInit {
     this.getLookups().subscribe();
   }
 
+  // TODO: Let's do a shotgun blast here, will improve later...
+  @HostListener('window:beforeunload', ['$event'])
+  onWindowClose(event: any): void {
+    this.logout(event);
+  }
+
+  logout(event?: any): void {
+    // Remove all saved data from sessionStorage
+    sessionStorage.clear();
+
+    // clear all cookies
+    this.cookies.clear();
+
+    // let's also try to get to the logout endpoint on the server...
+    this.authService.logout(true)
+      .subscribe(() => console.log('Current user logged out'));
+  }
+
   reloadUser() {
     this.authService.login()
       .subscribe(() => this.currentUser = this.authService.currentUser);
   }
-
 
   getLookups() {
     return concat(

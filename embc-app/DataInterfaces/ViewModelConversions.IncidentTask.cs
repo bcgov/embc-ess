@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -17,7 +18,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     Active = source.Active,
                     Region = source.Region?.ToViewModel(),
                     RegionalDistrict = source.RegionalDistrict?.ToViewModel(),
-                    Community = source.Community?.ToViewModel()
+                    Community = source.Community?.ToViewModel(),
+                    TotalAssociatedEvacuees = source.Registrations.Count() +
+                                                                source.Registrations.Select(r => r?.HeadOfHousehold?.FamilyMembers?.Count() ?? 0).Sum()
                 };
             }
             return result;

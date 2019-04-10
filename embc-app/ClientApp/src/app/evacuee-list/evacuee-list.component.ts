@@ -63,7 +63,7 @@ export class EvacueeListComponent implements OnInit {
 
 
   routeTo(essFileNumber: string) {
-    // TODO: this seems like bad practive but fix when we have time
+    // TODO: this seems like bad practice but fix when we have time
     this.router.navigate(['register-evacuee/fill/' + essFileNumber]);
   }
 

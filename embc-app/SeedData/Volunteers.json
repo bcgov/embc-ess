@@ -1,58 +1,58 @@
 [
     {
-        "name": "ess.developerV1",
         "email": "dev1@ebmc",
         "bceidAccountNumber": "ess.developerV1",
         "isAdministrator": false,
+        "isPrimaryContact": false,
         "canAccessRestrictedFiles": false,
         "organization": {
-            "BceidAccountNumber": "15F6FD8BC6C6401DB319311853FC518E"
+            "BCeIDBusinessGuid": "15F6FD8BC6C6401DB319311853FC518E"
         },
         "externaluseridentifier": null,
         "personType": "VOLN",
-        "firstName": "dev",
-        "lastName": "one"
+        "firstName": "developerV1",
+        "lastName": "ess"
     },
     {
-        "name": "ess.developerV2",
         "email": "dev2@ebmc",
         "bceidAccountNumber": "ess.developerV2",
         "isAdministrator": false,
+        "isPrimaryContact": false,
         "canAccessRestrictedFiles": false,
         "organization": {
-            "BceidAccountNumber": "25F6FD8BC6C6401DB319311853FC518E"
+            "BCeIDBusinessGuid": "25F6FD8BC6C6401DB319311853FC518E"
         },
         "externaluseridentifier": null,
         "personType": "VOLN",
-        "firstName": "dev",
-        "lastName": "two"
+        "firstName": "developerV2",
+        "lastName": "ess"
     },
     {
-        "name": "ess.developerA1",
         "email": "adm1@ebmc",
         "bceidAccountNumber": "ess.developerA1",
         "isAdministrator": true,
+        "isPrimaryContact": true,
         "canAccessRestrictedFiles": true,
         "organization": {
-            "BceidAccountNumber": "15F6FD8BC6C6401DB319311853FC518E"
+            "BCeIDBusinessGuid": "15F6FD8BC6C6401DB319311853FC518E"
         },
         "externaluseridentifier": null,
         "personType": "VOLN",
-        "firstName": "admin",
-        "lastName": "one"
+        "firstName": "developerA1",
+        "lastName": "ess"
     },
     {
-        "name": "ess.developerA2",
         "email": "adm2@ebmc",
         "bceidAccountNumber": "ess.developerA2",
         "isAdministrator": true,
+        "isPrimaryContact": true,
         "canAccessRestrictedFiles": false,
         "organization": {
-            "BceidAccountNumber": "25F6FD8BC6C6401DB319311853FC518E"
+            "BCeIDBusinessGuid": "25F6FD8BC6C6401DB319311853FC518E"
         },
         "externaluseridentifier": null,
         "personType": "VOLN",
-        "firstName": "admin",
-        "lastName": "two"
+        "firstName": "developerA2",
+        "lastName": "ess"
     }
 ]

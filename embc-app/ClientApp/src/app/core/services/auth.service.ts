@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-
 import { RestService } from './rest.service';
 import { User } from '../models';
-import { doesNotThrow } from 'assert';
 import { HttpResponse } from '@angular/common/http';
+import { EVERYONE, VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from 'src/app/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +13,12 @@ export class AuthService extends RestService {
 
   // this is the current user object
   user: BehaviorSubject<User> = new BehaviorSubject<User>(null);
-  public role: BehaviorSubject<string> = new BehaviorSubject<string>('role_everyone');
+  public role: BehaviorSubject<string> = new BehaviorSubject<string>(EVERYONE);
+
+  public isEveryone$ = this.role.pipe(map(x => x === EVERYONE));
+  public isVolunteer$ = this.role.pipe(map(x => x === VOLUNTEER));
+  public isLocalAuthority$ = this.role.pipe(map(x => x === LOCAL_AUTHORITY));
+  public isProvincialAdmin$ = this.role.pipe(map(x => x === PROVINCIAL_ADMIN));
 
   // // whether the user is currently logged in.
   // isLoggedIn$ = new BehaviorSubject<boolean>(false);
@@ -37,16 +41,18 @@ export class AuthService extends RestService {
     return done;
   }
 
-  logout(): void {
+  logout(callServer = false): Observable<void> {
     this.setCurrentUser(null);
-    // this.setLoggedIn(false);
+    if (callServer) {
+      return this.http.get<void>('logout', { headers: this.headers });
+    }
+    return of();
   }
 
   getCurrentUser(): Observable<User> {
     // check local cache first
     if (this.currentUser) {
       return of(this.currentUser);
-
     }
 
     return this.http.get<User>('api/users/current', { headers: this.headers })
@@ -80,7 +86,7 @@ export class AuthService extends RestService {
       // the most privileged comes last
       role = user.appRoles[user.appRoles.length - 1];
     } else {
-      role = 'role_everyone';
+      role = EVERYONE;
     }
     // save the role
     this.role.next(role);
