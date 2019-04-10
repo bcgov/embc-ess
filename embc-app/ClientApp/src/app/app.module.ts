@@ -38,6 +38,7 @@ import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
 import { OrganizationMakerComponent } from './organization-maker/organization-maker.component';
 import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
+import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summ
     VolunteerMakerComponent,
     OrganizationMakerComponent,
     EvacueeSummaryPageComponent,
+    VolunteerOrganizationListComponent,
   ],
   imports: [
     // angular

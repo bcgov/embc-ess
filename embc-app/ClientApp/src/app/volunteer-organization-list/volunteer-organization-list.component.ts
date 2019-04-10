@@ -10,11 +10,12 @@ import { VolunteerService, VolunteerSearchQueryParameters } from '../core/servic
 import { ListResult, Volunteer, PaginationSummary, User, Organization } from '../core/models';
 
 @Component({
-  selector: 'app-volunteer-list',
-  templateUrl: './volunteer-list.component.html',
-  styleUrls: ['./volunteer-list.component.scss']
+  selector: 'app-volunteer-organization-list',
+  templateUrl: './volunteer-organization-list.component.html',
+  styleUrls: ['./volunteer-organization-list.component.scss']
 })
-export class VolunteerListComponent implements OnInit {
+export class VolunteerOrganizationListComponent implements OnInit {
+
   // simple server response
   resultsAndPagination: ListResult<Volunteer>;
   notFoundMessage = 'Searching ...';

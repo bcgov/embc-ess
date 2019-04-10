@@ -1,0 +1,119 @@
+<!-- Provincial Staff -->
+<div class="mb-4">
+  <h1>Users for {{ currentOrganization?.name || 'all organizations' }}</h1>
+  <p>Use this page to view active ESS users & administrative users associated with your organization, as well as add users, and edit profiles & permissions.</p>
+
+  <section class="p-3" *ngIf="currentOrganization?.name">
+    <h3>Organization Details</h3>
+    <ul class="summary">
+      <li>
+        <span class="name">Name of Organization:</span>
+        <span class="value">{{ currentOrganization?.name }}</span>
+      </li>
+      <li>
+        <span class="name">Associated EMBC Region / Regional District / Community:</span>
+        <span class="value">{{ currentOrganization?.community?.name }}</span>
+      </li>
+      <li>
+        <span class="name">Primary Contact:</span>
+        <span class="value">{{ currentOrganization?.adminLastName }}, {{ currentOrganization?.adminFirstName }}</span>
+      </li>
+      <li>
+        <span class="name">Organization Status:</span>
+        <span class="value">{{ !!currentOrganization?.active ? 'Active' : 'Inactive' }}</span>
+      </li>
+    </ul>
+  </section>
+
+  <h3 class="blue-header">USERS LIST</h3>
+  <form novalidate role="search" [formGroup]="form">
+    <div class="form-row">
+      <div class="col-md-9">
+        <input type="text" aria-label="search" class="form-control mb-2" placeholder="Search by last name &hellip;" formControlName="searchbox" (keydown.enter)="search()">
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-primary" (click)="search()">Search</button>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-check form-check-inline">
+        <input type="radio" class="form-check-input" formControlName="userToggle" [value]="SHOW_ALL">
+        <label class="form-check-label">Show all</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="radio" class="form-check-input" formControlName="userToggle" [value]="SHOW_ADMINS_ONLY">
+        <label class="form-check-label">Show only admin users</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="radio" class="form-check-input" formControlName="userToggle" [value]="SHOW_ESS_USERS_ONLY">
+        <label class="form-check-label">Show only ESS users</label>
+      </div>
+    </div>
+  </form>
+  <div class="search-results mt-4">
+    <div *ngIf="results && results.length > 0; then adminSearchResultsTable; else adminNotFound"></div>
+  </div>
+
+  <ng-template #adminSearchResultsTable>
+    <div class="space-between align-items-center my-3">
+      <section>
+        <app-pagination-summary [value]="pagination">
+          <span class="font-weight-bold">ACTIVE</span> users
+          <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
+        </app-pagination-summary>
+      </section>
+      <section>
+        <button class="btn btn-primary" routerLink="../volunteer" [queryParams]="{orgId: currentOrganization?.id}">ADD USERS</button>
+      </section>
+    </div>
+    <table class="table">
+      <thead class="thead-light">
+        <th scope="col">LAST NAME</th>
+        <th scope="col">FIRST NAME</th>
+        <th scope="col">BCEID</th>
+        <!-- <th scope="col">RESTRICTED FILES</th> -->
+        <th scope="col">ROLE</th>
+        <th scope="col">PRIMARY CONTACT</th>
+        <th scope="col">ACTION</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let volunteer of results">
+          <td>{{volunteer.lastName}}</td>
+          <td>{{volunteer.firstName}}</td>
+          <td>{{volunteer.bceidAccountNumber}}</td>
+          <!-- <td>
+              <span *ngIf="volunteer.canAccessRestrictedFiles">Yes</span>
+              <span *ngIf="!volunteer.canAccessRestrictedFiles">No</span>
+            </td> -->
+          <td>{{!!volunteer.isAdministrator ? 'Admin' : 'ESS User'}}</td>
+          <td>{{!!volunteer.isAdministrator ? (!!volunteer.isPrimaryContact | yesNo) : 'n/a'}}</td>
+          <td>
+            <a [routerLink]="['../volunteer/', volunteer.id]" [queryParams]="{orgId: currentOrganization?.id}">Edit</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Pagination area -->
+    <span class="space-between" *ngIf="totalPages>1">
+      <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
+    </span>
+    <!-- <div class="space-between">
+        <button class="btn btn-primary float-right" routerLink="../volunteer" [queryParams]="{orgId: currentOrganization?.id}">ADD USERS</button>
+      </div> -->
+  </ng-template>
+
+  <ng-template #adminNotFound>
+    <p>
+      {{notFoundMessage}}
+    </p>
+  </ng-template>
+</div>
+
+<ul>
+  <li>page:{{page|json}}</li>
+  <li>totalPages:{{totalPages|json}}</li>
+  <li>collectionSize:{{collectionSize|json}}</li>
+  <li>maxSize:{{maxSize|json}}</li>
+  <li>previousQuery:{{previousQuery|json}}</li>
+  <li>sort:{{sort|json}}</li>
+</ul>
