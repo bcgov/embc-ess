@@ -94,9 +94,9 @@
       </tbody>
     </table>
     <!-- Pagination area -->
-    <span class="space-between" *ngIf="totalPages>1">
+    <div class="col" *ngIf="totalPages>1">
       <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
-    </span>
+    </div>
     <!-- <div class="space-between">
         <button class="btn btn-primary float-right" routerLink="../volunteer" [queryParams]="{orgId: currentOrganization?.id}">ADD USERS</button>
       </div> -->
