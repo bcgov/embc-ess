@@ -524,6 +524,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     }
   }
   submit() {
+    // The user now consents.
+    this.registration.declarationAndConsent = true;
     // Send data to the server
 
     this.submitted = true;
