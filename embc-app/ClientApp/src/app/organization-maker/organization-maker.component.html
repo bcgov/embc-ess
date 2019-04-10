@@ -44,7 +44,7 @@
 
     <div class="row">
       <div class="col-md-9 pt-4 mb-4">
-          <label class="required" for="community">Associated Regional District / Community</label>
+          <label class="required" for="community">Associated EMBC Regional District / Community</label>
           <app-communities-select [myFormControl]="community" id="community" [myRequired]="true"></app-communities-select>
       </div>
     </div>
@@ -90,7 +90,7 @@
           <span class="value">{{organization.adminFirstName}}</span>
         </li>
         <li>
-          <span class="name">Associated EMBC Region / Regional District / Community:</span>
+          <span class="name">Associated EMBC Regional District / Community:</span>
           <span class="value" *ngIf="organization.region">{{organization.region.name}}</span>
           <span class="value" *ngIf="organization.regionalDistrict">{{organization.regionalDistrict.name}}</span>
           <span class="value" *ngIf="organization.community">{{organization.community.name}}</span>

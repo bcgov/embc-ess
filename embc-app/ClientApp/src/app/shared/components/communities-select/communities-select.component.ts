@@ -1,10 +1,11 @@
 import { Component, Input, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { NgbTypeahead, NgbTypeaheadConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { AppState } from 'src/app/store';
-import { Community } from 'src/app/core/models';
+import { Community, Organization } from 'src/app/core/models';
 
 //
 // ref: https://ng-bootstrap.github.io/#/components/typeahead/
@@ -16,8 +17,10 @@ import { Community } from 'src/app/core/models';
   styleUrls: ['./communities-select.component.scss']
 })
 export class CommunitiesSelectComponent {
-  @Input() myFormControl: Community = null;
-  @Input() myRequired: string = null;
+  @Input() myFormControl: Organization = null;
+  @Input() myParent: FormGroup = null;
+  @Input() myFormControlName: string = null;
+  @Input() myRequired = false;
   @ViewChild('instance') instance: NgbTypeahead;
 
   // the observable
@@ -34,8 +37,8 @@ export class CommunitiesSelectComponent {
   inputFormatter = (c: Community) => c.name;
   resultFormatter = (c: Community) => c.name;
 
-  // function that returns communities whose name matches search text
-  // returns when search text hass changed or on click/focus events
+  // function that returns communities whose name partial-matches search text
+  // returns when search text has changed or on click/focus events
   search = (text$: Observable<string>) => {
     const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
     const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
@@ -52,10 +55,16 @@ export class CommunitiesSelectComponent {
     );
   }
 
+  //
+  // TODO: move form validators here?
+  //       see address-selector component
+  //
+
   constructor(
     private store: Store<AppState>,
     private config: NgbTypeaheadConfig
   ) {
+    // TODO: fix this
     // temporary hack to de-serialize communities
     // so we can work with them more easily in the search function
     this.communities$.subscribe(value => this.communities = value);

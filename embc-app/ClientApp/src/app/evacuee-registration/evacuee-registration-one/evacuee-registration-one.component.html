@@ -40,19 +40,16 @@
       <div class="form-row">
         <app-attention-icon></app-attention-icon>
         <app-form-field class="col-md-8" required="true" tooltip="Tool Tip: The location where you are registering the evacuees.">
-          <label>Facility Name / Registration Location</label>
-          <input [class.is-invalid]="invalid('facility')" class="form-control" type="text" formControlName="facility">
+          <label class="required" for="facility">Facility Name / Registration Location</label>
+          <input [class.is-invalid]="invalid('facility')" class="form-control" type="text" formControlName="facility" id="facility">
           <span *ngIf="submitted" class="invalid-feedback">{{e.facility}}</span>
         </app-form-field>
       </div>
       <div class="form-row">
         <app-attention-icon></app-attention-icon>
         <app-form-field class="col-md-8" required="true" tooltip="Tool Tip: A host community is the community where the registration is taking place and the Reception Centre is located.">
-          <label>Community</label>
-          <select [compareWith]="compareById" [class.is-invalid]="invalid('hostCommunity')" class="form-control" formControlName="hostCommunity">
-            <option [ngValue]="null">-- Select community</option>
-            <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
-          </select>
+          <label class="required" for="hostCommunity">Host Community</label>
+          <app-communities-select [class.is-invalid]="invalid('hostCommunity')" [myParent]="form" myFormControlName="hostCommunity" id="hostCommunity"></app-communities-select>
           <span *ngIf="submitted" class="invalid-feedback">{{e.hostCommunity}}</span>
         </app-form-field>
       </div>

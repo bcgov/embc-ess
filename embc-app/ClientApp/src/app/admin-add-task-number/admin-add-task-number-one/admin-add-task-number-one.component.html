@@ -7,20 +7,16 @@
     Task Details
   </h3>
   <div class="col mb-4">
-    <label>Task Number</label>
-    <input class="form-control" type="text" [formControl]="taskNumber">
+    <label class="required" for="taskNumber">Task Number</label>
+    <input class="form-control" type="text" [formControl]="taskNumber" id="taskNumber">
   </div>
   <div class="col mb-4">
-    <label>Community</label>
-    <select [compareWith]="compareById" class="form-control" [formControl]="community">
-      <!-- <option *ngIf="this.community.value && !this.community.touched">{{this.community.value.name}}</option> -->
-      <option *ngIf="!this.community.value">-- Select community</option>
-      <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
-    </select>
+    <label class="required" for="community">Community</label>
+    <app-communities-select [myFormControl]="community" id="community" [myRequired]="true"></app-communities-select>
   </div>
   <div class="col mb-4">
-    <label>Details of Incident</label>
-    <input class="form-control" type="text" placeholder="Please specify" [formControl]="details">
+    <label class="required" for="details">Details of Incident</label>
+    <input class="form-control" type="text" placeholder="Please specify" [formControl]="details" id="details">
   </div>
 </div>
 <div class="mt-5 space-between">

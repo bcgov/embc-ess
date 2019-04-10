@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Store } from '@ngrx/store';
-
-import { AppState } from '../store';
 import { ListResult, IncidentTask, PaginationSummary, Community } from '../core/models';
 import { IncidentTaskService } from '../core/services/incident-task.service';
 import { SearchQueryParameters } from '../shared/components/search';
@@ -14,9 +11,6 @@ import { SearchQueryParameters } from '../shared/components/search';
   styleUrls: ['./task-number-list.component.scss']
 })
 export class TaskNumberListComponent implements OnInit {
-
-  communities$ = this.store.select(s => s.lookups.communities.communities);
-
   // simple server response
   resultsAndPagination: ListResult<IncidentTask>;
   notFoundMessage = 'Searching ...';
@@ -27,7 +21,6 @@ export class TaskNumberListComponent implements OnInit {
     private incidentTaskService: IncidentTaskService,
     private router: Router,
     private route: ActivatedRoute,
-    private store: Store<AppState>,
     private fb: FormBuilder,
   ) { }
 

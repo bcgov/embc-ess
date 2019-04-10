@@ -28,7 +28,6 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
   metaOrganizations: ListResult<Organization>;
   // currentVolunteer$ = this.store.select(s => s.volunteers.currentVolunteer); // TODO
   // currentOrganization$ = this.store.select(s => s.organizations.currentOrganization); // TODO
-  communities$ = this.store.select(s => s.lookups.communities.communities);
   volunteer: Volunteer;
 
   constructor(

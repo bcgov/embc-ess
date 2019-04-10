@@ -10,10 +10,8 @@
 
   <form novalidate role="search" class="form-row" [formGroup]="form">
     <div class="col-md-9">
-      <select class="form-control" formControlName="searchbox">
-        <option [ngValue]="null">-- Select Associated Community</option>
-        <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
-      </select>
+      <label class="sr-only" for="searchbox">Associated EMBC Regional District / Community</label>
+      <app-communities-select [myParent]="form" myFormControlName="searchbox" id="searchbox"></app-communities-select>
     </div>
     <div class="col-md-3">
       <button class="btn btn-primary float-right" (click)="filter(form.value.searchbox)">FILTER</button>
