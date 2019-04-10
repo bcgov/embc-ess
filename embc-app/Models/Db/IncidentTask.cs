@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -40,5 +41,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public Guid? CommunityId { get; set; }
 
         public Community Community { get; set; }
+
+        public List<Registration> Registrations { get; set; }
     }
 }

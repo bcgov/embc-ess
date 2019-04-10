@@ -2,6 +2,7 @@ using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +16,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     .ThenInclude(d => d.Region)
                 .Include(t => t.Community)
                     .ThenInclude(c => c.RegionalDistrict)
-                        .ThenInclude(d => d.Region);
+                        .ThenInclude(d => d.Region)
+                .Include(t => t.Registrations);
 
         public async Task<IPagedResults<IncidentTask>> GetIncidentTasksAsync(SearchQueryParameters searchQuery)
         {

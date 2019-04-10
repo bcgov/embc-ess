@@ -5,13 +5,13 @@ namespace Gov.Jag.Embc.Public.ViewModels.Search
 {
     public class VolunteersSearchQueryParameters : SearchQueryParameters
     {
-        [FromQuery(Name = "ess")]
+        [FromQuery(Name = "ess_only")]
         public bool? OnlyEssUsers { get; set; }
 
-        [FromQuery(Name = "admin")]
+        [FromQuery(Name = "admin_only")]
         public bool? OnlyAdminUsers { get; set; }
 
-        [FromQuery(Name = "orgid")]
+        [FromQuery(Name = "org_id")]
         public string OrganizationId { get; set; }
     }
 }

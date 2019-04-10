@@ -4,45 +4,48 @@
 </h3>
 <section class="p-3">
   <ul class="summary">
-    <li>
-      <table class="m-2">
-        <thead>
-          <tr>
-            <td scope="col" colspan="4">
-              <h1>
-                {{registration?.headOfHousehold.lastName}}, {{registration?.headOfHousehold.firstName}}
-                {{registration?.headOfHousehold.initials}}
-              </h1>
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Task #: {{registration?.incidentTask?.taskNumber}}</td>
-            <td class="pr-2 pl-2" colspan="2">Self Registration Date & Time:
-              {{registration?.selfRegisteredDate | date}}
-            </td>
-            <td>File Status:
-              <span *ngIf="registration?.active">Active</span>
-              <span *ngIf="!registration?.active">Inactive</span>
-            </td>
-          </tr>
-          <tr>
-            <td>ESS File #: {{registration?.essFileNumber}}</td>
-            <td class="pr-2 pl-2" colspan="2">Registration Completed Date & Time:
-              {{registration?.registrationCompletionDate | date}}
-            </td>
-            <td>Restricted File:
-              <span *ngIf="registration?.restrictedAccess">Yes</span>
-              <span *ngIf="!registration?.restrictedAccess">No</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
+    <li class="summary-heading">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <h1>
+              {{registration?.headOfHousehold.lastName}}, {{registration?.headOfHousehold.firstName}}
+              {{registration?.headOfHousehold.initials}}
+            </h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            Task #: {{registration?.incidentTask?.taskNumber}}
+          </div>
+          <div class="col">
+            Self Registration Date &amp; Time:
+            {{registration?.selfRegisteredDate | date : 'MM/dd/yyyy, HH:mm'}}
+          </div>
+          <div class="col-2">
+            File Status:
+            <span *ngIf="registration?.active">Active</span>
+            <span *ngIf="!registration?.active">Inactive</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            ESS File #: {{registration?.essFileNumber}}
+          </div>
+          <div class="col">
+            Registration Completed Date &amp; Time:
+            {{registration?.registrationCompletionDate | date : 'MM/dd/yyyy, HH:mm'}}
+          </div>
+          <div class="col-2">
+            <!-- Restricted File:
+            <span *ngIf="registration?.restrictedAccess">Yes</span>
+            <span *ngIf="!registration?.restrictedAccess">No</span> -->
+          </div>
+        </div>
+      </div>
     </li>
     <li>
-      <span class="name">Facility Name/Registration Location</span>
+      <span class="name">Facility Name/Registration Location:</span>
       <span class="value">{{registration?.facility}}</span>
     </li>
     <li>
@@ -52,10 +55,11 @@
     <li>
       <span class="name"> Family Members:</span>
       <span class="value">
-        {{registration?.headOfHousehold.lastName}}, {{registration?.headOfHousehold.firstName}}<br>
-        <span *ngFor="let familyMember of registration?.headOfHousehold.familyMembers">{{familyMember.lastName}},
-          {{familyMember.firstName}}<br>
-        </span>
+        {{registration?.headOfHousehold.lastName}}, {{registration?.headOfHousehold.firstName}}
+        <br>
+        <ng-container *ngFor="let familyMember of registration?.headOfHousehold.familyMembers">
+          {{familyMember.lastName}}, {{familyMember.firstName}}<br>
+        </ng-container>
       </span>
     </li>
     <li>
@@ -67,13 +71,6 @@
     </li>
     <li>
       <span class="name">Supports Requested:</span>
-      <!-- "requiresAccommodation": true,
-          "requiresClothing": true,
-          "requiresFood": true,
-          "requiresIncidentals": false,
-          "requiresTransportation": true,
-          "requiresSupport": true, -->
-      <!-- {{registration.requiresFood}} -->
       <span class="value">
         <div class="form-check mt-2">
           <input class="form-check-input" [checked]="registration?.requiresFood" type="checkbox" disabled>
@@ -99,10 +96,6 @@
     </li>
   </ul>
   <div class="mt-5">
-    <button class="btn btn-primary float-right" (click)="routeTo(registration?.id)">VIEW FULL
-      PROFILE</button>
+    <button class="btn btn-primary float-right" (click)="routeTo(registration?.id)">VIEW FULL PROFILE</button>
   </div>
 </section>
-<!-- <div class="mt-5">
-    <pre>{{registration|json}}</pre>
-  </div> -->

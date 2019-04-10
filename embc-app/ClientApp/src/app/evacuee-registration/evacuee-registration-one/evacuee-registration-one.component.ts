@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, skipWhile } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { AppState } from '../../store';
 import { RegistrationService } from '../../core/services/registration.service';
 import {
-  Registration, FamilyMember, isBcAddress, Community, Country, Volunteer, IncidentTask, Address
+  Registration, FamilyMember, isBcAddress, Community, Country, Volunteer, IncidentTask, Address, User
 } from 'src/app/core/models';
 import { IncidentTaskService } from '../../core/services/incident-task.service';
-import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { hasErrors, invalidField, clearFormArray, compareById } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 
 @Component({
@@ -32,7 +33,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
   pageTitle = 'Add an Evacuee';
   activeForm = true; // this lets the user fill things out
-
   // The model for the form data collected
   form: FormGroup;
   componentActive = true;
@@ -41,12 +41,18 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   // Flags for the different modes this form supports
   createMode = true;
   finalizeMode = false;
-  editMode = false;
+  editMode = false; // edit mode is the mode where the form is fed data from the api. (Changes text and etc.)
+  summaryMode = false; // just show the summary
+  submitting = false; // this is what disables buttons on submit
 
+  // DECLARATION AND CONSENT MUST BE CHECKED BEFORE SUBMIT
+  declarationAndConsent: FormControl = new FormControl(null);
+
+  // this is the "final copy" or version of the content in the form that will be updated or refreshed.
   registration: Registration;
+  // who's completing/editing this evacuee registration
+  currentUser: User;
   submission: any;
-  // the ess file number on its own is useful for looking up information from the DB
-  // essFileNumber: string;
 
   // convenience getters so we can use helper functions in Angular templates
   hasErrors = hasErrors;
@@ -68,7 +74,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     private route: ActivatedRoute,
     private registrationService: RegistrationService,
     private incidentTaskService: IncidentTaskService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
   ) {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
@@ -136,43 +143,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       },
     };
     // TODO: Wow. it sure would be nice if we could just instatiate a class instead of using interfaces
-    this.registration = {
-      id: null,
-      active: null,
-      restrictedAccess: null,
-      declarationAndConsent: null,
-      essFileNumber: null,
-      dietaryNeeds: null,
-      dietaryNeedsDetails: null,
-      disasterAffectDetails: null,
-      externalReferralsDetails: null,
-      facility: null,
-      familyRecoveryPlan: null,
-      followUpDetails: null,
-      insuranceCode: null,
-      medicationNeeds: null,
-      registrationCompletionDate: null,
-      registeringFamilyMembers: null,
-      selfRegisteredDate: null,
-      hasThreeDayMedicationSupply: null,
-      hasInquiryReferral: null,
-      hasHealthServicesReferral: null,
-      hasFirstAidReferral: null,
-      hasChildCareReferral: null,
-      hasPersonalServicesReferral: null,
-      hasPetCareReferral: null,
-      hasPets: null,
-      requiresAccommodation: null,
-      requiresClothing: null,
-      requiresFood: null,
-      requiresIncidentals: null,
-      requiresTransportation: null,
-      requiresSupport: null,
-      headOfHousehold: null,
-      incidentTask: null,
-      hostCommunity: null,
-      completedBy: null,
-    }
+    this.registration = this.blankRegistration();
     // Define an instance of the validator for use with this form,
     // passing in this form's set of validation messages.
     this.validationHelper = new ValidationHelper(this.constraints);
@@ -199,6 +170,9 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
     // Watch for value changes
     this.onFormChange();
+
+    // Know the current user
+    this.authService.getCurrentUser().subscribe(u => this.currentUser = u);
 
     // if there are route params we should grab them
     const id = this.route.snapshot.params.id;
@@ -268,7 +242,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
   initForm(): void {
     this.form = this.formBuilder.group({
-      restrictedAccess: false,
+      restrictedAccess: null,
       essFileNumber: null,
       dietaryNeeds: [null, Validators.required],
       dietaryNeedsDetails: [null],
@@ -352,7 +326,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     // validate phone numbers, for BC residents ONLY!
     // NOTE - international numbers are not validated due to variance in formats, etc.
     this.f.primaryResidenceInBC.valueChanges
-      .pipe(skipWhile(() => this.f.primaryResidenceInBC.pristine))
       .subscribe((checked: boolean) => {
         if (checked) {
           this.f.phoneNumber.setValidators([CustomValidators.phone]);
@@ -367,18 +340,17 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
     // show/hide family members section based on the "family info" radio button
     this.f.registeringFamilyMembers.valueChanges
-      .pipe(skipWhile(() => this.f.registeringFamilyMembers.pristine))
       .subscribe((value: string) => {
-        if (value === 'yes') {
+        if (value === 'yes' && this.familyMembers.length === 0) {
           this.addFamilyMember();
-        } else {
+        }
+        if (value === 'no') {
           this.clearFamilyMembers();
         }
       });
 
     // set "family info" radio to "No family" when all members have been removed from the form
     this.familyMembers.valueChanges
-      .pipe(skipWhile(() => this.f.registeringFamilyMembers.pristine))
       .subscribe((family: any[]) => {
         const radio = this.f.registeringFamilyMembers;
         if (radio.value === 'yes' && family.length === 0) {
@@ -421,6 +393,14 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       // If the evacuee is here now then the defer to later of the registration of family members is now currently yes.
       if (r.registeringFamilyMembers === 'yes-later') {
         r.registeringFamilyMembers = 'yes';
+      }
+
+      // iterate over the array and collect each family member as a formgroup and put them into a form array
+      // we need to do this before we update the main form so it populates the FormArray properly
+      if (familyMembers != null) {
+        familyMembers.forEach((m: FamilyMember) => {
+          this.addFamilyMember(m);
+        });
       }
 
       // some form fields for showing or hiding UI elements
@@ -494,13 +474,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         mailingAddressSameAsPrimary: mailingAddressSameAsPrimary as boolean,
       });
 
-      // iterate over the array and collect each family member as a formgroup and put them into a form array
-      if (familyMembers != null) {
-        familyMembers.forEach((m: FamilyMember) => {
-          this.addFamilyMember(m);
-        });
-      }
-
       // add the primary residence back into the form
       if (primaryResidence != null) {
         this.form.patchValue({
@@ -532,25 +505,65 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     }
   }
 
-  onSubmit() {
-    this.submitted = true;
+  next() {
+    this.submitting = true; // this disables buttons while we process the form. 
+    this.submitted = true; // TODO: Unsure what this is.
     this.validateForm();
     // stop here if form is invalid
     if (this.form.invalid) {
       this.errorSummary = 'Some required fields have not been completed.';
-      return;
+      this.submitting = false; // reenable so they can try again
     } else {
-      // update client-side state
-      this.saveState();
-      // navigate to the next page.
-      const nextRoute = this.editMode ? '../../confirmation' : '../confirmation';
-      this.router.navigate([nextRoute], { relativeTo: this.route });
+      // success!
+      this.errorSummary = null;
+      // save the registration by copying the properties into it.
+      this.registration = this.collectRegistrationFromForm();
+
+      // navigate to the next page. AKA show the summary part of the form.
+      this.summaryMode = true;
+      this.submitting = false; // reenable when we parse data
     }
-    // success!
-    this.errorSummary = null;
+  }
+  submit() {
+    // Send data to the server
+
+    this.submitted = true;
+    // in transmission
+    this.submitting = true;
+    // this function performs the "send json to server" action
+    // push changes to backend
+    // TODO: should this be editmode?
+    if (this.registration.id == null) {
+      // submit the global registration to the server
+      this.registrationService
+        .createRegistration(this.registration)
+        .subscribe(() => {
+          this.submitting = false;
+
+          // TODO: there is an exception that if the route is ...com/embcess/register-evacuee it should only go up one instead of 2
+          // TODO: It should be fixed but will need a wider refactor for consistency
+          // It happens when the user is 
+
+          //if the parameters are on the end of the URL we need to route towards root once more.
+          this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
+        });
+    } else {
+      // submit the global registration to the server
+      this.registrationService
+        .updateRegistration(this.registration)
+        .subscribe(() => {
+          this.submitting = false;
+          this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
+        });
+    }
+  }
+  back() {
+    //return to the edit mode so you can change the form data
+    this.summaryMode = false;
   }
 
-  saveState() {
+  collectRegistrationFromForm(): Registration {
+    //
     const values = this.form.value;
     // ensure proper sub-types are assigned to people entities
     const personType: 'FMBR' = 'FMBR';
@@ -621,19 +634,81 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       hostCommunity: values.hostCommunity,
       completedBy: values.completedBy,
     };
+    const registration = this.registration;
     if (this.editMode) {
       // if we are editing the form we assign the values collected when the form initialized and collected the registration from the api.
-      r.id = this.registration.id;
-      r.active = this.registration.active || null;
-      r.declarationAndConsent = this.registration.declarationAndConsent || null;
-      r.essFileNumber = this.registration.essFileNumber || null;
-      r.headOfHousehold.id = this.registration.headOfHousehold.id || null;
-      r.registrationCompletionDate = this.registration.registrationCompletionDate || null; // todo need to check if this date is being handled correctly
-      r.headOfHousehold.primaryResidence.id = this.registration.headOfHousehold.primaryResidence.id || null;
-      r.completedBy = this.registration.completedBy || null;
+      r.id = registration.id;
+      r.active = registration.active || null;
+      r.declarationAndConsent = registration.declarationAndConsent || null;
+      r.essFileNumber = registration.essFileNumber || null;
+      r.headOfHousehold.id = registration.headOfHousehold.id || null;
+      r.registrationCompletionDate = registration.registrationCompletionDate || null; // todo need to check if this date is being handled correctly
+      r.headOfHousehold.primaryResidence.id = registration.headOfHousehold.primaryResidence.id || null;
+      r.completedBy = registration.completedBy || null;
     }
+    // timestamp the completion date on
+    r.registrationCompletionDate = r.registrationCompletionDate || new Date().toJSON();
+
+    // track who completed the registration for reporting purposes
+    const volunteer: Partial<Volunteer> = this.currentUser.contactid ? { id: this.currentUser.contactid } : null;
+    // the initial completed by volunteer is preserved unless there is a new volunteer
+    r.completedBy = r.completedBy || volunteer;
 
     // save the registration to the application state
-    this.store.dispatch(new UpdateRegistration({ registration: r }));
+    // this.store.dispatch(new UpdateRegistration({ registration: r }));
+    return r;
+  }
+  // --------------------HELPERS-----------------------------------------
+
+  isBcAddress(address: Address): boolean {
+    return isBcAddress(address);
+  }
+  genderOption(key: string) {
+    const option = GENDER_OPTIONS.find(item => item.key === key);
+    return option ? option.value : null;
+  }
+  insuranceOption(key: string) {
+    const option = INSURANCE_OPTIONS.find(item => item.key === key);
+    return option ? option.value : null;
+  }
+  blankRegistration(): Registration {
+    // This is a workaround for not having an instantiable class that initializes the interface
+    return {
+      id: null,
+      active: null,
+      restrictedAccess: null,
+      declarationAndConsent: null,
+      essFileNumber: null,
+      dietaryNeeds: null,
+      dietaryNeedsDetails: null,
+      disasterAffectDetails: null,
+      externalReferralsDetails: null,
+      facility: null,
+      familyRecoveryPlan: null,
+      followUpDetails: null,
+      insuranceCode: null,
+      medicationNeeds: null,
+      registrationCompletionDate: null,
+      registeringFamilyMembers: null,
+      selfRegisteredDate: null,
+      hasThreeDayMedicationSupply: null,
+      hasInquiryReferral: null,
+      hasHealthServicesReferral: null,
+      hasFirstAidReferral: null,
+      hasChildCareReferral: null,
+      hasPersonalServicesReferral: null,
+      hasPetCareReferral: null,
+      hasPets: null,
+      requiresAccommodation: null,
+      requiresClothing: null,
+      requiresFood: null,
+      requiresIncidentals: null,
+      requiresTransportation: null,
+      requiresSupport: null,
+      headOfHousehold: null,
+      incidentTask: null,
+      hostCommunity: null,
+      completedBy: null,
+    }
   }
 }

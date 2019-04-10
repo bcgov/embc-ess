@@ -9,12 +9,9 @@ namespace Gov.Jag.Embc.Public.Models.Db
     public class Volunteer : Person
     {
         [MaxLength(255)]
-        public string Name { get; set; } // TODO: What's this? Their display name? full name?
-
-        [MaxLength(255)]
         public string Email { get; set; }
 
-        public bool Active { get; set; }  // no deletions from DB this is a soft delete.
+        public bool Active { get; set; }
 
         public string BceidAccountNumber { get; set; }
         public bool? IsNewUser { get; set; }
