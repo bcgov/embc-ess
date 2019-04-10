@@ -12,7 +12,7 @@
   <!-- TODO: show icons for HOH, RESTRICTED FILE -->
 
   <!-- The start of the table stuff. -->
-  <p *ngIf="collectionSize>0">{{(maxSize * page)-maxSize}} - {{maxSize * page}} of {{collectionSize}}
+  <p *ngIf="collectionSize>0">{{(maxSize * page)-maxSize+1}} - {{maxSize * page}} of {{collectionSize}}
     <!-- <span class="font-weight-bold">ACTIVE</span> evacuees
     <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
   </p>
