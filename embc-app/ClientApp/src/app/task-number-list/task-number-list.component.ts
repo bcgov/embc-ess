@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ListResult, IncidentTask } from '../core/models';
-import { IncidentTaskService } from '../core/services/incident-task.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { ListResult, IncidentTask, PaginationSummary, Community } from '../core/models';
+import { IncidentTaskService } from '../core/services/incident-task.service';
 
 @Component({
   selector: 'app-task-number-list',
@@ -9,7 +10,6 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./task-number-list.component.scss']
 })
 export class TaskNumberListComponent implements OnInit {
-
   // simple server response
   metaIncidentTasks: ListResult<IncidentTask>;
   notFoundMessage: string = '';
@@ -31,6 +31,7 @@ export class TaskNumberListComponent implements OnInit {
     private incidentTaskService: IncidentTaskService,
     private router: Router,
     private route: ActivatedRoute,
+    private fb: FormBuilder,
   ) { }
 
   ngOnInit() {

@@ -12,7 +12,6 @@ import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { RegistrationService } from 'src/app/core/services/registration.service';
 
-
 @Component({
   selector: 'app-self-registration-three',
   templateUrl: './self-registration-three.component.html',
@@ -25,10 +24,6 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
 
   countries$ = this.store
     .select(state => state.lookups.countries.countries)
-    .pipe(map(arr => normalize(arr)));
-
-  communities$ = this.store
-    .select(state => state.lookups.communities.communities)
     .pipe(map(arr => normalize(arr)));
 
   relationshipTypes$ = this.store
@@ -133,17 +128,15 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     // push changes to backend
     this.service.createRegistration(registration).subscribe(
       data => {
-        this.submitting = false; // turn off submission
+        this.submitting = false; // turn off submission state
         this.router.navigate(['../step-4/' + data.essFileNumber], { relativeTo: this.route });
       },
       err => {
         // do not submit anymore
-        this.submitting = false; //turn off submission state
+        this.submitting = false; // turn off submission state
         this.router.navigate(['../error'], { relativeTo: this.route });
       }
     );
-
-
   }
 
   // stamp the dates that we want to track for this record

@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { IncidentTask } from '../core/models';
-// import { compareById } from '../shared/utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store';
 import { IncidentTaskService } from '../core/services/incident-task.service';
-import { UpdateIncidentTask } from '../store/incident-tasks/incident-tasks.actions';
+// import { UpdateIncidentTask } from '../store/incident-tasks/incident-tasks.actions';
 
 @Component({
   selector: 'app-task-number-maker',
@@ -19,7 +18,6 @@ export class TaskNumberMakerComponent implements OnInit {
   editMode = false;
   submitting = false;
 
-  communities$ = this.store.select(s => s.lookups.communities.communities);
   // whatever is in the application state
   currentIncidentTask$ = this.store.select(i => i.incidentTasks.currentIncidentTask);
   componentActive = true;
@@ -34,9 +32,6 @@ export class TaskNumberMakerComponent implements OnInit {
     details: '',
     community: null,
   };
-
-  // convenience getters so we can use helper functions in Angular templates
-  // compareById = compareById;
 
   constructor(
     private route: ActivatedRoute,
@@ -80,7 +75,7 @@ export class TaskNumberMakerComponent implements OnInit {
       this.maker = false;
       this.onSave();
     } else {
-      alert("All fields are required to continue.");
+      alert('All fields are required to continue.');
     }
   }
 

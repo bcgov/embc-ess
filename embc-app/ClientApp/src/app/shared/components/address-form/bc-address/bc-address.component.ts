@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, Directive } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-
-import { Community } from 'src/app/core/models';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { compareById } from 'src/app/shared/utils';
 
@@ -13,21 +11,14 @@ import { compareById } from 'src/app/shared/utils';
         <app-form-field class="col-md-6" required="true">
           <label>Apt/Suite/Building Number &amp; Street Address/PO Box</label>
           <input [class.is-invalid]="invalidAddressLine1" class="form-control" type="text" formControlName="addressLine1">
-          <span class="invalid-feedback">
-            Please enter your street address.
-          </span>
+          <span class="invalid-feedback">Please enter your street address.</span>
         </app-form-field>
       </div>
       <div class="row">
         <app-form-field class="col-md-6" required="true">
-          <label>Community</label>
-          <select [compareWith]="compareById" [class.is-invalid]="invalidCommunity" class="form-control" formControlName="community">
-            <option [ngValue]="null">-- Select community</option>
-            <option [ngValue]="item" *ngFor="let item of communities">{{item.name}}</option>
-          </select>
-          <span class="invalid-feedback">
-            Please enter your community.
-          </span>
+          <label for="community">Community</label>
+          <app-communities-select [class.is-invalid]="invalidCommunity" [myParent]="parent" myFormControlName="community" id="community"></app-communities-select>
+          <span class="invalid-feedback">Please enter your community.</span>
         </app-form-field>
         <app-form-field class="col-md-3" required="true">
           <label>Province</label>
@@ -37,9 +28,7 @@ import { compareById } from 'src/app/shared/utils';
           <label>Postal Code</label>
           <input [class.is-invalid]="invalidPostalCode" class="form-control" type="text" formControlName="postalCode">
           <small>(Format: a1a 1a1)</small>
-          <span class="invalid-feedback">
-            Please enter a valid postal code.
-          </span>
+          <span class="invalid-feedback">Please enter a valid postal code.</span>
         </app-form-field>
       </div>
       <div class="row">
@@ -55,7 +44,6 @@ import { compareById } from 'src/app/shared/utils';
 })
 export class BcAddressComponent implements OnInit {
   @Input() parent: FormGroup;
-  @Input() communities: Community[] = [];
   @Input() touched = false;
 
   // convenience getter so we can use helper functions within Angular templates

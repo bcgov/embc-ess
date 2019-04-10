@@ -21,7 +21,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   // state needed by this FORM
   countries$ = this.store.select(state => state.lookups.countries.countries);
-  communities$ = this.store.select(state => state.lookups.communities.communities);
   relationshipTypes$ = this.store.select(state => state.lookups.relationshipTypes.relationshipTypes);
   currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
 
@@ -431,7 +430,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // if restricted equals true then hide the form.
     // this turns on or off the form view.
     this.disableForm = state;
-    //set the value of the restricted form element
+    // set the value of the restricted form element
     this.form.patchValue({ restrictedAccess: state });
   }
   nullMailingAddress() {

@@ -1,8 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Organization } from '../core/models';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppState } from '../store';
-import { Store } from '@ngrx/store';
 import { OrganizationService } from '../core/services/organization.service';
 import { FormControl } from '@angular/forms';
 
@@ -15,8 +13,6 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
   maker: boolean;
   editMode: boolean;
   submitting = false; // tracks if in the process of submitting for the UI
-
-  communities$ = this.store.select(s => s.lookups.communities.communities);
   organization: Organization;
 
   // form value collectors
@@ -29,8 +25,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private organizationService: OrganizationService,
-    private store: Store<AppState>
+    private organizationService: OrganizationService
   ) { }
 
   ngOnInit() {
