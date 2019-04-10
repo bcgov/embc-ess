@@ -1,4 +1,4 @@
-APP_NAME = "develop-embcess"
+APP_NAME = "embcess-develop"
 PROJECT_NAMESPACE = "jhnamn"
 
 class AppEnvironment {
