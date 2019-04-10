@@ -27,7 +27,7 @@ export class EvacueeListComponent implements OnInit {
   totalPages: number; // how many pages are returned?
   pageSize: number; // how many entries are on the page
   previousQuery: string; // a place to save the last query parameters
-  sort: string = ''; // how do we sort the list
+  sort: string = '-registrationCompletionDate'; // how do we sort the list query param
   collectionSize: number = 0; // how large is the collection?
   maxSize = 10; // how many pages of results shoudl the UI show before collapsing?
   boundaryLinks = true; // do we show the jump to first and last page links?
@@ -50,7 +50,7 @@ export class EvacueeListComponent implements OnInit {
     const queryParams: SearchQueryParameters = {
       offset: (page * maxSize) - maxSize,
       limit: maxSize,
-      sort: this.sort || '',
+      sort: this.sort,
       q: query
     };
 
