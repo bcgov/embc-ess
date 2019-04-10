@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ListResult, IncidentTask } from '../core/models';
-import { IncidentTaskService } from '../core/services/incident-task.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { Store } from '@ngrx/store';
+
+import { AppState } from '../store';
+import { ListResult, IncidentTask, PaginationSummary, Community } from '../core/models';
+import { IncidentTaskService } from '../core/services/incident-task.service';
+import { SearchQueryParameters } from '../shared/components/search';
 
 @Component({
   selector: 'app-task-number-list',
@@ -9,6 +14,8 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./task-number-list.component.scss']
 })
 export class TaskNumberListComponent implements OnInit {
+
+  communities$ = this.store.select(s => s.lookups.communities.communities);
 
   // simple server response
   metaIncidentTasks: ListResult<IncidentTask>;
@@ -26,21 +33,37 @@ export class TaskNumberListComponent implements OnInit {
   collectionSize: number = 0; // how large is the collection?
   maxSize = 100; // how many results should the UI show?
   boundaryLinks = true; // do we show the jump to first and last page links?
+  resultsAndPagination: ListResult<IncidentTask>;
+  notFoundMessage = 'Searching ...';
+
+  form: FormGroup;
 
   constructor(
     private incidentTaskService: IncidentTaskService,
     private router: Router,
     private route: ActivatedRoute,
+    private store: Store<AppState>,
+    private fb: FormBuilder,
   ) { }
 
+  // convenience getters
+  get results(): IncidentTask[] {
+    return this.resultsAndPagination ? this.resultsAndPagination.data : null;
+  }
+
+  get pagination(): PaginationSummary {
+    return this.resultsAndPagination ? this.resultsAndPagination.metadata : null;
+  }
+
   ngOnInit() {
+    this.initSearchForm();
+
     // collect all volunteers
     this.getIncidentTasks();
   }
 
-  routeTo(id: string) {
-    // TODO: this seems like bad practice but fix when we have time
-    this.router.navigate(['../task-number/' + id], { relativeTo: this.route });
+  initSearchForm(): void {
+    this.form = this.fb.group({ searchbox: null });
   }
 
   getIncidentTasks(limit?: number, offset?: number, query?: string, sort?: string) {
@@ -59,8 +82,8 @@ export class TaskNumberListComponent implements OnInit {
     });
   }
 
-  search(searchTerm: string) {
+  filter(community: Community) {
     // submit and collect search
-    this.getIncidentTasks(null, null, searchTerm);
+    this.getIncidentTasks({ q: community ? community.id : '' });
   }
 }

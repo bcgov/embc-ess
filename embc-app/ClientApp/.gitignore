@@ -54,6 +54,3 @@ chrome-test-report.html
 # System Files
 .DS_Store
 Thumbs.db
-
-# workstation lock files
-package-lock.json
