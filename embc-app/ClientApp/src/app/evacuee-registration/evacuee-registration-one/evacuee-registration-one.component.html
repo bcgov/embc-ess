@@ -875,23 +875,23 @@
       <span class="name">Supports Requested:</span>
       <span class="value">
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresFood">
+          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresFood">
           <label class="form-check-label">Food</label>
         </div>
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresClothing">
+          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresClothing">
           <label class="form-check-label">Clothing</label>
         </div>
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresAccommodation">
+          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresAccommodation">
           <label class="form-check-label">Accommodation</label>
         </div>
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresIncidentals">
+          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresIncidentals">
           <label class="form-check-label">Incidentals</label>
         </div>
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresTransportation">
+          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresTransportation">
           <label class="form-check-label">Transportation</label>
         </div>
       </span>
@@ -971,7 +971,6 @@
 
   <div class="mt-5 space-between">
     <section>
-      <!-- TODO: Implement go back to EDIT registration -->
       <button type="button" class="btn btn-secondary" (click)="back()">EDIT REGISTRATION</button>
     </section>
     <section>
