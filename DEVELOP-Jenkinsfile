@@ -132,7 +132,7 @@ node('master') {
 
     stage('Startup') {
         // stop pending builds.
-        sh 'oc cancel-build bc/${RUNTIME_CHAINED_BUILD}'     
+        sh "oc cancel-build bc/${RUNTIME_CHAINED_BUILD}"
     }
     stage('Build') {        
 		echo "Building Application image..."
