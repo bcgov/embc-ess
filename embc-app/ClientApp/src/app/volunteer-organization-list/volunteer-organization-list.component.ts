@@ -10,11 +10,12 @@ import { VolunteerService, VolunteerSearchQueryParameters } from '../core/servic
 import { ListResult, Volunteer, PaginationSummary, User, Organization } from '../core/models';
 
 @Component({
-  selector: 'app-volunteer-list',
-  templateUrl: './volunteer-list.component.html',
-  styleUrls: ['./volunteer-list.component.scss']
+  selector: 'app-volunteer-organization-list',
+  templateUrl: './volunteer-organization-list.component.html',
+  styleUrls: ['./volunteer-organization-list.component.scss']
 })
-export class VolunteerListComponent implements OnInit {
+export class VolunteerOrganizationListComponent implements OnInit {
+
   // simple server response
   resultsAndPagination: ListResult<Volunteer>;
   notFoundMessage = 'Searching ...';
@@ -42,7 +43,7 @@ export class VolunteerListComponent implements OnInit {
   previousQuery: string; // a place to save the last query parameters
   sort: string = ''; // how do we sort the list
   collectionSize: number = 0; // how large is the collection?
-  maxSize = 20; // how many results should the UI show?
+  maxSize = 20; // how many records should the UI show?
   boundaryLinks = true; // do we show the jump to first and last page links?
 
   // the search form and associated toggles (show all, show only admins, show only regular users)
@@ -75,7 +76,7 @@ export class VolunteerListComponent implements OnInit {
     this.initVars()
       .subscribe(org => {
         // save into the global state
-        if (org) this.currentOrganization.id = org.id;
+        if (org) { this.currentOrganization.id = org.id; }
         // fetch volunteers now that we may know the org
         this.getVolunteers();
       });
@@ -180,7 +181,6 @@ export class VolunteerListComponent implements OnInit {
         // alert(v.metadata.pageSize)
         //save the last query performed
         this.previousQuery = params.q || '';
-
         // Set the not found result message. It should be hidden when results flow into the form
         this.notFoundMessage = 'No results found.';
       });
@@ -195,6 +195,8 @@ export class VolunteerListComponent implements OnInit {
 
   // submit and collect search
   search() {
+    // on search return to page 1
+    this.page = 1;
     if (!this.currentOrganization || !this.currentOrganization.id) {
       // do not get all volunteers in the system
       return;

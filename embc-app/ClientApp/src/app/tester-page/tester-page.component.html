@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col">
-    <app-evacuee-summary-page></app-evacuee-summary-page>
+    <ngb-pagination [collectionSize]="120" [(page)]="page" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
   </div>
   <!-- <div class="col">
     <app-organization-maker>
