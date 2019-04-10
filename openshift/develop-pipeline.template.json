@@ -27,7 +27,7 @@
         },
         "strategy": {
             "jenkinsPipelineStrategy": {
-                "jenkinsfilePath": "TEMP-Jenkinsfile"
+                "jenkinsfilePath": "DEVELOP-Jenkinsfile"
             },
             "type": "JenkinsPipeline"
         },
