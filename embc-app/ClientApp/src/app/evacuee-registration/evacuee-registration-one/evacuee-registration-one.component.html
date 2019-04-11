@@ -90,15 +90,15 @@
       <div class="form-check">
         <input class="form-check-input" type="radio" name="dummy" [value]="true" (click)="disableInput(true)">
         <label class="form-check-label" for="exampleRadios2">
-          <strong>No</strong> - (ESS Team: Requires an authorized team member to complete the form manually.)
+          <strong>No</strong> - (Emergency Support Services Team: Requires an authorized team member to complete the form manually.)
         </label>
       </div>
     </div>
     <div *ngIf="!activeForm">
-      <h1>ESS Team Handling Note</h1>
+      <h1>Emergency Support Services Team Handling Note</h1>
       <p>Privacy is important. Please locate a volunteer that is trained to collect and handle sensitive information.</p>
-      <p>This does not change the support offered but does change the process of collecting and handling information. This restricts other ESS team members from seeing the registration.</p>
-      <a routerLink="/dashboard">Return to the ESS Dashboard</a>
+      <p>This does not change the support offered but does change the process of collecting and handling information. This restricts other Emergency Support Services team members from seeing the registration.</p>
+      <a routerLink="/dashboard">Return to the Emergency Support Services Dashboard</a>
     </div>
     <div *ngIf="activeForm">
       <!-- Primary contact information -->
@@ -527,7 +527,7 @@
         <div class="form-row">
           <app-attention-icon [alignCenter]="false"></app-attention-icon>
           <p>
-            ESS (Emergency Support Services) provides short term assistance to give you and your family a chance to
+            Emergency Support Services provides short term assistance to give you and your family a chance to
             recover.<br>
             Have you thought about what you will do after that time?
           </p>
