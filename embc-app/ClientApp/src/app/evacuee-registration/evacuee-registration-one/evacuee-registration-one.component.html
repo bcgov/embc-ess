@@ -40,7 +40,7 @@
       <div class="form-row">
         <app-attention-icon></app-attention-icon>
         <app-form-field class="col-md-8" required="true" tooltip="Tool Tip: The location where you are registering the evacuees.">
-          <label class="required" for="facility">Facility Name / Registration Location</label>
+          <label for="facility">Facility Name / Registration Location</label>
           <input [class.is-invalid]="invalid('facility')" class="form-control" type="text" formControlName="facility" id="facility">
           <span *ngIf="submitted" class="invalid-feedback">{{e.facility}}</span>
         </app-form-field>
@@ -48,7 +48,7 @@
       <div class="form-row">
         <app-attention-icon></app-attention-icon>
         <app-form-field class="col-md-8" required="true" tooltip="Tool Tip: A host community is the community where the registration is taking place and the Reception Centre is located.">
-          <label class="required" for="hostCommunity">Host Community</label>
+          <label for="hostCommunity">Host Community</label>
           <app-communities-select [class.is-invalid]="invalid('hostCommunity')" [myParent]="form" myFormControlName="hostCommunity" id="hostCommunity"></app-communities-select>
           <span *ngIf="submitted" class="invalid-feedback">{{e.hostCommunity}}</span>
         </app-form-field>
@@ -144,7 +144,7 @@
         <h3 class="blue-header">
           EVACUEE FAMILY INFORMATION
         </h3>
-        <p>
+        <p class="required">
           Are you registering immediate family members who live in the same household with you?
         </p>
         <div class="form-group">
@@ -710,7 +710,6 @@
 
   <h3>Primary Address &amp; Contact Details</h3>
   <ul class="summary">
-
     <ng-container *ngIf="isBcAddress(registration?.headOfHousehold?.primaryResidence); then content else other_content">
     </ng-container>
     <ng-template #content>

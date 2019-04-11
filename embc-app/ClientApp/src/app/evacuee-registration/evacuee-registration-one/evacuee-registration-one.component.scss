@@ -1,0 +1,8 @@
+// to make 'invalid-feedback' message visible after custom component
+app-communities-select {
+  &.is-invalid {
+    ~ .invalid-feedback {
+      display: block;
+    }
+  }
+}
