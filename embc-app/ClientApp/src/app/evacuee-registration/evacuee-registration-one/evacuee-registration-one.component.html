@@ -185,7 +185,7 @@
                   <span *ngIf="submitted" class="invalid-feedback">Please enter a first name.</span>
                 </div>
                 <div class="col">
-                  <label>Middle Initial</label>
+                  <label>Initial</label>
                   <input type="text" class="form-control" formControlName="initials">
                 </div>
               </div>
@@ -633,10 +633,10 @@
       <span class="name">Task Number:</span>
       <span class="value">{{registration?.incidentTask?.taskNumber}}</span>
     </li>
-    <li>
+    <!-- <li>
       <span class="name">Restricted File:</span>
       <span class="value">{{registration?.restrictedAccess | yesNo}}</span>
-    </li>
+    </li> -->
   </ul>
 
   <h3>Place of Registration</h3>

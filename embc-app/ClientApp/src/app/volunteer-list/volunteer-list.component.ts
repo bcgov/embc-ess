@@ -75,7 +75,9 @@ export class VolunteerListComponent implements OnInit {
     this.initVars()
       .subscribe(org => {
         // save into the global state
-        if (org) this.currentOrganization.id = org.id;
+        if (org) {
+          this.currentOrganization.id = org.id;
+        }
         // fetch volunteers now that we may know the org
         this.getVolunteers();
       });

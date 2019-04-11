@@ -1,9 +1,9 @@
 <div *ngIf="maker">
   <div class="mb-4">
     <h1 *ngIf="!isProvincialAdmin && editMode === false">Add ESS User(s)</h1>
-    <h1 *ngIf="!isProvincialAdmin && editMode === true">Edit ESS User</h1>
+    <h1 *ngIf="!isProvincialAdmin && editMode === true">Edit ESS User Details</h1>
     <h1 *ngIf="isProvincialAdmin && editMode === false">Add User(s)</h1>
-    <h1 *ngIf="isProvincialAdmin && editMode === true">Edit User</h1>
+    <h1 *ngIf="isProvincialAdmin && editMode === true">Edit ESS User Details</h1>
 
     <p class="pb-3" *ngIf="isProvincialAdmin">
       Administrators can add users within an organization if they have their first name, last name, role, and BCeID.
@@ -36,6 +36,7 @@
     <div class="row pt-5">
       <div class="col-md-9">
         <label class="required" for="lastName">Last Name</label>
+        <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your legal last name."></app-font-awesome-icon>
         <input class="form-control" type="text" id="lastName" [formControl]="lastName" maxlength="50" required>
       </div>
     </div>
@@ -43,6 +44,7 @@
     <div class="row pt-5">
       <div class="col-md-9">
         <label class="required" for="firstName">First Name</label>
+        <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your legal first name."></app-font-awesome-icon>
         <input class="form-control" type="text" id="firstName" [formControl]="firstName" maxlength="50" required>
       </div>
     </div>
@@ -50,6 +52,7 @@
     <div class="row pt-5">
       <div class="col-md-9">
         <label class="required" for="bceid">BCeID</label>
+        <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your BCeID user ID."></app-font-awesome-icon>
         <input class="form-control" type="text" id="bceid" [formControl]="bceid" required>
       </div>
     </div>
@@ -102,7 +105,7 @@
       <app-font-awesome-icon icon="times"></app-font-awesome-icon>
       <span class="ml-2">Cancel &amp; Close</span>
     </a>
-    <button class="btn btn-primary float-right" (click)="next()">Next</button>
+    <button class="btn btn-primary float-right" (click)="next()">NEXT</button>
   </div>
 </div>
 
@@ -111,7 +114,7 @@
     <h1 class="mt-3">Review Details</h1>
     <p>Please confirm that all details you entered are correct by reading through the summary below.</p>
     <section class="p-3">
-      <h3>Evacuee Information</h3>
+      <h3>ESS User Details</h3>
       <ul class="summary">
         <li *ngIf="isProvincialAdmin">
           <span class="name">Organization:</span>
@@ -143,13 +146,13 @@
 
   <div class="mt-5 space-between">
     <section>
-      <button (click)="back()" class="btn btn-secondary">Edit</button>
+      <button (click)="back()" class="btn btn-secondary">EDIT DETAILS</button>
     </section>
     <section>
       <button *ngIf="!submitting" class="btn btn-primary" (click)="submit()">SAVE</button>
       <button *ngIf="submitting" class="btn btn-primary" disabled>SUBMITTING</button>
 
-      <button *ngIf="editMode === false && !submitting" class="btn btn-primary ml-2" (click)="submit(true)">SAVE &amp;ADD ANOTHER</button>
+      <button *ngIf="editMode === false && !submitting" class="btn btn-primary ml-2" (click)="submit(true)">SAVE &amp; ADD ANOTHER</button>
       <button *ngIf="editMode === false && submitting" class="btn btn-primary ml-2" disabled>SUBMITTING</button>
     </section>
   </div>
