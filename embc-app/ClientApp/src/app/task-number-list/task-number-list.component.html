@@ -1,39 +1,59 @@
 <div class="mb-4">
   <h1>Tasks</h1>
-  <p>Use this section to add new ESS users, as well as edit existing user information and permissions.</p>
+
+  <p>
+    The Emergency Coordination Centre (ECC) is responsible for adding task numbers to this list.
+    If you need a new task number, contact the ECC at 1-800-663-3456.
+  </p>
+
   <h3 class="blue-header">TASK LIST</h3>
 
-  <div role="search" class="form-row">
-    <div class="col-md-9">
-      <input #searchbox type="text" aria-label="search" class="form-control mb-2" placeholder="Search for user by last name &hellip;" (keydown.enter)="search(searchbox.value)">
+  <form novalidate role="search" class="form-row" [formGroup]="form">
+    <div class="col-md">
+      <label class="sr-only" for="searchbox">Associated EMBC Regional District / Community</label>
+      <app-communities-select [myParent]="form" myFormControlName="searchbox" id="searchbox" myPlaceHolder='Select incident location'></app-communities-select>
     </div>
-    <div class="col-md-3">
-      <button class="btn btn-primary" (click)="search(searchbox.value)">Search</button>
+    <div class="col-md-auto">
+      <button class="btn btn-primary" (click)="filter(form.value.searchbox)">FILTER</button>
     </div>
-  </div>
+  </form>
   <div class="search-results mt-4">
-    <div *ngIf="metaIncidentTasks && metaIncidentTasks.data.length>0; then searchResultsTable; else notFound"></div>
+    <div *ngIf="results && results.length > 0; then searchResultsTable; else notFound"></div>
   </div>
 
   <ng-template #searchResultsTable>
+    <div class="space-between align-items-center my-3">
+      <section>
+        <app-pagination-summary [value]="pagination">
+          <span class="font-weight-bold">ACTIVE</span> tasks
+          <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
+        </app-pagination-summary>
+      </section>
+      <section>
+        <button class="btn btn-primary" routerLink="../task-number/">ADD TASK NUMBER</button>
+      </section>
+    </div>
     <table class="table">
       <thead class="thead-light">
         <th scope="col">TASK NUMBER</th>
         <th scope="col">INCIDENT LOCATION</th>
-        <!-- <th scope="col"># ASSOCIATED EVACUEES</th> -->
+        <th scope="col"># ASSOCIATED EVACUEES</th>
         <th scope="col">ACTION</th>
       </thead>
       <tbody>
-        <tr *ngFor="let incidentTask of metaIncidentTasks.data">
+        <tr *ngFor="let incidentTask of results">
           <td>{{incidentTask?.taskNumber}}</td>
           <td>{{incidentTask?.community?.name}}</td>
-          <!-- <td>UNKNOWN</td> -->
+          <td>{{incidentTask?.totalAssociatedEvacuees > 0 ? incidentTask?.totalAssociatedEvacuees : 'n/a'}}</td>
           <td>
-            <a [routerLink]="" (click)="routeTo(incidentTask.id)">Edit Task Details</a>
+            <a [routerLink]="['../task-number/', incidentTask.id]">Edit Task Details</a>
           </td>
         </tr>
       </tbody>
     </table>
+    <div>
+      <button class="btn btn-primary float-right" routerLink="../task-number/">ADD TASK NUMBER</button>
+    </div>
   </ng-template>
 
   <ng-template #notFound>
@@ -41,5 +61,4 @@
       {{notFoundMessage}}
     </p>
   </ng-template>
-
 </div>

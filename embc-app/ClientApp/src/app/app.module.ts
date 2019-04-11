@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 // ngrx + configuration
 import { AppComponent } from './app.component';
@@ -37,6 +38,7 @@ import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
 import { OrganizationMakerComponent } from './organization-maker/organization-maker.component';
 import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
+import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +63,7 @@ import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summ
     VolunteerMakerComponent,
     OrganizationMakerComponent,
     EvacueeSummaryPageComponent,
+    VolunteerOrganizationListComponent,
   ],
   imports: [
     // angular
@@ -68,7 +71,7 @@ import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summ
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-
+    NgbPaginationModule,
     // 3rd party
     StoreModule.forRoot(rootReducer, { metaReducers }),
 

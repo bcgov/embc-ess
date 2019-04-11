@@ -12,7 +12,6 @@ import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { RegistrationService } from 'src/app/core/services/registration.service';
 
-
 @Component({
   selector: 'app-self-registration-three',
   templateUrl: './self-registration-three.component.html',
@@ -23,38 +22,19 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
   // state needed by this FORM
   currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
 
-  countries$ = this.store
-    .select(state => state.lookups.countries.countries)
-    .pipe(map(arr => normalize(arr)));
 
-  communities$ = this.store
-    .select(state => state.lookups.communities.communities)
-    .pipe(map(arr => normalize(arr)));
-
-  relationshipTypes$ = this.store
-    .select(state => state.lookups.relationshipTypes.relationshipTypes)
-    .pipe(map(arr => normalize(arr, 'code')));
-
-  form: FormGroup;
   componentActive = true;
   submitting = false;
   registration: Registration | null;
 
   constructor(
     private store: Store<AppState>,
-    private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private service: RegistrationService,
   ) { }
 
   ngOnInit() {
-    // Create form controls
-    this.initForm();
-
-    // Watch for value changes
-    this.onFormChange();
-
     // Update form values based on the state
     this.currentRegistration$
       .pipe(takeWhile(() => this.componentActive))
@@ -65,11 +45,6 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.componentActive = false;
-  }
-
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.form.controls;
   }
 
   insuranceOption(key: string) {
@@ -86,64 +61,34 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     return isBcAddress(address);
   }
 
-  // Define the form group
-  initForm() {
-    this.form = this.fb.group({
-      declarationAndConsent: [null, Validators.requiredTrue],
-    });
-  }
-
-  onFormChange() { }
-
   displayRegistration(props: { registration: Registration | null }): void {
     // Set the local registration property
     this.registration = props.registration;
-
-    if (this.registration && this.form) {
-      // Reset the form back to pristine
-      this.form.reset();
-
-      // Update the data on the form
-      this.form.patchValue({
-        declarationAndConsent: this.registration.declarationAndConsent,
-      });
-    }
   }
 
-  next() {
-    // stop here if form is invalid
-    if (this.form.invalid) {
-      return;
-    }
-
-    // Copy over all of the original properties
-    // Then copy over the values from the form
-    // This ensures values not on the form, such as the Id, are retained
-    const registration: Registration = {
-      ...this.registration,
-      ...this.form.value
-    };
+  submit() {
     this.submitting = true;
     // process the registration record before submission to the backend
-    this.processData(registration);
+
+    // by clicking submit this has to be true because submit is consent
+    this.registration.declarationAndConsent = true;
 
     // update client-side state
-    this.onSave(registration);
+    this.onSave(this.registration);
 
     // push changes to backend
-    this.service.createRegistration(registration).subscribe(
+    this.service.createRegistration(this.registration).subscribe(
       data => {
-        this.submitting = false; // turn off submission
+        this.submitting = false; // turn off submission state
         this.router.navigate(['../step-4/' + data.essFileNumber], { relativeTo: this.route });
       },
       err => {
+        alert(err);
         // do not submit anymore
-        this.submitting = false; //turn off submission state
+        this.submitting = false; // turn off submission state
         this.router.navigate(['../error'], { relativeTo: this.route });
       }
     );
-
-
   }
 
   // stamp the dates that we want to track for this record
@@ -153,18 +98,11 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
 
   back() {
     // clear the consent checkbox if we go back to edit the information provided so far
-    this.reset();
-
     const registration: Registration = {
       ...this.registration,
-      ...this.form.value
     };
     this.onSave(registration);
     this.router.navigate(['../step-1'], { relativeTo: this.route });
-  }
-
-  reset() {
-    this.f.declarationAndConsent.reset();
   }
 
   onSave(registration: Registration) {

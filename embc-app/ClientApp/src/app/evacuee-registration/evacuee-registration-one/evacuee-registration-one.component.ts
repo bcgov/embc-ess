@@ -28,7 +28,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   countries$ = this.store.select(s => s.lookups.countries.countries);
   regions$ = this.store.select(s => s.lookups.regions);
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
-  communities$ = this.store.select(s => s.lookups.communities.communities);
   incidentTasks$ = this.incidentTaskService.getIncidentTasks().pipe(map(x => x.data));
 
   pageTitle = 'Add an Evacuee';
@@ -506,7 +505,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   }
 
   next() {
-    this.submitting = true; // this disables buttons while we process the form. 
+    this.submitting = true; // this disables buttons while we process the form
     this.submitted = true; // TODO: Unsure what this is.
     this.validateForm();
     // stop here if form is invalid
@@ -525,6 +524,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     }
   }
   submit() {
+    // The user now consents.
+    this.registration.declarationAndConsent = true;
     // Send data to the server
 
     this.submitted = true;
@@ -542,9 +543,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
           // TODO: there is an exception that if the route is ...com/embcess/register-evacuee it should only go up one instead of 2
           // TODO: It should be fixed but will need a wider refactor for consistency
-          // It happens when the user is 
 
-          //if the parameters are on the end of the URL we need to route towards root once more.
+          // if the parameters are on the end of the URL we need to route towards root once more
           this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
         });
     } else {
@@ -558,7 +558,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     }
   }
   back() {
-    //return to the edit mode so you can change the form data
+    // return to the edit mode so you can change the form data
     this.summaryMode = false;
   }
 
@@ -571,7 +571,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
 
     // Use form values to create evacuee registration
     const r: Registration = {
-
       id: null,
       active: null,
       declarationAndConsent: null,
@@ -589,7 +588,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
         phoneNumber: values.phoneNumber || null,
         phoneNumberAlt: values.phoneNumberAlt || null,
         email: values.email || null,
-        familyMembers,//copy in the already parsed values for familymembers
+        familyMembers, // copy in the already parsed values for familymembers
         primaryResidence: { ...values.primaryResidence },
         mailingAddress: values.mailingAddressSameAsPrimary ? null : { ...values.mailingAddress },
       },
@@ -709,6 +708,6 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       incidentTask: null,
       hostCommunity: null,
       completedBy: null,
-    }
+    };
   }
 }

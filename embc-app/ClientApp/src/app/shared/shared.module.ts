@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { MaterialModule } from './material.module';
 import { WarningBannerComponent } from './components/warning-banner/warning-banner.component';
@@ -18,11 +19,12 @@ import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-aw
 import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
 import { SearchBarComponent, EvacueeSearchResultsComponent } from './components/search/';
+import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
 
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { ByIdPipe } from './pipes/by-id.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
-import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent } from './components/side-boxes';
+import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent, CollectionNoticeComponent } from './components/side-boxes';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 
@@ -43,6 +45,7 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     AttentionIconComponent,
     SearchBarComponent,
     EvacueeSearchResultsComponent,
+    CommunitiesSelectComponent,
     YesNoPipe,
     ByIdPipe,
     PluckPipe,
@@ -50,6 +53,7 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     AddOrganizationComponent,
     AddTaskNumberComponent,
     AddUserComponent,
+    CollectionNoticeComponent,
     PageNotFoundComponent,
     PaginationSummaryComponent,
   ],
@@ -58,6 +62,7 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbTypeaheadModule,
     MaterialModule,
   ],
   exports: [
@@ -83,6 +88,7 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     AttentionIconComponent,
     SearchBarComponent,
     EvacueeSearchResultsComponent,
+    CommunitiesSelectComponent,
     YesNoPipe,
     ByIdPipe,
     PluckPipe,
@@ -90,6 +96,7 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     AddOrganizationComponent,
     AddTaskNumberComponent,
     AddUserComponent,
+    CollectionNoticeComponent,
     PaginationSummaryComponent,
   ]
 })

@@ -40,19 +40,16 @@
       <div class="form-row">
         <app-attention-icon></app-attention-icon>
         <app-form-field class="col-md-8" required="true" tooltip="Tool Tip: The location where you are registering the evacuees.">
-          <label>Facility Name / Registration Location</label>
-          <input [class.is-invalid]="invalid('facility')" class="form-control" type="text" formControlName="facility">
+          <label for="facility">Facility Name / Registration Location</label>
+          <input [class.is-invalid]="invalid('facility')" class="form-control" type="text" formControlName="facility" id="facility">
           <span *ngIf="submitted" class="invalid-feedback">{{e.facility}}</span>
         </app-form-field>
       </div>
       <div class="form-row">
         <app-attention-icon></app-attention-icon>
         <app-form-field class="col-md-8" required="true" tooltip="Tool Tip: A host community is the community where the registration is taking place and the Reception Centre is located.">
-          <label>Community</label>
-          <select [compareWith]="compareById" [class.is-invalid]="invalid('hostCommunity')" class="form-control" formControlName="hostCommunity">
-            <option [ngValue]="null">-- Select community</option>
-            <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community.name}}</option>
-          </select>
+          <label for="hostCommunity">Host Community</label>
+          <app-communities-select [class.is-invalid]="invalid('hostCommunity')" [myParent]="form" myFormControlName="hostCommunity" id="hostCommunity"></app-communities-select>
           <span *ngIf="submitted" class="invalid-feedback">{{e.hostCommunity}}</span>
         </app-form-field>
       </div>
@@ -73,7 +70,7 @@
     </div>
   </div> -->
     <div class="mt-3 feature-block">
-      <h3>Restriction</h3>
+      <h3 class="required">Restriction</h3>
       <p>Concerned family and friends may inquire about you and your family because of the emergency. We would like to
         provide these people with some information about you. May we disclose your location and the contact information
         for you and your family members?
@@ -147,7 +144,7 @@
         <h3 class="blue-header">
           EVACUEE FAMILY INFORMATION
         </h3>
-        <p>
+        <p class="required">
           Are you registering immediate family members who live in the same household with you?
         </p>
         <div class="form-group">
@@ -188,7 +185,7 @@
                   <span *ngIf="submitted" class="invalid-feedback">Please enter a first name.</span>
                 </div>
                 <div class="col">
-                  <label>Middle Initial</label>
+                  <label>Initial</label>
                   <input type="text" class="form-control" formControlName="initials">
                 </div>
               </div>
@@ -636,10 +633,10 @@
       <span class="name">Task Number:</span>
       <span class="value">{{registration?.incidentTask?.taskNumber}}</span>
     </li>
-    <li>
+    <!-- <li>
       <span class="name">Restricted File:</span>
       <span class="value">{{registration?.restrictedAccess | yesNo}}</span>
-    </li>
+    </li> -->
   </ul>
 
   <h3>Place of Registration</h3>
@@ -713,7 +710,6 @@
 
   <h3>Primary Address &amp; Contact Details</h3>
   <ul class="summary">
-
     <ng-container *ngIf="isBcAddress(registration?.headOfHousehold?.primaryResidence); then content else other_content">
     </ng-container>
     <ng-template #content>
@@ -875,23 +871,23 @@
       <span class="name">Supports Requested:</span>
       <span class="value">
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresFood">
+          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresFood">
           <label class="form-check-label">Food</label>
         </div>
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresClothing">
+          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresClothing">
           <label class="form-check-label">Clothing</label>
         </div>
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresAccommodation">
+          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresAccommodation">
           <label class="form-check-label">Accommodation</label>
         </div>
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresIncidentals">
+          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresIncidentals">
           <label class="form-check-label">Incidentals</label>
         </div>
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled checked="registration?.requiresTransportation">
+          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresTransportation">
           <label class="form-check-label">Transportation</label>
         </div>
       </span>
@@ -947,23 +943,15 @@
     </li>
   </ul>
 
-  <h3 class="blue-header">DECLARATIONS AND CONSENT</h3>
+  <h3 class="blue-header">Collection Notice and Authorization</h3>
   <section class="padded-section">
     <div class="row">
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" [formControl]="declarationAndConsent">
+        <!-- <input class="form-check-input" type="checkbox" [formControl]="declarationAndConsent"> -->
         <label class="form-check-label required">
-          <p>The Emergency Management BC (EMBC) will collect your personal
-            information for the purpose of providing you with emergency services in accordance with sections 26(a) and
-            (c)
-            of the Freedom of Information and Protection of Privacy Act (FoIPPA) and the Emergency Management Act. EMBC
-            will also collect the information as per section 26(e) of FoIPPA in order to evaluate the ESS program.
-            Should
-            you have any questions about the collection, use, or disclosure of personal information, please contact the
-            ESS Call Centre Manager at PO Box 9201, STN PROV GOVT, Victoria, BC, V8W9J1 or by phone toll free at
-            1800-585-9559.</p>
-          By submitting your email address, you authorize the Emergency Management BC to communicate with you by email
-          about your registration and to invite you to provide feedback about your experience.
+          <p>Emergency Management BC (EMBC) will collect your personal information for the purpose of providing you with emergency services in accordance with section 26(c) of the Freedom of Information and Protection of Privacy Act (FoIPPA). EMBC will also collect the information as per section 26(e) of FoIPPA in order to evaluate the ESS program. Should you have any questions about the collection, use, or disclosure of personal information, please contact the ESS Call Centre Manager at PO Box 9201, STN PROV GOVT, Victoria, BC, V8W 9J1 or by phone toll free at 1-800-585-9559.</p>
+          <p>By submitting your email address, you authorize the Emergency Management BC to communicate with you by email
+            about your registration and to invite you to provide feedback about your experience.</p>
         </label>
       </div>
     </div>
@@ -971,7 +959,6 @@
 
   <div class="mt-5 space-between">
     <section>
-      <!-- TODO: Implement go back to EDIT registration -->
       <button type="button" class="btn btn-secondary" (click)="back()">EDIT REGISTRATION</button>
     </section>
     <section>
@@ -979,7 +966,7 @@
         <app-font-awesome-icon icon="times"></app-font-awesome-icon>
         <span class="ml-2">Cancel &amp; Close</span>
       </a>
-      <button type="button" class="btn btn-primary ml-4" [disabled]="!declarationAndConsent.value || submitting" (click)="submit()">
+      <button type="button" class="btn btn-primary ml-4" [disabled]="submitting" (click)="submit()">
         <span *ngIf="submitting">SUBMITTING</span>
         <span *ngIf="!submitting">SAVE</span>
       </button>

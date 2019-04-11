@@ -10,7 +10,7 @@ export class SideBoxInfoComponent implements OnInit {
   @Input() title = 'TITLE';
   @Input() content = 'Content can be added using the content input.';
   @Input() button = 'Ok';
-  @Input() route = '/'; //home by default
+  @Input() route = '/'; // home by default
   @Input() absoluteRouting = true;
 
 
@@ -20,7 +20,7 @@ export class SideBoxInfoComponent implements OnInit {
   }
 
   continue() {
-    //send the user along to the next page submitted
+    // send the user along to the next page submitted
     if (this.absoluteRouting) {
       this.router.navigateByUrl(this.route);
     } else {

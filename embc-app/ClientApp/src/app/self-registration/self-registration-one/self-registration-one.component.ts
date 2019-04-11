@@ -21,7 +21,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   // state needed by this FORM
   countries$ = this.store.select(state => state.lookups.countries.countries);
-  communities$ = this.store.select(state => state.lookups.communities.communities);
   relationshipTypes$ = this.store.select(state => state.lookups.relationshipTypes.relationshipTypes);
   currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
 
@@ -254,7 +253,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   }
 
   displayRegistration(registration: Registration | null): void {
-    if (registration !== null) this.disableForm = null;
+    if (registration !== null) {
+      this.disableForm = null;
+    }
+
     // Set the local registration property
     this.registration = registration;
 
@@ -268,8 +270,16 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       const primaryResidence = hoh.primaryResidence;
       const mailingAddress = hoh.mailingAddress;
 
+      // iterate over the array and collect each family member as a formgroup and put them into a form array
+      // we need to do this before we update the main form so it populates the FormArray properly
+      if (hoh.familyMembers != null) {
+        hoh.familyMembers.forEach((m: FamilyMember) => {
+          this.addFamilyMember(m);
+        });
+      }
+
       // set the page state and value for the restricted access
-      // if (this.registration.restrictedAccess === null) { 
+      // if (this.registration.restrictedAccess === null) {
       // } else if (this.registration.restrictedAccess === true) {
       //   this.setRestricted(true);
       // } else if (this.registration.restrictedAccess === false) {
@@ -288,11 +298,9 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
           dob: hoh.dob,
         },
         registeringFamilyMembers: this.registration.registeringFamilyMembers,
-        familyMembers: hoh.familyMembers,
         phoneNumber: hoh.phoneNumber,
         phoneNumberAlt: hoh.phoneNumberAlt,
         email: hoh.email,
-        mailingAddressSameAsPrimary: null,
       });
 
       if (primaryResidence != null) {
@@ -307,6 +315,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
             province: primaryResidence.province,
             country: primaryResidence.country,
           },
+          // if we got a primary address and no mailing address, it means they are the same.
+          mailingAddressSameAsPrimary: (mailingAddress == null),
         });
       }
 
@@ -329,20 +339,34 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   }
 
   // family member formgroup
-  createFamilyMember(): FormGroup {
-    return this.fb.group({
-      sameLastNameAsEvacuee: true,
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      initials: '',
-      gender: null,
-      dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
-      relationshipToEvacuee: [null, Validators.required],
-    });
+  createFamilyMember(fmbr?: FamilyMember): FormGroup {
+    if (fmbr) {
+      return this.fb.group({
+        id: fmbr.id || null,
+        active: fmbr.active || null,
+        sameLastNameAsEvacuee: fmbr.sameLastNameAsEvacuee,
+        firstName: [fmbr.firstName, Validators.required],
+        lastName: [fmbr.lastName, Validators.required],
+        initials: fmbr.initials,
+        gender: fmbr.gender,
+        dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        relationshipToEvacuee: [fmbr.relationshipToEvacuee, Validators.required],
+      });
+    } else {
+      return this.fb.group({
+        sameLastNameAsEvacuee: true,
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
+        initials: '',
+        gender: null,
+        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        relationshipToEvacuee: [null, Validators.required],
+      });
+    }
   }
 
-  addFamilyMember(): void {
-    this.familyMembers.push(this.createFamilyMember());
+  addFamilyMember(fmbr?: FamilyMember): void {
+    this.familyMembers.push(this.createFamilyMember(fmbr));
   }
 
   removeFamilyMember(i: number): void {
@@ -406,7 +430,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // if restricted equals true then hide the form.
     // this turns on or off the form view.
     this.disableForm = state;
-    //set the value of the restricted form element
+    // set the value of the restricted form element
     this.form.patchValue({ restrictedAccess: state });
   }
   nullMailingAddress() {

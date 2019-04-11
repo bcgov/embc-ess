@@ -2,38 +2,36 @@
   <div class="mb-4">
     <h1 *ngIf="editMode">Edit a Task Number</h1>
     <h1 *ngIf="!editMode">Add a Task Number</h1>
-    <p>The Emergency Coordination Centre is responsible for adding task numbers to the system. If you need a new task
-      number, contact the ECC at 1 800-663-3456.</p>
+    <p>
+      The Emergency Coordination Centre is responsible for adding task numbers to the system.
+      If you need a new task number, contact the ECC at 1-800-663-3456.
+    </p>
     <small>All fields are required</small>
     <h3 class="blue-header">
       Task Details
     </h3>
     <div class="col mb-4">
-      <label>Task Number</label>
-      <input class="form-control" type="text" [formControl]="taskNumber">
+      <label class="required" for="taskNumber">Task Number</label>
+      <input class="form-control" type="text" [formControl]="taskNumber" id="taskNumber">
     </div>
     <div class="col mb-4">
-      <label>Community</label>
-      <select class="form-control" [formControl]="community">
-        <option [ngValue]="incidentTask?.community" *ngIf="incidentTask?.community?.name">{{incidentTask?.community?.name}}</option>
-        <option [ngValue]="null" *ngIf="!incidentTask?.community">-- Select community</option>
-        <option [ngValue]="community" *ngFor="let community of communities$ | async">{{community?.name}}</option>
-      </select>
+      <label class="required" for="community">Incident Location</label>
+      <app-communities-select [myFormControl]="community" id="community" [myRequired]="true"></app-communities-select>
     </div>
     <div class="col mb-4">
-      <label>Details of Incident</label>
-      <input class="form-control" type="text" placeholder="Please specify" [formControl]="details">
+      <label class="required" for="details">Details of Incident</label>
+      <input class="form-control" type="text" placeholder="Please specify" [formControl]="details" id="details">
     </div>
   </div>
   <div class="mt-5 space-between">
     <section>
-      <a routerLink="/dashboard">
+      <a [routerLink]="taskNumbersRoute">
         <app-font-awesome-icon icon="times"></app-font-awesome-icon>
         <span class="ml-2">Cancel &amp; Close</span>
       </a>
     </section>
     <section>
-      <button class="btn btn-primary float-right" (click)="next()">Next</button>
+      <button class="btn btn-primary float-right" (click)="next()">NEXT</button>
     </section>
   </div>
 </div>
@@ -63,20 +61,15 @@
   </div>
   <div class="mt-5 space-between">
     <section>
-      <button class="btn btn-secondary" (click)="back()">Edit Task Details</button>
+      <button type="button" class="btn btn-secondary" (click)="back()">EDIT TASK DETAILS</button>
     </section>
     <section>
-      <button *ngIf="submitting" class="btn btn-primary" disabled>
+      <button type="button" *ngIf="submitting" class="btn btn-primary" disabled>
         <span>SUBMITTING</span>
       </button>
-      <button *ngIf="!submitting" class="btn btn-primary" (click)="submit()">
-        <span>SAVE</span>
+      <button type="button" *ngIf="!submitting" class="btn btn-primary" (click)="submit()">
+        <span>SAVE TASK</span>
       </button>
     </section>
   </div>
 </div>
-
-<!-- <div class="mt-5 space-between"> -->
-<!-- <pre>{{community|json}}</pre> -->
-<!-- <pre>{{incidentTask|json}}</pre> -->
-<!-- </div> -->
