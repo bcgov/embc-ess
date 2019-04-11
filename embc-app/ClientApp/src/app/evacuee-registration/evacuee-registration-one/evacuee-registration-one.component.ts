@@ -171,7 +171,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       // the only(first) element that is named Canada
       countries.forEach((country: Country) => {
         // if the canada is not set and we found one in the list
-        if (!this.CANADA && country.name === 'Canada') {
+        if (country.name === 'Canada') {
           this.CANADA = country;
         }
       });
@@ -537,10 +537,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     }
   }
   submit() {
-    // The user now consents.
-    this.registration.declarationAndConsent = true;
+    alert(this.registration.headOfHousehold.primaryResidence.country.name);
     // Send data to the server
-
     this.submitted = true;
     // in transmission
     this.submitting = true;
@@ -665,6 +663,9 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     const volunteer: Partial<Volunteer> = this.currentUser.contactid ? { id: this.currentUser.contactid } : null;
     // the initial completed by volunteer is preserved unless there is a new volunteer
     r.completedBy = r.completedBy || volunteer;
+
+    // The user now consents.
+    r.declarationAndConsent = true;
 
     // if there was no primary address country set by the form before submission
     if (!r.headOfHousehold.primaryResidence.country) {
