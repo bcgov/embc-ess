@@ -46,11 +46,16 @@
       </div>
       <div class="form-row">
         <app-attention-icon></app-attention-icon>
-        <app-form-field class="col-md-8" required="true" tooltip="Tool Tip: A host community is the community where the registration is taking place and the Reception Centre is located.">
+        <app-form-field class="col" required="true" tooltip="Tool Tip: A host community is the community where the registration is taking place and the Reception Centre is located.">
           <label for="hostCommunity">Host Community</label>
           <app-communities-select [class.is-invalid]="invalid('hostCommunity')" [myParent]="form" myFormControlName="hostCommunity" id="hostCommunity"></app-communities-select>
           <span *ngIf="submitted" class="invalid-feedback">{{e.hostCommunity}}</span>
         </app-form-field>
+        <div class="d-flex align-items-center col-md-7">
+          <small class="text-muted">
+            If the community is not listed please select nearest community and notify your supervisor. 
+          </small>
+        </div>
       </div>
     </div>
     <!-- Restricted access to this file? TODO: No restricted files are handled in V1-->
