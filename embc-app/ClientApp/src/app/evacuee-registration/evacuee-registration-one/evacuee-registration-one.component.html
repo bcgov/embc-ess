@@ -284,6 +284,10 @@
         </div>
         <span [class.d-block]="invalid('primaryResidenceInBC')" class="invalid-feedback">{{e.primaryResidenceInBC}}</span>
       </div>
+      <p>
+        <small><strong>Primary residence:</strong> Refers to a dwelling where a person usually lives. It may be a house or apartment, and at any given time, a person shall not have more than one primary residence. Primary residence is the legal residence of an individual and is usually determined based on the mailing address, telephone listing, the time spent at the residence per year and normally appears on their documents and is associated with income tax calculation, home owner's grant, etc.</small>
+      </p>
+
       <!-- primary residence in BC -->
       <div *ngIf="form.value.primaryResidenceInBC!==null" class="feature-block mb-4">
         <app-address-selector [parent]="f.primaryResidence" [touched]="submitted" [withinBC]="form.value.primaryResidenceInBC"></app-address-selector>
