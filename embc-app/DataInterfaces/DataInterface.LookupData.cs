@@ -30,8 +30,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return (await db.Communities
                 .Include(c => c.RegionalDistrict)
                     .ThenInclude(d => d.Region)
-                .ToArrayAsync())
                 .OrderBy(c => c.Name)
+                .ToArrayAsync())
                 .Select(d => d.ToViewModel());
         }
 
