@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User, ListResult, Registration } from '../core/models';
+import { User, ListResult, Registration, PaginationSummary } from '../core/models';
 import { Observable } from 'rxjs';
 import { EvacueeSearchResults, SearchQueryParameters } from '../shared/components/search';
 import { RegistrationService } from '../core/services/registration.service';
@@ -16,6 +16,7 @@ export class EvacueeListComponent implements OnInit {
   isLoggedIn = false;
   // server response
   resultsAndPagination$: Observable<ListResult<Registration>>;
+  pagination: PaginationSummary = null;
 
   // search related
   isLoadingResults = false;
@@ -68,6 +69,8 @@ export class EvacueeListComponent implements OnInit {
         this.totalPages = x.metadata.totalPages;
         this.collectionSize = x.metadata.totalCount;
         this.maxSize = x.metadata.pageSize;
+
+        this.pagination = x.metadata;
 
         //save the last query performed
         this.previousQuery = query;

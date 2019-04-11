@@ -4,7 +4,7 @@
 <p>Please confirm that all details you entered are correct by reading through the summary below.</p>
 
 <section class="p-3">
-  <ul class="summary">
+  <!-- <ul class="summary">
     <li>
       <span class="name">ESS File #:</span>
       <span class="value">{{registration?.essFileNumber}}</span>
@@ -13,7 +13,7 @@
       <span class="name">Restricted File:</span>
       <span class="value">{{registration?.restrictedAccess | yesNo}}</span>
     </li>
-  </ul>
+  </ul> -->
   <h3>Evacuee Information</h3>
   <ul class="summary">
     <li>
@@ -29,7 +29,7 @@
       <span class="value">{{registration?.headOfHousehold?.initials}}</span>
     </li>
     <li>
-      <span class="name">Nickname:</span>
+      <span class="name">Preferred Name:</span>
       <span class="value">{{registration?.headOfHousehold?.nickname}}</span>
     </li>
     <li>
@@ -42,8 +42,8 @@
     </li>
   </ul>
 
-  <h3>Evacuee Family Information</h3>
-  <ul class="summary" *ngFor="let fm of registration.headOfHousehold.familyMembers">
+  <h3 *ngIf="registration?.headOfHousehold?.familyMembers?.length > 0">Evacuee Family Information</h3>
+  <ul class="summary" *ngFor="let fm of registration?.headOfHousehold?.familyMembers">
     <li>
       <span class="name">Last Name:</span>
       <span class="value">{{fm?.lastName}}</span>

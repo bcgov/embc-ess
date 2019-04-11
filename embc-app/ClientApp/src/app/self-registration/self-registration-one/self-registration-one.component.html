@@ -8,7 +8,7 @@
   <small>All required fields are marked with an asterisk *</small>
 
   <div class="mt-3 feature-block">
-    <h3>Restriction</h3>
+    <h3 class="required">Restriction</h3>
     <p>Concerned family and friends may inquire about you and your family because of the emergency. We would like to
       provide these people with some information about you. May we disclose your location and the contact information
       for you and your family members?
@@ -29,14 +29,17 @@
   </div>
   <div *ngIf="disableForm===true">
     <h3 class="blue-header">PROCEED TO RECEPTION CENTRE</h3>
-    <h4>Your data privacy is important to us.</h4>
+    <h4 class="font-weight-bold mt-5">Your data privacy is important to us.</h4>
     <p>
       During an emergency response many people join the response effort. We want to ensure that your information remains
       unseen except by people that are trained to handle sensitive information.
     </p>
     <p>
       Please proceed to the nearest open pilot community Emergency Support Services reception centre to initiate your
-      registration and receive supports. Your nearest Reception Centre is listed at <a target="_blank" href="https://www.emergencyinfobc.gov.bc.ca/">EmergencyInfoBC</a>
+      registration and receive supports.
+    </p>
+    <p>
+      Your nearest Reception Centre is listed at <a target="_blank" href="https://www.emergencyinfobc.gov.bc.ca/">EmergencyInfoBC</a>
     </p>
   </div>
   <div *ngIf="disableForm===false">
@@ -94,7 +97,7 @@
 
     <h3 class="blue-header">EVACUEE FAMILY INFORMATION
       <!-- TODO: Implement animation for info circle on-hover -->
-      <app-font-awesome-icon icon="info-circle" className="ml-3 text-white" title="If unsure as to how to register additional family members, please contact the Emergency Support Services team through your local government.">
+      <app-font-awesome-icon icon="info-circle" className="ml-3 text-white" title="Each additional immediate family member needs to be added to your Evacuee Registration if they reside in the same household as you. Roommates or tenants of the same address need to be registered separately.">
       </app-font-awesome-icon>
     </h3>
     <section class="padded-section">
@@ -145,7 +148,7 @@
                   <span *ngIf="submitted" class="invalid-feedback">Please enter a first name.</span>
                 </div>
                 <div class="col">
-                  <label>Middle Initial</label>
+                  <label>Initial</label>
                   <input type="text" class="form-control" formControlName="initials">
                 </div>
               </div>
@@ -308,4 +311,3 @@
     </div>
   </div>
 </form>
-<!-- <pre>{{registration|json}}</pre> -->
