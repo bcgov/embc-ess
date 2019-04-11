@@ -370,7 +370,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
       this.finalizeMode = false; // turn off these
     } else {
       if (r.incidentTask == null) {
-        this.pageTitle = 'Finalize Evacuee Registration';
+        this.pageTitle = `Finalize Evacuee Registration ${r.essFileNumber}`;
         this.finalizeMode = true;
         this.createMode = false; // turn off these
       } else {

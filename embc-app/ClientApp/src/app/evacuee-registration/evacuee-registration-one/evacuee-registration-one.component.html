@@ -32,8 +32,7 @@
         </app-form-field>
         <div class="d-flex align-items-center col-md-7">
           <small class="text-muted">
-            If the task number you’re looking for is not listed, please contact your supervisor or the Emergency
-            Coordination Centre at 1-800-663-3456.
+            If the task number you’re looking for is not listed please contact your supervisor.
           </small>
         </div>
       </div>
@@ -47,11 +46,16 @@
       </div>
       <div class="form-row">
         <app-attention-icon></app-attention-icon>
-        <app-form-field class="col-md-8" required="true" tooltip="Tool Tip: A host community is the community where the registration is taking place and the Reception Centre is located.">
+        <app-form-field class="col" required="true" tooltip="Tool Tip: A host community is the community where the registration is taking place and the Reception Centre is located.">
           <label for="hostCommunity">Host Community</label>
           <app-communities-select [class.is-invalid]="invalid('hostCommunity')" [myParent]="form" myFormControlName="hostCommunity" id="hostCommunity"></app-communities-select>
           <span *ngIf="submitted" class="invalid-feedback">{{e.hostCommunity}}</span>
         </app-form-field>
+        <div class="d-flex align-items-center col-md-7">
+          <small class="text-muted">
+            If the community is not listed please select nearest community and notify your supervisor. 
+          </small>
+        </div>
       </div>
     </div>
     <!-- Restricted access to this file? TODO: No restricted files are handled in V1-->
@@ -92,7 +96,7 @@
       <h1>ESS Team Handling Note</h1>
       <p>Privacy is important. Please locate a volunteer that is trained to collect and handle sensitive information.</p>
       <p>This does not change the support offered but does change the process of collecting and handling information. This restricts other ESS team members from seeing the registration.</p>
-      <a routerLink="/dashboard">Return to the ESS Team Dashboard</a>
+      <a routerLink="/dashboard">Return to the ESS Dashboard</a>
     </div>
     <div *ngIf="activeForm">
       <!-- Primary contact information -->
@@ -145,7 +149,7 @@
           EVACUEE FAMILY INFORMATION
         </h3>
         <p class="required">
-          Are you registering immediate family members who live in the same household with you?
+          Are you registering immediate family members who live in the same household with you whom you know are safe?
         </p>
         <div class="form-group">
           <div class="form-check">
