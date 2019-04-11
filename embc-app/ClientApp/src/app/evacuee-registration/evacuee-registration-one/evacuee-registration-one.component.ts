@@ -30,6 +30,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
   incidentTasks$ = this.incidentTaskService.getIncidentTasks().pipe(map(x => x.data));
 
+  CANADA: Country; // the object representation of the default country
+
   pageTitle = 'Add an Evacuee';
   activeForm = true; // this lets the user fill things out
   // The model for the form data collected
@@ -164,6 +166,17 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   }
 
   ngOnInit() {
+    // fetch the default country
+    this.countries$.subscribe((countries: Country[]) => {
+      // the only(first) element that is named Canada
+      countries.forEach((country: Country) => {
+        // if the canada is not set and we found one in the list
+        if (country.name === 'Canada') {
+          this.CANADA = country;
+        }
+      });
+    });
+
     // Create form controls
     this.initForm();
 
@@ -524,10 +537,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     }
   }
   submit() {
-    // The user now consents.
-    this.registration.declarationAndConsent = true;
+    alert(this.registration.headOfHousehold.primaryResidence.country.name);
     // Send data to the server
-
     this.submitted = true;
     // in transmission
     this.submitting = true;
@@ -653,8 +664,19 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     // the initial completed by volunteer is preserved unless there is a new volunteer
     r.completedBy = r.completedBy || volunteer;
 
-    // save the registration to the application state
-    // this.store.dispatch(new UpdateRegistration({ registration: r }));
+    // The user now consents.
+    r.declarationAndConsent = true;
+
+    // if there was no primary address country set by the form before submission
+    if (!r.headOfHousehold.primaryResidence.country) {
+      r.headOfHousehold.primaryResidence.country = this.CANADA;
+    }
+    // the user included a mailing address but the form did not set the country
+    if (r.headOfHousehold.mailingAddress && !r.headOfHousehold.mailingAddress.country) {
+      r.headOfHousehold.mailingAddress.country = this.CANADA;
+    }
+
+    // return the registration
     return r;
   }
   // --------------------HELPERS-----------------------------------------

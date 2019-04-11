@@ -87,10 +87,16 @@ namespace Gov.Jag.Embc.Public.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] ViewModels.Registration item)
         {
+            if (item != null && (!item.DeclarationAndConsent.HasValue || !item.DeclarationAndConsent.Value))
+            {
+                ModelState.AddModelError("DeclarationAndConsent", "Declaration And Consent must be set to 'True'");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
             try
             {
                 item.Id = null;
@@ -150,6 +156,10 @@ A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
             if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id)
             {
                 return BadRequest();
+            }
+            if (item != null && (!item.DeclarationAndConsent.HasValue || !item.DeclarationAndConsent.Value))
+            {
+                ModelState.AddModelError("DeclarationAndConsent", "Declaration And Consent must be set to 'True'");
             }
             if (!ModelState.IsValid)
             {
