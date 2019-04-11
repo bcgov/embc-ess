@@ -91,6 +91,13 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            if (!item.DeclarationAndConsent.HasValue || !item.DeclarationAndConsent.Value)
+            {
+                ModelState.AddModelError("DeclarationAndConsent", "Declaration And Consent must be set to 'True'");
+                return BadRequest(ModelState);
+            }
+
             try
             {
                 item.Id = null;
@@ -153,6 +160,11 @@ A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
             }
             if (!ModelState.IsValid)
             {
+                return BadRequest(ModelState);
+            }
+            if (!item.DeclarationAndConsent.HasValue || !item.DeclarationAndConsent.Value)
+            {
+                ModelState.AddModelError("DeclarationAndConsent", "Declaration And Consent must be set to 'True'");
                 return BadRequest(ModelState);
             }
             try
