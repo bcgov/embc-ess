@@ -28,11 +28,11 @@
   <h3 class="blue-header">USERS LIST</h3>
   <form novalidate role="search" [formGroup]="form">
     <div class="form-row">
-      <div class="col-md-9">
+      <div class="col-md">
         <input type="text" aria-label="search" class="form-control mb-2" placeholder="Search by last name &hellip;" formControlName="searchbox" (keydown.enter)="search()">
       </div>
-      <div class="col-md-3">
-        <button class="btn btn-primary" (click)="search()">Search</button>
+      <div class="col-md-auto">
+        <button class="btn btn-primary" (click)="search()">SEARCH</button>
       </div>
     </div>
     <div class="form-row">
@@ -94,12 +94,12 @@
       </tbody>
     </table>
     <!-- Pagination area -->
-    <div class="col" *ngIf="totalPages>1">
+    <div class="col clearfix" *ngIf="totalPages > 1">
       <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
     </div>
-    <!-- <div class="space-between">
-        <button class="btn btn-primary float-right" routerLink="../volunteer" [queryParams]="{orgId: currentOrganization?.id}">ADD USERS</button>
-      </div> -->
+    <div class="clearfix">
+      <button class="btn btn-primary float-right" routerLink="../volunteer" [queryParams]="{orgId: currentOrganization?.id}">ADD USERS</button>
+    </div>
   </ng-template>
 
   <ng-template #adminNotFound>
@@ -108,7 +108,7 @@
     </p>
   </ng-template>
 </div>
-<!-- 
+<!--
 <ul>
   <li>page:{{page|json}}</li>
   <li>totalPages:{{totalPages|json}}</li>

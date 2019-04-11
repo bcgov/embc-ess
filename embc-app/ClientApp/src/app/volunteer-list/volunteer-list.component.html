@@ -6,11 +6,11 @@
   <h3 class="blue-header">USERS LIST</h3>
   <form novalidate role="search" [formGroup]="form">
     <div class="form-row">
-      <div class="col-md-9">
+      <div class="col-md">
         <input type="text" aria-label="search" class="form-control mb-2" placeholder="Search by last name &hellip;" formControlName="searchbox" (keydown.enter)="search()">
       </div>
-      <div class="col-md-3">
-        <button class="btn btn-primary" (click)="search()">Search</button>
+      <div class="col-md-auto">
+        <button class="btn btn-primary" (click)="search()">SEARCH</button>
       </div>
     </div>
   </form>
@@ -20,14 +20,11 @@
 
   <ng-template #searchResultsTable>
     <div class="space-between align-items-center my-3">
-      <!-- TODO: need to fix... "x - y of z users"... z should not exceed y -->
       <section>
-        {{(maxSize * page)-maxSize+1}} - {{maxSize * page}} of {{collectionSize}} users
-        <!-- TODO: make this work with the component-->
-        <!-- <app-pagination-summary [value]="pagination">
-            <span class="font-weight-bold">ACTIVE</span> users
-            TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small>
-          </app-pagination-summary> -->
+        <app-pagination-summary [value]="pagination">
+          <span class="font-weight-bold">ACTIVE</span> users
+          <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
+        </app-pagination-summary>
       </section>
       <section>
         <button class="btn btn-primary" routerLink="../../volunteer">ADD USERS</button>
@@ -57,14 +54,12 @@
       </tbody>
     </table>
     <!-- Pagination area -->
-    <span *ngIf="totalPages>1">
+    <div class="col clearfix" *ngIf="totalPages > 1">
       <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
-    </span>
-
-    <!-- <div>
-        <button class="btn btn-primary float-right" routerLink="../../volunteer">ADD USERS</button>
-      </div> -->
-
+    </div>
+    <div>
+      <button class="btn btn-primary float-right" routerLink="../../volunteer">ADD USERS</button>
+    </div>
   </ng-template>
 
   <ng-template #notFound>
@@ -73,7 +68,7 @@
     </p>
   </ng-template>
 </div>
-<!-- 
+<!--
 <ul>
   <li>page:{{page|json}}</li>
   <li>totalPages:{{totalPages|json}}</li>

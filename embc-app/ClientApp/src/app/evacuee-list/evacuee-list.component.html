@@ -10,16 +10,21 @@
 
   <!-- TODO: <a class="small" href="">advanced search</a> -->
   <!-- TODO: show icons for HOH, RESTRICTED FILE -->
-  <div class="row mb-2 mt-4">
-    <div class='col'>
-      <!-- The start of the table stuff. -->
-      <!-- TODO: need to fix... "x - y of z"... z should not exceed y -->
-      <p class="align-text-bottom" *ngIf="collectionSize>0">{{(maxSize * page)-maxSize+1}} - {{maxSize * page}} of {{collectionSize}}
-        <!-- <span class="font-weight-bold">ACTIVE</span> evacuees
-          <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
-      </p>
+  <div class="clearfix my-3">
+    <div class="float-right">
+      <app-font-awesome-icon class="mr-1" icon="user"></app-font-awesome-icon>
+      <span class="ml-2">Head of Household</span>
     </div>
-    <div class='col'>
+  </div>
+
+  <div class="space-between align-items-center my-3">
+    <section>
+      <app-pagination-summary [value]="pagination">
+        <span class="font-weight-bold">ACTIVE</span> evacuees
+        <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
+      </app-pagination-summary>
+    </section>
+    <section>
       <select class="form-control" [(ngModel)]="sort" (change)="search()">
         <!-- <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option> -->
         <option [value]="'-registrationCompletionDate'">Sort by: Latest (default)</option>
@@ -27,7 +32,7 @@
         <option [value]="'hostCommunity.name'">Community Evacuated to</option>
         <option [value]="'incidentTask.community.name'">Community Evacuated from</option>
       </select>
-    </div>
+    </section>
   </div>
   <!-- SORT:{{sort}} -->
   <app-evacuee-search-results #searchResultsView [searchResults]="searchResults$ | async">
@@ -36,7 +41,7 @@
   <!-- <select class="form-control" [(ngModel)]="maxSize">
     <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option>
   </select> -->
-  <!-- <span *ngIf="this.totalPages>1"> -->
-  <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
-  <!-- </span> -->
+  <div class="col clearfix" *ngIf="this.totalPages > 1">
+    <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
+  </div>
 </div>

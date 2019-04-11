@@ -9,11 +9,11 @@
   <h3 class="blue-header">TASK LIST</h3>
 
   <form novalidate role="search" class="form-row" [formGroup]="form">
-    <div class="col-md-9">
+    <div class="col-md">
       <label class="sr-only" for="searchbox">Associated EMBC Regional District / Community</label>
       <app-communities-select [myParent]="form" myFormControlName="searchbox" id="searchbox" myPlaceHolder='Select incident location'></app-communities-select>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-auto">
       <button class="btn btn-primary" (click)="filter(form.value.searchbox)">FILTER</button>
     </div>
   </form>
@@ -30,7 +30,7 @@
         </app-pagination-summary>
       </section>
       <section>
-        <button class="btn btn-primary" routerLink="../task-number/">ADD A TASK NUMBER</button>
+        <button class="btn btn-primary" routerLink="../task-number/">ADD TASK NUMBER</button>
       </section>
     </div>
     <table class="table">
@@ -52,7 +52,7 @@
       </tbody>
     </table>
     <div>
-      <button class="btn btn-primary float-right" routerLink="../task-number/">ADD A TASK NUMBER</button>
+      <button class="btn btn-primary float-right" routerLink="../task-number/">ADD TASK NUMBER</button>
     </div>
   </ng-template>
 
