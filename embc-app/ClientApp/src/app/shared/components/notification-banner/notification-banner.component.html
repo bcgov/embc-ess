@@ -1,3 +1,13 @@
-<p>
-  notification-banner works!
-</p>
+<nav *ngFor="let notification of notifications" class="navbar navbar-expand  notification-box">
+  <ul class="navbar-nav">
+    <li class="mr-4">
+      {{ notification }}
+      <span (click)="close(notification)">X</span>
+
+    </li>
+  </ul>
+
+
+
+</nav>
+<!-- <button (click)="addAThing()">Add a thing</button> -->

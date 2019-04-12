@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeaheadModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { MaterialModule } from './material.module';
 import { WarningBannerComponent } from './components/warning-banner/warning-banner.component';
@@ -65,6 +65,7 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     FormsModule,
     ReactiveFormsModule,
     NgbTypeaheadModule,
+    NgbAlertModule,
     MaterialModule,
   ],
   exports: [
