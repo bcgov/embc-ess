@@ -273,7 +273,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     this.registration = registration;
 
     // if there is a registration that is not null and the form is initialized
-    // clear the form and patch the valueS back into it.
+    // clear the form and patch the values back into it.
     if (this.registration && this.form && !this.registration.restrictedAccess) {
       // Reset the form back to pristine
       this.form.reset();
