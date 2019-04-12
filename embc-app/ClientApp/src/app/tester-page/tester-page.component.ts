@@ -28,4 +28,7 @@ export class TesterPageComponent implements OnInit {
   ) { }
 
   ngOnInit() { }
+  notify() {
+    alert("Fragility");
+  }
 }
