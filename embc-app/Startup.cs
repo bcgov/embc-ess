@@ -282,7 +282,8 @@ namespace Gov.Jag.Embc.Public
             app.UseXXssProtection(options => options.EnabledWithBlockMode());
             app.UseNoCacheHttpHeaders();
             // IMPORTANT: This session call MUST go before UseMvc()
-            app.UseSession();
+            var sessionTimout = TimeSpan.FromMinutes(Configuration.GetValue("SESSION_TIMEOUT_MINUTES", 20));
+            app.UseSession(new SessionOptions() { IdleTimeout = sessionTimout });
             app.UseAuthentication();
 
             // global policy - assign here or on each controller
