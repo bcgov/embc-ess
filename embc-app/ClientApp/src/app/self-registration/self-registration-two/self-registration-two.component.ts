@@ -107,7 +107,14 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
     // Update form values based on the state
     this.currentRegistration$
       .pipe(takeWhile(() => this.componentActive))
-      .subscribe(value => this.displayRegistration(value));
+      .subscribe(value => {
+        if (!value) {
+          // you shouldn't be here without registration data (redirect to step-1)
+          this.router.navigate(['../step-1'], { relativeTo: this.route });
+          return;
+        }
+        this.displayRegistration(value);
+      });
   }
 
   ngOnDestroy(): void {
