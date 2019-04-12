@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
     public class RegistrationsController : Controller
     {
         private readonly IDataInterface dataInterface;
@@ -40,6 +39,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet(Name = nameof(GetAll))]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters searchQuery)
         {
             try
@@ -60,6 +60,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetOne(string id)
         {
             var result = await dataInterface.GetRegistrationAsync(id);
@@ -71,6 +72,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet("{id}/summary")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetOneSummary(string id)
         {
             var result = await dataInterface.GetRegistrationSummaryAsync(id);
@@ -148,6 +150,7 @@ A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
         }
 
         [HttpPut("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Update([FromBody] ViewModels.Registration item, string id)
         {
             if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id)
@@ -175,6 +178,7 @@ A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
         }
 
         [HttpDelete("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Delete(string id)
         {
             if (string.IsNullOrWhiteSpace(id)) return BadRequest();
