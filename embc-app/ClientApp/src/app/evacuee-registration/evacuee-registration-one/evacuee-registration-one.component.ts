@@ -537,7 +537,7 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     }
   }
   submit() {
-    alert(this.registration.headOfHousehold.primaryResidence.country.name);
+    // alert(this.registration.headOfHousehold.primaryResidence.country.name);
     // Send data to the server
     this.submitted = true;
     // in transmission

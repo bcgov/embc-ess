@@ -1,7 +1,7 @@
 <!-- Provincial Staff -->
 <div class="mb-4">
   <h1>Users for {{ currentOrganization?.name || 'all organizations' }}</h1>
-  <p>Use this page to view active ESS users & administrative users associated with your organization, as well as add users, and edit profiles & permissions.</p>
+  <p>Use this page to view active Emergency Support Services users & administrative users associated with your organization, as well as add users, and edit profiles & permissions.</p>
 
   <section class="p-3" *ngIf="currentOrganization?.name">
     <h3>Organization Details</h3>
@@ -46,7 +46,7 @@
       </div>
       <div class="form-check form-check-inline">
         <input type="radio" class="form-check-input" formControlName="userToggle" [value]="SHOW_ESS_USERS_ONLY">
-        <label class="form-check-label">Show only ESS users</label>
+        <label class="form-check-label">Show only Emergency Support Services users</label>
       </div>
     </div>
   </form>
