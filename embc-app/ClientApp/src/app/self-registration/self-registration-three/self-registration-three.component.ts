@@ -36,8 +36,13 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     // Update form values based on the state
     this.currentRegistration$
       .pipe(takeWhile(() => this.componentActive))
-      .subscribe(registration => {
-        this.displayRegistration({ registration });
+      .subscribe(value => {
+        if (!value) {
+          // you shouldn't be here without registration data (redirect to step-1)
+          this.router.navigate(['../step-1'], { relativeTo: this.route });
+          return;
+        }
+        this.displayRegistration(value);
       });
   }
 
@@ -59,9 +64,9 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     return isBcAddress(address);
   }
 
-  displayRegistration(props: { registration: Registration | null }): void {
+  displayRegistration(registration: Registration | null): void {
     // Set the local registration property
-    this.registration = props.registration;
+    this.registration = registration;
   }
 
   submit() {
