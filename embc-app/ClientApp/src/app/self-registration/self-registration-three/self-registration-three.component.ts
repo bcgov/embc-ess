@@ -1,14 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit, ɵConsole } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
-import { map, takeWhile } from 'rxjs/operators';
+import { takeWhile } from 'rxjs/operators';
 
+import { AppState } from 'src/app/store';
+import * as RegistrationActions from 'src/app/store/registration/registration.actions';
 import { INSURANCE_OPTIONS, GENDER_OPTIONS } from 'src/app/constants/lookups';
 import { Registration, isBcAddress, Address } from 'src/app/core/models';
-import { normalize } from 'src/app/shared/utils';
-import { AppState } from 'src/app/store';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { RegistrationService } from 'src/app/core/services/registration.service';
 
@@ -68,10 +66,9 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
 
   submit() {
     this.submitting = true;
-    // process the registration record before submission to the backend
 
-    // by clicking submit this has to be true because submit is consent
-    this.registration.declarationAndConsent = true;
+    // process the registration record before submission to the backend
+    this.processData(this.registration);
 
     // update client-side state
     this.onSave(this.registration);
@@ -80,20 +77,24 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     this.service.createRegistration(this.registration).subscribe(
       data => {
         this.submitting = false; // turn off submission state
+        this.clearRegistration(); // prevent double submissions
         this.router.navigate(['../step-4/' + data.essFileNumber], { relativeTo: this.route });
       },
       err => {
-        alert(err);
+        console.log(err);
         // do not submit anymore
         this.submitting = false; // turn off submission state
+        this.clearRegistration(); // prevent double submissions
         this.router.navigate(['../error'], { relativeTo: this.route });
       }
     );
   }
 
-  // stamp the dates that we want to track for this record
   processData(value: Registration): void {
+    // stamp the dates that we want to track for this record
     value.selfRegisteredDate = new Date().toJSON();
+    // by clicking submit this has to be true because submit is consent
+    value.declarationAndConsent = true;
   }
 
   back() {
@@ -107,5 +108,9 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
 
   onSave(registration: Registration) {
     this.store.dispatch(new UpdateRegistration({ registration }));
+  }
+
+  clearRegistration(): void {
+    this.store.dispatch(new RegistrationActions.ClearCurrentRegistration());
   }
 }

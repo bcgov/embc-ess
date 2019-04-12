@@ -2,15 +2,17 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { skipWhile, takeWhile } from 'rxjs/operators';
+import { skipWhile, takeWhile, tap, filter } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { Registration, FamilyMember, isBcAddress } from 'src/app/core/models';
 import { AppState } from 'src/app/store';
+import * as RegistrationActions from 'src/app/store/registration/registration.actions';
+import { Registration, FamilyMember, isBcAddress } from 'src/app/core/models';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { clearFormArray, hasErrors, invalidField } from 'src/app/shared/utils';
+import { validateConfig } from '@angular/router/src/config';
 
 @Component({
   selector: 'app-self-registration-one',
@@ -135,8 +137,18 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
     // Update form values based on the state
     this.currentRegistration$
-      .pipe(takeWhile(() => this.componentActive))
+      .pipe(
+        takeWhile(() => this.componentActive),
+        tap(value => {
+          if (!value) {
+            // initialize the form if no registration supplied
+            this.store.dispatch(new RegistrationActions.InitializeCurrentRegistration());
+          }
+        }),
+        filter(value => !!value)
+      )
       .subscribe(value => {
+        // we don't want null values here
         this.displayRegistration(value);
         // TODO: I don't know where this goes in the massive amount of code below.
         // if something is coming out of the state that is not null we should turn the restriction to true
@@ -261,7 +273,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     this.registration = registration;
 
     // if there is a registration that is not null and the form is initialized
-    // clear the form and patch the valuse back into it.
+    // clear the form and patch the valueS back into it.
     if (this.registration && this.form && !this.registration.restrictedAccess) {
       // Reset the form back to pristine
       this.form.reset();

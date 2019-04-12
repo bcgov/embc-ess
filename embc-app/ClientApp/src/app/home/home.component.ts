@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
   }
 
   newRegistration(): void {
-    this.store.dispatch(new RegistrationActions.InitializeCurrentRegistration());
+    this.store.dispatch(new RegistrationActions.ClearCurrentRegistration());
     this.router.navigate(['/self-registration']);
   }
 }
