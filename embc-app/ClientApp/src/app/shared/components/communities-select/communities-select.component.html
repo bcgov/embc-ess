@@ -4,7 +4,7 @@
     [ngbTypeahead]="search" [inputFormatter]="inputFormatter" [resultFormatter]="resultFormatter"
     (click)="click$.next($event.target.value)" #instance="ngbTypeahead" [required]="myRequired"
     (blur)="onBlur($event.target.value)">
-  <button class="btn btn-icon" (click)="click$.next($event.target.value)" title="Show list">
+  <button class="btn btn-icon" (click)="click$.next($event.target.value)" title="Show list" tabindex="-1">
     <app-font-awesome-icon icon="caret-down"></app-font-awesome-icon>
   </button>
 </div>
@@ -13,7 +13,7 @@
     [ngbTypeahead]="search" [inputFormatter]="inputFormatter" [resultFormatter]="resultFormatter"
     (click)="click$.next($event.target.value)" #instance="ngbTypeahead" [required]="myRequired"
     (blur)="onBlur($event.target.value)">
-  <button class="btn btn-icon" (click)="click$.next($event.target.value)" title="Show list">
+  <button class="btn btn-icon" (click)="click$.next($event.target.value)" title="Show list" tabindex="-1">
     <app-font-awesome-icon icon="caret-down"></app-font-awesome-icon>
   </button>
 </div>
