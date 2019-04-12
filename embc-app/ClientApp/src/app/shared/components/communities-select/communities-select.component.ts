@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { NgbTypeahead, NgbTypeaheadConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, merge } from 'rxjs';
@@ -50,7 +50,7 @@ export class CommunitiesSelectComponent {
         if (!term) {
           return this.communities; // return all
         } else {
-          return this.communities.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1);
+          return this.communities.filter(community => community.name.toLowerCase().indexOf(term.toLowerCase()) > -1);
         }
       })
     );
@@ -74,5 +74,18 @@ export class CommunitiesSelectComponent {
     this.config.editable = false;
     this.config.focusFirst = false;
     this.config.placement = ['bottom-left'];
+  }
+
+  onBlur(search: string) {
+    // look for exact match
+    const found = this.communities.find(community => community.name.toLowerCase() === search.toLowerCase());
+
+    // if exact match was found, use it
+    // otherwise clear control to avoid confusion
+    if (this.myParent && this.myFormControlName) {
+      this.myParent.controls[this.myFormControlName].setValue(found || null);
+    } else if (this.myFormControl) {
+      (this.myFormControl as unknown as FormControl).setValue(found || null);
+    }
   }
 }
