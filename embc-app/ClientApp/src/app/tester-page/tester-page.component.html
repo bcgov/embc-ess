@@ -4,6 +4,9 @@
     <app-notification-banner></app-notification-banner>
   </div>
   <div class="col">
+    <ngb-alert [dismissible]="false">
+      <strong>Warning!</strong> Better check yourself, you're not looking too good.
+    </ngb-alert>
     <button (click)="notify()">Notify</button>
   </div>
 </div>
