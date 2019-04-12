@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
-    [AllowAnonymous]
+    [Authorize]
     //[Authorize(Policy = "Business-User")]
     public class OrganizationsController : Controller
     {

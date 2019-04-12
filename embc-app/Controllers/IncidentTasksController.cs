@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
-    [AllowAnonymous]
+    [Authorize]
     public class IncidentTasksController : Controller
     {
         private readonly IConfiguration Configuration;
@@ -38,7 +38,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> Get([FromQuery] SearchQueryParameters searchQuery)
         {
             try
