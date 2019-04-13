@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    [AllowAnonymous]
     public class VolunteersController : Controller
     {
         private readonly IConfiguration configuration;
