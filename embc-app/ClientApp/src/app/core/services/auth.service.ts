@@ -35,7 +35,7 @@ export class AuthService extends RestService {
     return this.currentUser && this.currentUser.isNewUser === false;
   }
 
-  public login(force: boolean = false): Observable<void> {
+  public login(force: boolean = false): Subject<void> {
     const done = new Subject<void>();
 
     // log into back end service and set user information
@@ -48,6 +48,8 @@ export class AuthService extends RestService {
   }
 
   public logout(force: boolean = false): Observable<void> {
+    const wasLoggedIn = this.isLoggedIn;
+
     // remove all saved data from session storage
     sessionStorage.clear();
 
@@ -57,7 +59,7 @@ export class AuthService extends RestService {
     // clear current user
     this.setCurrentUser(null);
 
-    if (force) {
+    if (force && wasLoggedIn) {
       // try to destroy session on server
       return this.http.get<void>('logout', { headers: this.headers });
     }

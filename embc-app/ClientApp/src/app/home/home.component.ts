@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from '../store';
 import * as RegistrationActions from 'src/app/store/registration/registration.actions';
-import { AuthService } from '../core/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -19,11 +18,9 @@ export class HomeComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private router: Router,
-    private authService: AuthService,
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   newRegistration(): void {
     this.store.dispatch(new RegistrationActions.ClearCurrentRegistration());

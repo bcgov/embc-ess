@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPaginationModule, NgbAlertModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // ngrx + configuration
 import { AppComponent } from './app.component';
@@ -38,7 +38,7 @@ import { RegistrationMakerComponent } from './registration-maker/registration-ma
 import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
-
+import { SessionExpiringModalComponent } from './modals/session-expiring/session-expiring.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +67,7 @@ import { SessionExpiredComponent } from './session-expired/session-expired.compo
     EvacueeRegistrationComponent,
     AdminDashboardComponent,
     SessionExpiredComponent,
+    SessionExpiringModalComponent,
   ],
   imports: [
     // angular
@@ -79,6 +80,7 @@ import { SessionExpiredComponent } from './session-expired/session-expired.compo
     StoreModule.forRoot(rootReducer, { metaReducers }),
     NgbPaginationModule,
     NgbAlertModule,
+    NgbModule,
 
     // core & shared
     CoreModule,
@@ -89,7 +91,11 @@ import { SessionExpiredComponent } from './session-expired/session-expired.compo
     SelfRegistrationModule,
     VolunteerEditorModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  entryComponents: [
+    SessionExpiringModalComponent,
+  ],
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }

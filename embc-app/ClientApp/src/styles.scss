@@ -343,3 +343,12 @@ ul.arrow > li:before {
     display: none;
   }
 }
+
+// overrides for mygovbc-bootstrap-theme
+.modal-backdrop.fade {
+  opacity: 0.5;
+}
+
+.modal.show {
+  opacity: 1;
+}
