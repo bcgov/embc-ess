@@ -8,4 +8,4 @@ NAME=test-pipeline
 SOURCE_REPOSITORY_URL=https://github.com/bcgov/jag-embcess.git
 SOURCE_REPOSITORY_REF=master
 CONTEXT_DIR=
-JENKINSFILE_PATH=TEST-Jenkinsfile
+JENKINSFILE_PATH=TRAINING-Jenkinsfile.pipeline
