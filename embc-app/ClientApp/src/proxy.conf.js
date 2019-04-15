@@ -13,6 +13,13 @@ const PROXY_CONFIG = {
       if (!process.env.API_URL) {
         return false;
       }
+      // append dev user login tokens (if available)
+      if (process.env.DEV_USER) {
+        req.headers['DEV-USER'] = process.env.DEV_USER;
+      }
+      if (process.env.DEV_BCSC_USER) {
+        req.headers['DEV-BCSC-USER'] = process.env.DEV_BCSC_USER;
+      }
     }
   }
 }
