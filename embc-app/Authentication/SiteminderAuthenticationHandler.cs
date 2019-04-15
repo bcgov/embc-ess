@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -203,7 +202,6 @@ namespace Gov.Jag.Embc.Public.Authentication
     public class SiteminderAuthenticationHandler : AuthenticationHandler<SiteMinderAuthOptions>
     {
         private readonly ILogger _logger;
-        private readonly IConfiguration configuration;
 
         /// <summary>
         /// Siteminder Authentication Constructir
@@ -212,10 +210,9 @@ namespace Gov.Jag.Embc.Public.Authentication
         /// <param name="loggerFactory"></param>
         /// <param name="encoder"></param>
         /// <param name="clock"></param>
-        public SiteminderAuthenticationHandler(IOptionsMonitor<SiteMinderAuthOptions> configureOptions, ILoggerFactory loggerFactory, UrlEncoder encoder, ISystemClock clock, IConfiguration configuration)
+        public SiteminderAuthenticationHandler(IOptionsMonitor<SiteMinderAuthOptions> configureOptions, ILoggerFactory loggerFactory, UrlEncoder encoder, ISystemClock clock)
             : base(configureOptions, loggerFactory, encoder, clock)
         {
-            this.configuration = configuration;
             _logger = loggerFactory.CreateLogger(typeof(SiteminderAuthenticationHandler));
         }
 
@@ -624,10 +621,6 @@ namespace Gov.Jag.Embc.Public.Authentication
                     permissions.Add("role_provincial_admin");
                 }
                 userSettings.AppRoles = permissions.ToArray();
-
-                //Set client timeout values
-                userSettings.ClientTimeoutWarningInMinutes = configuration.ClientTimeoutWarningInMinutes();
-                userSettings.ClientTimeoutWarningDurationInMinutes = configuration.ClientTimeoutWarningDurationInMinutes();
 
                 UserSettings.SaveUserSettings(userSettings, context);
 
