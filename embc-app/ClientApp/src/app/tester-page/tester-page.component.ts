@@ -3,7 +3,7 @@ import { VolunteerService } from '../core/services/volunteer.service';
 import { Volunteer, Registration, User } from '../core/models';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store';
-import { takeWhile } from 'rxjs/operators';
+import { takeWhile, delay } from 'rxjs/operators';
 import { state } from '@angular/animations';
 import { AuthService } from '../core/services/auth.service';
 import { NotificationQueueService } from '../core/services/notification-queue.service';
@@ -29,7 +29,9 @@ export class TesterPageComponent implements OnInit {
   ) { }
 
   ngOnInit() { }
-  notify(message: string) {
-    this.notifications.addNotification(message);
+  notify(message?: string) {
+    for (let i = 0; i < 10; i++) {
+      this.notifications.addNotification(message || new Date().toString());
+    }
   }
 }
