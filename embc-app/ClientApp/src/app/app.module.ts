@@ -41,7 +41,6 @@ import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summ
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
 import { LayoutMainComponent } from './home/components/layout-main/layout-main.component';
 import { LayoutSideComponent } from './home/components/layout-side/layout-side.component';
-import { LayoutContainerComponent } from './home/components/layout-container/layout-container.component';
 import { VolunteerDashboardPageComponent } from './home/pages/volunteer/volunteer-dashboard-page/volunteer-dashboard-page.component';
 
 @NgModule({
@@ -70,7 +69,6 @@ import { VolunteerDashboardPageComponent } from './home/pages/volunteer/voluntee
     VolunteerOrganizationListComponent,
     LayoutMainComponent,
     LayoutSideComponent,
-    LayoutContainerComponent,
     VolunteerDashboardPageComponent,
   ],
   imports: [
