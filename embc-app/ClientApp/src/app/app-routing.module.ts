@@ -14,15 +14,9 @@ import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-das
 import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
 import { EvacueeRegistrationOneComponent } from './evacuee-registration/evacuee-registration-one/evacuee-registration-one.component';
-// import { EvacueeRegistrationConfirmationComponent } from './evacuee-registration';
-import { VolunteerEditorComponent } from './volunteer-editor/volunteer-editor.component';
-import { VolunteerEditorOneComponent } from './volunteer-editor/volunteer-editor-one/volunteer-editor-one.component';
-import { VolunteerEditorConfirmationComponent } from './volunteer-editor/volunteer-editor-confirmation/volunteer-editor-confirmation.component';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
-import { AdminAddTaskNumberComponent } from './admin-add-task-number/admin-add-task-number.component';
-import { AdminAddTaskNumberOneComponent, AdminAddTaskNumberConfirmationComponent } from './admin-add-task-number';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { LoggedInGuard } from './core/guards/logged-in.guard';
 import { RoleGuard } from './core/guards/role.guard';
