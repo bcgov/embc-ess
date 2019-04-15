@@ -22,6 +22,8 @@ export class NotificationQueueService {
   addNotification(message: string, timeoutMs?: number, type?: string) {
     // the default notification is warning
     if (!type) { type = 'warning'; }
+    if (!timeoutMs) { timeoutMs = this.defaultTimeout; }
+
 
     // get old value of behaviour subject to update it.
     const currentNotifications: Notification[] = this.notificationQueue.getValue();
@@ -36,7 +38,7 @@ export class NotificationQueueService {
     setTimeout(() => {
       // expire the notification by its timestamp
       this.expireNotification(notification.identifier);
-    }, timeoutMs || this.defaultTimeout);
+    }, timeoutMs);
 
   }
 
