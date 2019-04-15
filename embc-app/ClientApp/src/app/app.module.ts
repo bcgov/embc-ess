@@ -12,7 +12,6 @@ import { rootReducer, metaReducers } from './store';
 import { HomeComponent } from './home/home.component';
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
-
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { VolunteerEditorModule } from './volunteer-editor';
@@ -22,7 +21,6 @@ import { SharedModule } from './shared/shared.module';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
-// import { AdminAddTaskNumberModule } from './admin-add-task-number';
 import { AdminDashboardModule } from './admin-dashboard';
 import { TopNavigationComponent } from './top-navigation/top-navigation.component';
 import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
@@ -84,7 +82,6 @@ import { VolunteerOrganizationListComponent } from './volunteer-organization-lis
     SelfRegistrationModule,
     EvacueeRegistrationModule,
     VolunteerEditorModule,
-    // AdminAddTaskNumberModule,
     AdminDashboardModule
   ],
   providers: [],
