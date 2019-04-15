@@ -43,6 +43,10 @@ namespace Gov.Jag.Embc.Public.Authentication
 
         public string[] AppRoles { get; set; }
 
+        public int ClientTimeoutWarningInMinutes { get; set; }
+
+        public int ClientTimeoutWarningDurationInMinutes { get; set; }
+
         /// <summary>
         /// Worker qualification requires new contact info.
         /// </summary>
