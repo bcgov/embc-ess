@@ -13,7 +13,7 @@ import {
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
 import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
-import { EvacueeRegistrationOneComponent } from './evacuee-registration/evacuee-registration-one/evacuee-registration-one.component';
+import { RegistrationMakerComponent } from './evacuee-registration/registration-maker/registration-maker.component';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
@@ -224,12 +224,12 @@ const routes: Routes = [
       //     },
       //     {
       //       path: 'fill/:id',
-      //       component: EvacueeRegistrationOneComponent,
+      //       component: RegistrationMakerComponent,
       //       data: { expectedRole: VOLUNTEER },
       //     },
       //     {
       //       path: 'fill',
-      //       component: EvacueeRegistrationOneComponent,
+      //       component: RegistrationMakerComponent,
       //       data: { expectedRole: VOLUNTEER },
       //     },
       //     {
@@ -301,12 +301,12 @@ const routes: Routes = [
       //     },
       //     {
       //       path: 'fill/:id',
-      //       component: EvacueeRegistrationOneComponent,
+      //       component: RegistrationMakerComponent,
       //       data: { expectedRole: LOCAL_AUTHORITY },
       //     },
       //     {
       //       path: 'fill',
-      //       component: EvacueeRegistrationOneComponent,
+      //       component: RegistrationMakerComponent,
       //       data: { expectedRole: LOCAL_AUTHORITY },
       //     },
       //     {
@@ -420,24 +420,24 @@ const routes: Routes = [
       },
       {
         path: 'register-evacuee',
-        component: EvacueeRegistrationOneComponent,
+        component: RegistrationMakerComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         path: 'register-evacuee/:id',
-        component: EvacueeRegistrationOneComponent,
+        component: RegistrationMakerComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         // the fill is to make it work exactly like the two components replaced.
         path: 'register-evacuee/fill',
-        component: EvacueeRegistrationOneComponent,
+        component: RegistrationMakerComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         // the fill is to make it work exactly like the two components replaced.
         path: 'register-evacuee/fill/:id',
-        component: EvacueeRegistrationOneComponent,
+        component: RegistrationMakerComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
@@ -461,7 +461,7 @@ const routes: Routes = [
   {
     // exception in routing
     path: 'register-evacuee/register-evacuee/fill/:id',
-    component: EvacueeRegistrationOneComponent,
+    component: RegistrationMakerComponent,
   },
   {
     // exception in routing

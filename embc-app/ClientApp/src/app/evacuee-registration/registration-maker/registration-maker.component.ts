@@ -19,11 +19,11 @@ import { AuthService } from 'src/app/core/services/auth.service';
 
 
 @Component({
-  selector: 'app-evacuee-registration-one',
-  templateUrl: './evacuee-registration-one.component.html',
-  styleUrls: ['./evacuee-registration-one.component.scss']
+  selector: 'app-registration-maker',
+  templateUrl: './registration-maker.component.html',
+  styleUrls: ['./registration-maker.component.scss']
 })
-export class EvacueeRegistrationOneComponent implements OnInit {
+export class RegistrationMakerComponent implements OnInit {
   // state needed by this FORM
   countries$ = this.store.select(s => s.lookups.countries.countries);
   regions$ = this.store.select(s => s.lookups.regions);

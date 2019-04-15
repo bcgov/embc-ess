@@ -6,13 +6,13 @@ import { SharedModule } from './../shared/shared.module';
 
 import { EvacueeRegistrationComponent } from './evacuee-registration.component';
 // import { EvacueeRegistrationConfirmationComponent } from './evacuee-registration-confirmation/evacuee-registration-confirmation.component';
-import { EvacueeRegistrationOneComponent } from './evacuee-registration-one/evacuee-registration-one.component';
+import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
 
 @NgModule({
     declarations: [
         EvacueeRegistrationComponent,
         // EvacueeRegistrationConfirmationComponent,
-        EvacueeRegistrationOneComponent,
+        RegistrationMakerComponent,
     ],
     imports: [
         CommonModule,
