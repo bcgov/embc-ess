@@ -15,7 +15,7 @@ import { TesterPageComponent } from './tester-page/tester-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { VolunteerEditorModule } from './volunteer-editor';
-import { EvacueeRegistrationModule } from './evacuee-registration';
+
 import { SelfRegistrationModule } from './self-registration';
 import { SharedModule } from './shared/shared.module';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
@@ -36,6 +36,8 @@ import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.compo
 import { OrganizationMakerComponent } from './organization-maker/organization-maker.component';
 import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
+import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
+import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +62,8 @@ import { VolunteerOrganizationListComponent } from './volunteer-organization-lis
     OrganizationMakerComponent,
     EvacueeSummaryPageComponent,
     VolunteerOrganizationListComponent,
+    RegistrationMakerComponent,
+    EvacueeRegistrationComponent,
   ],
   imports: [
     // angular
@@ -78,7 +82,6 @@ import { VolunteerOrganizationListComponent } from './volunteer-organization-lis
     // app
     AppRoutingModule,
     SelfRegistrationModule,
-    EvacueeRegistrationModule,
     VolunteerEditorModule,
     AdminDashboardModule
   ],
