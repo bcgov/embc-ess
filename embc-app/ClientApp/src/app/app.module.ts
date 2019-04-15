@@ -21,7 +21,6 @@ import { SharedModule } from './shared/shared.module';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
-import { AdminDashboardModule } from './admin-dashboard';
 import { TopNavigationComponent } from './top-navigation/top-navigation.component';
 import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
 import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
@@ -38,6 +37,7 @@ import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summ
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
 import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +64,7 @@ import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-reg
     VolunteerOrganizationListComponent,
     RegistrationMakerComponent,
     EvacueeRegistrationComponent,
+    AdminDashboardComponent,
   ],
   imports: [
     // angular
@@ -83,7 +84,6 @@ import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-reg
     AppRoutingModule,
     SelfRegistrationModule,
     VolunteerEditorModule,
-    AdminDashboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
