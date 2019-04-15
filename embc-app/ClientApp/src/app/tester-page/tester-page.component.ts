@@ -29,9 +29,8 @@ export class TesterPageComponent implements OnInit {
   ) { }
 
   ngOnInit() { }
-  notify(message?: string) {
-    for (let i = 0; i < 10; i++) {
-      this.notifications.addNotification(message || new Date().toString());
-    }
+
+  notify(message?: string, type?: string) {
+    this.notifications.addNotification(message, 6000, type);
   }
 }
