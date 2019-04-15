@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { debounceTime } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Notification, NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 
 @Component({
   selector: 'app-notification-banner',
@@ -11,23 +10,20 @@ export class NotificationBannerComponent implements OnInit {
 
   staticAlertClosed = false;
   successMessage: string;
+  currentNotifications: Notification[];
 
-  notifications = ['qwer', 'tyui', 'asdf'];
+  constructor(
+    private notificationQueueService: NotificationQueueService,
+  ) { }
+
   ngOnInit(): void {
-    // setTimeout(() => this.staticAlertClosed = true, 20000);
-
-    // this._success.subscribe((message) => this.successMessage = message);
-    // this._success.pipe(
-    //   debounceTime(5000)
-    // ).subscribe(() => this.successMessage = null);
+    this.notificationQueueService.notificationQueue.subscribe(n => {
+      this.currentNotifications = n;
+    });
   }
 
-  addAThing() {
-    this.notifications.push("Thing");
-  }
-  close(a: string) {
-    if (this.notifications.indexOf(a) !== -1) {
-      this.notifications.splice(this.notifications.indexOf(a), 1);
-    }
+  close(notification: Notification) {
+    // expire the notification
+    this.notificationQueueService.expireNotification(notification.identifier);
   }
 }

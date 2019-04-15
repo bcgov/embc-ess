@@ -1,13 +1,10 @@
-<nav *ngFor="let notification of notifications" class="navbar navbar-expand  notification-box">
+<nav *ngFor="let notification of currentNotifications" class="navbar navbar-expand  notification-box">
   <ul class="navbar-nav">
-    <li class="mr-4">
-      {{ notification }}
-      <span (click)="close(notification)">X</span>
-
+    <li class="mr-4" (click)="close(notification)">
+      <p class="align-middle">
+        <span class="mr-4">{{notification.message}}</span>
+        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+      </p>
     </li>
   </ul>
-
-
-
 </nav>
-<!-- <button (click)="addAThing()">Add a thing</button> -->
