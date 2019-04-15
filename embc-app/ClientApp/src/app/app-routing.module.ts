@@ -41,6 +41,7 @@ import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
+import { VolunteerDashboardPageComponent } from './home/pages/volunteer/volunteer-dashboard-page/volunteer-dashboard-page.component';
 
 /*
   /
@@ -107,8 +108,8 @@ const routes: Routes = [
     component: TesterPageComponent
   },
   {
-    path: 'test/:id',
-    component: TesterPageComponent
+    path: 'refactor',
+    component: VolunteerDashboardPageComponent
   },
   {
     // TODO: naming this should be "evacuee-self-registration"
