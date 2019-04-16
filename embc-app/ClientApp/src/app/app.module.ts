@@ -43,6 +43,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { EvacueeSearchResultsComponent } from './components/evacuee-search-results/evacuee-search-results.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 
 
 @NgModule({
@@ -55,7 +56,6 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
     VolunteerUsefulInformationComponent,
     EvacueeSummaryComponent,
     TopNavigationComponent,
-    // VolunteerLayoutComponent,
     TaskNumberListComponent,
     VolunteerListComponent,
     EvacueeListComponent,
@@ -75,9 +75,9 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
     EvacueeRegistrationComponent,
     AdminDashboardComponent,
     SessionExpiredComponent,
-    // SearchBarComponent,
     EvacueeSearchResultsComponent,
     SearchBarComponent,
+    PaginationSummaryComponent,
   ],
   imports: [
     // angular

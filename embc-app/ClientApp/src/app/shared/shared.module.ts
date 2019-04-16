@@ -26,7 +26,6 @@ import { ByIdPipe } from './pipes/by-id.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
 import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent, CollectionNoticeComponent } from './components/side-boxes';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +53,6 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     AddUserComponent,
     CollectionNoticeComponent,
     PageNotFoundComponent,
-    PaginationSummaryComponent,
   ],
   imports: [
     CommonModule,
@@ -96,7 +94,6 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     AddTaskNumberComponent,
     AddUserComponent,
     CollectionNoticeComponent,
-    PaginationSummaryComponent,
   ]
 })
 export class SharedModule { }
