@@ -1,0 +1,12 @@
+.error-page {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2rem;
+  padding: 2rem;
+
+  ul.arrow {
+    > li:before {
+      margin-right: 0.8rem;
+    }
+  }
+}

@@ -35,6 +35,7 @@ import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
+import { SessionExpiredComponent } from './session-expired/session-expired.component';
 
 /*
   /
@@ -103,6 +104,10 @@ const routes: Routes = [
   {
     path: 'test/:id',
     component: TesterPageComponent
+  },
+  {
+    path: 'session-expired',
+    component: SessionExpiredComponent
   },
   {
     // TODO: naming this should be "evacuee-self-registration"
