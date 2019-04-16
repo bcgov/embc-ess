@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminTaskNumbersComponent } from './admin-task-numbers.component';
+import { NotificationBannerComponent } from './notification-banner.component';
 
-describe('AdminTaskNumbersComponent', () => {
-  let component: AdminTaskNumbersComponent;
-  let fixture: ComponentFixture<AdminTaskNumbersComponent>;
+describe('NotificationBannerComponent', () => {
+  let component: NotificationBannerComponent;
+  let fixture: ComponentFixture<NotificationBannerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminTaskNumbersComponent ]
+      declarations: [ NotificationBannerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminTaskNumbersComponent);
+    fixture = TestBed.createComponent(NotificationBannerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

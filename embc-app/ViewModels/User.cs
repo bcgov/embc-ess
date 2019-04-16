@@ -19,5 +19,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string accountid { get; set; }
         public string UserType { get; set; }
         public string[] appRoles { get; set; }
+        public int ClientTimeoutWarningInMinutes { get; set; }
+        public int ClientTimeoutWarningDurationInMinutes { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 using Gov.Jag.Embc.Interfaces;
 using Gov.Jag.Embc.Public.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -9,18 +10,19 @@ using System.Security.Claims;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class UsersController : Controller
     {
-        private readonly IConfiguration Configuration;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IConfiguration configuration;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         public UsersController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
-            Configuration = configuration;
-            _httpContextAccessor = httpContextAccessor;
+            this.configuration = configuration;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
-        protected ClaimsPrincipal CurrentUser => _httpContextAccessor.HttpContext.User;
+        protected ClaimsPrincipal CurrentUser => httpContextAccessor.HttpContext.User;
 
         [HttpGet("current")]
         //[RequiresPermission(Permission.Login, Permission.NewUserRegistration)]
@@ -30,7 +32,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             SiteMinderAuthOptions siteMinderAuthOptions = new SiteMinderAuthOptions();
 
             // determine if we are a new registrant.
-            string temp = _httpContextAccessor.HttpContext.Session.GetString("UserSettings");
+            string temp = httpContextAccessor.HttpContext.Session.GetString("UserSettings");
             UserSettings userSettings = JsonConvert.DeserializeObject<UserSettings>(temp);
             ViewModels.User user = new ViewModels.User()
             {
@@ -40,7 +42,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                 businessname = userSettings.BusinessLegalName,
                 name = userSettings.UserDisplayName,
                 UserType = userSettings.UserType,
-                appRoles = userSettings.AppRoles
+                appRoles = userSettings.AppRoles,
+                ClientTimeoutWarningInMinutes = configuration.ClientTimeoutWarningInMinutes(),
+                ClientTimeoutWarningDurationInMinutes = configuration.ClientTimeoutWarningDurationInMinutes()
             };
 
             if (userSettings.IsNewUser)
@@ -52,8 +56,8 @@ namespace Gov.Jag.Embc.Public.Controllers
                 user.firstname = CommonDynamicsExtensions.GetFirstName(user.name);
                 user.accountid = userSettings.AccountId;
 
-                string siteminderBusinessGuid = _httpContextAccessor.HttpContext.Request.Headers[siteMinderAuthOptions.SiteMinderBusinessGuidKey];
-                string siteminderUserGuid = _httpContextAccessor.HttpContext.Request.Headers[siteMinderAuthOptions.SiteMinderUserGuidKey];
+                string siteminderBusinessGuid = httpContextAccessor.HttpContext.Request.Headers[siteMinderAuthOptions.SiteMinderBusinessGuidKey];
+                string siteminderUserGuid = httpContextAccessor.HttpContext.Request.Headers[siteMinderAuthOptions.SiteMinderUserGuidKey];
 
                 user.contactid = string.IsNullOrEmpty(siteminderUserGuid) ? userSettings.ContactId : siteminderUserGuid;
                 user.accountid = string.IsNullOrEmpty(siteminderBusinessGuid) ? userSettings.AccountId : siteminderBusinessGuid;
