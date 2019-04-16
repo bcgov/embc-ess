@@ -6,7 +6,6 @@ import { detectIE10orLower } from './shared/utils';
 import { ControlledListService } from './core/services/controlled-list.service';
 import { AuthService } from './core/services/auth.service';
 import { CookieService } from './core/services/cookie.service';
-import { UnauthorizedInterceptor } from './core/http-interceptors/unauthorized.interceptor';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +21,6 @@ export class AppComponent implements OnInit {
     private lookups: ControlledListService,
     private authService: AuthService,
     private cookies: CookieService,
-    private intercept: UnauthorizedInterceptor
   ) { }
 
   ngOnInit() {
