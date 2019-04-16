@@ -554,7 +554,7 @@ export class RegistrationMakerComponent implements OnInit {
         .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
-          this.notificationQueueService.addNotification("Evacuee added successfully");
+          this.notificationQueueService.addNotification('Evacuee added successfully');
 
           // TODO: there is an exception that if the route is ...com/embcess/register-evacuee it should only go up one instead of 2
           // TODO: It should be fixed but will need a wider refactor for consistency
@@ -568,7 +568,7 @@ export class RegistrationMakerComponent implements OnInit {
         .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
-          this.notificationQueueService.addNotification("Evacuee updated successfully");
+          this.notificationQueueService.addNotification('Evacuee updated successfully');
 
           this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
         });
