@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 
-import { EvacueeSearchResults } from '../interfaces';
 import { Registration } from 'src/app/core/models';
 import { Router, ActivatedRoute } from '@angular/router';
+import { EvacueeSearchResults } from 'src/app/shared/components/search';
 
 // TODO: Rename this
 interface RowItem {
