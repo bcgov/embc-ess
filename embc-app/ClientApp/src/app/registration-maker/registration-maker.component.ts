@@ -5,12 +5,12 @@ import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { AppState } from '../../store';
-import { RegistrationService } from '../../core/services/registration.service';
+import { AppState } from '../store';
+import { RegistrationService } from '../core/services/registration.service';
 import {
   Registration, FamilyMember, isBcAddress, Community, Country, Volunteer, IncidentTask, Address, User
 } from 'src/app/core/models';
-import { IncidentTaskService } from '../../core/services/incident-task.service';
+import { IncidentTaskService } from '../core/services/incident-task.service';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { hasErrors, invalidField, clearFormArray, compareById } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
@@ -19,16 +19,18 @@ import { AuthService } from 'src/app/core/services/auth.service';
 
 
 @Component({
-  selector: 'app-evacuee-registration-one',
-  templateUrl: './evacuee-registration-one.component.html',
-  styleUrls: ['./evacuee-registration-one.component.scss']
+  selector: 'app-registration-maker',
+  templateUrl: './registration-maker.component.html',
+  styleUrls: ['./registration-maker.component.scss']
 })
-export class EvacueeRegistrationOneComponent implements OnInit {
+export class RegistrationMakerComponent implements OnInit {
   // state needed by this FORM
   countries$ = this.store.select(s => s.lookups.countries.countries);
   regions$ = this.store.select(s => s.lookups.regions);
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
   incidentTasks$ = this.incidentTaskService.getIncidentTasks().pipe(map(x => x.data));
+
+  CANADA: Country; // the object representation of the default country
 
   pageTitle = 'Add an Evacuee';
   activeForm = true; // this lets the user fill things out
@@ -164,6 +166,17 @@ export class EvacueeRegistrationOneComponent implements OnInit {
   }
 
   ngOnInit() {
+    // fetch the default country
+    this.countries$.subscribe((countries: Country[]) => {
+      // the only(first) element that is named Canada
+      countries.forEach((country: Country) => {
+        // if the canada is not set and we found one in the list
+        if (country.name === 'Canada') {
+          this.CANADA = country;
+        }
+      });
+    });
+
     // Create form controls
     this.initForm();
 
@@ -524,10 +537,8 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     }
   }
   submit() {
-    // The user now consents.
-    this.registration.declarationAndConsent = true;
+    // alert(this.registration.headOfHousehold.primaryResidence.country.name);
     // Send data to the server
-
     this.submitted = true;
     // in transmission
     this.submitting = true;
@@ -653,8 +664,19 @@ export class EvacueeRegistrationOneComponent implements OnInit {
     // the initial completed by volunteer is preserved unless there is a new volunteer
     r.completedBy = r.completedBy || volunteer;
 
-    // save the registration to the application state
-    // this.store.dispatch(new UpdateRegistration({ registration: r }));
+    // The user now consents.
+    r.declarationAndConsent = true;
+
+    // if there was no primary address country set by the form before submission
+    if (!r.headOfHousehold.primaryResidence.country) {
+      r.headOfHousehold.primaryResidence.country = this.CANADA;
+    }
+    // the user included a mailing address but the form did not set the country
+    if (r.headOfHousehold.mailingAddress && !r.headOfHousehold.mailingAddress.country) {
+      r.headOfHousehold.mailingAddress.country = this.CANADA;
+    }
+
+    // return the registration
     return r;
   }
   // --------------------HELPERS-----------------------------------------

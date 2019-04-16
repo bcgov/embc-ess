@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeaheadModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { MaterialModule } from './material.module';
 import { WarningBannerComponent } from './components/warning-banner/warning-banner.component';
+import { NotificationBannerComponent } from './components/notification-banner/notification-banner.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SideBoxComponent } from './components/side-box/side-box.component';
@@ -31,6 +32,7 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
 @NgModule({
   declarations: [
     WarningBannerComponent,
+    NotificationBannerComponent,
     HeaderComponent,
     FooterComponent,
     SideBoxComponent,
@@ -63,6 +65,7 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     FormsModule,
     ReactiveFormsModule,
     NgbTypeaheadModule,
+    NgbAlertModule,
     MaterialModule,
   ],
   exports: [
@@ -74,6 +77,7 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
 
     // components, pipes, etc
     WarningBannerComponent,
+    NotificationBannerComponent,
     HeaderComponent,
     FooterComponent,
     SideBoxComponent,

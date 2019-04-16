@@ -1,9 +1,11 @@
 <div class="row">
   <div class="col clearfix">
-    <ngb-pagination [collectionSize]="120" [(page)]="page" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+    <!-- <ngb-pagination [collectionSize]="120" [(page)]="page" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination> -->
+    <!-- <app-notification-banner></app-notification-banner> -->
   </div>
-  <!-- <div class="col">
-    <app-organization-maker>
-    </app-organization-maker>
-  </div> -->
+  <div class="col">
+    <button (click)="notify('Warning!','warning')">Warning</button>
+    <button (click)="notify('Danger!','danger')">Danger</button>
+    <button (click)="notify('Success!','success')">Success</button>
+  </div>
 </div>

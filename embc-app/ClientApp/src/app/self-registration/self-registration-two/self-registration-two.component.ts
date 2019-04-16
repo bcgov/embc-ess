@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { takeWhile } from 'rxjs/operators';
 
 import { AppState } from 'src/app/store';
-import { Registration } from 'src/app/core/models';
+import { Registration, Country } from 'src/app/core/models';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { hasErrors, invalidField } from 'src/app/shared/utils';
@@ -19,6 +19,9 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
 
   // state needed by this FORM
   currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
+  countries$ = this.store.select(s => s.lookups.countries.countries);
+
+  CANADA: Country; // default country object
 
   form: FormGroup;
   submitted = false;
@@ -84,6 +87,17 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
 
   // Shortcuts for this.form.get(...)
   ngOnInit() {
+    // fetch the default country
+    this.countries$.subscribe((countries: Country[]) => {
+      // the only(first) element that is named Canada
+      countries.forEach((country: Country) => {
+        // if the canada is not set and we found one in the list
+        if (!this.CANADA && country.name === 'Canada') {
+          this.CANADA = country;
+        }
+      });
+    });
+
     // Create form controls
     this.initForm();
 
@@ -93,7 +107,14 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
     // Update form values based on the state
     this.currentRegistration$
       .pipe(takeWhile(() => this.componentActive))
-      .subscribe(value => this.displayRegistration(value));
+      .subscribe(value => {
+        if (!value) {
+          // you shouldn't be here without registration data (redirect to step-1)
+          this.router.navigate(['../step-1'], { relativeTo: this.route });
+          return;
+        }
+        this.displayRegistration(value);
+      });
   }
 
   ngOnDestroy(): void {
@@ -200,6 +221,14 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
       ...this.registration,
       ...this.form.value
     };
+    // if there was no primary address country set by the form before submission
+    if (!registration.headOfHousehold.primaryResidence.country) {
+      registration.headOfHousehold.primaryResidence.country = this.CANADA;
+    }
+    // the user included a mailing address but the form did not set the country
+    if (registration.headOfHousehold.mailingAddress && !registration.headOfHousehold.mailingAddress.country) {
+      registration.headOfHousehold.mailingAddress.country = this.CANADA;
+    }
     this.store.dispatch(new UpdateRegistration({ registration }));
   }
 }

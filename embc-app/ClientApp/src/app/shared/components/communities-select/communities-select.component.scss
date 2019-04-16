@@ -7,7 +7,7 @@
 }
 
 :host.is-invalid input {
-  border-color: #dc3545;
+  border-color:var(--danger);
 }
 
 div {

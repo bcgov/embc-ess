@@ -1,9 +1,9 @@
 <div *ngIf="maker">
   <div class="mb-4">
-    <h1 *ngIf="!isProvincialAdmin && editMode === false">Add ESS User(s)</h1>
-    <h1 *ngIf="!isProvincialAdmin && editMode === true">Edit ESS User Details</h1>
+    <h1 *ngIf="!isProvincialAdmin && editMode === false">Add Emergency Support Services User(s)</h1>
+    <h1 *ngIf="!isProvincialAdmin && editMode === true">Edit Emergency Support Services User Details</h1>
     <h1 *ngIf="isProvincialAdmin && editMode === false">Add User(s)</h1>
-    <h1 *ngIf="isProvincialAdmin && editMode === true">Edit ESS User Details</h1>
+    <h1 *ngIf="isProvincialAdmin && editMode === true">Edit Emergency Support Services User Details</h1>
 
     <p class="pb-3" *ngIf="isProvincialAdmin">
       Administrators can add users within an organization if they have their first name, last name, role, and BCeID.
@@ -65,7 +65,7 @@
           <div class="form-check">
             <label class="form-check-label" for="isAdministratorFalse">
               <input class="form-check-input" type="radio" [formControl]="isAdministrator" id="isAdministratorFalse" [value]="false">
-              <span class="pl-3">ESS User</span>
+              <span class="pl-3">Emergency Support Services User</span>
             </label>
           </div>
           <div class="form-check">
@@ -114,7 +114,7 @@
     <h1 class="mt-3">Review Details</h1>
     <p>Please confirm that all details you entered are correct by reading through the summary below.</p>
     <section class="p-3">
-      <h3>ESS User Details</h3>
+      <h3>Emergency Support Services User Details</h3>
       <ul class="summary">
         <li *ngIf="isProvincialAdmin">
           <span class="name">Organization:</span>

@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 // ngrx + configuration
 import { AppComponent } from './app.component';
@@ -12,21 +12,17 @@ import { rootReducer, metaReducers } from './store';
 import { HomeComponent } from './home/home.component';
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
-
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { VolunteerEditorModule } from './volunteer-editor';
-import { EvacueeRegistrationModule } from './evacuee-registration';
+
 import { SelfRegistrationModule } from './self-registration';
 import { SharedModule } from './shared/shared.module';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
-import { AdminAddTaskNumberModule } from './admin-add-task-number';
-import { AdminDashboardModule } from './admin-dashboard';
 import { TopNavigationComponent } from './top-navigation/top-navigation.component';
-import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
-import { AdminTaskNumbersComponent } from './admin-task-numbers/admin-task-numbers.component';
+// import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
 import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
 import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
@@ -39,6 +35,9 @@ import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.compo
 import { OrganizationMakerComponent } from './organization-maker/organization-maker.component';
 import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
+import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
+import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -50,8 +49,7 @@ import { VolunteerOrganizationListComponent } from './volunteer-organization-lis
     VolunteerUsefulInformationComponent,
     EvacueeSummaryComponent,
     TopNavigationComponent,
-    VolunteerLayoutComponent,
-    AdminTaskNumbersComponent,
+    // VolunteerLayoutComponent,
     TaskNumberListComponent,
     VolunteerListComponent,
     EvacueeListComponent,
@@ -64,6 +62,9 @@ import { VolunteerOrganizationListComponent } from './volunteer-organization-lis
     OrganizationMakerComponent,
     EvacueeSummaryPageComponent,
     VolunteerOrganizationListComponent,
+    RegistrationMakerComponent,
+    EvacueeRegistrationComponent,
+    AdminDashboardComponent,
   ],
   imports: [
     // angular
@@ -71,9 +72,11 @@ import { VolunteerOrganizationListComponent } from './volunteer-organization-lis
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbPaginationModule,
+
     // 3rd party
     StoreModule.forRoot(rootReducer, { metaReducers }),
+    NgbPaginationModule,
+    NgbAlertModule,
 
     // core & shared
     CoreModule,
@@ -82,10 +85,7 @@ import { VolunteerOrganizationListComponent } from './volunteer-organization-lis
     // app
     AppRoutingModule,
     SelfRegistrationModule,
-    EvacueeRegistrationModule,
     VolunteerEditorModule,
-    AdminAddTaskNumberModule,
-    AdminDashboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

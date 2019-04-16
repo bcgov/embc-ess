@@ -15,6 +15,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result.AddressLine2 = source.AddressLine2;
                 result.AddressLine3 = source.AddressLine3;
                 result.PostalCode = source.PostalCode;
+                result.Province = source.Province;
+                result.Country = source.Country?.ToViewModel();
 
                 if (source is Models.Db.BcAddress sourceBc)
                 {
@@ -25,8 +27,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 {
                     result.AddressSubtype = Models.Db.Address.OTHER_ADDRESS;
                     result.City = sourceOther.City;
-                    result.Province = sourceOther.Province;
-                    result.Country = sourceOther.Country.ToViewModel();
                 }
             }
             return result;
@@ -42,6 +42,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result.AddressLine2 = source.AddressLine2;
                 result.AddressLine3 = source.AddressLine3;
                 result.PostalCode = source.PostalCode;
+                result.Province = source.Province;
+                result.CountryId = Guid.Parse(source.Country.Id);
+
                 if (source.Id != null)
                 {
                     result.Id = Guid.Parse(source.Id);
@@ -55,8 +58,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 {
                     var resultOther = result as Models.Db.OtherAddress;
                     resultOther.City = source.City;
-                    resultOther.Province = source.Province;
-                    resultOther.CountryId = Guid.Parse(source.Country.Id);
                 }
             }
             return result;

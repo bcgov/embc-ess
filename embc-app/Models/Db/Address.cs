@@ -43,6 +43,12 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string AddressLine3 { get; set; }
 
         public string PostalCode { get; set; }
+
+        public string Province { get; set; }
+
+        public Guid CountryId { get; set; }
+
+        public Country Country { get; set; }
     }
 
     public partial class BcAddress : Address
@@ -60,12 +66,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
     public partial class OtherAddress : Address
     {
         public string City { get; set; }
-
-        public string Province { get; set; }
-
-        public Guid CountryId { get; set; }
-
-        public Country Country { get; set; }
 
         public OtherAddress()
         {
