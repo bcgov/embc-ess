@@ -5,12 +5,12 @@ import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { AppState } from '../../store';
-import { RegistrationService } from '../../core/services/registration.service';
+import { AppState } from '../store';
+import { RegistrationService } from '../core/services/registration.service';
 import {
   Registration, FamilyMember, isBcAddress, Community, Country, Volunteer, IncidentTask, Address, User
 } from 'src/app/core/models';
-import { IncidentTaskService } from '../../core/services/incident-task.service';
+import { IncidentTaskService } from '../core/services/incident-task.service';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { hasErrors, invalidField, clearFormArray, compareById } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
@@ -19,11 +19,11 @@ import { AuthService } from 'src/app/core/services/auth.service';
 
 
 @Component({
-  selector: 'app-evacuee-registration-one',
-  templateUrl: './evacuee-registration-one.component.html',
-  styleUrls: ['./evacuee-registration-one.component.scss']
+  selector: 'app-registration-maker',
+  templateUrl: './registration-maker.component.html',
+  styleUrls: ['./registration-maker.component.scss']
 })
-export class EvacueeRegistrationOneComponent implements OnInit {
+export class RegistrationMakerComponent implements OnInit {
   // state needed by this FORM
   countries$ = this.store.select(s => s.lookups.countries.countries);
   regions$ = this.store.select(s => s.lookups.regions);

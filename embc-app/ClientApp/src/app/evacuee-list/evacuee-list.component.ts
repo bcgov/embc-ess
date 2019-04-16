@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User, ListResult, Registration, PaginationSummary } from '../core/models';
+import { ListResult, Registration, PaginationSummary } from '../core/models';
 import { Observable } from 'rxjs';
 import { EvacueeSearchResults, SearchQueryParameters } from '../shared/components/search';
 import { RegistrationService } from '../core/services/registration.service';
