@@ -22,7 +22,7 @@ import { LoggedInGuard } from './core/guards/logged-in.guard';
 import { RoleGuard } from './core/guards/role.guard';
 import { RedirectGuard } from './core/guards/redirect.guard';
 import { VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from './constants';
-import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
+// import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
 import { LandingPageGuard } from './core/guards/landing-page.guard';
 import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
 import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
@@ -172,7 +172,7 @@ const routes: Routes = [
   // VOLUNTEER routes
   {
     path: 'volunteer',
-    component: VolunteerLayoutComponent,
+    // component: VolunteerLayoutComponent,
     canActivate: [LoggedInGuard],
     canActivateChild: [RoleGuard],
     data: { expectedRole: VOLUNTEER },
@@ -250,7 +250,7 @@ const routes: Routes = [
   // LOCAL_AUTHORITY routes
   {
     path: 'local-authority',
-    component: VolunteerLayoutComponent,
+    component: VolunteerDashboardComponent,
     canActivate: [LoggedInGuard],
     canActivateChild: [RoleGuard],
     children: [

@@ -22,7 +22,7 @@ import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volu
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
 import { TopNavigationComponent } from './top-navigation/top-navigation.component';
-import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
+// import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
 import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
 import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
@@ -49,7 +49,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     VolunteerUsefulInformationComponent,
     EvacueeSummaryComponent,
     TopNavigationComponent,
-    VolunteerLayoutComponent,
+    // VolunteerLayoutComponent,
     TaskNumberListComponent,
     VolunteerListComponent,
     EvacueeListComponent,
