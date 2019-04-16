@@ -1,5 +1,6 @@
 <span *ngFor="let notification of currentNotifications">
   <div *ngIf="notification.type==='danger'" class="alert alert-danger alert-dismissible mb-1" role="alert">
+    <i class="fas fa-exclamation-circle mr-2"></i>
     <strong>{{notification.message}}</strong>
     <button (click)="close(notification)" type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">
@@ -8,6 +9,7 @@
     </button>
   </div>
   <div *ngIf="notification.type==='warning'" class="alert alert-warning alert-dismissible mb-1" role="alert">
+    <i class="fas fa-exclamation-triangle mr-2"></i>
     <strong>{{notification.message}}</strong>
     <button (click)="close(notification)" type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">
@@ -16,6 +18,7 @@
     </button>
   </div>
   <div *ngIf="notification.type==='success'" class="alert alert-success alert-dismissible mb-1" role="alert">
+    <i class="fas fa-check-circle mr-2"></i>
     <strong>{{notification.message}}</strong>
     <button (click)="close(notification)" type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">
