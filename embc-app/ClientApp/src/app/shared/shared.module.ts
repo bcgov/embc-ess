@@ -19,7 +19,6 @@ import { DisableControlDirective } from './directives/disable-control.directive'
 import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
 import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
-import { SearchBarComponent } from './components/search/';
 import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
 
 import { YesNoPipe } from './pipes/yes-no.pipe';
@@ -45,8 +44,6 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     FontAwesomeIconComponent,
     FontAwesomeLinkComponent,
     AttentionIconComponent,
-    SearchBarComponent,
-    // EvacueeSearchResultsComponent,
     CommunitiesSelectComponent,
     YesNoPipe,
     ByIdPipe,
@@ -90,8 +87,6 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     FontAwesomeIconComponent,
     FontAwesomeLinkComponent,
     AttentionIconComponent,
-    SearchBarComponent,
-    // EvacueeSearchResultsComponent,
     CommunitiesSelectComponent,
     YesNoPipe,
     ByIdPipe,

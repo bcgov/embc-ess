@@ -42,6 +42,7 @@ import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-reg
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { EvacueeSearchResultsComponent } from './components/evacuee-search-results/evacuee-search-results.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
 
 
 @NgModule({
@@ -76,6 +77,7 @@ import { EvacueeSearchResultsComponent } from './components/evacuee-search-resul
     SessionExpiredComponent,
     // SearchBarComponent,
     EvacueeSearchResultsComponent,
+    SearchBarComponent,
   ],
   imports: [
     // angular
