@@ -6,7 +6,7 @@ import { switchMap, tap } from 'rxjs/operators';
 
 import { AuthService } from '../core/services/auth.service';
 import { OrganizationService } from '../core/services/organization.service';
-import { VolunteerService, VolunteerSearchQueryParameters } from '../core/services/volunteer.service';
+import { VolunteerService } from '../core/services/volunteer.service';
 import { ListResult, Volunteer, PaginationSummary, User, Organization } from '../core/models';
 
 @Component({

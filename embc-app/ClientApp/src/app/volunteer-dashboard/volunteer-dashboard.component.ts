@@ -4,8 +4,8 @@ import { RegistrationService } from '../core/services/registration.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { EvacueeSearchResults, SearchQueryParameters } from '../shared/components/search';
 import { AuthService } from '../core/services/auth.service';
+import { EvacueeSearchResults, SearchQueryParameters } from '../core/models/search-interfaces';
 
 interface Stub {
   id?: string; // the guid to link them to their file

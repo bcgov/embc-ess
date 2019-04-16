@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { VolunteerService } from '../core/services/volunteer.service';
-import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SearchQueryParameters } from '../shared/components/search';
 import { ListResult, Volunteer } from '../core/models';
-// import { }
+
 @Component({
   selector: 'app-volunteer-team-dashboard',
   templateUrl: './volunteer-team-dashboard.component.html',

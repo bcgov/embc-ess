@@ -6,7 +6,7 @@ import { CoreModule } from '../core.module';
 import { Volunteer, ListResult } from '../models';
 import { RestService } from './rest.service';
 import { HttpResponse } from '@angular/common/http';
-import { SearchQueryParameters } from 'src/app/shared/components/search';
+import { SearchQueryParameters } from '../models/search-interfaces';
 
 export interface VolunteerSearchQueryParameters extends SearchQueryParameters {
   org_id?: string;

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ListResult, Registration, PaginationSummary } from '../core/models';
 import { Observable } from 'rxjs';
-import { EvacueeSearchResults, SearchQueryParameters } from '../shared/components/search';
 import { RegistrationService } from '../core/services/registration.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/services/auth.service';
 import { map } from 'rxjs/operators';
+import { EvacueeSearchResults, SearchQueryParameters } from '../core/models/search-interfaces';
 
 @Component({
   selector: 'app-evacuee-list',

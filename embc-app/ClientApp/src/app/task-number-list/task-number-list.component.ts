@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ListResult, IncidentTask, PaginationSummary, Community } from '../core/models';
 import { IncidentTaskService } from '../core/services/incident-task.service';
-import { SearchQueryParameters } from '../shared/components/search';
+import { SearchQueryParameters } from '../core/models/search-interfaces';
 
 @Component({
   selector: 'app-task-number-list',

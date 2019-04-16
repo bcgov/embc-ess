@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import { ListResult, Organization, Community, PaginationSummary } from '../core/models';
 import { OrganizationService } from '../core/services/organization.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { SearchQueryParameters } from '../shared/components/search';
+import { SearchQueryParameters } from '../core/models/search-interfaces';
 
 // TODO: Un-comment code below when we are ready to aggregate all communities + regions in a single drop-down
 // interface SearchFilter {
