@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 // ngrx + configuration
 import { AppComponent } from './app.component';
@@ -72,9 +72,11 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbPaginationModule,
+
     // 3rd party
     StoreModule.forRoot(rootReducer, { metaReducers }),
+    NgbPaginationModule,
+    NgbAlertModule,
 
     // core & shared
     CoreModule,
