@@ -1,4 +1,4 @@
-﻿[
+[
     {
         "taskNumber": "123456",
         "details": "Flooding in Victoria",
@@ -9,7 +9,7 @@
     },
     {
         "taskNumber": "789012",
-        "details": "Wildfires in a Regional Distric",
+        "details": "Wildfires in a Regional District",
         "active": true,
         "regionalDistrict": {
             "name": "Capital Region"

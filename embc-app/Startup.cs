@@ -144,7 +144,6 @@ namespace Gov.Jag.Embc.Public
             // add a data interface
 
             services.AddTransient<IDataInterface, DataInterface>();
-            services.AddTransient<ISeederRepository, SeederRepository>();
 
             // Enable the IURLHelper to be able to build links within Controllers
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -155,7 +154,6 @@ namespace Gov.Jag.Embc.Public
                 return factory.GetUrlHelper(actionContext);
             });
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<EmbcSeeder>();
         }
 
         private void SetupDynamics(IServiceCollection services)
@@ -229,16 +227,9 @@ namespace Gov.Jag.Embc.Public
                 // run the database seeders
                 log.LogInformation("Adding/Updating seed data ...");
 
-                //Create a scope outside of the standard web server, which will only exist for the seeding
-                //of the database, which will only occur when the web server is started.
-                //This scope won't be affect or affect scopes of the EF activity
-                //var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
-                using(IServiceScope scope = app.ApplicationServices.CreateScope())
-                {
-                    //Get the seeder within this scope
-                    var seeder = scope.ServiceProvider.GetService<EmbcSeeder>();
-                    seeder.SeedData();
-                }  //Scope will be closed once seeding is completed
+                ISeederRepository seederRepository = new SeederRepository(adminCtx);
+                var seeder = new EmbcSeeder(loggerFactory, seederRepository);
+                seeder.SeedData();
 
                 log.LogInformation("Seeding operations are complete.");
             }

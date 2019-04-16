@@ -13,14 +13,18 @@ namespace Gov.Jag.Embc.Public.Seeder
         {
             try
             {
-                var fileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Seeder/SeedData" + Path.DirectorySeparatorChar + $"{seedDataFileName}.json");
-                string json = File.ReadAllText(fileName);
-                var result = JsonConvert.DeserializeObject<T>(json);
-                return result;
+                var assembly = Assembly.GetExecutingAssembly();
+                using (var stream = assembly.GetManifestResourceStream($"Gov.Jag.Embc.Public.Seeder.SeedData.{seedDataFileName}.json"))
+                using (var reader = new StreamReader(stream))
+                {
+                    string json = reader.ReadToEnd();
+                    var result = JsonConvert.DeserializeObject<T>(json);
+                    return result;
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception($"SeedDataLoader json file structure error!{Environment.NewLine}{ex.Message}");
+                throw new Exception($"{seedDataFileName}.json file structure error!{Environment.NewLine}{ex.Message}");
             }
         }
     }

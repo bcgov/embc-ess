@@ -51,9 +51,49 @@
 
 
   <ItemGroup>
+    <Content Remove="Seeder\SeedData\Communities.json" />
+    <Content Remove="Seeder\SeedData\Countries.json" />
+    <Content Remove="Seeder\SeedData\FamilyRelationshipTypes.json" />
+    <Content Remove="Seeder\SeedData\IncidentTasks.json" />
+    <Content Remove="Seeder\SeedData\Organizations.json" />
+    <Content Remove="Seeder\SeedData\RegionalDistricts.json" />
+    <Content Remove="Seeder\SeedData\Regions.json" />
+    <Content Remove="Seeder\SeedData\Volunteers.json" />
+  </ItemGroup>
+
+
+  <ItemGroup>
     <None Remove="Seeder\SeedData\IncidentTasks.json.todrop" />
     <None Remove="Seeder\SeedData\Organizations.json.todrop" />
     <None Remove="Seeder\SeedData\RegionalDistricts.json.todrop" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <EmbeddedResource Include="Seeder\SeedData\Communities.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Seeder\SeedData\Countries.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Seeder\SeedData\FamilyRelationshipTypes.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Seeder\SeedData\IncidentTasks.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Seeder\SeedData\Organizations.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Seeder\SeedData\RegionalDistricts.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Seeder\SeedData\Regions.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Seeder\SeedData\Volunteers.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -84,33 +124,6 @@
 
   <ItemGroup>
     <Content Update="SeedData\*.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="Seeder\SeedData\Communities.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Seeder\SeedData\Countries.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Seeder\SeedData\FamilyRelationshipTypes.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Seeder\SeedData\IncidentTasks.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Seeder\SeedData\Organizations.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Seeder\SeedData\RegionalDistricts.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Seeder\SeedData\Regions.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Seeder\SeedData\Volunteers.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

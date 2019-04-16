@@ -1,20 +1,26 @@
-﻿[
-  {
-    "Name": "Vancouver Island"
-  },
-  {
-    "Name": "South West"
-  },
-  {
-    "Name": "Central"
-  },
-  {
-    "Name": "South East"
-  },
-  {
-    "Name": "North East"
-  },
-  {
-    "Name": "North West"
-  }
+[
+    {
+        "Name": "Vancouver Island",
+        "Active": true
+    },
+    {
+        "Name": "South West",
+        "Active": true
+    },
+    {
+        "Name": "Central",
+        "Active": true
+    },
+    {
+        "Name": "South East",
+        "Active": true
+    },
+    {
+        "Name": "North East",
+        "Active": true
+    },
+    {
+        "Name": "North West",
+        "Active": true
+    }
 ]

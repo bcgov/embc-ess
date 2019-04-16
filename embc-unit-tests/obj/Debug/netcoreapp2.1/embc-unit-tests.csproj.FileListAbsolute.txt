@@ -14,6 +14,9 @@ C:\source\ess\embc-ess\embc-unit-tests\obj\Debug\netcoreapp2.1\embc-unit-tests.c
 C:\source\ess\embc-ess\embc-unit-tests\obj\Debug\netcoreapp2.1\embc-unit-tests.AssemblyInfoInputs.cache
 C:\source\ess\embc-ess\embc-unit-tests\obj\Debug\netcoreapp2.1\embc-unit-tests.AssemblyInfo.cs
 C:\source\ess\embc-ess\embc-unit-tests\obj\Debug\netcoreapp2.1\embc-unit-tests.csproj.CopyComplete
+C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\embc-unit-tests.pdb
+C:\source\ess\embc-ess\embc-unit-tests\obj\Debug\netcoreapp2.1\embc-unit-tests.dll
+C:\source\ess\embc-ess\embc-unit-tests\obj\Debug\netcoreapp2.1\embc-unit-tests.pdb
 C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\SeedData\Communities.json
 C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\SeedData\Countries.json
 C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\SeedData\FamilyRelationshipTypes.json
@@ -22,14 +25,3 @@ C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\SeedData\Organiza
 C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\SeedData\RegionalDistricts.json
 C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\SeedData\Regions.json
 C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\SeedData\Volunteers.json
-C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\Seeder\SeedData\Communities.json
-C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\Seeder\SeedData\Countries.json
-C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\Seeder\SeedData\FamilyRelationshipTypes.json
-C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\Seeder\SeedData\IncidentTasks.json
-C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\Seeder\SeedData\Organizations.json
-C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\Seeder\SeedData\RegionalDistricts.json
-C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\Seeder\SeedData\Regions.json
-C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\Seeder\SeedData\Volunteers.json
-C:\source\ess\embc-ess\embc-unit-tests\bin\Debug\netcoreapp2.1\embc-unit-tests.pdb
-C:\source\ess\embc-ess\embc-unit-tests\obj\Debug\netcoreapp2.1\embc-unit-tests.dll
-C:\source\ess\embc-ess\embc-unit-tests\obj\Debug\netcoreapp2.1\embc-unit-tests.pdb
