@@ -36,6 +36,7 @@ import { VolunteerUsefulInformationComponent } from './volunteer-useful-informat
 import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
 import { VolunteerDashboardPageComponent } from './home/pages/volunteer/volunteer-dashboard-page/volunteer-dashboard-page.component';
+import { SessionExpiredComponent } from './session-expired/session-expired.component';
 
 /*
   /
@@ -104,6 +105,10 @@ const routes: Routes = [
   {
     path: 'refactor',
     component: VolunteerDashboardPageComponent
+  },
+  {
+    path: 'session-expired',
+    component: SessionExpiredComponent
   },
   {
     // TODO: naming this should be "evacuee-self-registration"
