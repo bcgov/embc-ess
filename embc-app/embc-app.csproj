@@ -49,10 +49,11 @@
     <None Remove="Test\**" />
   </ItemGroup>
 
+
   <ItemGroup>
-    <Content Include="SeedData\IncidentTasks.json.todrop" />
-    <Content Include="SeedData\Organizations.json.todrop" />
-    <Content Include="SeedData\RegionalDistricts.json.todrop" />
+    <None Remove="Seeder\SeedData\IncidentTasks.json.todrop" />
+    <None Remove="Seeder\SeedData\Organizations.json.todrop" />
+    <None Remove="Seeder\SeedData\RegionalDistricts.json.todrop" />
   </ItemGroup>
 
   <ItemGroup>
@@ -83,6 +84,33 @@
 
   <ItemGroup>
     <Content Update="SeedData\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Seeder\SeedData\Communities.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Seeder\SeedData\Countries.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Seeder\SeedData\FamilyRelationshipTypes.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Seeder\SeedData\IncidentTasks.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Seeder\SeedData\Organizations.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Seeder\SeedData\RegionalDistricts.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Seeder\SeedData\Regions.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Seeder\SeedData\Volunteers.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
