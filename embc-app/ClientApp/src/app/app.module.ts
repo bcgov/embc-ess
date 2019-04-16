@@ -34,9 +34,9 @@ import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.compo
 import { OrganizationMakerComponent } from './organization-maker/organization-maker.component';
 import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
-import { LayoutMainComponent } from './home/components/layout-main/layout-main.component';
-import { LayoutSideComponent } from './home/components/layout-side/layout-side.component';
-import { VolunteerDashboardPageComponent } from './home/pages/volunteer/volunteer-dashboard-page/volunteer-dashboard-page.component';
+import { LayoutMainComponent } from './components/layout-main/layout-main.component';
+import { LayoutSideComponent } from './components/layout-side/layout-side.component';
+import { VolunteerDashboardPageComponent } from './pages/volunteer/volunteer-dashboard-page/volunteer-dashboard-page.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
 import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';

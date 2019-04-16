@@ -35,7 +35,7 @@ import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
-import { VolunteerDashboardPageComponent } from './home/pages/volunteer/volunteer-dashboard-page/volunteer-dashboard-page.component';
+import { VolunteerDashboardPageComponent } from './pages/volunteer/volunteer-dashboard-page/volunteer-dashboard-page.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 
 /*
