@@ -1,7 +1,7 @@
 <!-- No navbar (default state) -->
 
 <!-- Volunteer navbar -->
-<nav *ngIf="role==='role_volunteer'" class=" navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
+<nav *ngIf="role==='role_volunteer'" class=" navbar navbar-default navbar-expand navbar-footer navbar-static-bottom mb-0">
   <ul class="navbar-nav">
     <li class="mr-4">
       <a routerLink="volunteer/evacuees" title="Go Home">Home</a>
@@ -16,7 +16,7 @@
 </nav>
 
 <!-- Local authority navbar -->
-<nav *ngIf="role==='role_local_authority'" class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
+<nav *ngIf="role==='role_local_authority'" class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom mb-0">
   <ul class="navbar-nav">
     <li class="mr-4">
       <a routerLink="/" title="Go Home">Home</a>
@@ -38,7 +38,7 @@
 </nav>
 
 <!-- Administrator navbar -->
-<nav *ngIf="role==='role_provincial_admin'" class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom">
+<nav *ngIf="role==='role_provincial_admin'" class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom mb-0">
   <ul class="navbar-nav">
     <li class="mr-4">
       <a routerLink="/" title="Go Home">Home</a>
