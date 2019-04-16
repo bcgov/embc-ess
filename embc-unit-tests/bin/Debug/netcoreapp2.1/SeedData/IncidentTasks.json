@@ -1,0 +1,26 @@
+﻿[
+    {
+        "taskNumber": "123456",
+        "details": "Flooding in Victoria",
+        "active": true,
+        "community": {
+            "name": "Victoria"
+        }
+    },
+    {
+        "taskNumber": "789012",
+        "details": "Wildfires in a Regional Distric",
+        "active": true,
+        "regionalDistrict": {
+            "name": "Capital Region"
+        }
+    },
+    {
+        "taskNumber": "456789",
+        "details": "Major Emergency in an EMBC Region",
+        "active": true,
+        "region": {
+            "name": "Vancouver Island"
+        }
+    }
+]

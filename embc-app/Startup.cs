@@ -4,6 +4,7 @@ using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Authorization;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models;
+using Gov.Jag.Embc.Public.Seeder;
 using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -143,6 +144,7 @@ namespace Gov.Jag.Embc.Public
             // add a data interface
 
             services.AddTransient<IDataInterface, DataInterface>();
+            services.AddTransient<ISeederRepository, SeederRepository>();
 
             // Enable the IURLHelper to be able to build links within Controllers
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -153,6 +155,7 @@ namespace Gov.Jag.Embc.Public
                 return factory.GetUrlHelper(actionContext);
             });
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<EmbcSeeder>();
         }
 
         private void SetupDynamics(IServiceCollection services)
@@ -226,8 +229,17 @@ namespace Gov.Jag.Embc.Public
                 // run the database seeders
                 log.LogInformation("Adding/Updating seed data ...");
 
-                SeedFactory<EmbcDbContext> seederFactory = new SeedFactory<EmbcDbContext>(Configuration, env, loggerFactory);
-                seederFactory.Seed(adminCtx);
+                //Create a scope outside of the standard web server, which will only exist for the seeding
+                //of the database, which will only occur when the web server is started.
+                //This scope won't be affect or affect scopes of the EF activity
+                //var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
+                using(IServiceScope scope = app.ApplicationServices.CreateScope())
+                {
+                    //Get the seeder within this scope
+                    var seeder = scope.ServiceProvider.GetService<EmbcSeeder>();
+                    seeder.SeedData();
+                }  //Scope will be closed once seeding is completed
+
                 log.LogInformation("Seeding operations are complete.");
             }
             catch (Exception e)
