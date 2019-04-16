@@ -16,6 +16,7 @@ import { hasErrors, invalidField, clearFormArray, compareById } from 'src/app/sh
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { NotificationQueueService } from '../core/services/notification-queue.service';
 
 
 @Component({
@@ -77,6 +78,7 @@ export class RegistrationMakerComponent implements OnInit {
     private incidentTaskService: IncidentTaskService,
     private router: Router,
     private authService: AuthService,
+    private notificationQueueService: NotificationQueueService
   ) {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
@@ -555,6 +557,7 @@ export class RegistrationMakerComponent implements OnInit {
           // TODO: there is an exception that if the route is ...com/embcess/register-evacuee it should only go up one instead of 2
           // TODO: It should be fixed but will need a wider refactor for consistency
 
+          this.notificationQueueService.addNotification("Evacuee added successfully");
           // if the parameters are on the end of the URL we need to route towards root once more
           this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
         });
