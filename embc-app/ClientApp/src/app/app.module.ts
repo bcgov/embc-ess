@@ -38,6 +38,7 @@ import { VolunteerOrganizationListComponent } from './volunteer-organization-lis
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
 import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { SessionExpiredComponent } from './session-expired/session-expired.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     RegistrationMakerComponent,
     EvacueeRegistrationComponent,
     AdminDashboardComponent,
+    SessionExpiredComponent,
   ],
   imports: [
     // angular
