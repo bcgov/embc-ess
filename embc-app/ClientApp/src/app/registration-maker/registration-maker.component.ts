@@ -553,11 +553,11 @@ export class RegistrationMakerComponent implements OnInit {
         .createRegistration(this.registration)
         .subscribe(() => {
           this.submitting = false;
+          // add a notification to the queue
+          this.notificationQueueService.addNotification("Evacuee added successfully");
 
           // TODO: there is an exception that if the route is ...com/embcess/register-evacuee it should only go up one instead of 2
           // TODO: It should be fixed but will need a wider refactor for consistency
-
-          this.notificationQueueService.addNotification("Evacuee added successfully");
           // if the parameters are on the end of the URL we need to route towards root once more
           this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
         });
@@ -567,6 +567,9 @@ export class RegistrationMakerComponent implements OnInit {
         .updateRegistration(this.registration)
         .subscribe(() => {
           this.submitting = false;
+          // add a notification to the queue
+          this.notificationQueueService.addNotification("Evacuee updated successfully");
+
           this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
         });
     }
