@@ -8,11 +8,11 @@ import { map } from 'rxjs/operators';
 import { EvacueeSearchResults, SearchQueryParameters } from '../core/models/search-interfaces';
 
 @Component({
-  selector: 'app-evacuee-list',
-  templateUrl: './evacuee-list.component.html',
-  styleUrls: ['./evacuee-list.component.scss']
+  selector: 'app-registration-list',
+  templateUrl: './registration-list.component.html',
+  styleUrls: ['./registration-list.component.scss']
 })
-export class EvacueeListComponent implements OnInit {
+export class RegistrationListComponent implements OnInit {
   isLoggedIn = false;
   // server response
   resultsAndPagination$: Observable<ListResult<Registration>>;

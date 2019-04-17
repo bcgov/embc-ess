@@ -11,11 +11,11 @@ import {
   SelfRegistrationErrorComponent,
 } from './self-registration';
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
-import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
+import { RegistrationPageComponent } from './registration-page/registration-page.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
-import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
+import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { LoggedInGuard } from './core/guards/logged-in.guard';
@@ -30,9 +30,9 @@ import { OrganizationListComponent } from './organization-list/organization-list
 import { OrganizationMakerComponent } from './organization-maker/organization-maker.component';
 import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.component';
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
-import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
+import { RegistrationListComponent } from './registration-list/registration-list.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
-import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
+import { RegistrationSummaryFullComponent } from './registration-summary-full/registration-summary-full.component';
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
 import { VolunteerDashboardPageComponent } from './pages/volunteer/volunteer-dashboard-page/volunteer-dashboard-page.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
@@ -189,32 +189,32 @@ const routes: Routes = [
       },
       {
         path: 'evacuee/:id',
-        component: EvacueeSummaryPageComponent,
+        component: RegistrationSummaryFullComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
         path: 'evacuee-summary/:id',
-        component: EvacueeSummaryComponent,
+        component: RegistrationSummaryComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
         path: 'register-evacuee',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
         path: 'register-evacuee/:id',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
         path: 'register-evacuee/fill',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
         path: 'register-evacuee/fill/:id',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: VOLUNTEER },
       },
       // {
@@ -266,32 +266,32 @@ const routes: Routes = [
       },
       {
         path: 'evacuee/:id',
-        component: EvacueeSummaryPageComponent,
+        component: RegistrationSummaryFullComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
         path: 'evacuee-summary/:id',
-        component: EvacueeSummaryComponent,
+        component: RegistrationSummaryComponent,
         data: { expectedRole: LOCAL_AUTHORITY }
       },
       {
         path: 'register-evacuee',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
         path: 'register-evacuee/:id',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
         path: 'register-evacuee/fill',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
         path: 'register-evacuee/fill/:id',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       // {
@@ -365,17 +365,17 @@ const routes: Routes = [
       },
       {
         path: 'evacuees',
-        component: EvacueeListComponent,
+        component: RegistrationListComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         path: 'evacuee/:id',
-        component: EvacueeSummaryPageComponent,
+        component: RegistrationSummaryFullComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         path: 'evacuee-summary/:id',
-        component: EvacueeSummaryComponent,
+        component: RegistrationSummaryComponent,
         data: { expectedRole: PROVINCIAL_ADMIN }
       },
       {
@@ -455,7 +455,7 @@ const routes: Routes = [
 
   {
     path: 'evacuee-summary/:id',
-    component: EvacueeSummaryComponent,
+    component: RegistrationSummaryComponent,
   },
 
   // {
@@ -471,12 +471,12 @@ const routes: Routes = [
   {
     // exception in routing
     path: 'register-evacuee/fill',
-    component: EvacueeRegistrationComponent,
+    component: RegistrationPageComponent,
   },
   {
     // exception in routing
     path: 'register-evacuee/fill/:id',
-    component: EvacueeRegistrationComponent,
+    component: RegistrationPageComponent,
   },
   {
     // exception in routing
