@@ -33,18 +33,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .ToArrayAsync()).Select(d => d.ToViewModel());
         }
 
-        public async Task AddCommunitiesAsync(List<Models.Db.Community> communities)
-        {
-            await db.AddRangeAsync(communities);
-            await db.SaveChangesAsync();
-        }
-
-        public async Task UpdateCommunitiesAsync(List<Models.Db.Community> communities)
-        {
-            db.UpdateRange(communities);
-            await db.SaveChangesAsync();
-        }
-
         public async Task<IEnumerable<FamilyRelationshipType>> GetFamilyRelationshipTypesAsync()
         {
             return (await db.FamilyRelationshipTypes.ToArrayAsync()).Select(t => t.ToViewModel());

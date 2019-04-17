@@ -1,21 +1,26 @@
-using System;
 using Xunit;
-using Gov.Jag.Embc.Public.DataInterfaces;
-using NSubstitute;
-using Castle.Core.Logging;
 using Gov.Jag.Embc.Public.Seeder;
 using Gov.Jag.Embc.Public.Models.Db;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
 
 namespace embc_unit_tests
 {
     public class SeederTests
     {
+        private SeedDataLoader seedDataLoader;
+
+        public SeederTests()
+        {
+            var loggerFactory = Substitute.For<ILoggerFactory>();
+            this.seedDataLoader = new SeedDataLoader(loggerFactory);
+        }
 
         [Fact]
         public void GetCommuntySeedDataFromSeedDataLoader()
         {
-            var result = SeedDataLoader.GetSeedData<List<Community>>("Communities");
+            var result = seedDataLoader.GetSeedData<List<Community>>("Communities");
 
             Assert.NotNull(result);
             Assert.True(result.Count > 0);
@@ -24,7 +29,7 @@ namespace embc_unit_tests
         [Fact]
         public void GetCountrySeedDataFromSeedDataLoader()
         {
-            var result = SeedDataLoader.GetSeedData<List<Country>>("Countries");
+            var result = seedDataLoader.GetSeedData<List<Country>>("Countries");
 
             Assert.NotNull(result);
             Assert.True(result.Count > 0);
@@ -33,7 +38,7 @@ namespace embc_unit_tests
         [Fact]
         public void GetFamilyRelationshipTypesSeedDataFromSeedDataLoader()
         {
-            var result = SeedDataLoader.GetSeedData<List<FamilyRelationshipType>>("FamilyRelationshipTypes");
+            var result = seedDataLoader.GetSeedData<List<FamilyRelationshipType>>("FamilyRelationshipTypes");
 
             Assert.NotNull(result);
             Assert.True(result.Count > 0);
@@ -42,7 +47,7 @@ namespace embc_unit_tests
         [Fact]
         public void GetIncidentTasksSeederDataFromSeedDataLoader()
         {
-            var result = SeedDataLoader.GetSeedData<List<IncidentTask>>("IncidentTasks");
+            var result = seedDataLoader.GetSeedData<List<IncidentTask>>("IncidentTasks");
 
             Assert.NotNull(result);
             Assert.True(result.Count > 0);
@@ -51,7 +56,7 @@ namespace embc_unit_tests
         [Fact]
         public void GetOrganizationsSeederDataFromSeedDataLoader()
         {
-            var result = SeedDataLoader.GetSeedData<List<Organization>>("Organizations");
+            var result = seedDataLoader.GetSeedData<List<Organization>>("Organizations");
 
             Assert.NotNull(result);
             Assert.True(result.Count > 0);
@@ -60,7 +65,7 @@ namespace embc_unit_tests
         [Fact]
         public void GetRegionalDistrictsSeederDataFromSeedDataLoader()
         {
-            var result = SeedDataLoader.GetSeedData<List<RegionalDistrict>>("RegionalDistricts");
+            var result = seedDataLoader.GetSeedData<List<RegionalDistrict>>("RegionalDistricts");
 
             Assert.NotNull(result);
             Assert.True(result.Count > 0);
@@ -69,7 +74,7 @@ namespace embc_unit_tests
         [Fact]
         public void GetRegionsSeederDataFromSeedDataLoader()
         {
-            var result = SeedDataLoader.GetSeedData<List<Region>>("Regions");
+            var result = seedDataLoader.GetSeedData<List<Region>>("Regions");
 
             Assert.NotNull(result);
             Assert.True(result.Count > 0);
@@ -78,7 +83,7 @@ namespace embc_unit_tests
         [Fact]
         public void GetVolunteersSeederDataFromSeedDataLoader()
         {
-            var result = SeedDataLoader.GetSeedData<List<Volunteer>>("Volunteers");
+            var result = seedDataLoader.GetSeedData<List<Volunteer>>("Volunteers");
 
             Assert.NotNull(result);
             Assert.True(result.Count > 0);

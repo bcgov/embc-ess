@@ -143,7 +143,6 @@ namespace Gov.Jag.Embc.Public
             // add a data interface
 
             services.AddTransient<IDataInterface, DataInterface>();
-            services.AddTransient<ISeederRepository, SeederRepository>();
 
             // Enable the IURLHelper to be able to build links within Controllers
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -154,7 +153,6 @@ namespace Gov.Jag.Embc.Public
                 return factory.GetUrlHelper(actionContext);
             });
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<EmbcSeeder>();
         }
 
         private void SetupDynamics(IServiceCollection services)
@@ -199,7 +197,9 @@ namespace Gov.Jag.Embc.Public
 
             log.LogInformation("Fetching the application's database context ...");
 
-            var adminCtx = new EmbcDbContext(new DbContextOptionsBuilder<EmbcDbContext>().UseSqlServer(DatabaseTools.GetSaConnectionString(Configuration)).Options);
+            var adminCtx = new EmbcDbContext(new DbContextOptionsBuilder<EmbcDbContext>()
+                .UseLoggerFactory(loggerFactory)
+                .UseSqlServer(DatabaseTools.GetSaConnectionString(Configuration)).Options);
 
             if (!string.IsNullOrEmpty(Configuration["DB_FULL_REFRESH"]) && Configuration["DB_FULL_REFRESH"].ToLowerInvariant() == "true")
             {
@@ -229,7 +229,8 @@ namespace Gov.Jag.Embc.Public
                 log.LogInformation("Adding/Updating seed data ...");
 
                 ISeederRepository seederRepository = new SeederRepository(adminCtx);
-                var seeder = new EmbcSeeder(loggerFactory, seederRepository, env);
+                var seedDataLoader = new SeedDataLoader(loggerFactory);
+                var seeder = new EmbcSeeder(loggerFactory, seederRepository, env, seedDataLoader);
                 seeder.SeedData();
 
                 log.LogInformation("Seeding operations are complete.");

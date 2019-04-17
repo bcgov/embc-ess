@@ -4,12 +4,20 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
 
 namespace Gov.Jag.Embc.Public.Seeder
 {
     public class SeedDataLoader
     {
-        public static T GetSeedData<T>(string seedDataFileName)
+        private readonly ILogger logger;
+
+        public SeedDataLoader(ILoggerFactory loggerFactory)
+        {
+            logger = loggerFactory.CreateLogger(typeof(SeedDataLoader));
+        }
+
+        public T GetSeedData<T>(string seedDataFileName)
         {
             try
             {
@@ -24,7 +32,8 @@ namespace Gov.Jag.Embc.Public.Seeder
             }
             catch (Exception ex)
             {
-                throw new Exception($"{seedDataFileName}.json file structure error!{Environment.NewLine}{ex.Message}");
+                logger.LogError($"{seedDataFileName}.json file structure error!{Environment.NewLine}{ex.Message}");
+                return default(T);
             }
         }
     }

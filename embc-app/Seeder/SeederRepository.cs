@@ -21,8 +21,6 @@ namespace Gov.Jag.Embc.Public.Seeder
             return db.Countries.ToArray();
         }
 
-        #region Regions
-
         public IEnumerable<Region> GetRegions()
         {
             return db.Regions.ToArray();
@@ -30,24 +28,29 @@ namespace Gov.Jag.Embc.Public.Seeder
 
         public void AddOrUpdateRegions(List<Region> regions)
         {
-            foreach (var region in regions)
+            var existingEntities = db.Regions.Where(r => regions.Exists(ex => ex.Name.Equals(r.Name, StringComparison.OrdinalIgnoreCase))).ToList();
+
+            foreach (var entity in existingEntities)
             {
-                var entity = db.Regions.SingleOrDefault(r => r.Name.Equals(region.Name, StringComparison.OrdinalIgnoreCase)) ?? new Region();
+                var region = regions.Single(r => r.Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase));
                 entity.Name = region.Name;
                 entity.Active = region.Active;
                 db.AddOrUpdate(entity);
             }
-            
+            db.UpdateRange(existingEntities);
+
+            var newEntities = regions.Where(r => !existingEntities.Exists(ex => ex.Name.Equals(r.Name, StringComparison.OrdinalIgnoreCase)));
+            db.AddRange(newEntities);
+
             db.SaveChanges();
         }
-
-        #endregion
 
         public IEnumerable<RegionalDistrict> GetRegionalDistricts()
         {
             return db.RegionalDistricts.ToArray();
         }
 
+        //TODO: To be dropped with removal of regional districts
         public void AddOrUpdateRegionalDistricts(List<RegionalDistrict> regionalDistricts)
         {
             foreach (var regionalDistrict in regionalDistricts)
@@ -63,14 +66,21 @@ namespace Gov.Jag.Embc.Public.Seeder
 
         public void AddOrUpdateFamilyRelationshipTypes(List<FamilyRelationshipType> familyRelationshipTypes)
         {
-            foreach (var familyRelationshipType in familyRelationshipTypes)
+            var existingEntities = db.FamilyRelationshipTypes.Where(f => familyRelationshipTypes.Exists(ex => ex.Code == f.Code)).ToList();
+
+            foreach (var entity in existingEntities)
             {
-                var entity = db.FamilyRelationshipTypes.SingleOrDefault(f => f.Code == familyRelationshipType.Code) ?? new FamilyRelationshipType();
+                var familyRelationshipType = db.FamilyRelationshipTypes.SingleOrDefault(f => f.Code == entity.Code);
                 entity.Code = familyRelationshipType.Code;
                 entity.Active = familyRelationshipType.Active;
                 entity.Description = familyRelationshipType.Description;
                 db.AddOrUpdate(entity);
             }
+            db.UpdateRange(existingEntities);
+
+            var newEntities = familyRelationshipTypes.Where(f => !existingEntities.Exists(ex => ex.Code == f.Code));
+            db.AddRange(newEntities);
+
             db.SaveChanges();
         }
 
@@ -93,7 +103,7 @@ namespace Gov.Jag.Embc.Public.Seeder
             }
 
             var newEntities = communities
-                .Where(c => !existingEntities.Exists(ex => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) && c.RegionalDistrictId == ex.RegionalDistrictId)).ToList();
+                .Where(c => !existingEntities.Exists(ex => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) && c.RegionalDistrictId == ex.RegionalDistrictId));
 
             db.AddRange(newEntities);
             db.UpdateRange(existingEntities);
@@ -103,17 +113,23 @@ namespace Gov.Jag.Embc.Public.Seeder
 
         public void AddOrUpdateIncidentTasks(List<IncidentTask> incidentTasks)
         {
-            foreach (var incidentTask in incidentTasks)
+            var existingEntities = db.IncidentTasks.Where(it => incidentTasks.Exists(ex => ex.TaskNumber == it.TaskNumber)).ToList();
+
+            foreach (var entity in existingEntities)
             {
-                var entity = db.IncidentTasks.SingleOrDefault(it => it.TaskNumber == incidentTask.TaskNumber) ?? new IncidentTask();
+                var incidentTask = incidentTasks.Single(it => it.TaskNumber == entity.TaskNumber);
                 entity.TaskNumber = incidentTask.TaskNumber;
                 entity.Details = incidentTask.Details;
                 entity.Active = incidentTask.Active;
                 entity.RegionId = incidentTask.RegionId;
                 entity.RegionalDistrictId = incidentTask.RegionalDistrictId;
                 entity.CommunityId = incidentTask.CommunityId;
-                db.AddOrUpdate(entity);
             }
+            db.UpdateRange(existingEntities);
+
+            var newEntities = incidentTasks.Where(it => !existingEntities.Exists(ex => ex.TaskNumber == it.TaskNumber));
+            db.AddRange(newEntities);
+
             db.SaveChanges();
         }
 
@@ -124,9 +140,11 @@ namespace Gov.Jag.Embc.Public.Seeder
 
         public void AddOrUpdateOrganizations(List<Organization> organizations)
         {
-            foreach (var organization in organizations)
+            var existingEntities = db.Organizations.Where(o => organizations.Exists(ex => ex.BCeIDBusinessGuid == o.BCeIDBusinessGuid)).ToList();
+
+            foreach (var entity in existingEntities)
             {
-                var entity = db.Organizations.SingleOrDefault(o => o.BCeIDBusinessGuid == organization.BCeIDBusinessGuid) ?? new Organization();
+                var organization = existingEntities.Single(o => o.BCeIDBusinessGuid == entity.BCeIDBusinessGuid);
 
                 entity.BCeIDBusinessGuid = organization.BCeIDBusinessGuid;
                 entity.Name = organization.Name;
@@ -134,19 +152,25 @@ namespace Gov.Jag.Embc.Public.Seeder
                 entity.RegionalDistrictId = organization.RegionalDistrictId;
                 entity.CommunityId = organization.CommunityId;
 
-                db.AddOrUpdate(entity);
             }
+            db.UpdateRange(existingEntities);
+
+            var newEntities = organizations.Where(o => !existingEntities.Exists(ex => ex.BCeIDBusinessGuid == o.BCeIDBusinessGuid));
+            db.AddRange(newEntities);
 
             db.SaveChanges();
         }
 
         public void AddOrUpdateVolunteers(List<Volunteer> volunteers)
         {
-            foreach (var volunteer in volunteers)
-            {
-                var entity = db.People.Where(x => x is Volunteer)
+            var existingEntities = db.People.Where(x => x is Volunteer)
                     .Cast<Volunteer>()
-                    .FirstOrDefault(x => x.BceidAccountNumber == volunteer.BceidAccountNumber) ?? new Volunteer();
+                    .Where(v => volunteers.Exists(ex => ex.BceidAccountNumber == v.BceidAccountNumber))
+                    .ToList();
+
+            foreach (var entity in existingEntities)
+            {
+                var volunteer = volunteers.Single(x => x.BceidAccountNumber == entity.BceidAccountNumber);
 
                 entity.BceidAccountNumber = volunteer.BceidAccountNumber;
                 entity.FirstName = volunteer.FirstName;
@@ -158,9 +182,11 @@ namespace Gov.Jag.Embc.Public.Seeder
                 entity.OrganizationId = volunteer.OrganizationId;
                 entity.IsAdministrator = volunteer.IsAdministrator;
                 entity.IsPrimaryContact = volunteer.IsPrimaryContact;
-
-                db.AddOrUpdate(entity);
             }
+            db.UpdateRange(existingEntities);
+
+            var newEntities = volunteers.Where(v => !existingEntities.Exists(ex => ex.BceidAccountNumber == v.BceidAccountNumber));
+            db.AddRange(newEntities);
 
             db.SaveChanges();
         }
@@ -177,7 +203,7 @@ namespace Gov.Jag.Embc.Public.Seeder
                 entity.Active = updateCountry.Active;
             }
 
-            var newEntities = countries.Where(c => !existingEntities.Exists(ex => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase))).ToList();
+            var newEntities = countries.Where(c => !existingEntities.Exists(ex => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase)));
 
             db.AddRange(newEntities);
             db.UpdateRange(existingEntities);
