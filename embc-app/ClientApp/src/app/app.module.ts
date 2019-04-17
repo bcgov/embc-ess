@@ -45,6 +45,7 @@ import { RegistrationPageComponent } from './registration-page/registration-page
 import { VolunteerDashboardExamplePageComponent } from './pages/volunteer/volunteer-dashboard-example-page/volunteer-dashboard-example-page.component';
 import { VolunteerRegistrationsPageComponent } from './pages/volunteer/volunteer-registrations-page/volunteer-registrations-page.component';
 import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
+import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { UsefulInformationPageComponent } from './pages/useful-information-page/
     PaginationSummaryComponent,
     VolunteerRegistrationsPageComponent,
     UsefulInformationPageComponent,
+    LocalAuthorityRegistrationsPageComponent,
   ],
   imports: [
     // angular
