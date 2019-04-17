@@ -15,7 +15,7 @@ import { RegistrationPageComponent } from './registration-page/registration-page
 import { TesterPageComponent } from './tester-page/tester-page.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
-import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
+import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { LoggedInGuard } from './core/guards/logged-in.guard';
@@ -194,7 +194,7 @@ const routes: Routes = [
       },
       {
         path: 'evacuee-summary/:id',
-        component: EvacueeSummaryComponent,
+        component: RegistrationSummaryComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
@@ -271,7 +271,7 @@ const routes: Routes = [
       },
       {
         path: 'evacuee-summary/:id',
-        component: EvacueeSummaryComponent,
+        component: RegistrationSummaryComponent,
         data: { expectedRole: LOCAL_AUTHORITY }
       },
       {
@@ -375,7 +375,7 @@ const routes: Routes = [
       },
       {
         path: 'evacuee-summary/:id',
-        component: EvacueeSummaryComponent,
+        component: RegistrationSummaryComponent,
         data: { expectedRole: PROVINCIAL_ADMIN }
       },
       {
@@ -455,7 +455,7 @@ const routes: Routes = [
 
   {
     path: 'evacuee-summary/:id',
-    component: EvacueeSummaryComponent,
+    component: RegistrationSummaryComponent,
   },
 
   // {

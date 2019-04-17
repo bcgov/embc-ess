@@ -20,7 +20,7 @@ import { SelfRegistrationModule } from './self-registration';
 import { SharedModule } from './shared/shared.module';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
-import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
+import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
 import { TopNavigationComponent } from './top-navigation/top-navigation.component';
 import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
@@ -48,7 +48,7 @@ import { RegistrationPageComponent } from './registration-page/registration-page
     TesterPageComponent,
     VolunteerTeamDashboardComponent,
     VolunteerUsefulInformationComponent,
-    EvacueeSummaryComponent,
+    RegistrationSummaryComponent,
     TopNavigationComponent,
     TaskNumberListComponent,
     VolunteerListComponent,
