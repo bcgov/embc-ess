@@ -50,26 +50,7 @@
   </ItemGroup>
 
 
-  <ItemGroup>
-    <Content Remove="Seeder\SeedData\Communities.json" />
-    <Content Remove="Seeder\SeedData\Countries.json" />
-    <Content Remove="Seeder\SeedData\FamilyRelationshipTypes.json" />
-    <Content Remove="Seeder\SeedData\IncidentTasks.json" />
-    <Content Remove="Seeder\SeedData\Organizations.json" />
-    <Content Remove="Seeder\SeedData\RegionalDistricts.json" />
-    <Content Remove="Seeder\SeedData\Regions.json" />
-    <Content Remove="Seeder\SeedData\Volunteers.json" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <None Remove="Seeder\SeedData\IncidentTasks.json.todrop" />
-    <None Remove="Seeder\SeedData\Organizations.json.todrop" />
-    <None Remove="Seeder\SeedData\RegionalDistricts.json.todrop" />
-  </ItemGroup>
-
-
-  <ItemGroup>
+    <ItemGroup>
     <EmbeddedResource Include="Seeder\SeedData\Communities.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
