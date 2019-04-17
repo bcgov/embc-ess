@@ -20,24 +20,23 @@ import { SelfRegistrationModule } from './self-registration';
 import { SharedModule } from './shared/shared.module';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
-import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.component';
+import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
 import { TopNavigationComponent } from './top-navigation/top-navigation.component';
 import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
-import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
+import { RegistrationListComponent } from './registration-list/registration-list.component';
 import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
-import { EvacueeSummaryContainerComponent } from './evacuee-summary-container/evacuee-summary-container.component';
 import { VolunteerEditorContainerComponent } from './volunteer-editor-container/volunteer-editor-container.component';
 import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.component';
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
 import { OrganizationMakerComponent } from './organization-maker/organization-maker.component';
-import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
+import { RegistrationSummaryFullComponent } from './registration-summary-full/registration-summary-full.component';
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
-import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
+import { RegistrationPageComponent } from './registration-page/registration-page.component';
 
 
 @NgModule({
@@ -48,23 +47,21 @@ import { SessionExpiredComponent } from './session-expired/session-expired.compo
     TesterPageComponent,
     VolunteerTeamDashboardComponent,
     VolunteerUsefulInformationComponent,
-    EvacueeSummaryComponent,
+    RegistrationSummaryComponent,
     TopNavigationComponent,
-    // VolunteerLayoutComponent,
     TaskNumberListComponent,
     VolunteerListComponent,
-    EvacueeListComponent,
+    RegistrationListComponent,
     OrganizationListComponent,
     UsefulInformationContentComponent,
-    EvacueeSummaryContainerComponent,
     VolunteerEditorContainerComponent,
     TaskNumberMakerComponent,
     VolunteerMakerComponent,
     OrganizationMakerComponent,
-    EvacueeSummaryPageComponent,
+    RegistrationSummaryFullComponent,
     VolunteerOrganizationListComponent,
     RegistrationMakerComponent,
-    EvacueeRegistrationComponent,
+    RegistrationPageComponent,
     AdminDashboardComponent,
     SessionExpiredComponent,
   ],

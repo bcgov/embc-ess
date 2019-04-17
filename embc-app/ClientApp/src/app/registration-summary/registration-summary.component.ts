@@ -4,11 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Registration } from '../core/models';
 
 @Component({
-  selector: 'app-evacuee-summary',
-  templateUrl: './evacuee-summary.component.html',
-  styleUrls: ['./evacuee-summary.component.scss']
+  selector: 'app-registration-summary',
+  templateUrl: './registration-summary.component.html',
+  styleUrls: ['./registration-summary.component.scss']
 })
-export class EvacueeSummaryComponent implements OnInit {
+export class RegistrationSummaryComponent implements OnInit {
 
   // collect ess file number from activated route
   registration: Registration;
