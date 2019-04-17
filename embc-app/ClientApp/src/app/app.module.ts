@@ -43,7 +43,8 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
 import { VolunteerDashboardExamplePageComponent } from './pages/volunteer/volunteer-dashboard-example-page/volunteer-dashboard-example-page.component';
-
+import { VolunteerRegistrationsPageComponent } from './pages/volunteer/volunteer-registrations-page/volunteer-registrations-page.component';
+import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,8 @@ import { VolunteerDashboardExamplePageComponent } from './pages/volunteer/volunt
     EvacueeSearchResultsComponent,
     SearchBarComponent,
     PaginationSummaryComponent,
+    VolunteerRegistrationsPageComponent,
+    UsefulInformationPageComponent,
   ],
   imports: [
     // angular
