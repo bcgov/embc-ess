@@ -1,14 +1,7 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpResponse,
-  HttpHandler,
-  HttpEvent,
-  HttpErrorResponse
-} from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { map, catchError } from 'rxjs/operators';
 
@@ -24,20 +17,20 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
     // handle all of the requests
     return next.handle(request).pipe(
       // handle all of the events by mapping them
-      map((event: HttpEvent<any>) => event),
+      map(event => event),
+      // handle errors
       catchError((error: HttpErrorResponse) => {
+        // check if error is "not logged in"
         if (error.status === 401 && this.auth.isLoggedIn) {
-          // if the error is a "not logged in" error then we should redirect them to the session expired page.
+          // perform logout
+          this.auth.logout(false).subscribe();
+
+          // redirect to session expired page
           this.router.navigateByUrl('/session-expired');
         }
-        // build an error response and return it
-        let data = {};
-        data = {
-          reason: error && error.error.reason ? error.error.reason : '',
-          status: error.status
-        };
         return throwError(error);
       })
     );
   }
+
 }
