@@ -11,7 +11,6 @@ import { NotificationQueueService } from '../core/services/notification-queue.se
 
 // import { IncidentTaskService } from '../core/services/incident-task.service';
 // import { RegistrationService } from '../core/services/registration.service';
-// import { UserDataService } from '../core/services/user-data.service';
 // import { AppState } from '../store';
 // import { Country, RegionalDistrict, Region, IncidentTask, Registration, User } from '../core/models';
 // import { ControlledListService } from '../core/services/controlled-list.service';
