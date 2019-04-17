@@ -27,7 +27,7 @@ import { VolunteerListComponent } from './volunteer-list/volunteer-list.componen
 import { RegistrationListComponent } from './registration-list/registration-list.component';
 import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
-import { EvacueeSummaryContainerComponent } from './evacuee-summary-container/evacuee-summary-container.component';
+// import { RegistrationSummaryPageComponent } from './registration-summary-page/registration-summary-page.component';
 import { VolunteerEditorContainerComponent } from './volunteer-editor-container/volunteer-editor-container.component';
 import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.component';
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
@@ -55,7 +55,7 @@ import { RegistrationPageComponent } from './registration-page/registration-page
     RegistrationListComponent,
     OrganizationListComponent,
     UsefulInformationContentComponent,
-    EvacueeSummaryContainerComponent,
+    // RegistrationSummaryPageComponent,
     VolunteerEditorContainerComponent,
     TaskNumberMakerComponent,
     VolunteerMakerComponent,
