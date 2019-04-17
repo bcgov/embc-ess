@@ -1,26 +1,21 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { takeWhile, map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 import { RegistrationService } from 'src/app/core/services/registration.service';
-import { AppState } from 'src/app/store';
 import { Registration, Address, isBcAddress, User, Volunteer } from 'src/app/core/models';
-import { normalize } from 'src/app/shared/utils';
 import { GENDER_OPTIONS, INSURANCE_OPTIONS } from '../constants';
 
 @Component({
-  selector: 'app-evacuee-summary-page',
-  templateUrl: './evacuee-summary-page.component.html',
-  styleUrls: ['./evacuee-summary-page.component.scss']
+  selector: 'app-registration-summary-full',
+  templateUrl: './registration-summary-full.component.html',
+  styleUrls: ['./registration-summary-full.component.scss']
 })
-export class EvacueeSummaryPageComponent implements OnInit {
+export class RegistrationSummaryFullComponent implements OnInit {
 
   // local copy of the application state
   registration: Registration;
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
     private registrationService: RegistrationService,
   ) { }
@@ -51,11 +46,11 @@ export class EvacueeSummaryPageComponent implements OnInit {
   // }
   yesNo(value: boolean) {
     if (value === true) {
-      return "Yes";
+      return 'Yes';
     } else if (value === false) {
-      return "No";
+      return 'No';
     } else {
-      return "";
+      return '';
     }
   }
 }

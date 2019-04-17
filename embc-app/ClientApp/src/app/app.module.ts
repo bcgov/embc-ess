@@ -32,7 +32,7 @@ import { VolunteerEditorContainerComponent } from './volunteer-editor-container/
 import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.component';
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
 import { OrganizationMakerComponent } from './organization-maker/organization-maker.component';
-import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
+import { RegistrationSummaryFullComponent } from './registration-summary-full/registration-summary-full.component';
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
@@ -60,7 +60,7 @@ import { RegistrationPageComponent } from './registration-page/registration-page
     TaskNumberMakerComponent,
     VolunteerMakerComponent,
     OrganizationMakerComponent,
-    EvacueeSummaryPageComponent,
+    RegistrationSummaryFullComponent,
     VolunteerOrganizationListComponent,
     RegistrationMakerComponent,
     RegistrationPageComponent,

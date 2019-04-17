@@ -33,7 +33,7 @@ import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
 import { RegistrationListComponent } from './registration-list/registration-list.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
-import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
+import { RegistrationSummaryFullComponent } from './registration-summary-full/registration-summary-full.component';
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 
@@ -189,7 +189,7 @@ const routes: Routes = [
       },
       {
         path: 'evacuee/:id',
-        component: EvacueeSummaryPageComponent,
+        component: RegistrationSummaryFullComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
@@ -266,7 +266,7 @@ const routes: Routes = [
       },
       {
         path: 'evacuee/:id',
-        component: EvacueeSummaryPageComponent,
+        component: RegistrationSummaryFullComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
@@ -370,7 +370,7 @@ const routes: Routes = [
       },
       {
         path: 'evacuee/:id',
-        component: EvacueeSummaryPageComponent,
+        component: RegistrationSummaryFullComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
