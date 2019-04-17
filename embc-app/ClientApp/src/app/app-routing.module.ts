@@ -11,7 +11,7 @@ import {
   SelfRegistrationErrorComponent,
 } from './self-registration';
 import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
-import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
+import { RegistrationPageComponent } from './registration-page/registration-page.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
 import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
@@ -199,22 +199,22 @@ const routes: Routes = [
       },
       {
         path: 'register-evacuee',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
         path: 'register-evacuee/:id',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
         path: 'register-evacuee/fill',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
         path: 'register-evacuee/fill/:id',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: VOLUNTEER },
       },
       // {
@@ -276,22 +276,22 @@ const routes: Routes = [
       },
       {
         path: 'register-evacuee',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
         path: 'register-evacuee/:id',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
         path: 'register-evacuee/fill',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
         path: 'register-evacuee/fill/:id',
-        component: EvacueeRegistrationComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       // {
@@ -471,12 +471,12 @@ const routes: Routes = [
   {
     // exception in routing
     path: 'register-evacuee/fill',
-    component: EvacueeRegistrationComponent,
+    component: RegistrationPageComponent,
   },
   {
     // exception in routing
     path: 'register-evacuee/fill/:id',
-    component: EvacueeRegistrationComponent,
+    component: RegistrationPageComponent,
   },
   {
     // exception in routing
