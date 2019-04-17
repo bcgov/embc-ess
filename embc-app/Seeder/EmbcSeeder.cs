@@ -1,4 +1,5 @@
 using Gov.Jag.Embc.Public.Models.Db;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,13 @@ namespace Gov.Jag.Embc.Public.Seeder
     {
         private readonly ILoggerFactory _loggerFactory;
         private readonly ISeederRepository _seederRepository;
+        private readonly IHostingEnvironment _environment;
 
-        public EmbcSeeder(ILoggerFactory loggerFactory, ISeederRepository seederRepository)
+        public EmbcSeeder(ILoggerFactory loggerFactory, ISeederRepository seederRepository, IHostingEnvironment environment)
         {
             _loggerFactory = loggerFactory;
             _seederRepository = seederRepository;
+            _environment = environment;
         }
 
         public void SeedData()
@@ -25,8 +28,8 @@ namespace Gov.Jag.Embc.Public.Seeder
             SeedIncidentTasks();
             SeedFamilyRelationshipType();
             SeedCountries();
-            //SeedOrganziations();
-            //SeedVolunteers();
+            SeedOrganziations();
+            SeedVolunteers();
         }
 
         private void SeedRegions()
@@ -71,6 +74,12 @@ namespace Gov.Jag.Embc.Public.Seeder
 
         private void SeedIncidentTasks()
         {
+            string[] targetEnvironments = { "Development", "Staging", "Test" };
+            if (!targetEnvironments.Contains(_environment.EnvironmentName))
+            {
+                return;
+            }
+
             var incidentTasks = SeedDataLoader.GetSeedData<List<IncidentTask>>("IncidentTasks");
             var regions = _seederRepository.GetRegions().ToList() ?? new List<Region>();
             var regionalDistricts = _seederRepository.GetRegionalDistricts().ToList() ?? new List<RegionalDistrict>();
@@ -109,8 +118,13 @@ namespace Gov.Jag.Embc.Public.Seeder
         }
         private void SeedOrganziations()
         {
-            var organizations = SeedDataLoader.GetSeedData<List<Organization>>("Organizations");
+            string[] targetEnvironments = { "Development", "Staging", "Test" };
+            if (!targetEnvironments.Contains(_environment.EnvironmentName))
+            {
+                return;
+            }
 
+            var organizations = SeedDataLoader.GetSeedData<List<Organization>>("Organizations");
             var regions = _seederRepository.GetRegions().ToList() ?? new List<Region>();
             var regionalDistricts = _seederRepository.GetRegionalDistricts().ToList() ?? new List<RegionalDistrict>();
             var organizationCommunities = organizations.Where(it => it.Community != null).Select(s => s.Community).ToList() ?? new List<Community>();
@@ -127,10 +141,28 @@ namespace Gov.Jag.Embc.Public.Seeder
                     o.Community = null;
                 }
             );
+
+            _seederRepository.AddOrUpdateOrganizations(organizations.GroupBy(o => o.BCeIDBusinessGuid).Select(g => g.First()).ToList());
         }
         private void SeedVolunteers()
         {
-            throw new NotImplementedException();
+            string[] targetEnvironments = { "Development", "Staging", "Test" };
+            if (!targetEnvironments.Contains(_environment.EnvironmentName))
+            {
+                return;
+            }
+
+            var volunteers = SeedDataLoader.GetSeedData<List<Volunteer>>("Volunteers");
+            var organizations = _seederRepository.GetOrganizations().ToList();
+
+            volunteers.ForEach(v =>
+            {
+                v.OrganizationId = organizations
+                    .Single(o => o.BCeIDBusinessGuid.Equals(v.Organization.BCeIDBusinessGuid, StringComparison.OrdinalIgnoreCase)).Id;
+                v.Organization = null;
+            });
+
+            _seederRepository.AddOrUpdateVolunteers(volunteers.GroupBy(v => v.BceidAccountNumber).Select(g => g.First()).ToList());
         }
     }
 }

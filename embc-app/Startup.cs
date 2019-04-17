@@ -1,4 +1,3 @@
-using Gov.Embc.Public.Seeders;
 using Gov.Jag.Embc.Interfaces;
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Authorization;
@@ -230,7 +229,7 @@ namespace Gov.Jag.Embc.Public
                 log.LogInformation("Adding/Updating seed data ...");
 
                 ISeederRepository seederRepository = new SeederRepository(adminCtx);
-                var seeder = new EmbcSeeder(loggerFactory, seederRepository);
+                var seeder = new EmbcSeeder(loggerFactory, seederRepository, env);
                 seeder.SeedData();
 
                 log.LogInformation("Seeding operations are complete.");

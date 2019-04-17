@@ -123,12 +123,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="SeedData\*.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="Seeder\SeedData\Communities.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

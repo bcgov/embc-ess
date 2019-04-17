@@ -124,12 +124,45 @@ namespace Gov.Jag.Embc.Public.Seeder
 
         public void AddOrUpdateOrganizations(List<Organization> organizations)
         {
-            throw new NotImplementedException();
+            foreach (var organization in organizations)
+            {
+                var entity = db.Organizations.SingleOrDefault(o => o.BCeIDBusinessGuid == organization.BCeIDBusinessGuid) ?? new Organization();
+
+                entity.BCeIDBusinessGuid = organization.BCeIDBusinessGuid;
+                entity.Name = organization.Name;
+                entity.RegionId = organization.RegionId;
+                entity.RegionalDistrictId = organization.RegionalDistrictId;
+                entity.CommunityId = organization.CommunityId;
+
+                db.AddOrUpdate(entity);
+            }
+
+            db.SaveChanges();
         }
 
         public void AddOrUpdateVolunteers(List<Volunteer> volunteers)
         {
-            throw new NotImplementedException();
+            foreach (var volunteer in volunteers)
+            {
+                var entity = db.People.Where(x => x is Volunteer)
+                    .Cast<Volunteer>()
+                    .FirstOrDefault(x => x.BceidAccountNumber == volunteer.BceidAccountNumber) ?? new Volunteer();
+
+                entity.BceidAccountNumber = volunteer.BceidAccountNumber;
+                entity.FirstName = volunteer.FirstName;
+                entity.LastName = volunteer.LastName;
+                entity.Externaluseridentifier = volunteer.Externaluseridentifier;
+                entity.Active = volunteer.Active;
+                entity.CanAccessRestrictedFiles = volunteer.CanAccessRestrictedFiles;
+                entity.Email = volunteer.Email;
+                entity.OrganizationId = volunteer.OrganizationId;
+                entity.IsAdministrator = volunteer.IsAdministrator;
+                entity.IsPrimaryContact = volunteer.IsPrimaryContact;
+
+                db.AddOrUpdate(entity);
+            }
+
+            db.SaveChanges();
         }
 
         public void AddOrUpdateCountries(List<Country> countries)
