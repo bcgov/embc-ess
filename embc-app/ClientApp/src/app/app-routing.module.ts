@@ -34,7 +34,7 @@ import { RegistrationListComponent } from './registration-list/registration-list
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { RegistrationSummaryFullComponent } from './registration-summary-full/registration-summary-full.component';
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
-import { VolunteerDashboardPageComponent } from './pages/volunteer/volunteer-dashboard-page/volunteer-dashboard-page.component';
+import { VolunteerDashboardExamplePageComponent } from './pages/volunteer/volunteer-dashboard-example-page/volunteer-dashboard-example-page.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 
 /*
@@ -103,7 +103,7 @@ const routes: Routes = [
   },
   {
     path: 'refactor',
-    component: VolunteerDashboardPageComponent
+    component: VolunteerDashboardExamplePageComponent
   },
   {
     path: 'session-expired',

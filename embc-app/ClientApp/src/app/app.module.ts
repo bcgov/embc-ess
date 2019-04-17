@@ -35,7 +35,6 @@ import { RegistrationSummaryFullComponent } from './registration-summary-full/re
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
 import { LayoutMainComponent } from './components/layout-main/layout-main.component';
 import { LayoutSideComponent } from './components/layout-side/layout-side.component';
-import { VolunteerDashboardPageComponent } from './pages/volunteer/volunteer-dashboard-page/volunteer-dashboard-page.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
@@ -43,6 +42,7 @@ import { EvacueeSearchResultsComponent } from './components/evacuee-search-resul
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
+import { VolunteerDashboardExamplePageComponent } from './pages/volunteer/volunteer-dashboard-example-page/volunteer-dashboard-example-page.component';
 
 
 @NgModule({
@@ -68,7 +68,7 @@ import { RegistrationPageComponent } from './registration-page/registration-page
     VolunteerOrganizationListComponent,
     LayoutMainComponent,
     LayoutSideComponent,
-    VolunteerDashboardPageComponent,
+    VolunteerDashboardExamplePageComponent,
     RegistrationMakerComponent,
     RegistrationPageComponent,
     AdminDashboardComponent,

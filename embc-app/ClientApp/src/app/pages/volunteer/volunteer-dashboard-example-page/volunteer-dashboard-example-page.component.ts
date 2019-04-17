@@ -8,11 +8,11 @@ import { Observable } from 'rxjs';
 import { EvacueeSearchResults, SearchQueryParameters } from 'src/app/core/models/search-interfaces';
 
 @Component({
-  selector: 'app-volunteer-dashboard-page',
-  templateUrl: './volunteer-dashboard-page.component.html',
-  styleUrls: ['./volunteer-dashboard-page.component.scss']
+  selector: 'app-volunteer-dashboard-example-page',
+  templateUrl: './volunteer-dashboard-example-page.component.html',
+  styleUrls: ['./volunteer-dashboard-example-page.component.scss']
 })
-export class VolunteerDashboardPageComponent implements OnInit {
+export class VolunteerDashboardExamplePageComponent implements OnInit {
 
   isLoggedIn = false;
   // server response
