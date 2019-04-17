@@ -1,0 +1,21 @@
+<app-layout-main>
+  <!-- TODO: this registration list should be broken into components without the header block -->
+  <app-volunteer-list></app-volunteer-list>
+</app-layout-main>
+<app-layout-side>
+  <app-add-evacuee></app-add-evacuee>
+  <app-add-user route="/local-authority/volunteer"></app-add-user>
+  <app-side-box title="Useful Information">
+    <section role="content">
+      <p>
+        Don't forget to deactivate Emergency Support Services users who are no longer active members of your team.
+      </p>
+      <p>
+        This includes deactivating convergent volunteers.
+      </p>
+    </section>
+    <!-- <section role="footer">
+          <button class="btn btn-primary" routerLink="/">Learn More</button>
+        </section> -->
+  </app-side-box>
+</app-layout-side>
