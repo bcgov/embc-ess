@@ -24,7 +24,7 @@ import { EvacueeSummaryComponent } from './evacuee-summary/evacuee-summary.compo
 import { TopNavigationComponent } from './top-navigation/top-navigation.component';
 import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
-import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
+import { RegistrationListComponent } from './registration-list/registration-list.component';
 import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
 import { EvacueeSummaryContainerComponent } from './evacuee-summary-container/evacuee-summary-container.component';
@@ -52,7 +52,7 @@ import { RegistrationPageComponent } from './registration-page/registration-page
     TopNavigationComponent,
     TaskNumberListComponent,
     VolunteerListComponent,
-    EvacueeListComponent,
+    RegistrationListComponent,
     OrganizationListComponent,
     UsefulInformationContentComponent,
     EvacueeSummaryContainerComponent,

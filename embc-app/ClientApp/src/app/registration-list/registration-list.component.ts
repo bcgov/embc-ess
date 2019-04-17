@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './evacuee-list.component.html',
   styleUrls: ['./evacuee-list.component.scss']
 })
-export class EvacueeListComponent implements OnInit {
+export class RegistrationListComponent implements OnInit {
   isLoggedIn = false;
   // server response
   resultsAndPagination$: Observable<ListResult<Registration>>;

@@ -31,7 +31,7 @@ import { OrganizationListComponent } from './organization-list/organization-list
 import { OrganizationMakerComponent } from './organization-maker/organization-maker.component';
 import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.component';
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
-import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
+import { RegistrationListComponent } from './registration-list/registration-list.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
@@ -365,7 +365,7 @@ const routes: Routes = [
       },
       {
         path: 'evacuees',
-        component: EvacueeListComponent,
+        component: RegistrationListComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
