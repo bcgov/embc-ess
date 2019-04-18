@@ -4,10 +4,10 @@
 <nav *ngIf="role===volunteer" class=" navbar navbar-default navbar-expand navbar-footer navbar-static-bottom mb-0">
   <ul class="navbar-nav">
     <li class="mr-4">
-      <a routerLink="volunteer-/evacuees" title="Go Home">Home</a>
+      <a routerLink="volunteer-/registrations" title="Go Home">Home</a>
     </li>
     <li class="mr-4">
-      <a routerLink="volunteer-/evacuees" title="Go to Evacuees Area">Evacuees</a>
+      <a routerLink="volunteer-/registrations" title="Go to Evacuees Area">Evacuees</a>
     </li>
     <li class="mr-4">
       <a routerLink="volunteer-/useful-info" title="Go to useful information">Useful Information</a>
@@ -38,7 +38,7 @@
 </nav>
 
 <!-- Administrator navbar -->
-<nav *ngIf="role===provicnialAdmin" class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom mb-0">
+<nav *ngIf="role===provincialAdmin" class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom mb-0">
   <ul class="navbar-nav">
     <li class="mr-4">
       <a routerLink="provincial-admin-/task-numbers" title="Go Home">Home</a>

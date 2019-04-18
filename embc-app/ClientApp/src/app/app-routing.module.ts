@@ -36,6 +36,8 @@ import { RegistrationSummaryFullComponent } from './registration-summary-full/re
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
 import { VolunteerDashboardExamplePageComponent } from './pages/volunteer/volunteer-dashboard-example-page/volunteer-dashboard-example-page.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
+import { VolunteerRegistrationsPageComponent } from './pages/volunteer/volunteer-registrations-page/volunteer-registrations-page.component';
+import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
 
 /*
   /
@@ -111,6 +113,7 @@ import { SessionExpiredComponent } from './session-expired/session-expired.compo
     evacuee             <-- evacuee maker
     evacuee/:id         <-- evacuee maker (edit)
     evacuee/summary/:id <-- view tombstone summary page
+    evacuee/summary/full/:id <-- view full tombstone summary page
     useful-info
 
   /local-authority
@@ -121,7 +124,7 @@ import { SessionExpiredComponent } from './session-expired/session-expired.compo
     volunteer           <-- volunteer maker
     volunteer/:id       <-- volunteer maker (edit)
     evacuee/summary/:id <-- view tombstone summary page
-    useful-info
+    evacuee/summary/full/:id <-- view full tombstone summary page    useful-info
 
   /provincial-admin
     / <-- routes to task numbers
@@ -138,7 +141,7 @@ import { SessionExpiredComponent } from './session-expired/session-expired.compo
     volunteer           <-- volunteer maker
     volunteer/:id       <-- volunteer maker (edit)
     evacuee/summary/:id <-- view tombstone summary page
-    useful-info
+    evacuee/summary/full/:id <-- view full tombstone summary page    useful-info
 */
 const routes: Routes = [
   {
@@ -225,7 +228,7 @@ const routes: Routes = [
   // VOLUNTEER routes
   {
     path: 'volunteer',
-    // component: VolunteerDashboardComponent,
+    component: VolunteerDashboardComponent,
     canActivate: [LoggedInGuard],
     canActivateChild: [RoleGuard],
     data: { expectedRole: VOLUNTEER },
@@ -236,13 +239,13 @@ const routes: Routes = [
         data: { expectedRole: VOLUNTEER },
       },
       {
-        path: 'evacuee/:id',
-        component: RegistrationSummaryFullComponent,
+        path: 'evacuee/summary/:id',
+        component: RegistrationSummaryComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
-        path: 'evacuee-summary/:id',
-        component: RegistrationSummaryComponent,
+        path: 'evacuee/:id',
+        component: RegistrationSummaryFullComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
@@ -265,33 +268,6 @@ const routes: Routes = [
         component: RegistrationPageComponent,
         data: { expectedRole: VOLUNTEER },
       },
-      // {
-      //   path: 'register-evacuee',
-      //   component: EvacueeRegistrationComponent,
-      //   data: { expectedRole: VOLUNTEER },
-      //   children: [
-      //     {
-      //       path: '',
-      //       redirectTo: 'fill',
-      //       pathMatch: 'full'
-      //     },
-      //     {
-      //       path: 'fill/:id',
-      //       component: RegistrationMakerComponent,
-      //       data: { expectedRole: VOLUNTEER },
-      //     },
-      //     {
-      //       path: 'fill',
-      //       component: RegistrationMakerComponent,
-      //       data: { expectedRole: VOLUNTEER },
-      //     },
-      //     {
-      //       path: 'confirmation',
-      //       component: EvacueeRegistrationConfirmationComponent,
-      //       data: { expectedRole: VOLUNTEER },
-      //     }
-      //   ]
-      // },
       {
         path: 'useful-info',
         component: VolunteerUsefulInformationComponent,
@@ -299,7 +275,45 @@ const routes: Routes = [
       },
     ],
   },
-
+  // VOLUNTEER routes
+  {
+    path: 'volunteer-',
+    canActivate: [LoggedInGuard],
+    canActivateChild: [RoleGuard],
+    data: { expectedRole: VOLUNTEER },
+    children: [
+      {
+        path: 'registrations',
+        component: VolunteerRegistrationsPageComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
+      {
+        path: 'registration',
+        component: RegistrationMakerComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
+      {
+        path: 'registration/:id',
+        component: RegistrationMakerComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
+      {
+        path: 'registration/summary/:id',
+        component: RegistrationSummaryComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
+      {
+        path: 'registration/summary/full/:id',
+        component: RegistrationSummaryComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
+      {
+        path: 'useful-info',
+        component: UsefulInformationPageComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
+    ],
+  },
   // LOCAL_AUTHORITY routes
   {
     path: 'local-authority',
