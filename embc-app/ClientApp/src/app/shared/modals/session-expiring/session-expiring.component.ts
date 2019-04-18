@@ -9,7 +9,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class SessionExpiringModalComponent implements OnInit {
   @Input() durationInSeconds = 10;
 
-  private interval: NodeJS.Timer;
+  private interval: number;
 
   get countdownStr() {
     const mins = Math.trunc(this.durationInSeconds / 60);
@@ -23,7 +23,7 @@ export class SessionExpiringModalComponent implements OnInit {
 
   ngOnInit() {
     // start the warning countdown
-    this.interval = setInterval(this.doCountDown.bind(this), 1000);
+    this.interval = window.setInterval(this.doCountDown.bind(this), 1000);
   }
 
   private doCountDown() {

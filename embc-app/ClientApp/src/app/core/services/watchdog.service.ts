@@ -20,7 +20,7 @@ export enum RefreshReason {
 })
 export class WatchdogService {
 
-  private sessionWatchdogTimer: NodeJS.Timer = null;
+  private sessionWatchdogTimer: number = null;
   private sessionExpiringModal: NgbModalRef = null;
   private attachedEventListener: EventListenerOrEventListenerObject = null;
 
@@ -83,7 +83,7 @@ export class WatchdogService {
       : DEFAULT_WARNING_DURATION_IN_SECONDS;
 
     // start a new session watchdog timer
-    this.sessionWatchdogTimer = setTimeout(() => {
+    this.sessionWatchdogTimer = window.setTimeout(() => {
       this.sessionWatchdogTimer = null;
       this.openModal(timeoutWarningDurationInSeconds);
     }, timeoutWarningInSeconds * 1000);
