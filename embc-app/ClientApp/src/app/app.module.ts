@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPaginationModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 // ngrx + configuration
 import { AppComponent } from './app.component';
@@ -56,6 +56,7 @@ import { SideboxAddOrganizationComponent } from './components/sidebox-add-organi
 import { SideboxAddTaskNumberComponent } from './components/sidebox-add-task-number/sidebox-add-task-number.component';
 import { SideboxAddVolunteerComponent } from './components/sidebox-add-volunteer/sidebox-add-volunteer.component';
 import { SideboxCollectionNoticeComponent } from './components/sidebox-collection-notice/sidebox-collection-notice.component';
+import { SessionExpiringModalComponent } from './shared/modals/session-expiring/session-expiring.component';
 
 @NgModule({
   declarations: [
@@ -101,6 +102,7 @@ import { SideboxCollectionNoticeComponent } from './components/sidebox-collectio
     SearchBarComponent,
     PaginationSummaryComponent,
     UsefulInformationPageComponent,
+    SessionExpiringModalComponent,
   ],
   imports: [
     // angular
@@ -112,7 +114,7 @@ import { SideboxCollectionNoticeComponent } from './components/sidebox-collectio
     // 3rd party
     StoreModule.forRoot(rootReducer, { metaReducers }),
     NgbPaginationModule,
-    NgbAlertModule,
+    NgbModalModule,
 
     // core & shared
     CoreModule,
@@ -123,7 +125,11 @@ import { SideboxCollectionNoticeComponent } from './components/sidebox-collectio
     SelfRegistrationModule,
     VolunteerEditorModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  entryComponents: [
+    SessionExpiringModalComponent,
+  ],
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }
