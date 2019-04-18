@@ -72,7 +72,6 @@ namespace Gov.Jag.Embc.Public
                  .RequireAuthenticatedUser()
                  .Build();
                 opts.Filters.Add(new AuthorizeFilter(policy));
-
                 opts.Filters.Add(typeof(NoCacheHttpHeadersAttribute));
                 opts.Filters.Add(new XRobotsTagAttribute() { NoIndex = true, NoFollow = true });
                 opts.Filters.Add(typeof(XContentTypeOptionsAttribute));
@@ -282,7 +281,8 @@ namespace Gov.Jag.Embc.Public
             app.UseXXssProtection(options => options.EnabledWithBlockMode());
             app.UseNoCacheHttpHeaders();
             // IMPORTANT: This session call MUST go before UseMvc()
-            app.UseSession();
+            var sessionTimout = TimeSpan.FromMinutes(Configuration.ServerTimeoutInMinutes());
+            app.UseSession(new SessionOptions() { IdleTimeout = sessionTimout });
             app.UseAuthentication();
 
             // global policy - assign here or on each controller

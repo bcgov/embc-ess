@@ -30,7 +30,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return (await db.Communities
                 .Include(c => c.RegionalDistrict)
                     .ThenInclude(d => d.Region)
-                .ToArrayAsync()).Select(d => d.ToViewModel());
+                .OrderBy(c => c.Name)
+                .ToArrayAsync())
+                .Select(d => d.ToViewModel());
         }
 
         public async Task<IEnumerable<FamilyRelationshipType>> GetFamilyRelationshipTypesAsync()

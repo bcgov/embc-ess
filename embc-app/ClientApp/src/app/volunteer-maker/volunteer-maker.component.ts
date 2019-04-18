@@ -9,6 +9,7 @@ import { AuthService } from '../core/services/auth.service';
 import { VolunteerService } from '../core/services/volunteer.service';
 import { OrganizationService } from '../core/services/organization.service';
 import { User, Volunteer, Organization, ListResult } from '../core/models';
+import { NotificationQueueService } from '../core/services/notification-queue.service';
 // import { UpdateVolunteer } from '../store/volunteer/volunteer.actions';
 
 @Component({
@@ -36,7 +37,8 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
     private volunteerService: VolunteerService,
     private organizationService: OrganizationService,
     private authService: AuthService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private notificationQueueService: NotificationQueueService,
   ) { }
 
   // form value collectors
@@ -247,6 +249,8 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
       this.volunteerService.updateVolunteer(this.volunteer)
         .subscribe(() => {
           this.submitting = false;
+          // add a notification about the update
+          this.notificationQueueService.addNotification('User updated successfuly');
           // if addAnother route then reset this form
           // else route back to the volunteers list
           if (addAnother) {
@@ -263,6 +267,8 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
       this.volunteerService.createVolunteer(this.volunteer)
         .subscribe(v => {
           this.submitting = false;
+          // add a notification about the creation
+          this.notificationQueueService.addNotification('User added successfuly');
           // if addAnother route then reset this form
           // else route back to the volunteers list
           if (addAnother) {

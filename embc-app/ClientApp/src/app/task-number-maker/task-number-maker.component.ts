@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store';
 import { IncidentTaskService } from '../core/services/incident-task.service';
+import { NotificationQueueService } from '../core/services/notification-queue.service';
 // import { UpdateIncidentTask } from '../store/incident-tasks/incident-tasks.actions';
 
 @Component({
@@ -38,6 +39,7 @@ export class TaskNumberMakerComponent implements OnInit {
     private router: Router,
     private store: Store<AppState>,
     private incidentTaskService: IncidentTaskService,
+    private notificationQueueService: NotificationQueueService,
   ) { }
 
   // convenience getters
@@ -97,6 +99,8 @@ export class TaskNumberMakerComponent implements OnInit {
         this.incidentTaskService.updateIncidentTask(this.incidentTask)
           .subscribe(() => {
             this.submitting = false;
+            // add a message to the UI
+            this.notificationQueueService.addNotification('Task number updated successfully');
             // go back to the volunteer team dashboard
             // this needs to route in two different ways because the ID added for edit acts as a route element
             this.router.navigate([this.taskNumbersRoute], { relativeTo: this.route });
@@ -106,6 +110,8 @@ export class TaskNumberMakerComponent implements OnInit {
         this.incidentTaskService.createIncidentTask(this.incidentTask)
           .subscribe(i => {
             this.submitting = false;
+            // add a message to the UI
+            this.notificationQueueService.addNotification('Task number added successfully');
             // go back to the volunteer team dashboard
             this.router.navigate([this.taskNumbersRoute], { relativeTo: this.route });
           });

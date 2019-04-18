@@ -4,7 +4,7 @@ import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@
   selector: 'app-search-bar',
   template: `
     <div role="search" class="form-row">
-      <div class="col-md-9">
+      <div class="col">
         <input #searchBox
           type="text"
           aria-label="search"
@@ -12,8 +12,8 @@ import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@
           placeholder="{{placeholder}}"
           (keydown.enter)="doSearch()">
       </div>
-      <div class="col-md-3">
-        <button class="btn btn-primary" (click)="doSearch()">Search</button>
+      <div class="col-auto">
+        <button class="btn btn-primary" (click)="doSearch()">SEARCH</button>
       </div>
     </div>
   `,

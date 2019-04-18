@@ -40,7 +40,7 @@ import { compareById } from 'src/app/shared/utils';
       </div>
     </section>
   `,
-  styles: []
+  styles: ['app-communities-select.is-invalid~.invalid-feedback { display: block; }']
 })
 export class BcAddressComponent implements OnInit {
   @Input() parent: FormGroup;

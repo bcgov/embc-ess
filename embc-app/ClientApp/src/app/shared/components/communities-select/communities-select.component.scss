@@ -6,6 +6,10 @@
   max-height: 300px;
 }
 
+:host.is-invalid input {
+  border-color:var(--danger);
+}
+
 div {
   position: relative;
 }
