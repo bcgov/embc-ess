@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SessionExpiringModalComponent } from 'src/app/shared/modals/session-expiring/session-expiring.component';
-import * as _ from 'lodash';
+import debounce from 'lodash/debounce';
 
 // defaults (used for non-session users, ie, evacuees)
 const DEFAULT_WARNING_IN_SECONDS = 5 * 60;
@@ -62,7 +62,7 @@ export class WatchdogService {
 
   // NB: debounced function executes when 1000ms have elapsed since last call
   // tslint:disable-next-line:member-ordering
-  public refreshWatchdog = _.debounce((reason: RefreshReason) => {
+  public refreshWatchdog = debounce((reason: RefreshReason) => {
     // ignore all calls if modal is already open
     if (this.sessionExpiringModal) { return; }
 
