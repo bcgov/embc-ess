@@ -91,6 +91,54 @@ import { SessionExpiredComponent } from './session-expired/session-expired.compo
       fill
       confirmation
     useful-info
+
+    //---------A Plan-----------------------------------------------
+// The intent of this structure is to simplify the routes by roles. Unfortunately we need to restructure components to get it into this configuration.
+// If we can pass the identifiers through a service to the correct components then we can load the components without the id route
+  /
+    self-registration
+      /
+      step-1
+      step-2
+      step-3
+      step-4/:id
+      error
+    external
+      login
+
+  /volunteer
+    evacuees        <-- shows evacuee list page
+    evacuee             <-- evacuee maker
+    evacuee/:id         <-- evacuee maker (edit)
+    evacuee/summary/:id <-- view tombstone summary page
+    useful-info
+
+  /local-authority
+    evacuees        <-- shows evacuee list page
+    volunteers      <-- volunteer list page
+    evacuee             <-- evacuee maker
+    evacuee/:id         <-- evacuee maker (edit)
+    volunteer           <-- volunteer maker
+    volunteer/:id       <-- volunteer maker (edit)
+    evacuee/summary/:id <-- view tombstone summary page
+    useful-info
+
+  /provincial-admin
+    / <-- routes to task numbers
+    evacuees        <-- shows evacuee list page
+    organizations   <-- organization list page
+    volunteers      <-- volunteer list page
+    task-numbers    <-- task number list page
+    evacuee             <-- evacuee maker
+    evacuee/:id         <-- evacuee maker (edit)
+    organization        <-- organization maker
+    organization/:id    <-- organization maker (edit)
+    task-number         <-- task number maker
+    task-number/:id     <-- task number maker (edit)
+    volunteer           <-- volunteer maker
+    volunteer/:id       <-- volunteer maker (edit)
+    evacuee/summary/:id <-- view tombstone summary page
+    useful-info
 */
 const routes: Routes = [
   {
