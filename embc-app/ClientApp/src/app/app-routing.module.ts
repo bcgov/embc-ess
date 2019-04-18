@@ -481,7 +481,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'evacuees',
+        redirectTo: 'task-numbers',
         pathMatch: 'full',
       },
       {
