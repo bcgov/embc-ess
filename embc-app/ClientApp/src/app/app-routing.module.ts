@@ -39,6 +39,7 @@ import { SessionExpiredComponent } from './session-expired/session-expired.compo
 import { VolunteerRegistrationsPageComponent } from './pages/volunteer/volunteer-registrations-page/volunteer-registrations-page.component';
 import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
+import { ProvincialAdminOrganizationsPageComponent } from './pages/provincial-admin/provincial-admin-organizations-page/provincial-admin-organizations-page.component';
 
 /*
   /
@@ -570,6 +571,61 @@ const routes: Routes = [
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
     ],
+  },
+
+  // PROVINCIAL_ADMIN routes
+  {
+    path: 'provincial-admin-',
+    canActivate: [LoggedInGuard],
+    canActivateChild: [RoleGuard],
+    children: [
+      {
+        // set the default component to route to for this user
+        path: '',
+        component: LocalAuthorityRegistrationsPageComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'registrations',
+        component: LocalAuthorityRegistrationsPageComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'registration',
+        component: RegistrationMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'registration/:id',
+        component: RegistrationMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'registration/summary/:id',
+        component: RegistrationSummaryComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'registration/summary/full/:id',
+        component: RegistrationSummaryComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'organizations',
+        component: ProvincialAdminOrganizationsPageComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'task-numbers',
+        component: ProvincialAdminOrganizationsPageComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'useful-info',
+        component: UsefulInformationPageComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+    ]
   },
 
   {
