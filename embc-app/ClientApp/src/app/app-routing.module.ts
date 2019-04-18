@@ -283,6 +283,12 @@ const routes: Routes = [
     data: { expectedRole: VOLUNTEER },
     children: [
       {
+        // set the default component to route to for this user
+        path: '',
+        component: VolunteerRegistrationsPageComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
+      {
         path: 'registrations',
         component: VolunteerRegistrationsPageComponent,
         data: { expectedRole: VOLUNTEER },
