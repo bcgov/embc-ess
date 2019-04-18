@@ -35,7 +35,7 @@ export class AuthService extends RestService {
     return this.currentUser && this.currentUser.isNewUser === false;
   }
 
-  public login(force: boolean = false): Subject<void> {
+  public login(force: boolean = false): Observable<void> {
     const done = new Subject<void>();
 
     // log into back end service and set user information
@@ -44,7 +44,7 @@ export class AuthService extends RestService {
       done.next();
     });
 
-    return done;
+    return done.asObservable();
   }
 
   public logout(force: boolean = false): Observable<void> {
