@@ -10,7 +10,7 @@ class AppEnvironment {
 // EDIT LINE BELOW (Edit your environment TAG names)
 environments = [
   dev:new AppEnvironment(name:"Development",tag:"dev",previousTag:"dev-previous"),
-  test:new AppEnvironment(name:"Test",tag:"test",previousTag:"test-previous"),
+  test:new AppEnvironment(name:"Test",tag:"prod",previousTag:"prod-previous"),
   prod:new AppEnvironment(name:"Prod",tag:"prod",previousTag:"prod-previous")
 ]
 
@@ -23,10 +23,10 @@ IMAGESTREAM_NAME = "${APP_NAME}"
 PATHFINDER_URL = "pathfinder.bcgov"
 
 
-// Gets the container hash for the latest image in an image stream
+// Gets the container hash for the PROD image in an image stream
 def getLatestHash(imageStreamName) {
   return sh (
-    script: """oc get istag ${imageStreamName}:latest -o=jsonpath='{@.image.metadata.name}' | sed -e 's/sha256://g'""",
+    script: """oc get istag ${imageStreamName}:prod -o=jsonpath='{@.image.metadata.name}' | sed -e 's/sha256://g'""",
     returnStdout: true
   ).trim()
 }
@@ -85,7 +85,7 @@ def tagLatestStable(environment, backupTag, imageStream) {
 }
 
 def deployAndVerify(srcHash, environment, imageStream) {
-  echo "Deploying ${APP_NAME} to ${environment}"
+  echo "Deploying ${APP_NAME}-training to ${environment}"
   tagImage(srcHash, environment, imageStream)
   // verify deployment to an environment; e.g. [your-project-name]-dev
   openshiftVerifyDeployment(
