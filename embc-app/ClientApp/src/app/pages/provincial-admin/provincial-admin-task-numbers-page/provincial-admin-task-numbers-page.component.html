@@ -1,0 +1,22 @@
+<app-layout-main>
+  <!-- TODO: this registration list should be broken into components without the header block -->
+  <app-task-number-list></app-task-number-list>
+</app-layout-main>
+<app-layout-side>
+  <app-collection-notice></app-collection-notice>
+  <app-add-evacuee></app-add-evacuee>
+  <app-side-box title="Useful Information">
+    <section role="content">
+      <p>
+        Evacuees listed here that do not have a task number are self-registered and have not yet received Emergency
+        Support Services.
+      </p>
+      <p>
+        Use the “Action” column to “view” evacuee registrations as well as “finalize” evacuee self-registrations.
+      </p>
+    </section>
+    <!-- <section role="footer">
+      <button class="btn btn-primary" routerLink="/">Learn More</button>
+    </section> -->
+  </app-side-box>
+</app-layout-side>

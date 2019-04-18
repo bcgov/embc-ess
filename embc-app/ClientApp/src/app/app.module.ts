@@ -51,6 +51,7 @@ import { LocalAuthorityVolunteersPageComponent } from './pages/local-authority/l
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './pages/provincial-admin/provincial-admin-volunteers-organization-page/provincial-admin-volunteers-organization-page.component';
 import { ProvincialAdminOrganizationsPageComponent } from './pages/provincial-admin/provincial-admin-organizations-page/provincial-admin-organizations-page.component';
 import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
+import { ProvincialAdminTaskNumbersPageComponent } from './pages/provincial-admin/provincial-admin-task-numbers-page/provincial-admin-task-numbers-page.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { TopNavbarComponent } from './components/top-navbar/top-navbar.component
     ProvincialAdminVolunteersOrganizationPageComponent,
     ProvincialAdminOrganizationsPageComponent,
     TopNavbarComponent,
+    ProvincialAdminTaskNumbersPageComponent,
   ],
   imports: [
     // angular

@@ -40,6 +40,7 @@ import { VolunteerRegistrationsPageComponent } from './pages/volunteer/volunteer
 import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
 import { ProvincialAdminOrganizationsPageComponent } from './pages/provincial-admin/provincial-admin-organizations-page/provincial-admin-organizations-page.component';
+import { ProvincialAdminTaskNumbersPageComponent } from './pages/provincial-admin/provincial-admin-task-numbers-page/provincial-admin-task-numbers-page.component';
 
 /*
   /
@@ -573,7 +574,7 @@ const routes: Routes = [
     ],
   },
 
-  // PROVINCIAL_ADMIN routes
+  // PROVINCIAL_ADMIN NEW routes
   {
     path: 'provincial-admin-',
     canActivate: [LoggedInGuard],
@@ -617,7 +618,7 @@ const routes: Routes = [
       },
       {
         path: 'task-numbers',
-        component: ProvincialAdminOrganizationsPageComponent,
+        component: ProvincialAdminTaskNumbersPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
