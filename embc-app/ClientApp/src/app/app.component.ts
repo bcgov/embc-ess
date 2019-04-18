@@ -1,11 +1,9 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { concat } from 'rxjs';
-
-import { User } from './core/models';
+// import { User } from './core/models';
 import { detectIE10orLower } from './shared/utils';
 import { ControlledListService } from './core/services/controlled-list.service';
 import { AuthService } from './core/services/auth.service';
-import { CookieService } from './core/services/cookie.service';
 
 @Component({
   selector: 'app-root',
@@ -13,70 +11,56 @@ import { CookieService } from './core/services/cookie.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = '';
-  isIE = false;
-  currentUser: User = null;
+
+  public isIE = false;
 
   constructor(
     private lookups: ControlledListService,
-    private authService: AuthService,
-    private cookies: CookieService,
+    public authService: AuthService,
   ) { }
 
   ngOnInit() {
     this.isIE = detectIE10orLower();
-    this.initializeApp();
+
+    // check for authenticated user
+    this.login();
+
+    // load these once at init time as they do not change very often,
+    // and certainly not within the app
+    this.getLookups();
   }
 
   get versionInfo(): any {
     return null;
   }
 
-  get isAuthenticated(): boolean {
-    return !!this.currentUser;
-  }
+  // get currentUser(): User {
+  //   return this.authService.currentUser;
+  // }
 
-  get isNewUser(): boolean {
-    return this.isAuthenticated && this.currentUser.isNewUser === true;
-  }
+  // get isAuthenticated(): boolean {
+  //   return this.authService.isLoggedIn;
+  // }
 
-  get isReturningUser(): boolean {
-    return this.isAuthenticated && this.currentUser.isNewUser === false;
-  }
+  // get isNewUser(): boolean {
+  //   return this.authService.isNewUser;
+  // }
 
-  initializeApp() {
-    // Check for authenticated users
-    this.reloadUser();
+  // get isReturningUser(): boolean {
+  //   return this.authService.isLoggedIn;
+  // }
 
-    // Loaded once at init time, as they do not change very often, and
-    // certainly not within the app.
-    this.getLookups().subscribe();
-  }
-
-  // TODO: Let's do a shotgun blast here, will improve later...
+  // force logout when window (browser tab) is closed
   @HostListener('window:beforeunload', ['$event'])
   onWindowClose(event: any): void {
-    this.logout(event);
+    this.authService.logout(true).subscribe();
   }
 
-  logout(event?: any): void {
-    // Remove all saved data from sessionStorage
-    sessionStorage.clear();
-
-    // clear all cookies
-    this.cookies.clear();
-
-    // let's also try to get to the logout endpoint on the server...
-    this.authService.logout(true)
-      .subscribe(() => console.log('Current user logged out'));
+  private login() {
+    this.authService.login().subscribe();
   }
 
-  reloadUser() {
-    this.authService.login()
-      .subscribe(() => this.currentUser = this.authService.currentUser);
-  }
-
-  getLookups() {
+  private getLookups() {
     return concat(
       this.lookups.getAllCountries(),
       this.lookups.getAllRegions(),
@@ -84,6 +68,7 @@ export class AppComponent implements OnInit {
       this.lookups.getAllCommunities(),
       this.lookups.getAllFamilyRelationshipTypes(),
       // ...add more
-    );
+    ).subscribe();
   }
+
 }

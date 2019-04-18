@@ -22,7 +22,6 @@ import { LoggedInGuard } from './core/guards/logged-in.guard';
 import { RoleGuard } from './core/guards/role.guard';
 import { RedirectGuard } from './core/guards/redirect.guard';
 import { VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from './constants';
-// import { VolunteerLayoutComponent } from './volunteers/containers/volunteer-layout/volunteer-layout.component';
 import { LandingPageGuard } from './core/guards/landing-page.guard';
 import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
 import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
@@ -35,6 +34,7 @@ import { EvacueeListComponent } from './evacuee-list/evacuee-list.component';
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { EvacueeSummaryPageComponent } from './evacuee-summary-page/evacuee-summary-page.component';
 import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
+import { SessionExpiredComponent } from './session-expired/session-expired.component';
 
 /*
   /
@@ -105,6 +105,10 @@ const routes: Routes = [
     component: TesterPageComponent
   },
   {
+    path: 'session-expired',
+    component: SessionExpiredComponent
+  },
+  {
     // TODO: naming this should be "evacuee-self-registration"
     path: 'self-registration',
     component: SelfRegistrationComponent,
@@ -172,7 +176,7 @@ const routes: Routes = [
   // VOLUNTEER routes
   {
     path: 'volunteer',
-    // component: VolunteerLayoutComponent,
+    // component: VolunteerDashboardComponent,
     canActivate: [LoggedInGuard],
     canActivateChild: [RoleGuard],
     data: { expectedRole: VOLUNTEER },
@@ -250,7 +254,7 @@ const routes: Routes = [
   // LOCAL_AUTHORITY routes
   {
     path: 'local-authority',
-    component: VolunteerDashboardComponent,
+    // component: VolunteerDashboardComponent,
     canActivate: [LoggedInGuard],
     canActivateChild: [RoleGuard],
     children: [
