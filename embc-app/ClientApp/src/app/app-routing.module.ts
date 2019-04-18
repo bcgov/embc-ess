@@ -41,6 +41,7 @@ import { UsefulInformationPageComponent } from './pages/useful-information-page/
 import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
 import { ProvincialAdminOrganizationsPageComponent } from './pages/provincial-admin/provincial-admin-organizations-page/provincial-admin-organizations-page.component';
 import { ProvincialAdminTaskNumbersPageComponent } from './pages/provincial-admin/provincial-admin-task-numbers-page/provincial-admin-task-numbers-page.component';
+import { ProvincialAdminRegistrationsPageComponent } from './pages/provincial-admin/provincial-admin-registrations-page/provincial-admin-registrations-page.component';
 
 /*
   /
@@ -583,12 +584,22 @@ const routes: Routes = [
       {
         // set the default component to route to for this user
         path: '',
-        component: LocalAuthorityRegistrationsPageComponent,
+        component: ProvincialAdminRegistrationsPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         path: 'registrations',
-        component: LocalAuthorityRegistrationsPageComponent,
+        component: ProvincialAdminRegistrationsPageComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'organizations',
+        component: ProvincialAdminOrganizationsPageComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'task-numbers',
+        component: ProvincialAdminTaskNumbersPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
@@ -612,13 +623,13 @@ const routes: Routes = [
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
-        path: 'organizations',
-        component: ProvincialAdminOrganizationsPageComponent,
+        path: 'organization',
+        component: OrganizationMakerComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
-        path: 'task-numbers',
-        component: ProvincialAdminTaskNumbersPageComponent,
+        path: 'volunteer/:id',
+        component: VolunteerMakerComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
