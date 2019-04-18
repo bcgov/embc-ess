@@ -42,6 +42,7 @@ import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authorit
 import { ProvincialAdminOrganizationsPageComponent } from './pages/provincial-admin/provincial-admin-organizations-page/provincial-admin-organizations-page.component';
 import { ProvincialAdminTaskNumbersPageComponent } from './pages/provincial-admin/provincial-admin-task-numbers-page/provincial-admin-task-numbers-page.component';
 import { ProvincialAdminRegistrationsPageComponent } from './pages/provincial-admin/provincial-admin-registrations-page/provincial-admin-registrations-page.component';
+import { LocalAuthorityVolunteersPageComponent } from './pages/local-authority/local-authority-volunteers-page/local-authority-volunteers-page.component';
 
 /*
   /
@@ -440,6 +441,11 @@ const routes: Routes = [
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
+        path: 'volunteers',
+        component: LocalAuthorityVolunteersPageComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
         path: 'registration',
         component: RegistrationMakerComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
@@ -460,8 +466,13 @@ const routes: Routes = [
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
-        path: 'volunteers',
-        component: VolunteerRegistrationsPageComponent,
+        path: 'volunteer',
+        component: VolunteerMakerComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'volunteer/:id',
+        component: VolunteerMakerComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
