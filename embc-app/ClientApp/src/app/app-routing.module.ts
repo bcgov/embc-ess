@@ -622,6 +622,16 @@ const routes: Routes = [
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
+        path: 'task-number',
+        component: TaskNumberMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'task-number/:id',
+        component: TaskNumberMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
         path: 'useful-info',
         component: UsefulInformationPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
