@@ -1,3 +1,62 @@
-<p>
-  top-navbar works!
-</p>
+<!-- No navbar (default state) -->
+
+<!-- Volunteer navbar -->
+<nav *ngIf="role===volunteer" class=" navbar navbar-default navbar-expand navbar-footer navbar-static-bottom mb-0">
+  <ul class="navbar-nav">
+    <li class="mr-4">
+      <a routerLink="volunteer/evacuees" title="Go Home">Home</a>
+    </li>
+    <li class="mr-4">
+      <a routerLink="volunteer/evacuees" title="Go to Evacuees Area">Evacuees</a>
+    </li>
+    <li class="mr-4">
+      <a routerLink="volunteer/useful-info" title="Go to useful information">Useful Information</a>
+    </li>
+  </ul>
+</nav>
+
+<!-- Local authority navbar -->
+<nav *ngIf="role===localAuthority" class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom mb-0">
+  <ul class="navbar-nav">
+    <li class="mr-4">
+      <a routerLink="local-authority/evacuees" title="Go Home">Home</a>
+    </li>
+    <li class="mr-4">
+      <a routerLink="local-authority/evacuees" title="Go to Evacuees Area">Evacuees</a>
+    </li>
+
+    <!-- Only visible by local authority -->
+    <li class="mr-4">
+      <a routerLink="local-authority/volunteers" title="Go to Emergency Support Services Team page">Emergency Support Services Team</a>
+    </li>
+
+    <!-- TODO: The  link goes to the useful information page. Can be uncommented when the useful information pull request is accepted-->
+    <li class="mr-4">
+      <a routerLink="local-authority/useful-info" title="Go to useful information">Useful Information</a>
+    </li>
+  </ul>
+</nav>
+
+<!-- Administrator navbar -->
+<nav *ngIf="role===provicnialAdmin" class="navbar navbar-default navbar-expand navbar-footer navbar-static-bottom mb-0">
+  <ul class="navbar-nav">
+    <li class="mr-4">
+      <a routerLink="provincial-admin/task-numbers" title="Go Home">Home</a>
+    </li>
+    <li class="mr-4">
+      <a routerLink="provincial-admin/task-numbers" title="Manage Task Numbers">Task Numbers</a>
+    </li>
+    <li class="mr-4">
+      <a routerLink="provincial-admin/evacuees" title="Go to Evacuees Area">Evacuees</a>
+    </li>
+
+    <li class="mr-4">
+      <a routerLink="provincial-admin/organizations" title="Manage Organizations">Organizations &amp; Users</a>
+    </li>
+    <!-- The link should go to the page of volunteer users for the administrator?? -->
+    <!-- TODO: The  link goes to the useful information page. Can be uncommented when the useful information pull request is accepted-->
+    <li class="mr-4">
+      <a routerLink="provincial-admin/useful-info" title="Go to useful information">Useful Information</a>
+    </li>
+  </ul>
+</nav>
