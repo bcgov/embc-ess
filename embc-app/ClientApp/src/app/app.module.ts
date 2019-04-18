@@ -42,7 +42,6 @@ import { EvacueeSearchResultsComponent } from './components/evacuee-search-resul
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
-import { VolunteerDashboardExamplePageComponent } from './pages/volunteer/volunteer-dashboard-example-page/volunteer-dashboard-example-page.component';
 import { VolunteerRegistrationsPageComponent } from './pages/volunteer/volunteer-registrations-page/volunteer-registrations-page.component';
 import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
@@ -76,7 +75,6 @@ import { SideboxCollectionNoticeComponent } from './components/sidebox-collectio
     VolunteerListComponent,
     VolunteerEditorContainerComponent,
     VolunteerOrganizationListComponent,
-    VolunteerDashboardExamplePageComponent,
     VolunteerRegistrationsPageComponent,
     ProvincialAdminRegistrationsPageComponent,
     ProvincialAdminVolunteersOrganizationPageComponent,
