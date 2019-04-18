@@ -38,7 +38,7 @@ import { RegistrationMakerComponent } from './registration-maker/registration-ma
 import { EvacueeRegistrationComponent } from './evacuee-registration/evacuee-registration.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
-import { SessionExpiringModalComponent } from './modals/session-expiring/session-expiring.component';
+import { SessionExpiringModalComponent } from './shared/modals/session-expiring/session-expiring.component';
 
 @NgModule({
   declarations: [

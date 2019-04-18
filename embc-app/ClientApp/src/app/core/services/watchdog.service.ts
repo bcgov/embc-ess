@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { SessionExpiringModalComponent } from 'src/app/modals/session-expiring/session-expiring.component';
+import { SessionExpiringModalComponent } from 'src/app/shared/modals/session-expiring/session-expiring.component';
 import * as _ from 'lodash';
 
 // defaults (used for non-session users, ie, evacuees)
