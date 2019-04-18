@@ -38,6 +38,7 @@ import { VolunteerDashboardExamplePageComponent } from './pages/volunteer/volunt
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { VolunteerRegistrationsPageComponent } from './pages/volunteer/volunteer-registrations-page/volunteer-registrations-page.component';
 import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
+import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
 
 /*
   /
@@ -275,7 +276,7 @@ const routes: Routes = [
       },
     ],
   },
-  // VOLUNTEER routes
+  // VOLUNTEER NEW routes
   {
     path: 'volunteer-',
     canActivate: [LoggedInGuard],
@@ -418,6 +419,56 @@ const routes: Routes = [
       },
     ],
   },
+  // LOCAL AUTHORITY NEW routes
+  {
+    path: 'local-authority-',
+    canActivate: [LoggedInGuard],
+    canActivateChild: [RoleGuard],
+    children: [
+      {
+        // set the default component to route to for this user
+        path: '',
+        component: LocalAuthorityRegistrationsPageComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'registrations',
+        component: LocalAuthorityRegistrationsPageComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'registration',
+        component: RegistrationMakerComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'registration/:id',
+        component: RegistrationMakerComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'registration/summary/:id',
+        component: RegistrationSummaryComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'registration/summary/full/:id',
+        component: RegistrationSummaryComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'volunteers',
+        component: VolunteerRegistrationsPageComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'useful-info',
+        component: UsefulInformationPageComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+    ],
+  },
+
 
   // PROVINCIAL_ADMIN routes
   {
