@@ -1,10 +1,9 @@
-using Gov.Jag.Embc.Interfaces;
 using Gov.Jag.Embc.Public.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
+using System.Linq;
 using System.Security.Claims;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -14,61 +13,31 @@ namespace Gov.Jag.Embc.Public.Controllers
     public class UsersController : Controller
     {
         private readonly IConfiguration configuration;
-        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IHttpContextAccessor ctx;
 
         public UsersController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             this.configuration = configuration;
-            this.httpContextAccessor = httpContextAccessor;
+            this.ctx = httpContextAccessor;
         }
 
-        protected ClaimsPrincipal CurrentUser => httpContextAccessor.HttpContext.User;
+        protected ClaimsPrincipal CurrentUser => ctx.HttpContext.User;
 
         [HttpGet("current")]
-        //[RequiresPermission(Permission.Login, Permission.NewUserRegistration)]
-
         public virtual IActionResult UsersCurrentGet()
         {
-            SiteMinderAuthOptions siteMinderAuthOptions = new SiteMinderAuthOptions();
-
-            // determine if we are a new registrant.
-            string temp = httpContextAccessor.HttpContext.Session.GetString("UserSettings");
-            UserSettings userSettings = JsonConvert.DeserializeObject<UserSettings>(temp);
+            var principal = HttpContext.User;
             ViewModels.User user = new ViewModels.User()
             {
-                id = userSettings.UserId,
-                contactid = userSettings.ContactId,
-                accountid = userSettings.AccountId,
-                businessname = userSettings.BusinessLegalName,
-                name = userSettings.UserDisplayName,
-                UserType = userSettings.UserType,
-                appRoles = userSettings.AppRoles,
+                appRoles = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray(),
+                name = principal.FindFirstValue(SiteMinderClaimTypes.Name),
+                UserType = principal.FindFirstValue(SiteMinderClaimTypes.UserType),
+                contactid = principal.FindFirstValue(ClaimTypes.Sid),
+                id = principal.FindFirstValue(ClaimTypes.Upn),
+                accountid = principal.FindFirstValue(SiteMinderClaimTypes.OrgId),
                 ClientTimeoutWarningInMinutes = configuration.ClientTimeoutWarningInMinutes(),
                 ClientTimeoutWarningDurationInMinutes = configuration.ClientTimeoutWarningDurationInMinutes()
             };
-
-            if (userSettings.IsNewUser)
-            {
-                user.isNewUser = true;
-                // get details from the headers.
-
-                user.lastname = CommonDynamicsExtensions.GetLastName(user.name);
-                user.firstname = CommonDynamicsExtensions.GetFirstName(user.name);
-                user.accountid = userSettings.AccountId;
-
-                string siteminderBusinessGuid = httpContextAccessor.HttpContext.Request.Headers[siteMinderAuthOptions.SiteMinderBusinessGuidKey];
-                string siteminderUserGuid = httpContextAccessor.HttpContext.Request.Headers[siteMinderAuthOptions.SiteMinderUserGuidKey];
-
-                user.contactid = string.IsNullOrEmpty(siteminderUserGuid) ? userSettings.ContactId : siteminderUserGuid;
-                user.accountid = string.IsNullOrEmpty(siteminderBusinessGuid) ? userSettings.AccountId : siteminderBusinessGuid;
-            }
-            else
-            {
-                user.lastname = userSettings.AuthenticatedUser.Surname;
-                user.firstname = userSettings.AuthenticatedUser.GivenName;
-                user.email = userSettings.AuthenticatedUser.Email;
-                user.isNewUser = false;
-            }
 
             return new JsonResult(user);
         }
