@@ -4,6 +4,9 @@
 @import "styles/defaults.scss";
 @import "styles/mixins.scss";
 
+// Bootstrap 4
+@import "~bootstrap/dist/css/bootstrap.css";
+
 // Components
 @import "styles/components/cards.scss";
 @import "styles/components/feature-blocks.scss";
