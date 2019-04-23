@@ -10,6 +10,7 @@ import { VolunteerService } from '../core/services/volunteer.service';
 import { OrganizationService } from '../core/services/organization.service';
 import { User, Volunteer, Organization, ListResult } from '../core/models';
 import { NotificationQueueService } from '../core/services/notification-queue.service';
+import { UniqueKeyService } from '../core/services/unique-key.service';
 // import { UpdateVolunteer } from '../store/volunteer/volunteer.actions';
 
 @Component({
@@ -26,6 +27,9 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
   isProvincialAdmin: boolean;
   isChangeOrg = false;
 
+  // the approriate path for routing for the current user
+  path: string;
+
   metaOrganizations: ListResult<Organization>;
   // currentVolunteer$ = this.store.select(s => s.volunteers.currentVolunteer); // TODO
   // currentOrganization$ = this.store.select(s => s.organizations.currentOrganization); // TODO
@@ -39,6 +43,7 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private store: Store<AppState>,
     private notificationQueueService: NotificationQueueService,
+    private uniqueKeyService: UniqueKeyService,
   ) { }
 
   // form value collectors
@@ -58,11 +63,13 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
       this.authService.getCurrentUser(),
       this.authService.isLocalAuthority$,
       this.authService.isProvincialAdmin$,
-      this.route.queryParamMap
-    ).subscribe(([currentUser, isLocalAuthority, isProvincialAdmin, queryParams]) => {
+      this.route.queryParamMap,
+      this.authService.path
+    ).subscribe(([currentUser, isLocalAuthority, isProvincialAdmin, queryParams, path]) => {
       this.currentUser = currentUser;
       this.isLocalAuthority = isLocalAuthority;
       this.isProvincialAdmin = isProvincialAdmin;
+      this.path = path;
 
       // if local authority then get their organization
       if (this.isLocalAuthority) {
@@ -108,10 +115,11 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
 
   // async continuation of above
   private ngOnInit2() {
-    if (this.route.snapshot.params.id) {
+    // collect key from service for looking up the volunteer
+    const key = this.uniqueKeyService.getKey();
+    if (key) {
       // there may be a user to edit because the route looks right
-      // TODO: error handling if volunteer not found
-      this.volunteerService.getVolunteerById(this.route.snapshot.params.id)
+      this.volunteerService.getVolunteerById(key)
         .subscribe(v => {
           // console.log('v =', v);
           this.editMode = true;
