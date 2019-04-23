@@ -30,11 +30,11 @@ namespace Gov.Jag.Embc.Public.Controllers
             ViewModels.User user = new ViewModels.User()
             {
                 appRoles = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray(),
-                name = principal.FindFirstValue(SiteMinderClaimTypes.Name),
-                UserType = principal.FindFirstValue(SiteMinderClaimTypes.UserType),
-                contactid = principal.FindFirstValue(ClaimTypes.Sid),
+                name = principal.FindFirstValue(SiteMinderClaimTypes.NAME),
+                UserType = principal.FindFirstValue(SiteMinderClaimTypes.USER_TYPE),
+                contactid = principal.FindFirstValue(EssClaimTypes.USER_ID),
                 id = principal.FindFirstValue(ClaimTypes.Upn),
-                accountid = principal.FindFirstValue(SiteMinderClaimTypes.OrgId),
+                accountid = principal.FindFirstValue(EssClaimTypes.ORG_ID),
                 ClientTimeoutWarningInMinutes = configuration.ClientTimeoutWarningInMinutes(),
                 ClientTimeoutWarningDurationInMinutes = configuration.ClientTimeoutWarningDurationInMinutes()
             };
