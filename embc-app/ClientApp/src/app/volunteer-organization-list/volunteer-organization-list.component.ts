@@ -118,7 +118,7 @@ export class VolunteerOrganizationListComponent implements OnInit {
         switchMap(([user, isLocalAuthority, isProvincialAdmin, queryParams]) => {
           // get the organization matching the query parameter passed in (if any)
           if (isProvincialAdmin) {
-            const orgId = queryParams.get('orgId');
+            const orgId = this.uniqueKeyService.getKey();
             return this.getAnyOrganization(orgId);
           }
           // for local authorities, we know what org they belong to

@@ -137,10 +137,12 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
           // if addUsers then route to the add users page
           // else route back to the organizations list
           if (addUsers) {
-            // TODO: use Store to save organization globally
-            this.router.navigate(['../../volunteer'], { queryParams: { orgId: this.organization.id }, relativeTo: this.route });
+            // save the organization id and route to the volunteer adder page
+            this.uniqueKeyService.setKey(this.organization.id);
+            this.router.navigate([`/${this.path}/organization/volunteers`]);
           } else {
-            this.router.navigate(['../../organizations'], { relativeTo: this.route });
+            // go back to the organization page
+            this.router.navigate([`/${this.path}/organizations`]);
           }
         });
     } else {
@@ -153,18 +155,19 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
           // if addUsers then route to the add users page
           // else route back to the organizations list
           if (addUsers) {
-            // TODO: use Store to save organization globally
-            this.router.navigate(['../volunteer'], { queryParams: { orgId: this.organization.id }, relativeTo: this.route });
+            // save the organization id and route to the volunteer adder page
+            this.uniqueKeyService.setKey(o.id);
+            this.router.navigate([`/${this.path}/organization/volunteers`]);
           } else {
-            this.router.navigate(['../organizations'], { relativeTo: this.route });
+            // go back to the organization page
+            this.router.navigate([`/${this.path}/organizations`]);
           }
         });
     }
   }
 
   cancel() {
-    // TODO: this seems like bad practice but fix when we have time
-    // go back to the organizations list
-    this.editMode ? this.router.navigate(['../../organizations'], { relativeTo: this.route }) : this.router.navigate(['../organizations'], { relativeTo: this.route });
+    // navigate back home
+    this.router.navigate([`/${this.path}/organizations`]);
   }
 }
