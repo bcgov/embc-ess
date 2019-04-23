@@ -264,10 +264,8 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
           if (addAnother) {
             this.resetForm();
           } else {
-            // TODO: preserveQueryParams is deprecated, use queryParamsHandling instead
-            this.editMode
-              ? this.router.navigate(['../../volunteers'], { relativeTo: this.route, preserveQueryParams: true })
-              : this.router.navigate(['../volunteers'], { relativeTo: this.route, preserveQueryParams: true });
+            // navigate back to the volunteers list
+            this.router.navigate([`/${this.path}/volunteers`], { preserveQueryParams: true })
           }
         });
     } else {
@@ -283,9 +281,8 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
             this.resetForm();
           } else {
             // TODO: preserveQueryParams is deprecated, use queryParamsHandling instead
-            this.editMode
-              ? this.router.navigate(['../../volunteers'], { relativeTo: this.route, preserveQueryParams: true })
-              : this.router.navigate(['../volunteers'], { relativeTo: this.route, preserveQueryParams: true });
+            // navigate back to the volunteers list
+            this.router.navigate([`/${this.path}/volunteers`], { preserveQueryParams: true });
           }
         });
     }
@@ -305,9 +302,7 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
 
   cancel() {
     // TODO: this seems like bad practice but fix when we have time
-    // go back to the volunteers list
-    this.editMode
-      ? this.router.navigate(['../../volunteers'], { relativeTo: this.route, preserveQueryParams: true })
-      : this.router.navigate(['../volunteers'], { relativeTo: this.route, preserveQueryParams: true });
+    // navigate back to the volunteers list
+    this.router.navigate([`/${this.path}/volunteers`], { preserveQueryParams: true });
   }
 }
