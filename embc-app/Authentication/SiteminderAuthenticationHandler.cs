@@ -61,9 +61,9 @@ namespace Gov.Jag.Embc.Public.Authentication
             {
                 smAuthToken = SiteMinderAuthenticationToken.GetFromCookie(Request);
                 Response.Cookies.Delete(SiteMinderAuthenticationToken.COOKIE_NAME);
-                logger.LogDebug($"smAuthToken (cookie): {smAuthToken.ToString()}");
             }
 
+            logger.LogDebug($"smAuthToken: {smAuthToken.ToString()}");
             var claims = Context.Session.GetString("app.principal");
             if (!string.IsNullOrEmpty(claims))
             {
@@ -73,7 +73,7 @@ namespace Gov.Jag.Embc.Public.Authentication
             }
             if (smAuthToken.IsAnonymous())
             {
-                logger.LogDebug($"NoResult: {smAuthToken.ToString()}");
+                logger.LogDebug($"NoResult");
                 return AuthenticateResult.NoResult();
             }
 
