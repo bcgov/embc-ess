@@ -1,0 +1,30 @@
+<span *ngFor="let notification of currentNotifications">
+  <div *ngIf="notification.type==='danger'" class="alert alert-danger alert-dismissible mb-1" role="alert">
+    <app-font-awesome-icon icon="exclamation-circle" class="mr-2"></app-font-awesome-icon>
+    <strong>{{notification.message}}</strong>
+    <button (click)="close(notification)" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">
+        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+      </span>
+    </button>
+  </div>
+  <div *ngIf="notification.type==='warning'" class="alert alert-warning alert-dismissible mb-1" role="alert">
+    <app-font-awesome-icon icon="exclamation-triangle" class="mr-2"></app-font-awesome-icon>
+    <strong>{{notification.message}}</strong>
+    <button (click)="close(notification)" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">
+        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+      </span>
+    </button>
+  </div>
+  <div *ngIf="notification.type==='success'" class="alert alert-success alert-dismissible mb-1" role="alert">
+    <app-font-awesome-icon icon="check-circle" class="mr-2"></app-font-awesome-icon>
+
+    <strong>{{notification.message}}</strong>
+    <button (click)="close(notification)" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">
+        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+      </span>
+    </button>
+  </div>
+</span>

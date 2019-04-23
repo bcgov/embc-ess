@@ -5,7 +5,7 @@
 
     <p class="pb-3">
       The term organization refers to a Regional District, Local Authority, First Nations Community, or NGO that your
-      Emergency Support Services (ESS) Team is responsible to.
+      Emergency Support Services Team is responsible to.
     </p>
     <p class="pb-3">
       In order to add an organization, you will need the Business BCeID User ID of the admin user for the organization.
@@ -44,8 +44,8 @@
 
     <div class="row">
       <div class="col-md-9 pt-4 mb-4">
-          <label class="required" for="community">Associated EMBC Regional District / Community</label>
-          <app-communities-select [myFormControl]="community" id="community" [myRequired]="true"></app-communities-select>
+        <label class="required" for="community">Associated EMBC Regional District / Community</label>
+        <app-communities-select [myFormControl]="community" id="community" [myRequired]="true"></app-communities-select>
       </div>
     </div>
   </div>
@@ -67,7 +67,7 @@
     </p>
 
     <section class="p-3">
-      <h3>Volunteer Information</h3>
+      <h3>Organization Details</h3>
       <ul class="summary">
         <li>
           <span class="name">Name of Organization:</span>
@@ -101,7 +101,7 @@
 
   <div class="mt-5 space-between">
     <section>
-      <button (click)="back()" class="btn btn-secondary">Edit</button>
+      <button (click)="back()" class="btn btn-secondary">EDIT DETAILS</button>
     </section>
     <section>
       <button *ngIf="!submitting" class="btn btn-primary" (click)="submit()">SAVE</button>

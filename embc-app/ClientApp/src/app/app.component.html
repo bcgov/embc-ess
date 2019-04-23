@@ -1,7 +1,10 @@
 <app-warning-banner [show]="isIE"></app-warning-banner>
-<app-header [currentUser]="currentUser"></app-header>
+<app-header [currentUser]="authService.currentUser"></app-header>
 <!-- Todo: only show the navbar when the user is logged in as a volunteer or administrator. -->
 <app-top-navigation></app-top-navigation>
+<app-top-navbar></app-top-navbar>
+
+<app-notification-banner></app-notification-banner>
 <div>
   <div class="app-outer" *ngIf="isIE == false">
     <div>

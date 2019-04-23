@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-
 import { AppState } from 'src/app/store';
-
+import { CookieService } from './cookie.service';
 
 @Injectable()
 export abstract class RestService {
@@ -12,6 +11,7 @@ export abstract class RestService {
   constructor(
     protected http: HttpClient,
     protected store: Store<AppState>,
+    protected cookies: CookieService,
   ) { }
 
   get headers(): HttpHeaders {
@@ -42,4 +42,5 @@ export abstract class RestService {
     }
     return throwError(errorMessage);
   }
+
 }

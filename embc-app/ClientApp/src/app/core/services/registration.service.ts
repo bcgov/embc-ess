@@ -5,8 +5,8 @@ import { catchError, retry } from 'rxjs/operators';
 import { CoreModule } from '../core.module';
 import { Registration, ListResult } from '../models';
 import { RestService } from './rest.service';
-import { SearchQueryParameters } from 'src/app/shared/components/search';
 import { HttpResponse } from '@angular/common/http';
+import { SearchQueryParameters } from '../models/search-interfaces';
 
 @Injectable({
   providedIn: CoreModule

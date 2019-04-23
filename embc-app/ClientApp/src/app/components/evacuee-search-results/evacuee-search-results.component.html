@@ -1,0 +1,49 @@
+<!-- <pre>{{searchResults|json}}</pre> -->
+
+<div class="search-results">
+  <div *ngIf="rows.length; then searchResultsTable; else notFound"></div>
+</div>
+
+<ng-template #searchResultsTable>
+  <table class="table">
+    <thead class="thead-light">
+      <th scope="col"></th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Task #</th>
+      <th scope="col">Emergency Support Services File #</th>
+      <th scope="col">Evacuated From</th>
+      <th scope="col">Evacuated To</th>
+      <!-- <th scope="col">Referrals</th> -->
+      <th scope="col">Action</th>
+    </thead>
+    <tbody>
+      <tr [class.table-danger]="rowItem.restrictedAccess" *ngFor="let rowItem of rows">
+        <th scope="row">
+          <app-font-awesome-icon class="mr-1 float-left" *ngIf="rowItem.headOfHousehold" icon="user">
+          </app-font-awesome-icon>
+          <app-font-awesome-icon class="float-right" *ngIf="rowItem.restrictedAccess" icon="lock">
+          </app-font-awesome-icon>
+        </th>
+        <td>{{rowItem.firstName}}</td>
+        <td>{{rowItem.lastName}}</td>
+        <td>{{rowItem.incidentTaskTaskNumber}}</td>
+        <td>{{rowItem.essFileNumber}}</td>
+        <td>{{rowItem.evacuatedFrom}}</td>
+        <td>{{rowItem.evacuatedTo}}</td>
+        <!-- <td>
+          <span *ngIf="rowItem.hasReferrals===true">Yes</span>
+        </td> -->
+        <td>
+          <!-- TODO: These always route to the same places. I'm going to cheat and hard code for now so we don't have to re-test int the component's output -->
+          <a *ngIf="!rowItem.incidentTaskTaskNumber" [routerLink]="" (click)="finalize(rowItem)">Finalize</a>
+          <a *ngIf="rowItem.incidentTaskTaskNumber" [routerLink]="" (click)="view(rowItem)">View</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
+
+<ng-template #notFound>
+  <p>{{notFoundMessage}}</p>
+</ng-template>

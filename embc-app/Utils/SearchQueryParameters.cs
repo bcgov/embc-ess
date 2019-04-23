@@ -35,5 +35,15 @@ namespace Gov.Jag.Embc.Public.Utils
 
         [FromQuery(Name = "notactive")]
         public bool IncludeDeactivated { get; set; } = false;
+
+        public bool HasQuery()
+        {
+            return !string.IsNullOrEmpty(this.Query);
+        }
+
+        public bool HasSortBy()
+        {
+            return !string.IsNullOrEmpty(this.SortBy);
+        }
     }
 }

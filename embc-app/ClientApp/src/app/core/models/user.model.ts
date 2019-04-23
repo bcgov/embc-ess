@@ -8,4 +8,6 @@ export interface User {
   contactid?: string;
   userType?: string;
   appRoles: string[];
+  clientTimeoutWarningInMinutes: number;
+  clientTimeoutWarningDurationInMinutes: number;
 }
