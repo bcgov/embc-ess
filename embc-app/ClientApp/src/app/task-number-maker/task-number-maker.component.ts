@@ -7,6 +7,7 @@ import { AppState } from '../store';
 import { IncidentTaskService } from '../core/services/incident-task.service';
 import { NotificationQueueService } from '../core/services/notification-queue.service';
 import { UniqueKeyService } from '../core/services/unique-key.service';
+import { AuthService } from '../core/services/auth.service';
 // import { UpdateIncidentTask } from '../store/incident-tasks/incident-tasks.actions';
 
 @Component({
@@ -19,6 +20,8 @@ export class TaskNumberMakerComponent implements OnInit {
   maker = true; // determines if the widget is in edit or confirmation mode
   editMode = false;
   submitting = false;
+  //path is for routing based on the user's role
+  path: string;
 
   // whatever is in the application state
   currentIncidentTask$ = this.store.select(i => i.incidentTasks.currentIncidentTask);
@@ -36,20 +39,18 @@ export class TaskNumberMakerComponent implements OnInit {
   };
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private store: Store<AppState>,
     private incidentTaskService: IncidentTaskService,
     private notificationQueueService: NotificationQueueService,
+    private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
   ) { }
 
-  // convenience getters
-  get taskNumbersRoute() {
-    return this.editMode ? '../../task-numbers' : '../task-numbers';
-  }
-
   ngOnInit() {
+    // keep the current path up to date
+    this.authService.path.subscribe(p => this.path = p);
+
     // initialize form for collection
     this.taskNumber = new FormControl('');
     this.details = new FormControl('');
@@ -104,9 +105,8 @@ export class TaskNumberMakerComponent implements OnInit {
             this.submitting = false;
             // add a message to the UI
             this.notificationQueueService.addNotification('Task number updated successfully');
-            // go back to the volunteer team dashboard
-            // this needs to route in two different ways because the ID added for edit acts as a route element
-            this.router.navigate([this.taskNumbersRoute], { relativeTo: this.route });
+            // go back to the task number list page
+            this.router.navigate([`/${this.path}/task-numbers`], { preserveQueryParams: true });
           });
       } else {
         // if the volunteer has no id we need to create a new one
@@ -115,8 +115,8 @@ export class TaskNumberMakerComponent implements OnInit {
             this.submitting = false;
             // add a message to the UI
             this.notificationQueueService.addNotification('Task number added successfully');
-            // go back to the volunteer team dashboard
-            this.router.navigate([this.taskNumbersRoute], { relativeTo: this.route });
+            // go back to the task number list page
+            this.router.navigate([`/${this.path}/task-numbers`], { preserveQueryParams: true });
           });
       }
     }

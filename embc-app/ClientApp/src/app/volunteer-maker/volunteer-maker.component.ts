@@ -265,7 +265,7 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
             this.resetForm();
           } else {
             // navigate back to the volunteers list
-            this.router.navigate([`/${this.path}/volunteers`], { preserveQueryParams: true })
+            this.router.navigate([`/${this.path}/volunteers`], { preserveQueryParams: true });
           }
         });
     } else {
