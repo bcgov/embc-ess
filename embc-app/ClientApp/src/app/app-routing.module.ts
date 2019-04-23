@@ -161,7 +161,6 @@ const routes: Routes = [
     component: SessionExpiredComponent
   },
   {
-    // TODO: naming this should be "evacuee-self-registration"
     path: 'self-registration',
     component: SelfRegistrationComponent,
     children: [
@@ -616,6 +615,11 @@ const routes: Routes = [
       {
         path: 'organization',
         component: OrganizationMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        path: 'organization/volunteers',
+        component: VolunteerOrganizationListComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
