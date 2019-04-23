@@ -34,7 +34,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Login(string path)
         {
-            if (env.IsDevelopment() && "headers".Equals(path, StringComparison.OrdinalIgnoreCase))
+            if (!env.IsProduction() && "headers".Equals(path, StringComparison.OrdinalIgnoreCase))
             {
                 foreach (var header in Request.Headers)
                 {

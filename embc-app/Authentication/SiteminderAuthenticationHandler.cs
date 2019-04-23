@@ -73,7 +73,7 @@ namespace Gov.Jag.Embc.Public.Authentication
             }
             if (smAuthToken.IsAnonymous())
             {
-                logger.LogDebug($"NoResult");
+                logger.LogDebug($"NoResult: {smAuthToken.ToString()}");
                 return AuthenticateResult.NoResult();
             }
 
