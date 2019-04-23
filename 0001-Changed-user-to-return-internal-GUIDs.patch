@@ -1,0 +1,186 @@
+From ac6a62890daa5eb69bd0181a80bec88da9079865 Mon Sep 17 00:00:00 2001
+From: Yossi Tamari <yossi.tamari@quartech.com>
+Date: Tue, 23 Apr 2019 11:29:29 -0700
+Subject: [PATCH] Changed user to return internal GUIDs
+
+---
+ .../SiteMinderAuthenticationToken.cs          | 32 +++++------
+ .../SiteminderAuthenticationHandler.cs        | 56 +++++++++++--------
+ embc-app/Controllers/UsersController.cs       |  8 +--
+ 3 files changed, 51 insertions(+), 45 deletions(-)
+
+diff --git a/embc-app/Authentication/SiteMinderAuthenticationToken.cs b/embc-app/Authentication/SiteMinderAuthenticationToken.cs
+index 52e9d4c..472aa2c 100644
+--- a/embc-app/Authentication/SiteMinderAuthenticationToken.cs
++++ b/embc-app/Authentication/SiteMinderAuthenticationToken.cs
+@@ -1,17 +1,21 @@
+ using Gov.Jag.Embc.Public.Utils;
+ using Microsoft.AspNetCore.Http;
+ using System;
+-using System.Collections.Generic;
+ using System.Linq;
+-using System.Security.Claims;
+ 
+ namespace Gov.Jag.Embc.Public.Authentication
+ {
+     public static class SiteMinderClaimTypes
+     {
+-        public static string UserType = "sm.usertype";
+-        public static string Name = "sm.name";
+-        public static string OrgId = "sm.orgid";
++        public static string USER_TYPE = "sm.user_type";
++        public static string NAME = "sm.name";
++        public static string BUSINESS_GUID = "sm.business_guid";
++    }
++
++    public static class EssClaimTypes
++    {
++        public static string USER_ID = "ess.user_id";
++        public static string ORG_ID = "ess.org_id";
+     }
+ 
+     public class SiteMinderAuthenticationToken
+@@ -83,6 +87,11 @@ namespace Gov.Jag.Embc.Public.Authentication
+             return "internal".Equals(smgov_usertype, StringComparison.OrdinalIgnoreCase);
+         }
+ 
++        public bool IsExternal()
++        {
++            return "business".Equals(smgov_usertype, StringComparison.OrdinalIgnoreCase);
++        }
++
+         public override string ToString()
+         {
+             return $"smgov_userguid={smgov_userguid};" +
+@@ -93,18 +102,5 @@ namespace Gov.Jag.Embc.Public.Authentication
+                 $"smgov_businessguid={smgov_businessguid};" +
+                 $"sm_user={sm_user}";
+         }
+-
+-        public IEnumerable<Claim> ToClaims()
+-        {
+-            var claims = new (string type, string value)[]
+-            {
+-                (SiteMinderClaimTypes.UserType, smgov_usertype),
+-                (ClaimTypes.Sid, smgov_userguid),
+-                (SiteMinderClaimTypes.Name, smgov_userdisplayname),
+-                (ClaimTypes.Upn, sm_universalid),
+-                (SiteMinderClaimTypes.OrgId, smgov_businessguid)
+-            };
+-            return claims.Where(c => c.value != null).Select(c => new Claim(c.type, c.value));
+-        }
+     }
+ }
+diff --git a/embc-app/Authentication/SiteminderAuthenticationHandler.cs b/embc-app/Authentication/SiteminderAuthenticationHandler.cs
+index 5b026bc..8e4cf75 100644
+--- a/embc-app/Authentication/SiteminderAuthenticationHandler.cs
++++ b/embc-app/Authentication/SiteminderAuthenticationHandler.cs
+@@ -8,7 +8,6 @@ using Microsoft.IdentityModel.Tokens;
+ using System;
+ using System.Collections.Generic;
+ using System.IdentityModel.Tokens.Jwt;
+-using System.Linq;
+ using System.Security.Claims;
+ using System.Text.Encodings.Web;
+ using System.Threading.Tasks;
+@@ -92,36 +91,47 @@ namespace Gov.Jag.Embc.Public.Authentication
+         }
+ 
+         private async Task<ClaimsPrincipal> CreatePrincipalFor(SiteMinderAuthenticationToken smAuthToken)
+-        {
+-            var roles = new List<string>();
+-            roles.Add("role_everyone");
+-
++        {
++            var claims = new List<Claim>();
++            claims.Add(new Claim(ClaimTypes.Role, "role_everyone"));
+             if (smAuthToken.IsInternal())
+             {
+                 //EMBC admin
+-                roles.Add("role_volunteer");
+-                roles.Add("role_local_authority");
+-                roles.Add("role_provincial_admin");
+-            }
+-            else
++                claims.Add(new Claim(ClaimTypes.Role, "role_volunteer"));
++                claims.Add(new Claim(ClaimTypes.Role, "role_local_authority"));
++                claims.Add(new Claim(ClaimTypes.Role, "role_provincial_admin"));
++                claims.Add(new Claim(ClaimTypes.Sid, smAuthToken.smgov_userguid));
++                claims.Add(new Claim(ClaimTypes.Upn, smAuthToken.sm_universalid));
++                claims.Add(new Claim(SiteMinderClaimTypes.USER_TYPE, smAuthToken.smgov_usertype));
++                claims.Add(new Claim(SiteMinderClaimTypes.NAME, smAuthToken.smgov_userdisplayname));
++                claims.Add(new Claim(EssClaimTypes.USER_ID, smAuthToken.smgov_userguid));
++            }
++            else if (smAuthToken.IsExternal())
+             {
+-                var volunteer = dataInterface.GetVolunteerByBceidUserId(smAuthToken.sm_universalid);
+-                if (volunteer == null) throw new ApplicationException("Volunteer not found");
+                 //Volunteer
+-                if (string.IsNullOrEmpty(volunteer.Externaluseridentifier))
++                var volunteer = dataInterface.GetVolunteerByBceidUserId(smAuthToken.sm_universalid);
++
++                if (volunteer == null) throw new ApplicationException("Volunteer not found");
++                if (volunteer.Externaluseridentifier != smAuthToken.smgov_userguid) throw new ApplicationException("Volunteer BCeID GUID does not match");
++                if (volunteer.Organization.BCeIDBusinessGuid != smAuthToken.smgov_businessguid) throw new ApplicationException("Volunteer doesn't belong to the correct organization");
++
++                if (string.IsNullOrEmpty(volunteer.Externaluseridentifier))
+                 {
+                     volunteer.Externaluseridentifier = smAuthToken.smgov_userguid;
+                     await dataInterface.UpdateVolunteerAsync(volunteer);
+-                }
+-                if (volunteer.Externaluseridentifier != smAuthToken.smgov_userguid) throw new ApplicationException("Volunteer BCeID GUID does not match");
+-                if (volunteer.Organization.BCeIDBusinessGuid != smAuthToken.smgov_businessguid) throw new ApplicationException("Volunteer doesn't belong to the correct organization");
+-
+-                roles.Add("role_volunteer");
+-                if (volunteer.IsAdministrator ?? false) roles.Add("role_local_authority");
++                }
++
++                claims.Add(new Claim(ClaimTypes.Role, "role_volunteer"));
++                if (volunteer.IsAdministrator ?? false) claims.Add(new Claim(ClaimTypes.Role, "role_local_authority"));
++                claims.Add(new Claim(ClaimTypes.Sid, smAuthToken.smgov_userguid));
++                claims.Add(new Claim(ClaimTypes.Upn, smAuthToken.sm_universalid));
++                claims.Add(new Claim(SiteMinderClaimTypes.USER_TYPE, smAuthToken.smgov_usertype));
++                claims.Add(new Claim(SiteMinderClaimTypes.NAME, smAuthToken.smgov_userdisplayname));
++                claims.Add(new Claim(SiteMinderClaimTypes.BUSINESS_GUID, smAuthToken.smgov_businessguid));
++                claims.Add(new Claim(EssClaimTypes.USER_ID, volunteer.Id));
++                claims.Add(new Claim(EssClaimTypes.ORG_ID, volunteer.Organization.Id));
+             }
+-            var claims = new List<Claim>();
+-            claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
+-            claims.AddRange(smAuthToken.ToClaims());
++
+             return new ClaimsPrincipal(new ClaimsIdentity(claims, Options.Scheme));
+         }
+     }
+@@ -136,7 +146,7 @@ namespace Gov.Jag.Embc.Public.Authentication
+             {
+                 Subject = (ClaimsIdentity)principal.Identity,
+                 Audience = "self",
+-                Issuer = "self",
++                Issuer = "self",
+             });
+ 
+             return token;
+diff --git a/embc-app/Controllers/UsersController.cs b/embc-app/Controllers/UsersController.cs
+index 2e9f2fe..efa83fc 100644
+--- a/embc-app/Controllers/UsersController.cs
++++ b/embc-app/Controllers/UsersController.cs
+@@ -30,11 +30,11 @@ namespace Gov.Jag.Embc.Public.Controllers
+             ViewModels.User user = new ViewModels.User()
+             {
+                 appRoles = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray(),
+-                name = principal.FindFirstValue(SiteMinderClaimTypes.Name),
+-                UserType = principal.FindFirstValue(SiteMinderClaimTypes.UserType),
+-                contactid = principal.FindFirstValue(ClaimTypes.Sid),
++                name = principal.FindFirstValue(SiteMinderClaimTypes.NAME),
++                UserType = principal.FindFirstValue(SiteMinderClaimTypes.USER_TYPE),
++                contactid = principal.FindFirstValue(EssClaimTypes.USER_ID),
+                 id = principal.FindFirstValue(ClaimTypes.Upn),
+-                accountid = principal.FindFirstValue(SiteMinderClaimTypes.OrgId),
++                accountid = principal.FindFirstValue(EssClaimTypes.ORG_ID),
+                 ClientTimeoutWarningInMinutes = configuration.ClientTimeoutWarningInMinutes(),
+                 ClientTimeoutWarningDurationInMinutes = configuration.ClientTimeoutWarningDurationInMinutes()
+             };
+-- 
+2.17.1
+
