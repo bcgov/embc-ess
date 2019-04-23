@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../store';
 import { IncidentTaskService } from '../core/services/incident-task.service';
 import { NotificationQueueService } from '../core/services/notification-queue.service';
+import { UniqueKeyService } from '../core/services/unique-key.service';
 // import { UpdateIncidentTask } from '../store/incident-tasks/incident-tasks.actions';
 
 @Component({
@@ -40,6 +41,7 @@ export class TaskNumberMakerComponent implements OnInit {
     private store: Store<AppState>,
     private incidentTaskService: IncidentTaskService,
     private notificationQueueService: NotificationQueueService,
+    private uniqueKeyService: UniqueKeyService,
   ) { }
 
   // convenience getters
@@ -53,9 +55,10 @@ export class TaskNumberMakerComponent implements OnInit {
     this.details = new FormControl('');
     this.community = new FormControl('');
 
-    if (this.route.snapshot.params.id) {
+    const key = this.uniqueKeyService.getKey();
+    if (key) {
       // there may be a user to edit because the route has an ID for an incident task
-      this.incidentTaskService.getIncidentTask(this.route.snapshot.params.id)
+      this.incidentTaskService.getIncidentTask(key)
         .subscribe((i: IncidentTask) => {
           // save the incident task for filling in information later.
           this.taskNumber.setValue(i.taskNumber);
