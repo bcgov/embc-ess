@@ -52,9 +52,9 @@ export class RegistrationSummaryComponent implements OnInit {
   routeTo() {
     // TODO: this seems like bad practice but fix when we have time
     if (confirm('By clicking continue you acknowledge that all changes to this information will be collected, audited, and your administrator may contact you about them.')) {
-      // save teh key for lookup
+      // save the key for lookup
       this.uniqueKeyService.setKey(this.registration.id);
-      this.router.navigate([`/${this.path}/registration/summary/full/${this.registration.id}`]);
+      this.router.navigate([`/${this.path}/registration/summary/full`]);
     }
   }
 }
