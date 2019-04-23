@@ -50,7 +50,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> LoginDevelopment(string userName)
         {
-            if (!env.IsDevelopment() || string.IsNullOrWhiteSpace(userName)) return Unauthorized();
+            if (env.IsProduction() || string.IsNullOrWhiteSpace(userName)) return Unauthorized();
 
             HttpContext.Session.Clear();
 
@@ -61,7 +61,7 @@ namespace Gov.Jag.Embc.Public.Controllers
 
             SiteMinderAuthenticationToken.AddToResponse(secToken, Response);
 
-            return RedirectToAction("login");
+            return LocalRedirect($"{configuration["BASE_PATH"]}/login");
         }
 
         private async Task<SiteMinderAuthenticationToken> CreateDevTokenForIdir(string userName)
