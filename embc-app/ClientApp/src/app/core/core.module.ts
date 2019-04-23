@@ -1,9 +1,9 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { UnauthorizedInterceptor } from './interceptors/unauthorized.interceptor';
+import { WatchdogInterceptor } from './interceptors/watchdog.interceptor';
 import { throwIfAlreadyLoaded } from './guards/module-import.guard';
-import { UnauthorizedInterceptor } from './http-interceptors/unauthorized.interceptor';
 
 @NgModule({
   declarations: [],
@@ -12,7 +12,8 @@ import { UnauthorizedInterceptor } from './http-interceptors/unauthorized.interc
     HttpClientModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: UnauthorizedInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: UnauthorizedInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: WatchdogInterceptor, multi: true }
   ]
 })
 export class CoreModule {

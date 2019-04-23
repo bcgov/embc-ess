@@ -3,6 +3,7 @@ import { Organization } from '../core/models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrganizationService } from '../core/services/organization.service';
 import { FormControl } from '@angular/forms';
+import { NotificationQueueService } from '../core/services/notification-queue.service';
 
 @Component({
   selector: 'app-organization-maker',
@@ -25,7 +26,8 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private organizationService: OrganizationService
+    private organizationService: OrganizationService,
+    private notificationQueueService: NotificationQueueService,
   ) { }
 
   ngOnInit() {
@@ -120,6 +122,8 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
       this.organizationService.updateOrganization(this.organization)
         .subscribe(() => {
           this.submitting = false;
+          // add a message to the UI
+          this.notificationQueueService.addNotification('Organization updated successfully');
           // if addUsers then route to the add users page
           // else route back to the organizations list
           if (addUsers) {
@@ -134,6 +138,8 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
       this.organizationService.createOrganization(this.organization)
         .subscribe(o => {
           this.submitting = false;
+          // add a message to the UI
+          this.notificationQueueService.addNotification('Organization added successfully');
           // if addUsers then route to the add users page
           // else route back to the organizations list
           if (addUsers) {
