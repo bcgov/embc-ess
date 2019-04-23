@@ -4,6 +4,7 @@ import { Registration } from 'src/app/core/models';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EvacueeSearchResults } from 'src/app/core/models/search-interfaces';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 // TODO: Rename this
 interface RowItem {
@@ -57,16 +58,22 @@ export class EvacueeSearchResultsComponent implements OnChanges {
 
   rows: RowItem[] = [];
   notFoundMessage = 'Searching ...';
+  // the routing path
+  path: string;
 
   ngOnChanges(changes: SimpleChanges) {
     this.rows = this.processSearchResults(this.searchResults);
   }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private uniqueKeyService: UniqueKeyService,
+    private authService: AuthService
   ) { }
-
+  ngOnInit() {
+    this.authService.path.subscribe(p => this.path = p);
+  }
   onResultSelected(rowItem: RowItem, event: MouseEvent) {
     this.resultSelected.emit(rowItem);
   }
@@ -196,15 +203,13 @@ export class EvacueeSearchResultsComponent implements OnChanges {
 
   finalize(r: RowItem) {
     this.uniqueKeyService.setKey(r.rowData.id);
-    this.router.navigate(['registration']
-      , { relativeTo: this.route }
-    );
+    this.router.navigate([`/${this.path}/registration`]);
   }
 
   view(r: RowItem) {
     this.uniqueKeyService.setKey(r.rowData.id);
-    this.router.navigate(['registration/summary']
-      , { relativeTo: this.route }
+    this.router.navigate([`/${this.path}/registration/summary`]
+      // , { relativeTo: this.route }
     );
   }
 }
