@@ -17,6 +17,7 @@ import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { NotificationQueueService } from '../core/services/notification-queue.service';
+import { UniqueKeyService } from '../core/services/unique-key.service';
 
 
 @Component({
@@ -70,6 +71,9 @@ export class RegistrationMakerComponent implements OnInit {
   private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
   private validationHelper: ValidationHelper;
 
+  // what is the value of the currently examined key
+  private uniqueKey: string;
+
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>, // ngrx app state
@@ -78,7 +82,8 @@ export class RegistrationMakerComponent implements OnInit {
     private incidentTaskService: IncidentTaskService,
     private router: Router,
     private authService: AuthService,
-    private notificationQueueService: NotificationQueueService
+    private notificationQueueService: NotificationQueueService,
+    private uniqueKeyService: UniqueKeyService,
   ) {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
@@ -168,6 +173,9 @@ export class RegistrationMakerComponent implements OnInit {
   }
 
   ngOnInit() {
+    // get unique key if one exists
+    this.uniqueKey = this.uniqueKeyService.getKey();
+
     // fetch the default country
     this.countries$.subscribe((countries: Country[]) => {
       // the only(first) element that is named Canada

@@ -3,6 +3,7 @@ import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from
 import { Registration } from 'src/app/core/models';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EvacueeSearchResults } from 'src/app/core/models/search-interfaces';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
 // TODO: Rename this
 interface RowItem {
@@ -63,6 +64,7 @@ export class EvacueeSearchResultsComponent implements OnChanges {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private uniqueKeyService: UniqueKeyService,
   ) { }
 
   onResultSelected(rowItem: RowItem, event: MouseEvent) {
@@ -193,10 +195,16 @@ export class EvacueeSearchResultsComponent implements OnChanges {
   }
 
   finalize(r: RowItem) {
-    this.router.navigate(['../register-evacuee/fill/' + r.rowData.id], { relativeTo: this.route });
+    this.uniqueKeyService.setKey(r.rowData.id);
+    this.router.navigate(['registration']
+      , { relativeTo: this.route }
+    );
   }
 
   view(r: RowItem) {
-    this.router.navigate(['../evacuee-summary/' + r.rowData.id], { relativeTo: this.route });
+    this.uniqueKeyService.setKey(r.rowData.id);
+    this.router.navigate(['registration/summary']
+      , { relativeTo: this.route }
+    );
   }
 }
