@@ -31,7 +31,7 @@ namespace Gov.Jag.Embc.Public.Authentication
         {
             return new SiteMinderAuthenticationToken
             {
-                smgov_userguid = req.Headers["smgov_userguid "],
+                smgov_userguid = req.Headers["smgov_userguid"],
                 sm_universalid = req.Headers["sm_universalid"],
                 smgov_businessguid = req.Headers["smgov_businessguid"],
                 sm_user = req.Headers["sm_user"],
