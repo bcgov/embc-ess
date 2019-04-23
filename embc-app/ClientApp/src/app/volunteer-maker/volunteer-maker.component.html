@@ -64,13 +64,13 @@
           <legend class="sr-only">Role</legend>
           <div class="form-check">
             <label class="form-check-label" for="isAdministratorFalse">
-              <input class="form-check-input" type="radio" [formControl]="isAdministrator" id="isAdministratorFalse" [value]="false">
+              <input class="form-check-input" type="radio" name="isAdministrator" [formControl]="isAdministrator" id="isAdministratorFalse" [value]="false">
               <span class="pl-3">Emergency Support Services User</span>
             </label>
           </div>
           <div class="form-check">
             <label class="form-check-label" for="isAdministratorTrue">
-              <input class="form-check-input" type="radio" [formControl]="isAdministrator" id="isAdministratorTrue" [value]="true">
+              <input class="form-check-input" type="radio" name="isAdministrator" [formControl]="isAdministrator" id="isAdministratorTrue" [value]="true">
               <span class="pl-3">Admin</span>
             </label>
           </div>
@@ -78,20 +78,20 @@
       </div>
     </div>
 
-    <div class="row pt-5" *ngIf="isProvincialAdmin && isAdministrator.value === true">
+    <div class="row pt-5" *ngIf="isProvincialAdmin && isAdministrator.value">
       <div class="col-md-9">
         <label class="required">Primary Contact for Organization</label>
         <fieldset class="form-group">
           <legend class="sr-only">Primary Contact for Organization</legend>
           <div class="form-check">
             <label class="form-check-label" for="isPrimaryContactTrue">
-              <input class="form-check-input" type="radio" [formControl]="isPrimaryContact" id="isPrimaryContactTrue" [value]="true">
+              <input class="form-check-input" type="radio" name="isPrimaryContact" [formControl]="isPrimaryContact" id="isPrimaryContactTrue" [value]="true">
               <span class="pl-3">Yes</span>
             </label>
           </div>
           <div class="form-check">
             <label class="form-check-label" for="isPrimaryContactFalse">
-              <input class="form-check-input" type="radio" [formControl]="isPrimaryContact" id="isPrimaryContactFalse" [value]="false">
+              <input class="form-check-input" type="radio" name="isPrimaryContact" [formControl]="isPrimaryContact" id="isPrimaryContactFalse" [value]="false">
               <span class="pl-3">No</span>
             </label>
           </div>
