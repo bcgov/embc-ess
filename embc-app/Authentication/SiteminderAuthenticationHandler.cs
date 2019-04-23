@@ -61,25 +61,32 @@ namespace Gov.Jag.Embc.Public.Authentication
             {
                 smAuthToken = SiteMinderAuthenticationToken.GetFromCookie(Request);
                 Response.Cookies.Delete(SiteMinderAuthenticationToken.COOKIE_NAME);
+                logger.LogDebug($"smAuthToken (cookie): {smAuthToken.ToString()}");
             }
 
             var claims = Context.Session.GetString("app.principal");
             if (!string.IsNullOrEmpty(claims))
             {
                 var principal = claims.FromJwt();
+                logger.LogDebug($"Success (session): {principal.Identity.Name}");
                 return AuthenticateResult.Success(new AuthenticationTicket(principal, Options.Scheme));
             }
-            if (smAuthToken.IsAnonymous()) return AuthenticateResult.NoResult();
+            if (smAuthToken.IsAnonymous())
+            {
+                logger.LogDebug($"NoResult");
+                return AuthenticateResult.NoResult();
+            }
 
             try
             {
                 var principal = await CreatePrincipalFor(smAuthToken);
                 Context.Session.SetString("app.principal", principal.ToJwt());
+                logger.LogDebug($"Success (new): {principal.Identity.Name}");
                 return AuthenticateResult.Success(new AuthenticationTicket(principal, Options.Scheme));
             }
             catch (ApplicationException e)
             {
-                logger.LogError($"AuthenticationHandler failed to authenticate user: {e.Message}");
+                logger.LogError($"Fail: {e.Message}");
                 return AuthenticateResult.Fail(e.Message);
             }
         }
