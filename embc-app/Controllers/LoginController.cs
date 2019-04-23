@@ -36,16 +36,12 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             if (!env.IsProduction() && "headers".Equals(path, StringComparison.OrdinalIgnoreCase))
             {
-                foreach (var header in Request.Headers)
-                {
-                    await Response.WriteAsync($"{header.Key}={string.Join(",", header.Value.ToArray())}");
-                    return Ok();
-                }
+                return Content(string.Join("/r/n", Request.Headers.Select(header => $"{header.Key}={string.Join(",", header.Value.ToArray())}")), "text/plain", Encoding.UTF8);
             }
 
             if (ControllerContext.HttpContext.User == null || !ControllerContext.HttpContext.User.Identity.IsAuthenticated) return Unauthorized();
 
-            return LocalRedirect($"{configuration["BASE_PATH"]}/{path}");
+            return await Task.FromResult(LocalRedirect($"{configuration["BASE_PATH"]}/{path}"));
         }
 
         [HttpGet]
