@@ -102,7 +102,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                 new Claim(ClaimTypes.Sid, smgov_userguid),
                 new Claim(SiteMinderClaimTypes.Name, smgov_userdisplayname),
                 new Claim(ClaimTypes.Upn, sm_universalid),
-                new Claim(SiteMinderClaimTypes.OrgId, smgov_businessguid)
+                new Claim(SiteMinderClaimTypes.OrgId, smgov_businessguid ?? "")
             };
         }
     }

@@ -38,7 +38,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             if (!env.IsProduction() && "headers".Equals(path, StringComparison.OrdinalIgnoreCase))
             {
-                return Content(string.Join("/r/n", Request.Headers.Select(header => $"{header.Key}={string.Join(",", header.Value.ToArray())}")), "text/plain", Encoding.UTF8);
+                return Content(string.Join(Environment.NewLine, Request.Headers.Select(header => $"{header.Key}={string.Join(",", header.Value.ToArray())}")), "text/plain", Encoding.UTF8);
             }
 
             if (ControllerContext.HttpContext.User == null || !ControllerContext.HttpContext.User.Identity.IsAuthenticated) return Unauthorized();
