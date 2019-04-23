@@ -31,6 +31,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult> Login(string path)
         {
             if (env.IsDevelopment() && "headers".Equals(path, StringComparison.OrdinalIgnoreCase))
@@ -41,6 +42,8 @@ namespace Gov.Jag.Embc.Public.Controllers
                     return Ok();
                 }
             }
+
+            if (ControllerContext.HttpContext.User == null || !ControllerContext.HttpContext.User.Identity.IsAuthenticated) return Unauthorized();
 
             return LocalRedirect($"{configuration["BASE_PATH"]}/{path}");
         }
