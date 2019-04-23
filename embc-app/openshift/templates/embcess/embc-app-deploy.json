@@ -10,27 +10,17 @@
             "apiVersion": "v1",
             "kind": "Secret",
             "stringData": {
-                "base-path": "/embcess",
-                "base-uri": "https://training.justice.gov.bc.ca",
-                "database-service-name": "${DATABASE_SERVICE_NAME}",
                 "db-admin-password": "${DB_ADMIN_PASSWORD}",
                 "db-databasename": "ess-training",
                 "db-password": "${DB_PASSWORD}",
-                "db-username": "ess-training",
-                "smtp-host": "apps.smtp.gov.bc.ca"
+                "db-username": "ess-training"
             },
             "metadata": {
                 "annotations": {
-                    "template.openshift.io/expose-base-path": "{.data['base-path']}",
-                    "template.openshift.io/expose-base-uri": "{.data['base-uri']}",
-                    "template.openshift.io/expose-database-service-name": "{.data['database-service-name']}",
                     "template.openshift.io/expose-db-admin-password": "{.data['db-admin-password']}",
                     "template.openshift.io/expose-db-databasename": "{.data['db-databasename']}",
                     "template.openshift.io/expose-db-password": "{.data['db-password']}",
-                    "template.openshift.io/expose-db-username": "{.data['db-username']}",
-                    "template.openshift.io/expose-dynamics-odata-uri": "{.data['dynamics-odata-uri']}",
-                    "template.openshift.io/expose-sharepoint-server-appid-uri": "{.data['sharepoint-server-appid-uri']}",
-                    "template.openshift.io/expose-smtp-host": "{.data['smtp-host']}"
+                    "template.openshift.io/expose-db-username": "{.data['db-username']}"
                 },
                 "name": "embcess-training",
                 "namespace": "jhnamn-test",
@@ -101,21 +91,11 @@
                                     },
                                     {
                                         "name": "BASE_URI",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "base-uri",
-                                                "name": "${SECRET_RESOURCE_NAME}"
-                                            }
-                                        }
+                                        "value": "${BASE_URI}"
                                     },
                                     {
                                         "name": "BASE_PATH",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "base-path",
-                                                "name": "${SECRET_RESOURCE_NAME}"
-                                            }
-                                        }
+                                        "value": "${BASE_PATH}"
                                     },
                                     {
                                         "name": "SITEMINDER_LOGOUT_URL",
@@ -123,31 +103,21 @@
                                     },
                                     {
                                         "name": "SMTP_HOST",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "smtp-host",
-                                                "name": "${SECRET_RESOURCE_NAME}"
-                                            }
-                                        }
+                                        "value": "${SMTP_HOST}"
                                     },
                                     {
                                         "name": "SMTP_DEFAULT_SENDER",
-                                        "value": "no-reply@gov.bc.ca"
+                                        "value": "${SMTP_DEFAULT_SENDER}"
+                                    },
+                                    {
+                                        "name": "DATABASE_SERVICE_NAME",
+                                        "value": "${DATABASE_SERVICE_NAME}"
                                     },
                                     {
                                         "name": "DB_ADMIN_PASSWORD",
                                         "valueFrom": {
                                             "secretKeyRef": {
                                                 "key": "db-admin-password",
-                                                "name": "${SECRET_RESOURCE_NAME}"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "DATABASE_SERVICE_NAME",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "database-service-name",
                                                 "name": "${SECRET_RESOURCE_NAME}"
                                             }
                                         }
@@ -343,13 +313,6 @@
             "value": "test"
         },
         {
-            "name": "ASPNETCORE_ENVIRONMENT",
-            "displayName": "AspNetCore Environment",
-            "description": "The ASP Net Core deployment environment setting.",
-            "required": true,
-            "value": "Test"
-        },
-        {
             "name": "CPU_LIMIT",
             "displayName": "CPU Limit",
             "description": "Maximum amount of CPU the container can use.",
@@ -439,11 +402,25 @@
             "value": "embcess-training"
         },
         {
+            "name": "ASPNETCORE_ENVIRONMENT",
+            "displayName": "AspNetCore Environment",
+            "description": "The ASP Net Core deployment environment setting.",
+            "required": true,
+            "value": "Test"
+        },
+        {
+            "name": "BASE_URI",
+            "displayName": "Base Uri",
+            "description": "",
+            "required": true,
+            "value": "essprep"
+        },
+        {
             "name": "BASE_PATH",
             "displayName": "",
             "description": "",
             "required": true,
-            "value": "embcess"
+            "value": "/embcess"
         },
         {
             "name": "SITEMINDER_LOGOUT_URL",
@@ -451,6 +428,27 @@
             "description": "Siteminder logout URL, e.g., https://logon.gov.bc.ca/clp-cgi/logoff.cgi, if left blank a value will be defaulted. Note this url is for prod and should be changed for dev and test.",
             "required": true,
             "value": "https://logon.gov.bc.ca/clp-cgi/logoff.cgi"
+        },
+        {
+            "name": "SMTP_HOST",
+            "displayName": "",
+            "description": "",
+            "required": true,
+            "value": ""
+        },
+        {
+            "name": "SMTP_DEFAULT_SENDER",
+            "displayName": "",
+            "description": "",
+            "required": true,
+            "value": ""
+        },
+        {
+            "name": "DATABASE_SERVICE_NAME",
+            "displayName": "",
+            "description": "",
+            "required": true,
+            "value": ""
         },
         {
             "description": "Password for the MSSQL connection user.",
