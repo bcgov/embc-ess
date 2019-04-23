@@ -441,27 +441,17 @@ const routes: Routes = [
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
-        path: 'registration/:id',
-        component: RegistrationMakerComponent,
-        data: { expectedRole: LOCAL_AUTHORITY },
-      },
-      {
-        path: 'registration/summary/:id',
+        path: 'registration/summary',
         component: RegistrationSummaryComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
-        path: 'registration/summary/full/:id',
+        path: 'registration/summary/full',
         component: RegistrationSummaryComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
         path: 'volunteer',
-        component: VolunteerMakerComponent,
-        data: { expectedRole: LOCAL_AUTHORITY },
-      },
-      {
-        path: 'volunteer/:id',
         component: VolunteerMakerComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
