@@ -19,7 +19,6 @@ import { DisableControlDirective } from './directives/disable-control.directive'
 import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
 import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
-import { SearchBarComponent, EvacueeSearchResultsComponent } from './components/search/';
 import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
 
 import { YesNoPipe } from './pipes/yes-no.pipe';
@@ -27,7 +26,6 @@ import { ByIdPipe } from './pipes/by-id.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
 import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent, CollectionNoticeComponent } from './components/side-boxes';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 
 @NgModule({
   declarations: [
@@ -45,8 +43,6 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     FontAwesomeIconComponent,
     FontAwesomeLinkComponent,
     AttentionIconComponent,
-    SearchBarComponent,
-    EvacueeSearchResultsComponent,
     CommunitiesSelectComponent,
     YesNoPipe,
     ByIdPipe,
@@ -57,7 +53,6 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     AddUserComponent,
     CollectionNoticeComponent,
     PageNotFoundComponent,
-    PaginationSummaryComponent,
   ],
   imports: [
     CommonModule,
@@ -90,8 +85,6 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     FontAwesomeIconComponent,
     FontAwesomeLinkComponent,
     AttentionIconComponent,
-    SearchBarComponent,
-    EvacueeSearchResultsComponent,
     CommunitiesSelectComponent,
     YesNoPipe,
     ByIdPipe,
@@ -101,7 +94,6 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     AddTaskNumberComponent,
     AddUserComponent,
     CollectionNoticeComponent,
-    PaginationSummaryComponent,
   ]
 })
 export class SharedModule { }
