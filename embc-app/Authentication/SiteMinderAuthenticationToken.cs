@@ -96,14 +96,15 @@ namespace Gov.Jag.Embc.Public.Authentication
 
         public IEnumerable<Claim> ToClaims()
         {
-            return new[]
+            var claims = new (string type, string value)[]
             {
-                new Claim(SiteMinderClaimTypes.UserType, smgov_usertype),
-                new Claim(ClaimTypes.Sid, smgov_userguid),
-                new Claim(SiteMinderClaimTypes.Name, smgov_userdisplayname),
-                new Claim(ClaimTypes.Upn, sm_universalid),
-                new Claim(SiteMinderClaimTypes.OrgId, smgov_businessguid ?? "")
+                (SiteMinderClaimTypes.UserType, smgov_usertype),
+                (ClaimTypes.Sid, smgov_userguid),
+                (SiteMinderClaimTypes.Name, smgov_userdisplayname),
+                (ClaimTypes.Upn, sm_universalid),
+                (SiteMinderClaimTypes.OrgId, smgov_businessguid)
             };
+            return claims.Where(c => c.value != null).Select(c => new Claim(c.type, c.value));
         }
     }
 }
