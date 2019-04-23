@@ -447,7 +447,7 @@ const routes: Routes = [
       },
       {
         path: 'registration/summary/full',
-        component: RegistrationSummaryComponent,
+        component: RegistrationSummaryFullComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
