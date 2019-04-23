@@ -10,6 +10,7 @@ $accent: mat-palette($mat-indigo, 500, A200, A400);
 $warn: mat-palette($mat-red, 500);
 $theme: mat-light-theme($primary, $accent, $warn);
 @include angular-material-theme($theme);
+
 body {
     color: #494949;
     background: #f2f2f2;
@@ -89,7 +90,8 @@ html{
 
 p {
     font-weight: Regular;
-    font-size: 14px #494949
+    font-size: 14px;
+    color: #494949
 }
 
 h1 {
