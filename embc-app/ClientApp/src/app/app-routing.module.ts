@@ -299,17 +299,12 @@ const routes: Routes = [
         data: { expectedRole: VOLUNTEER },
       },
       {
-        path: 'registration/:id',
-        component: RegistrationMakerComponent,
-        data: { expectedRole: VOLUNTEER },
-      },
-      {
-        path: 'registration/summary/:id',
+        path: 'registration/summary',
         component: RegistrationSummaryComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
-        path: 'registration/summary/full/:id',
+        path: 'registration/summary/full',
         component: RegistrationSummaryComponent,
         data: { expectedRole: VOLUNTEER },
       },

@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SideboxAddRegistrationComponent implements OnInit {
 
-  route = '../registration';
+  route = 'registration';
 
   constructor() { }
 

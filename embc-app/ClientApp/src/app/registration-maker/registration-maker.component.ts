@@ -71,9 +71,6 @@ export class RegistrationMakerComponent implements OnInit {
   private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
   private validationHelper: ValidationHelper;
 
-  // what is the value of the currently examined key
-  private uniqueKey: string;
-
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>, // ngrx app state
@@ -173,8 +170,6 @@ export class RegistrationMakerComponent implements OnInit {
   }
 
   ngOnInit() {
-    // get unique key if one exists
-    this.uniqueKey = this.uniqueKeyService.getKey();
 
     // fetch the default country
     this.countries$.subscribe((countries: Country[]) => {
@@ -196,13 +191,14 @@ export class RegistrationMakerComponent implements OnInit {
     // Know the current user
     this.authService.getCurrentUser().subscribe(u => this.currentUser = u);
 
-    // if there are route params we should grab them
-    const id = this.route.snapshot.params.id;
+    // // if there are route params we should grab them
+    // const id = this.route.snapshot.params.id;
 
-    if (id) {
+    // get unique key if one exists
+    const key = this.uniqueKeyService.getKey();
+    if (key) {
       // this is a form with data flowing in.
-      // TODO: Redirect to error page if we fail to fetch the registration
-      this.registrationService.getRegistrationById(id).subscribe(r => {
+      this.registrationService.getRegistrationById(key).subscribe(r => {
 
         // set registration mode to edit and save the previous content in an object.
         this.registration = r;
