@@ -31,21 +31,15 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
-    
-
     <Compile Remove="Test\**" />
     <Content Remove="$(SpaRoot)**" />
-    
-
     <Content Remove="Test\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
 
   <ItemGroup>
-
     <EmbeddedResource Remove="Test\**" />
-
     <None Remove="Test\**" />
   </ItemGroup>
 
@@ -100,8 +94,9 @@
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" Condition="'$(UAT_BUILD)' == '' And '$(PROD_BUILD)' == ''" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" Condition="'$(UAT_BUILD)' == '' And '$(PROD_BUILD)' == '' And '$(PREP_BUILD)' == ''" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run builduat -- --prod" Condition="'$(UAT_BUILD)' == '1'" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run buildprep -- --prod" Condition="'$(PREP_BUILD)' == '1'" />
 	<Exec WorkingDirectory="$(SpaRoot)" Command="npm run buildprod -- --prod" Condition="'$(PROD_BUILD)' == '1'" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
 
