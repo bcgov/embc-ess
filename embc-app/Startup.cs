@@ -98,9 +98,9 @@ namespace Gov.Jag.Embc.Public
             // setup siteminder authentication (core 2.0)
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = SiteMinderAuthOptions2.AuthenticationSchemeName;
-                options.DefaultChallengeScheme = SiteMinderAuthOptions2.AuthenticationSchemeName;
-            }).AddSiteminderAuth2(options =>
+                options.DefaultAuthenticateScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
+                options.DefaultChallengeScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
+            }).AddSiteminderAuth(options =>
             {
             });
 
