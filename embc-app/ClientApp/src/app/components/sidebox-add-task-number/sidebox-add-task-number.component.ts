@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-sidebox-add-task-number',
@@ -7,10 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SideboxAddTaskNumberComponent implements OnInit {
 
-  route = '../task-number';
-  constructor() { }
+  route: string;
+  constructor(
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
+    this.authService.path.subscribe(p => {
+      this.route = `/${p}/task-number`;
+    });
   }
 
 }

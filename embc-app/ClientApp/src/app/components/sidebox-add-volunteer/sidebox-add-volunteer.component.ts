@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-sidebox-add-volunteer',
@@ -6,10 +7,16 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./sidebox-add-volunteer.component.scss']
 })
 export class SideboxAddVolunteerComponent implements OnInit {
-  route = '../volunteer';
+  route: string;
 
-  constructor() { }
+  constructor(
+    private authService: AuthService
+  ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.authService.path.subscribe(p => {
+      this.route = `/${p}/volunteer`;
+    });
+  }
 
 }
