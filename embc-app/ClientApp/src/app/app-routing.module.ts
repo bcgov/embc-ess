@@ -623,7 +623,12 @@ const routes: Routes = [
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
-        path: 'volunteer/:id',
+        // the volunteers route is really the organization starting point. Must be like this to share components with other roles
+        path: 'volunteers',
+        redirectTo: 'organizations'
+      },
+      {
+        path: 'volunteer',
         component: VolunteerMakerComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
@@ -642,6 +647,7 @@ const routes: Routes = [
         component: UsefulInformationPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
+
     ]
   },
 
