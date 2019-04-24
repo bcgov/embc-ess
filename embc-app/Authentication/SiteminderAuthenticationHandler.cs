@@ -202,6 +202,7 @@ namespace Gov.Jag.Embc.Public.Authentication
     public class SiteminderAuthenticationHandler : AuthenticationHandler<SiteMinderAuthOptions>
     {
         private readonly ILogger _logger;
+        private readonly IHostingEnvironment env;
 
         /// <summary>
         /// Siteminder Authentication Constructir
@@ -210,9 +211,10 @@ namespace Gov.Jag.Embc.Public.Authentication
         /// <param name="loggerFactory"></param>
         /// <param name="encoder"></param>
         /// <param name="clock"></param>
-        public SiteminderAuthenticationHandler(IOptionsMonitor<SiteMinderAuthOptions> configureOptions, ILoggerFactory loggerFactory, UrlEncoder encoder, ISystemClock clock)
+        public SiteminderAuthenticationHandler(IOptionsMonitor<SiteMinderAuthOptions> configureOptions, ILoggerFactory loggerFactory, UrlEncoder encoder, ISystemClock clock, IHostingEnvironment env)
             : base(configureOptions, loggerFactory, encoder, clock)
         {
+            this.env = env;
             _logger = loggerFactory.CreateLogger(typeof(SiteminderAuthenticationHandler));
         }
 
@@ -222,6 +224,12 @@ namespace Gov.Jag.Embc.Public.Authentication
         /// <returns></returns>
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
+#if DEBUG
+            if (env.IsDevelopment() && Request.Path.StartsWithSegments(new PathString("/api")) && !Request.Path.StartsWithSegments(new PathString("/api/users")))
+            {
+                return AuthenticateResult.Success(new AuthenticationTicket(new ClaimsPrincipal(new ClaimsIdentity(Options.Scheme)), Options.Scheme));
+            }
+#endif
             ClaimsPrincipal principal = new ClaimsPrincipal();
 
             // get siteminder headers
