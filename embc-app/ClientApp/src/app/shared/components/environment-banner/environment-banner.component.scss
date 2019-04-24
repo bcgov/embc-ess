@@ -1,0 +1,10 @@
+@import "~src/styles/_defaults.scss";
+
+div {
+  color: $font-color;
+  background-color: $bg-banner;
+  text-align: center;
+  font-size: 11px;
+  padding-top: 1.5px;
+  padding-bottom: 1.5px;
+}
