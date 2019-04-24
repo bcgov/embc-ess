@@ -37,31 +37,219 @@ namespace Gov.Jag.Embc.Public.Authentication
 
     public class SiteminderAuthenticationHandler : AuthenticationHandler<SiteMinderAuthOptions>
     {
-        private readonly ILogger logger;
-        private readonly IDataInterface dataInterface;
-        private readonly IHostingEnvironment environment;
+        private readonly ILogger _logger;
+        private readonly IHostingEnvironment env;
 
-        public SiteminderAuthenticationHandler(IOptionsMonitor<SiteMinderAuthOptions> configureOptions,
-            ILoggerFactory loggerFactory,
-            UrlEncoder encoder,
-            ISystemClock clock,
-            IDataInterface dataInterface,
-            IHostingEnvironment environment)
-             : base(configureOptions, loggerFactory, encoder, clock)
+        /// <summary>
+        /// Siteminder Authentication Constructir
+        /// </summary>
+        /// <param name="configureOptions"></param>
+        /// <param name="loggerFactory"></param>
+        /// <param name="encoder"></param>
+        /// <param name="clock"></param>
+        public SiteminderAuthenticationHandler(IOptionsMonitor<SiteMinderAuthOptions> configureOptions, ILoggerFactory loggerFactory, UrlEncoder encoder, ISystemClock clock, IHostingEnvironment env)
+            : base(configureOptions, loggerFactory, encoder, clock)
         {
-            this.environment = environment;
-            this.dataInterface = dataInterface;
-            logger = loggerFactory.CreateLogger(typeof(SiteminderAuthenticationHandler));
+            this.env = env;
+            _logger = loggerFactory.CreateLogger(typeof(SiteminderAuthenticationHandler));
         }
 
+        /// <summary>
+        /// Process Authentication Request
+        /// </summary>
+        /// <returns></returns>
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            var smAuthToken = SiteMinderAuthenticationToken.GetFromHttpHeaders(Request);
-            if (!environment.IsProduction() && smAuthToken.IsAnonymous())
+#if DEBUG
+            if (env.IsDevelopment() && Request.Path.StartsWithSegments(new PathString("/api")) && !Request.Path.StartsWithSegments(new PathString("/api/users")))
             {
-                smAuthToken = SiteMinderAuthenticationToken.GetFromCookie(Request);
-                Response.Cookies.Delete(SiteMinderAuthenticationToken.COOKIE_NAME);
+                return AuthenticateResult.Success(new AuthenticationTicket(new ClaimsPrincipal(new ClaimsIdentity(Options.Scheme)), Options.Scheme));
             }
+#endif
+            ClaimsPrincipal principal = new ClaimsPrincipal();
+
+            // get siteminder headers
+            _logger.LogError("Parsing the HTTP headers for SiteMinder authentication credential");
+
+            SiteMinderAuthOptions options = new SiteMinderAuthOptions();
+            bool isDeveloperLogin = false;
+            bool isBCSCDeveloperLogin = false;
+            try
+            {
+                HttpContext context = Request.HttpContext;
+
+                IDataInterface _dataInterface = (IDataInterface)context.RequestServices.GetService(typeof(IDataInterface));
+
+                IHostingEnvironment hostingEnv = (IHostingEnvironment)context.RequestServices.GetService(typeof(IHostingEnvironment));
+
+                UserSettings userSettings = new UserSettings();
+
+                string userId = null;
+                string devCompanyId = null;
+                string siteMinderGuid = "";
+                string siteMinderBusinessGuid = "";
+                string siteMinderUserType = "";
+
+                // **************************************************
+                // If this is an Error or Authentiation API - Ignore
+                // **************************************************
+                string url = context.Request.GetDisplayUrl().ToLower();
+
+                if (url.Contains(".js"))
+                {
+                    return AuthenticateResult.NoResult();
+                }
+
+                // **************************************************
+                // Check if we have a Dev Environment Cookie
+                // **************************************************
+                //if (!hostingEnv.IsProduction())
+                //{
+                // check for a fake BCeID login in dev mode
+                string temp = context.Request.Cookies[options.DevAuthenticationTokenKey];
+
+                if (string.IsNullOrEmpty(temp)) // could be an automated test user.
+                {
+                    temp = context.Request.Headers["DEV-USER"];
+                }
+
+                if (!string.IsNullOrEmpty(temp))
+                {
+                    if (temp.Contains("::"))
+                    {
+                        var temp2 = temp.Split("::");
+                        userId = temp2[0];
+                        if (temp2.Length >= 2)
+                            devCompanyId = temp2[1];
+                        else
+                            devCompanyId = temp2[0];
+                    }
+                    else
+                    {
+                        userId = temp;
+                        devCompanyId = temp;
+                    }
+                    isDeveloperLogin = true;
+
+                    _logger.LogError("Got user from dev cookie = " + userId + ", company = " + devCompanyId);
+                }
+                else
+                {
+                    // same set of tests for a BC Services Card dev login
+                    temp = context.Request.Cookies[options.DevBCSCAuthenticationTokenKey];
+
+                    if (string.IsNullOrEmpty(temp)) // could be an automated test user.
+                    {
+                        temp = context.Request.Headers["DEV-BCSC-USER"];
+                    }
+
+                    if (!string.IsNullOrEmpty(temp))
+                    {
+                        userId = temp;
+                        isBCSCDeveloperLogin = true;
+
+                        _logger.LogError("Got user from dev cookie = " + userId);
+                    }
+                }
+                //}
+
+                // **************************************************
+                // Check if the user session is already created
+                // **************************************************
+                try
+                {
+                    _logger.LogInformation("Checking user session");
+                    userSettings = UserSettings.ReadUserSettings(context);
+                    _logger.LogError("UserSettings found: " + userSettings.GetJson());
+                }
+                catch
+                {
+                    //do nothing
+                    _logger.LogError("No UserSettings found");
+                }
+
+                // is user authenticated - if so we're done
+                if ((userSettings.UserAuthenticated && string.IsNullOrEmpty(userId)) ||
+                    (userSettings.UserAuthenticated && !string.IsNullOrEmpty(userId) &&
+                     !string.IsNullOrEmpty(userSettings.UserId) && userSettings.UserId == userId))
+                {
+                    _logger.LogError("User already authenticated with active session: " + userSettings.UserId);
+                    principal = userSettings.AuthenticatedUser.ToClaimsPrincipal(options.Scheme, userSettings.UserType);
+                    return AuthenticateResult.Success(new AuthenticationTicket(principal, null, Options.Scheme));
+                }
+
+                string smgov_userdisplayname = context.Request.Headers["smgov_userdisplayname"];
+                if (!string.IsNullOrEmpty(smgov_userdisplayname))
+                {
+                    userSettings.UserDisplayName = smgov_userdisplayname;
+                }
+
+                string smgov_businesslegalname = context.Request.Headers["smgov_businesslegalname"];
+                if (!string.IsNullOrEmpty(smgov_businesslegalname))
+                {
+                    userSettings.BusinessLegalName = smgov_businesslegalname;
+                }
+
+                // **************************************************
+                // Authenticate based on SiteMinder Headers
+                // **************************************************
+                _logger.LogError("Parsing the HTTP headers for SiteMinder authentication credential");
+
+                // At this point userID would only be set if we are logging in through as a DEV user
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    _logger.LogError("Getting user data from headers");
+
+                    userId = context.Request.Headers[options.SiteMinderUserNameKey];
+                    if (string.IsNullOrEmpty(userId))
+                    {
+                        userId = context.Request.Headers[options.SiteMinderUniversalIdKey];
+                    }
+
+                    siteMinderGuid = context.Request.Headers[options.SiteMinderUserGuidKey];
+                    siteMinderBusinessGuid = context.Request.Headers[options.SiteMinderBusinessGuidKey];
+                    siteMinderUserType = context.Request.Headers[options.SiteMinderUserTypeKey];
+
+                    // **************************************************
+                    // Validate credentials
+                    // **************************************************
+                    if (string.IsNullOrEmpty(userId))
+                    {
+                        _logger.LogError(options.MissingSiteMinderUserIdError);
+                        return AuthenticateResult.Fail(options.MissingSiteMinderGuidError);
+                    }
+
+                    if (string.IsNullOrEmpty(siteMinderGuid))
+                    {
+                        _logger.LogError(options.MissingSiteMinderGuidError);
+                        return AuthenticateResult.Fail(options.MissingSiteMinderGuidError);
+                    }
+                    if (string.IsNullOrEmpty(siteMinderUserType))
+                    {
+                        _logger.LogError(options.MissingSiteMinderUserTypeError);
+                        return AuthenticateResult.Fail(options.MissingSiteMinderUserTypeError);
+                    }
+                }
+                else // DEV user, setup a fake session and SiteMinder headers.
+                {
+                    if (isDeveloperLogin)
+                    {
+                        _logger.LogError("Generating a Development user");
+                        userSettings.BusinessLegalName = devCompanyId + " BusinessProfileName";
+                        userSettings.UserDisplayName = userId + " BCeIDContactType";
+
+                        // search for a matching user.
+                        var existingContact = _dataInterface.GetVolunteerByName(userId, "BCeIDContactType");
+
+                        if (existingContact != null)
+                        {
+                            siteMinderGuid = existingContact.Externaluseridentifier;
+                        }
+                        else
+                        {
+                            siteMinderGuid = GuidUtility.CreateIdForDynamics("contact", userSettings.UserDisplayName).ToString();
+                        }
 
             logger.LogDebug($"smAuthToken: {smAuthToken.ToString()}");
             var claims = Context.Session.GetString("app.principal");
