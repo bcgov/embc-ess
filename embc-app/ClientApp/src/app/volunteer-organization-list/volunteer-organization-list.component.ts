@@ -8,6 +8,7 @@ import { AuthService } from '../core/services/auth.service';
 import { OrganizationService } from '../core/services/organization.service';
 import { VolunteerService, VolunteerSearchQueryParameters } from '../core/services/volunteer.service';
 import { ListResult, Volunteer, PaginationSummary, User, Organization } from '../core/models';
+import { UniqueKeyService } from '../core/services/unique-key.service';
 
 @Component({
   selector: 'app-volunteer-organization-list',
@@ -19,7 +20,8 @@ export class VolunteerOrganizationListComponent implements OnInit {
   // simple server response
   resultsAndPagination: ListResult<Volunteer>;
   notFoundMessage = 'Searching ...';
-
+  // what route should this component route to
+  path: string;
   // who's accessing this list component
   currentUser: User;
   isLocalAuthority: boolean;
@@ -56,6 +58,7 @@ export class VolunteerOrganizationListComponent implements OnInit {
     private volunteers: VolunteerService,
     private organizations: OrganizationService,
     private auth: AuthService,
+    private uniqueKeyService: UniqueKeyService,
   ) { }
 
   // convenience getters
@@ -70,6 +73,8 @@ export class VolunteerOrganizationListComponent implements OnInit {
   }
 
   ngOnInit() {
+    // save the base url path
+    this.auth.path.subscribe(p => this.path = p);
     // initialize the form component
     this.initSearchForm();
     // initialize the global variables. When done get volunteers associated with the organization
@@ -113,7 +118,7 @@ export class VolunteerOrganizationListComponent implements OnInit {
         switchMap(([user, isLocalAuthority, isProvincialAdmin, queryParams]) => {
           // get the organization matching the query parameter passed in (if any)
           if (isProvincialAdmin) {
-            const orgId = queryParams.get('orgId');
+            const orgId = this.uniqueKeyService.getKey();
             return this.getAnyOrganization(orgId);
           }
           // for local authorities, we know what org they belong to
@@ -202,5 +207,10 @@ export class VolunteerOrganizationListComponent implements OnInit {
       return;
     }
     this.getVolunteers();
+  }
+  modifyOrganizationVolunteer(id?: string) {
+    // save the organization id for loading
+    this.uniqueKeyService.setKey(id);
+    this.router.navigate([`/${this.path}/volunteer`]);
   }
 }

@@ -17,6 +17,7 @@ import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { NotificationQueueService } from '../core/services/notification-queue.service';
+import { UniqueKeyService } from '../core/services/unique-key.service';
 
 @Component({
   selector: 'app-registration-maker',
@@ -65,6 +66,9 @@ export class RegistrationMakerComponent implements OnInit {
   // error summary to display; i.e. 'Some required fields have not been completed.'
   errorSummary = '';
 
+  // path for this user to route from
+  path: string;
+
   // generic validation helper
   private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
   private validationHelper: ValidationHelper;
@@ -72,12 +76,12 @@ export class RegistrationMakerComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>, // ngrx app state
-    private route: ActivatedRoute,
     private registrationService: RegistrationService,
     private incidentTaskService: IncidentTaskService,
     private router: Router,
+    private notificationQueueService: NotificationQueueService,
     private authService: AuthService,
-    private notificationQueueService: NotificationQueueService
+    private uniqueKeyService: UniqueKeyService,
   ) {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
@@ -167,6 +171,7 @@ export class RegistrationMakerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.authService.path.subscribe(p => this.path = p);
     // fetch the default country
     this.countries$.subscribe((countries: Country[]) => {
       // the only(first) element that is named Canada
@@ -187,13 +192,14 @@ export class RegistrationMakerComponent implements OnInit {
     // Know the current user
     this.authService.getCurrentUser().subscribe(u => this.currentUser = u);
 
-    // if there are route params we should grab them
-    const id = this.route.snapshot.params.id;
+    // // if there are route params we should grab them
+    // const id = this.route.snapshot.params.id;
 
-    if (id) {
+    // get unique key if one exists
+    const key = this.uniqueKeyService.getKey();
+    if (key) {
       // this is a form with data flowing in.
-      // TODO: Redirect to error page if we fail to fetch the registration
-      this.registrationService.getRegistrationById(id).subscribe(r => {
+      this.registrationService.getRegistrationById(key).subscribe(r => {
 
         // set registration mode to edit and save the previous content in an object.
         this.registration = r;
@@ -556,11 +562,8 @@ export class RegistrationMakerComponent implements OnInit {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee added successfully');
-
-          // TODO: there is an exception that if the route is ...com/embcess/register-evacuee it should only go up one instead of 2
-          // TODO: It should be fixed but will need a wider refactor for consistency
-          // if the parameters are on the end of the URL we need to route towards root once more
-          this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
+          // go back to the main dashboard
+          this.router.navigate([`/${this.path}/`]);
         });
     } else {
       // submit the global registration to the server
@@ -571,7 +574,8 @@ export class RegistrationMakerComponent implements OnInit {
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee updated successfully');
 
-          this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
+          // go back to the main dashboard
+          this.router.navigate([`/${this.path}/`]);
         });
     }
   }
