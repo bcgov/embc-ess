@@ -1,17 +1,21 @@
 using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 
 namespace Gov.Jag.Embc.Public.Authentication
 {
     public static class SiteMinderClaimTypes
     {
-        public static string UserType = "sm.usertype";
-        public static string Name = "sm.name";
-        public static string OrgId = "sm.orgid";
+        public static string USER_TYPE = "sm.user_type";
+        public static string NAME = "sm.name";
+        public static string BUSINESS_GUID = "sm.business_guid";
+    }
+
+    public static class EssClaimTypes
+    {
+        public static string USER_ID = "ess.user_id";
+        public static string ORG_ID = "ess.org_id";
     }
 
     public class SiteMinderAuthenticationToken
@@ -83,6 +87,11 @@ namespace Gov.Jag.Embc.Public.Authentication
             return "internal".Equals(smgov_usertype, StringComparison.OrdinalIgnoreCase);
         }
 
+        public bool IsExternal()
+        {
+            return "business".Equals(smgov_usertype, StringComparison.OrdinalIgnoreCase);
+        }
+
         public override string ToString()
         {
             return $"smgov_userguid={smgov_userguid};" +
@@ -92,19 +101,6 @@ namespace Gov.Jag.Embc.Public.Authentication
                 $"smgov_usertype={smgov_usertype};" +
                 $"smgov_businessguid={smgov_businessguid};" +
                 $"sm_user={sm_user}";
-        }
-
-        public IEnumerable<Claim> ToClaims()
-        {
-            var claims = new (string type, string value)[]
-            {
-                (SiteMinderClaimTypes.UserType, smgov_usertype),
-                (ClaimTypes.Sid, smgov_userguid),
-                (SiteMinderClaimTypes.Name, smgov_userdisplayname),
-                (ClaimTypes.Upn, sm_universalid),
-                (SiteMinderClaimTypes.OrgId, smgov_businessguid)
-            };
-            return claims.Where(c => c.value != null).Select(c => new Claim(c.type, c.value));
         }
     }
 }

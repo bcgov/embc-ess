@@ -8,7 +8,6 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -93,35 +92,46 @@ namespace Gov.Jag.Embc.Public.Authentication
 
         private async Task<ClaimsPrincipal> CreatePrincipalFor(SiteMinderAuthenticationToken smAuthToken)
         {
-            var roles = new List<string>();
-            roles.Add("role_everyone");
-
+            var claims = new List<Claim>();
+            claims.Add(new Claim(ClaimTypes.Role, "role_everyone"));
             if (smAuthToken.IsInternal())
             {
                 //EMBC admin
-                roles.Add("role_volunteer");
-                roles.Add("role_local_authority");
-                roles.Add("role_provincial_admin");
+                claims.Add(new Claim(ClaimTypes.Role, "role_volunteer"));
+                claims.Add(new Claim(ClaimTypes.Role, "role_local_authority"));
+                claims.Add(new Claim(ClaimTypes.Role, "role_provincial_admin"));
+                claims.Add(new Claim(ClaimTypes.Sid, smAuthToken.smgov_userguid));
+                claims.Add(new Claim(ClaimTypes.Upn, smAuthToken.sm_universalid));
+                claims.Add(new Claim(SiteMinderClaimTypes.USER_TYPE, smAuthToken.smgov_usertype));
+                claims.Add(new Claim(SiteMinderClaimTypes.NAME, smAuthToken.smgov_userdisplayname));
+                claims.Add(new Claim(EssClaimTypes.USER_ID, smAuthToken.smgov_userguid));
             }
-            else
+            else if (smAuthToken.IsExternal())
             {
-                var volunteer = dataInterface.GetVolunteerByBceidUserId(smAuthToken.sm_universalid);
-                if (volunteer == null) throw new ApplicationException("Volunteer not found");
                 //Volunteer
+                var volunteer = dataInterface.GetVolunteerByBceidUserId(smAuthToken.sm_universalid);
+
+                if (volunteer == null) throw new ApplicationException("Volunteer not found");
+                if (volunteer.Externaluseridentifier != smAuthToken.smgov_userguid) throw new ApplicationException("Volunteer BCeID GUID does not match");
+                if (volunteer.Organization.BCeIDBusinessGuid != smAuthToken.smgov_businessguid) throw new ApplicationException("Volunteer doesn't belong to the correct organization");
+
                 if (string.IsNullOrEmpty(volunteer.Externaluseridentifier))
                 {
                     volunteer.Externaluseridentifier = smAuthToken.smgov_userguid;
                     await dataInterface.UpdateVolunteerAsync(volunteer);
                 }
-                if (volunteer.Externaluseridentifier != smAuthToken.smgov_userguid) throw new ApplicationException("Volunteer BCeID GUID does not match");
-                if (volunteer.Organization.BCeIDBusinessGuid != smAuthToken.smgov_businessguid) throw new ApplicationException("Volunteer doesn't belong to the correct organization");
 
-                roles.Add("role_volunteer");
-                if (volunteer.IsAdministrator ?? false) roles.Add("role_local_authority");
+                claims.Add(new Claim(ClaimTypes.Role, "role_volunteer"));
+                if (volunteer.IsAdministrator ?? false) claims.Add(new Claim(ClaimTypes.Role, "role_local_authority"));
+                claims.Add(new Claim(ClaimTypes.Sid, smAuthToken.smgov_userguid));
+                claims.Add(new Claim(ClaimTypes.Upn, smAuthToken.sm_universalid));
+                claims.Add(new Claim(SiteMinderClaimTypes.USER_TYPE, smAuthToken.smgov_usertype));
+                claims.Add(new Claim(SiteMinderClaimTypes.NAME, smAuthToken.smgov_userdisplayname));
+                claims.Add(new Claim(SiteMinderClaimTypes.BUSINESS_GUID, smAuthToken.smgov_businessguid));
+                claims.Add(new Claim(EssClaimTypes.USER_ID, volunteer.Id));
+                claims.Add(new Claim(EssClaimTypes.ORG_ID, volunteer.Organization.Id));
             }
-            var claims = new List<Claim>();
-            claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
-            claims.AddRange(smAuthToken.ToClaims());
+
             return new ClaimsPrincipal(new ClaimsIdentity(claims, Options.Scheme));
         }
     }
