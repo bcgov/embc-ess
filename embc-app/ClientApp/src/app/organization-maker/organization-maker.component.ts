@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OrganizationService } from '../core/services/organization.service';
 import { FormControl } from '@angular/forms';
 import { NotificationQueueService } from '../core/services/notification-queue.service';
+import { AuthService } from '../core/services/auth.service';
+import { UniqueKeyService } from '../core/services/unique-key.service';
 
 @Component({
   selector: 'app-organization-maker',
@@ -15,6 +17,8 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
   editMode: boolean;
   submitting = false; // tracks if in the process of submitting for the UI
   organization: Organization;
+  // path for routing based on user role
+  path: string;
 
   // form value collectors
   organizationName: FormControl;
@@ -28,9 +32,13 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
     private router: Router,
     private organizationService: OrganizationService,
     private notificationQueueService: NotificationQueueService,
+    private authService: AuthService,
+    private uniqueKeyService: UniqueKeyService,
   ) { }
 
   ngOnInit() {
+    // subscribe to the path so we can route based on user role
+    this.authService.path.subscribe(p => this.path = p);
     // initialize form controls
     this.organizationName = new FormControl('');
     this.adminBceid = new FormControl('');
@@ -38,10 +46,12 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
     this.adminFirstName = new FormControl('');
     this.community = new FormControl('');
 
-    if (this.route.snapshot.params.id) {
+
+    const key = this.uniqueKeyService.getKey();
+    if (key) {
       // there may be an organization to edit because the route looks right
       // TODO: error checking if org not found
-      this.organizationService.getOrganizationById(this.route.snapshot.params.id)
+      this.organizationService.getOrganizationById(key)
         .subscribe(o => {
           this.editMode = true;
           this.maker = true;
@@ -127,10 +137,12 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
           // if addUsers then route to the add users page
           // else route back to the organizations list
           if (addUsers) {
-            // TODO: use Store to save organization globally
-            this.router.navigate(['../../volunteer'], { queryParams: { orgId: this.organization.id }, relativeTo: this.route });
+            // save the organization id and route to the volunteer adder page
+            this.uniqueKeyService.setKey(this.organization.id);
+            this.router.navigate([`/${this.path}/organization/volunteers`]);
           } else {
-            this.router.navigate(['../../organizations'], { relativeTo: this.route });
+            // go back to the organization page
+            this.router.navigate([`/${this.path}/organizations`]);
           }
         });
     } else {
@@ -143,18 +155,19 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
           // if addUsers then route to the add users page
           // else route back to the organizations list
           if (addUsers) {
-            // TODO: use Store to save organization globally
-            this.router.navigate(['../volunteer'], { queryParams: { orgId: this.organization.id }, relativeTo: this.route });
+            // save the organization id and route to the volunteer adder page
+            this.uniqueKeyService.setKey(o.id);
+            this.router.navigate([`/${this.path}/organization/volunteers`]);
           } else {
-            this.router.navigate(['../organizations'], { relativeTo: this.route });
+            // go back to the organization page
+            this.router.navigate([`/${this.path}/organizations`]);
           }
         });
     }
   }
 
   cancel() {
-    // TODO: this seems like bad practice but fix when we have time
-    // go back to the organizations list
-    this.editMode ? this.router.navigate(['../../organizations'], { relativeTo: this.route }) : this.router.navigate(['../organizations'], { relativeTo: this.route });
+    // navigate back home
+    this.router.navigate([`/${this.path}/organizations`]);
   }
 }

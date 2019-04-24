@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { RegistrationService } from 'src/app/core/services/registration.service';
 import { Registration, Address, isBcAddress, User, Volunteer } from 'src/app/core/models';
 import { GENDER_OPTIONS, INSURANCE_OPTIONS } from '../constants';
+import { UniqueKeyService } from '../core/services/unique-key.service';
+import { AuthService } from '../core/services/auth.service';
 
 @Component({
   selector: 'app-registration-summary-full',
@@ -14,20 +16,35 @@ export class RegistrationSummaryFullComponent implements OnInit {
 
   // local copy of the application state
   registration: Registration;
+  path: string;
 
   constructor(
-    private route: ActivatedRoute,
+    private router: Router,
     private registrationService: RegistrationService,
+    private authService: AuthService,
+    private uniqueKeyService: UniqueKeyService,
   ) { }
 
   ngOnInit() {
-    // if there are route params we should grab them
-    if (this.route.snapshot.params.id) {
-      this.registrationService.getRegistrationById(this.route.snapshot.params.id)
+    // get the path for routing
+    this.authService.path.subscribe(p => this.path = p);
+    // get the key for lookup
+    const key = this.uniqueKeyService.getKey();
+    if (key) {
+      this.registrationService.getRegistrationById(key)
         .subscribe(r => {
-          // Save the registration into the
-          this.registration = r;
+          // if there is nothing useful returned route somewhere else.
+          if (!r.essFileNumber) {
+            // send them back to their home page
+            this.router.navigate([`/${this.path}`]);
+          } else {
+            // Save the registration into the
+            this.registration = r;
+          }
         });
+    } else {
+      // send them back to their home page
+      this.router.navigate([`/${this.path}`]);
     }
   }
   isBcAddress(address: Address): boolean {
@@ -41,9 +58,6 @@ export class RegistrationSummaryFullComponent implements OnInit {
     const option = INSURANCE_OPTIONS.find(item => item.key === key);
     return option ? option.value : null;
   }
-  // routeToEditor() {
-  //   this.router.navigate(['../register-evacuee/fill/' + this.registration.id]);// todo: make this go to the edit page
-  // }
   yesNo(value: boolean) {
     if (value === true) {
       return 'Yes';
@@ -52,5 +66,10 @@ export class RegistrationSummaryFullComponent implements OnInit {
     } else {
       return '';
     }
+  }
+  routeTo() {
+    // save the key for lookup. This only ever links to the editor
+    this.uniqueKeyService.setKey(this.registration.id);
+    this.router.navigate([`/${this.path}/registration`]);
   }
 }

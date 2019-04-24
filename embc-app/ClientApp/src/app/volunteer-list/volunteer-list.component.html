@@ -27,7 +27,7 @@
         </app-pagination-summary>
       </section>
       <section>
-        <button class="btn btn-primary" routerLink="../../volunteer">ADD USERS</button>
+        <button class="btn btn-primary" routerLink="" (click)="modifyVolunteer()">ADD USERS</button>
       </section>
     </div>
     <table class="table">
@@ -48,7 +48,7 @@
               <span *ngIf="!volunteer.canAccessRestrictedFiles">No</span>
             </td> -->
           <td>
-            <a [routerLink]="['../../volunteer/', volunteer.id]">Edit</a>
+            <a routerLink="" (click)="modifyVolunteer(volunteer.id)">Edit</a>
           </td>
         </tr>
       </tbody>
@@ -58,7 +58,7 @@
       <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
     </div>
     <div>
-      <button class="btn btn-primary float-right" routerLink="../../volunteer">ADD USERS</button>
+      <button class="btn btn-primary" routerLink="" (click)="modifyVolunteer()">ADD USERS</button>
     </div>
   </ng-template>
 
