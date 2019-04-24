@@ -4,6 +4,9 @@
 @import "styles/defaults.scss";
 @import "styles/mixins.scss";
 
+// Bootstrap 4
+@import "~bootstrap/dist/css/bootstrap.css";
+
 // Components
 @import "styles/components/cards.scss";
 @import "styles/components/feature-blocks.scss";
@@ -32,28 +35,27 @@ html {
 }
 
 body {
-  color: #494949;
+  color: $font-color;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: MyriadWebPro, Calibri, Arial, "sans serif";
   font-weight: 400;
 }
 
-h1,
-h2,
-h3 {
-  color: #494949;
+h1, h2, h3,
+.h1, .h2, .h3 {
+  color: $font-color;
 }
 
-h1 {
+h1, .h1 {
   font-size: 36px;
 }
 
-h2 {
+h2, .h2 {
   font-size: 24px;
 }
 
-h3 {
+h3, .h3 {
   font-weight: 600;
   font-size: 18px;
 
@@ -62,7 +64,7 @@ h3 {
   }
 }
 
-h4 {
+h4, .h4 {
   font-size: 16px;
 }
 

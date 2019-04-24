@@ -3,7 +3,7 @@
   <input class="form-control" type="text" [formControl]="myFormControl" placeholder="{{myPlaceHolder}}"
     [ngbTypeahead]="search" [inputFormatter]="inputFormatter" [resultFormatter]="resultFormatter"
     (click)="click$.next($event.target.value)" #instance="ngbTypeahead" [required]="myRequired"
-    (blur)="onBlur($event.target.value)">
+    (blur)="onBlur($event.target.value)" [id]="myId">
   <button class="btn btn-icon" (click)="click$.next($event.target.value)" title="Show list" tabindex="-1">
     <app-font-awesome-icon icon="caret-down"></app-font-awesome-icon>
   </button>
@@ -12,7 +12,7 @@
   <input class="form-control" type="text" formControlName="{{myFormControlName}}" placeholder="{{myPlaceHolder}}"
     [ngbTypeahead]="search" [inputFormatter]="inputFormatter" [resultFormatter]="resultFormatter"
     (click)="click$.next($event.target.value)" #instance="ngbTypeahead" [required]="myRequired"
-    (blur)="onBlur($event.target.value)">
+    (blur)="onBlur($event.target.value)" [id]="myId">
   <button class="btn btn-icon" (click)="click$.next($event.target.value)" title="Show list" tabindex="-1">
     <app-font-awesome-icon icon="caret-down"></app-font-awesome-icon>
   </button>

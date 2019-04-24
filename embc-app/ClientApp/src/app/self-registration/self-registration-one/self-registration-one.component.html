@@ -1,49 +1,55 @@
 <form novalidate (ngSubmit)="onSubmit()" [formGroup]="form">
-  <h2 class="step">STEP 1 of 4</h2>
+  <p class="step h2">STEP 1 of 4</p>
   <h1 class="mt-3">Register as an Evacuee</h1>
 
-  <p>If you have been given an evacuation order and have been asked to leave your home, use this step-by-step Evacuee
-    Self-Registration form to register with Emergency Support Services.</p>
+  <p>
+    If you have been given an evacuation order and have been asked to leave your home, use this step-by-step Evacuee
+    Self-Registration form to register with Emergency Support Services.
+  </p>
 
-  <small>All required fields are marked with an asterisk *</small>
+  <p>
+    <small>All required fields are marked with an asterisk *</small>
+  </p>
 
-  <h3 class="blue-header">Collection Notice and Authorization</h3>
+  <h2 class="blue-header h3">COLLECTION NOTICE AND AUTHORIZATION</h2>
   <section class="padded-section">
-    <!-- <input class="form-check-input" type="checkbox" [formControl]="declarationAndConsent"> -->
+    <!-- <input type="checkbox" class="form-check-input" [formControl]="declarationAndConsent"> -->
     <p>
-      <small>
-        Emergency Management BC (EMBC) will collect your personal information for the purpose of providing you with emergency services in accordance with section 26(c) of the Freedom of Information and Protection of Privacy Act (FoIPPA). EMBC will also collect the information as per section 26(e) of FoIPPA in order to evaluate the ESS program. Should you have any questions about the collection, use, or disclosure of personal information, please contact the Emergency Support Services Call Centre Manager at PO Box 9201, STN PROV GOVT, Victoria, BC, V8W 9J1 or by phone toll free at 1-800-585-9559.
-      </small>
+      <small>Emergency Management BC (EMBC) will collect your personal information for the purpose of providing you with
+        emergency services in accordance with section 26(c) of the Freedom of Information and Protection of Privacy Act
+        (FoIPPA). EMBC will also collect the information as per section 26(e) of FoIPPA in order to evaluate the ESS
+        program. Should you have any questions about the collection, use, or disclosure of personal information, please
+        contact the Emergency Support Services Call Centre Manager at PO Box 9201, STN PROV GOVT, Victoria, BC, V8W 9J1 or
+        by phone toll free at 1-800-585-9559.</small>
     </p>
     <p>
-      <small>
-        By submitting your email address, you authorize the Emergency Management BC to communicate with you by email
-        about your registration and to invite you to provide feedback about your experience.
-      </small>
+      <small>By submitting your email address, you authorize the Emergency Management BC to communicate with you by
+        email about your registration and to invite you to provide feedback about your experience.</small>
     </p>
   </section>
 
   <div class="mt-3 feature-block">
-    <h3 class="required">Restriction</h3>
-    <p>Concerned family and friends may inquire about you and your family because of the emergency. We would like to
-      provide these people with some information about you. May we disclose your location and the contact information
-      for you and your family members?
+    <h2 class="required h3 mt-0">Restriction</h2>
+    <p>
+      Concerned family and friends may inquire about you and your family because of the emergency. We would like to provide
+      these people with some information about you. May we disclose your location and the contact information for you and
+      your family members?
     </p>
     <div class="form-check">
-      <input class="form-check-input" type="radio" [value]="false" formControlName="restrictedAccess" (click)="setRestricted(false)">
-      <label class="form-check-label" for="exampleRadios1">
+      <input type="radio" class="form-check-input" [value]="false" formControlName="restrictedAccess" (click)="setRestricted(false)" id="restrictedAccessFalse">
+      <label class="form-check-label" for="restrictedAccessFalse">
         <strong>Yes</strong>
       </label>
     </div>
     <div class="form-check">
-      <input class="form-check-input" type="radio" [value]="true" formControlName="restrictedAccess" (click)="setRestricted(true)">
-      <label class="form-check-label" for="exampleRadios2">
-        <strong>No</strong> - (Please proceed to the nearest open pilot community Emergency Support Services reception
-        centre to initiate your registration and receive supports.)
+      <input type="radio" class="form-check-input" [value]="true" formControlName="restrictedAccess" (click)="setRestricted(true)" id="restrictedAccessTrue">
+      <label class="form-check-label" for="restrictedAccessTrue">
+        <strong>No</strong> - (Please proceed to the nearest open pilot community Emergency Support Services reception centre
+        to initiate your registration and receive supports.)
       </label>
     </div>
   </div>
-  <div *ngIf="disableForm===true">
+  <div *ngIf="disableForm === true">
     <h3 class="blue-header">PROCEED TO RECEPTION CENTRE</h3>
     <h4 class="font-weight-bold mt-5">Your data privacy is important to us.</h4>
     <p>
@@ -55,44 +61,42 @@
       registration and receive supports.
     </p>
     <p>
-      Your nearest Reception Centre is listed at <a target="_blank" href="https://www.emergencyinfobc.gov.bc.ca/">EmergencyInfoBC</a>
+      Your nearest Reception Centre is listed at <a target="_blank"
+        href="https://www.emergencyinfobc.gov.bc.ca/">EmergencyInfoBC</a>.
     </p>
   </div>
-  <div *ngIf="disableForm===false">
-    <h3 class="blue-header">EVACUEE DETAILS</h3>
+
+  <div *ngIf="disableForm === false">
+    <h2 class="blue-header h3">EVACUEE DETAILS</h2>
     <section class="padded-section" formGroupName="headOfHousehold">
       <div class="row">
         <app-form-field class="col-md-9" required="true" tooltip="Tool Tip: Please ensure you use the legal last name of the person registering the family.">
-          <label>Last Name</label>
-          <input [class.is-invalid]="invalid('headOfHousehold.lastName')" class="form-control" type="text" formControlName="lastName">
-          <span *ngIf="submitted" class="invalid-feedback">
-            {{validationErrors['headOfHousehold'].lastName}}
-          </span>
+          <label for="lastName">Last Name</label>
+          <input type="text" [class.is-invalid]="invalid('headOfHousehold.lastName')" class="form-control" formControlName="lastName" id="lastName" autocomplete="off">
+          <span *ngIf="submitted" class="invalid-feedback">{{validationErrors['headOfHousehold'].lastName}}</span>
         </app-form-field>
       </div>
       <div class="row">
         <app-form-field class="col-md-9" required="true" tooltip="Tool Tip: Please ensure you use the legal first name of the person registering the family.">
-          <label>First Name</label>
-          <input [class.is-invalid]="invalid('headOfHousehold.firstName')" class="form-control" type="text" formControlName="firstName">
-          <span *ngIf="submitted" class="invalid-feedback">
-            {{validationErrors['headOfHousehold'].firstName}}
-          </span>
+          <label for="firstName">First Name</label>
+          <input type="text" [class.is-invalid]="invalid('headOfHousehold.firstName')" class="form-control" formControlName="firstName" id="firstName" autocomplete="off">
+          <span *ngIf="submitted" class="invalid-feedback">{{validationErrors['headOfHousehold'].firstName}}</span>
         </app-form-field>
       </div>
       <div class="row">
         <app-form-field class="col-md-2">
-          <label>Initial</label>
-          <input class="form-control" type="text" formControlName="initials">
+          <label for="initials">Initial</label>
+          <input type="text" class="form-control" formControlName="initials" id="initials" autocomplete="off">
         </app-form-field>
         <app-form-field class="col-md-7">
-          <label>Preferred Name</label>
-          <input class="form-control" type="text" formControlName="nickname">
+          <label for="nickname">Preferred Name</label>
+          <input type="text" class="form-control" formControlName="nickname" id="nickname" autocomplete="off">
         </app-form-field>
       </div>
       <div class="row">
         <app-form-field class="col-md-4">
-          <label>Gender</label>
-          <select class="form-control" formControlName="gender">
+          <label for="gender">Gender</label>
+          <select class="form-control" formControlName="gender" id="gender">
             <option [ngValue]="null">Please select--</option>
             <option value="female">Female</option>
             <option value="male">Male</option>
@@ -101,40 +105,35 @@
         </app-form-field>
         <div class="col-md-4">
           <!-- TODO: Split DOB into 3 inputs [MM] [DD] [YYYY] -->
-          <label class="required">Date of Birth</label>
-          <input type="text" placeholder="yyyy-mm-dd" [class.is-invalid]="invalid('headOfHousehold.dob')" class="form-control" formControlName="dob">
+          <label class="required" for="dob">Date of Birth</label>
+          <input type="text" placeholder="yyyy-mm-dd" [class.is-invalid]="invalid('headOfHousehold.dob')" class="form-control" formControlName="dob" id="dob" autocomplete="off">
           <small>(Format: yyyy-mm-dd)</small>
-          <span *ngIf="submitted" class="invalid-feedback">
-            {{validationErrors['headOfHousehold'].dob}}
-          </span>
+          <span *ngIf="submitted" class="invalid-feedback">{{validationErrors['headOfHousehold'].dob}}</span>
         </div>
       </div>
     </section>
 
-    <h3 class="blue-header">EVACUEE FAMILY INFORMATION
+    <h2 class="blue-header h3">EVACUEE FAMILY INFORMATION
       <!-- TODO: Implement animation for info circle on-hover -->
       <app-font-awesome-icon icon="info-circle" className="ml-3 text-white" title="Each additional immediate family member needs to be added to your Evacuee Registration if they reside in the same household as you. Roommates or tenants of the same address need to be registered separately.">
       </app-font-awesome-icon>
-    </h3>
+    </h2>
     <section class="padded-section">
       <p class="required">Are you registering immediate family members who live in the same household with you whom you know are safe?</p>
       <div class="form-group">
         <div class="form-check">
-          <input [class.is-invalid]="invalid('registeringFamilyMembers')" class="form-check-input" type="radio" value="yes" formControlName="registeringFamilyMembers">
-          <label class="form-check-label">Yes</label>
+          <input type="radio" [class.is-invalid]="invalid('registeringFamilyMembers')" class="form-check-input" value="yes" formControlName="registeringFamilyMembers" id="registeringFamilyMembersYes">
+          <label class="form-check-label" for="registeringFamilyMembersYes">Yes</label>
         </div>
         <div class="form-check">
-          <input [class.is-invalid]="invalid('registeringFamilyMembers')" class="form-check-input" type="radio" value="yes-later" formControlName="registeringFamilyMembers">
-          <label class="form-check-label">Yes, but I'd like to register them when I get to the
-            Reception Centre</label>
+          <input type="radio" [class.is-invalid]="invalid('registeringFamilyMembers')" class="form-check-input" value="yes-later" formControlName="registeringFamilyMembers" id="registeringFamilyMembersYesLater">
+          <label class="form-check-label" for="registeringFamilyMembersYesLater">Yes, but I'd like to register them when I get to the Reception Centre</label>
         </div>
         <div class="form-check">
-          <input [class.is-invalid]="invalid('registeringFamilyMembers')" class="form-check-input" type="radio" value="no" formControlName="registeringFamilyMembers">
-          <label class="form-check-label">No</label>
-          <span *ngIf="submitted" class="invalid-feedback">
-            {{validationErrors['registeringFamilyMembers']}}
-          </span>
+          <input type="radio" [class.is-invalid]="invalid('registeringFamilyMembers')" class="form-check-input" value="no" formControlName="registeringFamilyMembers" id="registeringFamilyMembersNo">
+          <label class="form-check-label" for="registeringFamilyMembersNo">No</label>
         </div>
+        <span [class.d-block]="invalid('registeringFamilyMembers')" class="invalid-feedback">{{validationErrors['registeringFamilyMembers']}}</span>
       </div>
       <div *ngIf="ui.showFamilyMembers()">
         <div class="family-members__list" formArrayName="familyMembers">
@@ -143,47 +142,40 @@
             <div class="card-body">
               <div class="row mb-2">
                 <div class="col">
-                  <label class="required">Last Name</label>
-                  <input [class.is-invalid]="invalid('lastName', entry)" class="form-control" type="text" formControlName="lastName">
+                  <label class="required" for="lastName-{{i}}">Last Name</label>
+                  <input type="text" [class.is-invalid]="invalid('lastName', entry)" class="form-control" formControlName="lastName" id="lastName-{{i}}" autocomplete="off">
                   <span *ngIf="submitted" class="invalid-feedback">Please enter a last name.</span>
                 </div>
                 <!-- <div class="col">
-                  <label>
-                    Same as main applicant.
-                  </label>
+                  <label for="sameLastNameAsEvacuee-{{i}}">Same as main applicant.</label>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" [value]="true"
-                      formControlName="sameLastNameAsEvacuee">
+                    <input type="checkbox" class="form-check-input" [value]="true" formControlName="sameLastNameAsEvacuee" id="sameLastNameAsEvacuee-{{i}}">
                   </div>
                 </div> -->
               </div>
               <div class="row mb-2">
                 <div class="col">
-                  <label class="required">First Name</label>
-                  <input [class.is-invalid]="invalid('firstName', entry)" class="form-control" type="text" formControlName="firstName">
+                  <label class="required" for="firstName-{{i}}">First Name</label>
+                  <input type="text" [class.is-invalid]="invalid('firstName', entry)" class="form-control" formControlName="firstName" id="firstName-{{i}}" autocomplete="off">
                   <span *ngIf="submitted" class="invalid-feedback">Please enter a first name.</span>
                 </div>
                 <div class="col">
-                  <label>Initial</label>
-                  <input type="text" class="form-control" formControlName="initials">
+                  <label for="initials-{{i}}">Initial</label>
+                  <input type="text" class="form-control" formControlName="initials" id="initials-{{i}}" autocomplete="off">
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="col-6">
-                  <label class="required">Relationship to evacuee</label>
-                  <select [class.is-invalid]="invalid('relationshipToEvacuee', entry)" class="form-control" formControlName="relationshipToEvacuee">
+                  <label class="required" for="relationshipToEvacuee-{{i}}">Relationship to evacuee</label>
+                  <select [class.is-invalid]="invalid('relationshipToEvacuee', entry)" class="form-control" formControlName="relationshipToEvacuee" id="relationshipToEvacuee-{{i}}">
                     <option [ngValue]="null">Please select--</option>
-                    <option [ngValue]="item" *ngFor="let item of relationshipTypes$ | async">
-                      {{item.description}}
-                    </option>
+                    <option [ngValue]="item" *ngFor="let item of relationshipTypes$ | async">{{item.description}}</option>
                   </select>
-                  <span *ngIf="submitted" class="invalid-feedback">
-                    Please state your relationship to this family member.
-                  </span>
+                  <span *ngIf="submitted" class="invalid-feedback">Please state your relationship to this family member.</span>
                 </div>
                 <div class="col">
-                  <label>Gender</label>
-                  <select class="form-control" formControlName="gender">
+                  <label for="gender-{{i}}">Gender</label>
+                  <select class="form-control" formControlName="gender" id="gender-{{i}}">
                     <option [ngValue]="null">Please select--</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -191,20 +183,14 @@
                   </select>
                 </div>
                 <div class="col">
-                  <label class="required">Date of Birth</label>
-                  <input type="text" placeholder="yyyy-mm-dd" [class.is-invalid]="invalid('dob', entry)" class="form-control" formControlName="dob">
+                  <label class="required" for="dob-{{i}}">Date of Birth</label>
+                  <input type="text" placeholder="yyyy-mm-dd" [class.is-invalid]="invalid('dob', entry)" class="form-control" formControlName="dob" id="dob-{{i}}" autocomplete="off">
                   <small>(Format: yyyy-mm-dd)</small>
-                  <span *ngIf="submitted && hasErrors('dob', entry, ['required'])" class="invalid-feedback">
-                    Please enter a date of birth.
-                  </span>
+                  <span *ngIf="submitted && hasErrors('dob', entry, ['required'])" class="invalid-feedback">Please enter a date of birth.</span>
                   <ng-container *ngIf="submitted && hasErrors('dob', entry, ['date', 'maxDate'])">
-                    <span *ngIf="hasErrors('dob', entry, ['date']); else maxDate" class="invalid-feedback">
-                      Please enter a valid date.
-                    </span>
+                    <span *ngIf="hasErrors('dob', entry, ['date']); else maxDate" class="invalid-feedback">Please enter a valid date.</span>
                     <ng-template #maxDate>
-                      <span class="invalid-feedback">
-                        Date of birth must be today or in the past.
-                      </span>
+                      <span class="invalid-feedback">Date of birth must be today or in the past.</span>
                     </ng-template>
                   </ng-container>
                 </div>
@@ -223,95 +209,85 @@
       </div>
     </section>
 
-    <h3 class="blue-header">PRIMARY RESIDENCE &amp; CONTACT DETAILS</h3>
+    <h2 class="blue-header h3">PRIMARY RESIDENCE &amp; CONTACT DETAILS</h2>
     <section class="padded-section">
-      <div class="d-flex flex-row">
-        <p class="m-0 mr-4 required">Is your primary residence within BC</p>
-        <div class="form-check form-check-inline">
-          <input [class.is-invalid]="invalid('primaryResidenceInBC')" class="form-check-input" type="radio" formControlName="primaryResidenceInBC" [value]="true">
-          <label class="form-check-label">Yes</label>
+      <p class="required">Is your primary residence within BC?</p>
+      <div class="form-group">
+        <div class="form-check">
+          <input type="radio" [class.is-invalid]="invalid('primaryResidenceInBC')" class="form-check-input" formControlName="primaryResidenceInBC" [value]="true" id="primaryResidenceInBCTrue">
+          <label class="form-check-label" for="primaryResidenceInBCTrue">Yes</label>
         </div>
-        <div class="form-check form-check-inline">
-          <input [class.is-invalid]="invalid('primaryResidenceInBC')" class="form-check-input" type="radio" formControlName="primaryResidenceInBC" [value]="false">
-          <label class="form-check-label">No</label>
+        <div class="form-check">
+          <input type="radio" [class.is-invalid]="invalid('primaryResidenceInBC')" class="form-check-input" formControlName="primaryResidenceInBC" [value]="false" id="primaryResidenceInBCFalse">
+          <label class="form-check-label" for="primaryResidenceInBCFalse">No</label>
         </div>
+        <span [class.d-block]="invalid('primaryResidenceInBC')" class="invalid-feedback">{{validationErrors['primaryResidenceInBC']}}</span>
       </div>
-      <span [class.d-block]="invalid('primaryResidenceInBC')" class="invalid-feedback">
-        {{validationErrors['primaryResidenceInBC']}}
-      </span>
+      
       <section *ngIf="ui.showPrimaryAddressSection()" class="mt-4 feature-block">
-        <app-address-selector [parent]="primaryResidence" [touched]="submitted" [withinBC]="f['primaryResidenceInBC'].value">
-        </app-address-selector>
+        <app-address-selector [parent]="primaryResidence" [touched]="submitted" [withinBC]="f['primaryResidenceInBC'].value"></app-address-selector>
         <section>
           <div class="row">
             <app-form-field class="col-md-6">
-              <label>Telephone / Mobile Number</label>
-              <input [class.is-invalid]="invalid('phoneNumber')" class="form-control" type="text" placeholder="" formControlName="phoneNumber">
+              <label for="phoneNumber">Telephone / Mobile Number</label>
+              <input type="text" [class.is-invalid]="invalid('phoneNumber')" class="form-control" placeholder="" formControlName="phoneNumber" id="phoneNumber" autocomplete="off">
               <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 9999999999)</small>
-              <span *ngIf="submitted" class="invalid-feedback">
-                {{validationErrors['phoneNumber']}}
-              </span>
+              <span *ngIf="submitted" class="invalid-feedback">{{validationErrors['phoneNumber']}}</span>
             </app-form-field>
             <app-form-field class="col-md-6">
-              <label>Alternate Telephone / Mobile Number</label>
-              <input [class.is-invalid]="invalid('phoneNumberAlt')" class="form-control" type="text" placeholder="" formControlName="phoneNumberAlt">
+              <label for="phoneNumberAlt">Alternate Telephone / Mobile Number</label>
+              <input type="text" [class.is-invalid]="invalid('phoneNumberAlt')" class="form-control" placeholder="" formControlName="phoneNumberAlt" id="phoneNumberAlt" autocomplete="off">
               <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 9999999999)</small>
-              <span *ngIf="submitted" class="invalid-feedback">
-                {{validationErrors['phoneNumberAlt']}}
-              </span>
+              <span *ngIf="submitted" class="invalid-feedback">{{validationErrors['phoneNumberAlt']}}</span>
             </app-form-field>
           </div>
           <div class="row">
             <app-form-field class="col-md-8">
-              <label>Email Address</label>
-              <input [class.is-invalid]="invalid('email')" class="form-control" type="text" autocomplete="email" spellcheck="false" formControlName="email">
+              <label for="email">Email Address</label>
+              <input type="email" [class.is-invalid]="invalid('email')" class="form-control" spellcheck="false" formControlName="email" id="email" autocomplete="off">
               <small>Your email address will be used to communicate with you about your registration.</small>
-              <span *ngIf="submitted" class="invalid-feedback">
-                {{validationErrors['email']}}
-              </span>
+              <span *ngIf="submitted" class="invalid-feedback">{{validationErrors['email']}}</span>
             </app-form-field>
           </div>
         </section>
       </section>
     </section>
 
-    <h3 class="blue-header">MAILING ADDRESS</h3>
+    <h2 class="blue-header h3">MAILING ADDRESS</h2>
     <section class="padded-section">
       <p class="required">Is your mailing address the same as your primary residence?</p>
       <div class="form-group">
         <div class="form-check">
-          <input [class.is-invalid]="invalid('mailingAddressSameAsPrimary')" class="form-check-input" type="radio" formControlName="mailingAddressSameAsPrimary" [value]="true" (click)="nullMailingAddress()">
-          <label class="form-check-label">Yes</label>
+          <input type="radio" [class.is-invalid]="invalid('mailingAddressSameAsPrimary')" class="form-check-input" formControlName="mailingAddressSameAsPrimary" [value]="true" (click)="nullMailingAddress()" id="mailingAddressSameAsPrimaryTrue">
+          <label class="form-check-label" for="mailingAddressSameAsPrimaryTrue">Yes</label>
         </div>
         <div class="form-check">
-          <input [class.is-invalid]="invalid('mailingAddressSameAsPrimary')" class="form-check-input" type="radio" formControlName="mailingAddressSameAsPrimary" [value]="false">
-          <label class="form-check-label">No</label>
-          <span *ngIf="submitted" class="invalid-feedback">
-            {{validationErrors['mailingAddressSameAsPrimary']}}
-          </span>
+          <input type="radio" [class.is-invalid]="invalid('mailingAddressSameAsPrimary')" class="form-check-input" formControlName="mailingAddressSameAsPrimary" [value]="false" id="mailingAddressSameAsPrimaryFalse">
+          <label class="form-check-label" for="mailingAddressSameAsPrimaryFalse">No</label>
         </div>
+        <span [class.d-block]="invalid('mailingAddressSameAsPrimary')" class="invalid-feedback">{{validationErrors['mailingAddressSameAsPrimary']}}</span>
       </div>
       <section *ngIf="ui.showMailingAddressSelector()" class="feature-block">
-        <div class="d-flex flex-row">
-          <p class="m-0 mr-4 required">Is your mailing address within BC</p>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" formControlName="mailingAddressInBC" [value]="true">
-            <label class="form-check-label">Yes</label>
+        <p class="required">Is your mailing address within BC?</p>
+        <div class="form-group">
+          <div class="form-check">
+            <input type="radio" class="form-check-input" formControlName="mailingAddressInBC" [value]="true" id="mailingAddressInBCTrue">
+            <label class="form-check-label" for="mailingAddressInBCTrue">Yes</label>
           </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" formControlName="mailingAddressInBC" [value]="false">
-            <label class="form-check-label">No</label>
+          <div class="form-check">
+            <input type="radio" class="form-check-input" formControlName="mailingAddressInBC" [value]="false" id="mailingAddressInBCFalse">
+            <label class="form-check-label" for="mailingAddressInBCFalse">No</label>
           </div>
+          <span [class.d-block]="invalid('mailingAddressInBC')" class="invalid-feedback">{{validationErrors['mailingAddressInBC']}}</span>
         </div>
-        <span [class.d-block]="invalid('mailingAddressInBC')" class="invalid-feedback">
-          {{validationErrors['mailingAddressInBC']}}
-        </span>
+        
         <app-address-selector class="mt-4" *ngIf="ui.showMailingAddressSection()" [parent]="mailingAddress" [touched]="submitted" [withinBC]="f['mailingAddressInBC'].value"></app-address-selector>
       </section>
     </section>
 
     <div *ngIf="errorSummary" class="mt-5 pl-5 text-danger">
-      <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon> {{ errorSummary }}
+      <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>
+      &nbsp;{{errorSummary}}
     </div>
 
     <div class="mt-5 space-between">
@@ -322,7 +298,7 @@
         </a>
       </section>
       <section>
-        <button class="btn btn-primary" type="submit">NEXT</button>
+        <button type="submit" class="btn btn-primary">NEXT</button>
       </section>
     </div>
   </div>
