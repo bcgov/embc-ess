@@ -1,5 +1,7 @@
 @import "~src/styles/_defaults.scss";
 
+$invalid-color: #d8292f;
+
 .error-states {
   color: $fc-invalid-color;
 }

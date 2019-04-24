@@ -16,8 +16,8 @@ import { compareById } from 'src/app/shared/utils';
       </div>
       <div class="row">
         <app-form-field class="col-md-6" required="true">
-          <label>Community</label>
-          <app-communities-select [class.is-invalid]="invalidCommunity" [myParent]="parent" myFormControlName="community"></app-communities-select>
+          <label for="community">Community</label>
+          <app-communities-select [class.is-invalid]="invalidCommunity" [myParent]="parent" myFormControlName="community" id="community"></app-communities-select>
           <span class="invalid-feedback">Please enter your community.</span>
         </app-form-field>
         <app-form-field class="col-md-3" required="true">

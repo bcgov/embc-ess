@@ -1,7 +1,5 @@
-@import "~src/styles/_defaults.scss";
-
 $bootstrap-sass-asset-helper: true;
-
+// @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 .title {
     font-weight: Semi-bold;
     font-size: 30px;
@@ -37,7 +35,7 @@ $bootstrap-sass-asset-helper: true;
 .body {
     font-size: 18px;
     background: #f1f1f1;
-    color: $font-color;
+    color: #494949;
 }
 
 .app-content {
@@ -70,7 +68,7 @@ h2,
 h3,
 h4,
 h5 {
-    color: $font-color;
+    color: #494949;
     font-weight: 600
 }
 

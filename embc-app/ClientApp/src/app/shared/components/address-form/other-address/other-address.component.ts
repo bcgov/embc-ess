@@ -12,14 +12,18 @@ import { compareById } from 'src/app/shared/utils';
         <app-form-field class="col-md-6" required="true">
           <label>Apt/Suite/Building Number &amp; Street Address/PO Box</label>
           <input [class.is-invalid]="invalidAddressLine1" class="form-control" type="text" formControlName="addressLine1">
-          <span class="invalid-feedback">Please enter your street address.</span>
+          <span class="invalid-feedback">
+            Please enter your street address.
+          </span>
         </app-form-field>
       </div>
       <div class="row">
         <app-form-field class="col-md-6" required="true">
           <label>City</label>
           <input [class.is-invalid]="invalidCity" class="form-control" type="text" formControlName="city">
-          <span class="invalid-feedback">Please enter your city.</span>
+          <span class="invalid-feedback">
+            Please enter your city.
+          </span>
         </app-form-field>
         <app-form-field class="col-md-3">
           <label>Region/Province/State</label>
@@ -37,7 +41,9 @@ import { compareById } from 'src/app/shared/utils';
             <option [ngValue]="null">-- Select Country</option>
             <option [ngValue]="item" *ngFor="let item of countries">{{item.name}}</option>
           </select>
-          <span class="invalid-feedback">Please select a country from the dropdown list.</span>
+          <span class="invalid-feedback">
+            Please select a country from the dropdown list.
+          </span>
         </app-form-field>
       </div>
     </section>
