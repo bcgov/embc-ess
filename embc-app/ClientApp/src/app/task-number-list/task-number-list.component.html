@@ -30,7 +30,7 @@
         </app-pagination-summary>
       </section>
       <section>
-        <button class="btn btn-primary" routerLink="../task-number/">ADD TASK NUMBER</button>
+        <button class="btn btn-primary float-right" routerLink="" (click)="modifyTaskNumber()">ADD TASK NUMBER</button>
       </section>
     </div>
     <table class="table">
@@ -46,13 +46,13 @@
           <td>{{incidentTask?.community?.name}}</td>
           <td>{{incidentTask?.totalAssociatedEvacuees > 0 ? incidentTask?.totalAssociatedEvacuees : 'n/a'}}</td>
           <td>
-            <a [routerLink]="['../task-number/', incidentTask.id]">Edit Task Details</a>
+            <a routerLink="" (click)="modifyTaskNumber(incidentTask.id)">Edit Task Details</a>
           </td>
         </tr>
       </tbody>
     </table>
     <div>
-      <button class="btn btn-primary float-right" routerLink="../task-number/">ADD TASK NUMBER</button>
+      <button class="btn btn-primary float-right" routerLink="" (click)="modifyTaskNumber()">ADD TASK NUMBER</button>
     </div>
   </ng-template>
 

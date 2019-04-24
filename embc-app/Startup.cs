@@ -1,9 +1,9 @@
-using Gov.Embc.Public.Seeders;
 using Gov.Jag.Embc.Interfaces;
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Authorization;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models;
+using Gov.Jag.Embc.Public.Seeder;
 using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -90,7 +90,8 @@ namespace Gov.Jag.Embc.Public
                     opts.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;
                     opts.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
 
-                    // ReferenceLoopHandling is set to Ignore to prevent JSON parser issues with the user / roles model.
+                    // ReferenceLoopHandling is set to Ignore to prevent JSON parser issues with the
+                    // user / roles model.
                     opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
 
@@ -196,7 +197,9 @@ namespace Gov.Jag.Embc.Public
 
             log.LogInformation("Fetching the application's database context ...");
 
-            var adminCtx = new EmbcDbContext(new DbContextOptionsBuilder<EmbcDbContext>().UseSqlServer(DatabaseTools.GetSaConnectionString(Configuration)).Options);
+            var adminCtx = new EmbcDbContext(new DbContextOptionsBuilder<EmbcDbContext>()
+                .UseLoggerFactory(loggerFactory)
+                .UseSqlServer(DatabaseTools.GetSaConnectionString(Configuration)).Options);
 
             if (!string.IsNullOrEmpty(Configuration["DB_FULL_REFRESH"]) && Configuration["DB_FULL_REFRESH"].ToLowerInvariant() == "true")
             {
@@ -225,8 +228,11 @@ namespace Gov.Jag.Embc.Public
                 // run the database seeders
                 log.LogInformation("Adding/Updating seed data ...");
 
-                SeedFactory<EmbcDbContext> seederFactory = new SeedFactory<EmbcDbContext>(Configuration, env, loggerFactory);
-                seederFactory.Seed(adminCtx);
+                ISeederRepository seederRepository = new SeederRepository(adminCtx);
+                var seedDataLoader = new SeedDataLoader(loggerFactory);
+                var seeder = new EmbcSeeder(loggerFactory, seederRepository, env, seedDataLoader);
+                seeder.SeedData();
+
                 log.LogInformation("Seeding operations are complete.");
             }
             catch (Exception e)
@@ -298,8 +304,7 @@ namespace Gov.Jag.Embc.Public
 
             app.UseSpa(spa =>
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
+                // To learn more about options for serving an Angular SPA from ASP.NET Core, see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
 

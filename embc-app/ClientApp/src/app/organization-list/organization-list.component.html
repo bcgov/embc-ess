@@ -31,7 +31,7 @@
         </app-pagination-summary>
       </section>
       <section>
-        <button class="btn btn-primary" routerLink="../organization">ADD ORGANIZATION</button>
+        <button class="btn btn-primary" routerLink="" (click)="modifyOrganization()">ADD ORGANIZATION</button>
       </section>
     </div>
     <table class="table">
@@ -49,15 +49,15 @@
           <td>{{organization?.community?.name}}</td>
           <td>{{organization?.adminLastName}}, {{organization?.adminFirstName}}</td>
           <td>
-            <a [routerLink]="['../volunteers']" [queryParams]="{orgId: organization.id}">View / Add Users</a>
+            <a routerLink="" (click)="modifyOrganizationVolunteers(organization.id)">View / Add Users</a>
             <br>
-            <a [routerLink]="['../organization/', organization.id]">Edit Details</a>
+            <a routerLink="" (click)="modifyOrganization(organization.id)">Edit Details</a>
           </td>
         </tr>
       </tbody>
     </table>
     <div>
-      <button class="btn btn-primary float-right" routerLink="../organization">ADD ORGANIZATION</button>
+      <button class="btn btn-primary float-right" routerLink="" (click)="modifyOrganization()">ADD ORGANIZATION</button>
     </div>
   </ng-template>
 
@@ -67,7 +67,7 @@
         {{notFoundMessage}}
       </section>
       <section>
-        <button class="btn btn-primary" routerLink="../organization">ADD ORGANIZATION</button>
+        <button class="btn btn-primary" (click)="modifyOrganization(organization.id)">ADD ORGANIZATION</button>
       </section>
     </div>
   </ng-template>

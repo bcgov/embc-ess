@@ -7,7 +7,9 @@ import { map } from 'rxjs/operators';
 import { ListResult, Organization, Community, PaginationSummary } from '../core/models';
 import { OrganizationService } from '../core/services/organization.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { SearchQueryParameters } from '../shared/components/search';
+import { SearchQueryParameters } from '../core/models/search-interfaces';
+import { AuthService } from '../core/services/auth.service';
+import { UniqueKeyService } from '../core/services/unique-key.service';
 
 // TODO: Un-comment code below when we are ready to aggregate all communities + regions in a single drop-down
 // interface SearchFilter {
@@ -36,6 +38,8 @@ export class OrganizationListComponent implements OnInit {
   // simple server response
   resultsAndPagination: ListResult<Organization>;
   notFoundMessage = 'Searching ...';
+  // the base path for routing
+  path: string;
 
   form: FormGroup;
 
@@ -45,6 +49,8 @@ export class OrganizationListComponent implements OnInit {
     private route: ActivatedRoute,
     // private store: Store<AppState>,
     private fb: FormBuilder,
+    private authService: AuthService,
+    private uniqueKeyService: UniqueKeyService,
   ) { }
 
   // convenience getters
@@ -57,6 +63,7 @@ export class OrganizationListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.authService.path.subscribe(p => this.path = p);
     this.form = this.fb.group({ searchbox: null });
 
     // collect all organizations
@@ -73,5 +80,16 @@ export class OrganizationListComponent implements OnInit {
 
   filter(community: Community) {
     this.getOrganizations({ q: community ? community.id : null });
+  }
+  modifyOrganization(id?: string) {
+    // load the organization maker
+    this.uniqueKeyService.setKey(id);
+    this.router.navigate([`/${this.path}/organization`]);
+
+  }
+  modifyOrganizationVolunteers(id?: string) {
+    // load the organization's volunteer list
+    this.uniqueKeyService.setKey(id);
+    this.router.navigate([`/${this.path}/organization/volunteers`]);
   }
 }

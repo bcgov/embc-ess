@@ -63,7 +63,7 @@
         </app-pagination-summary>
       </section>
       <section>
-        <button class="btn btn-primary" routerLink="../volunteer" [queryParams]="{orgId: currentOrganization?.id}">ADD USERS</button>
+        <button class="btn btn-primary float-right" routerLink="" (click)="modifyOrganizationVolunteer()">ADD USERS</button>
       </section>
     </div>
     <table class="table">
@@ -88,7 +88,7 @@
           <td>{{!!volunteer.isAdministrator ? 'Admin' : 'ESS User'}}</td>
           <td>{{!!volunteer.isAdministrator ? (!!volunteer.isPrimaryContact | yesNo) : 'n/a'}}</td>
           <td>
-            <a [routerLink]="['../volunteer/', volunteer.id]" [queryParams]="{orgId: currentOrganization?.id}">Edit</a>
+            <a routerLink="" (click)="modifyOrganizationVolunteer(volunteer.id)">Edit</a>
           </td>
         </tr>
       </tbody>
@@ -98,7 +98,7 @@
       <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
     </div>
     <div class="clearfix">
-      <button class="btn btn-primary float-right" routerLink="../volunteer" [queryParams]="{orgId: currentOrganization?.id}">ADD USERS</button>
+      <button class="btn btn-primary float-right" routerLink="" (click)="modifyOrganizationVolunteer()">ADD USERS</button>
     </div>
   </ng-template>
 

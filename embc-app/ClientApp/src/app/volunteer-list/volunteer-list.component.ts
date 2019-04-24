@@ -6,8 +6,9 @@ import { switchMap, tap } from 'rxjs/operators';
 
 import { AuthService } from '../core/services/auth.service';
 import { OrganizationService } from '../core/services/organization.service';
-import { VolunteerService, VolunteerSearchQueryParameters } from '../core/services/volunteer.service';
+import { VolunteerService } from '../core/services/volunteer.service';
 import { ListResult, Volunteer, PaginationSummary, User, Organization } from '../core/models';
+import { UniqueKeyService } from '../core/services/unique-key.service';
 
 @Component({
   selector: 'app-volunteer-list',
@@ -47,6 +48,8 @@ export class VolunteerListComponent implements OnInit {
 
   // the search form and associated toggles (show all, show only admins, show only regular users)
   form: FormGroup;
+  // this is the correct path prefix for the user
+  path: string;
 
   constructor(
     private router: Router,
@@ -54,7 +57,8 @@ export class VolunteerListComponent implements OnInit {
     private fb: FormBuilder,
     private volunteers: VolunteerService,
     private organizations: OrganizationService,
-    private auth: AuthService,
+    private authService: AuthService,
+    private uniqueKeyService: UniqueKeyService
   ) { }
 
   // convenience getters
@@ -69,6 +73,7 @@ export class VolunteerListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.authService.path.subscribe(p => this.path = p);
     // initialize the form component
     this.initSearchForm();
     // initialize the global variables. When done get volunteers associated with the organization
@@ -97,9 +102,9 @@ export class VolunteerListComponent implements OnInit {
   initVars(): Observable<Organization> {
     // combine everything we need to display this form into one Observable
     const combined$ = combineLatest(
-      this.auth.getCurrentUser(),
-      this.auth.isLocalAuthority$,
-      this.auth.isProvincialAdmin$,
+      this.authService.getCurrentUser(),
+      this.authService.isLocalAuthority$,
+      this.authService.isProvincialAdmin$,
       this.route.queryParamMap,
     );
 
@@ -202,5 +207,13 @@ export class VolunteerListComponent implements OnInit {
       return;
     }
     this.getVolunteers();
+  }
+  modifyVolunteer(id?: string) {
+    if (id) {
+      // save the unique ID for lookup in the new component
+      this.uniqueKeyService.setKey(id);
+    }
+    // save the volunteer
+    this.router.navigate([`/${this.path}/volunteer`]);
   }
 }
