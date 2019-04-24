@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
-
 import { EvacueeSearchResults } from '../interfaces';
-import { Registration } from 'src/app/core/models';
+import { Registration, isBcAddress, isOtherAddress } from 'src/app/core/models';
 import { Router, ActivatedRoute } from '@angular/router';
+import get from 'lodash/get';
 
 // TODO: Rename this
 interface RowItem {
@@ -81,6 +81,7 @@ export class EvacueeSearchResultsComponent implements OnChanges {
       if (!registration) {
         return;  // bad data; should fix
       }
+
       // push the head of household as a stub
       const hoh: RowItem = {
         // hold on to a copy of the source data
@@ -109,26 +110,24 @@ export class EvacueeSearchResultsComponent implements OnChanges {
         registrationCompletionDate: registration.registrationCompletionDate
       };
 
-      if (registration.incidentTask && registration.incidentTask.taskNumber) {
-        // check for nulls
-        hoh.incidentTaskTaskNumber = registration.incidentTask.taskNumber;
-      } else {
-        hoh.incidentTaskTaskNumber = '';
-      }
-      if (registration.headOfHousehold.primaryResidence
-        && registration.headOfHousehold.primaryResidence.community
-        && registration.headOfHousehold.primaryResidence.community.name) {
-        // check for nulls
-        hoh.evacuatedFrom = registration.headOfHousehold.primaryResidence.community.name;
+      // get Incident Task Number
+      hoh.incidentTaskTaskNumber = (registration.incidentTask && registration.incidentTask.taskNumber) || '';
+
+      // get Evacuated From (depending on address type)
+      if (registration.headOfHousehold && isBcAddress(registration.headOfHousehold.primaryResidence)) {
+        hoh.evacuatedFrom = get(registration, 'headOfHousehold.primaryResidence.community.name', '');
+      } else if (registration.headOfHousehold && isOtherAddress(registration.headOfHousehold.primaryResidence)) {
+        const city = get(registration, 'headOfHousehold.primaryResidence.city');
+        const province = get(registration, 'headOfHousehold.primaryResidence.province');
+        const country = get(registration, 'headOfHousehold.primaryResidence.country.name');
+        hoh.evacuatedFrom = [city, province, country].filter(x => x).join(', ') || '';
       } else {
         hoh.evacuatedFrom = '';
       }
-      if (registration.hostCommunity && registration.hostCommunity.name) {
-        // check for nulls
-        hoh.evacuatedTo = registration.hostCommunity.name;
-      } else {
-        hoh.evacuatedTo = '';
-      }
+
+      // get Evacuated To
+      hoh.evacuatedTo = (registration.hostCommunity && registration.hostCommunity.name) || '';
+
       listItems.push(hoh);
 
       // push the family members of the HOH as stubs
