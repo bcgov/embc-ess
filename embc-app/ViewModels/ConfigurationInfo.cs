@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Gov.Jag.Embc.Public.ViewModels
 {
-    public class ApplicationVersionInfo
+    public class ConfigurationInfo
     {
         /// <summary>
         /// Base Path of the application
         /// </summary>
         public string BasePath { get; set; }
+
         /// <summary>
         /// Base URI for the application
         /// </summary>
-        public string BaseUri { get; set; }        
+        public string BaseUri { get; set; }
 
         /// <summary>
         /// Dotnet Environment (Development, Staging, Production...)
@@ -44,6 +40,11 @@ namespace Gov.Jag.Embc.Public.ViewModels
         /// <summary>
         /// Git repository used to build the application
         /// </summary>
-        public string SourceRepository { get; set; }              
+        public string SourceRepository { get; set; }
+
+        public int ClientTimeoutWarningInMinutes { get; internal set; }
+        public int DefaultTimeoutWarningInMinutes { get; internal set; }
+        public int ClientTimeoutWarningDurationInMinutes { get; internal set; }
+        public int DefaultWarningDurationInMinutes { get; internal set; }
     }
 }
