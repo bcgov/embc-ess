@@ -69,6 +69,10 @@
 			  {
                 "name": "PROD_BUILD",
                 "value": "${PROD_BUILD}"
+              },
+			  {
+                "name": "PREP_BUILD",
+                "value": "${PREP_BUILD}"
               }
             ]
           }
@@ -195,6 +199,12 @@
 	{
       "name": "PROD_BUILD",
       "displayName": "Prod Build",
+      "description": "1 if true",      
+      "value": ""
+    },
+	{
+      "name": "PREP_BUILD",
+      "displayName": "Prep Build",
       "description": "1 if true",      
       "value": ""
     }     

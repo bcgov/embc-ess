@@ -43,8 +43,8 @@ namespace Gov.Jag.Embc.Public.Controllers
                 name = userSettings.UserDisplayName,
                 UserType = userSettings.UserType,
                 appRoles = userSettings.AppRoles,
-                ClientTimeoutWarningInMinutes = configuration.ClientTimeoutWarningInMinutes(),
-                ClientTimeoutWarningDurationInMinutes = configuration.ClientTimeoutWarningDurationInMinutes()
+                ClientTimeoutWarningInMinutes = configuration.UserTimeoutWarningInMinutes(),
+                ClientTimeoutWarningDurationInMinutes = configuration.UserTimeoutWarningDurationInMinutes()
             };
 
             if (userSettings.IsNewUser)
