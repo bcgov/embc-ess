@@ -34,10 +34,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public Region Region { get; set; }
 
-        public Guid? RegionalDistrictId { get; set; }
-
-        public RegionalDistrict RegionalDistrict { get; set; }
-
         public Guid? CommunityId { get; set; }
 
         public Community Community { get; set; }

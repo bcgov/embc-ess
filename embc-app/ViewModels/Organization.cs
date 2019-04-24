@@ -14,8 +14,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
         public Region Region { get; set; }
 
-        public RegionalDistrict RegionalDistrict { get; set; }
-
         public Community Community { get; set; }
 
         public string AdminFirstName { get; set; }

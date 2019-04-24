@@ -18,18 +18,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return (await db.Regions.ToArrayAsync()).Select(r => r.ToViewModel());
         }
 
-        public async Task<IEnumerable<RegionalDistrict>> GetRegionalDistrictsAsync()
-        {
-            return (await db.RegionalDistricts
-                .Include(d => d.Region)
-                .ToArrayAsync()).Select(d => d.ToViewModel());
-        }
-
         public async Task<IEnumerable<Community>> GetCommunitiesAsync()
         {
             return (await db.Communities
-                .Include(c => c.RegionalDistrict)
-                    .ThenInclude(d => d.Region)
+                .Include(d => d.Region)
                 .OrderBy(c => c.Name)
                 .ToArrayAsync())
                 .Select(d => d.ToViewModel());

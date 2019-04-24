@@ -76,11 +76,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             // get the region.
 
-            RegionalDistrict regionalDistrict = null;
+            Region region = null;
 
-            if (initialCommunity.RegionalDistrict != null)
+            if (initialCommunity.Region != null)
             {
-                regionalDistrict = context.GetRegionalDistrictByName(initialCommunity.RegionalDistrict.Name);
+                region = context.GetRegionByName(initialCommunity.Region.Name);
             }
 
             Community = new Community
@@ -89,7 +89,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 //Id = initialCommunity.Id,
                 Name = initialCommunity.Name,
                 Active = true,
-                RegionalDistrict = regionalDistrict
+                Region = region
             };
 
             context.AddCommunity(Community);
@@ -111,7 +111,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 Community.Name = CommunityInfo.Name;
                 Community.Active = CommunityInfo.Active;
-                Community.RegionalDistrict = CommunityInfo.RegionalDistrict;
+                Community.Region = CommunityInfo.Region;
                 context.UpdateCommunity(Community);
             }
         }

@@ -15,8 +15,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string Name { get; set; }
 
         public bool Active { get; set; }
-        public Guid RegionalDistrictId { get; set; }
-        public RegionalDistrict RegionalDistrict { get; set; }
+        public Guid RegionId { get; set; }
+        public Region Region { get; set; }
         public IEnumerable<Organization> Organizations { get; set; }
     }
 }
