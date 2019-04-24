@@ -29,15 +29,14 @@ namespace Gov.Jag.Embc.Public.Controllers
             var principal = HttpContext.User;
             ViewModels.User user = new ViewModels.User()
             {
-                id = userSettings.UserId,
-                contactid = userSettings.ContactId,
-                accountid = userSettings.AccountId,
-                businessname = userSettings.BusinessLegalName,
-                name = userSettings.UserDisplayName,
-                UserType = userSettings.UserType,
-                appRoles = userSettings.AppRoles,
-                ClientTimeoutWarningInMinutes = configuration.UserTimeoutWarningInMinutes(),
-                ClientTimeoutWarningDurationInMinutes = configuration.UserTimeoutWarningDurationInMinutes()
+                appRoles = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray(),
+                name = principal.FindFirstValue(SiteMinderClaimTypes.Name),
+                UserType = principal.FindFirstValue(SiteMinderClaimTypes.UserType),
+                contactid = principal.FindFirstValue(ClaimTypes.Sid),
+                id = principal.FindFirstValue(ClaimTypes.Upn),
+                accountid = principal.FindFirstValue(SiteMinderClaimTypes.OrgId),
+                ClientTimeoutWarningInMinutes = configuration.ClientTimeoutWarningInMinutes(),
+                ClientTimeoutWarningDurationInMinutes = configuration.ClientTimeoutWarningDurationInMinutes()
             };
 
             return new JsonResult(user);
