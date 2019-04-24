@@ -12,8 +12,7 @@ import { throwIfAlreadyLoaded } from './guards/module-import.guard';
     HttpClientModule,
   ],
   providers: [
-    // TODO: there should be no situations where we get a 401 and into the session expired. Mark for deletion?
-    // { provide: HTTP_INTERCEPTORS, useClass: UnauthorizedInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: UnauthorizedInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: WatchdogInterceptor, multi: true }
   ]
 })
