@@ -1,5 +1,6 @@
 export * from './address.model';
 export * from './community.model';
+export * from './config.model';
 export * from './country.model';
 export * from './evacuee.model';
 export * from './incident-task.model';

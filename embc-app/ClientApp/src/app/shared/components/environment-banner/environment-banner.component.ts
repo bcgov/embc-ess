@@ -1,0 +1,27 @@
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store';
+import { Config } from 'src/app/core/models';
+
+@Component({
+  selector: 'app-environment-banner',
+  templateUrl: './environment-banner.component.html',
+  styleUrls: ['./environment-banner.component.scss']
+})
+export class EnvironmentBannerComponent implements OnInit {
+
+  config$ = this.store.select(s => s.lookups.config.config)
+
+  environment: string = null; // NB: this stays null/empty in Prod
+
+  constructor(
+    private store: Store<AppState>, // ngrx app state
+  ) { }
+
+  ngOnInit() {
+    this.config$.subscribe((config: Config) => {
+      this.environment = config && config.environment;
+    });
+  }
+
+}
