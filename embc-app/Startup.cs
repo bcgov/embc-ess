@@ -218,6 +218,9 @@ namespace Gov.Jag.Embc.Public
             }
             adminCtx.Database.EnsureCreated();
 
+            log.LogInformation("Syncing migrations prior to migrating...");
+            DatabaseTools.SyncInitialMigration(DatabaseTools.GetSaConnectionString(Configuration));
+
             log.LogInformation("Migrating the database ...");
             adminCtx.Database.Migrate();
 
