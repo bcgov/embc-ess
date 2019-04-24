@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, OnInit } from '@angular/core';
 import { Registration, isBcAddress, isOtherAddress } from 'src/app/core/models';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EvacueeSearchResults } from 'src/app/core/models/search-interfaces';
@@ -44,7 +44,7 @@ interface RowItem {
   templateUrl: './evacuee-search-results.component.html',
   styleUrls: ['./evacuee-search-results.component.scss']
 })
-export class EvacueeSearchResultsComponent implements OnChanges {
+export class EvacueeSearchResultsComponent implements OnChanges, OnInit {
 
   /**
    * The results to display
@@ -71,6 +71,7 @@ export class EvacueeSearchResultsComponent implements OnChanges {
     private uniqueKeyService: UniqueKeyService,
     private authService: AuthService
   ) { }
+
   ngOnInit() {
     this.authService.path.subscribe(p => this.path = p);
   }
