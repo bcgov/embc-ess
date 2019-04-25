@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { RegistrationService } from 'src/app/core/services/registration.service';
 import { Registration, Address, isBcAddress, User, Volunteer } from 'src/app/core/models';
@@ -47,18 +47,22 @@ export class RegistrationSummaryFullComponent implements OnInit {
       this.router.navigate([`/${this.path}`]);
     }
   }
+
   isBcAddress(address: Address): boolean {
     return isBcAddress(address);
   }
+
   genderOption(key: string) {
     const option = GENDER_OPTIONS.find(item => item.key === key);
     return option ? option.value : null;
   }
+
   insuranceOption(key: string) {
     const option = INSURANCE_OPTIONS.find(item => item.key === key);
     return option ? option.value : null;
   }
-  yesNo(value: boolean) {
+
+  yesNo(value: boolean): string {
     if (value === true) {
       return 'Yes';
     } else if (value === false) {
@@ -67,9 +71,20 @@ export class RegistrationSummaryFullComponent implements OnInit {
       return '';
     }
   }
+
   routeTo() {
     // save the key for lookup. This only ever links to the editor
     this.uniqueKeyService.setKey(this.registration.id);
     this.router.navigate([`/${this.path}/registration`]);
   }
+
+  get hasReferrals(): boolean {
+    return this.registration.hasInquiryReferral
+      || this.registration.hasHealthServicesReferral
+      || this.registration.hasFirstAidReferral
+      || this.registration.hasPersonalServicesReferral
+      || this.registration.hasChildCareReferral
+      || this.registration.hasPetCareReferral;
+  }
+
 }

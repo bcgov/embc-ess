@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RegistrationService } from '../core/services/registration.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Registration } from '../core/models';
 import { AuthService } from '../core/services/auth.service';
 import { UniqueKeyService } from '../core/services/unique-key.service';
@@ -12,10 +12,8 @@ import { UniqueKeyService } from '../core/services/unique-key.service';
 })
 export class RegistrationSummaryComponent implements OnInit {
 
-  // collect ess file number from activated route
   registration: Registration;
-  // all routing should be handled through the current path
-  path: string;
+  path: string; // for relative routing
 
   constructor(
     private router: Router,
@@ -28,18 +26,18 @@ export class RegistrationSummaryComponent implements OnInit {
     // get path for routing
     this.authService.path.subscribe(p => this.path = p);
 
-    // try to collect the ess file number and load it
+    // get lookup key and load registration data
     const key = this.uniqueKeyService.getKey();
-    // if the value stored as the lookup key is falsy then we should reroute home
+    // ensure we have a lookup key
     if (key) {
       this.registrationService.getRegistrationById(key)
         .subscribe(r => {
-          // if there is nothing useful returned route somewhere else.
+          // ensure we have an ESS File Number
           if (!r.essFileNumber) {
             // send them back to their home page
             this.router.navigate([`/${this.path}`]);
           } else {
-            // Save the registration into the
+            // save the registration object
             this.registration = r;
           }
         });
@@ -49,12 +47,13 @@ export class RegistrationSummaryComponent implements OnInit {
     }
   }
 
-  routeTo() {
-    // TODO: this seems like bad practice but fix when we have time
+  showFullProfile() {
+    // TODO: replace confirm with a better popup
     if (confirm('By clicking continue you acknowledge that all changes to this information will be collected, audited, and your administrator may contact you about them.')) {
       // save the key for lookup
       this.uniqueKeyService.setKey(this.registration.id);
       this.router.navigate([`/${this.path}/registration/summary/full`]);
     }
   }
+
 }

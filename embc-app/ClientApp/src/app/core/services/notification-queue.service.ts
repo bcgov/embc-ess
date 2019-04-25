@@ -24,7 +24,6 @@ export class NotificationQueueService {
     if (!type) { type = 'warning'; }
     if (!timeoutMs) { timeoutMs = this.defaultTimeout; }
 
-
     // get old value of behaviour subject to update it.
     const currentNotifications: Notification[] = this.notificationQueue.getValue();
 
