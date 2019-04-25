@@ -3,8 +3,9 @@ import { map, catchError } from 'rxjs/operators';
 
 import { CoreModule } from '../core.module';
 import { RestService } from './rest.service';
-import { Country, Region, RegionalDistrict, Community, RelationshipType } from '../models';
+import { Config, Country, Region, RegionalDistrict, Community, RelationshipType } from '../models';
 
+import * as ConfigActions from 'src/app/store/lookups/config.actions';
 import * as CountryActions from 'src/app/store/lookups/country.actions';
 import * as RegionActions from 'src/app/store/lookups/region.actions';
 import * as RegionalDistrictActions from 'src/app/store/lookups/regional-district.actions';
@@ -18,6 +19,22 @@ export class ControlledListService extends RestService {
 
   // Loaded once at init time, as they do not change very often, and
   // certainly not within the app.
+
+  getConfig() {
+    this.store.dispatch(new ConfigActions.LoadConfig());
+    return this.http.get<Config>('api/config', { headers: this.headers })
+      .pipe(
+        map((config: Config) => {
+          // everything went OK
+          this.store.dispatch(new ConfigActions.LoadConfigSuccess({ config }));
+        }),
+        catchError(error => {
+          // dispatch a fail action if there were errors
+          this.store.dispatch(new ConfigActions.LoadConfigFail(error));
+          return this.handleError(error);
+        }),
+      );
+  }
 
   getAllCountries() {
     this.store.dispatch(new CountryActions.LoadCountries());
