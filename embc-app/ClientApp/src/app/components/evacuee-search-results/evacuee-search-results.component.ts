@@ -1,8 +1,10 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
-
-import { Registration } from 'src/app/core/models';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, OnInit } from '@angular/core';
+import { Registration, isBcAddress, isOtherAddress } from 'src/app/core/models';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EvacueeSearchResults } from 'src/app/core/models/search-interfaces';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import get from 'lodash/get';
 
 // TODO: Rename this
 interface RowItem {
@@ -42,7 +44,7 @@ interface RowItem {
   templateUrl: './evacuee-search-results.component.html',
   styleUrls: ['./evacuee-search-results.component.scss']
 })
-export class EvacueeSearchResultsComponent implements OnChanges {
+export class EvacueeSearchResultsComponent implements OnChanges, OnInit {
 
   /**
    * The results to display
@@ -56,15 +58,23 @@ export class EvacueeSearchResultsComponent implements OnChanges {
 
   rows: RowItem[] = [];
   notFoundMessage = 'Searching ...';
+  // the routing path
+  path: string;
 
   ngOnChanges(changes: SimpleChanges) {
     this.rows = this.processSearchResults(this.searchResults);
   }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private uniqueKeyService: UniqueKeyService,
+    private authService: AuthService
   ) { }
 
+  ngOnInit() {
+    this.authService.path.subscribe(p => this.path = p);
+  }
   onResultSelected(rowItem: RowItem, event: MouseEvent) {
     this.resultSelected.emit(rowItem);
   }
@@ -81,6 +91,7 @@ export class EvacueeSearchResultsComponent implements OnChanges {
       if (!registration) {
         return;  // bad data; should fix
       }
+
       // push the head of household as a stub
       const hoh: RowItem = {
         // hold on to a copy of the source data
@@ -109,26 +120,24 @@ export class EvacueeSearchResultsComponent implements OnChanges {
         registrationCompletionDate: registration.registrationCompletionDate
       };
 
-      if (registration.incidentTask && registration.incidentTask.taskNumber) {
-        // check for nulls
-        hoh.incidentTaskTaskNumber = registration.incidentTask.taskNumber;
-      } else {
-        hoh.incidentTaskTaskNumber = '';
-      }
-      if (registration.headOfHousehold.primaryResidence
-        && registration.headOfHousehold.primaryResidence.community
-        && registration.headOfHousehold.primaryResidence.community.name) {
-        // check for nulls
-        hoh.evacuatedFrom = registration.headOfHousehold.primaryResidence.community.name;
+      // get Incident Task Number
+      hoh.incidentTaskTaskNumber = (registration.incidentTask && registration.incidentTask.taskNumber) || '';
+
+      // get Evacuated From (depending on address type)
+      if (registration.headOfHousehold && isBcAddress(registration.headOfHousehold.primaryResidence)) {
+        hoh.evacuatedFrom = get(registration, 'headOfHousehold.primaryResidence.community.name', '');
+      } else if (registration.headOfHousehold && isOtherAddress(registration.headOfHousehold.primaryResidence)) {
+        const city = get(registration, 'headOfHousehold.primaryResidence.city');
+        const province = get(registration, 'headOfHousehold.primaryResidence.province');
+        const country = get(registration, 'headOfHousehold.primaryResidence.country.name');
+        hoh.evacuatedFrom = [city, province, country].filter(x => x).join(', ') || '';
       } else {
         hoh.evacuatedFrom = '';
       }
-      if (registration.hostCommunity && registration.hostCommunity.name) {
-        // check for nulls
-        hoh.evacuatedTo = registration.hostCommunity.name;
-      } else {
-        hoh.evacuatedTo = '';
-      }
+
+      // get Evacuated To
+      hoh.evacuatedTo = (registration.hostCommunity && registration.hostCommunity.name) || '';
+
       listItems.push(hoh);
 
       // push the family members of the HOH as stubs
@@ -193,10 +202,14 @@ export class EvacueeSearchResultsComponent implements OnChanges {
   }
 
   finalize(r: RowItem) {
-    this.router.navigate(['../register-evacuee/fill/' + r.rowData.id], { relativeTo: this.route });
+    this.uniqueKeyService.setKey(r.rowData.id);
+    this.router.navigate([`/${this.path}/registration`]);
   }
 
   view(r: RowItem) {
-    this.router.navigate(['../evacuee-summary/' + r.rowData.id], { relativeTo: this.route });
+    this.uniqueKeyService.setKey(r.rowData.id);
+    this.router.navigate([`/${this.path}/registration/summary`]
+      // , { relativeTo: this.route }
+    );
   }
 }

@@ -17,7 +17,7 @@ import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { NotificationQueueService } from '../core/services/notification-queue.service';
-
+import { UniqueKeyService } from '../core/services/unique-key.service';
 
 @Component({
   selector: 'app-registration-maker',
@@ -66,6 +66,9 @@ export class RegistrationMakerComponent implements OnInit {
   // error summary to display; i.e. 'Some required fields have not been completed.'
   errorSummary = '';
 
+  // path for this user to route from
+  path: string;
+
   // generic validation helper
   private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
   private validationHelper: ValidationHelper;
@@ -73,12 +76,12 @@ export class RegistrationMakerComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>, // ngrx app state
-    private route: ActivatedRoute,
     private registrationService: RegistrationService,
     private incidentTaskService: IncidentTaskService,
     private router: Router,
+    private notificationQueueService: NotificationQueueService,
     private authService: AuthService,
-    private notificationQueueService: NotificationQueueService
+    private uniqueKeyService: UniqueKeyService,
   ) {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
@@ -168,6 +171,7 @@ export class RegistrationMakerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.authService.path.subscribe(p => this.path = p);
     // fetch the default country
     this.countries$.subscribe((countries: Country[]) => {
       // the only(first) element that is named Canada
@@ -188,13 +192,14 @@ export class RegistrationMakerComponent implements OnInit {
     // Know the current user
     this.authService.getCurrentUser().subscribe(u => this.currentUser = u);
 
-    // if there are route params we should grab them
-    const id = this.route.snapshot.params.id;
+    // // if there are route params we should grab them
+    // const id = this.route.snapshot.params.id;
 
-    if (id) {
+    // get unique key if one exists
+    const key = this.uniqueKeyService.getKey();
+    if (key) {
       // this is a form with data flowing in.
-      // TODO: Redirect to error page if we fail to fetch the registration
-      this.registrationService.getRegistrationById(id).subscribe(r => {
+      this.registrationService.getRegistrationById(key).subscribe(r => {
 
         // set registration mode to edit and save the previous content in an object.
         this.registration = r;
@@ -337,20 +342,6 @@ export class RegistrationMakerComponent implements OnInit {
     // validate the whole form as we capture data
     this.form.valueChanges.subscribe(() => this.validateForm());
 
-    // validate phone numbers, for BC residents ONLY!
-    // NOTE - international numbers are not validated due to variance in formats, etc.
-    this.f.primaryResidenceInBC.valueChanges
-      .subscribe((checked: boolean) => {
-        if (checked) {
-          this.f.phoneNumber.setValidators([CustomValidators.phone]);
-          this.f.phoneNumberAlt.setValidators([CustomValidators.phone]);
-        } else {
-          this.f.phoneNumber.setValidators(null);
-          this.f.phoneNumberAlt.setValidators(null);
-        }
-        this.f.phoneNumber.updateValueAndValidity();
-        this.f.phoneNumberAlt.updateValueAndValidity();
-      });
 
     // show/hide family members section based on the "family info" radio button
     this.f.registeringFamilyMembers.valueChanges
@@ -359,17 +350,33 @@ export class RegistrationMakerComponent implements OnInit {
           this.addFamilyMember();
         }
         if (value === 'no') {
+          // TODO: should prompt before clearing any entered family member data
           this.clearFamilyMembers();
         }
       });
 
-    // set "family info" radio to "No family" when all members have been removed from the form
+    // set "family info" radio to "no family" when all members have been removed from the form
     this.familyMembers.valueChanges
       .subscribe((family: any[]) => {
         const radio = this.f.registeringFamilyMembers;
         if (radio.value === 'yes' && family.length === 0) {
           radio.setValue('no');
         }
+      });
+
+    // validate phone numbers, for BC residents ONLY!
+    // NOTE - international numbers are not validated due to variance in formats, etc.
+    this.f.primaryResidenceInBC.valueChanges
+      .subscribe((value: boolean) => {
+        if (value) {
+          this.f.phoneNumber.setValidators([CustomValidators.phone]);
+          this.f.phoneNumberAlt.setValidators([CustomValidators.phone]);
+        } else {
+          this.f.phoneNumber.setValidators(null);
+          this.f.phoneNumberAlt.setValidators(null);
+        }
+        this.f.phoneNumber.updateValueAndValidity();
+        this.f.phoneNumberAlt.updateValueAndValidity();
       });
   }
 
@@ -538,8 +545,8 @@ export class RegistrationMakerComponent implements OnInit {
       this.submitting = false; // reenable when we parse data
     }
   }
+
   submit() {
-    // alert(this.registration.headOfHousehold.primaryResidence.country.name);
     // Send data to the server
     this.submitted = true;
     // in transmission
@@ -555,11 +562,8 @@ export class RegistrationMakerComponent implements OnInit {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee added successfully');
-
-          // TODO: there is an exception that if the route is ...com/embcess/register-evacuee it should only go up one instead of 2
-          // TODO: It should be fixed but will need a wider refactor for consistency
-          // if the parameters are on the end of the URL we need to route towards root once more
-          this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
+          // go back to the main dashboard
+          this.router.navigate([`/${this.path}/`]);
         });
     } else {
       // submit the global registration to the server
@@ -570,10 +574,12 @@ export class RegistrationMakerComponent implements OnInit {
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee updated successfully');
 
-          this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
+          // go back to the main dashboard
+          this.router.navigate([`/${this.path}/`]);
         });
     }
   }
+
   back() {
     // return to the edit mode so you can change the form data
     this.summaryMode = false;
@@ -650,6 +656,7 @@ export class RegistrationMakerComponent implements OnInit {
       hostCommunity: values.hostCommunity,
       completedBy: values.completedBy,
     };
+
     const registration = this.registration;
     if (this.editMode) {
       // if we are editing the form we assign the values collected when the form initialized and collected the registration from the api.
@@ -662,6 +669,7 @@ export class RegistrationMakerComponent implements OnInit {
       r.headOfHousehold.primaryResidence.id = registration.headOfHousehold.primaryResidence.id || null;
       r.completedBy = registration.completedBy || null;
     }
+
     // timestamp the completion date on
     r.registrationCompletionDate = r.registrationCompletionDate || new Date().toJSON();
 
@@ -673,31 +681,54 @@ export class RegistrationMakerComponent implements OnInit {
     // The user now consents.
     r.declarationAndConsent = true;
 
-    // if there was no primary address country set by the form before submission
+    // the user included a primary address but the form did not set the country
     if (!r.headOfHousehold.primaryResidence.country) {
       r.headOfHousehold.primaryResidence.country = this.CANADA;
     }
+
     // the user included a mailing address but the form did not set the country
     if (r.headOfHousehold.mailingAddress && !r.headOfHousehold.mailingAddress.country) {
       r.headOfHousehold.mailingAddress.country = this.CANADA;
     }
 
+    // if they set Dietary Needs to false then delete Dietary Needs Details
+    if (!r.dietaryNeeds) {
+      r.dietaryNeedsDetails = '';
+    }
+
+    // if they set Medication Needs to false then set Has Three Day Medication Supply to false
+    if (!r.medicationNeeds) {
+      r.hasThreeDayMedicationSupply = false;
+    }
+
+    // if they set Requires Support to false then set all Supports Requested to false
+    if (!r.requiresSupport) {
+      r.requiresFood = false;
+      r.requiresClothing = false;
+      r.requiresAccommodation = false;
+      r.requiresIncidentals = false;
+      r.requiresTransportation = false;
+    }
+
     // return the registration
     return r;
   }
-  // --------------------HELPERS-----------------------------------------
 
+  // --------------------HELPERS-----------------------------------------
   isBcAddress(address: Address): boolean {
     return isBcAddress(address);
   }
+
   genderOption(key: string) {
     const option = GENDER_OPTIONS.find(item => item.key === key);
     return option ? option.value : null;
   }
+
   insuranceOption(key: string) {
     const option = INSURANCE_OPTIONS.find(item => item.key === key);
     return option ? option.value : null;
   }
+
   blankRegistration(): Registration {
     // This is a workaround for not having an instantiable class that initializes the interface
     return {
