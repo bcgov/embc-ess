@@ -35,8 +35,8 @@ namespace Gov.Jag.Embc.Public.Controllers
                 contactid = principal.FindFirstValue(EssClaimTypes.USER_ID),
                 id = principal.FindFirstValue(ClaimTypes.Upn),
                 accountid = principal.FindFirstValue(EssClaimTypes.ORG_ID),
-                ClientTimeoutWarningInMinutes = configuration.ClientTimeoutWarningInMinutes(),
-                ClientTimeoutWarningDurationInMinutes = configuration.ClientTimeoutWarningDurationInMinutes()
+                ClientTimeoutWarningInMinutes = configuration.UserTimeoutWarningInMinutes(),
+                ClientTimeoutWarningDurationInMinutes = configuration.UserTimeoutWarningInMinutes()
             };
 
             return new JsonResult(user);

@@ -161,7 +161,6 @@ const routes: Routes = [
     component: SessionExpiredComponent
   },
   {
-    // TODO: naming this should be "evacuee-self-registration"
     path: 'self-registration',
     component: SelfRegistrationComponent,
     children: [
@@ -218,9 +217,9 @@ const routes: Routes = [
     component: PageNotFoundComponent, // TODO: See if we can remove this component here without breaking routing
     data: {
       navigateByRole: {
-        role_volunteer: 'volunteer/evacuees',
-        role_local_authority: 'local-authority/evacuees',
-        role_provincial_admin: 'provincial-admin/evacuees',
+        role_volunteer: 'volunteer-/evacuees',
+        role_local_authority: 'local-authority-/evacuees',
+        role_provincial_admin: 'provincial-admin-/evacuees',
       }
     },
   },
@@ -299,18 +298,13 @@ const routes: Routes = [
         data: { expectedRole: VOLUNTEER },
       },
       {
-        path: 'registration/:id',
-        component: RegistrationMakerComponent,
-        data: { expectedRole: VOLUNTEER },
-      },
-      {
-        path: 'registration/summary/:id',
+        path: 'registration/summary',
         component: RegistrationSummaryComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
-        path: 'registration/summary/full/:id',
-        component: RegistrationSummaryComponent,
+        path: 'registration/summary/full',
+        component: RegistrationSummaryFullComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
@@ -446,27 +440,17 @@ const routes: Routes = [
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
-        path: 'registration/:id',
-        component: RegistrationMakerComponent,
-        data: { expectedRole: LOCAL_AUTHORITY },
-      },
-      {
-        path: 'registration/summary/:id',
+        path: 'registration/summary',
         component: RegistrationSummaryComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
-        path: 'registration/summary/full/:id',
-        component: RegistrationSummaryComponent,
+        path: 'registration/summary/full',
+        component: RegistrationSummaryFullComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
         path: 'volunteer',
-        component: VolunteerMakerComponent,
-        data: { expectedRole: LOCAL_AUTHORITY },
-      },
-      {
-        path: 'volunteer/:id',
         component: VolunteerMakerComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
@@ -634,7 +618,17 @@ const routes: Routes = [
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
-        path: 'volunteer/:id',
+        path: 'organization/volunteers',
+        component: VolunteerOrganizationListComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      {
+        // the volunteers route is really the organization starting point. Must be like this to share components with other roles
+        path: 'volunteers',
+        redirectTo: 'organizations'
+      },
+      {
+        path: 'volunteer',
         component: VolunteerMakerComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
@@ -653,6 +647,7 @@ const routes: Routes = [
         component: UsefulInformationPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
+
     ]
   },
 

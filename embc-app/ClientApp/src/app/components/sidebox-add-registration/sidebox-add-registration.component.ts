@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-sidebox-add-registration',
@@ -7,11 +8,16 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SideboxAddRegistrationComponent implements OnInit {
 
-  route = '../registration';
+  route: string;
 
-  constructor() { }
+  constructor(
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
+    this.authService.path.subscribe(p => {
+      this.route = `/${p}/registration`;
+    });
   }
 
 }

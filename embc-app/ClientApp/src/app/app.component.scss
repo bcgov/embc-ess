@@ -1,5 +1,7 @@
+@import "~src/styles/_defaults.scss";
+
 $bootstrap-sass-asset-helper: true;
-// @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
 .title {
     font-weight: Semi-bold;
     font-size: 30px;
@@ -35,7 +37,7 @@ $bootstrap-sass-asset-helper: true;
 .body {
     font-size: 18px;
     background: #f1f1f1;
-    color: #494949;
+    color: $font-color;
 }
 
 .app-content {
@@ -68,7 +70,7 @@ h2,
 h3,
 h4,
 h5 {
-    color: #494949;
+    color: $font-color;
     font-weight: 600
 }
 
@@ -273,10 +275,6 @@ a:active {
     padding-bottom: 0 !important;
     padding-top: 0 !important;
     cursor: pointer;
-}
-
-.not-supported-browser {
-    padding-top: 20px;
 }
 
 button.btn-mobile {

@@ -4,6 +4,7 @@ import { concat } from 'rxjs';
 import { detectIE10orLower } from './shared/utils';
 import { ControlledListService } from './core/services/controlled-list.service';
 import { AuthService } from './core/services/auth.service';
+import { UniqueKeyService } from './core/services/unique-key.service';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit {
   constructor(
     private lookups: ControlledListService,
     public authService: AuthService,
+    public uniqueKeyService: UniqueKeyService,
   ) { }
 
   ngOnInit() {
@@ -62,6 +64,7 @@ export class AppComponent implements OnInit {
 
   private getLookups() {
     return concat(
+      this.lookups.getConfig(),
       this.lookups.getAllCountries(),
       this.lookups.getAllRegions(),
       this.lookups.getAllRegionalDistricts(),

@@ -11,6 +11,7 @@ import { EVERYONE, VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from 'src/app/
 export class AuthService extends RestService {
 
   public user: BehaviorSubject<User> = new BehaviorSubject<User>(null);
+  public path: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public role: BehaviorSubject<string> = new BehaviorSubject<string>(EVERYONE);
 
   public isEveryone$ = this.role.pipe(map(x => x === EVERYONE));
@@ -104,10 +105,25 @@ export class AuthService extends RestService {
 
     // save the role
     this.role.next(role);
+    // set the routing path
+    this.setPath();
   }
 
-  // setLoggedIn(value: boolean): void {
-  //   this.isLoggedIn$.next(value);
-  // }
+  setPath() {
+    // set the correct path for routing the user in the application
+    switch (this.role.getValue()) {
+      case PROVINCIAL_ADMIN:
+        this.path.next('provincial-admin-');
+        break;
+      case LOCAL_AUTHORITY:
+        this.path.next('local-authority-');
+        break;
+      case VOLUNTEER:
+        this.path.next('volunteer-');
+        break;
+      default:
+        this.path.next('');
+    }
+  }
 
 }

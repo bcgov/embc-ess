@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbTypeaheadModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { MaterialModule } from './material.module';
+import { EnvironmentBannerComponent } from './components/environment-banner/environment-banner.component';
 import { WarningBannerComponent } from './components/warning-banner/warning-banner.component';
 import { NotificationBannerComponent } from './components/notification-banner/notification-banner.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -29,6 +30,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 
 @NgModule({
   declarations: [
+    EnvironmentBannerComponent,
     WarningBannerComponent,
     NotificationBannerComponent,
     HeaderComponent,
@@ -71,6 +73,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     MaterialModule,
 
     // components, pipes, etc
+    EnvironmentBannerComponent,
     WarningBannerComponent,
     NotificationBannerComponent,
     HeaderComponent,
