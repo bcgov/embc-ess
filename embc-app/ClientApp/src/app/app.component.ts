@@ -64,6 +64,7 @@ export class AppComponent implements OnInit {
 
   private getLookups() {
     return concat(
+      this.lookups.getConfig(),
       this.lookups.getAllCountries(),
       this.lookups.getAllRegions(),
       this.lookups.getAllRegionalDistricts(),
