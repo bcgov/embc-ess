@@ -217,9 +217,9 @@ const routes: Routes = [
     component: PageNotFoundComponent, // TODO: See if we can remove this component here without breaking routing
     data: {
       navigateByRole: {
-        role_volunteer: 'volunteer/evacuees',
-        role_local_authority: 'local-authority/evacuees',
-        role_provincial_admin: 'provincial-admin/evacuees',
+        role_volunteer: 'volunteer-/evacuees',
+        role_local_authority: 'local-authority-/evacuees',
+        role_provincial_admin: 'provincial-admin-/evacuees',
       }
     },
   },
