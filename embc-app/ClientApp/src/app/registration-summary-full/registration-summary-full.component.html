@@ -12,7 +12,7 @@
     </div>
   </section>
 
-  <section class="mt-5 ml-3">
+  <section class="mt-5 mx-3">
     <ul class="summary">
       <li>
         <span class="name">Emergency Support Services File #:</span>
@@ -255,7 +255,7 @@
         <span class="name">Requires Supports:</span>
         <span class="value">{{registration.requiresSupport | yesNo}}</span>
       </li>
-      <li>
+      <li *ngIf="registration.requiresSupport">
         <span class="name">Supports Requested:</span>
         <span class="value">
           <div class="form-check mt-2">
@@ -287,15 +287,6 @@
       <ul class="summary">
         <li>
           <span>&nbsp;{{registration.familyRecoveryPlan}}</span>
-        </li>
-      </ul>
-    </div>
-
-    <div *ngIf="registration.followUpDetails">
-      <h2>Internal Case Notes</h2>
-      <ul class="summary">
-        <li>
-          <span>&nbsp;{{registration.followUpDetails}}</span>
         </li>
       </ul>
     </div>
@@ -338,6 +329,15 @@
         </li>
       </ul>
     </div>
+  </section>
+
+  <section *ngIf="registration.followUpDetails" class="mt-4">
+    <h2 class="blue-header font-weight-bold">INTERNAL CASE NOTES</h2>
+    <ul class="summary mx-3">
+      <li>
+        <span>&nbsp;{{registration.followUpDetails}}</span>
+      </li>
+    </ul>
   </section>
 
   <section class="space-between align-items-center mt-5 mb-4">
