@@ -44,6 +44,7 @@ import { ProvincialAdminRegistrationsPageComponent } from './pages/provincial-ad
 import { LocalAuthorityVolunteersPageComponent } from './pages/local-authority/local-authority-volunteers-page/local-authority-volunteers-page.component';
 
 /*
+
   /
     self-registration
       /
@@ -53,99 +54,37 @@ import { LocalAuthorityVolunteersPageComponent } from './pages/local-authority/l
       step-4/:id
       error
     external
-      login
+    login
 
   /volunteer
-    evacuees
-    evacuee-summary/:id
-    register-evacuee
-      /
-      fill/:id
-      fill
-      confirmation
+    registrations               <-- shows evacuee list page
+    registration/summary        <-- view tombstone summary page
+    registration/summary/full   <-- view full summary page
+    registration                <-- evacuee maker
     useful-info
 
   /local-authority
-    evacuees
-    evacuee-summary/:id
-    register-evacuee
-      /
-      fill/:id
-      fill
-      confirmation
-    volunteers
-    volunteer
-    volunteer/:id
+    registrations               <-- shows evacuee list page
+    volunteers                  <-- volunteer list page
+    registration/summary        <-- view tombstone summary page
+    registration/summary/full   <-- view full summary page
+    registration                <-- evacuee maker
+    volunteer                   <-- volunteer maker
     useful-info
-
-  /provincial-admin
-    /
-    evacuees
-    evacuee-summary/:id
-    organizations
-    organization
-    organization/:id
-    task-numbers
-    task-number
-    task-number/:id
-    volunteers
-    volunteer
-    volunteer/:id
-    register-evacuee
-      /
-      fill/:id
-      fill
-      confirmation
-    useful-info
-
-    //---------A Plan-----------------------------------------------
-// The intent of this structure is to simplify the routes by roles. Unfortunately we need to restructure components to get it into this configuration.
-// If we can pass the identifiers through a service to the correct components then we can load the components without the id route
-  /
-    self-registration
-      /
-      step-1
-      step-2
-      step-3
-      step-4/:id
-      error
-    external
-      login
-
-  /volunteer
-    evacuees        <-- shows evacuee list page
-    evacuee             <-- evacuee maker
-    evacuee/:id         <-- evacuee maker (edit)
-    evacuee/summary/:id <-- view tombstone summary page
-    evacuee/summary/full/:id <-- view full tombstone summary page
-    useful-info
-
-  /local-authority
-    evacuees        <-- shows evacuee list page
-    volunteers      <-- volunteer list page
-    evacuee             <-- evacuee maker
-    evacuee/:id         <-- evacuee maker (edit)
-    volunteer           <-- volunteer maker
-    volunteer/:id       <-- volunteer maker (edit)
-    evacuee/summary/:id <-- view tombstone summary page
-    evacuee/summary/full/:id <-- view full tombstone summary page    useful-info
 
   /provincial-admin
     / <-- routes to task numbers
-    evacuees        <-- shows evacuee list page
-    organizations   <-- organization list page
-    volunteers      <-- volunteer list page
-    task-numbers    <-- task number list page
-    evacuee             <-- evacuee maker
-    evacuee/:id         <-- evacuee maker (edit)
-    organization        <-- organization maker
-    organization/:id    <-- organization maker (edit)
-    task-number         <-- task number maker
-    task-number/:id     <-- task number maker (edit)
-    volunteer           <-- volunteer maker
-    volunteer/:id       <-- volunteer maker (edit)
-    evacuee/summary/:id <-- view tombstone summary page
-    evacuee/summary/full/:id <-- view full tombstone summary page    useful-info
+    evacuees                    <-- shows evacuee list page
+    organizations               <-- organization list page
+    volunteers                  <-- volunteer list page
+    task-numbers                <-- task number list page
+    registration/summary        <-- view tombstone summary page
+    registration/summary/full   <-- view full tombstone summary page
+    evacuee                     <-- evacuee maker
+    organization                <-- organization maker
+    task-number                 <-- task number maker
+    volunteer                   <-- volunteer maker
+    useful-info
 */
 const routes: Routes = [
   {
@@ -217,63 +156,13 @@ const routes: Routes = [
     component: PageNotFoundComponent, // TODO: See if we can remove this component here without breaking routing
     data: {
       navigateByRole: {
-        role_volunteer: 'volunteer-/evacuees',
-        role_local_authority: 'local-authority-/evacuees',
-        role_provincial_admin: 'provincial-admin-/evacuees',
+        role_volunteer: 'volunteer-',
+        role_local_authority: 'local-authority-',
+        role_provincial_admin: 'provincial-admin-',
       }
     },
   },
 
-  // VOLUNTEER routes
-  // {
-  //   path: 'volunteer',
-  //   component: VolunteerDashboardComponent,
-  //   canActivate: [LoggedInGuard],
-  //   canActivateChild: [RoleGuard],
-  //   data: { expectedRole: VOLUNTEER },
-  //   children: [
-  //     {
-  //       path: 'evacuees',
-  //       component: VolunteerDashboardComponent,
-  //       data: { expectedRole: VOLUNTEER },
-  //     },
-  //     {
-  //       path: 'evacuee/summary/:id',
-  //       component: RegistrationSummaryComponent,
-  //       data: { expectedRole: VOLUNTEER },
-  //     },
-  //     {
-  //       path: 'evacuee/:id',
-  //       component: RegistrationSummaryFullComponent,
-  //       data: { expectedRole: VOLUNTEER },
-  //     },
-  //     {
-  //       path: 'register-evacuee',
-  //       component: RegistrationPageComponent,
-  //       data: { expectedRole: VOLUNTEER },
-  //     },
-  //     {
-  //       path: 'register-evacuee/:id',
-  //       component: RegistrationPageComponent,
-  //       data: { expectedRole: VOLUNTEER },
-  //     },
-  //     {
-  //       path: 'register-evacuee/fill',
-  //       component: RegistrationPageComponent,
-  //       data: { expectedRole: VOLUNTEER },
-  //     },
-  //     {
-  //       path: 'register-evacuee/fill/:id',
-  //       component: RegistrationPageComponent,
-  //       data: { expectedRole: VOLUNTEER },
-  //     },
-  //     {
-  //       path: 'useful-info',
-  //       component: VolunteerUsefulInformationComponent,
-  //       data: { expectedRole: VOLUNTEER },
-  //     },
-  //   ],
-  // },
   // VOLUNTEER NEW routes
   {
     path: 'volunteer-',
@@ -314,104 +203,7 @@ const routes: Routes = [
       },
     ],
   },
-  // // LOCAL_AUTHORITY routes
-  // {
-  //   path: 'local-authority',
-  //   // component: VolunteerDashboardComponent,
-  //   canActivate: [LoggedInGuard],
-  //   canActivateChild: [RoleGuard],
-  //   children: [
-  //     {
-  //       path: 'evacuees',
-  //       component: VolunteerDashboardComponent,
-  //       data: { expectedRole: LOCAL_AUTHORITY },
-  //     },
-  //     {
-  //       path: 'evacuee/:id',
-  //       component: RegistrationSummaryFullComponent,
-  //       data: { expectedRole: LOCAL_AUTHORITY },
-  //     },
-  //     {
-  //       path: 'evacuee-summary/:id',
-  //       component: RegistrationSummaryComponent,
-  //       data: { expectedRole: LOCAL_AUTHORITY }
-  //     },
-  //     {
-  //       path: 'register-evacuee',
-  //       component: RegistrationPageComponent,
-  //       data: { expectedRole: LOCAL_AUTHORITY },
-  //     },
-  //     {
-  //       path: 'register-evacuee/:id',
-  //       component: RegistrationPageComponent,
-  //       data: { expectedRole: LOCAL_AUTHORITY },
-  //     },
-  //     {
-  //       path: 'register-evacuee/fill',
-  //       component: RegistrationPageComponent,
-  //       data: { expectedRole: LOCAL_AUTHORITY },
-  //     },
-  //     {
-  //       path: 'register-evacuee/fill/:id',
-  //       component: RegistrationPageComponent,
-  //       data: { expectedRole: LOCAL_AUTHORITY },
-  //     },
-  //     // {
-  //     //   path: 'register-evacuee',
-  //     //   component: EvacueeRegistrationComponent,
-  //     //   data: { expectedRole: LOCAL_AUTHORITY },
-  //     //   children: [
-  //     //     {
-  //     //       path: '',
-  //     //       redirectTo: 'fill',
-  //     //       pathMatch: 'full'
-  //     //     },
-  //     //     {
-  //     //       path: 'fill/:id',
-  //     //       component: RegistrationMakerComponent,
-  //     //       data: { expectedRole: LOCAL_AUTHORITY },
-  //     //     },
-  //     //     {
-  //     //       path: 'fill',
-  //     //       component: RegistrationMakerComponent,
-  //     //       data: { expectedRole: LOCAL_AUTHORITY },
-  //     //     },
-  //     //     {
-  //     //       path: 'confirmation',
-  //     //       component: EvacueeRegistrationConfirmationComponent,
-  //     //       data: { expectedRole: LOCAL_AUTHORITY },
-  //     //     }
-  //     //   ]
-  //     // },
-  //     {
-  //       path: 'volunteers',
-  //       component: VolunteerTeamDashboardComponent,
-  //       data: { expectedRole: LOCAL_AUTHORITY },
-  //       children: [
-  //         {
-  //           path: '',
-  //           component: VolunteerListComponent,
-  //           data: { expectedRole: LOCAL_AUTHORITY },
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       path: 'volunteer',
-  //       component: VolunteerMakerComponent,
-  //       data: { expectedRole: LOCAL_AUTHORITY },
-  //     },
-  //     {
-  //       path: 'volunteer/:id',
-  //       component: VolunteerMakerComponent,
-  //       data: { expectedRole: LOCAL_AUTHORITY },
-  //     },
-  //     {
-  //       path: 'useful-info',
-  //       component: UsefulInformationContentComponent,
-  //       data: { expectedRole: LOCAL_AUTHORITY },
-  //     },
-  //   ],
-  // },
+
   // LOCAL AUTHORITY NEW routes
   {
     path: 'local-authority-',
@@ -461,109 +253,6 @@ const routes: Routes = [
       },
     ],
   },
-
-
-  // // PROVINCIAL_ADMIN routes
-  // {
-  //   path: 'provincial-admin',
-  //   component: AdminDashboardComponent,
-  //   canActivate: [LoggedInGuard],
-  //   canActivateChild: [RoleGuard],
-  //   children: [
-  //     {
-  //       path: '',
-  //       redirectTo: 'task-numbers',
-  //       pathMatch: 'full',
-  //     },
-  //     {
-  //       path: 'evacuees',
-  //       component: RegistrationListComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'evacuee/:id',
-  //       component: RegistrationSummaryFullComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'evacuee-summary/:id',
-  //       component: RegistrationSummaryComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN }
-  //     },
-  //     {
-  //       path: 'organizations',
-  //       component: OrganizationListComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'organization',
-  //       component: OrganizationMakerComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'organization/:id',
-  //       component: OrganizationMakerComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'task-numbers',
-  //       component: TaskNumberListComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'task-number',
-  //       component: TaskNumberMakerComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'task-number/:id',
-  //       component: TaskNumberMakerComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'volunteers',
-  //       component: VolunteerOrganizationListComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'volunteer',
-  //       component: VolunteerMakerComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'volunteer/:id',
-  //       component: VolunteerMakerComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'register-evacuee',
-  //       component: RegistrationMakerComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'register-evacuee/:id',
-  //       component: RegistrationMakerComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       // the fill is to make it work exactly like the two components replaced.
-  //       path: 'register-evacuee/fill',
-  //       component: RegistrationMakerComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       // the fill is to make it work exactly like the two components replaced.
-  //       path: 'register-evacuee/fill/:id',
-  //       component: RegistrationMakerComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //     {
-  //       path: 'useful-info',
-  //       component: UsefulInformationContentComponent,
-  //       data: { expectedRole: PROVINCIAL_ADMIN },
-  //     },
-  //   ],
-  // },
 
   // PROVINCIAL_ADMIN NEW routes
   {
@@ -640,37 +329,6 @@ const routes: Routes = [
 
     ]
   },
-
-  // {
-  //   path: 'evacuee-summary/:id',
-  //   component: RegistrationSummaryComponent,
-  // },
-
-  // {
-  //   // exception in routing
-  //   path: 'register-evacuee',
-  //   redirectTo: 'provincial-admin/register-evacuee/fill'
-  // },
-  // {
-  //   // exception in routing
-  //   path: 'register-evacuee/register-evacuee/fill/:id',
-  //   component: RegistrationMakerComponent,
-  // },
-  // {
-  //   // exception in routing
-  //   path: 'register-evacuee/fill',
-  //   component: RegistrationPageComponent,
-  // },
-  // {
-  //   // exception in routing
-  //   path: 'register-evacuee/fill/:id',
-  //   component: RegistrationPageComponent,
-  // },
-  // {
-  //   // exception in routing
-  //   path: 'evacuees',
-  //   redirectTo: 'dashboard'
-  // },
 
   // 404 route (catch all default)
   {
