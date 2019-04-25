@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store';
-import { Config } from 'src/app/core/models';
 
 @Component({
   selector: 'app-environment-banner',
@@ -10,8 +9,6 @@ import { Config } from 'src/app/core/models';
 })
 export class EnvironmentBannerComponent implements OnInit {
 
-  config$ = this.store.select(s => s.lookups.config.config)
-
   environment: string = null; // NB: this stays null/empty in Prod
 
   constructor(
@@ -19,7 +16,7 @@ export class EnvironmentBannerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.config$.subscribe((config: Config) => {
+    this.store.select(s => s.lookups.config.config).subscribe(config => {
       this.environment = config && config.environment;
     });
   }
