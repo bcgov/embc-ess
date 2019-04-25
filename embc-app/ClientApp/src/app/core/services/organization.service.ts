@@ -6,7 +6,6 @@ import { CoreModule } from '../core.module';
 import { Organization, ListResult } from '../models';
 import { RestService } from './rest.service';
 import { HttpResponse } from '@angular/common/http';
-import { SearchQueryParameters } from 'src/app/shared/components/search';
 
 @Injectable({
   providedIn: CoreModule

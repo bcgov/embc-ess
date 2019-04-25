@@ -23,6 +23,12 @@ Developer Prerequisites
 - Node.js version 8 LTS
 - .NET Core IDE such as Visual Studio or VS Code
 
+Backend Unit Tests
+-----------------------
+To run c# code unit tests either using a cli opened to the root of any of the projects or the "Package Manager Console" use the command:
+
+`dotnet test`
+
 **DevOps**
 - RedHat OpenShift tools
 - Docker

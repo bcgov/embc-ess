@@ -1,0 +1,101 @@
+<h1>Evacuee Summary</h1>
+<h3 class="blue-header">
+  EVACUEE INFORMATION
+</h3>
+<section class="p-3">
+  <ul class="summary">
+    <li class="summary-heading">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <h1>
+              {{registration?.headOfHousehold.lastName}}, {{registration?.headOfHousehold.firstName}}
+              {{registration?.headOfHousehold.initials}}
+            </h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            Task #: {{registration?.incidentTask?.taskNumber}}
+          </div>
+          <div class="col">
+            Self Registration Date &amp; Time:
+            {{registration?.selfRegisteredDate | date : 'MM/dd/yyyy, HH:mm'}}
+          </div>
+          <div class="col-2">
+            File Status:
+            <span *ngIf="registration?.active">Active</span>
+            <span *ngIf="!registration?.active">Inactive</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            Emergency Support Services File #: {{registration?.essFileNumber}}
+          </div>
+          <div class="col">
+            Registration Completed Date &amp; Time:
+            {{registration?.registrationCompletionDate | date : 'MM/dd/yyyy, HH:mm'}}
+          </div>
+          <div class="col-2">
+            <!-- Restricted File:
+            <span *ngIf="registration?.restrictedAccess">Yes</span>
+            <span *ngIf="!registration?.restrictedAccess">No</span> -->
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <span class="name">Facility Name/Registration Location:</span>
+      <span class="value">{{registration?.facility}}</span>
+    </li>
+    <li>
+      <span class="name">Host Community:</span>
+      <span class="value">{{registration?.hostCommunity?.name}}</span>
+    </li>
+    <li>
+      <span class="name"> Family Members:</span>
+      <span class="value">
+        {{registration?.headOfHousehold.lastName}}, {{registration?.headOfHousehold.firstName}}
+        <br>
+        <ng-container *ngFor="let familyMember of registration?.headOfHousehold.familyMembers">
+          {{familyMember.lastName}}, {{familyMember.firstName}}<br>
+        </ng-container>
+      </span>
+    </li>
+    <li>
+      <span class="name">Supports:</span>
+      <span class="value">
+        <span *ngIf="registration?.requiresSupport">Yes</span>
+        <span *ngIf="!registration?.requiresSupport">No</span>
+      </span>
+    </li>
+    <li>
+      <span class="name">Supports Requested:</span>
+      <span class="value">
+        <div class="form-check mt-2">
+          <input class="form-check-input" [checked]="registration?.requiresFood" type="checkbox" disabled>
+          <label class="form-check-label">Food</label>
+        </div>
+        <div class="form-check mt-2">
+          <input class="form-check-input" [checked]="registration?.requiresClothing" type="checkbox" disabled>
+          <label class="form-check-label">Clothing</label>
+        </div>
+        <div class="form-check mt-2">
+          <input class="form-check-input" [checked]="registration?.requiresAccommodation" type="checkbox" disabled>
+          <label class="form-check-label">Accommodation</label>
+        </div>
+        <div class="form-check mt-2">
+          <input class="form-check-input" [checked]="registration?.requiresIncidentals" type="checkbox" disabled>
+          <label class="form-check-label">Incidentals</label>
+        </div>
+        <div class="form-check mt-2">
+          <input class="form-check-input" [checked]="registration?.requiresTransportation" type="checkbox" disabled>
+          <label class="form-check-label">Transportation</label>
+        </div>
+      </span>
+    </li>
+  </ul>
+  <div class="mt-5">
+    <button class="btn btn-primary float-right" (click)="routeTo()">VIEW FULL PROFILE</button>
+  </div>
+</section>
