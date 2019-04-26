@@ -137,7 +137,7 @@ namespace Gov.Jag.Embc.Public.Seeder
             volunteers.ForEach(v =>
             {
                 v.OrganizationId = organizations
-                    .Single(o => o.BCeIDBusinessGuid.Equals(v.Organization.BCeIDBusinessGuid, StringComparison.OrdinalIgnoreCase)).Id;
+                    .SingleOrDefault(o => o.BCeIDBusinessGuid.Equals(v.Organization.BCeIDBusinessGuid, StringComparison.OrdinalIgnoreCase))?.Id;
                 v.Organization = null;
             });
 

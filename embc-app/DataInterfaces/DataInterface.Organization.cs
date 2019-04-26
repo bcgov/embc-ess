@@ -30,7 +30,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
             var items = await Organizations
                 .Where(o => (!communityId.HasValue || o.Community.Id == communityId) ||
-                    (string.IsNullOrEmpty(regionName) || o.RegionName == regionName)
+                    (string.IsNullOrEmpty(regionName) || o.RegionName.Equals(regionName, StringComparison.OrdinalIgnoreCase))
                 )
                 .Where(t => searchQuery.IncludeDeactivated || t.Active)
                 .Sort(searchQuery.SortBy ?? "id")
