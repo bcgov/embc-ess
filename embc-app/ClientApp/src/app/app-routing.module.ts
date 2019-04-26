@@ -42,6 +42,8 @@ import { ProvincialAdminOrganizationsPageComponent } from './pages/provincial-ad
 import { ProvincialAdminTaskNumbersPageComponent } from './pages/provincial-admin/provincial-admin-task-numbers-page/provincial-admin-task-numbers-page.component';
 import { ProvincialAdminRegistrationsPageComponent } from './pages/provincial-admin/provincial-admin-registrations-page/provincial-admin-registrations-page.component';
 import { LocalAuthorityVolunteersPageComponent } from './pages/local-authority/local-authority-volunteers-page/local-authority-volunteers-page.component';
+import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
+// import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
 
 /*
 
@@ -61,6 +63,8 @@ import { LocalAuthorityVolunteersPageComponent } from './pages/local-authority/l
     registration/summary        <-- view tombstone summary page
     registration/summary/full   <-- view full summary page
     registration                <-- evacuee maker
+    referrals/:id               <-- referral maker for registration 'id'
+    referral/:id                <-- view referral 'id'
     useful-info
 
   /local-authority
@@ -69,18 +73,20 @@ import { LocalAuthorityVolunteersPageComponent } from './pages/local-authority/l
     registration/summary        <-- view tombstone summary page
     registration/summary/full   <-- view full summary page
     registration                <-- evacuee maker
+    referrals/:id               <-- referral maker for registration 'id'
+    referral/:id                <-- view referral 'id'
     volunteer                   <-- volunteer maker
     useful-info
 
   /provincial-admin
-    / <-- routes to task numbers
-    evacuees                    <-- shows evacuee list page
+    /                           <-- routes to task numbers
     organizations               <-- organization list page
     volunteers                  <-- volunteer list page
     task-numbers                <-- task number list page
     registration/summary        <-- view tombstone summary page
     registration/summary/full   <-- view full tombstone summary page
-    evacuee                     <-- evacuee maker
+    referrals/:id               <-- referral maker for registration 'id'
+    referral/:id                <-- view referral 'id'
     organization                <-- organization maker
     task-number                 <-- task number maker
     volunteer                   <-- volunteer maker
@@ -99,6 +105,8 @@ const routes: Routes = [
     path: 'session-expired',
     component: SessionExpiredComponent
   },
+
+  // SELF-REGISTRATION routes
   {
     path: 'self-registration',
     component: SelfRegistrationComponent,
@@ -163,7 +171,7 @@ const routes: Routes = [
     },
   },
 
-  // VOLUNTEER NEW routes
+  // VOLUNTEER routes
   {
     path: 'volunteer-',
     canActivate: [LoggedInGuard],
@@ -197,6 +205,16 @@ const routes: Routes = [
         data: { expectedRole: VOLUNTEER },
       },
       {
+        path: 'referrals/:id',
+        component: ReferralMakerComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
+      // {
+      //   path: 'referral/:id',
+      //   component: ReferralViewComponent,
+      //   data: { expectedRole: VOLUNTEER },
+      // },
+      {
         path: 'useful-info',
         component: UsefulInformationPageComponent,
         data: { expectedRole: VOLUNTEER },
@@ -204,7 +222,7 @@ const routes: Routes = [
     ],
   },
 
-  // LOCAL AUTHORITY NEW routes
+  // LOCAL AUTHORITY routes
   {
     path: 'local-authority-',
     canActivate: [LoggedInGuard],
@@ -242,6 +260,16 @@ const routes: Routes = [
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
+        path: 'referrals/:id',
+        component: ReferralMakerComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      // {
+      //   path: 'referral/:id',
+      //   component: ReferralViewComponent,
+      //   data: { expectedRole: LOCAL_AUTHORITY },
+      // },
+      {
         path: 'volunteer',
         component: VolunteerMakerComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
@@ -254,7 +282,7 @@ const routes: Routes = [
     ],
   },
 
-  // PROVINCIAL_ADMIN NEW routes
+  // PROVINCIAL_ADMIN routes
   {
     path: 'provincial-admin-',
     canActivate: [LoggedInGuard],
@@ -296,6 +324,16 @@ const routes: Routes = [
         component: RegistrationSummaryFullComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
+      {
+        path: 'referrals/:id',
+        component: ReferralMakerComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
+      // {
+      //   path: 'referral/:id',
+      //   component: ReferralViewComponent,
+      //   data: { expectedRole: PROVINCIAL_ADMIN },
+      // },
       {
         path: 'organization',
         component: OrganizationMakerComponent,

@@ -56,7 +56,11 @@ import { SideboxAddTaskNumberComponent } from './components/sidebox-add-task-num
 import { SideboxAddVolunteerComponent } from './components/sidebox-add-volunteer/sidebox-add-volunteer.component';
 import { SideboxCollectionNoticeComponent } from './components/sidebox-collection-notice/sidebox-collection-notice.component';
 import { SessionExpiringModalComponent } from './shared/modals/session-expiring/session-expiring.component';
-import { VolunteerModule } from './volunteer/volunteer.module';
+
+// TODO: move these to volunteer/local-authority/provincial-admin modules
+import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
+import { IncidentalsComponent } from './volunteer/components/incidentals/incidentals.component';
+import { ReferralTableComponent } from './volunteer/components/referral-table/referral-table.component';
 
 @NgModule({
   declarations: [
@@ -103,6 +107,9 @@ import { VolunteerModule } from './volunteer/volunteer.module';
     PaginationSummaryComponent,
     UsefulInformationPageComponent,
     SessionExpiringModalComponent,
+    ReferralMakerComponent,
+    IncidentalsComponent,
+    ReferralTableComponent,
   ],
   imports: [
     // angular
@@ -123,7 +130,6 @@ import { VolunteerModule } from './volunteer/volunteer.module';
     AppRoutingModule,
     SelfRegistrationModule,
     VolunteerEditorModule,
-    VolunteerModule,
   ],
   entryComponents: [
     SessionExpiringModalComponent,
