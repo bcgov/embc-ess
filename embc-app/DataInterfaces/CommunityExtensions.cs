@@ -19,6 +19,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             Community _Community = context.Communities.FirstOrDefault<Community>(x => x.Id == Community.Id);
             _Community.Name = Community.Name;
+            _Community.Active = Community.Active;
             context.Communities.Update(_Community);
             context.SaveChanges();
         }

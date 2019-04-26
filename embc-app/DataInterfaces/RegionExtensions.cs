@@ -16,10 +16,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             context.SaveChanges();
         }
 
-        [Obsolete]
         public static void UpdateRegion(this EmbcDbContext context, Region Region)
         {
             Region _Region = context.Regions.FirstOrDefault<Region>(x => x.Name == Region.Name);
+            _Region.Active = Region.Active;
             context.Regions.Update(_Region);
             context.SaveChanges();
         }

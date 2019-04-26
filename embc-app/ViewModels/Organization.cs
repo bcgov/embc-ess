@@ -12,8 +12,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
         public string BCeIDBusinessGuid { get; set; }
 
-        public string RegionName { get; set; }
-
         public Region Region { get; set; }
 
         public Community Community { get; set; }
