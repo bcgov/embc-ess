@@ -8,18 +8,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static class CountryExtensions
     {
-        public static void AddCountry(this EmbcDbContext context, Country Country)
+        public static void AddCountry(this EmbcDbContext context, Country newCountry)
         {
             // create a new Country.
-            context.Countries.Add(Country);
+            context.Countries.Add(newCountry);
             context.SaveChanges();
         }
 
-        public static void UpdateCountry(this EmbcDbContext context, Country Country)
+        public static void UpdateCountry(this EmbcDbContext context, Country updatedCountry)
         {
-            Country _Country = context.Countries.FirstOrDefault<Country>(x => x.Id == Country.Id);
-            _Country.Name = Country.Name;
-            context.Countries.Update(_Country);
+            var country = context.Countries.FirstOrDefault(x => x.Id == updatedCountry.Id);
+            country.Name = updatedCountry.Name;
+            context.Countries.Update(country);
             context.SaveChanges();
         }
 
@@ -30,37 +30,37 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <returns>The Country, or null if it does not exist.</returns>
         public static Country GetCountryByName(this EmbcDbContext context, string name)
         {
-            Country Country = context.Countries.FirstOrDefault(x => x.Name == name);
-            return Country;
+            var country = context.Countries.FirstOrDefault(x => x.Name == name);
+            return country;
         }
 
         /// <summary>
         /// Create Countries from a (json) file
         /// </summary>
         /// <param name="context"></param>
-        /// <param name="CountryJsonPath"></param>
-        public static void AddInitialCountriesFromFile(this EmbcDbContext context, string CountryJsonPath)
+        /// <param name="countryJsonPath"></param>
+        public static void AddInitialCountriesFromFile(this EmbcDbContext context, string countryJsonPath)
         {
-            if (!string.IsNullOrEmpty(CountryJsonPath) && File.Exists(CountryJsonPath))
+            if (!string.IsNullOrEmpty(countryJsonPath) && File.Exists(countryJsonPath))
             {
-                string CountryJson = File.ReadAllText(CountryJsonPath);
-                context.AddInitialCountries(CountryJson);
+                string countryJson = File.ReadAllText(countryJsonPath);
+                context.AddInitialCountries(countryJson);
             }
         }
 
-        private static void AddInitialCountries(this EmbcDbContext context, string CountryJson)
+        private static void AddInitialCountries(this EmbcDbContext context, string countryJson)
         {
-            List<Country> Countries = JsonConvert.DeserializeObject<List<Country>>(CountryJson);
+            var countries = JsonConvert.DeserializeObject<List<Country>>(countryJson);
 
-            if (Countries != null)
+            if (countries != null)
             {
-                context.AddInitialCountries(Countries);
+                context.AddInitialCountries(countries);
             }
         }
 
-        private static void AddInitialCountries(this EmbcDbContext context, List<Country> Countries)
+        private static void AddInitialCountries(this EmbcDbContext context, List<Country> countries)
         {
-            Countries.ForEach(context.AddInitialCountry);
+            countries.ForEach(context.AddInitialCountry);
         }
 
         /// <summary>
@@ -68,13 +68,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         private static void AddInitialCountry(this EmbcDbContext context, Country initialCountry)
         {
-            Country Country = context.GetCountryByName(initialCountry.Name);
-            if (Country != null)
+            var country = context.GetCountryByName(initialCountry.Name);
+            if (country != null)
             {
                 return;
             }
 
-            Country = new Country
+            country = new Country
             ()
             {
                 Id = initialCountry.Id,
@@ -82,26 +82,26 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 Active = true
             };
 
-            context.AddCountry(Country);
+            context.AddCountry(country);
         }
 
         /// <summary>
         /// Update Country
         /// </summary>
         /// <param name="context"></param>
-        /// <param name="CountryInfo"></param>
-        public static void UpdateSeedCountryInfo(this EmbcDbContext context, Country CountryInfo)
+        /// <param name="updatedCountry"></param>
+        public static void UpdateSeedCountryInfo(this EmbcDbContext context, Country updatedCountry)
         {
-            Country Country = context.GetCountryByName(CountryInfo.Name);
-            if (Country == null)
+            var country = context.GetCountryByName(updatedCountry.Name);
+            if (country == null)
             {
-                context.AddCountry(CountryInfo);
+                context.AddCountry(updatedCountry);
             }
             else
             {
-                Country.Name = CountryInfo.Name;
-                Country.Active = CountryInfo.Active;
-                context.UpdateCountry(Country);
+                country.Name = updatedCountry.Name;
+                country.Active = updatedCountry.Active;
+                context.UpdateCountry(country);
             }
         }
     }

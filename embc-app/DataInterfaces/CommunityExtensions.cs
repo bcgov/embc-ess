@@ -17,10 +17,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public static void UpdateCommunity(this EmbcDbContext context, Community Community)
         {
-            Community _Community = context.Communities.FirstOrDefault<Community>(x => x.Id == Community.Id);
-            _Community.Name = Community.Name;
-            _Community.Active = Community.Active;
-            context.Communities.Update(_Community);
+            var community = context.Communities.FirstOrDefault(x => x.Id == Community.Id);
+            community.Name = Community.Name;
+            community.Active = Community.Active;
+            context.Communities.Update(community);
             context.SaveChanges();
         }
 

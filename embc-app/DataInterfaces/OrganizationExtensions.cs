@@ -31,7 +31,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         private static void AddOrganizations(this EmbcDbContext context, string json)
         {
-            List<Organization> items = JsonConvert.DeserializeObject<List<Organization>>(json);
+            var items = JsonConvert.DeserializeObject<List<Organization>>(json);
 
             if (items != null)
             {
