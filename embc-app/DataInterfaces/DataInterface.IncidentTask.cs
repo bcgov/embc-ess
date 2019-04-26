@@ -12,11 +12,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         private IQueryable<Models.Db.IncidentTask> IncidentTasks => db.IncidentTasks
                 .Include(t => t.Region)
-                .Include(t => t.RegionalDistrict)
-                    .ThenInclude(d => d.Region)
                 .Include(t => t.Community)
-                    .ThenInclude(c => c.RegionalDistrict)
-                        .ThenInclude(d => d.Region)
+                    .ThenInclude(d => d.Region)
                 .Include(t => t.Registrations);
 
         public async Task<IPagedResults<IncidentTask>> GetIncidentTasksAsync(SearchQueryParameters searchQuery)

@@ -55,13 +55,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 region = context.GetRegionByName(item.Region.Name);
             }
 
-            RegionalDistrict regionalDistrict = null;
-
-            if (item.RegionalDistrict != null)
-            {
-                regionalDistrict = context.GetRegionalDistrictByName(item.RegionalDistrict.Name);
-            }
-
             Community community = null;
 
             if (item.Community != null)
@@ -74,7 +67,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 BCeIDBusinessGuid = item.BCeIDBusinessGuid,
                 Active = true,
                 RegionId = region?.Id,
-                RegionalDistrictId = regionalDistrict?.Id,
                 CommunityId = community?.Id,
                 Name = item.Name
             };

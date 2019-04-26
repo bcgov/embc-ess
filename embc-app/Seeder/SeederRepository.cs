@@ -45,25 +45,6 @@ namespace Gov.Jag.Embc.Public.Seeder
             db.SaveChanges();
         }
 
-        public IEnumerable<RegionalDistrict> GetRegionalDistricts()
-        {
-            return db.RegionalDistricts.ToArray();
-        }
-
-        //TODO: To be dropped with removal of regional districts
-        public void AddOrUpdateRegionalDistricts(List<RegionalDistrict> regionalDistricts)
-        {
-            foreach (var regionalDistrict in regionalDistricts)
-            {
-                var entity = db.RegionalDistricts.SingleOrDefault(rd => rd.Name.Equals(regionalDistrict.Name, StringComparison.OrdinalIgnoreCase)) ?? new RegionalDistrict();
-                entity.Name = regionalDistrict.Name;
-                entity.Active = regionalDistrict.Active;
-                entity.RegionId = regionalDistrict.RegionId;
-                db.AddOrUpdate(entity);
-            }
-            db.SaveChanges();
-        }
-
         public void AddOrUpdateFamilyRelationshipTypes(List<FamilyRelationshipType> familyRelationshipTypes)
         {
             var existingEntities = db.FamilyRelationshipTypes.Where(f => familyRelationshipTypes.Exists(ex => ex.Code == f.Code)).ToList();
@@ -93,17 +74,17 @@ namespace Gov.Jag.Embc.Public.Seeder
         {
             var existingEntities = db.Communities
                 .Where(ex =>
-                            communities.Exists(c => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) && c.RegionalDistrictId == ex.RegionalDistrictId)).ToList();
+                            communities.Exists(c => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) && c.RegionId == ex.RegionId)).ToList();
             foreach (var entity in existingEntities)
             {
-                var updatedCommunity = communities.Single(c => c.Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase) && c.RegionalDistrictId == entity.RegionalDistrictId);
+                var updatedCommunity = communities.Single(c => c.Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase) && c.RegionId == entity.RegionId);
                 entity.Name = updatedCommunity.Name;
                 entity.Active = updatedCommunity.Active;
-                entity.RegionalDistrictId = updatedCommunity.RegionalDistrictId;
+                entity.RegionId = updatedCommunity.RegionId;
             }
 
             var newEntities = communities
-                .Where(c => !existingEntities.Exists(ex => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) && c.RegionalDistrictId == ex.RegionalDistrictId));
+                .Where(c => !existingEntities.Exists(ex => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) && c.RegionId == ex.RegionId));
 
             db.AddRange(newEntities);
             db.UpdateRange(existingEntities);
@@ -122,7 +103,6 @@ namespace Gov.Jag.Embc.Public.Seeder
                 entity.Details = incidentTask.Details;
                 entity.Active = incidentTask.Active;
                 entity.RegionId = incidentTask.RegionId;
-                entity.RegionalDistrictId = incidentTask.RegionalDistrictId;
                 entity.CommunityId = incidentTask.CommunityId;
             }
             db.UpdateRange(existingEntities);
@@ -149,7 +129,6 @@ namespace Gov.Jag.Embc.Public.Seeder
                 entity.BCeIDBusinessGuid = organization.BCeIDBusinessGuid;
                 entity.Name = organization.Name;
                 entity.RegionId = organization.RegionId;
-                entity.RegionalDistrictId = organization.RegionalDistrictId;
                 entity.CommunityId = organization.CommunityId;
 
             }

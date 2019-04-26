@@ -17,7 +17,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     Details = source.Details,
                     Active = source.Active,
                     Region = source.Region?.ToViewModel(),
-                    RegionalDistrict = source.RegionalDistrict?.ToViewModel(),
                     Community = source.Community?.ToViewModel(),
                     TotalAssociatedEvacuees = source.Registrations.Count() +
                                                                 source.Registrations.Select(r => r?.HeadOfHousehold?.FamilyMembers?.Count() ?? 0).Sum()
@@ -36,7 +35,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     TaskNumber = source.TaskNumber,
                     Details = source.Details,
                     RegionId = source.Region != null ? Guid.Parse(source.Region.Id) : (Guid?)null,
-                    RegionalDistrictId = source.RegionalDistrict != null ? Guid.Parse(source.RegionalDistrict.Id) : (Guid?)null,
                     CommunityId = source.Community != null ? Guid.Parse(source.Community.Id) : (Guid?)null
                 };
 

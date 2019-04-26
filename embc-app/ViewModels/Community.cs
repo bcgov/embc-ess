@@ -8,6 +8,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string Name { get; set; }
 
         // related entities
-        public RegionalDistrict RegionalDistrict { get; set; }
+        public Region Region { get; set; }
     }
 }
