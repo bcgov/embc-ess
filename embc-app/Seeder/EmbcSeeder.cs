@@ -48,13 +48,13 @@ namespace Gov.Jag.Embc.Public.Seeder
 
             communities.ToList().ForEach(c =>
                 {
-                    c.RegionId = regions.Single(rd => rd.Name.Equals(c.Region.Name, StringComparison.OrdinalIgnoreCase)).Id;
+                    c.RegionName = c.Region.Name;
                     c.Region = null;
                 }
             );
 
             seederRepository.AddOrUpdateCommunities(communities
-                .GroupBy(c => new { c.Name, c.RegionId })
+                .GroupBy(c => new { c.Name, c.RegionName })
                 .Select(g => g.First())
                 .ToList());
         }
@@ -74,7 +74,7 @@ namespace Gov.Jag.Embc.Public.Seeder
 
             incidentTasks.ToList().ForEach(it =>
                 {
-                    it.RegionId = regions.SingleOrDefault(r => r.Name.Equals(it.Region?.Name, StringComparison.OrdinalIgnoreCase))?.Id;
+                    it.RegionName = it.Region?.Name;
                     it.Region = null;
                     it.CommunityId = communties.SingleOrDefault(c => c.Name.Equals(it.Community?.Name, StringComparison.OrdinalIgnoreCase))?.Id;
                     it.Community = null;
@@ -114,7 +114,7 @@ namespace Gov.Jag.Embc.Public.Seeder
 
             organizations.ToList().ForEach(o =>
                 {
-                    o.RegionId = regions.SingleOrDefault(r => r.Name.Equals(o.Region?.Name, StringComparison.OrdinalIgnoreCase))?.Id;
+                    o.RegionName = o.Region?.Name;
                     o.Region = null;
                     o.CommunityId = communties.SingleOrDefault(c => c.Name.Equals(o.Community?.Name, StringComparison.OrdinalIgnoreCase))?.Id;
                     o.Community = null;

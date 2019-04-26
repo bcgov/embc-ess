@@ -30,7 +30,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public bool Active { get; set; }
 
         // only one of the following will be set; ie a regional incident vs a community one, etc
-        public Guid? RegionId { get; set; }
+        [ForeignKey("Region")]
+        public string RegionName { get; set; }
 
         public Region Region { get; set; }
 

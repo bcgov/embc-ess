@@ -17,11 +17,20 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<IPagedResults<Organization>> GetOrganizationsAsync(SearchQueryParameters searchQuery)
         {
-            Guid? searchEntityId = searchQuery.HasQuery() ? Guid.Parse(searchQuery.Query) : (Guid?)null;
+            Guid searchEntityId;
+            Guid? communityId = null;
+            string regionName = null;
+            if(searchQuery.HasQuery() && Guid.TryParse(searchQuery.Query, out searchEntityId))
+            {
+                communityId = searchEntityId;
+            }
+            else if (searchQuery.HasQuery())
+            {
+                regionName = searchQuery.Query;
+            }
             var items = await Organizations
-                .Where(o => !searchEntityId.HasValue ||
-                    o.Community.Id == searchEntityId ||
-                    o.Region.Id == searchEntityId
+                .Where(o => (!communityId.HasValue || o.Community.Id == communityId) ||
+                    (string.IsNullOrEmpty(regionName) || o.RegionName == regionName)
                 )
                 .Where(t => searchQuery.IncludeDeactivated || t.Active)
                 .Sort(searchQuery.SortBy ?? "id")

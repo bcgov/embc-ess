@@ -7,10 +7,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
 {
     public class Region
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public Guid Id { get; set; }
-
         [MaxLength(255)]
         public string Name { get; set; }
 
