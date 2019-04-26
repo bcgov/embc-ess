@@ -73,13 +73,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 region = context.GetRegionByName(initialIncidentTask.Region.Name);
             }
 
-            RegionalDistrict regionalDistrict = null;
-
-            if (initialIncidentTask.RegionalDistrict != null)
-            {
-                regionalDistrict = context.GetRegionalDistrictByName(initialIncidentTask.RegionalDistrict.Name);
-            }
-
             Community community = null;
 
             if (initialIncidentTask.Community != null)
@@ -93,7 +86,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 Details = initialIncidentTask.Details,
                 Active = true,
                 Region = region,
-                RegionalDistrict = regionalDistrict,
                 Community = community,
                 TaskNumber = initialIncidentTask.TaskNumber
             };

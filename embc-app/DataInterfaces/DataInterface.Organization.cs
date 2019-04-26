@@ -12,11 +12,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         private IQueryable<Models.Db.Organization> Organizations => db.Organizations
             .AsNoTracking()
             .Include(x => x.Region)
-            .Include(x => x.RegionalDistrict)
-                .ThenInclude(x => x.Region)
             .Include(x => x.Community)
-                .ThenInclude(x => x.RegionalDistrict)
-                    .ThenInclude(x => x.Region);
+                .ThenInclude(x => x.Region);
 
         public async Task<IPagedResults<Organization>> GetOrganizationsAsync(SearchQueryParameters searchQuery)
         {
@@ -24,7 +21,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var items = await Organizations
                 .Where(o => !searchEntityId.HasValue ||
                     o.Community.Id == searchEntityId ||
-                    o.RegionalDistrict.Id == searchEntityId ||
                     o.Region.Id == searchEntityId
                 )
                 .Where(t => searchQuery.IncludeDeactivated || t.Active)

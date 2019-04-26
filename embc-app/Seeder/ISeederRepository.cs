@@ -13,11 +13,7 @@ namespace Gov.Jag.Embc.Public.Seeder
         IEnumerable<Region> GetRegions();
 
         void AddOrUpdateRegions(List<Region> regions);
-
-        IEnumerable<RegionalDistrict> GetRegionalDistricts();
-
-        void AddOrUpdateRegionalDistricts(List<RegionalDistrict> regionalDistricts);
-
+        
         void AddOrUpdateFamilyRelationshipTypes(List<FamilyRelationshipType> familyRelationshipTypes);
 
         void AddOrUpdateIncidentTasks(List<IncidentTask> incidentTasks);

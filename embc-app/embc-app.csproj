@@ -60,9 +60,6 @@
     <EmbeddedResource Include="Seeder\SeedData\Organizations.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Seeder\SeedData\RegionalDistricts.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="Seeder\SeedData\Regions.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -111,9 +108,6 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Update="Seeder\SeedData\Organizations.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Seeder\SeedData\RegionalDistricts.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Update="Seeder\SeedData\Regions.json">

@@ -17,11 +17,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             .Include(v => v.Organization)
                 .ThenInclude(x => x.Region)
             .Include(v => v.Organization)
-                .ThenInclude(x => x.RegionalDistrict)
             .Include(v => v.Organization)
                 .ThenInclude(x => x.Community)
-                    .ThenInclude(x => x.RegionalDistrict)
-                        .ThenInclude(x => x.Region)
+                    .ThenInclude(x => x.Region)
         ;
 
         public async Task UpdateVolunteerAsync(Volunteer person)

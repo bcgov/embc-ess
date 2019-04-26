@@ -62,14 +62,6 @@ namespace embc_unit_tests
             Assert.True(result.Count > 0);
         }
 
-        [Fact]
-        public void GetRegionalDistrictsSeederDataFromSeedDataLoader()
-        {
-            var result = seedDataLoader.GetSeedData<List<RegionalDistrict>>("RegionalDistricts");
-
-            Assert.NotNull(result);
-            Assert.True(result.Count > 0);
-        }
 
         [Fact]
         public void GetRegionsSeederDataFromSeedDataLoader()

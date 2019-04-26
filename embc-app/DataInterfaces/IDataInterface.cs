@@ -46,8 +46,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<IEnumerable<Region>> GetRegionsAsync();
 
-        Task<IEnumerable<RegionalDistrict>> GetRegionalDistrictsAsync();
-
         Task<IEnumerable<FamilyRelationshipType>> GetFamilyRelationshipTypesAsync();
 
         #endregion Lookup data
