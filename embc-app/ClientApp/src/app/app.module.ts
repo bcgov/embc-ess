@@ -44,12 +44,12 @@ import { RegistrationPageComponent } from './registration-page/registration-page
 import { VolunteerRegistrationsPageComponent } from './pages/volunteer/volunteer-registrations-page/volunteer-registrations-page.component';
 import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
-import { ProvincialAdminRegistrationsPageComponent } from './pages/provincial-admin/provincial-admin-registrations-page/provincial-admin-registrations-page.component';
+import { ProvincialAdminRegistrationsPageComponent } from './provincial-admin/pages/registrations/provincial-admin-registrations-page.component';
 import { LocalAuthorityVolunteersPageComponent } from './pages/local-authority/local-authority-volunteers-page/local-authority-volunteers-page.component';
-import { ProvincialAdminVolunteersOrganizationPageComponent } from './pages/provincial-admin/provincial-admin-volunteers-organization-page/provincial-admin-volunteers-organization-page.component';
-import { ProvincialAdminOrganizationsPageComponent } from './pages/provincial-admin/provincial-admin-organizations-page/provincial-admin-organizations-page.component';
+import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
+import { ProvincialAdminOrganizationsPageComponent } from './provincial-admin/pages/organizations/provincial-admin-organizations-page.component';
 import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
-import { ProvincialAdminTaskNumbersPageComponent } from './pages/provincial-admin/provincial-admin-task-numbers-page/provincial-admin-task-numbers-page.component';
+import { ProvincialAdminTaskNumbersPageComponent } from './provincial-admin/pages/task-numbers/provincial-admin-task-numbers-page.component';
 import { SideboxAddRegistrationComponent } from './components/sidebox-add-registration/sidebox-add-registration.component';
 import { SideboxAddOrganizationComponent } from './components/sidebox-add-organization/sidebox-add-organization.component';
 import { SideboxAddTaskNumberComponent } from './components/sidebox-add-task-number/sidebox-add-task-number.component';

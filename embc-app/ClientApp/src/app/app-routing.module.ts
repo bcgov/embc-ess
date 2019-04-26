@@ -38,9 +38,9 @@ import { SessionExpiredComponent } from './session-expired/session-expired.compo
 import { VolunteerRegistrationsPageComponent } from './pages/volunteer/volunteer-registrations-page/volunteer-registrations-page.component';
 import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
-import { ProvincialAdminOrganizationsPageComponent } from './pages/provincial-admin/provincial-admin-organizations-page/provincial-admin-organizations-page.component';
-import { ProvincialAdminTaskNumbersPageComponent } from './pages/provincial-admin/provincial-admin-task-numbers-page/provincial-admin-task-numbers-page.component';
-import { ProvincialAdminRegistrationsPageComponent } from './pages/provincial-admin/provincial-admin-registrations-page/provincial-admin-registrations-page.component';
+import { ProvincialAdminOrganizationsPageComponent } from './provincial-admin/pages/organizations/provincial-admin-organizations-page.component';
+import { ProvincialAdminTaskNumbersPageComponent } from './provincial-admin/pages/task-numbers/provincial-admin-task-numbers-page.component';
+import { ProvincialAdminRegistrationsPageComponent } from './provincial-admin/pages/registrations/provincial-admin-registrations-page.component';
 import { LocalAuthorityVolunteersPageComponent } from './pages/local-authority/local-authority-volunteers-page/local-authority-volunteers-page.component';
 
 /*
