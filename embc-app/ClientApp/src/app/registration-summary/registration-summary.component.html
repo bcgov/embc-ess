@@ -1,17 +1,16 @@
 <h1>Evacuee Summary</h1>
-<h3 class="blue-header">
-  EVACUEE INFORMATION
-</h3>
-<section class="p-3">
-  <ul class="summary">
+
+<section class="clearfix">
+  <h2 class="blue-header font-weight-bold">EVACUEE INFORMATION</h2>
+  <ul class="summary mx-3">
     <li class="summary-heading">
-      <div class="container">
+      <div class="container py-3">
         <div class="row">
           <div class="col">
-            <h1>
+            <div class="h1 my-3">
               {{registration?.headOfHousehold.lastName}}, {{registration?.headOfHousehold.firstName}}
               {{registration?.headOfHousehold.initials}}
-            </h1>
+            </div>
           </div>
         </div>
         <div class="row">
@@ -63,11 +62,8 @@
       </span>
     </li>
     <li>
-      <span class="name">Supports:</span>
-      <span class="value">
-        <span *ngIf="registration?.requiresSupport">Yes</span>
-        <span *ngIf="!registration?.requiresSupport">No</span>
-      </span>
+      <span class="name">Requires Supports:</span>
+      <span class="value">{{registration?.requiresSupport | yesNo}}</span>
     </li>
     <li>
       <span class="name">Supports Requested:</span>
@@ -94,8 +90,12 @@
         </div>
       </span>
     </li>
+    <li>
+      <span class="name">Internal Case Notes:</span>
+      <span class="value">{{registration?.followUpDetails | yesNo}}</span>
+    </li>
   </ul>
-  <div class="mt-5">
-    <button class="btn btn-primary float-right" (click)="routeTo()">VIEW FULL PROFILE</button>
+  <div class="mt-4 mx-3">
+    <button class="btn btn-primary float-right" (click)="showFullProfile()">VIEW FULL PROFILE</button>
   </div>
 </section>

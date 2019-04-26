@@ -527,8 +527,8 @@ export class RegistrationMakerComponent implements OnInit {
   }
 
   next() {
-    this.submitting = true; // this disables buttons while we process the form
-    this.submitted = true; // TODO: Unsure what this is.
+    this.submitting = true; // disables buttons while we process the form
+    this.submitted = true; // used for invalid feedback // TODO: possibly get rid of this
     this.validateForm();
     // stop here if form is invalid
     if (this.form.invalid) {
@@ -543,19 +543,17 @@ export class RegistrationMakerComponent implements OnInit {
       // navigate to the next page. AKA show the summary part of the form.
       this.summaryMode = true;
       this.submitting = false; // reenable when we parse data
+      window.scrollTo(0, 0); // scroll to top
     }
   }
 
   submit() {
-    // Send data to the server
-    this.submitted = true;
-    // in transmission
-    this.submitting = true;
-    // this function performs the "send json to server" action
-    // push changes to backend
-    // TODO: should this be editmode?
+    this.submitted = true; // send data to the server
+    this.submitting = true; // in transmission
+
+    // create or update registration
+    // TODO: should this be editmode instead?
     if (this.registration.id == null) {
-      // submit the global registration to the server
       this.registrationService
         .createRegistration(this.registration)
         .subscribe(() => {
@@ -566,14 +564,12 @@ export class RegistrationMakerComponent implements OnInit {
           this.router.navigate([`/${this.path}/`]);
         });
     } else {
-      // submit the global registration to the server
       this.registrationService
         .updateRegistration(this.registration)
         .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee updated successfully');
-
           // go back to the main dashboard
           this.router.navigate([`/${this.path}/`]);
         });
@@ -583,6 +579,7 @@ export class RegistrationMakerComponent implements OnInit {
   back() {
     // return to the edit mode so you can change the form data
     this.summaryMode = false;
+    window.scrollTo(0, 0); // scroll to top
   }
 
   collectRegistrationFromForm(): Registration {
@@ -621,10 +618,10 @@ export class RegistrationMakerComponent implements OnInit {
       dietaryNeeds: values.dietaryNeeds as boolean,
       dietaryNeedsDetails: values.dietaryNeedsDetails as string,
       disasterAffectDetails: values.disasterAffectDetails as string,
-      externalReferralsDetails: values.externalReferralsDetails as string,
+      externalReferralsDetails: this.asStringAndTrim(values.externalReferralsDetails),
       facility: values.facility as string,
-      familyRecoveryPlan: values.familyRecoveryPlan as string,
-      followUpDetails: values.followUpDetails as string,
+      familyRecoveryPlan: this.asStringAndTrim(values.familyRecoveryPlan),
+      followUpDetails: this.asStringAndTrim(values.followUpDetails),
       insuranceCode: values.insuranceCode as string,
       medicationNeeds: values.medicationNeeds as boolean,
       registeringFamilyMembers: values.registeringFamilyMembers as string, // 'yes' or 'no'
@@ -712,6 +709,11 @@ export class RegistrationMakerComponent implements OnInit {
 
     // return the registration
     return r;
+  }
+
+  asStringAndTrim(value: any): string {
+    const s = value as string;
+    return s ? s.trim() : null;
   }
 
   // --------------------HELPERS-----------------------------------------
