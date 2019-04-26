@@ -34,7 +34,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 {
                     Name = source.Name,
                     BCeIDBusinessGuid = source.BCeIDBusinessGuid,
-                    RegionId = source.Region == null ? (Guid?)null : Guid.Parse(source.Region.Id),
+                    RegionName = source.Region?.Name,
                     CommunityId = source.Community == null ? (Guid?)null : Guid.Parse(source.Community?.Id)
                 };
                 if (source.Id != null)

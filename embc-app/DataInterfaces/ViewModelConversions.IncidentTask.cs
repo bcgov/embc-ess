@@ -34,7 +34,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 {
                     TaskNumber = source.TaskNumber,
                     Details = source.Details,
-                    RegionId = source.Region != null ? Guid.Parse(source.Region.Id) : (Guid?)null,
+                    RegionName = source.Region?.Name,
                     CommunityId = source.Community != null ? Guid.Parse(source.Community.Id) : (Guid?)null
                 };
 

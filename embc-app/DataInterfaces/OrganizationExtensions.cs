@@ -66,7 +66,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 BCeIDBusinessGuid = item.BCeIDBusinessGuid,
                 Active = true,
-                RegionId = region?.Id,
+                RegionName = region.Name,
                 CommunityId = community?.Id,
                 Name = item.Name
             };

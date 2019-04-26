@@ -1,5 +1,6 @@
 using Gov.Jag.Embc.Public.Models.Db;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,8 +18,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public static void UpdateRegion(this EmbcDbContext context, Region Region)
         {
-            Region _Region = context.Regions.FirstOrDefault<Region>(x => x.Id == Region.Id);
-            _Region.Name = Region.Name;
+            Region _Region = context.Regions.FirstOrDefault<Region>(x => x.Name == Region.Name);
+            _Region.Active = Region.Active;
             context.Regions.Update(_Region);
             context.SaveChanges();
         }
@@ -77,7 +78,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             Region = new Region
             ()
             {
-                Id = initialRegion.Id,
                 Name = initialRegion.Name,
                 Active = true
             };
