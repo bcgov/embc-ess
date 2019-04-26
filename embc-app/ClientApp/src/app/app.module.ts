@@ -56,6 +56,7 @@ import { SideboxAddTaskNumberComponent } from './components/sidebox-add-task-num
 import { SideboxAddVolunteerComponent } from './components/sidebox-add-volunteer/sidebox-add-volunteer.component';
 import { SideboxCollectionNoticeComponent } from './components/sidebox-collection-notice/sidebox-collection-notice.component';
 import { SessionExpiringModalComponent } from './shared/modals/session-expiring/session-expiring.component';
+import { VolunteerModule } from './volunteer/volunteer.module';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { SessionExpiringModalComponent } from './shared/modals/session-expiring/
     AppRoutingModule,
     SelfRegistrationModule,
     VolunteerEditorModule,
+    VolunteerModule,
   ],
   entryComponents: [
     SessionExpiringModalComponent,
