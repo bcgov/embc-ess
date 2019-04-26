@@ -216,7 +216,14 @@ namespace Gov.Jag.Embc.Public
                     Configuration["DB_USER"],
                     Configuration["DB_PASSWORD"]);
             }
-            adminCtx.Database.EnsureCreated();
+
+            //Check if the database exists
+            var databaseExists = adminCtx.Database.CanConnect();
+            if (databaseExists)
+            {
+                log.LogInformation("Syncing migrations prior to migrating...");
+                DatabaseTools.SyncInitialMigration(DatabaseTools.GetSaConnectionString(Configuration));
+            }
 
             log.LogInformation("Syncing migrations prior to migrating...");
             DatabaseTools.SyncInitialMigration(DatabaseTools.GetSaConnectionString(Configuration));

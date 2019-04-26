@@ -85,7 +85,7 @@ namespace Gov.Jag.Embc.Public
             {
                 conn.Open();
                 var sql =
-                    @"IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Communities')
+                    @"IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'__EFMigrationsHistory')
                         BEGIN
                                 IF NOT EXISTS(SELECT ef.MigrationId FROM __EFMigrationsHistory ef WHERE ef.MigrationId = N'20190424150858_InitialDB')
                                 BEGIN
