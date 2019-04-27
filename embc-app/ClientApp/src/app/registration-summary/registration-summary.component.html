@@ -1,101 +1,134 @@
-<h1>Evacuee Summary</h1>
+<div *ngIf="registration">
+  <h1>Evacuee Summary</h1>
 
-<section class="clearfix">
-  <h2 class="blue-header font-weight-bold">EVACUEE INFORMATION</h2>
-  <ul class="summary mx-3">
-    <li class="summary-heading">
-      <div class="container py-3">
-        <div class="row">
-          <div class="col">
-            <div class="h1 my-3">
-              {{registration?.headOfHousehold.lastName}}, {{registration?.headOfHousehold.firstName}}
-              {{registration?.headOfHousehold.initials}}
+  <section class="clearfix">
+    <h2 class="blue-header font-weight-bold">EVACUEE INFORMATION</h2>
+    <ul class="summary mx-3">
+      <li class="summary-heading">
+        <div class="container py-3">
+          <div class="row">
+            <div class="col">
+              <div class="h1 my-3">
+                {{registration.headOfHousehold?.lastName}}, {{registration.headOfHousehold?.firstName}} {{registration.headOfHousehold?.initials}}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              Task #: {{registration.incidentTask?.taskNumber}}
+            </div>
+            <div class="col">
+              Self Registration Date &amp; Time: {{registration.selfRegisteredDate | date : 'MM/dd/yyyy, HH:mm'}}
+            </div>
+            <div class="col-2">
+              File Status:
+              <span *ngIf="registration.active">Active</span>
+              <span *ngIf="!registration.active">Inactive</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              Emergency Support Services File #: {{registration.essFileNumber}}
+            </div>
+            <div class="col">
+              Registration Completed Date &amp; Time: {{registration.registrationCompletionDate | date : 'MM/dd/yyyy, HH:mm'}}
+            </div>
+            <div class="col-2">
+              <!-- Restricted File:
+              <span *ngIf="registration.restrictedAccess">Yes</span>
+              <span *ngIf="!registration.restrictedAccess">No</span> -->
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-4">
-            Task #: {{registration?.incidentTask?.taskNumber}}
+      </li>
+      <li>
+        <span class="name">Facility Name/Registration Location:</span>
+        <span class="value">{{registration.facility}}</span>
+      </li>
+      <li>
+        <span class="name">Host Community:</span>
+        <span class="value">{{registration.hostCommunity?.name}}</span>
+      </li>
+      <li>
+        <span class="name"> Family Members:</span>
+        <span class="value">
+          <div *ngFor="let familyMember of registration.headOfHousehold?.familyMembers">
+            {{familyMember.lastName}}, {{familyMember.firstName}}
           </div>
-          <div class="col">
-            Self Registration Date &amp; Time:
-            {{registration?.selfRegisteredDate | date : 'MM/dd/yyyy, HH:mm'}}
+        </span>
+      </li>
+      <li>
+        <span class="name">Requires Supports:</span>
+        <span class="value">{{registration.requiresSupport | yesNo}}</span>
+      </li>
+      <li>
+        <span class="name">Supports Requested:</span>
+        <span class="value">
+          <div class="form-check mt-2">
+            <input class="form-check-input" [checked]="registration.requiresFood" type="checkbox" disabled>
+            <label class="form-check-label">Food</label>
           </div>
-          <div class="col-2">
-            File Status:
-            <span *ngIf="registration?.active">Active</span>
-            <span *ngIf="!registration?.active">Inactive</span>
+          <div class="form-check mt-2">
+            <input class="form-check-input" [checked]="registration.requiresClothing" type="checkbox" disabled>
+            <label class="form-check-label">Clothing</label>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-4">
-            Emergency Support Services File #: {{registration?.essFileNumber}}
+          <div class="form-check mt-2">
+            <input class="form-check-input" [checked]="registration.requiresAccommodation" type="checkbox" disabled>
+            <label class="form-check-label">Accommodation</label>
           </div>
-          <div class="col">
-            Registration Completed Date &amp; Time:
-            {{registration?.registrationCompletionDate | date : 'MM/dd/yyyy, HH:mm'}}
+          <div class="form-check mt-2">
+            <input class="form-check-input" [checked]="registration.requiresIncidentals" type="checkbox" disabled>
+            <label class="form-check-label">Incidentals</label>
           </div>
-          <div class="col-2">
-            <!-- Restricted File:
-            <span *ngIf="registration?.restrictedAccess">Yes</span>
-            <span *ngIf="!registration?.restrictedAccess">No</span> -->
+          <div class="form-check mt-2">
+            <input class="form-check-input" [checked]="registration.requiresTransportation" type="checkbox" disabled>
+            <label class="form-check-label">Transportation</label>
           </div>
-        </div>
-      </div>
-    </li>
-    <li>
-      <span class="name">Facility Name/Registration Location:</span>
-      <span class="value">{{registration?.facility}}</span>
-    </li>
-    <li>
-      <span class="name">Host Community:</span>
-      <span class="value">{{registration?.hostCommunity?.name}}</span>
-    </li>
-    <li>
-      <span class="name"> Family Members:</span>
-      <span class="value">
-        {{registration?.headOfHousehold.lastName}}, {{registration?.headOfHousehold.firstName}}
-        <br>
-        <ng-container *ngFor="let familyMember of registration?.headOfHousehold.familyMembers">
-          {{familyMember.lastName}}, {{familyMember.firstName}}<br>
-        </ng-container>
-      </span>
-    </li>
-    <li>
-      <span class="name">Requires Supports:</span>
-      <span class="value">{{registration?.requiresSupport | yesNo}}</span>
-    </li>
-    <li>
-      <span class="name">Supports Requested:</span>
-      <span class="value">
-        <div class="form-check mt-2">
-          <input class="form-check-input" [checked]="registration?.requiresFood" type="checkbox" disabled>
-          <label class="form-check-label">Food</label>
-        </div>
-        <div class="form-check mt-2">
-          <input class="form-check-input" [checked]="registration?.requiresClothing" type="checkbox" disabled>
-          <label class="form-check-label">Clothing</label>
-        </div>
-        <div class="form-check mt-2">
-          <input class="form-check-input" [checked]="registration?.requiresAccommodation" type="checkbox" disabled>
-          <label class="form-check-label">Accommodation</label>
-        </div>
-        <div class="form-check mt-2">
-          <input class="form-check-input" [checked]="registration?.requiresIncidentals" type="checkbox" disabled>
-          <label class="form-check-label">Incidentals</label>
-        </div>
-        <div class="form-check mt-2">
-          <input class="form-check-input" [checked]="registration?.requiresTransportation" type="checkbox" disabled>
-          <label class="form-check-label">Transportation</label>
-        </div>
-      </span>
-    </li>
-    <li>
-      <span class="name">Internal Case Notes:</span>
-      <span class="value">{{registration?.followUpDetails | yesNo}}</span>
-    </li>
-  </ul>
-  <div class="mt-4 mx-3">
-    <button class="btn btn-primary float-right" (click)="showFullProfile()">VIEW FULL PROFILE</button>
-  </div>
-</section>
+        </span>
+      </li>
+      <li>
+        <span class="name">Internal Case Notes:</span>
+        <span class="value">{{registration.followUpDetails | yesNo}}</span>
+      </li>
+    </ul>
+    <div class="mt-4 mx-3">
+      <button class="btn btn-primary float-right" (click)="showFullProfile()">VIEW FULL PROFILE</button>
+    </div>
+  </section>
+
+  <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
+    <h2 class="blue-header font-weight-bold">REFERRALS</h2>
+
+    <div class="feature-block card d-block border-0">
+      <!-- TODO: only display 'and family' if familyMembers > 0 ? -->
+      <h3>Add referrals for {{registration.headOfHousehold?.lastName + ', ' + registration.headOfHousehold?.firstName}} and family</h3>
+
+      <app-form-field>
+        <!-- TODO: pre-select HOH? -->
+        <label for="purchaser">Who will be responsible for purchasing goods?</label>
+        <select class="form-control w-25" id="purchaser" [(ngModel)]="selectedPurchaser">
+          <option value="null">Please select--</option>
+          <option *ngIf="registration.headOfHousehold"
+            [value]="registration.headOfHousehold.lastName + ', ' + registration.headOfHousehold.firstName">
+            {{registration.headOfHousehold.lastName}}, {{registration.headOfHousehold.firstName}}
+          </option>
+          <option *ngFor="let familyMember of registration.headOfHousehold?.familyMembers"
+            [value]="familyMember.lastName + ', ' + familyMember.firstName">
+            {{familyMember.lastName}}, {{familyMember.firstName}}
+          </option>
+          <option value="other">Someone else...</option>
+        </select>
+
+        <input type="text" *ngIf="selectedPurchaser === 'other'" class="form-control w-25 ml-3" id="otherPurchaser" [(ngModel)]="otherPurchaser" placeholder="Please specify">
+      </app-form-field>
+
+      <button class="btn btn-primary d-block" [disabled]="!purchaser" (click)="addReferrals()">
+        ADD REFERRALS
+      </button>
+    </div>
+
+    <div class="mt-4 mx-3">
+      <app-referral-table></app-referral-table>
+    </div>
+  </section>
+</div>

@@ -12,8 +12,15 @@ import { UniqueKeyService } from '../core/services/unique-key.service';
 })
 export class RegistrationSummaryComponent implements OnInit {
 
-  registration: Registration;
+  registration: Registration = null;
   path: string; // for relative routing
+  selectedPurchaser = 'null';
+  otherPurchaser: string = null;
+
+  get purchaser() {
+    const otherPurchaser = this.otherPurchaser ? this.otherPurchaser.trim() : null;
+    return (this.selectedPurchaser === 'other') ? otherPurchaser : (this.selectedPurchaser !== 'null') ? this.selectedPurchaser : null;
+  }
 
   constructor(
     private router: Router,
@@ -54,6 +61,14 @@ export class RegistrationSummaryComponent implements OnInit {
       this.uniqueKeyService.setKey(this.registration.id);
       this.router.navigate([`/${this.path}/registration/summary/full`]);
     }
+  }
+
+  addReferrals() {
+    console.log('add referrals where goods will be purchased by =', this.purchaser);
+
+    // // save the key for lookup
+    // this.uniqueKeyService.setKey(this.registration.id);
+    // this.router.navigate([`/${this.path}/registration/summary/full`]);
   }
 
 }
