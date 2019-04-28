@@ -46,7 +46,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public string Province { get; set; }
 
-        public Guid CountryId { get; set; }
+        [ForeignKey("Country")]
+        public string CountryCode { get; set; }
 
         public Country Country { get; set; }
     }

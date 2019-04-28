@@ -1,5 +1,6 @@
 using Gov.Jag.Embc.Public.Models.Db;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public static void UpdateCountry(this EmbcDbContext context, Country updatedCountry)
         {
-            var country = context.Countries.FirstOrDefault(x => x.Id == updatedCountry.Id);
+            var country = context.Countries.FirstOrDefault(x => x.CountryCode.Equals(updatedCountry.CountryCode, StringComparison.OrdinalIgnoreCase));
             country.Name = updatedCountry.Name;
             context.Countries.Update(country);
             context.SaveChanges();
@@ -77,7 +78,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             country = new Country
             ()
             {
-                Id = initialCountry.Id,
+                CountryCode = initialCountry.CountryCode,
                 Name = initialCountry.Name,
                 Active = true
             };
