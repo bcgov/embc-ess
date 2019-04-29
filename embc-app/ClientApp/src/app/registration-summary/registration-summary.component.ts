@@ -65,11 +65,7 @@ export class RegistrationSummaryComponent implements OnInit {
   }
 
   addReferrals() {
-    console.log('add referrals where goods will be purchased by =', this.purchaser);
-
-    // // save the key for lookup
-    // this.uniqueKeyService.setKey(this.registration.id);
-    // this.router.navigate([`/${this.path}/registration/summary/full`]);
+    this.router.navigate([`/${this.path}/referrals`, this.registration.id, this.purchaser]);
   }
 
 }

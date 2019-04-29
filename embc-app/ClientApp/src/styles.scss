@@ -354,3 +354,8 @@ ul.arrow > li:before {
 .modal.show {
   opacity: 1;
 }
+
+input[type=checkbox],
+input[type=radio] {
+  top: 3px;
+}

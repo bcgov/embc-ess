@@ -59,8 +59,10 @@ import { SessionExpiringModalComponent } from './shared/modals/session-expiring/
 
 // TODO: move these to volunteer/local-authority/provincial-admin modules
 import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
-import { IncidentalsComponent } from './volunteer/components/incidentals/incidentals.component';
+import { IncidentalsReferralComponent } from './volunteer/components/incidentals-referral/incidentals-referral.component';
 import { ReferralTableComponent } from './volunteer/components/referral-table/referral-table.component';
+import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid-from-to.component';
+import { SupplierComponent } from './volunteer/components/supplier/supplier.component';
 
 @NgModule({
   declarations: [
@@ -108,8 +110,10 @@ import { ReferralTableComponent } from './volunteer/components/referral-table/re
     UsefulInformationPageComponent,
     SessionExpiringModalComponent,
     ReferralMakerComponent,
-    IncidentalsComponent,
+    IncidentalsReferralComponent,
     ReferralTableComponent,
+    ValidFromToComponent,
+    SupplierComponent,
   ],
   imports: [
     // angular

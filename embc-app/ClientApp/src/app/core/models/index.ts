@@ -4,6 +4,7 @@ export * from './config.model';
 export * from './country.model';
 export * from './evacuee.model';
 export * from './incident-task.model';
+export * from './incidentals-referral.model';
 export * from './list-result';
 export * from './organization.model';
 export * from './person.model';

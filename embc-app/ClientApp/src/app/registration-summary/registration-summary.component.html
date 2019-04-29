@@ -1,7 +1,7 @@
 <div *ngIf="registration">
   <h1>Evacuee Summary</h1>
 
-  <section class="clearfix">
+  <section class="clearfix" id="information">
     <h2 class="blue-header font-weight-bold">EVACUEE INFORMATION</h2>
     <ul class="summary mx-3">
       <li class="summary-heading">
@@ -9,7 +9,9 @@
           <div class="row">
             <div class="col">
               <div class="h1 my-3">
-                {{registration.headOfHousehold?.lastName}}, {{registration.headOfHousehold?.firstName}} {{registration.headOfHousehold?.initials}}
+                {{registration.headOfHousehold?.lastName}},
+                {{registration.headOfHousehold?.firstName}}
+                {{registration.headOfHousehold?.initials}}
               </div>
             </div>
           </div>
@@ -31,7 +33,8 @@
               Emergency Support Services File #: {{registration.essFileNumber}}
             </div>
             <div class="col">
-              Registration Completed Date &amp; Time: {{registration.registrationCompletionDate | date : 'MM/dd/yyyy, HH:mm'}}
+              Registration Completed Date &amp; Time:
+              {{registration.registrationCompletionDate | date : 'MM/dd/yyyy, HH:mm'}}
             </div>
             <div class="col-2">
               <!-- Restricted File:
@@ -92,16 +95,17 @@
       </li>
     </ul>
     <div class="mt-4 mx-3">
-      <button class="btn btn-primary float-right" (click)="showFullProfile()">VIEW FULL PROFILE</button>
+      <button type="button" class="btn btn-primary float-right" (click)="showFullProfile()">VIEW FULL PROFILE</button>
     </div>
   </section>
 
-  <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
+  <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix" id="referrals">
     <h2 class="blue-header font-weight-bold">REFERRALS</h2>
 
     <div class="feature-block card d-block border-0">
       <!-- TODO: only display 'and family' if familyMembers > 0 ? -->
-      <h3>Add referrals for {{registration.headOfHousehold?.lastName + ', ' + registration.headOfHousehold?.firstName}} and family</h3>
+      <h3>Add referrals for {{registration.headOfHousehold?.lastName + ', ' + registration.headOfHousehold?.firstName}}
+        and family</h3>
 
       <app-form-field>
         <!-- TODO: pre-select HOH? -->
@@ -119,10 +123,11 @@
           <option value="other">Someone else...</option>
         </select>
 
-        <input type="text" *ngIf="selectedPurchaser === 'other'" class="form-control w-25 ml-3" id="otherPurchaser" [(ngModel)]="otherPurchaser" placeholder="Please specify">
+        <input type="text" *ngIf="selectedPurchaser === 'other'" class="form-control w-25 ml-3"
+          [(ngModel)]="otherPurchaser" placeholder="Please specify">
       </app-form-field>
 
-      <button class="btn btn-primary d-block" [disabled]="!purchaser" (click)="addReferrals()">
+      <button type="button" class="btn btn-primary d-block" [disabled]="!purchaser" (click)="addReferrals()">
         ADD REFERRALS
       </button>
     </div>

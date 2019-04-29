@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReferralTableComponent implements OnInit {
 
+  numReferrals = 10; // TODO: get from db
+
   constructor() { }
 
   ngOnInit() { }

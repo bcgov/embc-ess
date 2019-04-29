@@ -1,138 +1,107 @@
 <div *ngIf="registration">
-  <h1>REFERRAL MAKER - under construction</h1>
 
-  <section class="clearfix">
-    <h2 class="blue-header font-weight-bold">EVACUEE INFORMATION</h2>
-    <ul class="summary mx-3">
-      <li class="summary-heading">
-        <div class="container py-3">
-          <div class="row">
-            <div class="col">
-              <div class="h1 my-3">
-                {{registration.headOfHousehold?.lastName}}, {{registration.headOfHousehold?.firstName}} {{registration.headOfHousehold?.initials}}
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-4">
-              Task #: {{registration.incidentTask?.taskNumber}}
-            </div>
-            <div class="col">
-              Self Registration Date &amp; Time:
-              {{registration.selfRegisteredDate | date : 'MM/dd/yyyy, HH:mm'}}
-            </div>
-            <div class="col-2">
-              File Status:
-              <span *ngIf="registration.active">Active</span>
-              <span *ngIf="!registration.active">Inactive</span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-4">
-              Emergency Support Services File #: {{registration.essFileNumber}}
-            </div>
-            <div class="col">
-              Registration Completed Date &amp; Time:
-              {{registration.registrationCompletionDate | date : 'MM/dd/yyyy, HH:mm'}}
-            </div>
-            <div class="col-2">
-              <!-- Restricted File:
-              <span *ngIf="registration.restrictedAccess">Yes</span>
-              <span *ngIf="!registration.restrictedAccess">No</span> -->
-            </div>
-          </div>
-        </div>
-      </li>
-      <li>
-        <span class="name">Facility Name/Registration Location:</span>
-        <span class="value">{{registration.facility}}</span>
-      </li>
-      <li>
-        <span class="name">Host Community:</span>
-        <span class="value">{{registration.hostCommunity?.name}}</span>
-      </li>
-      <li>
-        <span class="name"> Family Members:</span>
-        <span class="value">
-          <div *ngFor="let familyMember of registration.headOfHousehold?.familyMembers">
-            {{familyMember.lastName}}, {{familyMember.firstName}}
-          </div>
-        </span>
-      </li>
-      <li>
-        <span class="name">Requires Supports:</span>
-        <span class="value">{{registration.requiresSupport}}</span>
-      </li>
-      <li>
-        <span class="name">Supports Requested:</span>
-        <span class="value">
-          <div class="form-check mt-2">
-            <input class="form-check-input" [checked]="registration.requiresFood" type="checkbox" disabled>
-            <label class="form-check-label">Food</label>
-          </div>
-          <div class="form-check mt-2">
-            <input class="form-check-input" [checked]="registration.requiresClothing" type="checkbox" disabled>
-            <label class="form-check-label">Clothing</label>
-          </div>
-          <div class="form-check mt-2">
-            <input class="form-check-input" [checked]="registration.requiresAccommodation" type="checkbox" disabled>
-            <label class="form-check-label">Accommodation</label>
-          </div>
-          <div class="form-check mt-2">
-            <input class="form-check-input" [checked]="registration.requiresIncidentals" type="checkbox" disabled>
-            <label class="form-check-label">Incidentals</label>
-          </div>
-          <div class="form-check mt-2">
-            <input class="form-check-input" [checked]="registration.requiresTransportation" type="checkbox" disabled>
-            <label class="form-check-label">Transportation</label>
-          </div>
-        </span>
-      </li>
-      <li>
-        <span class="name">Internal Case Notes:</span>
-        <span class="value">{{registration.followUpDetails}}</span>
-      </li>
-    </ul>
-    <div class="mt-4 mx-3">
-      <button class="btn btn-primary float-right" (click)="showFullProfile()">VIEW FULL PROFILE</button>
-    </div>
-  </section>
+  <div *ngIf="maker">
+    <h1>Identify Supports</h1>
 
-  <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
-    <h2 class="blue-header font-weight-bold">REFERRALS</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit amet pulvinar.
+      Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean efficitur et arcu a
+      fringilla.
+    </p>
 
-    <div class="feature-block card d-block border-0">
-      <h3>Add referrals for {{registration.headOfHousehold?.lastName + ',' + registration.headOfHousehold?.firstName}} and family</h3>
-      <div class="row">
-        <div class="col-6">
-          <label for="purchaser">Who will be responsible for purchasing goods?</label>
-          <select class="form-control w-25" id="purchaser" [(ngModel)]="selectedPurchaser">
-            <option value="null">Please select--</option>
-            <option *ngIf="registration.headOfHousehold" [value]="registration.headOfHousehold.lastName + ', ' + registration.headOfHousehold.firstName">
-                {{registration.headOfHousehold.lastName}}, {{registration.headOfHousehold.firstName}}
-            </option>
-            <option *ngFor="let familyMember of registration.headOfHousehold?.familyMembers" [value]="familyMember.lastName + ',' + familyMember.firstName">
-              {{familyMember.lastName}}, {{familyMember.firstName}}
-            </option>
-            <option value="other">Someone else...</option>
-          </select>
-        </div>
-        <div class="col-6">
-          <p>selectedPurchaser: {{selectedPurchaser}}</p>
-          <p *ngIf="selectedPurchaser === 'other'">WHO ELSE???</p>
+    <section class="clearfix">
+      <!-- confirm task start time -->
+      <div class="feature-block card d-block border-0">
+        <div *ngIf="registration?.incidentTask['startDate']">
+          <label>Please confirm timing for commencement of supports:</label>
+          <!-- <div>{{registration.incidentTask['startDate'] | date:'yyyy/MM/dd \'at\' HH:mm:ss a'}}</div> -->
+          <div>{{registration.incidentTask['startDate'] | dateTimeFormatPipe}}</div>
         </div>
       </div>
-      <button class="btn btn-primary d-block mt-4" [disabled]="selectedPurchaser === 'null'" (click)="addReferrals()">ADD REFERRALS</button>
-    </div>
 
-    <div class="mt-4 mx-3">
-      <!-- TODO: referrals table compoenent goes here -->
-      No referrals have been added yet.
-
-      <!-- part of table component -->
-      <div class="mt-4 mx-3" *ngIf="numReferrals > 0 || true">
-        <button class="btn btn-primary float-right" (click)="printReferrals()">PRINT SELECTED REFERRALS</button>
+      <!-- select required supports -->
+      <div class="card d-block border-0 p-4">
+        <label>Select required supports:</label>
+        <div class="form-check mt-2">
+          <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood">
+          <label class="form-check-label" for="supportFood">Food</label>
+        </div>
+        <div class="form-check mt-2">
+          <input type="checkbox" class="form-check-input" [checked]="clothingReferrals.length > 0" id="supportClothing">
+          <label class="form-check-label" for="supportClothing">Clothing</label>
+        </div>
+        <div class="form-check mt-2">
+          <input type="checkbox" class="form-check-input" [checked]="accommodationReferrals.length > 0"
+            id="supportAccommodation">
+          <label class="form-check-label" for="supportAccommodation">Accommodation</label>
+        </div>
+        <div class="form-check mt-2">
+          <input type="checkbox" class="form-check-input" [checked]="incidentalsReferrals.length > 0"
+            id="supportIncidentals" (change)="incidentalsReferralChange()">
+          <label class="form-check-label" for="supportIncidentals">Incidentals</label>
+        </div>
+        <div class="form-check mt-2">
+          <input type="checkbox" class="form-check-input" [checked]="transportationReferrals.length > 0"
+            id="supportTransportation">
+          <label class="form-check-label" for="supportTransportation">Transportation</label>
+        </div>
       </div>
+
+      <!-- loop through all referrals by type -->
+      <article *ngFor="let r of foodReferrals" class="mt-4">
+        <!-- <app-food-referral ([r])="r"></app-food-referral> -->
+      </article>
+
+      <article *ngFor="let r of clothingReferrals" class="mt-4">
+        <!-- <app-clothing-referral ([r])="r"></app-clothing-referral> -->
+      </article>
+
+      <article *ngFor="let r of accommodationReferrals" class="mt-4">
+        <!-- <app-accommodation-referral ([r])="r"></app-accommodation-referral> -->
+      </article>
+
+      <article *ngFor="let r of incidentalsReferrals" class="mt-4">
+        <app-incidentals-referral [registration]="registration" [(referral)]="r"
+          (remove)="removeIncidentalsReferral(index)" (add)="addIncidentalsReferral()"></app-incidentals-referral>
+      </article>
+
+      <article *ngFor="let r of transportationReferrals" class="mt-4">
+        <!-- <app-transportation-referral ([r])="r"></app-transportation-referral> -->
+      </article>
+    </section>
+
+    <div class="mt-5 space-between">
+      <a routerLink="" (click)="cancel()">
+        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+        <span class="ml-2">Cancel &amp; Close</span>
+      </a>
+      <button type="button" class="btn btn-primary float-right" (click)="createReferral()">CREATE REFERRAL</button>
     </div>
-  </section>
+  </div>
+
+  <div *ngIf="!maker">
+    <h1>Create Referrals</h1>
+
+    <p>Please confirm that all details you entered are correct by reading through the summary below with the evacuee.
+    </p>
+
+    <section class="clearfix">
+      <!-- TODO: look through all referrals (by type) -->
+    </section>
+
+    <div class="mt-5 space-between">
+      <section>
+        <button type="button" (click)="back()" class="btn btn-secondary">EDIT REFERRALS</button>
+      </section>
+      <section>
+        <a routerLink="" (click)="cancel()">
+          <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+          <span class="ml-2">Cancel &amp; Close</span>
+        </a>
+        <button type="button" *ngIf="!submitting" class="btn btn-primary ml-5" (click)="finalize()">FINALIZE
+          REFERRALS</button>
+        <button type="button" *ngIf="submitting" class="btn btn-primary ml-5" disabled>FINALIZING...</button>
+      </section>
+    </div>
+  </div>
+
 </div>
