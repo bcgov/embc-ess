@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { concat } from 'rxjs';
+import { forkJoin } from 'rxjs';
 // import { User } from './core/models';
 import { detectIE10orLower } from './shared/utils';
 import { ControlledListService } from './core/services/controlled-list.service';
@@ -63,11 +63,10 @@ export class AppComponent implements OnInit {
   }
 
   private getLookups() {
-    return concat(
+    return forkJoin(
       this.lookups.getConfig(),
       this.lookups.getAllCountries(),
       this.lookups.getAllRegions(),
-      this.lookups.getAllRegionalDistricts(),
       this.lookups.getAllCommunities(),
       this.lookups.getAllFamilyRelationshipTypes(),
       // ...add more
