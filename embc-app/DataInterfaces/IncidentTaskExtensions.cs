@@ -22,8 +22,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <returns>The IncidentTask, or null if it does not exist.</returns>
         public static IncidentTask GetIncidentTaskByTaskNumber(this EmbcDbContext context, string taskNumber)
         {
-            IncidentTask IncidentTask = context.IncidentTasks.FirstOrDefault(x => x.TaskNumber == taskNumber);
-            return IncidentTask;
+            var incidentTask = context.IncidentTasks.FirstOrDefault(x => x.TaskNumber == taskNumber);
+            return incidentTask;
         }
 
         /// <summary>

@@ -9,18 +9,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static class RegionExtensions
     {
-        public static void AddRegion(this EmbcDbContext context, Region Region)
+        public static void AddRegion(this EmbcDbContext context, Region newRegion)
         {
             // create a new Region.
-            context.Regions.Add(Region);
+            context.Regions.Add(newRegion);
             context.SaveChanges();
         }
 
-        public static void UpdateRegion(this EmbcDbContext context, Region Region)
+        public static void UpdateRegion(this EmbcDbContext context, Region udpatedRegion)
         {
-            Region _Region = context.Regions.FirstOrDefault<Region>(x => x.Name == Region.Name);
-            _Region.Active = Region.Active;
-            context.Regions.Update(_Region);
+            var region = context.Regions.FirstOrDefault<Region>(x => x.Name == udpatedRegion.Name);
+            region.Active = udpatedRegion.Active;
+            context.Regions.Update(region);
             context.SaveChanges();
         }
 
@@ -31,37 +31,37 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <returns>The Region, or null if it does not exist.</returns>
         public static Region GetRegionByName(this EmbcDbContext context, string name)
         {
-            Region Region = context.Regions.FirstOrDefault(x => x.Name == name);
-            return Region;
+            var region = context.Regions.FirstOrDefault(x => x.Name == name);
+            return region;
         }
 
         /// <summary>
         /// Create Regions from a (json) file
         /// </summary>
         /// <param name="context"></param>
-        /// <param name="RegionJsonPath"></param>
-        public static void AddInitialRegionsFromFile(this EmbcDbContext context, string RegionJsonPath)
+        /// <param name="regionJsonPath"></param>
+        public static void AddInitialRegionsFromFile(this EmbcDbContext context, string regionJsonPath)
         {
-            if (!string.IsNullOrEmpty(RegionJsonPath) && File.Exists(RegionJsonPath))
+            if (!string.IsNullOrEmpty(regionJsonPath) && File.Exists(regionJsonPath))
             {
-                string RegionJson = File.ReadAllText(RegionJsonPath);
-                context.AddInitialRegions(RegionJson);
+                var regionJson = File.ReadAllText(regionJsonPath);
+                context.AddInitialRegions(regionJson);
             }
         }
 
-        private static void AddInitialRegions(this EmbcDbContext context, string RegionJson)
+        private static void AddInitialRegions(this EmbcDbContext context, string regionJson)
         {
-            List<Region> Regions = JsonConvert.DeserializeObject<List<Region>>(RegionJson);
+            var regions = JsonConvert.DeserializeObject<List<Region>>(regionJson);
 
-            if (Regions != null)
+            if (regions != null)
             {
-                context.AddInitialRegions(Regions);
+                context.AddInitialRegions(regions);
             }
         }
 
-        private static void AddInitialRegions(this EmbcDbContext context, List<Region> Regions)
+        private static void AddInitialRegions(this EmbcDbContext context, List<Region> regions)
         {
-            Regions.ForEach(context.AddInitialRegion);
+            regions.ForEach(context.AddInitialRegion);
         }
 
         /// <summary>
@@ -69,20 +69,20 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         private static void AddInitialRegion(this EmbcDbContext context, Region initialRegion)
         {
-            Region Region = context.GetRegionByName(initialRegion.Name);
-            if (Region != null)
+            var region = context.GetRegionByName(initialRegion.Name);
+            if (region != null)
             {
                 return;
             }
 
-            Region = new Region
+            region = new Region
             ()
             {
                 Name = initialRegion.Name,
                 Active = true
             };
 
-            context.AddRegion(Region);
+            context.AddRegion(region);
         }
 
         /// <summary>
@@ -90,18 +90,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// </summary>
         /// <param name="context"></param>
         /// <param name="regionInfo"></param>
-        public static void UpdateSeedRegionInfo(this EmbcDbContext context, Region RegionInfo)
+        public static void UpdateSeedRegionInfo(this EmbcDbContext context, Region regionInfo)
         {
-            Region Region = context.GetRegionByName(RegionInfo.Name);
-            if (Region == null)
+            var region = context.GetRegionByName(regionInfo.Name);
+            if (region == null)
             {
-                context.AddRegion(RegionInfo);
+                context.AddRegion(regionInfo);
             }
             else
             {
-                Region.Name = RegionInfo.Name;
-                Region.Active = RegionInfo.Active;
-                context.UpdateRegion(Region);
+                region.Name = regionInfo.Name;
+                region.Active = regionInfo.Active;
+                context.UpdateRegion(region);
             }
         }
     }

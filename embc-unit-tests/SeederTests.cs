@@ -33,6 +33,7 @@ namespace embc_unit_tests
 
             Assert.NotNull(result);
             Assert.True(result.Count > 0);
+            Assert.True(result.TrueForAll(c => !string.IsNullOrEmpty(c.CountryCode)));
         }
 
         [Fact]

@@ -43,7 +43,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result.AddressLine3 = source.AddressLine3;
                 result.PostalCode = source.PostalCode;
                 result.Province = source.Province;
-                result.CountryId = Guid.Parse(source.Country.Id);
+                result.CountryCode = source.Country.CountryCode;
 
                 if (source.Id != null)
                 {
