@@ -17,10 +17,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<IPagedResults<Organization>> GetOrganizationsAsync(SearchQueryParameters searchQuery)
         {
-            Guid searchEntityId;
             Guid? communityId = null;
             string regionName = null;
-            if(searchQuery.HasQuery() && Guid.TryParse(searchQuery.Query, out searchEntityId))
+            if (searchQuery.HasQuery() && Guid.TryParse(searchQuery.Query, out Guid searchEntityId))
             {
                 communityId = searchEntityId;
             }
@@ -40,9 +39,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return new PaginatedList<Organization>(items.Select(i => i.org.ToViewModel(i.pc)), searchQuery.Offset, searchQuery.Limit);
         }
 
-        public Organization GetOrganizationBCeIDGuid(string guid)
+        public async Task<Organization> GetOrganizationByBCeIDGuidAsync(string guid)
         {
-            var org = Organizations.FirstOrDefault(x => x.BCeIDBusinessGuid == guid);
+            var org = await Organizations.FirstOrDefaultAsync(x => x.BCeIDBusinessGuid == guid);
             if (org == null) return null;
             return org.ToViewModel(GetPrimaryContactForOrganization(org.Id).GetAwaiter().GetResult());
         }

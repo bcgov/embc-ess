@@ -1,4 +1,3 @@
-using Gov.Jag.Embc.Interfaces;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
@@ -13,10 +12,9 @@ namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
-    //[Authorize(Policy = "Business-User")]
     public class OrganizationsController : Controller
     {
-        private readonly BCeIDBusinessQuery _bceid;
+        //private readonly BCeIDBusinessQuery _bceid;
 
         //private readonly SharePointFileManager _sharePointFileManager;
         private readonly IHttpContextAccessor httpContextAccessor;
