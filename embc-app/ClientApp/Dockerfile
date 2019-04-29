@@ -3,6 +3,9 @@ FROM node:8.11.4-alpine as node
 
 WORKDIR /usr/src/app
 
+# install a specific NPM version
+RUN npm install -g npm@6.9.0
+
 COPY package*.json ./
 
 RUN npm install
