@@ -1,5 +1,8 @@
+using Gov.Jag.Embc.Interfaces;
 using Gov.Jag.Embc.Public.Authentication;
+using Gov.Jag.Embc.Public.Authorization;
 using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.Models;
 using Gov.Jag.Embc.Public.Seeder;
 using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -17,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Net.Http.Headers;
 using NWebsec.AspNetCore.Mvc;
 using NWebsec.AspNetCore.Mvc.Csp;
@@ -99,6 +104,14 @@ namespace Gov.Jag.Embc.Public
             {
             });
 
+            // setup authorization
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Business-User", policy =>
+                                  policy.RequireClaim(User.UserTypeClaim, "Business"));
+            });
+            services.RegisterPermissionHandler();
+
             // setup key ring to persist in storage.
             if (!string.IsNullOrEmpty(Configuration["KEY_RING_DIRECTORY"]))
             {
@@ -109,6 +122,12 @@ namespace Gov.Jag.Embc.Public
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
+            });
+
+            // allow for large files to be uploaded
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 1073741824; // 1 GB
             });
 
             // health checks
@@ -134,6 +153,39 @@ namespace Gov.Jag.Embc.Public
                 return factory.GetUrlHelper(actionContext);
             });
             services.AddTransient<IEmailSender, EmailSender>();
+        }
+
+        private void SetupDynamics(IServiceCollection services)
+        {
+            string dynamicsOdataUri = Configuration["DYNAMICS_ODATA_URI"];
+            string aadTenantId = Configuration["DYNAMICS_AAD_TENANT_ID"];
+            string serverAppIdUri = Configuration["DYNAMICS_SERVER_APP_ID_URI"];
+            string clientKey = Configuration["DYNAMICS_CLIENT_KEY"];
+            string clientId = Configuration["DYNAMICS_CLIENT_ID"];
+
+            string ssgUsername = Configuration["SSG_USERNAME"];
+            string ssgPassword = Configuration["SSG_PASSWORD"];
+
+            AuthenticationResult authenticationResult = null;
+            // authenticate using ADFS.
+            if (string.IsNullOrEmpty(ssgUsername) || string.IsNullOrEmpty(ssgPassword))
+            {
+                var authenticationContext = new AuthenticationContext(
+                    "https://login.windows.net/" + aadTenantId);
+                ClientCredential clientCredential = new ClientCredential(clientId, clientKey);
+                var task = authenticationContext.AcquireTokenAsync(serverAppIdUri, clientCredential);
+                task.Wait();
+                authenticationResult = task.Result;
+            }
+
+            // add BCeID Web Services
+
+            string bceidUrl = Configuration["BCEID_SERVICE_URL"];
+            string bceidSvcId = Configuration["BCEID_SERVICE_SVCID"];
+            string bceidUserid = Configuration["BCEID_SERVICE_USER"];
+            string bceidPasswd = Configuration["BCEID_SERVICE_PASSWD"];
+
+            services.AddTransient<BCeIDBusinessQuery>(_ => new BCeIDBusinessQuery(bceidSvcId, bceidUserid, bceidPasswd, bceidUrl));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,17 +11,17 @@ namespace Gov.Jag.Embc.Public.Utils
         {
             if (source == null)
             {
-                throw new ArgumentNullException(nameof(source));
+                throw new ArgumentNullException("source");
             }
 
             if (string.IsNullOrEmpty(sortBy))
             {
-                throw new ArgumentNullException(nameof(sortBy));
+                throw new ArgumentNullException("sortBy");
             }
 
             // support sorting by multiple fields; e.g. "+name,-age" ==> Sort by Name ASC, then Age DESC
             var listSortBy = sortBy.Split(",");
-            listSortBy = listSortBy.Select(AdjustDirection).ToArray();
+            listSortBy = listSortBy.Select(item => AdjustDirection(item)).ToArray();
 
             var sortExpression = string.Join(",", listSortBy);
 
@@ -29,7 +29,7 @@ namespace Gov.Jag.Embc.Public.Utils
             {
                 source = source.OrderBy(sortExpression);
             }
-            catch (ParseException)
+            catch (ParseException ex)
             {
                 // sortBy included field not part of the model - Ignore
             }
@@ -46,7 +46,7 @@ namespace Gov.Jag.Embc.Public.Utils
             // parse direction and field from provided sort-item
             // e.g. "name" ==> direction: ASC, field: name
             // e.g. "-name" ==> direction: DESC, field: name
-            if (item.StartsWith("-", StringComparison.OrdinalIgnoreCase))
+            if (item.StartsWith("-"))
             {
                 direction = "-";
                 field = item.Substring(1);
@@ -62,7 +62,7 @@ namespace Gov.Jag.Embc.Public.Utils
 
                 default:
                     return field;
-            }
+            };
         }
     }
 }

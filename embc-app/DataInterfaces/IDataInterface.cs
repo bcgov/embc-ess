@@ -54,7 +54,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<IPagedResults<Organization>> GetOrganizationsAsync(SearchQueryParameters searchQuery);
 
-        Task<Organization> GetOrganizationByBCeIDGuidAsync(string guid);
+        Organization GetOrganizationBCeIDGuid(string guid);
 
         Task<string> CreateOrganizationAsync(Organization item);
 
