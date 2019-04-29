@@ -40,5 +40,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public Community Community { get; set; }
 
         public List<Registration> Registrations { get; set; }
+
+        public DateTimeOffset? StartDate { get; set; }
     }
 }

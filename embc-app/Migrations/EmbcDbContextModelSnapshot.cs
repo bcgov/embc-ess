@@ -110,6 +110,8 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<string>("RegionName");
 
+                    b.Property<DateTimeOffset?>("StartDate");
+
                     b.Property<string>("TaskNumber");
 
                     b.HasKey("Id");
