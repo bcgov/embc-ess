@@ -47,24 +47,24 @@
       </div>
 
       <!-- loop through all referrals by type -->
-      <article *ngFor="let r of foodReferrals" class="mt-4">
+      <article *ngFor="let r of foodReferrals; let i = index" class="mt-4">
         <!-- <app-food-referral ([r])="r"></app-food-referral> -->
       </article>
 
-      <article *ngFor="let r of clothingReferrals" class="mt-4">
+      <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4">
         <!-- <app-clothing-referral ([r])="r"></app-clothing-referral> -->
       </article>
 
-      <article *ngFor="let r of accommodationReferrals" class="mt-4">
+      <article *ngFor="let r of accommodationReferrals; let i = index" class="mt-4">
         <!-- <app-accommodation-referral ([r])="r"></app-accommodation-referral> -->
       </article>
 
-      <article *ngFor="let r of incidentalsReferrals" class="mt-4">
+      <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
         <app-incidentals-referral [registration]="registration" [(referral)]="r"
-          (remove)="removeIncidentalsReferral(index)" (add)="addIncidentalsReferral()"></app-incidentals-referral>
+          (remove)="removeIncidentalsReferral(i)" (add)="addIncidentalsReferral()"></app-incidentals-referral>
       </article>
 
-      <article *ngFor="let r of transportationReferrals" class="mt-4">
+      <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4">
         <!-- <app-transportation-referral ([r])="r"></app-transportation-referral> -->
       </article>
     </section>

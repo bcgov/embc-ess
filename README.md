@@ -1,5 +1,5 @@
 # embc-ess
-Emergency Management BC - Emergency Social Services Modernization
+Emergency Management BC - Emergency Support Services Modernization
 
 
 Technology Stack
