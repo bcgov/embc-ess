@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IncidentTask } from '../core/models';
+import { IncidentTask } from '../../../core/models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../store';
-import { IncidentTaskService } from '../core/services/incident-task.service';
-import { NotificationQueueService } from '../core/services/notification-queue.service';
-import { UniqueKeyService } from '../core/services/unique-key.service';
-import { AuthService } from '../core/services/auth.service';
+import { AppState } from '../../../store';
+import { IncidentTaskService } from '../../../core/services/incident-task.service';
+import { NotificationQueueService } from '../../../core/services/notification-queue.service';
+import { UniqueKeyService } from '../../../core/services/unique-key.service';
+import { AuthService } from '../../../core/services/auth.service';
 // import { UpdateIncidentTask } from '../store/incident-tasks/incident-tasks.actions';
 
 @Component({
