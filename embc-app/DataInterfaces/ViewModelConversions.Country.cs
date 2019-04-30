@@ -9,7 +9,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 result = new ViewModels.Country()
                 {
-                    Id = source.Id.ToString(),
+                    Id = source.CountryCode,
+                    CountryCode = source.CountryCode,
                     Name = source.Name,
                     Active = source.Active
                 };

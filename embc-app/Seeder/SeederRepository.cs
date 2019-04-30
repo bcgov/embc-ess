@@ -74,17 +74,17 @@ namespace Gov.Jag.Embc.Public.Seeder
         {
             var existingEntities = db.Communities
                 .Where(ex =>
-                            communities.Exists(c => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) && c.RegionId == ex.RegionId)).ToList();
+                            communities.Exists(c => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) && c.RegionName == ex.RegionName)).ToList();
             foreach (var entity in existingEntities)
             {
-                var updatedCommunity = communities.Single(c => c.Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase) && c.RegionId == entity.RegionId);
+                var updatedCommunity = communities.Single(c => c.Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase) && c.RegionName == entity.RegionName);
                 entity.Name = updatedCommunity.Name;
                 entity.Active = updatedCommunity.Active;
-                entity.RegionId = updatedCommunity.RegionId;
+                entity.RegionName = updatedCommunity.RegionName;
             }
 
             var newEntities = communities
-                .Where(c => !existingEntities.Exists(ex => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) && c.RegionId == ex.RegionId));
+                .Where(c => !existingEntities.Exists(ex => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) && c.RegionName == ex.RegionName));
 
             db.AddRange(newEntities);
             db.UpdateRange(existingEntities);
@@ -102,7 +102,7 @@ namespace Gov.Jag.Embc.Public.Seeder
                 entity.TaskNumber = incidentTask.TaskNumber;
                 entity.Details = incidentTask.Details;
                 entity.Active = incidentTask.Active;
-                entity.RegionId = incidentTask.RegionId;
+                entity.RegionName = incidentTask.RegionName;
                 entity.CommunityId = incidentTask.CommunityId;
             }
             db.UpdateRange(existingEntities);
@@ -128,7 +128,7 @@ namespace Gov.Jag.Embc.Public.Seeder
 
                 entity.BCeIDBusinessGuid = organization.BCeIDBusinessGuid;
                 entity.Name = organization.Name;
-                entity.RegionId = organization.RegionId;
+                entity.RegionName = organization.RegionName;
                 entity.CommunityId = organization.CommunityId;
 
             }

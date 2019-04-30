@@ -4,11 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, of, Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
-import { AuthService } from '../core/services/auth.service';
-import { OrganizationService } from '../core/services/organization.service';
-import { VolunteerService, VolunteerSearchQueryParameters } from '../core/services/volunteer.service';
-import { ListResult, Volunteer, PaginationSummary, User, Organization } from '../core/models';
-import { UniqueKeyService } from '../core/services/unique-key.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { OrganizationService } from '../../../core/services/organization.service';
+import { VolunteerService, VolunteerSearchQueryParameters } from '../../../core/services/volunteer.service';
+import { ListResult, Volunteer, PaginationSummary, User, Organization } from '../../../core/models';
+import { UniqueKeyService } from '../../../core/services/unique-key.service';
 
 @Component({
   selector: 'app-volunteer-organization-list',

@@ -4,14 +4,16 @@ using Gov.Jag.Embc.Public.DataInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Gov.Jag.Embc.Public.Migrations
 {
     [DbContext(typeof(EmbcDbContext))]
-    partial class EmbcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190426152517_Change-Region-PrimaryKey-To-Name")]
+    partial class ChangeRegionPrimaryKeyToName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.Property<string>("AddressSubtype")
                         .IsRequired();
 
-                    b.Property<string>("CountryCode");
+                    b.Property<Guid>("CountryId");
 
                     b.Property<string>("PostalCode");
 
@@ -42,7 +44,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryCode");
+                    b.HasIndex("CountryId");
 
                     b.ToTable("Addresses");
 
@@ -70,7 +72,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 
             modelBuilder.Entity("Gov.Jag.Embc.Public.Models.Db.Country", b =>
                 {
-                    b.Property<string>("CountryCode")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("Active");
@@ -78,7 +80,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(255);
 
-                    b.HasKey("CountryCode");
+                    b.HasKey("Id");
 
                     b.ToTable("Countries");
                 });
@@ -109,8 +111,6 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.Property<string>("Details");
 
                     b.Property<string>("RegionName");
-
-                    b.Property<DateTimeOffset?>("StartDate");
 
                     b.Property<string>("TaskNumber");
 
@@ -390,7 +390,8 @@ namespace Gov.Jag.Embc.Public.Migrations
                 {
                     b.HasOne("Gov.Jag.Embc.Public.Models.Db.Country", "Country")
                         .WithMany()
-                        .HasForeignKey("CountryCode");
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Gov.Jag.Embc.Public.Models.Db.Community", b =>

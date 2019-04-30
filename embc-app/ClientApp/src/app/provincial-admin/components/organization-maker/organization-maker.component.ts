@@ -1,11 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Organization } from '../core/models';
+import { Organization } from '../../../core/models';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OrganizationService } from '../core/services/organization.service';
+import { OrganizationService } from '../../../core/services/organization.service';
 import { FormControl } from '@angular/forms';
-import { NotificationQueueService } from '../core/services/notification-queue.service';
-import { AuthService } from '../core/services/auth.service';
-import { UniqueKeyService } from '../core/services/unique-key.service';
+import { NotificationQueueService } from '../../../core/services/notification-queue.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { UniqueKeyService } from '../../../core/services/unique-key.service';
 
 @Component({
   selector: 'app-organization-maker',
