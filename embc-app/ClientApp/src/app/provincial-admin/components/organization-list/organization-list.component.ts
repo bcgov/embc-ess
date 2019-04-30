@@ -4,12 +4,12 @@ import { combineLatest, concat } from 'rxjs';
 import { map } from 'rxjs/operators';
 // import { Store } from '@ngrx/store';
 // import { AppState } from '../store';
-import { ListResult, Organization, Community, PaginationSummary } from '../core/models';
-import { OrganizationService } from '../core/services/organization.service';
+import { ListResult, Organization, Community, PaginationSummary } from '../../../core/models';
+import { OrganizationService } from '../../../core/services/organization.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { SearchQueryParameters } from '../core/models/search-interfaces';
-import { AuthService } from '../core/services/auth.service';
-import { UniqueKeyService } from '../core/services/unique-key.service';
+import { SearchQueryParameters } from '../../../core/models/search-interfaces';
+import { AuthService } from '../../../core/services/auth.service';
+import { UniqueKeyService } from '../../../core/services/unique-key.service';
 
 // TODO: Un-comment code below when we are ready to aggregate all communities + regions in a single drop-down
 // interface SearchFilter {
