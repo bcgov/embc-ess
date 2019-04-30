@@ -22,11 +22,13 @@ import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
 import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
 
-import { YesNoPipe } from './pipes/yes-no.pipe';
-import { ByIdPipe } from './pipes/by-id.pipe';
-import { PluckPipe } from './pipes/pluck.pipe';
 import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent, CollectionNoticeComponent } from './components/side-boxes';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+
+import { ByIdPipe } from './pipes/by-id.pipe';
+import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
+import { PluckPipe } from './pipes/pluck.pipe';
+import { YesNoPipe } from './pipes/yes-no.pipe';
 
 @NgModule({
   declarations: [
@@ -46,9 +48,10 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     FontAwesomeLinkComponent,
     AttentionIconComponent,
     CommunitiesSelectComponent,
-    YesNoPipe,
     ByIdPipe,
+    DateTimeFormatPipe,
     PluckPipe,
+    YesNoPipe,
     AddEvacueeComponent,
     AddOrganizationComponent,
     AddTaskNumberComponent,
@@ -89,9 +92,10 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     FontAwesomeLinkComponent,
     AttentionIconComponent,
     CommunitiesSelectComponent,
-    YesNoPipe,
     ByIdPipe,
+    DateTimeFormatPipe,
     PluckPipe,
+    YesNoPipe,
     AddEvacueeComponent,
     AddOrganizationComponent,
     AddTaskNumberComponent,

@@ -44,6 +44,14 @@ export class RegistrationService extends RestService {
       );
   }
 
+  getSummaryById(id: string): Observable<Registration> {
+    return this.http.get<Registration>(`api/registrations/${id}/summary`, { headers: this.headers })
+      .pipe(
+        retry(3),
+        catchError(this.handleError),
+      );
+  }
+
   getRegistrationById(id: string): Observable<Registration> {
     return this.http.get<Registration>(`api/registrations/${id}`, { headers: this.headers })
       .pipe(
