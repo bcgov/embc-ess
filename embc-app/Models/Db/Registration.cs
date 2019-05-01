@@ -75,9 +75,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public Community HostCommunity { get; set; }
 
-        //Mapped to Volunteer
-        public int? CompletedById { get; set; }
-
-        public Volunteer CompletedBy { get; set; }
+        public Guid? CompletedById { get; set; }
     }
 }

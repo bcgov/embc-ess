@@ -30,7 +30,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         .ThenInclude(addr => (addr as Models.Db.OtherAddress).Country)
                 .Include(reg => reg.HostCommunity)
                     .ThenInclude(c => c.Region)
-                .Include(reg => reg.CompletedBy)
                 .Include(reg => reg.IncidentTask)
                     .ThenInclude(t => t.Region)
                 .Include(reg => reg.IncidentTask)

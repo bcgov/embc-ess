@@ -124,12 +124,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             modelBuilder.Entity<Registration>()
                 .Property(r => r.EssFileNumber)
                 .HasDefaultValueSql("NEXT VALUE FOR ESSFileNumbers");
-
-            modelBuilder.Entity<Registration>()
-                .HasOne(r => r.CompletedBy)
-                .WithMany()
-                .HasForeignKey(r => r.CompletedById)
-                .HasPrincipalKey(v => v.Id);
         }
     }
 }

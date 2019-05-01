@@ -16,6 +16,12 @@ namespace Gov.Jag.Embc.Public.Migrations
                 name: "FK_Registrations_People_CompletedById",
                 table: "Registrations");
 
+            migrationBuilder.DropIndex(
+                name: "IX_Registrations_CompletedById",
+                table: "Registrations");
+
+
+
             migrationBuilder.CreateTable(
                 name: "Volunteers",
                 columns: table => new
@@ -88,33 +94,13 @@ namespace Gov.Jag.Embc.Public.Migrations
                 nullable: true);
 
             migrationBuilder.Sql("UPDATE Registrations SET CompletedByPeopleId = CompletedById");
-            migrationBuilder.Sql("UPDATE Registrations SET CompletedById = null");
-
-
-            migrationBuilder.DropIndex(
-                name: "IX_Registrations_CompletedById",
-                table: "Registrations");
-
-            migrationBuilder.DropColumn(
-                name: "CompletedById",
-                table: "Registrations");
-
-            migrationBuilder.AddColumn<int>(
-                name: "CompletedById",
-                table: "Registrations",
-                nullable: true);
-
+            
             migrationBuilder.Sql(@"UPDATE Registrations
-                                                    SET CompletedById = v.Id
+                                                    SET CompletedById = v.Externaluseridentifier
                                                 FROM Registrations r
                                                 INNER JOIN
                                                     Volunteers v
                                                     ON r.CompletedByPeopleId = v.PeopleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Registrations_CompletedById",
-                table: "Registrations",
-                column: "CompletedById");
 
             migrationBuilder.DropColumn(
                 name: "CompletedByPeopleId",
@@ -168,31 +154,12 @@ namespace Gov.Jag.Embc.Public.Migrations
                 name: "IX_Volunteers_OrganizationId",
                 table: "Volunteers",
                 column: "OrganizationId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Registrations_Volunteers_CompletedById",
-                table: "Registrations",
-                column: "CompletedById",
-                principalTable: "Volunteers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Registrations_Volunteers_CompletedById",
-                table: "Registrations");
-
             migrationBuilder.DropTable(
                 name: "Volunteers");
-
-            migrationBuilder.AlterColumn<Guid>(
-                name: "CompletedById",
-                table: "Registrations",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldNullable: true);
 
             migrationBuilder.AddColumn<bool>(
                 name: "Active",
@@ -239,6 +206,11 @@ namespace Gov.Jag.Embc.Public.Migrations
                 name: "OrganizationId",
                 table: "People",
                 nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Registrations_CompletedById",
+                table: "Registrations",
+                column: "CompletedById");
 
             migrationBuilder.CreateIndex(
                 name: "IX_People_OrganizationId",

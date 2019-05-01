@@ -43,7 +43,5 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public Guid? OrganizationId { get; set; }
 
         public Organization Organization { get; set; }
-
-        //public List<Registration> CompletedRegistrations { get; set; }
     }
 }

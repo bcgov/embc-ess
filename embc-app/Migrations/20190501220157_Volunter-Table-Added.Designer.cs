@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gov.Jag.Embc.Public.Migrations
 {
     [DbContext(typeof(EmbcDbContext))]
-    [Migration("20190501023439_Volunter-Table-Added")]
+    [Migration("20190501220157_Volunter-Table-Added")]
     partial class VolunterTableAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -205,7 +205,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<int?>("CompletedById");
+                    b.Property<Guid?>("CompletedById");
 
                     b.Property<bool?>("DeclarationAndConsent");
 
@@ -274,8 +274,6 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.Property<DateTimeOffset?>("SelfRegisteredDate");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompletedById");
 
                     b.HasIndex("HeadOfHouseholdId");
 
@@ -433,10 +431,6 @@ namespace Gov.Jag.Embc.Public.Migrations
 
             modelBuilder.Entity("Gov.Jag.Embc.Public.Models.Db.Registration", b =>
                 {
-                    b.HasOne("Gov.Jag.Embc.Public.Models.Db.Volunteer", "CompletedBy")
-                        .WithMany()
-                        .HasForeignKey("CompletedById");
-
                     b.HasOne("Gov.Jag.Embc.Public.Models.Db.HeadOfHousehold", "HeadOfHousehold")
                         .WithMany()
                         .HasForeignKey("HeadOfHouseholdId");
