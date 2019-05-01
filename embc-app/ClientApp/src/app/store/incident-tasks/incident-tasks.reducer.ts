@@ -22,7 +22,10 @@ const initialState: State = {
     id: null, // as string
     taskNumber: null, // as string
     details: null, // as string
-    community: null // as Community
+    totalAssociatedEvacuees: 0, // as number
+    community: null, // as Community
+    region: null, // as Region
+    startDate: null // as string (datetime)
   },
   loading: false,
   loaded: false,

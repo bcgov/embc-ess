@@ -36,6 +36,8 @@ export class TaskNumberMakerComponent implements OnInit {
     taskNumber: '',
     details: '',
     community: null,
+    region: null,
+    startDate: null // datetime
   };
 
   constructor(
