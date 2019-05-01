@@ -1,15 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Gov.Jag.Embc.Public.Data.Extensions;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gov.Jag.Embc.Public.Seeder
 {
     public class SeederRepository : ISeederRepository
     {
-        readonly EmbcDbContext db;
+        private readonly EmbcDbContext db;
 
         public SeederRepository(EmbcDbContext ctx)
         {
@@ -104,6 +104,7 @@ namespace Gov.Jag.Embc.Public.Seeder
                 entity.Active = incidentTask.Active;
                 entity.RegionName = incidentTask.RegionName;
                 entity.CommunityId = incidentTask.CommunityId;
+                entity.StartDate = incidentTask.StartDate;
             }
             db.UpdateRange(existingEntities);
 
@@ -130,7 +131,6 @@ namespace Gov.Jag.Embc.Public.Seeder
                 entity.Name = organization.Name;
                 entity.RegionName = organization.RegionName;
                 entity.CommunityId = organization.CommunityId;
-
             }
             db.UpdateRange(existingEntities);
 
@@ -189,7 +189,5 @@ namespace Gov.Jag.Embc.Public.Seeder
 
             db.SaveChanges();
         }
-
- 
     }
 }
