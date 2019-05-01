@@ -12,8 +12,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         private IQueryable<Models.Db.Volunteer> Volunteers => db.Volunteers
             .AsNoTracking()
-            //.Where(p => p is Models.Db.Volunteer)
-            //.Cast<Models.Db.Volunteer>()
             .Include(v => v.Organization)
                 .ThenInclude(x => x.Region)
             .Include(v => v.Organization)
@@ -38,8 +36,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 volunteer.IsPrimaryContact = false;
             }
             db.Volunteers.Update(volunteer);
-            //var numberOfPrimaryContacts = await GetNumberOfPrimaryContactsInOrganization(orgId);
-            //if (numberOfPrimaryContacts < 1) throw new InvalidOperationException("Organization must have at least 1 primary contact");
 
             await db.SaveChangesAsync();
         }
