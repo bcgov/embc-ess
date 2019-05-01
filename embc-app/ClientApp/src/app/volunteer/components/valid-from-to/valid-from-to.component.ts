@@ -24,7 +24,7 @@ export class ValidFromToComponent implements OnInit {
   initializeDates(referralDate: ReferralDate): void {
 
     // if there is no identifier this component is useless.
-    if (referralDate.identifier) {
+    if (referralDate.uuid) {
       // generate the referral date
       this.wrd = this.generateReferralDate(referralDate);
     }

@@ -14,7 +14,7 @@ export class TesterPageComponent implements OnInit {
   dateStub: any;
 
   // inputDate: ReferralDate = { identifier: 'banana' };
-  inputDate: ReferralDate = { identifier: 'banana', from: '2019-05-01T21:22:58.149Z' };
+  inputDate: ReferralDate = { uuid: 'banana', from: '2019-05-01T21:22:58.149Z' };
 
   constructor(
     private notifications: NotificationQueueService

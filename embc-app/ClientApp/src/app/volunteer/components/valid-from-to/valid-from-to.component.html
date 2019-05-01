@@ -3,18 +3,18 @@
     <span class="h3">Valid From</span>
     <div class="row">
       <div class="col-6">
-        <label for="validFromDate">Date</label>
-        <input type="date" id="validFromDate" class="form-control">
+        <label for="validFromDate_{{referralDate.uuid}}">Date</label>
+        <input type="date" id="validFromDate_{{referralDate.uuid}}" class="form-control">
         <span class="invalid-feedback">Please enter a valid date.</span>
       </div>
       <div class="col-3 pl-0">
-        <label for="validFromTime">Time</label>
-        <input type="time" id="validFromTime" class="form-control">
+        <label for="validFromTime_{{referralDate.uuid}}">Time</label>
+        <input type="time" id="validFromTime_{{referralDate.uuid}}" class="form-control">
         <span class="invalid-feedback">Please enter a valid time.</span>
       </div>
       <div class="col-3 pl-0">
-        <label for="numberDays"># Days</label>
-        <select class="form-control" id="numberDays">
+        <label for="numberDays_{{referralDate.uuid}}"># Days</label>
+        <select class="form-control" id="numberDays_{{referralDate.uuid}}">
           <option>--</option>
           <option *ngFor="let n of days">{{n}}</option>
         </select>
@@ -25,15 +25,15 @@
     <span class="h3">Valid To</span>
     <div class="row">
       <div class="col-7">
-        <label for="validToDate">Date</label>
-        <input type="text" id="validToDate" class="form-control" readonly>
+        <label for="validToDate_{{referralDate.uuid}}">Date</label>
+        <input type="text" id="validToDate_{{referralDate.uuid}}" class="form-control" readonly>
       </div>
       <div class="col-5 pl-0">
-        <label for="validToTime">Time</label>
-        <input type="text" id="validToTime" class="form-control" readonly>
+        <label for="validToTime_{{referralDate.uuid}}">Time</label>
+        <input type="text" id="validToTime_{{referralDate.uuid}}" class="form-control" readonly>
       </div>
     </div>
   </div>
   <!-- TODO: we should emit whenever a form element changes -->
-  <button (click)="emitReferralDate()">Emit</button>
+  <button (click)="emitReferralDate(wrd)">Emit</button>
   <pre>{{wrd|json}}</pre>
