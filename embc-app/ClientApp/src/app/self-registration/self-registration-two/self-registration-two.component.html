@@ -41,7 +41,7 @@
         <label class="form-check-label" for="hasPetsFalse">No</label>
       </div>
       <span [class.d-block]="invalid('hasPets')" class="invalid-feedback">{{validationErrors['hasPets']}}</span>
-  </div>
+    </div>
   </section>
 
   <h2 class="blue-header h3">INSURANCE</h2>
@@ -129,7 +129,7 @@
       <button type="button" class="btn btn-secondary" (click)="back()">EDIT SELF-REGISTRATION</button>
     </section>
     <section>
-      <a routerLink="/dashboard">
+      <a routerLink="/">
         <app-font-awesome-icon icon="times"></app-font-awesome-icon>
         <span class="ml-2">Cancel &amp; Close</span>
       </a>
