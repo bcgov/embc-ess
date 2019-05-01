@@ -15,7 +15,9 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string Name { get; set; }
 
         public bool Active { get; set; }
-        public RegionalDistrict RegionalDistrict { get; set; }
+        [ForeignKey("Region")]
+        public string RegionName { get; set; }
+        public Region Region { get; set; }
         public IEnumerable<Organization> Organizations { get; set; }
     }
 }

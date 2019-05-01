@@ -12,7 +12,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     Id = source.Id.ToString(),
                     Name = source.Name,
                     Active = source.Active,
-                    RegionalDistrict = source.RegionalDistrict.ToViewModel()
+                    Region = source.Region.ToViewModel()
                 };
             }
             return result;

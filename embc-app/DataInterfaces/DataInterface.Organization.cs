@@ -12,20 +12,24 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         private IQueryable<Models.Db.Organization> Organizations => db.Organizations
             .AsNoTracking()
             .Include(x => x.Region)
-            .Include(x => x.RegionalDistrict)
-                .ThenInclude(x => x.Region)
             .Include(x => x.Community)
-                .ThenInclude(x => x.RegionalDistrict)
-                    .ThenInclude(x => x.Region);
+                .ThenInclude(x => x.Region);
 
         public async Task<IPagedResults<Organization>> GetOrganizationsAsync(SearchQueryParameters searchQuery)
         {
-            Guid? searchEntityId = searchQuery.HasQuery() ? Guid.Parse(searchQuery.Query) : (Guid?)null;
+            Guid? communityId = null;
+            string regionName = null;
+            if (searchQuery.HasQuery() && Guid.TryParse(searchQuery.Query, out Guid searchEntityId))
+            {
+                communityId = searchEntityId;
+            }
+            else if (searchQuery.HasQuery())
+            {
+                regionName = searchQuery.Query;
+            }
             var items = await Organizations
-                .Where(o => !searchEntityId.HasValue ||
-                    o.Community.Id == searchEntityId ||
-                    o.RegionalDistrict.Id == searchEntityId ||
-                    o.Region.Id == searchEntityId
+                .Where(o => (!communityId.HasValue || o.Community.Id == communityId) ||
+                    (string.IsNullOrEmpty(regionName) || o.RegionName.Equals(regionName, StringComparison.OrdinalIgnoreCase))
                 )
                 .Where(t => searchQuery.IncludeDeactivated || t.Active)
                 .Sort(searchQuery.SortBy ?? "id")
@@ -35,9 +39,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return new PaginatedList<Organization>(items.Select(i => i.org.ToViewModel(i.pc)), searchQuery.Offset, searchQuery.Limit);
         }
 
-        public Organization GetOrganizationBCeIDGuid(string guid)
+        public async Task<Organization> GetOrganizationByBCeIDGuidAsync(string guid)
         {
-            var org = Organizations.FirstOrDefault(x => x.BCeIDBusinessGuid == guid);
+            var org = await Organizations.FirstOrDefaultAsync(x => x.BCeIDBusinessGuid == guid);
             if (org == null) return null;
             return org.ToViewModel(GetPrimaryContactForOrganization(org.Id).GetAwaiter().GetResult());
         }

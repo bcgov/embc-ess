@@ -5,8 +5,8 @@ import { catchError, retry } from 'rxjs/operators';
 import { CoreModule } from '../core.module';
 import { Registration, ListResult } from '../models';
 import { RestService } from './rest.service';
-import { SearchQueryParameters } from 'src/app/shared/components/search';
 import { HttpResponse } from '@angular/common/http';
+import { SearchQueryParameters } from '../models/search-interfaces';
 
 @Injectable({
   providedIn: CoreModule
@@ -41,6 +41,14 @@ export class RegistrationService extends RestService {
       .pipe(
         retry(3),
         catchError(this.handleError)
+      );
+  }
+
+  getSummaryById(id: string): Observable<Registration> {
+    return this.http.get<Registration>(`api/registrations/${id}/summary`, { headers: this.headers })
+      .pipe(
+        retry(3),
+        catchError(this.handleError),
       );
   }
 

@@ -20,14 +20,12 @@ namespace Gov.Jag.Embc.Public.Models.Db
         [Column("BceidAccountNumber")]
         public string BCeIDBusinessGuid { get; set; }
 
-        public Guid? RegionId { get; set; }
+        [ForeignKey("Region")]
+        public string RegionName { get; set; }
 
-        public Guid? RegionalDistrictId { get; set; }
         public Guid? CommunityId { get; set; }
 
         public Region Region { get; set; }
-
-        public RegionalDistrict RegionalDistrict { get; set; }
 
         public Community Community { get; set; }
     }

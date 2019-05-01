@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Data.SqlClient;
 
 namespace Gov.Jag.Embc.Public
@@ -75,6 +76,25 @@ namespace Gov.Jag.Embc.Public
                 cmd.ExecuteNonQuery();
 
                 conn.Close();
+            }
+        }
+
+        public static void SyncInitialMigration(string connectionString)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                var sql =
+                    @"IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'__EFMigrationsHistory')
+                        BEGIN
+                                IF NOT EXISTS(SELECT ef.MigrationId FROM __EFMigrationsHistory ef WHERE ef.MigrationId = N'20190424150858_InitialDB')
+                                BEGIN
+                                    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+                                    VALUES(N'20190424150858_InitialDB', N'2.2.0-rtm-35687');
+                                END
+                        END";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
             }
         }
     }

@@ -17,6 +17,7 @@ import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { NotificationQueueService } from '../core/services/notification-queue.service';
+import { UniqueKeyService } from '../core/services/unique-key.service';
 
 @Component({
   selector: 'app-registration-maker',
@@ -65,6 +66,9 @@ export class RegistrationMakerComponent implements OnInit {
   // error summary to display; i.e. 'Some required fields have not been completed.'
   errorSummary = '';
 
+  // path for this user to route from
+  path: string;
+
   // generic validation helper
   private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
   private validationHelper: ValidationHelper;
@@ -72,12 +76,12 @@ export class RegistrationMakerComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>, // ngrx app state
-    private route: ActivatedRoute,
     private registrationService: RegistrationService,
     private incidentTaskService: IncidentTaskService,
     private router: Router,
+    private notificationQueueService: NotificationQueueService,
     private authService: AuthService,
-    private notificationQueueService: NotificationQueueService
+    private uniqueKeyService: UniqueKeyService,
   ) {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
@@ -167,6 +171,7 @@ export class RegistrationMakerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.authService.path.subscribe(p => this.path = p);
     // fetch the default country
     this.countries$.subscribe((countries: Country[]) => {
       // the only(first) element that is named Canada
@@ -187,13 +192,14 @@ export class RegistrationMakerComponent implements OnInit {
     // Know the current user
     this.authService.getCurrentUser().subscribe(u => this.currentUser = u);
 
-    // if there are route params we should grab them
-    const id = this.route.snapshot.params.id;
+    // // if there are route params we should grab them
+    // const id = this.route.snapshot.params.id;
 
-    if (id) {
+    // get unique key if one exists
+    const key = this.uniqueKeyService.getKey();
+    if (key) {
       // this is a form with data flowing in.
-      // TODO: Redirect to error page if we fail to fetch the registration
-      this.registrationService.getRegistrationById(id).subscribe(r => {
+      this.registrationService.getRegistrationById(key).subscribe(r => {
 
         // set registration mode to edit and save the previous content in an object.
         this.registration = r;
@@ -521,8 +527,8 @@ export class RegistrationMakerComponent implements OnInit {
   }
 
   next() {
-    this.submitting = true; // this disables buttons while we process the form
-    this.submitted = true; // TODO: Unsure what this is.
+    this.submitting = true; // disables buttons while we process the form
+    this.submitted = true; // used for invalid feedback // TODO: possibly get rid of this
     this.validateForm();
     // stop here if form is invalid
     if (this.form.invalid) {
@@ -537,41 +543,35 @@ export class RegistrationMakerComponent implements OnInit {
       // navigate to the next page. AKA show the summary part of the form.
       this.summaryMode = true;
       this.submitting = false; // reenable when we parse data
+      window.scrollTo(0, 0); // scroll to top
     }
   }
 
   submit() {
-    // Send data to the server
-    this.submitted = true;
-    // in transmission
-    this.submitting = true;
-    // this function performs the "send json to server" action
-    // push changes to backend
-    // TODO: should this be editmode?
+    this.submitted = true; // send data to the server
+    this.submitting = true; // in transmission
+
+    // create or update registration
+    // TODO: should this be editmode instead?
     if (this.registration.id == null) {
-      // submit the global registration to the server
       this.registrationService
         .createRegistration(this.registration)
         .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee added successfully');
-
-          // TODO: there is an exception that if the route is ...com/embcess/register-evacuee it should only go up one instead of 2
-          // TODO: It should be fixed but will need a wider refactor for consistency
-          // if the parameters are on the end of the URL we need to route towards root once more
-          this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
+          // go back to the main dashboard
+          this.router.navigate([`/${this.path}/`]);
         });
     } else {
-      // submit the global registration to the server
       this.registrationService
         .updateRegistration(this.registration)
         .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee updated successfully');
-
-          this.editMode ? this.router.navigate(['../../../evacuees'], { relativeTo: this.route }) : this.router.navigate(['../../evacuees'], { relativeTo: this.route });
+          // go back to the main dashboard
+          this.router.navigate([`/${this.path}/`]);
         });
     }
   }
@@ -579,6 +579,7 @@ export class RegistrationMakerComponent implements OnInit {
   back() {
     // return to the edit mode so you can change the form data
     this.summaryMode = false;
+    window.scrollTo(0, 0); // scroll to top
   }
 
   collectRegistrationFromForm(): Registration {
@@ -617,10 +618,10 @@ export class RegistrationMakerComponent implements OnInit {
       dietaryNeeds: values.dietaryNeeds as boolean,
       dietaryNeedsDetails: values.dietaryNeedsDetails as string,
       disasterAffectDetails: values.disasterAffectDetails as string,
-      externalReferralsDetails: values.externalReferralsDetails as string,
+      externalReferralsDetails: this.asStringAndTrim(values.externalReferralsDetails),
       facility: values.facility as string,
-      familyRecoveryPlan: values.familyRecoveryPlan as string,
-      followUpDetails: values.followUpDetails as string,
+      familyRecoveryPlan: this.asStringAndTrim(values.familyRecoveryPlan),
+      followUpDetails: this.asStringAndTrim(values.followUpDetails),
       insuranceCode: values.insuranceCode as string,
       medicationNeeds: values.medicationNeeds as boolean,
       registeringFamilyMembers: values.registeringFamilyMembers as string, // 'yes' or 'no'
@@ -708,6 +709,11 @@ export class RegistrationMakerComponent implements OnInit {
 
     // return the registration
     return r;
+  }
+
+  asStringAndTrim(value: any): string {
+    const s = value as string;
+    return s ? s.trim() : null;
   }
 
   // --------------------HELPERS-----------------------------------------

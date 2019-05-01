@@ -1,0 +1,37 @@
+<!--
+TODO - this component needs to have:
+- valid-from-to sub-component
+- button to open View Rates popup (and popup template?)
+- list of evacuees sub-component
+- approved items block
+- supplier sub-component
+- add comments block
+- remove/add another buttons
+
+I think this component needs to implement a form, and pass child forms to the sub-components.
+
+And of course this component needs to be implemented as a 'maker' with both an edit and view-only interface.
+-->
+
+<section>
+  <h2 class="blue-header">
+    <app-font-awesome-icon icon="plus-circle"></app-font-awesome-icon>&nbsp;&nbsp;INCIDENTALS
+  </h2>
+  <div class="space-between align-items-end">
+    <app-valid-from-to></app-valid-from-to>
+    <button type="button" class="btn btn-secondary" (click)="viewIncidentalsRates()">VIEW ESS RATES</button>
+  </div>
+
+  <div class="feature-block card p-0 mt-4">
+    <app-supplier></app-supplier>
+
+    <div class="card-footer">
+      <app-fa-link icon="times" class="float-left" (click)="remove.emit()">
+        Remove this referral
+      </app-fa-link>
+      <app-fa-link icon="plus-circle" color="#669900" class="float-right" (click)="add.emit()">
+        ADD ANOTHER INCIDENTALS REFERRAL
+      </app-fa-link>
+    </div>
+  </div>
+</section>

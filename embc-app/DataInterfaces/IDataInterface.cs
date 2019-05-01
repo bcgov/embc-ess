@@ -46,8 +46,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<IEnumerable<Region>> GetRegionsAsync();
 
-        Task<IEnumerable<RegionalDistrict>> GetRegionalDistrictsAsync();
-
         Task<IEnumerable<FamilyRelationshipType>> GetFamilyRelationshipTypesAsync();
 
         #endregion Lookup data
@@ -56,7 +54,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<IPagedResults<Organization>> GetOrganizationsAsync(SearchQueryParameters searchQuery);
 
-        Organization GetOrganizationBCeIDGuid(string guid);
+        Task<Organization> GetOrganizationByBCeIDGuidAsync(string guid);
 
         Task<string> CreateOrganizationAsync(Organization item);
 

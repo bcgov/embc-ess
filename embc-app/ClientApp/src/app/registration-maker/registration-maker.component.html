@@ -1,20 +1,20 @@
 <div *ngIf="!summaryMode">
   <!-- ADD AN EVACUEE / EDIT EVACUEE REGISTRATION -->
-  <div class="mt-4">
-    <h1>{{pageTitle}}</h1>
-    <p *ngIf="createMode">
-      Before starting a new evacuee registration, use the search tool on your dashboard to confirm that the evacuee hasn’t already registered.
-    </p>
-    <p>
-      <small>
-        All required fields are marked with an asterisk *
-      </small>
-    </p>
-  </div>
+  <h1 class="mt-4">{{pageTitle}}</h1>
+
+  <p *ngIf="createMode">
+    Before starting a new evacuee registration, use the search tool on your dashboard to confirm that the evacuee hasn’t already registered.
+  </p>
+
+  <p>
+    <small>
+      All required fields are marked with an asterisk *
+    </small>
+  </p>
 
   <!-- COLLECTION NOTICE AND AUTHORIZATION -->
   <div class="mt-4">
-    <h3 class="blue-header">Collection Notice and Authorization</h3>
+    <h2 class="blue-header font-weight-bold">COLLECTION NOTICE AND AUTHORIZATION</h2>
     <section class="padded-section">
       <!-- <input type="checkbox" class="form-check-input" [formControl]="declarationAndConsent"> -->
       <p>
@@ -33,7 +33,7 @@
   <form novalidate [formGroup]="form">
     <!-- TASK NUMBER & PLACE OF REGISTRATION -->
     <div class="mt-4">
-      <h3 class="blue-header">TASK NUMBER &amp; PLACE OF REGISTRATION</h3>
+      <h2 class="blue-header font-weight-bold">TASK NUMBER &amp; PLACE OF REGISTRATION</h2>
       <div class="form-row">
         <app-attention-icon></app-attention-icon>
         <app-form-field required="true" class="col">
@@ -81,7 +81,7 @@
 
     <!-- RESTRICTION // TODO: restricted files not handled in V1 -->
     <!-- <div class="mt-4">
-      <h3 class="blue-header">RESTRICTION</h3>
+      <h2 class="blue-header font-weight-bold">RESTRICTION</h2>
       <p class="required">Concerned family and friends may inquire about you and your family because of the emergency. We would like to provide these people with some information about you. Please check "Yes" if you <u>do not</u> want EMBC to disclose your location and the contact information for you and your family members?</p>
       <div class="form-check">
         <input type="checkbox" class="form-check-input" formControlName="restrictedAccess" id="restrictedAccess">
@@ -91,9 +91,10 @@
 
     <!-- RESTRICTION -->
     <div class="feature-block mt-4">
-      <h3 class="required">Restriction</h3>
+      <h2 class="required mt-0">Restriction</h2>
       <p>
-        Concerned family and friends may inquire about you and your family because of the emergency. We would like to provide these people with some information about you. May we disclose your location and the contact information for you and your family members?
+        Concerned family and friends may inquire about you and your family because of the emergency. We would like to provide these people with some information about you.<br>
+        <strong>May we disclose your location and the contact information for you and your family members?</strong>
       </p>
       <div class="form-check">
         <input type="radio" class="form-check-input" name="restriction" [checked]="activeForm" (click)="disableInput(false)" id="restrictionFalse">
@@ -124,7 +125,7 @@
     <div *ngIf="activeForm">
       <!-- EVACUEE DETAILS -->
       <div formGroupName="headOfHousehold" class="mt-4">
-        <h3 class="blue-header">EVACUEE DETAILS</h3>
+        <h2 class="blue-header font-weight-bold">EVACUEE DETAILS</h2>
         <app-form-field required="true">
           <label for="lastName">Last Name</label>
           <input type="text" [class.is-invalid]="invalid('headOfHousehold.lastName')" class="form-control" formControlName="lastName" id="lastName" autocomplete="off">
@@ -166,7 +167,7 @@
 
       <!-- EVACUEE FAMILY INFORMATION -->
       <div class="mt-4">
-        <h3 class="blue-header">EVACUEE FAMILY INFORMATION</h3>
+        <h2 class="blue-header font-weight-bold">EVACUEE FAMILY INFORMATION</h2>
         <p class="required">
           Are you registering family members who live in the same household with you whom you know are safe?
         </p>
@@ -258,7 +259,7 @@
 
       <!-- PRIMARY RESIDENCE & CONTACT DETAILS -->
       <div class="mt-4">
-        <h3 class="blue-header">PRIMARY RESIDENCE &amp; CONTACT DETAILS</h3>
+        <h2 class="blue-header font-weight-bold">PRIMARY RESIDENCE &amp; CONTACT DETAILS</h2>
         <p class="required">
           Is your primary residence within BC?
         </p>
@@ -307,7 +308,7 @@
 
       <!-- MAILING ADDRESS -->
       <div class="mt-4">
-        <h3 class="blue-header">MAILING ADDRESS</h3>
+        <h2 class="blue-header font-weight-bold">MAILING ADDRESS</h2>
         <p class="required">
           Is your mailing address the same as your primary residence?
         </p>
@@ -345,7 +346,7 @@
 
       <!-- BRIEF STATEMENT OF HOW THE PERSON/FAMILY WERE AFFECTED BY THE DISASTER -->
       <div class="mt-4">
-        <h3 class="blue-header">BRIEF STATEMENT OF HOW THE PERSON/FAMILY WERE AFFECTED BY THE DISASTER</h3>
+        <h2 class="blue-header font-weight-bold">BRIEF STATEMENT OF HOW THE PERSON/FAMILY WERE AFFECTED BY THE DISASTER</h2>
         <div class="form-row">
           <app-attention-icon></app-attention-icon>
           <p class="col">
@@ -361,7 +362,7 @@
 
       <!-- INSURANCE -->
       <div class="mt-4">
-        <h3 class="blue-header">INSURANCE</h3>
+        <h2 class="blue-header font-weight-bold">INSURANCE</h2>
         <p class="required">
           Do you have insurance to cover your immediate needs?
         </p>
@@ -391,7 +392,7 @@
 
       <!-- ADDITIONAL INFORMATION -->
       <div class="mt-4">
-        <h3 class="blue-header">ADDITIONAL INFORMATION</h3>
+        <h2 class="blue-header font-weight-bold">ADDITIONAL INFORMATION</h2>
 
         <!-- DIETARY REQUIREMENTS -->
         <div class="form-row mt-0">
@@ -475,7 +476,7 @@
 
       <!-- NEXT STEPS -->
       <div class="mt-4">
-        <h3 class="blue-header">NEXT STEPS</h3>
+        <h2 class="blue-header font-weight-bold">NEXT STEPS</h2>
         <p class="required">
           While you are evacuated do you require supports?<br>
           This could be in the form of food / accommodation / clothing / incidentals or transportation.
@@ -519,7 +520,7 @@
 
       <!-- FAMILY RECOVERY PLANS (IMMEDIATE & LONG TERM) -->
       <div class="mb-4">
-        <h3 class="blue-header">FAMILY RECOVERY PLANS (IMMEDIATE &amp; LONG TERM)</h3>
+        <h2 class="blue-header font-weight-bold">FAMILY RECOVERY PLANS (IMMEDIATE &amp; LONG TERM)</h2>
         <div class="form-row">
           <app-attention-icon [alignCenter]="false"></app-attention-icon>
           <p class="col">
@@ -532,8 +533,8 @@
 
       <!-- FOLLOW-UP REQUIRED -->
       <div class="mb-4">
-        <h3 class="blue-header">FOLLOW-UP REQUIRED</h3>
-        <div class="form-row ml-0">
+        <h2 class="blue-header font-weight-bold">FOLLOW-UP REQUIRED</h2>
+        <div class="form-row mx-0">
           <app-attention-icon [alignCenter]="false"></app-attention-icon>
           <textarea class="form-control" placeholder="Details" rows="4" formControlName="followUpDetails"></textarea>
         </div>
@@ -541,7 +542,7 @@
 
       <!-- REFERRALS MADE WITHIN RECEPTION CENTRE -->
       <div class="mb-4">
-        <h3 class="blue-header">REFERRALS MADE WITHIN RECEPTION CENTRE</h3>
+        <h2 class="blue-header font-weight-bold">REFERRALS MADE WITHIN RECEPTION CENTRE</h2>
         <div class="form-row">
           <app-attention-icon></app-attention-icon>
           <p class="col">
@@ -576,40 +577,41 @@
 
       <!-- OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE< -->
       <div class="mb-4">
-        <h3 class="blue-header">OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE</h3>
-        <div class="form-row ml-0">
+        <h2 class="blue-header font-weight-bold">OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE</h2>
+        <div class="form-row mx-0">
           <app-attention-icon [alignCenter]="false"></app-attention-icon>
           <textarea class="form-control" placeholder="Details" rows="4" formControlName="externalReferralsDetails"></textarea>
         </div>
       </div>
 
-      <div *ngIf="errorSummary" class="mt-5 pl-5 text-danger">
+      <div *ngIf="errorSummary" class="text-danger mt-5 pl-5">
         <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>
         &nbsp;{{ errorSummary }}
       </div>
 
-      <div class="mt-5 mb-4 space-between">
-        <section>
+      <section class="space-between align-items-center mt-5 mb-4">
+        <div>
           <a routerLink="/dashboard">
             <app-font-awesome-icon icon="times"></app-font-awesome-icon>
             <span class="ml-2">Cancel &amp; Close</span>
           </a>
-        </section>
-        <section>
+        </div>
+        <div>
           <button type="button" class="btn btn-primary ml-4" [disabled]="submitting" (click)="next()">
             <span *ngIf="submitting">WORKING</span>
             <span *ngIf="!submitting">NEXT</span>
           </button>
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
   </form>
 </div>
 
 <!-- *********************************SUMMARY BELOW****************************************** -->
 <div *ngIf="summaryMode">
-  <!-- Not editing? reviewing -->
-  <h1 class="mt-3">Review Details</h1>
+  <!-- REVIEW DETAILS -->
+  <h1 class="mt-4">Review Details</h1>
+
   <p>
     Please confirm that all details you entered are correct by reading through the summary below with the evacuee.
   </p>
@@ -625,7 +627,7 @@
     </li> -->
   </ul>
 
-  <h3>Place of Registration</h3>
+  <h2>Place of Registration</h2>
   <ul class="summary">
     <li>
       <span class="name">Facility Name/Registration Location:</span>
@@ -637,7 +639,7 @@
     </li>
   </ul>
 
-  <h3>Evacuee Information</h3>
+  <h2>Evacuee Information</h2>
   <ul class="summary">
     <li>
       <span class="name">Last Name:</span>
@@ -666,7 +668,7 @@
   </ul>
 
   <div *ngIf="registration?.headOfHousehold?.familyMembers">
-    <h3>Evacuee Family Information</h3>
+    <h2>Evacuee Family Information</h2>
     <ul class="summary mt-4" *ngFor="let fm of registration.headOfHousehold.familyMembers">
       <li>
         <span class="name">Last Name:</span>
@@ -695,7 +697,7 @@
     </ul>
   </div>
 
-  <h3>Primary Address &amp; Contact Details</h3>
+  <h2>Primary Address &amp; Contact Details</h2>
   <ul class="summary">
     <ng-container *ngIf="isBcAddress(registration?.headOfHousehold?.primaryResidence); then content1 else other_content1"></ng-container>
     <ng-template #content1>
@@ -756,8 +758,8 @@
     </li>
   </ul>
 
-  <ng-container *ngIf="registration?.headOfHousehold?.mailingAddress">
-    <h3>Mailing Address</h3>
+  <div *ngIf="registration?.headOfHousehold?.mailingAddress">
+    <h2>Mailing Address</h2>
     <ul class="summary">
       <ng-container *ngIf="isBcAddress(registration?.headOfHousehold?.mailingAddress); then content2 else other_content2"></ng-container>
       <ng-template #content2>
@@ -805,16 +807,16 @@
         </li>
       </ng-template>
     </ul>
-  </ng-container>
+  </div>
 
-  <h3>Brief statement of how the person/family were affected by the disaster</h3>
+  <h2>Brief statement of how the person/family were affected by the disaster</h2>
   <ul class="summary">
     <li>
       <span>&nbsp;{{registration?.disasterAffectDetails}}</span>
     </li>
   </ul>
 
-  <h3>Insurance</h3>
+  <h2>Insurance</h2>
   <ul class="summary">
     <li>
       <span class="name">Do you have insurance:</span>
@@ -822,7 +824,7 @@
     </li>
   </ul>
 
-  <h3>Additional Information</h3>
+  <h2>Additional Information</h2>
   <ul class="summary">
     <li>
       <span class="name">Dietary Requirements:</span>
@@ -846,7 +848,7 @@
     </li>
   </ul>
 
-  <h3>Next Steps</h3>
+  <h2>Next Steps</h2>
   <ul class="summary">
     <li>
       <span class="name">Requires Supports:</span>
@@ -879,52 +881,52 @@
     </li>
   </ul>
 
-  <h3>Family Recovery Plan</h3>
+  <h2>Family Recovery Plan</h2>
   <ul class="summary">
     <li>
       <span>&nbsp;{{registration?.familyRecoveryPlan}}</span>
     </li>
   </ul>
 
-  <h3>Follow-up Required</h3>
+  <h2>Referrals Made Within Reception Centre</h2>
   <ul class="summary">
     <li>
-      <span>&nbsp;{{registration?.followUpDetails}}</span>
-    </li>
-  </ul>
-
-  <h3>Referrals made within Reception Centre</h3>
-  <ul class="summary">
-    <li *ngIf="registration?.hasInquiryReferral">
       <span class="name">Inquiry Referral:</span>
       <span class="value">{{registration?.hasInquiryReferral | yesNo}}</span>
     </li>
-    <li *ngIf="registration?.hasHealthServicesReferral">
+    <li>
       <span class="name">Health Services Referral:</span>
       <span class="value">{{registration?.hasHealthServicesReferral | yesNo}}</span>
     </li>
-    <li *ngIf="registration?.hasFirstAidReferral">
+    <li>
       <span class="name">First Aid Referral:</span>
       <span class="value">{{registration?.hasFirstAidReferral | yesNo}}</span>
     </li>
-    <li *ngIf="registration?.hasPersonalServicesReferral">
+    <li>
       <span class="name">Personal Services Referral:</span>
       <span class="value">{{registration?.hasPersonalServicesReferral | yesNo}}</span>
     </li>
-    <li *ngIf="registration?.hasChildCareReferral">
+    <li>
       <span class="name">Child Care Referral:</span>
       <span class="value">{{registration?.hasChildCareReferral | yesNo}}</span>
     </li>
-    <li *ngIf="registration?.hasPetCareReferral">
+    <li>
       <span class="name">Pet Care Referral:</span>
       <span class="value">{{registration?.hasPetCareReferral | yesNo}}</span>
     </li>
   </ul>
 
-  <h3>Other Agency Referrals</h3>
+  <h2>Other Agency Referrals</h2>
   <ul class="summary">
     <li>
       <span>&nbsp;{{registration?.externalReferralsDetails}}</span>
+    </li>
+  </ul>
+
+  <h2>Internal Case Notes</h2>
+  <ul class="summary">
+    <li>
+      <span>&nbsp;{{registration?.followUpDetails}}</span>
     </li>
   </ul>
 

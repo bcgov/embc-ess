@@ -84,7 +84,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<Country> Countries { get; set; }
         public DbSet<FamilyRelationshipType> FamilyRelationshipTypes { get; set; }
         public DbSet<IncidentTask> IncidentTasks { get; set; }
-        public DbSet<RegionalDistrict> RegionalDistricts { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Registration> Registrations { get; set; }
         public DbSet<Person> People { get; set; }

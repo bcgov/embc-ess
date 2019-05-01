@@ -6,9 +6,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
 {
     public class Country
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public Guid Id { get; set; }
+        public string CountryCode { get; set; }
 
         [MaxLength(255)]
         public string Name { get; set; }

@@ -1,0 +1,74 @@
+<div class="mb-4">
+  <h1>List of Organizations &amp; Users</h1>
+
+  <p class="pb-3">
+    Use this page to view organizations and users that are currently registered in the system. If you are unable to find
+    an organization or a user, please add them.
+  </p>
+
+  <h3 class="blue-header">Organizations &amp; Users List</h3>
+
+  <form novalidate role="search" class="form-row" [formGroup]="form">
+    <div class="col-md-9">
+      <label class="sr-only" for="searchbox">Associated EMBC Regional District / Community</label>
+      <app-communities-select [myParent]="form" myFormControlName="searchbox" myId="searchbox"
+        myPlaceHolder='Select associated EMBC Regional District / Community'></app-communities-select>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-primary float-right" (click)="filter(form.value.searchbox)">FILTER</button>
+    </div>
+  </form>
+  <div class="search-results mt-5">
+    <div *ngIf="results && results.length > 0; then searchResultsTable; else notFound"></div>
+  </div>
+
+  <ng-template #searchResultsTable>
+    <div class="space-between align-items-center my-3">
+      <section>
+        <app-pagination-summary [value]="pagination">
+          <span class="font-weight-bold">ACTIVE</span> organizations
+          <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
+        </app-pagination-summary>
+      </section>
+      <section>
+        <button class="btn btn-primary" routerLink="" (click)="modifyOrganization()">ADD ORGANIZATION</button>
+      </section>
+    </div>
+    <table class="table">
+      <thead class="thead-light">
+        <th scope="col">NAME</th>
+        <th scope="col">ADMIN BCeID USER ID</th>
+        <th scope="col">REGION / COMMUNITY</th>
+        <th scope="col">PRIMARY CONTACT</th>
+        <th scope="col">ACTION</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let organization of results">
+          <td>{{organization?.name}}</td>
+          <td>{{organization?.adminBCeID}}</td>
+          <td>{{organization?.community?.name}}</td>
+          <td>{{organization?.adminLastName}}, {{organization?.adminFirstName}}</td>
+          <td>
+            <a routerLink="" (click)="modifyOrganizationVolunteers(organization.id)">View / Add Users</a>
+            <br>
+            <a routerLink="" (click)="modifyOrganization(organization.id)">Edit Details</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <button class="btn btn-primary float-right" routerLink="" (click)="modifyOrganization()">ADD ORGANIZATION</button>
+    </div>
+  </ng-template>
+
+  <ng-template #notFound>
+    <div class="space-between align-items-center my-3">
+      <section>
+        {{notFoundMessage}}
+      </section>
+      <section>
+        <button class="btn btn-primary" (click)="modifyOrganization()">ADD ORGANIZATION</button>
+      </section>
+    </div>
+  </ng-template>
+</div>
