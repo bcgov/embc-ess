@@ -10,6 +10,7 @@ import { Registration } from 'src/app/core/models';
 export class TesterPageComponent implements OnInit {
   registration: Registration = null;
   page = 1;
+  dateStub: any;
 
   constructor(
     private notifications: NotificationQueueService
@@ -27,5 +28,15 @@ export class TesterPageComponent implements OnInit {
 
   doAdd() {
     console.log('add event');
+  }
+
+  onDate(event: string) {
+    alert(event);
+    // for checking the object
+    if (event) {
+      alert(event);
+    } else {
+      alert('Event is triggering but no payload.');
+    }
   }
 }

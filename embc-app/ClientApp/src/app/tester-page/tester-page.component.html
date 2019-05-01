@@ -1,11 +1,12 @@
 <div class="row">
   <div class="col">
-    <app-incidentals-referral [registration]="registration" (remove)="doRemove" (add)="doAdd"></app-incidentals-referral>
-
+    <!-- <app-incidentals-referral [registration]="registration" (remove)="doRemove" (add)="doAdd"></app-incidentals-referral> -->
+    <app-valid-from-to (dateStub)="onDate($event)"></app-valid-from-to>
   </div>
-  <!-- <div class="col-1">
-    <button (click)="notify('Warning!','warning')">Warning</button>
+  <div class="col">
+    <pre>{{dateStub|json}}</pre>
+    <!-- <button (click)="notify('Warning!','warning')">Warning</button>
     <button (click)="notify('Danger!','danger')">Danger</button>
-    <button (click)="notify('Success!','success')">Success</button>
-  </div> -->
+    <button (click)="notify('Success!','success')">Success</button> -->
+  </div>
 </div>
