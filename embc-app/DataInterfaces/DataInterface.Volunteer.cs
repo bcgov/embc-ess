@@ -10,10 +10,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public partial class DataInterface
     {
-        private IQueryable<Models.Db.Volunteer> Volunteers => db.People
+        private IQueryable<Models.Db.Volunteer> Volunteers => db.Volunteers
             .AsNoTracking()
-            .Where(p => p is Models.Db.Volunteer)
-            .Cast<Models.Db.Volunteer>()
+            //.Where(p => p is Models.Db.Volunteer)
+            //.Cast<Models.Db.Volunteer>()
             .Include(v => v.Organization)
                 .ThenInclude(x => x.Region)
             .Include(v => v.Organization)
@@ -22,11 +22,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     .ThenInclude(x => x.Region)
         ;
 
-        public async Task UpdateVolunteerAsync(Volunteer person)
+        public async Task UpdateVolunteerAsync(Volunteer updatedVolunteer)
         {
-            if (string.IsNullOrEmpty(person.Organization.Id)) throw new InvalidOperationException($"Volunteer {person.Id} is not associated with an organization");
+            if (string.IsNullOrEmpty(updatedVolunteer.Organization.Id)) throw new InvalidOperationException($"Volunteer {updatedVolunteer.Id} is not associated with an organization");
 
-            var volunteer = (Models.Db.Volunteer)person.ToModel();
+            var volunteer = updatedVolunteer.ToModel();
             var orgId = volunteer.OrganizationId.Value;
             if (volunteer.IsPrimaryContact ?? false)
             {
@@ -37,7 +37,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 volunteer.IsPrimaryContact = false;
             }
-            db.People.Update(volunteer);
+            db.Volunteers.Update(volunteer);
             //var numberOfPrimaryContacts = await GetNumberOfPrimaryContactsInOrganization(orgId);
             //if (numberOfPrimaryContacts < 1) throw new InvalidOperationException("Organization must have at least 1 primary contact");
 
@@ -56,7 +56,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 contact.IsPrimaryContact = false;
             }
-            db.People.UpdateRange(previousPrimaryContactsForOrg);
+            db.Volunteers.UpdateRange(previousPrimaryContactsForOrg);
             await Task.CompletedTask;
         }
 
@@ -85,20 +85,20 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<Volunteer> GetVolunteerByIdAsync(string id)
         {
-            var person = await Volunteers.SingleOrDefaultAsync(v => v.Id == Guid.Parse(id));
+            var person = await Volunteers.SingleOrDefaultAsync(v => v.Id == Convert.ToInt32(id));
             return person?.ToViewModel();
         }
 
         public async Task<bool> VolunteerExistsAsync(string id)
         {
-            return await Volunteers.AnyAsync(x => x.Id == Guid.Parse(id));
+            return await Volunteers.AnyAsync(x => x.Id == Convert.ToInt32(id));
         }
 
-        public async Task<string> CreateVolunteerAsync(Volunteer person)
+        public async Task<string> CreateVolunteerAsync(Volunteer newVolunteer)
         {
-            if (person.Organization == null || string.IsNullOrEmpty(person.Organization.Id)) throw new InvalidOperationException($"Volunteer {person.Id} is not associated with an organization");
+            if (newVolunteer.Organization == null || string.IsNullOrEmpty(newVolunteer.Organization.Id)) throw new InvalidOperationException($"Volunteer {newVolunteer.Id} is not associated with an organization");
 
-            var volunteer = (Models.Db.Volunteer)person.ToModel();
+            var volunteer = newVolunteer.ToModel();
             var orgId = volunteer.OrganizationId.Value;
             if (volunteer.IsPrimaryContact ?? false)
             {
@@ -109,29 +109,29 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 volunteer.IsPrimaryContact = false;
             }
-            var newPerson = await db.People.AddAsync(volunteer);
+            var newEntity = await db.Volunteers.AddAsync(volunteer);
             await db.SaveChangesAsync();
-            return newPerson.Entity.Id.ToString();
+            return newEntity.Entity.Id.ToString();
         }
 
         public async Task<bool> DeactivateVolunteerAsync(string id)
         {
-            var person = await db.People.SingleOrDefaultAsync(p => p.Id == Guid.Parse(id)) as Models.Db.Volunteer;
-            if (person == null) return false;
+            var volunteer = await db.Volunteers.SingleOrDefaultAsync(v => v.Id == Convert.ToInt32(id));
+            if (volunteer == null) return false;
 
-            person.Active = false;
-            db.People.Update(person);
+            volunteer.Active = false;
+            db.Volunteers.Update(volunteer);
             await db.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> ActivateVolunteerAsync(string id)
         {
-            var person = await db.People.SingleOrDefaultAsync(p => p.Id == Guid.Parse(id)) as Models.Db.Volunteer;
-            if (person == null) return false;
+            var volunteer = await db.Volunteers.SingleOrDefaultAsync(v => v.Id == Convert.ToInt32(id));
+            if (volunteer == null) return false;
 
-            person.Active = true;
-            db.People.Update(person);
+            volunteer.Active = true;
+            db.Volunteers.Update(volunteer);
             await db.SaveChangesAsync();
             return true;
         }
@@ -146,7 +146,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public Volunteer GetVolunteerByExternalId(string externalId)
         {
-            var volunteer = Volunteers.FirstOrDefault(x => x.Externaluseridentifier == externalId);
+            var volunteer = Volunteers.FirstOrDefault(x => x.Externaluseridentifier == Guid.Parse(externalId));
             if (volunteer == null) return null;
 
             return volunteer.ToViewModel();

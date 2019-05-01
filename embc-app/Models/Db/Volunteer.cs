@@ -1,13 +1,30 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
     /// <summary>
     /// Volunteer Database Model
     /// </summary>
-    public class Volunteer : Person
+    public class Volunteer
     {
+        public Volunteer()
+        {
+            //CompletedRegistrations = new List<Registration>();
+        }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public int Id { get; set; }
+
+        [MaxLength(255)]
+        public string FirstName { get; set; }
+
+        [MaxLength(255)]
+        public string LastName { get; set; }
+
         [MaxLength(255)]
         public string Email { get; set; }
 
@@ -20,16 +37,13 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public bool? CanAccessRestrictedFiles { get; set; }
 
         // siteminder guid
-        public string Externaluseridentifier { get; set; }
+        public Guid? Externaluseridentifier { get; set; }
 
         // related entities
         public Guid? OrganizationId { get; set; }
 
         public Organization Organization { get; set; }
 
-        public Volunteer()
-        {
-            PersonType = Person.VOLUNTEER;
-        }
+        //public List<Registration> CompletedRegistrations { get; set; }
     }
 }

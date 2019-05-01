@@ -142,8 +142,7 @@ namespace Gov.Jag.Embc.Public.Seeder
 
         public void AddOrUpdateVolunteers(List<Volunteer> volunteers)
         {
-            var existingEntities = db.People.Where(x => x is Volunteer)
-                    .Cast<Volunteer>()
+            var existingEntities = db.Volunteers
                     .Where(v => volunteers.Exists(ex => ex.BceidAccountNumber == v.BceidAccountNumber))
                     .ToList();
 

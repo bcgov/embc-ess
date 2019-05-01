@@ -88,6 +88,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<Registration> Registrations { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Organization> Organizations { get; set; }
+        public DbSet<Volunteer> Volunteers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -106,13 +107,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .HasValue<OtherAddress>(Address.OTHER_ADDRESS);
 
             // People hierarchy
-            modelBuilder.Entity<Volunteer>().HasBaseType<Person>();
+            //modelBuilder.Entity<Volunteer>().HasBaseType<Person>();
             modelBuilder.Entity<HeadOfHousehold>().HasBaseType<Person>();
             modelBuilder.Entity<FamilyMember>().HasBaseType<Person>();
             modelBuilder.Entity<Person>()
                 .ToTable("People")
                 .HasDiscriminator(pers => pers.PersonType)
-                .HasValue<Volunteer>(Person.VOLUNTEER)
+                //.HasValue<Volunteer>(Person.VOLUNTEER)
                 .HasValue<HeadOfHousehold>(Person.HOH)
                 .HasValue<FamilyMember>(Person.FAMILY_MEMBER);
 
@@ -123,6 +124,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             modelBuilder.Entity<Registration>()
                 .Property(r => r.EssFileNumber)
                 .HasDefaultValueSql("NEXT VALUE FOR ESSFileNumbers");
+
+            modelBuilder.Entity<Registration>()
+                .HasOne(r => r.CompletedBy)
+                .WithMany()
+                .HasForeignKey(r => r.CompletedById)
+                .HasPrincipalKey(v => v.Id);
         }
     }
 }

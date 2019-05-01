@@ -79,7 +79,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 OrganizationId = newItem.Entity.Id,
                 IsPrimaryContact = true
             };
-            var newAdmin = await db.People.AddAsync(admin);
+            var newAdmin = await db.Volunteers.AddAsync(admin);
             await db.SaveChangesAsync();
 
             return newItem.Entity.Id.ToString();
