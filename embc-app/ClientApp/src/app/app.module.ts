@@ -55,7 +55,14 @@ import { SideboxAddOrganizationComponent } from './components/sidebox-add-organi
 import { SideboxAddTaskNumberComponent } from './components/sidebox-add-task-number/sidebox-add-task-number.component';
 import { SideboxAddVolunteerComponent } from './components/sidebox-add-volunteer/sidebox-add-volunteer.component';
 import { SideboxCollectionNoticeComponent } from './components/sidebox-collection-notice/sidebox-collection-notice.component';
+
+// shared modals // TODO: move to shared module
+import { ClothingRatesComponent } from './shared/modals/clothing-rates/clothing-rates.component';
+import { FoodRatesComponent } from './shared/modals/food-rates/food-rates.component';
+import { IncidentalsRatesComponent } from './shared/modals/incidentals-rates/incidentals-rates.component';
+import { LodgingRatesComponent } from './shared/modals/lodging-rates/lodging-rates.component';
 import { SessionExpiringModalComponent } from './shared/modals/session-expiring/session-expiring.component';
+import { TransportationRatesComponent } from './shared/modals/transportation-rates/transportation-rates.component';
 
 // TODO: move these to volunteer/local-authority/provincial-admin modules
 import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
@@ -108,7 +115,14 @@ import { SupplierComponent } from './volunteer/components/supplier/supplier.comp
     SearchBarComponent,
     PaginationSummaryComponent,
     UsefulInformationPageComponent,
+
+    ClothingRatesComponent,
+    FoodRatesComponent,
+    IncidentalsRatesComponent,
+    LodgingRatesComponent,
     SessionExpiringModalComponent,
+    TransportationRatesComponent,
+
     ReferralMakerComponent,
     IncidentalsReferralComponent,
     ReferralTableComponent,
@@ -136,7 +150,12 @@ import { SupplierComponent } from './volunteer/components/supplier/supplier.comp
     VolunteerEditorModule,
   ],
   entryComponents: [
+    ClothingRatesComponent,
+    FoodRatesComponent,
+    IncidentalsRatesComponent,
+    LodgingRatesComponent,
     SessionExpiringModalComponent,
+    TransportationRatesComponent,
   ],
   bootstrap: [
     AppComponent

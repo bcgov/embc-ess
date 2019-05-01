@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Registration, IncidentalsReferral } from 'src/app/core/models';
+import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
 
 @Component({
   selector: 'app-incidentals-referral',
@@ -12,11 +14,18 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
   @Output() remove = new EventEmitter<any>();
   @Output() add = new EventEmitter<any>();
 
-  constructor() { }
+  private incidentalsRatesModal: NgbModalRef = null;
+
+  constructor(
+    private modals: NgbModal,
+  ) { }
 
   ngOnInit() { }
 
-  ngOnDestroy() { }
+  ngOnDestroy() {
+    // close modal if it's open
+    if (this.incidentalsRatesModal) { this.incidentalsRatesModal.dismiss(); }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.registration) {
@@ -27,8 +36,11 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
     }
   }
 
-  viewRates() {
-    console.log('you clicked the View Rates button');
-    // TODO: display modal with incidentals rates sheet template
+  viewIncidentalsRates() {
+    this.incidentalsRatesModal = this.modals.open(IncidentalsRatesComponent, { size: 'lg' });
+    this.incidentalsRatesModal.result.then(
+      () => { this.incidentalsRatesModal = null; },
+      () => { this.incidentalsRatesModal = null; }
+    );
   }
 }
