@@ -78,6 +78,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                                                 WHERE
 	                                                p.PersonType = 'VOLN'");
 
+            migrationBuilder.Sql("DELETE FROM People WHERE PersonType = 'VOLN'");
 
             //Migrate values from new table but use the new ForeignKey resource Externaluseridentifier
             //Add temp column
