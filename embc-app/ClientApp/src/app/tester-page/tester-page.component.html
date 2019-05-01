@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col">
     <!-- <app-incidentals-referral [registration]="registration" (remove)="doRemove" (add)="doAdd"></app-incidentals-referral> -->
-    <app-valid-from-to (dateStub)="onDate($event)"></app-valid-from-to>
+    <app-valid-from-to [referralDate]="inputDate" (dateStub)="onDate($event)"></app-valid-from-to>
   </div>
   <div class="col">
     <pre>{{dateStub|json}}</pre>

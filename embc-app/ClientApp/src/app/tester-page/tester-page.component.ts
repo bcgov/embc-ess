@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationQueueService } from '../core/services/notification-queue.service';
 import { Registration } from 'src/app/core/models';
+import { ReferralDate } from '../core/models/referral-date';
 
 @Component({
   selector: 'app-tester-page',
@@ -11,6 +12,9 @@ export class TesterPageComponent implements OnInit {
   registration: Registration = null;
   page = 1;
   dateStub: any;
+
+  // inputDate: ReferralDate = { identifier: 'banana' };
+  inputDate: ReferralDate = { identifier: 'banana', from: '2019-05-01T21:22:58.149Z' };
 
   constructor(
     private notifications: NotificationQueueService
@@ -31,12 +35,9 @@ export class TesterPageComponent implements OnInit {
   }
 
   onDate(event: string) {
-    alert(event);
     // for checking the object
     if (event) {
-      alert(event);
-    } else {
-      alert('Event is triggering but no payload.');
+      this.dateStub = event;
     }
   }
 }
