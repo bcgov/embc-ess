@@ -12,8 +12,15 @@ import { UniqueKeyService } from '../core/services/unique-key.service';
 })
 export class RegistrationSummaryComponent implements OnInit {
 
-  registration: Registration;
+  registration: Registration = null;
   path: string; // for relative routing
+  selectedPurchaser = 'null';
+  otherPurchaser: string = null;
+
+  get purchaser() {
+    const otherPurchaser = this.otherPurchaser ? this.otherPurchaser.trim() : null;
+    return (this.selectedPurchaser === 'other') ? otherPurchaser : (this.selectedPurchaser !== 'null') ? this.selectedPurchaser : null;
+  }
 
   constructor(
     private router: Router,
@@ -30,6 +37,7 @@ export class RegistrationSummaryComponent implements OnInit {
     const key = this.uniqueKeyService.getKey();
     // ensure we have a lookup key
     if (key) {
+      // this.registrationService.getSummaryById(key) // TODO: use this when BE completes API (re: some missing fields)
       this.registrationService.getRegistrationById(key)
         .subscribe(r => {
           // ensure we have an ESS File Number
@@ -54,6 +62,10 @@ export class RegistrationSummaryComponent implements OnInit {
       this.uniqueKeyService.setKey(this.registration.id);
       this.router.navigate([`/${this.path}/registration/summary/full`]);
     }
+  }
+
+  addReferrals() {
+    this.router.navigate([`/${this.path}/referrals`, this.registration.id, this.purchaser]);
   }
 
 }

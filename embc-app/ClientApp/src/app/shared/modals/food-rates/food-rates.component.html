@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <h1 class="modal-title h2">Emergency Support Services Rates</h1>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <table class="table table-rates">
+    <thead>
+      <tr class="light">
+        <th scope="col" colspan="2">FOOD</th>
+        <th scope="col">Breakfast</th>
+        <th scope="col">Lunch</th>
+        <th scope="col">Dinner</th>
+        <th scope="col">TOTAL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="light">
+        <th scope="row" class="dark">1</th>
+        <td>Restaurant Meals<br>(per person rate)</td>
+        <td>$10.00</td>
+        <td>$13.00</td>
+        <td>$22.00</td>
+        <td class="dark">$45.00 (incl. PST)</td>
+      </tr>
+      <tr class="dark">
+        <th scope="row">2</th>
+        <td class="light">Groceries<br>(per person daily rate)</td>
+        <td colspan="4" class="text-center">$22.50 (incl. GST/PST)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div>
+    <p><strong>NOTE:</strong> Alcohol, tobacco and gratuities are not eligible expenses.</p>
+  </div>
+</div>

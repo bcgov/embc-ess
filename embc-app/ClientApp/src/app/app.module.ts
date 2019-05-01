@@ -21,17 +21,17 @@ import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volu
 import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
 import { TopNavigationComponent } from './top-navigation/top-navigation.component';
-import { TaskNumberListComponent } from './task-number-list/task-number-list.component';
+import { TaskNumberListComponent } from './provincial-admin/components/task-number-list/task-number-list.component';
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
 import { RegistrationListComponent } from './registration-list/registration-list.component';
-import { OrganizationListComponent } from './organization-list/organization-list.component';
+import { OrganizationListComponent } from './provincial-admin/components/organization-list/organization-list.component';
 import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
 import { VolunteerEditorContainerComponent } from './volunteer-editor-container/volunteer-editor-container.component';
-import { TaskNumberMakerComponent } from './task-number-maker/task-number-maker.component';
+import { TaskNumberMakerComponent } from './provincial-admin/components/task-number-maker/task-number-maker.component';
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
-import { OrganizationMakerComponent } from './organization-maker/organization-maker.component';
+import { OrganizationMakerComponent } from './provincial-admin/components/organization-maker/organization-maker.component';
 import { RegistrationSummaryFullComponent } from './registration-summary-full/registration-summary-full.component';
-import { VolunteerOrganizationListComponent } from './volunteer-organization-list/volunteer-organization-list.component';
+import { VolunteerOrganizationListComponent } from './provincial-admin/components/volunteer-organization-list/volunteer-organization-list.component';
 import { LayoutMainComponent } from './components/layout-main/layout-main.component';
 import { LayoutSideComponent } from './components/layout-side/layout-side.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
@@ -44,19 +44,32 @@ import { RegistrationPageComponent } from './registration-page/registration-page
 import { VolunteerRegistrationsPageComponent } from './pages/volunteer/volunteer-registrations-page/volunteer-registrations-page.component';
 import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
-import { ProvincialAdminRegistrationsPageComponent } from './pages/provincial-admin/provincial-admin-registrations-page/provincial-admin-registrations-page.component';
+import { ProvincialAdminRegistrationsPageComponent } from './provincial-admin/pages/registrations/provincial-admin-registrations-page.component';
 import { LocalAuthorityVolunteersPageComponent } from './pages/local-authority/local-authority-volunteers-page/local-authority-volunteers-page.component';
-import { ProvincialAdminVolunteersOrganizationPageComponent } from './pages/provincial-admin/provincial-admin-volunteers-organization-page/provincial-admin-volunteers-organization-page.component';
-import { ProvincialAdminOrganizationsPageComponent } from './pages/provincial-admin/provincial-admin-organizations-page/provincial-admin-organizations-page.component';
+import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
+import { ProvincialAdminOrganizationsPageComponent } from './provincial-admin/pages/organizations/provincial-admin-organizations-page.component';
 import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
-import { ProvincialAdminTaskNumbersPageComponent } from './pages/provincial-admin/provincial-admin-task-numbers-page/provincial-admin-task-numbers-page.component';
+import { ProvincialAdminTaskNumbersPageComponent } from './provincial-admin/pages/task-numbers/provincial-admin-task-numbers-page.component';
 import { SideboxAddRegistrationComponent } from './components/sidebox-add-registration/sidebox-add-registration.component';
 import { SideboxAddOrganizationComponent } from './components/sidebox-add-organization/sidebox-add-organization.component';
 import { SideboxAddTaskNumberComponent } from './components/sidebox-add-task-number/sidebox-add-task-number.component';
 import { SideboxAddVolunteerComponent } from './components/sidebox-add-volunteer/sidebox-add-volunteer.component';
 import { SideboxCollectionNoticeComponent } from './components/sidebox-collection-notice/sidebox-collection-notice.component';
+
+// shared modals // TODO: move to shared module
+import { ClothingRatesComponent } from './shared/modals/clothing-rates/clothing-rates.component';
+import { FoodRatesComponent } from './shared/modals/food-rates/food-rates.component';
+import { IncidentalsRatesComponent } from './shared/modals/incidentals-rates/incidentals-rates.component';
+import { LodgingRatesComponent } from './shared/modals/lodging-rates/lodging-rates.component';
 import { SessionExpiringModalComponent } from './shared/modals/session-expiring/session-expiring.component';
-import { VolunteerModule } from './volunteer/volunteer.module';
+import { TransportationRatesComponent } from './shared/modals/transportation-rates/transportation-rates.component';
+
+// TODO: move these to volunteer/local-authority/provincial-admin modules
+import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
+import { IncidentalsReferralComponent } from './volunteer/components/incidentals-referral/incidentals-referral.component';
+import { ReferralTableComponent } from './volunteer/components/referral-table/referral-table.component';
+import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid-from-to.component';
+import { SupplierComponent } from './volunteer/components/supplier/supplier.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +115,19 @@ import { VolunteerModule } from './volunteer/volunteer.module';
     SearchBarComponent,
     PaginationSummaryComponent,
     UsefulInformationPageComponent,
+
+    ClothingRatesComponent,
+    FoodRatesComponent,
+    IncidentalsRatesComponent,
+    LodgingRatesComponent,
     SessionExpiringModalComponent,
+    TransportationRatesComponent,
+
+    ReferralMakerComponent,
+    IncidentalsReferralComponent,
+    ReferralTableComponent,
+    ValidFromToComponent,
+    SupplierComponent,
   ],
   imports: [
     // angular
@@ -123,10 +148,14 @@ import { VolunteerModule } from './volunteer/volunteer.module';
     AppRoutingModule,
     SelfRegistrationModule,
     VolunteerEditorModule,
-    VolunteerModule,
   ],
   entryComponents: [
+    ClothingRatesComponent,
+    FoodRatesComponent,
+    IncidentalsRatesComponent,
+    LodgingRatesComponent,
     SessionExpiringModalComponent,
+    TransportationRatesComponent,
   ],
   bootstrap: [
     AppComponent
