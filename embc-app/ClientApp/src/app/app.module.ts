@@ -151,8 +151,6 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
 
     // 3rd party
     StoreModule.forRoot(rootReducer, { metaReducers }),
-    NgbPaginationModule,
-    NgbModalModule,
     NgbDatepickerModule,
     NgbTimepickerModule,
 

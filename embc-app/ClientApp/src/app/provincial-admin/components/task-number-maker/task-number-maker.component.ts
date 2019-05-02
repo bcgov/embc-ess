@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { IncidentTask } from '../../../core/models';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store';
 import { IncidentTaskService } from '../../../core/services/incident-task.service';
@@ -27,10 +27,13 @@ export class TaskNumberMakerComponent implements OnInit {
   currentIncidentTask$ = this.store.select(i => i.incidentTasks.currentIncidentTask);
   componentActive = true;
 
-  // three fields to collect
+  // fields to collect
   taskNumber: FormControl;
   community: FormControl;
   details: FormControl;
+  startDateField: FormControl;
+  startTimeField: FormControl;
+
   incidentTask: IncidentTask = {
     id: '',
     taskNumber: '',
@@ -54,9 +57,7 @@ export class TaskNumberMakerComponent implements OnInit {
     this.authService.path.subscribe(p => this.path = p);
 
     // initialize form for collection
-    this.taskNumber = new FormControl('');
-    this.details = new FormControl('');
-    this.community = new FormControl('');
+    this.initializeForm();
 
     const key = this.uniqueKeyService.getKey();
     if (key) {
@@ -64,10 +65,7 @@ export class TaskNumberMakerComponent implements OnInit {
       this.incidentTaskService.getIncidentTask(key)
         .subscribe((i: IncidentTask) => {
           // save the incident task for filling in information later.
-          this.taskNumber.setValue(i.taskNumber);
-          // alert(JSON.stringify(i.community));
-          this.community.setValue(i.community);
-          this.details.setValue(i.details);
+          this.displayTaskNumber(i);
           this.incidentTask = i;
           this.editMode = true;
         });
@@ -75,6 +73,23 @@ export class TaskNumberMakerComponent implements OnInit {
       // this is a fresh form and will be a simple add user
       this.editMode = false;
     }
+  }
+
+  initializeForm(): void {
+    this.taskNumber = new FormControl('');
+    this.details = new FormControl('');
+    this.community = new FormControl('');
+    this.startDateField = new FormControl('');
+    this.startTimeField = new FormControl({ hour: 0, minute: 0 });
+  }
+
+  displayTaskNumber(task: IncidentTask): void {
+    this.taskNumber.setValue(task.taskNumber);
+    this.community.setValue(task.community);
+    this.details.setValue(task.details);
+
+    // TODO: split JS Date object into date and time components
+    this.startDateField.setValue(task.startDate);
   }
 
   next(): void {
@@ -125,6 +140,11 @@ export class TaskNumberMakerComponent implements OnInit {
           });
       }
     }
+  }
+
+  cancel() {
+    // navigate back home
+    this.router.navigate([`/${this.path}/task-numbers`]);
   }
 
   onSave(): void {

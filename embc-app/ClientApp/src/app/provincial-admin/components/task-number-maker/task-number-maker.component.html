@@ -19,13 +19,28 @@
       <app-communities-select [myFormControl]="community" myId="community" [myRequired]="true"></app-communities-select>
     </div>
     <div class="col mb-4">
+      <label class="required">Incident Date &amp; Time</label>
+      <div class="space-between">
+        <section>
+          <label class="small" for="startDate">Date</label>
+          <input type="text" class="form-control" placeholder="yyyy-mm-dd" [formControl]="startDateField" id="startDate" autocomplete="off">
+          <small>(Format: yyyy-mm-dd)</small>
+        </section>
+        <section>
+          <label class="small" for="startTime">Time</label>
+          <ngb-timepicker [meridian]="true" [formControl]="startTimeField"></ngb-timepicker>
+          <input type="text" class="form-control" [formControl]="startTimeField" id="startTime" autocomplete="off">
+        </section>
+      </div>
+    </div>
+    <div class="col mb-4">
       <label class="required" for="details">Details of Incident</label>
       <input class="form-control" type="text" placeholder="Please specify" [formControl]="details" id="details">
     </div>
   </div>
   <div class="mt-5 space-between">
     <section>
-      <a [routerLink]="taskNumbersRoute">
+      <a routerLink="" (click)="cancel()">
         <app-font-awesome-icon icon="times"></app-font-awesome-icon>
         <span class="ml-2">Cancel &amp; Close</span>
       </a>
