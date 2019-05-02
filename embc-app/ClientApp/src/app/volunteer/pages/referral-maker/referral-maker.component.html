@@ -14,7 +14,7 @@
         <div *ngIf="registration?.incidentTask['startDate']">
           <label>Please confirm timing for commencement of supports:</label>
           <!-- <div>{{registration.incidentTask['startDate'] | date:'yyyy/MM/dd \'at\' HH:mm:ss a'}}</div> -->
-          <div>{{registration.incidentTask['startDate'] | dateTimeFormatPipe}}</div>
+          <div>Incident start date &amp; time: {{registration.incidentTask['startDate'] | dateTimeFormatPipe}}</div>
         </div>
       </div>
 
@@ -61,8 +61,8 @@
       </article>
 
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
-        <app-incidentals-referral [registration]="registration" [(referral)]="r" [editMode]="true"
-          (remove)="removeIncidentalsReferral(i)" (add)="addIncidentalsReferral()"></app-incidentals-referral>
+        <app-incidentals-referral [(referral)]="r" [editMode]="true" (remove)="removeIncidentalsReferral(i)"
+          (add)="addIncidentalsReferral()"></app-incidentals-referral>
       </article>
 
       <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4">
@@ -87,8 +87,7 @@
 
     <section class="clearfix">
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
-        <app-incidentals-referral [registration]="registration" [(referral)]="r" [editMode]="false">
-        </app-incidentals-referral>
+        <app-incidentals-referral [(referral)]="r" [editMode]="false"></app-incidentals-referral>
       </article>
     </section>
 

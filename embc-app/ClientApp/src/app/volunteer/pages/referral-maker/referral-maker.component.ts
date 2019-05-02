@@ -3,8 +3,16 @@ import { RegistrationService } from 'src/app/core/services/registration.service'
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
-import { Registration, Supplier, BcAddress } from 'src/app/core/models';
-import { IncidentalsReferral, FoodReferral } from 'src/app/core/models';
+import {
+  Registration,
+  Supplier,
+  BcAddress,
+  IncidentalsReferral,
+  FoodReferral,
+  ClothingReferral,
+  AccommodationReferral,
+  TransportationReferral
+} from 'src/app/core/models';
 
 @Component({
   selector: 'app-referral-maker',
@@ -24,10 +32,10 @@ export class ReferralMakerComponent implements OnInit {
   evacuees: Array<any> = [];
 
   foodReferrals: Array<FoodReferral> = [];
-  clothingReferrals: Array<any> = [];
-  accommodationReferrals: Array<any> = [];
+  clothingReferrals: Array<ClothingReferral> = [];
+  accommodationReferrals: Array<AccommodationReferral> = [];
   incidentalsReferrals: Array<IncidentalsReferral> = [];
-  transportationReferrals: Array<any> = [];
+  transportationReferrals: Array<TransportationReferral> = [];
 
   constructor(
     private route: ActivatedRoute,
