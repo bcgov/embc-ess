@@ -9,7 +9,6 @@ import { StoreModule } from '@ngrx/store';
 import { rootReducer, metaReducers } from './store';
 
 import { HomeComponent } from './home/home.component';
-import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
@@ -83,7 +82,6 @@ import { SupplierComponent } from './volunteer/components/supplier/supplier.comp
     RegistrationPageComponent,
     RegistrationSummaryFullComponent,
     VolunteerMakerComponent,
-    VolunteerDashboardComponent,
     VolunteerTeamDashboardComponent,
     VolunteerUsefulInformationComponent,
     VolunteerListComponent,

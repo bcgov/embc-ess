@@ -10,7 +10,6 @@ import {
   SelfRegistrationFourComponent,
   SelfRegistrationErrorComponent,
 } from './self-registration';
-import { VolunteerDashboardComponent } from './volunteer-dashboard/volunteer-dashboard.component';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';

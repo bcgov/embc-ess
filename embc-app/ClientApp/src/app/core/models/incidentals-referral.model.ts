@@ -1,5 +1,5 @@
 export interface IncidentalsReferral {
-  id: string | null;
+  id: string;
   active?: boolean;
   validFrom: Date;
   validTo: Date;
@@ -8,4 +8,5 @@ export interface IncidentalsReferral {
   approvedItems: string;
   maxTotal: number;
   comments: string;
+  purchaser: string;
 }

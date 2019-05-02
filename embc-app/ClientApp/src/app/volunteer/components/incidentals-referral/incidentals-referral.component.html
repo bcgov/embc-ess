@@ -13,25 +13,104 @@ I think this component needs to implement a form, and pass child forms to the su
 And of course this component needs to be implemented as a 'maker' with both an edit and view-only interface.
 -->
 
-<section>
-  <h2 class="blue-header">
-    <app-font-awesome-icon icon="plus-circle"></app-font-awesome-icon>&nbsp;&nbsp;INCIDENTALS
-  </h2>
-  <div class="space-between align-items-end">
-    <app-valid-from-to></app-valid-from-to>
-    <button type="button" class="btn btn-secondary" (click)="viewIncidentalsRates()">VIEW ESS RATES</button>
+<!-- TODO: change 'maker' to 'editMode' -->
+
+<div *ngIf="referral">
+  <div *ngIf="editMode">
+    <section>
+      <h2 class="blue-header">
+        <app-font-awesome-icon icon="plus-circle"></app-font-awesome-icon>&nbsp;&nbsp;INCIDENTALS
+      </h2>
+      <div class="space-between align-items-end">
+        <app-valid-from-to [validFrom]="referral.validFrom" [validTo]="referral.validTo"></app-valid-from-to>
+        <button type="button" class="btn btn-secondary" (click)="viewIncidentalsRates()">VIEW ESS RATES</button>
+      </div>
+
+      <div class="feature-block card p-0 mt-4">
+
+        <!-- TODO: <app-evacuee-list></app-evacuee-list> -->
+
+        <!-- TODO: here, prompt for Food Required and # of Days for Meals -->
+
+        <app-supplier></app-supplier>
+
+        <div class="card-footer">
+          <app-fa-link icon="times" class="float-left" (click)="remove.emit()">
+            Remove this referral
+          </app-fa-link>
+          <app-fa-link icon="plus-circle" color="#669900" class="float-right" (click)="add.emit()">
+            ADD ANOTHER INCIDENTALS REFERRAL
+          </app-fa-link>
+        </div>
+      </div>
+    </section>
   </div>
 
-  <div class="feature-block card p-0 mt-4">
-    <app-supplier></app-supplier>
-
-    <div class="card-footer">
-      <app-fa-link icon="times" class="float-left" (click)="remove.emit()">
-        Remove this referral
-      </app-fa-link>
-      <app-fa-link icon="plus-circle" color="#669900" class="float-right" (click)="add.emit()">
-        ADD ANOTHER INCIDENTALS REFERRAL
-      </app-fa-link>
-    </div>
+  <div *ngIf="!editMode">
+    <ul class="summary mx-3">
+        <li class="summary-heading">
+          <div class="container py-3">
+            <div class="row">
+              <div class="col-4">
+                <div class="h1 my-3">Incidentals</div>
+                <div>
+                  <span class="name"><strong>Valid From:</strong></span>
+                  <span class="value">{{referral.validFrom | date}}</span>
+                </div>
+                <div>
+                  <span class="name"><strong>Valid To:</strong></span>
+                  <span class="value">{{referral.validTo | date}}</span>
+                </div>
+              </div>
+              <!-- TODO: need Supplier model and object for this: -->
+              <div class="col-4" *ngIf="referral.supplier">
+                <span><strong>{{referral.supplier.name}}</strong></span>
+                <span>{{referral.supplier.address}}</span>
+                <span>{{referral.supplier.city + ', BC'}} &nbsp;&nbsp; {{referral.supplier.postalCode}}</span>
+                <span>Tel: {{referral.supplier.tel}} | Fax: {{referral.supplier.fax}}</span>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <span class="name">Person responsible for purchasing goods:</span>
+          <span class="value">{{referral.purchaser}}</span>
+        </li>
+        <li *ngIf="referral.id">
+          <span class="name">Referral Status:</span>
+          <span class="value">{{referral.active ? 'ACTIVE' : 'DEACTIVATED'}}</span>
+        </li>
+        <li *ngIf="referral.id">
+          <span class="name">Referral #:</span>
+          <span class="value">{{referral.id}}</span>
+        </li>
+        <li>
+          <!-- TODO: iterate over all family members and only 'check' the selected ones -->
+          <span class="name">Evacuees Requiring Incidentals:</span>
+          <span class="value">
+            <div class="form-check mt-2" *ngIf="registration.headOfHousehold">
+              <input class="form-check-input" [checked]="true" type="checkbox" disabled>
+              <label class="form-check-label">{{registration.headOfHousehold.lastName}}, {{registration.headOfHousehold.firstName}}</label>
+            </div>
+            <div class="form-check mt-2" *ngFor="let familyMember of registration.headOfHousehold?.familyMembers">
+              <input class="form-check-input" [checked]="true" type="checkbox" disabled>
+              <label class="form-check-label">{{familyMember.lastName}}, {{familyMember.firstName}}</label>
+            </div>
+          </span>
+        </li>
+        <!-- TODO: can use this in Food Referral -->
+        <!-- <div># Days for Meals: {{numDays(referral.validFrom, referral.validTo)}}</div> -->
+        <li>
+          <span class="name">List of approved items:</span>
+          <span class="value">{{referral.approvedItems}}</span>
+        </li>
+        <li>
+          <span class="name">Up to a total of:</span>
+          <span class="value">${{referral.maxTotal}}</span>
+        </li>
+        <li>
+          <span>{{referral.comments}}</span>
+        </li>
+      </ul>
   </div>
-</section>
+</div>
