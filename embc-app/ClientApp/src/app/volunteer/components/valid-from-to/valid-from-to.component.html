@@ -4,9 +4,9 @@
     <div class="row">
       <div class="col-6">
         <div class="form-group mb-0">
-          <label for="validFromDate_{{referralDate.uuid}}">Date</label>
+          <label for="validFromDate_{{wrdForm.uuid}}">Date</label>
           <div class="input-group">
-            <input class="form-control" placeholder="yyyy-mm-dd" name="validFromDate_{{referralDate.uuid}}" ngbDatepicker #fromDate="ngbDatepicker" [firstDayOfWeek]="7" navigation="arrows" [(ngModel)]="wrdForm.to" (click)="fromDate.close();" required aria-required="true">
+            <input class="form-control" placeholder="yyyy-mm-dd" name="validFromDate_{{wrdForm.uuid}}" ngbDatepicker #fromDate="ngbDatepicker" [firstDayOfWeek]="7" navigation="arrows" [(ngModel)]="wrdForm.fromDate" (click)="fromDate.close();" required aria-required="true">
             <div class="input-group-append">
               <button class="btn btn-icon" (click)="fromDate.toggle()" type="button" tabindex="-1">
                 <i class="material-icons">date_range</i>
@@ -19,13 +19,15 @@
 
       </div>
       <div class="col-3 pl-0">
-        <label for="validFromTime_{{referralDate.uuid}}">Time</label>
-        <input type="time" id="validFromTime_{{referralDate.uuid}}" class="form-control">
+        <label for="validFromTime_{{wrdForm.uuid}}">Time</label>
+        <!-- <input type="time" id="validFromTime_{{wrdForm.uuid}}" class="form-control"> -->
+        <ngb-timepicker id="validFromTime_{{wrdForm.uuid}}" [(ngModel)]="wrdForm.fromTime"></ngb-timepicker>
+
         <span class="invalid-feedback">Please enter a valid time.</span>
       </div>
       <div class="col-3 pl-0">
-        <label for="numberDays_{{referralDate.uuid}}"># Days</label>
-        <select class="form-control" id="numberDays_{{referralDate.uuid}}">
+        <label for="numberDays_{{wrdForm.uuid}}"># Days</label>
+        <select class="form-control" id="numberDays_{{wrdForm.uuid}}">
           <option>--</option>
           <option *ngFor="let n of days">{{n}}</option>
         </select>
@@ -36,15 +38,15 @@
     <span class="h3">Valid To</span>
     <div class="row">
       <div class="col-7">
-        <label for="validToDate_{{referralDate.uuid}}">Date</label>
-        <input type="text" id="validToDate_{{referralDate.uuid}}" class="form-control" readonly>
+        <label for="validToDate_{{wrdForm.uuid}}">Date</label>
+        <input type="text" id="validToDate_{{wrdForm.uuid}}" class="form-control" readonly>
       </div>
       <div class="col-5 pl-0">
-        <label for="validToTime_{{referralDate.uuid}}">Time</label>
-        <input type="text" id="validToTime_{{referralDate.uuid}}" class="form-control" readonly>
+        <label for="validToTime_{{wrdForm.uuid}}">Time</label>
+        <input type="text" id="validToTime_{{wrdForm.uuid}}" class="form-control" readonly>
       </div>
     </div>
   </div>
   <!-- TODO: we should emit whenever a form element changes -->
-  <button (click)="emitReferralDate(wrd)">Emit</button>
+  <button (click)="emitReferralDate()">Emit</button>
   <pre>{{wrdForm|json}}</pre>
