@@ -15,10 +15,12 @@ export class ReferralMakerComponent implements OnInit {
 
   // TODO: retrieve incidentTask (for start date/time) if not already attached to Registration object
 
-  maker = true;
+  editMode = true; // when you first land on this page
   submitting = false;
   registration: Registration = null;
-  path: string; // for relative routing
+  path: string = null; // for relative routing
+  regId: string = null;
+  purchaser: string = null;
 
   foodReferrals: Array<any> = [];
   clothingReferrals: Array<any> = [];
@@ -39,16 +41,16 @@ export class ReferralMakerComponent implements OnInit {
     this.authService.path.subscribe(p => this.path = p);
 
     // get URL params
-    const id = this.route.snapshot.paramMap.get('id');
-    const purchaser = this.route.snapshot.paramMap.get('purchaser');
+    this.regId = this.route.snapshot.paramMap.get('id');
+    this.purchaser = this.route.snapshot.paramMap.get('purchaser');
 
-    if (!id || !purchaser) {
+    if (!this.regId || !this.purchaser) {
       // error - return to list
       this.router.navigate([`/${this.path}/registrations`]);
     }
 
     // get registration data
-    this.registrationService.getRegistrationById(id)
+    this.registrationService.getRegistrationById(this.regId)
       .subscribe(r => {
         if (!r.essFileNumber) {
           // error - send them back to their home page
@@ -65,7 +67,7 @@ export class ReferralMakerComponent implements OnInit {
 
   back() {
     // show the editing parts of the form
-    this.maker = true;
+    this.editMode = true;
     window.scrollTo(0, 0); // scroll to top
   }
 
@@ -75,7 +77,7 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   createReferral() {
-    this.maker = false;
+    this.editMode = false;
     window.scrollTo(0, 0); // scroll to top
   }
 
@@ -99,39 +101,31 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   removeIncidentalsReferral(i: number) {
-    console.log('remove incidentals referral index =', i);
     this.incidentalsReferrals.splice(i, 1);
-
-    console.log('incidentals =', this.incidentalsReferrals);
   }
 
   addIncidentalsReferral() {
-    const i = this.incidentalsReferrals.length;
-    console.log('add incidentals referral index =', i);
     this.incidentalsReferrals.push({
-      id: i.toString(),
-      validFrom: null,
-      validTo: null,
+      id: null, // is populated back BE after save
+      active: false,
+      validFrom: new Date(2019, 0, 1), // TODO: for local testing only
+      validTo: new Date(2019, 11, 31), // TODO: for local testing only
       evacuees: [],
       approvedItems: '',
       maxTotal: 100,
-      comments: 'some comments here'
+      comments: 'some comments here',
+      purchaser: this.purchaser
     });
-
-    console.log('incidentals =', this.incidentalsReferrals);
   }
 
   clearIncidentalsReferrals(): void {
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Incidentals referrals?')) {
-      console.log('clear all incidentals referrals');
-      // this.incidentalsReferrals.length = 0;
       while (this.incidentalsReferrals.length > 0) { this.incidentalsReferrals.pop(); }
-
-      console.log('incidentals =', this.incidentalsReferrals);
     }
   }
 
+  // SAMPLE CODE
   // family member formgroup
   // createFamilyMember(fmbr?: FamilyMember): FormGroup {
   //   if (fmbr) {
