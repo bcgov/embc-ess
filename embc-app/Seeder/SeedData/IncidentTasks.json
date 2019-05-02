@@ -1,11 +1,12 @@
-﻿[
+[
     {
         "taskNumber": "123456",
         "details": "Flooding in Victoria",
         "active": true,
         "community": {
             "name": "Victoria"
-        }
+        },
+        "startDate": "2019-01-12T10:12:45.000Z"
     },
     {
         "taskNumber": "789012",
@@ -13,7 +14,8 @@
         "active": true,
         "regionalDistrict": {
             "name": "Capital Region"
-        }
+        },
+        "startDate": "2018-12-31T23:59:10.000Z"
     },
     {
         "taskNumber": "456789",
@@ -21,6 +23,7 @@
         "active": true,
         "region": {
             "name": "Vancouver Island"
-        }
+        },
+        "startDate": "2019-02-28T01:00:01.000Z"
     }
 ]
