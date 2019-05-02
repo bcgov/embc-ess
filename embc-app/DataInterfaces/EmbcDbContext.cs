@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -23,8 +25,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     /// </summary>
     public class EmbcDbContextFactory : IEmbcDbContextFactory
     {
-        private readonly DbContextOptions<EmbcDbContext> _options;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly DbContextOptions<EmbcDbContext> options;
+        private readonly IHttpContextAccessor ctx;
 
         /// <summary>
         /// Database Context Factory Constructor
@@ -33,8 +35,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <param name="options"></param>
         public EmbcDbContextFactory(IHttpContextAccessor httpContextAccessor, DbContextOptions<EmbcDbContext> options)
         {
-            _options = options;
-            _httpContextAccessor = httpContextAccessor;
+            this.options = options;
+            ctx = httpContextAccessor;
         }
 
         /// <summary>
@@ -43,13 +45,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <returns></returns>
         public EmbcDbContext Create()
         {
-            return new EmbcDbContext(_httpContextAccessor, _options);
+            return new EmbcDbContext(ctx, options);
         }
     }
 
     public class EmbcDbContext : DbContext
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor ctx;
 
         public EmbcDbContext(DbContextOptions<EmbcDbContext> options) : base(options)
         {
@@ -59,7 +61,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public EmbcDbContext(IHttpContextAccessor httpContextAccessor, DbContextOptions<EmbcDbContext> options) : base(options)
         {
-            _httpContextAccessor = httpContextAccessor;
+            ctx = httpContextAccessor;
 
             // override the default timeout as some operations are time intensive
             Database?.SetCommandTimeout(180);
@@ -123,6 +125,23 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             modelBuilder.Entity<Registration>()
                 .Property(r => r.EssFileNumber)
                 .HasDefaultValueSql("NEXT VALUE FOR ESSFileNumbers");
+
+            modelBuilder.ShadowProperties();
+
+        }
+
+        public override int SaveChanges()
+        {
+            ChangeTracker.SetShadowProperties(ctx?.HttpContext?.User);
+
+            return base.SaveChanges();
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            ChangeTracker.SetShadowProperties(ctx?.HttpContext?.User);
+
+            return await base.SaveChangesAsync(cancellationToken);
         }
     }
 }

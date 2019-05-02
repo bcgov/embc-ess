@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
-    public class Country
+    public class Country : IAuditableEntity
     {
         [Key]
         public string CountryCode { get; set; }

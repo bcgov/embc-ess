@@ -8,7 +8,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// <summary>
     /// Incident Task Database Model
     /// </summary>
-    public class IncidentTask
+    public class IncidentTask : IAuditableEntity
     {
         public IncidentTask()
         { }

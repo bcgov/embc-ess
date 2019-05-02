@@ -7,7 +7,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// <summary>
     /// Evacuee Registration Database Model
     /// </summary>
-    public class Registration
+    public class Registration : IAuditableEntity
     {
         /// <summary>
         /// A system-generated unique identifier
