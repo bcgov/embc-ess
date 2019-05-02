@@ -14,5 +14,6 @@ services:
     environment:
       - NODE_ENV=development
       - API_URL
+      - SM_TOKEN
       - DEV_USER
       - DEV_BCSC_USER

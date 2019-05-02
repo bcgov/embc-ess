@@ -1,7 +1,7 @@
+console.log();
+console.log(`** Using angular proxy to remote API server: ${process.env.API_URL} **`);
 
-console.log(`Using proxy to remote API server: ${process.env.API_URL}`);
-
-const PROXY_CONFIG = {
+const proxyConfig = {
   '/embcess/api': {
     'target': process.env.API_URL,
     'secure': false,
@@ -14,14 +14,11 @@ const PROXY_CONFIG = {
         return false;
       }
       // append dev user login tokens (if available)
-      if (process.env.DEV_USER) {
-        req.headers['DEV-USER'] = process.env.DEV_USER;
-      }
-      if (process.env.DEV_BCSC_USER) {
-        req.headers['DEV-BCSC-USER'] = process.env.DEV_BCSC_USER;
+      if (process.env.SM_TOKEN) {
+        req.headers.cookie = 'sm.token=' + process.env.SM_TOKEN;
       }
     }
   }
 }
 
-module.exports = PROXY_CONFIG;
+module.exports = proxyConfig;
