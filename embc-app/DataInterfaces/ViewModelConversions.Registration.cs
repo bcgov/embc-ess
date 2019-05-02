@@ -129,7 +129,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     RegistrationCompletionDate = source.RegistrationCompletionDate,
                     HeadOfHousehold = source.HeadOfHousehold?.ToViewModel() as ViewModels.HeadOfHousehold,
                     IncidentTask = source.IncidentTask?.ToViewModel(),
-                    HostCommunity = source.HostCommunity?.ToViewModel()
+                    HostCommunity = source.HostCommunity?.ToViewModel(),
+                    Active = source.Active,
+                    HasFollowUpDetails = !string.IsNullOrWhiteSpace(source.FollowUpDetails),
+                    Facility = source.Facility
                 };
             }
 
