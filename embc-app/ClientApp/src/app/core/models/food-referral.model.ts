@@ -1,6 +1,8 @@
 import { Evacuee, Supplier } from './';
 
-export interface IncidentalsReferral {
+type FoodType = ( 'RESTAURANT' | 'GROCERIES' );
+
+export interface FoodReferral {
   id: string;
   active?: boolean;
   purchaser: string;
@@ -10,7 +12,11 @@ export interface IncidentalsReferral {
     evacuee: Evacuee,
     selected: boolean
   }>;
-  approvedItems: string;
+  foodType: FoodType;
+  numBreakfasts?: number;
+  numLunches?: number;
+  numDinners?: number;
+  numDaysMeals?: number;
   totalAmt: number;
   supplier: Supplier;
   comments: string;

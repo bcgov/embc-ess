@@ -22,7 +22,8 @@
       <div class="card d-block border-0 p-4">
         <label>Select required supports:</label>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood">
+          <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood"
+            (change)="foodReferralChange()">
           <label class="form-check-label" for="supportFood">Food</label>
         </div>
         <div class="form-check mt-2">
@@ -86,7 +87,8 @@
 
     <section class="clearfix">
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
-        <app-incidentals-referral [registration]="registration" [(referral)]="r" [editMode]="false"></app-incidentals-referral>
+        <app-incidentals-referral [registration]="registration" [(referral)]="r" [editMode]="false">
+        </app-incidentals-referral>
       </article>
     </section>
 
