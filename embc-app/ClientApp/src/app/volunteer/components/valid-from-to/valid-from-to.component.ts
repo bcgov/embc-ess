@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import range from 'lodash/range';
 
 @Component({
@@ -7,8 +7,10 @@ import range from 'lodash/range';
   styleUrls: ['./valid-from-to.component.scss']
 })
 export class ValidFromToComponent implements OnInit {
+  @Input() validFrom: Date = null;
+  @Input() validTo: Date = null;
 
-  days = range(1, 6); // [1,2,3,4,5]
+  days = range(1, 15); // [1..14]
 
   constructor() { }
 
