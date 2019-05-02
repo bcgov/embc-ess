@@ -55,11 +55,11 @@ namespace Gov.Jag.Embc.Public.Authentication
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            var smAuthToken = SiteMinderAuthenticationToken.GetFromHttpHeaders(Request);
+            var smAuthToken = SiteMinderAuthenticationToken.CreateFromFwdHeaders(Request);
             if (!environment.IsProduction() && smAuthToken.IsAnonymous())
             {
-                smAuthToken = SiteMinderAuthenticationToken.GetFromCookie(Request);
-                Response.Cookies.Delete(SiteMinderAuthenticationToken.COOKIE_NAME);
+                smAuthToken = SiteMinderAuthenticationToken.CreateForDev(Request);
+                Response.Cookies.Delete(SiteMinderAuthenticationToken.SM_TOKEN_NAME);
             }
 
             logger.LogDebug($"smAuthToken: {smAuthToken.ToString()}");
