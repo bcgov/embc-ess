@@ -3,9 +3,20 @@
     <span class="h3">Valid From</span>
     <div class="row">
       <div class="col-6">
-        <label for="validFromDate_{{referralDate.uuid}}">Date</label>
-        <input type="date" id="validFromDate_{{referralDate.uuid}}" class="form-control">
-        <span class="invalid-feedback">Please enter a valid date.</span>
+        <div class="form-group mb-0">
+          <label for="validFromDate_{{referralDate.uuid}}">Date</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd" name="validFromDate_{{referralDate.uuid}}" ngbDatepicker #fromDate="ngbDatepicker" [firstDayOfWeek]="7" navigation="arrows" [(ngModel)]="wrdForm.to" (click)="fromDate.close();" required aria-required="true">
+            <div class="input-group-append">
+              <button class="btn btn-icon" (click)="fromDate.toggle()" type="button" tabindex="-1">
+                <i class="material-icons">date_range</i>
+              </button>
+            </div>
+          </div>
+
+          <span class="invalid-feedback">Please enter a valid date.</span>
+        </div>
+
       </div>
       <div class="col-3 pl-0">
         <label for="validFromTime_{{referralDate.uuid}}">Time</label>
@@ -36,4 +47,4 @@
   </div>
   <!-- TODO: we should emit whenever a form element changes -->
   <button (click)="emitReferralDate(wrd)">Emit</button>
-  <pre>{{wrd|json}}</pre>
+  <pre>{{wrdForm|json}}</pre>

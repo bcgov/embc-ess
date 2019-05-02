@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import range from 'lodash/range';
-import { ReferralDate } from 'src/app/core/models/referral-date';
+import { ReferralDate, ReferralDateForm, YearMonthDay } from 'src/app/core/models/referral-date';
 import * as moment from 'moment';
+
 @Component({
   selector: 'app-valid-from-to',
   templateUrl: './valid-from-to.component.html',
@@ -11,8 +12,9 @@ export class ValidFromToComponent implements OnInit {
   @Input() referralDate: ReferralDate;
   @Output() dateStub = new EventEmitter<ReferralDate>();
   days = range(1, 6); // [1,2,3,4,5]
+  model;
 
-  wrd: ReferralDate; // Working Referral Date
+  wrdForm: any; // The form elements (different data)
 
   constructor() { }
 
@@ -22,11 +24,13 @@ export class ValidFromToComponent implements OnInit {
   }
 
   initializeDates(referralDate: ReferralDate): void {
-
     // if there is no identifier this component is useless.
     if (referralDate.uuid) {
       // generate the referral date
-      this.wrd = this.generateReferralDate(referralDate);
+      this.wrdForm = this.generateReferralDateForm(referralDate);
+      // use the referral date to generate the useful form object
+      console.log(this.generateReferralDateForm(referralDate));
+
     }
   }
 
@@ -35,18 +39,44 @@ export class ValidFromToComponent implements OnInit {
     this.dateStub.emit(referralDate);
   }
 
-  generateReferralDate(referralDate: ReferralDate): ReferralDate {
-    if (!referralDate.from) {
-      // if no from date then datestamp to now
-      referralDate.from = moment();
-    }
-    if (referralDate.days === null || referralDate.days === undefined) {
-      // if the days are null then we instantiate to 1 so we can math
-      referralDate.days = 1;
-    }
-    // set the to date
-    referralDate.to = moment().add(referralDate.days, 'days');
+  generateReferralDateForm(referralDate: ReferralDate): ReferralDateForm {
     // return the changes
-    return referralDate;
+    const rd: ReferralDateForm = {
+      uuid: referralDate.uuid || null,
+      days: referralDate.days || 1,
+      to: this.convertMomentToYmd(moment(referralDate.to))
+        || this.convertMomentToYmd(moment()),
+      from: this.convertMomentToYmd(moment(referralDate.from))
+        || this.convertMomentToYmd(moment().add(1, 'd')),
+    };
+    return rd;
+  }
+
+
+  convertMomentToYmd(date: moment.Moment): YearMonthDay {
+    // convert a moment to a year month day object
+    return {
+      year: date.year(),
+      month: date.month(),
+      day: date.day(),
+    };
+  }
+  convertYmdToMoment(date: YearMonthDay): moment.Moment {
+    // convert a ymd to a moment
+    return moment().day(date.day).month(date.month).year(date.year);
+  }
+
+  onFromDateSelect(date) {
+    // get date from angular bootstrap datepicker
+    // {"year":2019,"month":5,"day":16}
+
+    // the input is a date string consistent with the user's browser.
+    // Using the browser we can then convert it into milliseconds
+    // using moments we convert it to a consistent format
+    alert(JSON.stringify(date));
+
+    // parse the browser date into a moment value
+    // alert(typeof date);
+
   }
 }
