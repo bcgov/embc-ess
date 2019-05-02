@@ -4,14 +4,16 @@ using Gov.Jag.Embc.Public.DataInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Gov.Jag.Embc.Public.Migrations
 {
     [DbContext(typeof(EmbcDbContext))]
-    partial class EmbcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190502053607_Set-Community-RegionName-Not-Null")]
+    partial class SetCommunityRegionNameNotNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,6 +276,8 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompletedById");
+
                     b.HasIndex("HeadOfHouseholdId");
 
                     b.HasIndex("HostCommunityId");
@@ -281,44 +285,6 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.HasIndex("IncidentTaskId");
 
                     b.ToTable("Registrations");
-                });
-
-            modelBuilder.Entity("Gov.Jag.Embc.Public.Models.Db.Volunteer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("BceidAccountUserName");
-
-                    b.Property<bool?>("CanAccessRestrictedFiles");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(255);
-
-                    b.Property<bool?>("IsAdministrator");
-
-                    b.Property<bool?>("IsNewUser");
-
-                    b.Property<bool?>("IsPrimaryContact");
-
-                    b.Property<string>("LastName")
-                        .HasMaxLength(255);
-
-                    b.Property<Guid?>("OrganizationId");
-
-                    b.Property<Guid?>("SiteMinderGuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrganizationId");
-
-                    b.ToTable("Volunteers");
                 });
 
             modelBuilder.Entity("Gov.Jag.Embc.Public.Models.Db.BcAddress", b =>
@@ -392,6 +358,37 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.HasDiscriminator().HasValue("HOH");
                 });
 
+            modelBuilder.Entity("Gov.Jag.Embc.Public.Models.Db.Volunteer", b =>
+                {
+                    b.HasBaseType("Gov.Jag.Embc.Public.Models.Db.Person");
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("BceidAccountNumber");
+
+                    b.Property<bool?>("CanAccessRestrictedFiles");
+
+                    b.Property<string>("Email")
+                        .HasColumnName("Volunteer_Email")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("Externaluseridentifier");
+
+                    b.Property<bool?>("IsAdministrator");
+
+                    b.Property<bool?>("IsNewUser");
+
+                    b.Property<bool?>("IsPrimaryContact");
+
+                    b.Property<Guid?>("OrganizationId");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.ToTable("Volunteer");
+
+                    b.HasDiscriminator().HasValue("VOLN");
+                });
+
             modelBuilder.Entity("Gov.Jag.Embc.Public.Models.Db.Address", b =>
                 {
                     b.HasOne("Gov.Jag.Embc.Public.Models.Db.Country", "Country")
@@ -431,6 +428,10 @@ namespace Gov.Jag.Embc.Public.Migrations
 
             modelBuilder.Entity("Gov.Jag.Embc.Public.Models.Db.Registration", b =>
                 {
+                    b.HasOne("Gov.Jag.Embc.Public.Models.Db.Volunteer", "CompletedBy")
+                        .WithMany()
+                        .HasForeignKey("CompletedById");
+
                     b.HasOne("Gov.Jag.Embc.Public.Models.Db.HeadOfHousehold", "HeadOfHousehold")
                         .WithMany()
                         .HasForeignKey("HeadOfHouseholdId");
@@ -442,13 +443,6 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.HasOne("Gov.Jag.Embc.Public.Models.Db.IncidentTask", "IncidentTask")
                         .WithMany("Registrations")
                         .HasForeignKey("IncidentTaskId");
-                });
-
-            modelBuilder.Entity("Gov.Jag.Embc.Public.Models.Db.Volunteer", b =>
-                {
-                    b.HasOne("Gov.Jag.Embc.Public.Models.Db.Organization", "Organization")
-                        .WithMany()
-                        .HasForeignKey("OrganizationId");
                 });
 
             modelBuilder.Entity("Gov.Jag.Embc.Public.Models.Db.BcAddress", b =>
@@ -479,6 +473,13 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.HasOne("Gov.Jag.Embc.Public.Models.Db.Address", "PrimaryResidence")
                         .WithMany()
                         .HasForeignKey("PrimaryResidenceId");
+                });
+
+            modelBuilder.Entity("Gov.Jag.Embc.Public.Models.Db.Volunteer", b =>
+                {
+                    b.HasOne("Gov.Jag.Embc.Public.Models.Db.Organization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId");
                 });
 #pragma warning restore 612, 618
         }
