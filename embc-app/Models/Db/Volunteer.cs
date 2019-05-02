@@ -30,16 +30,13 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public bool Active { get; set; }
 
-        public string BceidAccountNumber { get; set; }
+        public string BceidAccountUserName { get; set; }
         public bool? IsNewUser { get; set; }
         public bool? IsAdministrator { get; set; }
         public bool? IsPrimaryContact { get; set; }
         public bool? CanAccessRestrictedFiles { get; set; }
+        public Guid? SiteMinderGuid { get; set; }
 
-        // siteminder guid
-        public Guid? Externaluseridentifier { get; set; }
-
-        // related entities
         public Guid? OrganizationId { get; set; }
 
         public Organization Organization { get; set; }

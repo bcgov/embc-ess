@@ -20,6 +20,9 @@ namespace Gov.Jag.Embc.Public.Migrations
                 name: "IX_Registrations_CompletedById",
                 table: "Registrations");
 
+            migrationBuilder.DropIndex(
+                name: "IX_People_OrganizationId",
+                table: "People");
 
 
             migrationBuilder.CreateTable(
@@ -32,12 +35,12 @@ namespace Gov.Jag.Embc.Public.Migrations
                     LastName = table.Column<string>(maxLength: 255, nullable: true),
                     Email = table.Column<string>(maxLength: 255, nullable: true),
                     Active = table.Column<bool>(nullable: false),
-                    BceidAccountNumber = table.Column<string>(nullable: true),
+                    BceidAccountUserName = table.Column<string>(nullable: true),
                     IsNewUser = table.Column<bool>(nullable: true),
                     IsAdministrator = table.Column<bool>(nullable: true),
                     IsPrimaryContact = table.Column<bool>(nullable: true),
                     CanAccessRestrictedFiles = table.Column<bool>(nullable: true),
-                    Externaluseridentifier = table.Column<Guid>(nullable: true),
+                    SiteMinderGuid = table.Column<Guid>(nullable: true),
                     OrganizationId = table.Column<Guid>(nullable: true),
                     PeopleId = table.Column<Guid>(nullable: false)
                 },
@@ -58,12 +61,12 @@ namespace Gov.Jag.Embc.Public.Migrations
                                                     ,LastName
                                                     ,Email
                                                     ,Active
-                                                    ,BceidAccountNumber
+                                                    ,BceidAccountUserName
                                                     ,IsNewUser
                                                     ,IsAdministrator
                                                     ,IsPrimaryContact
                                                     ,CanAccessRestrictedFiles
-                                                    ,Externaluseridentifier
+                                                    ,SiteMinderGuid
                                                     ,OrganizationId
                                                     ,PeopleId)
                                                 SELECT 
@@ -94,9 +97,9 @@ namespace Gov.Jag.Embc.Public.Migrations
                 nullable: true);
 
             migrationBuilder.Sql("UPDATE Registrations SET CompletedByPeopleId = CompletedById");
-            
+
             migrationBuilder.Sql(@"UPDATE Registrations
-                                                    SET CompletedById = v.Externaluseridentifier
+                                                    SET CompletedById = v.SiteMinderGuid
                                                 FROM Registrations r
                                                 INNER JOIN
                                                     Volunteers v
@@ -109,10 +112,6 @@ namespace Gov.Jag.Embc.Public.Migrations
             migrationBuilder.DropColumn(
                 name: "PeopleId",
                 table: "Volunteers");
-
-            migrationBuilder.DropIndex(
-                name: "IX_People_OrganizationId",
-                table: "People");
 
             migrationBuilder.DropColumn(
                 name: "Active",

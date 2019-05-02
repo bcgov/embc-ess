@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gov.Jag.Embc.Public.Migrations
 {
     [DbContext(typeof(EmbcDbContext))]
-    [Migration("20190501220157_Volunter-Table-Added")]
+    [Migration("20190502060823_Volunter-Table-Added")]
     partial class VolunterTableAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -292,14 +292,12 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("BceidAccountNumber");
+                    b.Property<string>("BceidAccountUserName");
 
                     b.Property<bool?>("CanAccessRestrictedFiles");
 
                     b.Property<string>("Email")
                         .HasMaxLength(255);
-
-                    b.Property<Guid?>("Externaluseridentifier");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(255);
@@ -314,6 +312,8 @@ namespace Gov.Jag.Embc.Public.Migrations
                         .HasMaxLength(255);
 
                     b.Property<Guid?>("OrganizationId");
+
+                    b.Property<Guid?>("SiteMinderGuid");
 
                     b.HasKey("Id");
 

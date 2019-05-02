@@ -143,17 +143,17 @@ namespace Gov.Jag.Embc.Public.Seeder
         public void AddOrUpdateVolunteers(List<Volunteer> volunteers)
         {
             var existingEntities = db.Volunteers
-                    .Where(v => volunteers.Exists(ex => ex.BceidAccountNumber == v.BceidAccountNumber))
+                    .Where(v => volunteers.Exists(ex => ex.BceidAccountUserName == v.BceidAccountUserName))
                     .ToList();
 
             foreach (var entity in existingEntities)
             {
-                var volunteer = volunteers.Single(x => x.BceidAccountNumber == entity.BceidAccountNumber);
+                var volunteer = volunteers.Single(x => x.BceidAccountUserName == entity.BceidAccountUserName);
 
-                entity.BceidAccountNumber = volunteer.BceidAccountNumber;
+                entity.BceidAccountUserName = volunteer.BceidAccountUserName;
                 entity.FirstName = volunteer.FirstName;
                 entity.LastName = volunteer.LastName;
-                entity.Externaluseridentifier = volunteer.Externaluseridentifier;
+                entity.SiteMinderGuid = volunteer.SiteMinderGuid;
                 entity.Active = volunteer.Active;
                 entity.CanAccessRestrictedFiles = volunteer.CanAccessRestrictedFiles;
                 entity.Email = volunteer.Email;
@@ -163,7 +163,7 @@ namespace Gov.Jag.Embc.Public.Seeder
             }
             db.UpdateRange(existingEntities);
 
-            var newEntities = volunteers.Where(v => !existingEntities.Exists(ex => ex.BceidAccountNumber == v.BceidAccountNumber));
+            var newEntities = volunteers.Where(v => !existingEntities.Exists(ex => ex.BceidAccountUserName == v.BceidAccountUserName));
             db.AddRange(newEntities);
 
             db.SaveChanges();
