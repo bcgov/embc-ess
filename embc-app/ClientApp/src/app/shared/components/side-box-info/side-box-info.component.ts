@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -6,18 +6,14 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './side-box-info.component.html',
   styleUrls: ['./side-box-info.component.scss']
 })
-export class SideBoxInfoComponent implements OnInit {
+export class SideBoxInfoComponent {
   @Input() title = 'TITLE';
   @Input() content = 'Content can be added using the content input.';
   @Input() button = 'Ok';
   @Input() route = '/'; // home by default
   @Input() absoluteRouting = true;
 
-
   constructor(private router: Router, private current: ActivatedRoute) { }
-
-  ngOnInit() {
-  }
 
   continue() {
     // send the user along to the next page submitted
