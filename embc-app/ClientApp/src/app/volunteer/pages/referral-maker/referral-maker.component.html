@@ -1,6 +1,6 @@
 <div *ngIf="registration">
 
-  <div *ngIf="maker">
+  <div *ngIf="editMode">
     <h1>Identify Supports</h1>
 
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit amet pulvinar.
@@ -60,7 +60,7 @@
       </article>
 
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
-        <app-incidentals-referral [registration]="registration" [(referral)]="r"
+        <app-incidentals-referral [registration]="registration" [(referral)]="r" [editMode]="true"
           (remove)="removeIncidentalsReferral(i)" (add)="addIncidentalsReferral()"></app-incidentals-referral>
       </article>
 
@@ -78,14 +78,16 @@
     </div>
   </div>
 
-  <div *ngIf="!maker">
+  <div *ngIf="!editMode">
     <h1>Create Referrals</h1>
 
     <p>Please confirm that all details you entered are correct by reading through the summary below with the evacuee.
     </p>
 
     <section class="clearfix">
-      <!-- TODO: look through all referrals (by type) -->
+      <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
+        <app-incidentals-referral [registration]="registration" [(referral)]="r" [editMode]="false"></app-incidentals-referral>
+      </article>
     </section>
 
     <div class="mt-5 space-between">

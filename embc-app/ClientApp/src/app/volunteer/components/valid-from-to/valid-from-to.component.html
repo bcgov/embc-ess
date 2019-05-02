@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-6">
         <label for="validFromDate">Date</label>
-        <input type="date" id="validFromDate" class="form-control">
+        <input type="text" id="validFromDate" class="form-control" [value]="validFrom">
         <span class="invalid-feedback">Please enter a valid date.</span>
       </div>
       <div class="col-3 pl-0">
@@ -26,11 +26,11 @@
     <div class="row">
       <div class="col-7">
         <label for="validToDate">Date</label>
-        <input type="text" id="validToDate" class="form-control" readonly>
+        <input type="text" id="validToDate" class="form-control" [value]="validTo" readonly>
       </div>
       <div class="col-5 pl-0">
         <label for="validToTime">Time</label>
-        <input type="text" id="validToTime" class="form-control" readonly>
+        <input type="time" id="validToTime" class="form-control">
     </div>
   </div>
 </div>

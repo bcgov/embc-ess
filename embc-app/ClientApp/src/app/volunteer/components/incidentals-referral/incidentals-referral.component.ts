@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, S
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Registration, IncidentalsReferral } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-incidentals-referral',
@@ -11,6 +12,7 @@ import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rat
 export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChanges {
   @Input() registration: Registration = null;
   @Input() referral: IncidentalsReferral = null;
+  @Input() editMode = false;
   @Output() remove = new EventEmitter<any>();
   @Output() add = new EventEmitter<any>();
 
@@ -29,10 +31,13 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.registration) {
-      console.log('registration =', changes.registration);
+      console.log('registration =', changes.registration.currentValue);
     }
     if (changes.referral) {
-      console.log('referral =', changes.referral);
+      console.log('referral =', changes.referral.currentValue);
+    }
+    if (changes.editMode) {
+      console.log('editMode =', changes.editMode.currentValue);
     }
   }
 
@@ -42,5 +47,12 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
       () => { this.incidentalsRatesModal = null; },
       () => { this.incidentalsRatesModal = null; }
     );
+  }
+
+  // TODO: move this to some shared util
+  numDays(validFrom: Date, validTo: Date): number {
+    const a = moment(validFrom);
+    const b = moment(validTo);
+    return b.diff(a, 'days') + 1; // TODO: verify this
   }
 }
