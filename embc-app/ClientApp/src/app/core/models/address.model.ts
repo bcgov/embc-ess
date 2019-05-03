@@ -2,7 +2,7 @@ import { Community, Country } from './';
 
 interface BaseAddress {
   id: string | null;
-  addressSubtype: string; // one of ['BCAD', 'OTAD'] for BC vs non-BC addresses
+  addressSubtype: string; // see below
   addressLine1: string;
   addressLine2?: string;
   addressLine3?: string;

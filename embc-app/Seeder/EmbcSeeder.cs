@@ -141,7 +141,7 @@ namespace Gov.Jag.Embc.Public.Seeder
                 v.Organization = null;
             });
 
-            seederRepository.AddOrUpdateVolunteers(volunteers.GroupBy(v => v.BceidAccountNumber).Select(g => g.First()).ToList());
+            seederRepository.AddOrUpdateVolunteers(volunteers.GroupBy(v => v.BceidAccountUserName).Select(g => g.First()).ToList());
         }
     }
 }

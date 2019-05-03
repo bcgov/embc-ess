@@ -17,7 +17,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     BCeIDBusinessGuid = source.BCeIDBusinessGuid,
                     Region = source.Region?.ToViewModel(),
                     Community = source.Community?.ToViewModel(),
-                    AdminBCeID = primaryContact?.BceidAccountNumber,
+                    AdminBCeID = primaryContact?.BceidAccountUserName,
                     AdminFirstName = primaryContact?.FirstName,
                     AdminLastName = primaryContact?.LastName
                 };

@@ -7,19 +7,14 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// <summary>
     /// Person Database Model
     /// </summary>
-    public abstract partial class Person
+    public abstract class Person
     {
-        public const string VOLUNTEER = "VOLN";
         public const string HOH = "HOH";
         public const string FAMILY_MEMBER = "FMBR";
 
         public static Person Create(string subType)
         {
-            if (subType == VOLUNTEER)
-            {
-                return new Volunteer();
-            }
-            else if (subType == HOH)
+            if (subType == HOH)
             {
                 return new HeadOfHousehold();
             }

@@ -72,14 +72,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var admin = new Models.Db.Volunteer()
             {
                 Active = true,
-                BceidAccountNumber = item.AdminBCeID,
+                BceidAccountUserName = item.AdminBCeID,
                 FirstName = item.AdminFirstName,
                 LastName = item.AdminLastName,
                 IsAdministrator = true,
                 OrganizationId = newItem.Entity.Id,
                 IsPrimaryContact = true
             };
-            var newAdmin = await db.People.AddAsync(admin);
+            var newAdmin = await db.Volunteers.AddAsync(admin);
             await db.SaveChangesAsync();
 
             return newItem.Entity.Id.ToString();
