@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -42,21 +41,9 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet(Name = nameof(GetAll))]
         public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters searchQuery)
         {
-            try
-            {
-                var items = await dataInterface.GetRegistrationsAsync(searchQuery);
+            var items = await dataInterface.GetRegistrationsAsync(searchQuery);
 
-                return Json(new
-                {
-                    data = items.Items,
-                    metadata = items.Pagination
-                });
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+            return Json(items);
         }
 
         [HttpGet("{id}")]
@@ -95,23 +82,15 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
+            item.Id = null;
+            item.Active = true;
+            var result = await dataInterface.CreateRegistrationAsync(item);
+            if (!string.IsNullOrWhiteSpace(result.HeadOfHousehold.Email))
             {
-                item.Id = null;
-                item.Active = true;
-                var result = await dataInterface.CreateRegistrationAsync(item);
-                if (!string.IsNullOrWhiteSpace(result.HeadOfHousehold.Email))
-                {
-                    var registrationEmail = CreateEmailMessageForRegistration(result);
-                    emailSender.Send(registrationEmail);
-                }
-                return Json(result);
+                var registrationEmail = CreateEmailMessageForRegistration(result);
+                emailSender.Send(registrationEmail);
             }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+            return Json(result);
         }
 
         private EmailMessage CreateEmailMessageForRegistration(Registration registration)
@@ -162,16 +141,9 @@ A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
             {
                 return BadRequest(ModelState);
             }
-            try
-            {
-                await dataInterface.UpdateRegistrationAsync(item);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+
+            await dataInterface.UpdateRegistrationAsync(item);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -179,16 +151,8 @@ A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
         {
             if (string.IsNullOrWhiteSpace(id)) return BadRequest();
 
-            try
-            {
-                var result = await dataInterface.DeactivateRegistration(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e);
-            }
+            var result = await dataInterface.DeactivateRegistration(id);
+            return Ok();
         }
     }
 }
