@@ -125,7 +125,7 @@ export class ValidFromToComponent implements OnInit {
     const d = new Date();
     Date.parse(`${d.getFullYear}-${d.getMonth()}-${d.getDate()} ${this.wrdForm.fromTime.hour}:${this.wrdForm.fromTime.minute}`) ? this.validTime = true : this.validTime = false;
   }
-  // ****************************helpers
+
   convertMomentToYmd(date: moment.Moment): YearMonthDay {
     // convert a moment to a year month day object
     return {
