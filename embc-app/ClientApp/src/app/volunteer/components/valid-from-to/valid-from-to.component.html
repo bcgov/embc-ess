@@ -4,8 +4,8 @@
     <div class="row">
       <div class="col">
         <div class="input-group mb-0">
-          <label for="validFromDate_{{wrdForm.uuid}}">Date</label>
-          <input class="form-control" placeholder="yyyy-mm-dd" name="validFromDate_{{wrdForm.uuid}}" ngbDatepicker #fromDate="ngbDatepicker" [firstDayOfWeek]="7" navigation="arrows" [(ngModel)]="wrdForm.fromDate" (click)="fromDate.close();" (ngModelChange)="updateDisplay()" required aria-required="true">
+          <label for="validFromDate_{{id}}">Date</label>
+          <input class="form-control" placeholder="yyyy-mm-dd" name="validFromDate_{{id}}" ngbDatepicker #fromDate="ngbDatepicker" [firstDayOfWeek]="7" navigation="arrows" [(ngModel)]="wrdForm.fromDate" (click)="fromDate.close();" (ngModelChange)="updateDisplay()" required aria-required="true">
           <div class="input-group-append">
             <button class="btn btn-icon picker-patch" (click)="fromDate.toggle()" type="button" tabindex="-1">
               <i class="material-icons">date_range</i>
@@ -16,15 +16,15 @@
       </div>
       <div class="col-3 pl-0 pr-0">
         <div class="form-group mb-0">
-          <label for="validFromTime_{{wrdForm.uuid}}">Time</label>
-          <!-- <input type="time" id="validFromTime_{{wrdForm.uuid}}" class="form-control"> -->
-          <ngb-timepicker id="validFromTime_{{wrdForm.uuid}}" [(ngModel)]="wrdForm.fromTime" [meridian]="true" [spinners]="false" (ngModelChange)="updateDisplay()"></ngb-timepicker>
+          <label for="validFromTime_{{id}}">Time</label>
+          <!-- <input type="time" id="validFromTime_{{id}}" class="form-control"> -->
+          <ngb-timepicker id="validFromTime_{{id}}" [(ngModel)]="wrdForm.fromTime" [meridian]="true" [spinners]="false" (ngModelChange)="updateDisplay()"></ngb-timepicker>
           <span *ngIf="!validTime" class="invalid-feedback" style="display: block;">Please enter a valid time.</span>
         </div>
       </div>
       <div class="col-3 pl-0">
-        <label for="numberDays_{{wrdForm.uuid}}"># Days</label>
-        <select class="form-control" id="numberDays_{{wrdForm.uuid}}" [(ngModel)]="wrdForm.days" (change)="updateDisplay()">
+        <label for="numberDays_{{id}}"># Days</label>
+        <select class="form-control" id="numberDays_{{id}}" [(ngModel)]="wrdForm.days" (change)="updateDisplay()">
           <option *ngFor="let n of days" [ngValue]="n">
             {{n}}
           </option>
@@ -36,12 +36,12 @@
     <span class="h3">Valid To</span>
     <div class="row">
       <div class="col-7">
-        <label for="validToDate_{{wrdForm.uuid}}">Date</label>
-        <input type="text" id="validToDate_{{wrdForm.uuid}}" class="form-control" [value]="displayDate" readonly>
+        <label for="validToDate_{{id}}">Date</label>
+        <input type="text" id="validToDate_{{id}}" class="form-control" [value]="displayDate" readonly>
       </div>
       <div class="col-5 pl-0">
-        <label for="validToTime_{{wrdForm.uuid}}">Time</label>
-        <input type="text" id="validToTime_{{wrdForm.uuid}}" class="form-control" [value]="displayTime" readonly>
+        <label for="validToTime_{{id}}">Time</label>
+        <input type="text" id="validToTime_{{id}}" class="form-control" [value]="displayTime" readonly>
       </div>
     </div>
   </div>

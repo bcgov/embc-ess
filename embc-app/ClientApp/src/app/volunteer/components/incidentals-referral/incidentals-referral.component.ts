@@ -3,6 +3,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IncidentalsReferral } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
 import * as moment from 'moment';
+import { ReferralDate } from 'src/app/core/models/referral-date';
 
 @Component({
   selector: 'app-incidentals-referral',
@@ -50,5 +51,9 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
     const a = moment(validFrom);
     const b = moment(validTo);
     return b.diff(a, 'days') + 1; // TODO: verify this
+  }
+  onDate(event: ReferralDate) {
+    // collect the referral date from the event
+    this.referral.dates = event;
   }
 }

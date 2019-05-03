@@ -1,11 +1,9 @@
 export interface ReferralDate {
-  uuid: string; // must be unique so that we can display uniquely
-  from?: Date;
-  to?: Date;
-  days?: number;
+  from: Date;
+  to?: Date; // generated
+  days?: number; // comes with a default in the components
 }
 export interface ReferralDateForm {
-  uuid: string; // must be unique so that we can display uniquely
   fromDate?: YearMonthDay;
   toDate?: YearMonthDay;
   fromTime?: HourMinute;

@@ -1,11 +1,11 @@
 import { Evacuee, Supplier } from './';
+import { ReferralDate } from './referral-date';
 
 export interface Referral {
   id: string;
   active?: boolean;
   purchaser: string;
-  validFrom: Date;
-  validTo: Date;
+  dates: ReferralDate;
   evacuees: Array<{
     evacuee: Evacuee,
     selected: boolean

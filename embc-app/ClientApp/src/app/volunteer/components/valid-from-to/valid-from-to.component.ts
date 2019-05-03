@@ -11,7 +11,8 @@ import * as moment from 'moment';
 export class ValidFromToComponent implements OnInit {
   @Input() editMode: boolean; // unimplemented for read only
   @Input() referralDate: ReferralDate;
-  @Output() dateStub = new EventEmitter<ReferralDate>();
+  @Input() id?: string;
+  @Output() date = new EventEmitter<ReferralDate>();
 
   days = range(1, 15); // [1..14]
 
@@ -26,12 +27,14 @@ export class ValidFromToComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    // initialize the dates passed to this component
-    // if there is no identifier this component is useless.
-    if (this.referralDate.uuid) {
-      // generate the referral date
-      this.wrdForm = this.convertReferralDateToReferralDateForm(this.referralDate);
+    // if the id is missing we set the component to generic
+    if (!this.id) {
+      this.id = 'generic';
     }
+    // initialize the dates passed to this component
+
+    // generate the referral date
+    this.wrdForm = this.convertReferralDateToReferralDateForm(this.referralDate);
     this.updateDisplay();
   }
 
@@ -39,7 +42,7 @@ export class ValidFromToComponent implements OnInit {
     // check validity of input
     if (this.validDate && this.validTime) {
       // After all changes are made
-      this.dateStub.emit(this.convertReferralDateFormToReferralDate(this.wrdForm));
+      this.date.emit(this.convertReferralDateFormToReferralDate(this.wrdForm));
     } else {
       // TODO: handle invalid pitput
     }
@@ -80,7 +83,6 @@ export class ValidFromToComponent implements OnInit {
     const d = referralDate.days || 1;
     // return the changes
     return {
-      uuid: referralDate.uuid || null,
       days: referralDate.days || d, // this is the form default
       fromDate: this.convertMomentToYmd(moment(referralDate.from)),
       fromTime: this.convertMomentToHm(moment(referralDate.from)),
@@ -98,7 +100,6 @@ export class ValidFromToComponent implements OnInit {
 
     // return the changes
     return {
-      uuid: referralDateForm.uuid,
       days: referralDateForm.days, // this is the form default
       to: moment()
         .set('year', tD.get('year'))
