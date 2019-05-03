@@ -54,7 +54,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public bool? HasPets { get; set; }
 
         // requirements (needs assessment)
-        public bool? RequiresAccommodation { get; set; }
+        public bool? RequiresLodging { get; set; }
 
         public bool? RequiresClothing { get; set; }
         public bool? RequiresFood { get; set; }

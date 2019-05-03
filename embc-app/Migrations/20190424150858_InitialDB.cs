@@ -288,7 +288,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                     HasPersonalServicesReferral = table.Column<bool>(nullable: true),
                     HasPetCareReferral = table.Column<bool>(nullable: true),
                     HasPets = table.Column<bool>(nullable: true),
-                    RequiresAccommodation = table.Column<bool>(nullable: true),
+                    RequiresLodging = table.Column<bool>(nullable: true),
                     RequiresClothing = table.Column<bool>(nullable: true),
                     RequiresFood = table.Column<bool>(nullable: true),
                     RequiresIncidentals = table.Column<bool>(nullable: true),

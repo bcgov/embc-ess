@@ -114,7 +114,7 @@ Your Emergency Support Services File Number is: <b>{registration.EssFileNumber}<
             {
                 body += $@"
 <br/><br/>
-- If you are under order and require food, clothing, accommodation, transportation, incidentals or other emergency supports, proceed to your nearest Reception Centre.
+- If you are under order and require food, clothing, lodging, transportation, incidentals or other emergency supports, proceed to your nearest Reception Centre.
 A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
 - If you do not require supports, or are under alert, no further actions are required.<br/>
 - If you are in a Reception Centre, proceed to one of the Emergency Support Services volunteers on site who will be able to assist you with completing your registration.<br/>

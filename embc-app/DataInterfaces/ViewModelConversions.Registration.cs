@@ -26,7 +26,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     RequiresFood = source.RequiresFood,
 
                     RequiresClothing = source.RequiresClothing,
-                    RequiresAccommodation = source.RequiresAccommodation,
+                    RequiresLodging = source.RequiresLodging,
                     RequiresIncidentals = source.RequiresIncidentals,
                     RequiresTransportation = source.RequiresTransportation,
                     Facility = source.Facility,
@@ -71,7 +71,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     RequiresFood = source.RequiresFood,
 
                     RequiresClothing = source.RequiresClothing,
-                    RequiresAccommodation = source.RequiresAccommodation,
+                    RequiresLodging = source.RequiresLodging,
                     RequiresIncidentals = source.RequiresIncidentals,
                     RequiresTransportation = source.RequiresTransportation,
                     Facility = source.Facility,
@@ -121,7 +121,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     RequiresSupport = source.RequiresSupport,
                     RequiresFood = source.RequiresFood,
                     RequiresClothing = source.RequiresClothing,
-                    RequiresAccommodation = source.RequiresAccommodation,
+                    RequiresLodging = source.RequiresLodging,
                     RequiresIncidentals = source.RequiresIncidentals,
                     RequiresTransportation = source.RequiresTransportation,
                     SelfRegisteredDate = source.SelfRegisteredDate?.DateTime,

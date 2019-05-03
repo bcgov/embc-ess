@@ -11,7 +11,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public DateTime? SelfRegisteredDate { get; set; }
         public DateTime? RegistrationCompletionDate { get; set; }
         public string RegisteringFamilyMembers { get; set; }  // one of ['yes', 'yes-later', 'no']
-        public bool? RequiresAccommodation { get; set; }
+        public bool? RequiresLodging { get; set; }
         public bool? RequiresClothing { get; set; }
         public bool? RequiresFood { get; set; }
         public bool? RequiresIncidentals { get; set; }

@@ -257,7 +257,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<DateTimeOffset?>("RegistrationCompletionDate");
 
-                    b.Property<bool?>("RequiresAccommodation");
+                    b.Property<bool?>("RequiresLodging");
 
                     b.Property<bool?>("RequiresClothing");
 
