@@ -9,13 +9,13 @@ import * as moment from 'moment';
   styleUrls: ['./valid-from-to.component.scss']
 })
 export class ValidFromToComponent implements OnInit {
-  @Input() editMode: boolean; // unimplemented for read only
+  @Input() editMode: boolean; // unimplemented editmode false is read only
   @Input() referralDate: ReferralDate;
   @Input() id?: string;
   @Output() date = new EventEmitter<ReferralDate>();
 
   days = range(1, 15); // [1..14]
-
+  defaultDays = 1; // the default amount for the component to use as a duration
   displayDate: string;
   displayTime: string;
   // invalid date or time
@@ -44,7 +44,10 @@ export class ValidFromToComponent implements OnInit {
       // After all changes are made
       this.date.emit(this.convertReferralDateFormToReferralDate(this.wrdForm));
     } else {
-      // TODO: handle invalid pitput
+      // TODO: handle invalid inputs
+      this.date.emit({ from: null });
+
+
     }
 
   }
@@ -52,10 +55,9 @@ export class ValidFromToComponent implements OnInit {
   calculate(w: ReferralDateForm): ReferralDateForm {
     // calculate to date
     // set the hours and minutes on the to date to whatever the user picked
-    const tD = this.convertYmdToMoment(w.fromDate).add(w.days, 'd')
+    const tD = this.convertYmdToMoment(w.fromDate).add(w.days, 'days')
       .hours(this.convertHmToMoment(w.fromTime).hours())
       .minutes(this.convertHmToMoment(w.fromTime).minutes());
-    // tD = tD.hours()
 
     // set a date based on whatever is found in the global
     w.toDate = this.convertMomentToYmd(tD);
@@ -80,10 +82,9 @@ export class ValidFromToComponent implements OnInit {
 
   convertReferralDateToReferralDateForm(referralDate: ReferralDate): ReferralDateForm {
     // default number of days on the form
-    const d = referralDate.days || 1;
     // return the changes
     return {
-      days: referralDate.days || d, // this is the form default
+      days: referralDate.days || this.defaultDays, // this is the form default
       fromDate: this.convertMomentToYmd(moment(referralDate.from)),
       fromTime: this.convertMomentToHm(moment(referralDate.from)),
       toDate: null, // these should be calculated
@@ -104,14 +105,14 @@ export class ValidFromToComponent implements OnInit {
       to: moment()
         .set('year', tD.get('year'))
         .set('month', tD.get('month'))
-        .set('day', tD.get('day'))
+        .set('date', tD.get('date'))
         .set('hour', tT.get('hour'))
         .set('minute', tT.get('minute'))
         .toDate(),
       from: moment()
         .set('year', fD.get('year'))
         .set('month', fD.get('month'))
-        .set('day', fD.get('day'))
+        .set('date', fD.get('date'))
         .set('hour', fT.get('hour'))
         .set('minute', fT.get('minute'))
         .toDate(),
@@ -120,10 +121,10 @@ export class ValidFromToComponent implements OnInit {
 
   validateInputs() {
     // check the to and from for a valid range sets the validDate and validTime flags
-    Date.parse(`${this.wrdForm.fromDate.year}-${this.wrdForm.fromDate.month}-${this.wrdForm.fromDate.day}`) ? this.validDate = true : this.validDate = false;
+    this.wrdForm.fromDate && Date.parse(`${this.wrdForm.fromDate.year}-${this.wrdForm.fromDate.month}-${this.wrdForm.fromDate.day}`) ? this.validDate = true : this.validDate = false;
     // use today as a start to evaluate whether or not the time is valid
     const d = new Date();
-    Date.parse(`${d.getFullYear}-${d.getMonth()}-${d.getDate()} ${this.wrdForm.fromTime.hour}:${this.wrdForm.fromTime.minute}`) ? this.validTime = true : this.validTime = false;
+    this.wrdForm.fromTime && Date.parse(`${d.getFullYear}-${d.getMonth()}-${d.getDate()} ${this.wrdForm.fromTime.hour}:${this.wrdForm.fromTime.minute}`) ? this.validTime = true : this.validTime = false;
   }
 
   convertMomentToYmd(date: moment.Moment): YearMonthDay {
