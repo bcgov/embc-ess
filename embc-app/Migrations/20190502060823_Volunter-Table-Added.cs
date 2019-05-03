@@ -98,13 +98,13 @@ namespace Gov.Jag.Embc.Public.Migrations
 
             migrationBuilder.Sql("UPDATE Registrations SET CompletedByPeopleId = CompletedById");
             migrationBuilder.Sql("UPDATE Registrations SET CompletedById = null");
-            
+
             migrationBuilder.AlterColumn<string>(
                 name: "CompletedById",
                 table: "Registrations",
                 nullable: true,
-                oldClrType: typeof(string),
-                oldMaxLength: 255,
+                maxLength: 255,
+                oldClrType: typeof(Guid),
                 oldNullable: true);
 
             migrationBuilder.Sql(@"UPDATE Registrations
