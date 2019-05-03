@@ -6,7 +6,7 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import {
   Registration,
   Supplier,
-  BcAddress,
+  SupplierAddress,
   IncidentalsReferral,
   FoodReferral,
   ClothingReferral,
@@ -138,6 +138,7 @@ export class ReferralMakerComponent implements OnInit {
     const referral: IncidentalsReferral = {
       id: null, // is populated back BE after save
       active: true,
+      type: 'INCIDENTALS',
       purchaser: this.purchaser,
       validFrom: new Date(2019, 0, 1), // TODO: for local testing only
       validTo: new Date(2019, 11, 31), // TODO: for local testing only
@@ -155,11 +156,12 @@ export class ReferralMakerComponent implements OnInit {
     const referral: FoodReferral = {
       id: null, // is populated back BE after save
       active: true,
+      type: 'FOOD',
+      subType: null,
       purchaser: this.purchaser,
       validFrom: new Date(2019, 0, 1), // TODO: for local testing only
       validTo: new Date(2019, 11, 31), // TODO: for local testing only
       evacuees: this.evacuees,
-      foodType: null,
       numBreakfasts: 0,
       numLunches: 0,
       numDinners: 0,
@@ -177,19 +179,21 @@ export class ReferralMakerComponent implements OnInit {
       id: null, // for future use
       active: true,
       name: 'name', // null,
-      address: this.newBcAddress,
-      phoneNumber: '123-456-7890', // null,
-      faxNumber: '321-654-0987', // null
+      address: this.newSupplierAddress,
+      phoneNumber: '123-456-7890', // null, // TODO: for testing only
+      faxNumber: '321-654-0987', // null // TODO: for testing only
     };
   }
 
-  private get newBcAddress(): BcAddress {
+  private get newSupplierAddress(): SupplierAddress {
     return {
       id: null,
-      addressSubtype: 'BCAD',
-      addressLine1: 'addressLine1', // null,
-      postalCode: 'postalCode', // null,
-      community: null
+      addressSubtype: 'SUPP',
+      addressLine1: 'addressLine1', // null, // TODO: for testing only
+      postalCode: 'postalCode', // null, // TODO: for testing only
+      city: null,
+      province: 'BC', // supplier is always in BC
+      country: null // not using at this time
     };
   }
 

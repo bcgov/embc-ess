@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ReferralService } from 'src/app/core/services/referral.service';
 import { Registration, ListResult, PaginationSummary, Referral } from 'src/app/core/models';
-import { ReferralSearchResults, SearchQueryParameters } from 'src/app/core/models/search-interfaces';
+import { ReferralSearchResults } from 'src/app/core/models/search-interfaces';
 
 @Component({
   selector: 'app-referral-table',
@@ -15,12 +15,12 @@ export class ReferralTableComponent implements OnChanges {
 
   // server response
   resultsAndPagination$: Observable<ListResult<Referral>>;
-  pagination: PaginationSummary = null;
 
   // search related
   isLoadingResults = false;
   searchResults$: Observable<ReferralSearchResults>;
   numReferrals = 0;
+  pagination: PaginationSummary = null;
 
   constructor(
     private referralService: ReferralService,
@@ -37,16 +37,8 @@ export class ReferralTableComponent implements OnChanges {
     if (this.registration.id) {
       this.isLoadingResults = true;
 
-      // go get a fresh list of registrations from the service
-      const queryParams: SearchQueryParameters = {
-        offset: 0,
-        limit: 100, // TODO: how to make this 'infinity'?
-        sort: '-startDate',
-        q: `${this.registration.id}`
-      };
-
       // get the collection of meta and data
-      this.resultsAndPagination$ = this.referralService.getReferrals(queryParams);
+      this.resultsAndPagination$ = this.referralService.getReferrals(this.registration.id);
 
       // process server response into something we can display in the UI
       this.searchResults$ = this.resultsAndPagination$.pipe(

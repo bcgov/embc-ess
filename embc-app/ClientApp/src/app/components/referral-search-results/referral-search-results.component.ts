@@ -1,39 +1,39 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, OnInit } from '@angular/core';
-import { Registration, Referral, isBcAddress, isOtherAddress } from 'src/app/core/models';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { Referral } from 'src/app/core/models';
 import { ReferralSearchResults } from 'src/app/core/models/search-interfaces';
-import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { AuthService } from 'src/app/core/services/auth.service';
-import get from 'lodash/get';
 
 // TODO: Rename this
 interface RowItem {
+  registrationId: string;
+
   // The underlying data for any given row within the table view.
-  rowData: Registration;
+  data: Referral;
 
-  // metadata for this row
-  count: number;  // Length of the number of total rows.
-  even: boolean;  // True if this cell is contained in a row with an even-numbered index.
-  first: boolean; // True if this cell is contained in the first row.
-  index: number;  // Index of the data object in the provided data array.
-  last: boolean;  // True if this cell is contained in the last row.
-  odd: boolean;   // True if this cell is contained in a row with an odd-numbered index.
+  // // metadata for this row
+  // count: number;  // Length of the number of total rows.
+  // even: boolean;  // True if this cell is contained in a row with an even-numbered index.
+  // first: boolean; // True if this cell is contained in the first row.
+  // index: number;  // Index of the data object in the provided data array.
+  // last: boolean;  // True if this cell is contained in the last row.
+  // odd: boolean;   // True if this cell is contained in a row with an odd-numbered index.
 
-  // These are convenience accessors to the underlying data represented by `rowData`
-  // They are populated in `processSearchResults()`
-  id?: string; // the guid to link them to their file
-  restrictedAccess: boolean; // should this file be shown or not?
-  headOfHousehold: boolean; // whether this rowItem is belongs to the head of household
-  essFileNumber: number; // what is the ESS file number
-  firstName: string;
-  lastName: string;
-  incidentTaskTaskNumber: string;
-  requiresIncidentals: boolean; // do they need vouchers
-  personType: string; // HOH || FMBR || VOLN
-  evacuatedFrom: string; // community name
-  evacuatedTo: string; // community name
-  hasReferrals: boolean;
-  registrationCompletionDate: string | null;
+  // // These are convenience accessors to the underlying data represented by `rowData`
+  // // They are populated in `processSearchResults()`
+  // id?: string; // the guid to link them to their file
+  // restrictedAccess: boolean; // should this file be shown or not?
+  // headOfHousehold: boolean; // whether this rowItem is belongs to the head of household
+  // essFileNumber: number; // what is the ESS file number
+  // firstName: string;
+  // lastName: string;
+  // incidentTaskTaskNumber: string;
+  // requiresIncidentals: boolean; // do they need vouchers
+  // personType: string; // HOH || FMBR || VOLN
+  // evacuatedFrom: string; // community name
+  // evacuatedTo: string; // community name
+  // hasReferrals: boolean;
+  // registrationCompletionDate: string | null;
 }
 
 /**
@@ -66,8 +66,6 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
-    private uniqueKeyService: UniqueKeyService,
     private authService: AuthService
   ) { }
 
@@ -86,6 +84,7 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
       return [];
     }
 
+    // convert search results into row items
     const listItems: RowItem[] = [];
     search.results.forEach((registration, index, array) => {
       if (!registration) {
@@ -192,22 +191,29 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
       //   listItems.push(fmbr);
       // }
     });
+
     return listItems;
   }
 
-  private hasReferrals(r: Registration): boolean {
-    // TODO we need to check business logic for this because there is deeper discussion with the client about
-    // how this becomes a meaningful flag. This also should probably be handled server-side instead of here.
-    return false;
+  getType(r: RowItem): string {
+    let result: string = null;
+
+    if (r.data.type) {
+      result = `<div class="text-weight-bold">${this.toTitleCase(r.data.type)}</div>`;
+      if (r.data.subType) {
+        result += `<div>${this.toTitleCase(r.data.subType)}</div>`;
+      }
+    }
+
+    return result;
   }
 
-  finalize(r: RowItem) {
-    this.uniqueKeyService.setKey(r.rowData.id);
-    this.router.navigate([`/${this.path}/registration`]);
+  toTitleCase(s: string): string {
+    return s.replace(/\w\S/g, t => t.toUpperCase());
   }
 
+  // TODO: move this to HTML so user can open link in new tab
   view(r: RowItem) {
-    this.uniqueKeyService.setKey(r.rowData.id);
-    this.router.navigate([`/${this.path}/registration/summary`]);
+    this.router.navigate([`/${this.path}/referral/${r.registrationId}/${r.data.id}`]);
   }
 }
