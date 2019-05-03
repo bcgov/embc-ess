@@ -3,6 +3,7 @@ using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -63,6 +64,24 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 RegistrationId = registrationId,
                 Referrals = new PaginatedList<ReferralListItem>(results, searchQuery.Offset, searchQuery.Limit)
+            }));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(string registrationId, [FromBody] IEnumerable<Referral> referrals)
+        {
+            var referralsList = new List<string>();
+            var i = 1000001;
+            foreach (var referral in referrals)
+            {
+                referralsList.Add($"D{i:D7}");
+                i++;
+            }
+
+            return await Task.FromResult(Json(new
+            {
+                RegistrationId = registrationId,
+                Referrals = referralsList.Select(r => new { ReferralId = r }).ToArray()
             }));
         }
     }
