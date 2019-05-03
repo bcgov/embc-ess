@@ -12,7 +12,9 @@ export class ValidFromToComponent implements OnInit {
   @Input() referralDate: ReferralDate;
   @Output() dateStub = new EventEmitter<ReferralDate>();
   days = range(1, 6); // [1,2,3,4,5]
-  model;
+
+  displayDate: string;
+  displayTime: string;
 
   wrdForm: ReferralDateForm; // The form elements (different data)
 
@@ -25,11 +27,35 @@ export class ValidFromToComponent implements OnInit {
       // generate the referral date
       this.wrdForm = this.convertReferralDateToReferralDateForm(this.referralDate);
     }
+    this.updateDisplay();
   }
 
   emitReferralDate(): void {
     // After all changes are made
     this.dateStub.emit(this.convertReferralDateFormToReferralDate(this.wrdForm));
+  }
+
+  calculate(w: ReferralDateForm): ReferralDateForm {
+    // calculate to date
+    // set the hours and minutes on the to date to whatever the user picked
+    const tD = this.convertYmdToMoment(w.fromDate).add(w.days, 'd')
+      .hours(this.convertHmToMoment(w.fromTime).hours())
+      .minutes(this.convertHmToMoment(w.fromTime).minutes());
+    // tD = tD.hours()
+
+    // set a date based on whatever is found in the global
+    w.toDate = this.convertMomentToYmd(tD);
+    w.toTime = this.convertMomentToHm(tD);
+    // save the global
+    return w;
+  }
+
+  updateDisplay() {
+    const w = this.wrdForm;
+    this.wrdForm = this.calculate(w);
+    this.displayDate = this.convertYmdToMoment(w.toDate).format('YYYY-MM-DD');
+    this.displayTime = this.convertHmToMoment(w.toTime).format('h:mm a');
+    this.emitReferralDate();
   }
 
   convertReferralDateToReferralDateForm(referralDate: ReferralDate): ReferralDateForm {
@@ -39,21 +65,19 @@ export class ValidFromToComponent implements OnInit {
     return {
       uuid: referralDate.uuid || null,
       days: referralDate.days || d, // this is the form default
-      fromDate: this.convertMomentToYmd(moment(referralDate.from))
-        || this.convertMomentToYmd(moment()),
-      toDate: this.convertMomentToYmd(moment(referralDate.from).add(d, 'd')),
-      fromTime: this.convertMomentToHm(moment(referralDate.from))
-        || this.convertMomentToHm(moment()),
-      toTime: this.convertMomentToHm(moment(referralDate.from).add(d, 'd')),
+      fromDate: this.convertMomentToYmd(moment(referralDate.from)),
+      fromTime: this.convertMomentToHm(moment(referralDate.from)),
+      toDate: null, // these should be calculated
+      toTime: null, // these should be calculated
     };
   }
 
   convertReferralDateFormToReferralDate(referralDateForm: ReferralDateForm): ReferralDate {
     // collect the dates and times and convert them
-    const tD: moment.Moment = this.convertYmdToMoment(referralDateForm.toDate);
-    const tT: moment.Moment = this.convertHmToMoment(referralDateForm.toTime);
     const fD: moment.Moment = this.convertYmdToMoment(referralDateForm.fromDate);
+    const tD: moment.Moment = this.convertYmdToMoment(referralDateForm.toDate);
     const fT: moment.Moment = this.convertHmToMoment(referralDateForm.fromTime);
+    const tT: moment.Moment = this.convertHmToMoment(referralDateForm.toTime);
 
     // return the changes
     return {
@@ -81,16 +105,16 @@ export class ValidFromToComponent implements OnInit {
     // convert a moment to a year month day object
     return {
       year: date.year(),
-      month: date.month(),
-      day: date.day(),
+      month: date.month() + 1,
+      day: date.date(),
     };
   }
   convertYmdToMoment(date: YearMonthDay): moment.Moment {
     // convert a ymd to a moment
     return moment()
       .year(date.year)
-      .month(date.month)
-      .day(date.day)
+      .month(date.month - 1)
+      .date(date.day);
   }
   convertMomentToHm(time: moment.Moment): HourMinute {
     return {

@@ -3,7 +3,7 @@
     <!-- <app-incidentals-referral [registration]="registration" (remove)="doRemove" (add)="doAdd"></app-incidentals-referral> -->
     <app-valid-from-to [referralDate]="inputDate" (dateStub)="onDate($event)"></app-valid-from-to>
   </div>
-  <div class="col">
+  <div class="col-2">
     <pre>{{dateStub|json}}</pre>
     <!-- <button (click)="notify('Warning!','warning')">Warning</button>
     <button (click)="notify('Danger!','danger')">Danger</button>
