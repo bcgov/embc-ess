@@ -17,9 +17,8 @@ export interface VolunteerSearchResults {
  * The search results to be displayed on an "<referral-search-results>" component.
  */
 export interface ReferralSearchResults {
-  query: string;
-  results: Referral[];
   registrationId: string;
+  results: Referral[];
 }
 
 /**

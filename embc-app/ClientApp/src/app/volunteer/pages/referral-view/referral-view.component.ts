@@ -31,7 +31,7 @@ export class ReferralViewComponent implements OnInit {
 
     // get URL params
     this.registrationId = this.route.snapshot.paramMap.get('regId');
-    this.referralId = this.route.snapshot.paramMap.get('RefId');
+    this.referralId = this.route.snapshot.paramMap.get('refId');
 
     if (!this.registrationId || !this.referralId) {
       // error - return to summary page
@@ -48,6 +48,10 @@ export class ReferralViewComponent implements OnInit {
         } else {
           this.referral = r;
         }
+      }, err => {
+        alert(err); // TODO: don't leave this here
+        // error - send them back to their home page
+        this.router.navigate([`/${this.path}`]);
       });
   }
 

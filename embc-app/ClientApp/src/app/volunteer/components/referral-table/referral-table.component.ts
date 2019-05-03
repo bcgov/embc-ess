@@ -38,8 +38,21 @@ export class ReferralTableComponent implements OnChanges {
           this.isLoadingResults = false;
           this.pagination = x.referrals.metadata;
 
+          // convert data[] to Referral[]
+          const data: Array<Referral> = x.referrals.data.map((y: any) => {
+            return {
+              active: y.active,
+              id: y.referralId,
+              subType: y.subType,
+              supplier: { name: y.supplier.name },
+              type: y.type,
+              validFrom: y.validFrom,
+              validTo: y.validTo
+            } as Referral;
+          });
+
           // the search results need to be in this special format
-          return { results: x.referrals.items, registrationId: x.registrationId } as ReferralSearchResults;
+          return { registrationId: x.registrationId, results: data } as ReferralSearchResults;
         })
       );
     }

@@ -15,13 +15,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr [class.table-danger]="r.restrictedAccess" *ngFor="let r of rows">
+      <tr *ngFor="let r of rows">
         <ng-container *ngIf="r.data.active; then editable else deactivated"></ng-container>
         <ng-template #editable>
           <td><input type="checkbox"></td>
           <td>{{r.data.id}}</td>
         </ng-template>
-        <ng-template>
+        <ng-template #deactivated>
           <td col-span="2">{{r.data.id}}</td>
         </ng-template>
         <td>{{r.data.supplier?.name}}</td>
