@@ -13,7 +13,8 @@ namespace Gov.Jag.Embc.Public.ViewModels
     {
         public string ReferralId { get; set; }
         public Supplier Supplier { get; set; }
-        public DateRange Valid { get; set; }
+        public DateTime ValidFrom { get; set; }
+        public DateTime ValidTo { get; set; }
         public string Type { get; set; }
         public string SubType { get; set; }
         public bool Active { get; set; }
@@ -22,11 +23,5 @@ namespace Gov.Jag.Embc.Public.ViewModels
     public class Supplier
     {
         public string Name { get; set; }
-    }
-
-    public struct DateRange
-    {
-        public DateTime From { get; set; }
-        public DateTime To { get; set; }
     }
 }
