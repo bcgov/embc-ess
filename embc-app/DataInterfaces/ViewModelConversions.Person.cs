@@ -43,7 +43,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     resultEvacuee.Nickname = evacuee.Nickname;
                     resultEvacuee.Initials = evacuee.Initials;
                     resultEvacuee.Gender = evacuee.Gender;
-                    resultEvacuee.Dob = evacuee.Dob;
+                    resultEvacuee.Dob = evacuee.Dob?.DateTime;
                 }
                 if (source is Models.Db.FamilyMember sourceFm)
                 {

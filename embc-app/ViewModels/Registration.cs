@@ -24,8 +24,8 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string FollowUpDetails { get; set; }
         public string InsuranceCode { get; set; }  // one of ['yes', 'yes-unsure', 'no', 'unsure']
         public bool? MedicationNeeds { get; set; }
-        public DateTimeOffset? SelfRegisteredDate { get; set; }
-        public DateTimeOffset? RegistrationCompletionDate { get; set; }
+        public DateTime? SelfRegisteredDate { get; set; }
+        public DateTime? RegistrationCompletionDate { get; set; }
         public string RegisteringFamilyMembers { get; set; }  // one of ['yes', 'yes-later', 'no']
 
         // family state flags
