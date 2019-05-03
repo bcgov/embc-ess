@@ -9,13 +9,17 @@ import * as moment from 'moment';
   styleUrls: ['./valid-from-to.component.scss']
 })
 export class ValidFromToComponent implements OnInit {
-  @Input() editMode: boolean; // unimplemented
+  @Input() editMode: boolean; // unimplemented for read only
   @Input() referralDate: ReferralDate;
   @Output() dateStub = new EventEmitter<ReferralDate>();
+
   days = range(1, 15); // [1..14]
 
   displayDate: string;
   displayTime: string;
+  // invalid date or time
+  validDate = true; // begin with the assumption of validity
+  validTime = true;
 
   wrdForm: ReferralDateForm; // The form elements (different data)
 
@@ -32,8 +36,14 @@ export class ValidFromToComponent implements OnInit {
   }
 
   emitReferralDate(): void {
-    // After all changes are made
-    this.dateStub.emit(this.convertReferralDateFormToReferralDate(this.wrdForm));
+    // check validity of input
+    if (this.validDate && this.validTime) {
+      // After all changes are made
+      this.dateStub.emit(this.convertReferralDateFormToReferralDate(this.wrdForm));
+    } else {
+      // TODO: handle invalid pitput
+    }
+
   }
 
   calculate(w: ReferralDateForm): ReferralDateForm {
@@ -53,9 +63,15 @@ export class ValidFromToComponent implements OnInit {
 
   updateDisplay() {
     const w = this.wrdForm;
-    this.wrdForm = this.calculate(w);
-    this.displayDate = this.convertYmdToMoment(w.toDate).format('YYYY-MM-DD');
-    this.displayTime = this.convertHmToMoment(w.toTime).format('h:mm a');
+
+    this.validateInputs();
+    if (this.validDate && this.validTime) {
+      // If the dates are valid then we calculate.
+      this.wrdForm = this.calculate(w);
+      this.displayDate = this.convertYmdToMoment(w.toDate).format('YYYY-MM-DD');
+      this.displayTime = this.convertHmToMoment(w.toTime).format('h:mm a');
+    }
+    // emit referral date (whether valid or not)
     this.emitReferralDate();
   }
 
@@ -101,6 +117,13 @@ export class ValidFromToComponent implements OnInit {
     };
   }
 
+  validateInputs() {
+    // check the to and from for a valid range sets the validDate and validTime flags
+    Date.parse(`${this.wrdForm.fromDate.year}-${this.wrdForm.fromDate.month}-${this.wrdForm.fromDate.day}`) ? this.validDate = true : this.validDate = false;
+    // use today as a start to evaluate whether or not the time is valid
+    const d = new Date();
+    Date.parse(`${d.getFullYear}-${d.getMonth()}-${d.getDate()} ${this.wrdForm.fromTime.hour}:${this.wrdForm.fromTime.minute}`) ? this.validTime = true : this.validTime = false;
+  }
   // ****************************helpers
   convertMomentToYmd(date: moment.Moment): YearMonthDay {
     // convert a moment to a year month day object

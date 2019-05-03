@@ -11,16 +11,15 @@
               <i class="material-icons">date_range</i>
             </button>
           </div>
-          <span class="invalid-feedback">Please enter a valid date.</span>
+          <span *ngIf="!validDate" class="invalid-feedback" style="display: block;">Please enter a valid date.</span>
         </div>
       </div>
-      <div class="col-3 pl-0">
+      <div class="col-3 pl-0 pr-0">
         <div class="form-group mb-0">
           <label for="validFromTime_{{wrdForm.uuid}}">Time</label>
           <!-- <input type="time" id="validFromTime_{{wrdForm.uuid}}" class="form-control"> -->
           <ngb-timepicker id="validFromTime_{{wrdForm.uuid}}" [(ngModel)]="wrdForm.fromTime" [meridian]="true" [spinners]="false" (ngModelChange)="updateDisplay()"></ngb-timepicker>
-
-          <span class="invalid-feedback">Please enter a valid time.</span>
+          <span *ngIf="!validTime" class="invalid-feedback" style="display: block;">Please enter a valid time.</span>
         </div>
       </div>
       <div class="col-3 pl-0">
@@ -48,3 +47,4 @@
   </div>
 
   <!-- <pre>{{wrdForm|json}}</pre> -->
+  <span class="invalid-feedback">Please enter a valid time.</span>
