@@ -35,7 +35,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public bool? IsAdministrator { get; set; }
         public bool? IsPrimaryContact { get; set; }
         public bool? CanAccessRestrictedFiles { get; set; }
-        public Guid? SiteMinderGuid { get; set; }
+        public Guid? UserId { get; set; }
 
         public Guid? OrganizationId { get; set; }
 

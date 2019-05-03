@@ -40,7 +40,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                     IsAdministrator = table.Column<bool>(nullable: true),
                     IsPrimaryContact = table.Column<bool>(nullable: true),
                     CanAccessRestrictedFiles = table.Column<bool>(nullable: true),
-                    SiteMinderGuid = table.Column<Guid>(nullable: true),
+                    UserId = table.Column<Guid>(nullable: true),
                     OrganizationId = table.Column<Guid>(nullable: true),
                     PeopleId = table.Column<Guid>(nullable: false)
                 },
@@ -66,7 +66,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                                                     ,IsAdministrator
                                                     ,IsPrimaryContact
                                                     ,CanAccessRestrictedFiles
-                                                    ,SiteMinderGuid
+                                                    ,UserId
                                                     ,OrganizationId
                                                     ,PeopleId)
                                                 SELECT 
@@ -99,7 +99,7 @@ namespace Gov.Jag.Embc.Public.Migrations
             migrationBuilder.Sql("UPDATE Registrations SET CompletedByPeopleId = CompletedById");
 
             migrationBuilder.Sql(@"UPDATE Registrations
-                                                    SET CompletedById = v.SiteMinderGuid
+                                                    SET CompletedById = v.UserId
                                                 FROM Registrations r
                                                 INNER JOIN
                                                     Volunteers v

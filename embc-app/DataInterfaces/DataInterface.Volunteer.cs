@@ -142,7 +142,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public Volunteer GetVolunteerByExternalId(string externalId)
         {
-            var volunteer = Volunteers.FirstOrDefault(x => x.SiteMinderGuid == Guid.Parse(externalId));
+            var volunteer = Volunteers.FirstOrDefault(x => x.UserId == Guid.Parse(externalId));
             if (volunteer == null) return null;
 
             return volunteer.ToViewModel();
