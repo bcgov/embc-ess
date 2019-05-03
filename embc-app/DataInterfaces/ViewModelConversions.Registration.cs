@@ -90,7 +90,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     DeclarationAndConsent = source.DeclarationAndConsent,
                     HeadOfHouseholdId = source.HeadOfHousehold.Id == null ? (Guid?)null : Guid.Parse(source.HeadOfHousehold.Id),
                     HeadOfHousehold = source.HeadOfHousehold.ToModel() as Models.Db.HeadOfHousehold,
-                    CompletedById = source.CompletedBy == null ? (Guid?)null : Guid.Parse(source.CompletedBy.Externaluseridentifier),
+                    CompletedById = source.CompletedBy.Externaluseridentifier,
                     HostCommunityId = source.HostCommunity == null ? (Guid?)null : Guid.Parse(source.HostCommunity.Id),
                     IncidentTaskId = source.IncidentTask == null ? (Guid?)null : Guid.Parse(source.IncidentTask.Id),
                 };

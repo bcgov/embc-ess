@@ -204,7 +204,8 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<Guid?>("CompletedById");
+                    b.Property<string>("CompletedById")
+                        .HasMaxLength(255);
 
                     b.Property<bool?>("DeclarationAndConsent");
 
@@ -312,7 +313,8 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<Guid?>("OrganizationId");
 
-                    b.Property<Guid?>("UserId");
+                    b.Property<string>("UserId")
+                        .HasMaxLength(255);
 
                     b.HasKey("Id");
 
