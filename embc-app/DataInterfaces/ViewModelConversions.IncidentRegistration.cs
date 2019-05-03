@@ -140,7 +140,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 foreach (var familyMember in source.HeadOfHousehold.FamilyMembers)
                 {
                     var evacuee = familyMember.ToModel();
-                    evacuee.EvacueeSequenceNumber = result.Evacuees.Count() + 1;
+                    if(string.IsNullOrEmpty(familyMember.Id))
+                    {
+                        evacuee.EvacueeSequenceNumber = result.Evacuees.Count() + 1;
+                    }
                     result.Evacuees.Add(evacuee);
                 }
 

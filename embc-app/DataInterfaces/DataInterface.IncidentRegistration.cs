@@ -26,16 +26,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task UpdateIncidentRegistrationAsync(Registration registration)
         {
-            //var familyMembersToKeep = registration.HeadOfHousehold.FamilyMembers.Where(fm => !string.IsNullOrWhiteSpace(fm.Id)).Select(fm => Guid.Parse(fm.Id)).ToList();
-            //var familyMembersToRemove = (await IncidentRegistrations.SingleAsync(x => x.Id == Guid.Parse(registration.Id)))
-            //.HeadOfHousehold.FamilyMembers.Where((fm) => !familyMembersToKeep.Contains(fm.Id));
+            var incidentRegistration = registration.ToModel();
+            var evacueesToKeep = incidentRegistration.Evacuees.Select(e => e.EvacueeSequenceNumber).ToArray();
+            var evacueesToRemove = db.Evacuees
+                .Where(e => e.IncidentRegistrationId == incidentRegistration.Id && !evacueesToKeep.Contains(e.EvacueeSequenceNumber));
 
-            var familyMembersToKeep = registration.HeadOfHousehold.FamilyMembers.Select(fm => fm.EvacueeSequenceNumber);
-            //TODO: Remove Dropped Evacuees of Updated Registrations
-            //var familyMembersToRemove = (await Evacuees.)
-
-            db.IncidentRegistrations.Update(registration.ToModel());
-            //db.Evacuees.RemoveRange(familyMembersToRemove);
+            db.IncidentRegistrations.Update(incidentRegistration);
+            db.Evacuees.RemoveRange(evacueesToRemove);
 
             await db.SaveChangesAsync();
         }

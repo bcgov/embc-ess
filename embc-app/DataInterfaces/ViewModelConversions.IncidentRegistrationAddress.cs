@@ -10,6 +10,26 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static partial class ViewModelConversions
     {
+        public static ViewModels.Address ToViewModel(this Models.Db.IncidentRegistrationAddress source)
+        {
+            ViewModels.Address result = null;
+            if (source != null)
+            {
+                result = new ViewModels.Address();
+                result.Id = source.IncidentRegSeqId;
+                result.AddressLine1 = source.AddressLine1;
+                result.AddressLine2 = source.AddressLine2;
+                result.AddressLine3 = source.AddressLine3;
+                result.PostalCode = source.PostalCode;
+                result.Province = source.Province;
+                result.Country = source.Country?.ToViewModel();
+                result.AddressSubtype = source.AddressSubtypeCode;
+                result.Community = source.Community?.ToViewModel();
+                result.City = source.City;
+            }
+            return result;
+        }
+
         public static Models.Db.IncidentRegistrationAddress ToModel(this ViewModels.Address source, AddressType addressType)
         {
             Models.Db.IncidentRegistrationAddress result = null;
@@ -27,11 +47,15 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
                 if (source.Id != null)
                 {
-                    result.IncidentRegistrationId = Guid.Parse(source.Id);
+                    result.IncidentRegistrationId = Models.Db.IncidentRegistrationAddress.GetIncidentRegistrationIdFromIncidentRegSeqId(source.Id);
+                    result.AddressSequenceNumber = Models.Db.IncidentRegistrationAddress.GetAddressSequenceNumberFromIncidentRegSeqId(source.Id);
+                }
+                else
+                {
+                    result.AddressSequenceNumber = addressType == AddressType.Primary ? 1 : 2;
                 }
 
                 result.AddressTypeCode = addressType.GetDisplayName();
-                result.AddressSequenceNumber = addressType == AddressType.Primary ? 1 : 2;
 
                 if (source.isBcAddress)
                 {

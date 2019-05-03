@@ -17,6 +17,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         [Key, Column(Order = 1)]
         public int EvacueeSequenceNumber { get; set; }
 
+        public string IncidentRegSeqId => $"{IncidentRegistration}-{EvacueeSequenceNumber}";
+
         [MaxLength(255)]
         public string FirstName { get; set; }
 
@@ -43,5 +45,15 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public EvacueeType EvacueeType => string.IsNullOrEmpty(EvacueeTypeCode) ? EvacueeType.NotSet : EnumHelper<EvacueeType>.GetValueFromName(EvacueeTypeCode);
 
         public IncidentRegistration IncidentRegistration { get; set; }
+
+        public static Guid GetIncidentRegistrationIdFromIncidentRegSeqId(string incidentRegSeqId)
+        {
+            return Guid.Parse(incidentRegSeqId.Split(',')[0]);
+        }
+
+        public static int GetEvacueeSequenceNumberFromIncidentRegSeqId(string incidentRegSeqId)
+        {
+            return Convert.ToInt32(incidentRegSeqId.Split(',')[1]);
+        }
     }
 }

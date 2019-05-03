@@ -24,8 +24,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     result = new ViewModels.FamilyMember();
                 }
 
-                result.Id = source.IncidentRegistrationId.ToString();
-                //TODO: Need to map EvacueeSequenceNumber to Person ViewModel
+                result.Id = source.IncidentRegSeqId;
+
                 result.FirstName = source.FirstName;
                 result.LastName = source.LastName;
 
@@ -35,11 +35,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     resultHoh.PhoneNumber = incidentRegistration.PhoneNumber;
                     resultHoh.PhoneNumberAlt = incidentRegistration.PhoneNumberAlt;
                     resultHoh.Email = incidentRegistration.Email;
-                    // related entities
-                    //resultHoh.PrimaryResidence = sourceHoh.PrimaryResidence.ToViewModel(); //TODO:  Get From Addresses
-                    //resultHoh.MailingAddress = sourceHoh.MailingAddress?.ToViewModel(); //TODO:  Get From Addresses
 
-                    //TODO:  Load family members from IncidentRegistration.Evacuees not HOH
+                    resultHoh.PrimaryResidence = incidentRegistration.IncidentRegistrationAddresses.Single(a => a.AddressType == AddressType.Primary).ToViewModel();
+                    if (incidentRegistration.IncidentRegistrationAddresses.Any(a => a.AddressType == AddressType.Mailing))
+                    {
+                        resultHoh.MailingAddress = incidentRegistration.IncidentRegistrationAddresses.Single(a => a.AddressType == AddressType.Mailing).ToViewModel();
+                    }
+
                     var familyMembers = incidentRegistration.Evacuees.Where(e => e.EvacueeTypeCode != EvacueeType.HeadOfHousehold.GetDisplayName());
                     if (familyMembers.Any())
                     {
@@ -77,7 +79,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
                 if (source.Id != null)
                 {
-                    result.IncidentRegistrationId = Guid.Parse(source.Id);
+                    result.IncidentRegistrationId = Models.Db.Evacuee.GetIncidentRegistrationIdFromIncidentRegSeqId(source.Id);
+                    result.EvacueeSequenceNumber = Models.Db.Evacuee.GetEvacueeSequenceNumberFromIncidentRegSeqId(source.Id);
                 }
 
                 result.FirstName = source.FirstName;
@@ -85,7 +88,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
                 if (source is ViewModels.Evacuee sourceEvacuee)
                 {
-                    result.EvacueeSequenceNumber = sourceEvacuee.EvacueeSequenceNumber;
                     result.Nickname = sourceEvacuee.Nickname;
                     result.Initials = sourceEvacuee.Initials;
                     result.Gender = source.Gender;

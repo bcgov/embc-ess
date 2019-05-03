@@ -19,6 +19,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         [Key, Column(Order = 1)]
         public int AddressSequenceNumber { get; set; }
 
+        public string IncidentRegSeqId => $"{IncidentRegistration}-{AddressSequenceNumber}";
+
         public string AddressTypeCode { get; set; }
 
         public AddressType AddressType => string.IsNullOrEmpty(AddressTypeCode) ?
@@ -52,5 +54,14 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public IncidentRegistration IncidentRegistration { get; set; }
 
+        public static Guid GetIncidentRegistrationIdFromIncidentRegSeqId(string incidentRegSeqId)
+        {
+            return Guid.Parse(incidentRegSeqId.Split(',')[0]);
+        }
+
+        public static int GetAddressSequenceNumberFromIncidentRegSeqId(string incidentRegSeqId)
+        {
+            return Convert.ToInt32(incidentRegSeqId.Split(',')[1]);
+        }
     }
 }
