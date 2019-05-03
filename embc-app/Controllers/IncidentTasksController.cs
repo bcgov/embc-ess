@@ -42,11 +42,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             var items = await dataInterface.GetIncidentTasksAsync(searchQuery);
 
-            return Json(new
-            {
-                data = items.Items,
-                metadata = items.Pagination
-            });
+            return Json(items);
         }
 
         [HttpGet("{id}")]

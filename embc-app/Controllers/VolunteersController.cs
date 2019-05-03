@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -37,11 +36,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             var items = await dataInterface.GetVolunteersAsync(searchQuery);
 
-            return Json(new
-            {
-                data = items.Items,
-                metadata = items.Pagination
-            });
+            return Json(items);
         }
 
         [HttpGet("{id}")]
