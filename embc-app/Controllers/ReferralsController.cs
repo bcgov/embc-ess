@@ -13,10 +13,7 @@ namespace Gov.Jag.Embc.Public.Controllers
     [Authorize]
     public class ReferralsController : Controller
     {
-        [HttpGet]
-        public async Task<IActionResult> Get(string registrationId, [FromQuery] SearchQueryParameters searchQuery)
-        {
-            var referrals = new[]{
+        private static IEnumerable<ReferralListItem> referrals = new[]{
                 new ReferralListItem
                 {
                     ReferralId = "D1000001",
@@ -59,7 +56,10 @@ namespace Gov.Jag.Embc.Public.Controllers
                 },
             };
 
-            var results = referrals.AsQueryable().Sort(searchQuery.SortBy ?? "ReferralId");
+        [HttpGet]
+        public async Task<IActionResult> Get(string registrationId, [FromQuery] SearchQueryParameters searchQuery)
+        {
+            var results = referrals.AsQueryable().Where(r => r.Active).Sort(searchQuery.SortBy ?? "ValidFrom");
             return await Task.FromResult(Json(new
             {
                 RegistrationId = registrationId,
@@ -83,6 +83,19 @@ namespace Gov.Jag.Embc.Public.Controllers
                 RegistrationId = registrationId,
                 Referrals = referralsList.Select(r => new { ReferralId = r }).ToArray()
             }));
+        }
+
+        [HttpDelete("{referralId}")]
+        public async Task<IActionResult> Delete(string registrationId, string referralId)
+        {
+            var referral = referrals.SingleOrDefault(r => r.ReferralId == referralId);
+            if (referral == null) return NotFound(new
+            {
+                registrationId = registrationId,
+                referralId = referralId
+            });
+            referral.Active = false;
+            return await Task.FromResult(Ok());
         }
     }
 }
