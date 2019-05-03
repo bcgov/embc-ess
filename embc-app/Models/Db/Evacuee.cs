@@ -36,7 +36,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         [MaxLength(255)]
         public string Gender { get; set; }
 
-        public DateTimeOffset? Dob { get; set; }
+        public DateTime? Dob { get; set; }
 
         public string BcServicesNumber { get; set; }
 

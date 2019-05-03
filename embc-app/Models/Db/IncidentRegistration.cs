@@ -42,8 +42,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string FollowUpDetails { get; set; }
         public string InsuranceCode { get; set; }
         public bool? MedicationNeeds { get; set; }
-        public DateTimeOffset? SelfRegisteredDate { get; set; }
-        public DateTimeOffset? RegistrationCompletionDate { get; set; }
+        public DateTime? SelfRegisteredDate { get; set; }
+        public DateTime? RegistrationCompletionDate { get; set; }
         public string RegisteringFamilyMembers { get; set; }  //TODO:  Not on New Model
 
         public bool? HasThreeDayMedicationSupply { get; set; }
