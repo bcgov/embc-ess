@@ -19,8 +19,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result.Email = source.Email;
                 result.BceidAccountNumber = source.BceidAccountUserName;
                 result.BceidAccountUserName = source.BceidAccountUserName;
-                result.Externaluseridentifier = source.UserId?.ToString();
-                result.SiteMinderGuid = source.UserId?.ToString();
+                result.Externaluseridentifier = source.UserId;
+                result.SiteMinderGuid = source.UserId;
                 result.IsAdministrator = source.IsAdministrator;
                 result.IsPrimaryContact = source.IsPrimaryContact;
                 result.CanAccessRestrictedFiles = source.CanAccessRestrictedFiles;
@@ -39,7 +39,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result.LastName = source.LastName;
                 result.Email = source.Email;
                 result.BceidAccountUserName = source.BceidAccountNumber;
-                result.UserId = source.Externaluseridentifier == null ? (Guid?)null : Guid.Parse(source.Externaluseridentifier);
+                result.UserId = source.Externaluseridentifier;
                 result.IsAdministrator = source.IsAdministrator;
                 result.IsPrimaryContact = source.IsPrimaryContact;
                 result.CanAccessRestrictedFiles = source.CanAccessRestrictedFiles;
