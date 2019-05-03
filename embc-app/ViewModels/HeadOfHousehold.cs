@@ -6,6 +6,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
     public class Evacuee : Person
     {
         public string BcServicesNumber { get; set; }
+        public int EvacueeSequenceNumber { get; set; }
     }
 
     public class HeadOfHousehold : Evacuee

@@ -16,9 +16,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<RegistrationSummary> GetRegistrationSummaryAsync(string id);
 
-        Task<Registration> CreateRegistrationAsync(Registration registration);
+        Task<Registration> CreateIncidentRegistrationAsync(Registration registration);
 
-        Task UpdateRegistrationAsync(Registration registration);
+        Task UpdateIncidentRegistrationAsync(Registration registration);
 
         Task<bool> DeactivateRegistration(string id);
 

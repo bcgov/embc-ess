@@ -10,13 +10,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// </summary>
     public class IncidentTask
     {
-        public IncidentTask()
-        { }
-
-        /// <summary>
-        /// A system-generated unique identifier
-        /// </summary>
-        /// <value>A system-generated unique identifier for a Role</value>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }

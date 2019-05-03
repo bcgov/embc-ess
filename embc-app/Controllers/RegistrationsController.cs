@@ -99,7 +99,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 item.Id = null;
                 item.Active = true;
-                var result = await dataInterface.CreateRegistrationAsync(item);
+                var result = await dataInterface.CreateIncidentRegistrationAsync(item);
                 if (!string.IsNullOrWhiteSpace(result.HeadOfHousehold.Email))
                 {
                     var registrationEmail = CreateEmailMessageForRegistration(result);
@@ -164,7 +164,7 @@ A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
             }
             try
             {
-                await dataInterface.UpdateRegistrationAsync(item);
+                await dataInterface.UpdateIncidentRegistrationAsync(item);
                 return Ok();
             }
             catch (Exception e)

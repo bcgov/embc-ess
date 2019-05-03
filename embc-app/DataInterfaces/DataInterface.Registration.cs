@@ -39,24 +39,24 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         .ThenInclude(d => d.Region)
            ;
 
-        public async Task<Registration> CreateRegistrationAsync(Registration registration)
-        {
-            var created = await db.Registrations.AddAsync(registration.ToModel());
-            await db.SaveChangesAsync();
-            return (await Registrations.SingleAsync(r => r.Id == created.Entity.Id)).ToViewModel();
-        }
+        //public async Task<Registration> CreateRegistrationAsync(Registration registration)
+        //{
+        //    var created = await db.Registrations.AddAsync(registration.ToModel());
+        //    await db.SaveChangesAsync();
+        //    return (await Registrations.SingleAsync(r => r.Id == created.Entity.Id)).ToViewModel();
+        //}
 
-        public async Task UpdateRegistrationAsync(Registration registration)
-        {
-            var familyMembersToKeep = registration.HeadOfHousehold.FamilyMembers.Where(fm => !string.IsNullOrWhiteSpace(fm.Id)).Select(fm => Guid.Parse(fm.Id)).ToList();
-            var familyMembersToRemove = (await Registrations.SingleAsync(x => x.Id == Guid.Parse(registration.Id)))
-                .HeadOfHousehold.FamilyMembers.Where((fm) => !familyMembersToKeep.Contains(fm.Id));
+        //public async Task UpdateRegistrationAsync(Registration registration)
+        //{
+        //    var familyMembersToKeep = registration.HeadOfHousehold.FamilyMembers.Where(fm => !string.IsNullOrWhiteSpace(fm.Id)).Select(fm => Guid.Parse(fm.Id)).ToList();
+        //    var familyMembersToRemove = (await Registrations.SingleAsync(x => x.Id == Guid.Parse(registration.Id)))
+        //        .HeadOfHousehold.FamilyMembers.Where((fm) => !familyMembersToKeep.Contains(fm.Id));
 
-            db.Registrations.Update(registration.ToModel());
-            db.People.RemoveRange(familyMembersToRemove);
+        //    db.Registrations.Update(registration.ToModel());
+        //    db.People.RemoveRange(familyMembersToRemove);
 
-            await db.SaveChangesAsync();
-        }
+        //    await db.SaveChangesAsync();
+        //}
 
         public async Task<IPagedResults<Registration>> GetRegistrationsAsync(SearchQueryParameters searchQuery)
         {

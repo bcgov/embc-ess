@@ -10,11 +10,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// </summary>
     public class Volunteer
     {
-        public Volunteer()
-        {
-            //CompletedRegistrations = new List<Registration>();
-        }
-
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
