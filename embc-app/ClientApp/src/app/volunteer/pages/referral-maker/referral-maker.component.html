@@ -22,8 +22,7 @@
       <div class="card d-block border-0 p-4">
         <label>Select required supports:</label>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood"
-            (change)="foodReferralChange()">
+          <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood" (change)="foodReferralChange()">
           <label class="form-check-label" for="supportFood">Food</label>
         </div>
         <div class="form-check mt-2">
@@ -31,18 +30,15 @@
           <label class="form-check-label" for="supportClothing">Clothing</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="accommodationReferrals.length > 0"
-            id="supportAccommodation">
-          <label class="form-check-label" for="supportAccommodation">Accommodation</label>
+          <input type="checkbox" class="form-check-input" [checked]="accommodationReferrals.length > 0" id="supportAccommodation">
+          <label class="form-check-label" for="supportAccommodation">Lodging</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="incidentalsReferrals.length > 0"
-            id="supportIncidentals" (change)="incidentalsReferralChange()">
+          <input type="checkbox" class="form-check-input" [checked]="incidentalsReferrals.length > 0" id="supportIncidentals" (change)="incidentalsReferralChange()">
           <label class="form-check-label" for="supportIncidentals">Incidentals</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="transportationReferrals.length > 0"
-            id="supportTransportation">
+          <input type="checkbox" class="form-check-input" [checked]="transportationReferrals.length > 0" id="supportTransportation">
           <label class="form-check-label" for="supportTransportation">Transportation</label>
         </div>
       </div>
@@ -61,8 +57,7 @@
       </article>
 
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
-        <app-incidentals-referral [(referral)]="r" [editMode]="true" (remove)="removeIncidentalsReferral(i)"
-          (add)="addIncidentalsReferral()"></app-incidentals-referral>
+        <app-incidentals-referral [(referral)]="r" [editMode]="true" (remove)="removeIncidentalsReferral(i)" (add)="addIncidentalsReferral()"></app-incidentals-referral>
       </article>
 
       <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4">
