@@ -19,6 +19,7 @@ export interface VolunteerSearchResults {
 export interface ReferralSearchResults {
   query: string;
   results: Referral[];
+  registrationId: string;
 }
 
 /**

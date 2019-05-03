@@ -27,7 +27,7 @@
         <td>{{r.data.supplier?.name}}</td>
         <td>{{r.data.validFrom | date}}</td>
         <td>{{r.data.validTo | date}}</td>
-        <td>{{getType(r)}}</td>
+        <td [innerHTML]="getType(r)"></td>
         <td><a [routerLink]="" (click)="view(r)">View</a></td>
       </tr>
     </tbody>

@@ -19,7 +19,6 @@ export class ReferralTableComponent implements OnChanges {
   // search related
   isLoadingResults = false;
   searchResults$: Observable<ReferralSearchResults>;
-  numReferrals = 0;
   pagination: PaginationSummary = null;
 
   constructor(
@@ -27,14 +26,7 @@ export class ReferralTableComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.registration) {
-      this.registration = changes.registration.currentValue;
-      this.doSearch();
-    }
-  }
-
-  private doSearch() {
-    if (this.registration.id) {
+    if (this.registration && this.registration.id) {
       this.isLoadingResults = true;
 
       // get the collection of meta and data
@@ -42,13 +34,12 @@ export class ReferralTableComponent implements OnChanges {
 
       // process server response into something we can display in the UI
       this.searchResults$ = this.resultsAndPagination$.pipe(
-        map(meta => {
+        map((x: any) => {
           this.isLoadingResults = false;
-          this.numReferrals = meta.metadata.totalCount;
-          this.pagination = meta.metadata;
+          this.pagination = x.referrals.metadata;
 
           // the search results need to be in this special format
-          return { results: meta.data, query: '' } as ReferralSearchResults;
+          return { results: x.referrals.items, registrationId: x.registrationId } as ReferralSearchResults;
         })
       );
     }

@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Referral } from 'src/app/core/models';
 import { ReferralSearchResults } from 'src/app/core/models/search-interfaces';
 import { AuthService } from 'src/app/core/services/auth.service';
+import startCase from 'lodash/startCase';
+import toLower from 'lodash/toLower';
 
 // TODO: Rename this
 interface RowItem {
@@ -78,128 +80,23 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
 
   // map the search results (referrals) into row items suitable for display on a table
   private processSearchResults(search: ReferralSearchResults): RowItem[] {
-    this.notFoundMessage = 'No results found.';
+    this.notFoundMessage = 'No referrals have been added yet';
 
     if (!search) {
       return [];
     }
 
     // convert search results into row items
-    const listItems: RowItem[] = [];
-    search.results.forEach((registration, index, array) => {
-      if (!registration) {
-        return;  // bad data; should fix
-      }
-
-      // // push the head of household as a stub
-      // const hoh: RowItem = {
-      //   // hold on to a copy of the source data
-      //   rowData: { ...registration },
-
-      //   // populate row metadata
-      //   index,
-      //   count: array.length,
-      //   even: index % 2 === 0,
-      //   odd: Math.abs(index % 2) === 1,
-      //   first: index === 0,
-      //   last: index === array.length - 1,
-
-      //   id: registration.id, // the guid to link them to their file
-      //   restrictedAccess: registration.restrictedAccess, // should this file be shown or not?
-      //   essFileNumber: registration.essFileNumber, // what is the ESS file number
-      //   firstName: registration.headOfHousehold.firstName,
-      //   lastName: registration.headOfHousehold.lastName,
-      //   requiresIncidentals: registration.requiresIncidentals, // do they need vouchers
-      //   personType: registration.headOfHousehold.personType, // HOH || FMBR || VOLN
-      //   headOfHousehold: true,
-      //   incidentTaskTaskNumber: null,
-      //   evacuatedFrom: null, // community name
-      //   evacuatedTo: null, // community name
-      //   hasReferrals: this.hasReferrals(registration),
-      //   registrationCompletionDate: registration.registrationCompletionDate
-      // };
-
-      // // get Incident Task Number
-      // hoh.incidentTaskTaskNumber = (registration.incidentTask && registration.incidentTask.taskNumber) || '';
-
-      // // get Evacuated From (depending on address type)
-      // if (registration.headOfHousehold && isBcAddress(registration.headOfHousehold.primaryResidence)) {
-      //   hoh.evacuatedFrom = get(registration, 'headOfHousehold.primaryResidence.community.name', '');
-      // } else if (registration.headOfHousehold && isOtherAddress(registration.headOfHousehold.primaryResidence)) {
-      //   const city = get(registration, 'headOfHousehold.primaryResidence.city');
-      //   const province = get(registration, 'headOfHousehold.primaryResidence.province');
-      //   const country = get(registration, 'headOfHousehold.primaryResidence.country.name');
-      //   hoh.evacuatedFrom = [city, province, country].filter(x => x).join(', ') || '';
-      // } else {
-      //   hoh.evacuatedFrom = '';
-      // }
-
-      // // get Evacuated To
-      // hoh.evacuatedTo = (registration.hostCommunity && registration.hostCommunity.name) || '';
-
-      // listItems.push(hoh);
-
-      // // push the family members of the HOH as stubs
-      // for (const familyMember of registration.headOfHousehold.familyMembers) {
-      //   const fmbr = {
-      //     // hold on to a copy of the source data
-      //     rowData: { ...registration },
-
-      //     // populate row metadata
-      //     index,
-      //     count: array.length,
-      //     even: index % 2 === 0,
-      //     odd: Math.abs(index % 2) === 1,
-      //     first: index === 0,
-      //     last: index === array.length - 1,
-
-      //     id: registration.id, // the guid to link them to their file
-      //     restrictedAccess: registration.restrictedAccess, // should this file be shown or not?
-      //     essFileNumber: registration.essFileNumber, // what is the ESS file number
-      //     firstName: familyMember.firstName,
-      //     lastName: familyMember.lastName,
-      //     incidentTaskTaskNumber: null,
-      //     requiresIncidentals: registration.requiresIncidentals, // do they need vouchers
-      //     personType: familyMember.personType, // HOH || FMBR || VOLN
-      //     headOfHousehold: false,
-      //     evacuatedFrom: null, // community name
-      //     evacuatedTo: null, // community name
-      //     hasReferrals: this.hasReferrals(registration),
-      //     registrationCompletionDate: registration.registrationCompletionDate
-      //   };
-
-      //   if (registration.incidentTask && registration.incidentTask.taskNumber) {
-      //     // check for nulls
-      //     fmbr.incidentTaskTaskNumber = registration.incidentTask.taskNumber;
-      //   } else {
-      //     fmbr.incidentTaskTaskNumber = '';
-      //   }
-      //   if (registration.headOfHousehold.primaryResidence
-      //     && registration.headOfHousehold.primaryResidence.community
-      //     && registration.headOfHousehold.primaryResidence.community.name) {
-      //     // check for nulls
-      //     fmbr.evacuatedFrom = registration.headOfHousehold.primaryResidence.community.name;
-      //   } else {
-      //     fmbr.evacuatedFrom = '';
-      //   }
-      //   if (registration.hostCommunity && registration.hostCommunity.name) {
-      //     // check for nulls
-      //     fmbr.evacuatedTo = registration.hostCommunity.name;
-      //   } else {
-      //     fmbr.evacuatedTo = '';
-      //   }
-      //   listItems.push(fmbr);
-      // }
+    return search.results.map(result => {
+      return ({ registrationId: search.registrationId, data: result } as RowItem);
     });
-
-    return listItems;
   }
 
   getType(r: RowItem): string {
     let result: string = null;
 
     if (r.data.type) {
-      result = `<div class="text-weight-bold">${this.toTitleCase(r.data.type)}</div>`;
+      result = `<div class="font-weight-bold">${this.toTitleCase(r.data.type)}</div>`;
       if (r.data.subType) {
         result += `<div>${this.toTitleCase(r.data.subType)}</div>`;
       }
@@ -208,8 +105,8 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
     return result;
   }
 
-  toTitleCase(s: string): string {
-    return s.replace(/\w\S/g, t => t.toUpperCase());
+  toTitleCase(str: string): string {
+    return startCase(toLower(str));
   }
 
   // TODO: move this to HTML so user can open link in new tab

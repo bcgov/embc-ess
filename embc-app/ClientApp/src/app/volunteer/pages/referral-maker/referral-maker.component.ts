@@ -6,7 +6,6 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import {
   Registration,
   Supplier,
-  SupplierAddress,
   IncidentalsReferral,
   FoodReferral,
   ClothingReferral,
@@ -144,9 +143,10 @@ export class ReferralMakerComponent implements OnInit {
       validTo: new Date(2019, 11, 31), // TODO: for local testing only
       evacuees: this.evacuees,
       approvedItems: null,
-      totalAmt: 0,
+      totalAmount: 0,
       supplier: this.newSupplier,
       comments: 'some comments here',
+      confirmChecked: false
     };
 
     this.incidentalsReferrals.push(referral);
@@ -166,9 +166,10 @@ export class ReferralMakerComponent implements OnInit {
       numLunches: 0,
       numDinners: 0,
       numDaysMeals: 0,
-      totalAmt: 0,
+      totalAmount: 0,
       supplier: this.newSupplier,
       comments: 'some comments here',
+      confirmChecked: false
     };
 
     this.foodReferrals.push(referral);
@@ -178,22 +179,13 @@ export class ReferralMakerComponent implements OnInit {
     return {
       id: null, // for future use
       active: true,
-      name: 'name', // null,
-      address: this.newSupplierAddress,
-      phoneNumber: '123-456-7890', // null, // TODO: for testing only
-      faxNumber: '321-654-0987', // null // TODO: for testing only
-    };
-  }
-
-  private get newSupplierAddress(): SupplierAddress {
-    return {
-      id: null,
-      addressSubtype: 'SUPP',
-      addressLine1: 'addressLine1', // null, // TODO: for testing only
-      postalCode: 'postalCode', // null, // TODO: for testing only
-      city: null,
-      province: 'BC', // supplier is always in BC
-      country: null // not using at this time
+      name: 'Supplier 1', // TODO: for testing only
+      address: '1050 Main Street', // TODO: for testing only
+      postalCode: 'V8R 1R4', // TODO: for testing only
+      city: 'Victoria', // TODO: for testing only
+      province: 'BC',
+      telephone: '250-123-4567', // TODO: for testing only
+      fax: '250-345-7789', // TODO: for testing only
     };
   }
 

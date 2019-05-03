@@ -14,9 +14,10 @@ export interface Referral {
     evacuee: Evacuee,
     selected: boolean
   }>;
-  totalAmt?: number;
+  totalAmount: number; // NB: set to 0 if not used
   supplier: Supplier;
   comments: string;
+  confirmChecked: boolean;
 }
 
 export interface FoodReferral extends Referral {

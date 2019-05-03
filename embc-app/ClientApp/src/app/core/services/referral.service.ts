@@ -16,6 +16,7 @@ export class ReferralService extends RestService {
     // NB: hard-coded server limit is 500
     // NB: default sort order is validFrom
     const params = { limit: '500', offset: '0', q: '', sort: '' };
+    id = 'ad265630-3975-446c-5d46-08d6becbab24'; // FOR TESTING ONLY!
     return this.http.get<ListResult<Referral>>(`api/registrations/${id}/referrals`, { headers: this.headers, params })
       .pipe(
         retry(3),
@@ -33,7 +34,11 @@ export class ReferralService extends RestService {
   // }
 
   // POST api/registrations/<id>/referrals ???
-  createReferrals(registrationId: string, data: Referral[]): Observable<HttpResponse<any>> {
+  createReferrals(registrationId: string, referrals: Referral[]): Observable<HttpResponse<any>> {
+    // TODO: assemble data object for BE
+    // TODO: add id [1..n] to referrals
+    // TODO: only send array of selected evacuees (evacuee[] not evacuees[])
+    const data = referrals;
     return this.http.post<HttpResponse<any>>(`api/registrations/${registrationId}/referrals`, data, { headers: this.headers })
       .pipe(
         retry(3),

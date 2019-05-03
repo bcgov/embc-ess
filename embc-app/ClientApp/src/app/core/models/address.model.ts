@@ -22,14 +22,7 @@ export interface OtherAddress extends BaseAddress {
   country: Country;
 }
 
-export interface SupplierAddress extends BaseAddress {
-  addressSubtype: 'SUPP';
-  city: string;
-  province: 'BC'; // supplier is always in BC
-  country: Country;
-}
-
-export type Address = BcAddress & OtherAddress & SupplierAddress;
+export type Address = BcAddress & OtherAddress;
 
 export function isBcAddress(address: Address): boolean {
   return address && address.addressSubtype === 'BCAD';
@@ -37,8 +30,4 @@ export function isBcAddress(address: Address): boolean {
 
 export function isOtherAddress(address: Address): boolean {
   return address && address.addressSubtype === 'OTAD';
-}
-
-export function isSupplierAddress(address: Address): boolean {
-  return address && address.addressSubtype === 'SUPP';
 }
