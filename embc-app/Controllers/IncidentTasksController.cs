@@ -67,7 +67,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 ModelState.AddModelError("StartDate", "Incident task must have a start date");
             }
-            if (item.StartDate.HasValue && item.StartDate.Value > DateTimeOffset.Now)
+            if (item.StartDate.HasValue && item.StartDate.Value > DateTime.Now)
             {
                 ModelState.AddModelError("StartDate", "Incident start date cannot be in the future");
             }
@@ -92,7 +92,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 ModelState.AddModelError("StartDate", "Incident task must have a start date");
             }
-            if (item.StartDate.HasValue && item.StartDate.Value > DateTimeOffset.Now)
+            if (item.StartDate.HasValue && item.StartDate.Value > DateTime.Now)
             {
                 ModelState.AddModelError("StartDate", "Incident start date cannot be in the future");
             }
