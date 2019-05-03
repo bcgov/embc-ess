@@ -9,15 +9,11 @@ namespace Gov.Jag.Embc.Public.ViewModels
     {
         public static Person Create(string subType)
         {
-            if (subType == Models.Db.Person.VOLUNTEER)
-            {
-                return new Volunteer();
-            }
-            else if (subType == Models.Db.Person.HOH)
+            if (subType == Models.Db.Person.HOH)
             {
                 return new HeadOfHousehold();
             }
-            else if (subType == Models.Db.Person.FAMILY_MEMBER)
+            if (subType == Models.Db.Person.FAMILY_MEMBER)
             {
                 return new FamilyMember();
             }

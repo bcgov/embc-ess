@@ -55,10 +55,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Volunteer item)
         {
-            if (!item.PersonType.Equals(Models.Db.Person.VOLUNTEER, StringComparison.OrdinalIgnoreCase))
-            {
-                ModelState.AddModelError("PersonType", $"Must be {Models.Db.Person.VOLUNTEER}");
-            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -76,10 +72,6 @@ namespace Gov.Jag.Embc.Public.Controllers
             if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id)
             {
                 return BadRequest(Json(id));
-            }
-            if (!item.PersonType.Equals(Models.Db.Person.VOLUNTEER, StringComparison.OrdinalIgnoreCase))
-            {
-                ModelState.AddModelError("PersonType", $"Must be {Models.Db.Person.VOLUNTEER}");
             }
             if (!ModelState.IsValid)
             {
