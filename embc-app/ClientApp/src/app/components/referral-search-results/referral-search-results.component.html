@@ -25,8 +25,8 @@
           <td col-span="2">{{r.data.id}}</td>
         </ng-template>
         <td>{{r.data.supplier?.name}}</td>
-        <td>{{r.data.validFrom | date}}</td>
-        <td>{{r.data.validTo | date}}</td>
+        <td>{{r.data.validFrom | date : 'MMM-dd-yyyy'}}</td>
+        <td>{{r.data.validTo | date : 'MMM-dd-yyyy'}}</td>
         <td [innerHTML]="getType(r)"></td>
         <td><a [routerLink]="" (click)="view(r)">View</a></td>
       </tr>

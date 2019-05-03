@@ -4,12 +4,10 @@ table {
 }
 
 table thead {
-  th:nth-of-type(1) { width: 5%; }
-  th:nth-of-type(2) { width: 15%; }
-  th:nth-of-type(3) { width: 15%; }
-  th:nth-of-type(4) { width: 12.5%; }
-  th:nth-of-type(5) { width: 12.5%; }
-  th:nth-of-type(6) { width: 15%; }
-  th:nth-of-type(7) { width: 15%; }
-  th:nth-of-type(8) { width: 10%; }
+  th:nth-of-type(1) { width: 20%; } // optional checkbox + referral #
+  th:nth-of-type(2) { width: 20%; } // supplier name
+  th:nth-of-type(3) { width: 15%; } // valid from...
+  th:nth-of-type(4) { width: 15%; } // valid to...
+  th:nth-of-type(5) { width: 15%; } // type
+  th:nth-of-type(6) { width: 15%; } // action
 }

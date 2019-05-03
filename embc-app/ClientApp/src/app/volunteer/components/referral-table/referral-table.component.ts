@@ -57,4 +57,8 @@ export class ReferralTableComponent implements OnChanges {
       );
     }
   }
+
+  printReferrals() {
+    console.log('You clicked on Create PDF & Print!');
+  }
 }
