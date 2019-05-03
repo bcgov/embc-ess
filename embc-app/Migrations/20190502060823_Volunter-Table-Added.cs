@@ -40,7 +40,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                     IsAdministrator = table.Column<bool>(nullable: true),
                     IsPrimaryContact = table.Column<bool>(nullable: true),
                     CanAccessRestrictedFiles = table.Column<bool>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: true),
+                    UserId = table.Column<string>(maxLength: 255, nullable: true),
                     OrganizationId = table.Column<Guid>(nullable: true),
                     PeopleId = table.Column<Guid>(nullable: false)
                 },
@@ -97,6 +97,15 @@ namespace Gov.Jag.Embc.Public.Migrations
                 nullable: true);
 
             migrationBuilder.Sql("UPDATE Registrations SET CompletedByPeopleId = CompletedById");
+            migrationBuilder.Sql("UPDATE Registrations SET CompletedById = null");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "CompletedById",
+                table: "Registrations",
+                nullable: true,
+                maxLength: 255,
+                oldClrType: typeof(Guid),
+                oldNullable: true);
 
             migrationBuilder.Sql(@"UPDATE Registrations
                                                     SET CompletedById = v.UserId
