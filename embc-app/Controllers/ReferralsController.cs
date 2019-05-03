@@ -20,7 +20,8 @@ namespace Gov.Jag.Embc.Public.Controllers
                 {
                     ReferralId = "D1000001",
                     Supplier = new Supplier {Name="Supplier1" },
-                    Valid = new DateRange {From = DateTime.Parse("2019-04-02T11:00:00-07:00"), To = DateTime.Parse("2019-04-06T11:00:00-07:00")},
+                    ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
+                    ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
                     Type = "Food",
                     SubType = "Groceries",
                     Active = true,
@@ -29,7 +30,8 @@ namespace Gov.Jag.Embc.Public.Controllers
                 {
                     ReferralId = "D1000002",
                     Supplier = new Supplier  {Name="Supplier1" },
-                    Valid = new DateRange {From = DateTime.Parse("2019-04-02T11:00:00-07:00"), To = DateTime.Parse("2019-04-06T11:00:00-07:00")},
+                    ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
+                    ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
                     Type = "Food",
                     SubType = "Groceries",
                     Active = true,
@@ -38,7 +40,8 @@ namespace Gov.Jag.Embc.Public.Controllers
                 {
                     ReferralId = "D1000003",
                     Supplier =  new Supplier {Name="Supplier2" },
-                    Valid = new DateRange{From = DateTime.Parse("2019-04-02T11:00:00-07:00"), To = DateTime.Parse("2019-04-06T11:00:00-07:00")},
+                    ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
+                    ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
                     Type = "Clothing",
                     SubType = (string)null,
                     Active = true,
@@ -47,7 +50,8 @@ namespace Gov.Jag.Embc.Public.Controllers
                 {
                     ReferralId = "D1000004",
                     Supplier =  new Supplier {Name="Supplier2" },
-                    Valid = new DateRange {From = DateTime.Parse("2019-04-02T11:00:00-07:00"), To = DateTime.Parse("2019-04-06T11:00:00-07:00")},
+                    ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
+                    ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
                     Type = "Incidentals",
                     SubType = (string)null,
                     Active = true,
