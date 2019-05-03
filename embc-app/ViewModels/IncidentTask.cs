@@ -15,6 +15,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
         public Community Community { get; set; }
 
-        public DateTimeOffset? StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
     }
 }
