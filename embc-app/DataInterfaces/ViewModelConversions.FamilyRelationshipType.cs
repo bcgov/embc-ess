@@ -20,7 +20,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public static ViewModels.FamilyRelationshipType ToViewModel(this FamilyRelationshipTypes source)
+        public static ViewModels.FamilyRelationshipType ToViewModel(this EvacueeType source)
         {
             ViewModels.FamilyRelationshipType result = new ViewModels.FamilyRelationshipType()
             {

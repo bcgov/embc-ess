@@ -44,7 +44,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             try
             {
-                var items = await dataInterface.GetRegistrationsAsync(searchQuery);
+                var items = await dataInterface.GetIncidentRegistrationsAsync(searchQuery);
 
                 return Json(new
                 {
@@ -62,7 +62,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOne(string id)
         {
-            var result = await dataInterface.GetRegistrationAsync(id);
+            var result = await dataInterface.GetIncidentRegistrationAsync(id);
             if (result == null)
             {
                 return NotFound();
@@ -73,7 +73,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet("{id}/summary")]
         public async Task<IActionResult> GetOneSummary(string id)
         {
-            var result = await dataInterface.GetRegistrationSummaryAsync(id);
+            var result = await dataInterface.GetIncidentRegistrationSummaryAsync(id);
             if (result == null)
             {
                 return NotFound();
@@ -181,7 +181,7 @@ A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
 
             try
             {
-                var result = await dataInterface.DeactivateRegistration(id);
+                var result = await dataInterface.DeactivateIncidentRegistration(id);
                 return Ok();
             }
             catch (Exception e)

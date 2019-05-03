@@ -1,3 +1,4 @@
+using Gov.Jag.Embc.Public.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -20,9 +21,13 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public string AddressTypeCode { get; set; }
 
-        //public AddressType 
+        public AddressType AddressType => string.IsNullOrEmpty(AddressTypeCode) ?
+            AddressType.NotSet : EnumHelper<AddressType>.GetValueFromName(AddressSubtypeCode);
 
-        public string AddressSubtypeCode { get; set; }  // one of ['BCAD', 'OTAD'] for BC vs non-BC addresses
+        public string AddressSubtypeCode { get; set; }
+
+        public AddressSubType AddressSubType => string.IsNullOrEmpty(AddressSubtypeCode)
+            ? AddressSubType.NotSet : EnumHelper<AddressSubType>.GetValueFromName(AddressSubtypeCode);
 
         public string AddressLine1 { get; set; }
 

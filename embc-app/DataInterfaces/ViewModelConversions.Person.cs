@@ -8,52 +8,52 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static partial class ViewModelConversions
     {
-        public static ViewModels.Person ToViewModel(this Models.Db.Person source)
-        {
-            ViewModels.Person result = null;
-            if (source != null)
-            {
-                result = ViewModels.Person.Create(source.PersonType);
+        //public static ViewModels.Person ToViewModel(this Models.Db.Person source)
+        //{
+        //    ViewModels.Person result = null;
+        //    if (source != null)
+        //    {
+        //        result = ViewModels.Person.Create(source.PersonType);
 
-                result.Id = source.Id.ToString();
-                result.FirstName = source.FirstName;
-                result.LastName = source.LastName;
+        //        result.Id = source.Id.ToString();
+        //        result.FirstName = source.FirstName;
+        //        result.LastName = source.LastName;
 
-                if (source is Models.Db.HeadOfHousehold sourceHoh)
-                {
-                    var resultHoh = result as ViewModels.HeadOfHousehold;
-                    resultHoh.PhoneNumber = sourceHoh.PhoneNumber;
-                    resultHoh.PhoneNumberAlt = sourceHoh.PhoneNumberAlt;
-                    resultHoh.Email = sourceHoh.Email;
-                    // related entities
-                    resultHoh.PrimaryResidence = sourceHoh.PrimaryResidence.ToViewModel();
-                    resultHoh.MailingAddress = sourceHoh.MailingAddress?.ToViewModel();
-                    if (sourceHoh.FamilyMembers != null)
-                    {
-                        resultHoh.FamilyMembers = new List<ViewModels.FamilyMember>();
-                        foreach (var familyMember in sourceHoh.FamilyMembers)
-                        {
-                            resultHoh.FamilyMembers.Add(familyMember.ToViewModel() as ViewModels.FamilyMember);
-                        }
-                    }
-                }
-                if (source is Models.Db.EvacueeOld evacuee)
-                {
-                    var resultEvacuee = result as ViewModels.Evacuee;
-                    resultEvacuee.Nickname = evacuee.Nickname;
-                    resultEvacuee.Initials = evacuee.Initials;
-                    resultEvacuee.Gender = evacuee.Gender;
-                    resultEvacuee.Dob = evacuee.Dob;
-                }
-                if (source is Models.Db.FamilyMember sourceFm)
-                {
-                    var resultFm = result as ViewModels.FamilyMember;
-                    resultFm.RelationshipToEvacuee = sourceFm.RelationshipToEvacuee.ToViewModel();
-                    resultFm.SameLastNameAsEvacuee = sourceFm.SameLastNameAsEvacuee;
-                }
-            }
-            return result;
-        }
+        //        if (source is Models.Db.HeadOfHousehold sourceHoh)
+        //        {
+        //            var resultHoh = result as ViewModels.HeadOfHousehold;
+        //            resultHoh.PhoneNumber = sourceHoh.PhoneNumber;
+        //            resultHoh.PhoneNumberAlt = sourceHoh.PhoneNumberAlt;
+        //            resultHoh.Email = sourceHoh.Email;
+        //            // related entities
+        //            resultHoh.PrimaryResidence = sourceHoh.PrimaryResidence.ToViewModel();
+        //            resultHoh.MailingAddress = sourceHoh.MailingAddress?.ToViewModel();
+        //            if (sourceHoh.FamilyMembers != null)
+        //            {
+        //                resultHoh.FamilyMembers = new List<ViewModels.FamilyMember>();
+        //                foreach (var familyMember in sourceHoh.FamilyMembers)
+        //                {
+        //                    resultHoh.FamilyMembers.Add(familyMember.ToViewModel() as ViewModels.FamilyMember);
+        //                }
+        //            }
+        //        }
+        //        if (source is Models.Db.EvacueeOld evacuee)
+        //        {
+        //            var resultEvacuee = result as ViewModels.Evacuee;
+        //            resultEvacuee.Nickname = evacuee.Nickname;
+        //            resultEvacuee.Initials = evacuee.Initials;
+        //            resultEvacuee.Gender = evacuee.Gender;
+        //            resultEvacuee.Dob = evacuee.Dob;
+        //        }
+        //        if (source is Models.Db.FamilyMember sourceFm)
+        //        {
+        //            var resultFm = result as ViewModels.FamilyMember;
+        //            resultFm.RelationshipToEvacuee = sourceFm.RelationshipToEvacuee.ToViewModel();
+        //            resultFm.SameLastNameAsEvacuee = sourceFm.SameLastNameAsEvacuee;
+        //        }
+        //    }
+        //    return result;
+        //}
 
 
         //public static Models.Db.Person ToModelOld(this ViewModels.Person source)

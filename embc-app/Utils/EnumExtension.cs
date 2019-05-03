@@ -10,36 +10,14 @@ namespace Gov.Jag.Embc.Public.Utils
 {
     public static class EnumExtension
     {
-        public static string GetDescription(this Enum genericEnum)
+        public static string GetDescription(this Enum enumValue)
         {
-            //Type genericEnumType = genericEnum.GetType();
-            //MemberInfo[] memberInfo = genericEnumType.GetMember(genericEnum.ToString());
-            //if ((memberInfo != null && memberInfo.Length > 0))
-            //{
-            //    var attributes = memberInfo[0].GetCustomAttributes(typeof(System.ComponentModel.DescriptionAttribute), false);
-            //    if (attributes != null && attributes.Any())
-            //    {
-            //        return ((System.ComponentModel.DescriptionAttribute)attributes.ElementAt(0)).Description;
-            //    }
-            //}
-            //return genericEnum.ToString();
-            return GetAttribute<DescriptionAttribute>(genericEnum).Description;
+            return GetAttribute<DescriptionAttribute>(enumValue).Description;
         }
 
-        public static string GetDisplayName(this Enum genericEnum)
+        public static string GetDisplayName(this Enum enumValue)
         {
-            //Type genericEnumType = genericEnum.GetType();
-            //MemberInfo[] memberInfo = genericEnumType.GetMember(genericEnum.ToString());
-            //if ((memberInfo != null && memberInfo.Length > 0))
-            //{
-            //    var attributes = memberInfo[0].GetCustomAttributes(typeof(System.ComponentModel.DisplayNameAttribute), false);
-            //    if (attributes != null && attributes.Any())
-            //    {
-            //        return ((System.ComponentModel.DisplayNameAttribute)attributes.ElementAt(0)).DisplayName;
-            //    }
-            //}
-            //return genericEnum.ToString();
-            return GetAttribute<DisplayNameAttribute>(genericEnum).DisplayName;
+            return GetAttribute<DisplayNameAttribute>(enumValue).DisplayName;
         }
 
         /// <summary>

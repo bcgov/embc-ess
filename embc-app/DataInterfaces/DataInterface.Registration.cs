@@ -58,52 +58,52 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         //    await db.SaveChangesAsync();
         //}
 
-        public async Task<IPagedResults<Registration>> GetRegistrationsAsync(SearchQueryParameters searchQuery)
-        {
-            var q = searchQuery.Query;
+        //public async Task<IPagedResults<Registration>> GetRegistrationsAsync(SearchQueryParameters searchQuery)
+        //{
+        //    var q = searchQuery.Query;
 
-            var items = await Registrations
-                 .Where(r => !searchQuery.HasQuery() ||
-                    r.HeadOfHousehold.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
-                    r.HeadOfHousehold.FamilyMembers.Any(fm => fm.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
-                    r.EssFileNumber.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
-                    (r.IncidentTask != null && r.IncidentTask.TaskNumber.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
-                    (r.HeadOfHousehold.PrimaryResidence is Models.Db.BcAddress) &&
-                    ((Models.Db.BcAddress)r.HeadOfHousehold.PrimaryResidence).Community.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase))
-                .Where(t => searchQuery.IncludeDeactivated || t.Active)
-                .Sort(searchQuery.SortBy ?? "id")
-                 .ToArrayAsync();
+        //    var items = await Registrations
+        //         .Where(r => !searchQuery.HasQuery() ||
+        //            r.HeadOfHousehold.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
+        //            r.HeadOfHousehold.FamilyMembers.Any(fm => fm.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
+        //            r.EssFileNumber.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
+        //            (r.IncidentTask != null && r.IncidentTask.TaskNumber.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
+        //            (r.HeadOfHousehold.PrimaryResidence is Models.Db.BcAddress) &&
+        //            ((Models.Db.BcAddress)r.HeadOfHousehold.PrimaryResidence).Community.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase))
+        //        .Where(t => searchQuery.IncludeDeactivated || t.Active)
+        //        .Sort(searchQuery.SortBy ?? "id")
+        //         .ToArrayAsync();
 
-            return new PaginatedList<Registration>(items.Select(r => r.ToViewModel()), searchQuery.Offset, searchQuery.Limit);
-        }
+        //    return new PaginatedList<Registration>(items.Select(r => r.ToViewModel()), searchQuery.Offset, searchQuery.Limit);
+        //}
 
-        public async Task<Registration> GetRegistrationAsync(string id)
-        {
-            var entity = await GetRegistrationInternalAsync(id);
-            return entity?.ToViewModel();
-        }
+        //public async Task<Registration> GetRegistrationAsync(string id)
+        //{
+        //    var entity = await GetRegistrationInternalAsync(id);
+        //    return entity?.ToViewModel();
+        //}
 
-        private async Task<Models.Db.Registration> GetRegistrationInternalAsync(string id)
-        {
-            return await Registrations.SingleOrDefaultAsync(reg => reg.Id == Guid.Parse(id));
-        }
+        //private async Task<Models.Db.Registration> GetRegistrationInternalAsync(string id)
+        //{
+        //    return await Registrations.SingleOrDefaultAsync(reg => reg.Id == Guid.Parse(id));
+        //}
 
-        public async Task<RegistrationSummary> GetRegistrationSummaryAsync(string id)
-        {
-            var entity = await GetRegistrationInternalAsync(id);
-            return entity?.ToSummaryViewModel();
-        }
+        //public async Task<RegistrationSummary> GetRegistrationSummaryAsync(string id)
+        //{
+        //    var entity = await GetRegistrationInternalAsync(id);
+        //    return entity?.ToSummaryViewModel();
+        //}
 
-        public async Task<bool> DeactivateRegistration(string id)
-        {
-            if (!Guid.TryParse(id, out var guid)) return false;
+        //public async Task<bool> DeactivateRegistration(string id)
+        //{
+        //    if (!Guid.TryParse(id, out var guid)) return false;
 
-            var item = await db.Registrations.SingleOrDefaultAsync(reg => reg.Id == guid);
-            if (item == null) return false;
-            item.Active = false;
-            db.Update(item);
-            await db.SaveChangesAsync();
-            return true;
-        }
+        //    var item = await db.Registrations.SingleOrDefaultAsync(reg => reg.Id == guid);
+        //    if (item == null) return false;
+        //    item.Active = false;
+        //    db.Update(item);
+        //    await db.SaveChangesAsync();
+        //    return true;
+        //}
     }
 }

@@ -14,7 +14,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var isHeadOfHousehold = false;
             if (source != null)
             {
-                if (source.EvacueeTypeCode == FamilyRelationshipTypes.HeadOfHousehold.GetDisplayName())
+                if (source.EvacueeTypeCode == EvacueeType.HeadOfHousehold.GetDisplayName())
                 {
                     result = new ViewModels.HeadOfHousehold();
                     isHeadOfHousehold = true;
@@ -40,7 +40,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     //resultHoh.MailingAddress = sourceHoh.MailingAddress?.ToViewModel(); //TODO:  Get From Addresses
 
                     //TODO:  Load family members from IncidentRegistration.Evacuees not HOH
-                    var familyMembers = incidentRegistration.Evacuees.Where(e => e.EvacueeTypeCode != FamilyRelationshipTypes.HeadOfHousehold.GetDisplayName());
+                    var familyMembers = incidentRegistration.Evacuees.Where(e => e.EvacueeTypeCode != EvacueeType.HeadOfHousehold.GetDisplayName());
                     if (familyMembers.Any())
                     {
                         resultHoh.FamilyMembers = new List<ViewModels.FamilyMember>();
@@ -60,8 +60,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 if (!isHeadOfHousehold)
                 {
                     var resultFm = result as ViewModels.FamilyMember;
-                    resultFm.RelationshipToEvacuee = source.EvacueeTypeCode == FamilyRelationshipTypes.ImmediateFamily.GetDisplayName()
-                        ? FamilyRelationshipTypes.ImmediateFamily.ToViewModel() : FamilyRelationshipTypes.HeadOfHousehold.ToViewModel();
+                    resultFm.RelationshipToEvacuee = source.EvacueeTypeCode == EvacueeType.ImmediateFamily.GetDisplayName()
+                        ? EvacueeType.ImmediateFamily.ToViewModel() : EvacueeType.HeadOfHousehold.ToViewModel();
                     resultFm.SameLastNameAsEvacuee = source.SameLastNameAsEvacuee;
                 }
             }
@@ -95,7 +95,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 if (source is ViewModels.HeadOfHousehold sourceHoh)
                 {
                     result.EvacueeSequenceNumber = 1;
-                    result.EvacueeTypeCode = FamilyRelationshipTypes.HeadOfHousehold.GetDisplayName();
+                    result.EvacueeTypeCode = EvacueeType.HeadOfHousehold.GetDisplayName();
                 }
 
                 if (source is ViewModels.FamilyMember sourceFm)

@@ -46,8 +46,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     HasPetCareReferral = source.HasPetCareReferral,
                     SelfRegisteredDate = source.SelfRegisteredDate,
                     RegistrationCompletionDate = source.RegistrationCompletionDate,
-                    //TODO: HeadOfHousehold conversion for Registration ViewModel
-                    //HeadOfHousehold = source.HeadOfHousehold.ToViewModel() as ViewModels.HeadOfHousehold,
+                    HeadOfHousehold = source.Evacuees.Single(e => e.EvacueeType == Models.Db.Enumerations.EvacueeType.HeadOfHousehold)
+                                                        .ToViewModel(source) as ViewModels.HeadOfHousehold,
                     HostCommunity = source.HostCommunity?.ToViewModel(),
                     IncidentTask = source.IncidentTask?.ToViewModel(),
                     DeclarationAndConsent = source.DeclarationAndConsent
@@ -56,6 +56,39 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             return result;
         }
+
+        public static ViewModels.RegistrationSummary ToSummaryViewModel(this Models.Db.IncidentRegistration source)
+        {
+            ViewModels.RegistrationSummary result = null;
+            var fullViewModel = source.ToViewModel();
+            if (fullViewModel != null)
+            {
+                result = new ViewModels.RegistrationSummary()
+                {
+                    Id = fullViewModel.Id.ToString(),
+                    EssFileNumber = fullViewModel.EssFileNumber,
+                    RestrictedAccess = fullViewModel.RestrictedAccess,
+                    RegisteringFamilyMembers = fullViewModel.RegisteringFamilyMembers,
+                    RequiresSupport = fullViewModel.RequiresSupport,
+                    RequiresFood = fullViewModel.RequiresFood,
+                    RequiresClothing = fullViewModel.RequiresClothing,
+                    RequiresAccommodation = fullViewModel.RequiresAccommodation,
+                    RequiresIncidentals = fullViewModel.RequiresIncidentals,
+                    RequiresTransportation = fullViewModel.RequiresTransportation,
+                    SelfRegisteredDate = fullViewModel.SelfRegisteredDate,
+                    RegistrationCompletionDate = fullViewModel.RegistrationCompletionDate,
+                    HeadOfHousehold = fullViewModel.HeadOfHousehold,
+                    IncidentTask = fullViewModel.IncidentTask,
+                    HostCommunity = fullViewModel.HostCommunity,
+                    Active = fullViewModel.Active.HasValue ? fullViewModel.Active.Value : false,
+                    HasFollowUpDetails = !string.IsNullOrWhiteSpace(fullViewModel.FollowUpDetails),
+                    Facility = fullViewModel.Facility
+                };
+            }
+
+            return result;
+        }
+
 
         public static Models.Db.IncidentRegistration ToModel(this ViewModels.Registration source)
         {

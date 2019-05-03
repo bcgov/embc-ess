@@ -9,8 +9,9 @@ namespace Gov.Jag.Embc.Public.Models.Db
 {
     public class Enumerations
     {
-        public enum FamilyRelationshipTypes
+        public enum EvacueeType
         {
+            NotSet,
             [DisplayName("HOH")]
             [Description("Head of Household")]
             HeadOfHousehold,
@@ -24,6 +25,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public enum AddressType
         {
+            NotSet,
             [DisplayName("Primary")]
             Primary,
             [DisplayName("Mailing")]
@@ -32,6 +34,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public enum AddressSubType
         {
+            NotSet,
             [DisplayName("BCAD")]
             BCAddress,
             [DisplayName("OTAD")]

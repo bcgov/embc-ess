@@ -1,6 +1,8 @@
+using Gov.Jag.Embc.Public.Utils;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
@@ -37,6 +39,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string BcServicesNumber { get; set; }
 
         public string EvacueeTypeCode { get; set; }
+
+        public EvacueeType EvacueeType => string.IsNullOrEmpty(EvacueeTypeCode) ? EvacueeType.NotSet : EnumHelper<EvacueeType>.GetValueFromName(EvacueeTypeCode);
 
         public IncidentRegistration IncidentRegistration { get; set; }
     }

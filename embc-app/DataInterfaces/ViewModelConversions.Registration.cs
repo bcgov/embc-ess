@@ -5,53 +5,53 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static partial class ViewModelConversions
     {
-        public static ViewModels.Registration ToViewModel(this Models.Db.Registration source)
-        {
-            ViewModels.Registration result = null;
-            if (source != null)
-            {
-                result = new ViewModels.Registration()
-                {
-                    Id = source.Id.ToString(),
-                    Active = source.Active,
-                    EssFileNumber = source.EssFileNumber,
-                    RestrictedAccess = source.RestrictedAccess,
-                    RegisteringFamilyMembers = source.RegisteringFamilyMembers,
-                    DietaryNeeds = source.DietaryNeeds,
-                    DietaryNeedsDetails = source.DietaryNeedsDetails,
-                    MedicationNeeds = source.MedicationNeeds,
-                    HasThreeDayMedicationSupply = source.HasThreeDayMedicationSupply,
-                    HasPets = source.HasPets,
-                    InsuranceCode = source.InsuranceCode,
-                    RequiresSupport = source.RequiresSupport,
-                    RequiresFood = source.RequiresFood,
+        //public static ViewModels.Registration ToViewModel(this Models.Db.Registration source)
+        //{
+        //    ViewModels.Registration result = null;
+        //    if (source != null)
+        //    {
+        //        result = new ViewModels.Registration()
+        //        {
+        //            Id = source.Id.ToString(),
+        //            Active = source.Active,
+        //            EssFileNumber = source.EssFileNumber,
+        //            RestrictedAccess = source.RestrictedAccess,
+        //            RegisteringFamilyMembers = source.RegisteringFamilyMembers,
+        //            DietaryNeeds = source.DietaryNeeds,
+        //            DietaryNeedsDetails = source.DietaryNeedsDetails,
+        //            MedicationNeeds = source.MedicationNeeds,
+        //            HasThreeDayMedicationSupply = source.HasThreeDayMedicationSupply,
+        //            HasPets = source.HasPets,
+        //            InsuranceCode = source.InsuranceCode,
+        //            RequiresSupport = source.RequiresSupport,
+        //            RequiresFood = source.RequiresFood,
 
-                    RequiresClothing = source.RequiresClothing,
-                    RequiresAccommodation = source.RequiresAccommodation,
-                    RequiresIncidentals = source.RequiresIncidentals,
-                    RequiresTransportation = source.RequiresTransportation,
-                    Facility = source.Facility,
-                    DisasterAffectDetails = source.DisasterAffectDetails,
-                    ExternalReferralsDetails = source.ExternalReferralsDetails,
-                    FamilyRecoveryPlan = source.FamilyRecoveryPlan,
-                    FollowUpDetails = source.FollowUpDetails,
-                    HasInquiryReferral = source.HasInquiryReferral,
-                    HasHealthServicesReferral = source.HasHealthServicesReferral,
-                    HasFirstAidReferral = source.HasFirstAidReferral,
-                    HasPersonalServicesReferral = source.HasPersonalServicesReferral,
-                    HasChildCareReferral = source.HasChildCareReferral,
-                    HasPetCareReferral = source.HasPetCareReferral,
-                    SelfRegisteredDate = source.SelfRegisteredDate,
-                    RegistrationCompletionDate = source.RegistrationCompletionDate,
-                    HeadOfHousehold = source.HeadOfHousehold.ToViewModel() as ViewModels.HeadOfHousehold,
-                    HostCommunity = source.HostCommunity?.ToViewModel(),
-                    IncidentTask = source.IncidentTask?.ToViewModel(),
-                    DeclarationAndConsent = source.DeclarationAndConsent
-                };
-            }
+        //            RequiresClothing = source.RequiresClothing,
+        //            RequiresAccommodation = source.RequiresAccommodation,
+        //            RequiresIncidentals = source.RequiresIncidentals,
+        //            RequiresTransportation = source.RequiresTransportation,
+        //            Facility = source.Facility,
+        //            DisasterAffectDetails = source.DisasterAffectDetails,
+        //            ExternalReferralsDetails = source.ExternalReferralsDetails,
+        //            FamilyRecoveryPlan = source.FamilyRecoveryPlan,
+        //            FollowUpDetails = source.FollowUpDetails,
+        //            HasInquiryReferral = source.HasInquiryReferral,
+        //            HasHealthServicesReferral = source.HasHealthServicesReferral,
+        //            HasFirstAidReferral = source.HasFirstAidReferral,
+        //            HasPersonalServicesReferral = source.HasPersonalServicesReferral,
+        //            HasChildCareReferral = source.HasChildCareReferral,
+        //            HasPetCareReferral = source.HasPetCareReferral,
+        //            SelfRegisteredDate = source.SelfRegisteredDate,
+        //            RegistrationCompletionDate = source.RegistrationCompletionDate,
+        //            HeadOfHousehold = source.HeadOfHousehold.ToViewModel() as ViewModels.HeadOfHousehold,
+        //            HostCommunity = source.HostCommunity?.ToViewModel(),
+        //            IncidentTask = source.IncidentTask?.ToViewModel(),
+        //            DeclarationAndConsent = source.DeclarationAndConsent
+        //        };
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         //public static Models.Db.Registration ToModel(this ViewModels.Registration source)
         //{
@@ -110,35 +110,35 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         
 
-        public static ViewModels.RegistrationSummary ToSummaryViewModel(this Models.Db.Registration source)
-        {
-            ViewModels.RegistrationSummary result = null;
-            if (source != null)
-            {
-                result = new ViewModels.RegistrationSummary()
-                {
-                    Id = source.Id.ToString(),
-                    EssFileNumber = source.EssFileNumber,
-                    RestrictedAccess = source.RestrictedAccess,
-                    RegisteringFamilyMembers = source.RegisteringFamilyMembers,
-                    RequiresSupport = source.RequiresSupport,
-                    RequiresFood = source.RequiresFood,
-                    RequiresClothing = source.RequiresClothing,
-                    RequiresAccommodation = source.RequiresAccommodation,
-                    RequiresIncidentals = source.RequiresIncidentals,
-                    RequiresTransportation = source.RequiresTransportation,
-                    SelfRegisteredDate = source.SelfRegisteredDate,
-                    RegistrationCompletionDate = source.RegistrationCompletionDate,
-                    HeadOfHousehold = source.HeadOfHousehold?.ToViewModel() as ViewModels.HeadOfHousehold,
-                    IncidentTask = source.IncidentTask?.ToViewModel(),
-                    HostCommunity = source.HostCommunity?.ToViewModel(),
-                    Active = source.Active,
-                    HasFollowUpDetails = !string.IsNullOrWhiteSpace(source.FollowUpDetails),
-                    Facility = source.Facility
-                };
-            }
+        //public static ViewModels.RegistrationSummary ToSummaryViewModel(this Models.Db.Registration source)
+        //{
+        //    ViewModels.RegistrationSummary result = null;
+        //    if (source != null)
+        //    {
+        //        result = new ViewModels.RegistrationSummary()
+        //        {
+        //            Id = source.Id.ToString(),
+        //            EssFileNumber = source.EssFileNumber,
+        //            RestrictedAccess = source.RestrictedAccess,
+        //            RegisteringFamilyMembers = source.RegisteringFamilyMembers,
+        //            RequiresSupport = source.RequiresSupport,
+        //            RequiresFood = source.RequiresFood,
+        //            RequiresClothing = source.RequiresClothing,
+        //            RequiresAccommodation = source.RequiresAccommodation,
+        //            RequiresIncidentals = source.RequiresIncidentals,
+        //            RequiresTransportation = source.RequiresTransportation,
+        //            SelfRegisteredDate = source.SelfRegisteredDate,
+        //            RegistrationCompletionDate = source.RegistrationCompletionDate,
+        //            HeadOfHousehold = source.HeadOfHousehold?.ToViewModel() as ViewModels.HeadOfHousehold,
+        //            IncidentTask = source.IncidentTask?.ToViewModel(),
+        //            HostCommunity = source.HostCommunity?.ToViewModel(),
+        //            Active = source.Active,
+        //            HasFollowUpDetails = !string.IsNullOrWhiteSpace(source.FollowUpDetails),
+        //            Facility = source.Facility
+        //        };
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
     }
 }
