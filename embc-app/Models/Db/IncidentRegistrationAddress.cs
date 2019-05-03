@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
-    public class RegistrationAddress
+    public class IncidentRegistrationAddress
     {
 
         [Key, Column(Order = 0)]
@@ -17,7 +18,11 @@ namespace Gov.Jag.Embc.Public.Models.Db
         [Key, Column(Order = 1)]
         public int AddressSequenceNumber { get; set; }
 
-        public string AddressSubtype { get; set; }  // one of ['BCAD', 'OTAD'] for BC vs non-BC addresses
+        public string AddressTypeCode { get; set; }
+
+        //public AddressType 
+
+        public string AddressSubtypeCode { get; set; }  // one of ['BCAD', 'OTAD'] for BC vs non-BC addresses
 
         public string AddressLine1 { get; set; }
 
@@ -41,5 +46,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public Country Country { get; set; }
 
         public IncidentRegistration IncidentRegistration { get; set; }
+
     }
 }

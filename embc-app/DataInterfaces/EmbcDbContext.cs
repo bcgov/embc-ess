@@ -88,7 +88,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<IncidentTask> IncidentTasks { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Registration> Registrations { get; set; }
-        public DbSet<RegistrationAddress> RegistrationAddresses { get; set; }
+        public DbSet<IncidentRegistrationAddress> RegistrationAddresses { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Volunteer> Volunteers { get; set; }
@@ -97,6 +97,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             // this line is required so ef migrations will work.
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Evacuee>()
+                .HasKey(e => new { e.IncidentRegistrationId, e.EvacueeSequenceNumber });
+
+            modelBuilder.Entity<IncidentRegistrationAddress>()
+                .HasKey(ira => new { ira.IncidentRegistrationId, ira.AddressSequenceNumber });
 
             // Address hierarchy
             modelBuilder.Entity<BcAddress>().HasBaseType<Address>();

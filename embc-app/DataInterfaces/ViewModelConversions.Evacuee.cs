@@ -1,4 +1,5 @@
 using Gov.Jag.Embc.Public.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
@@ -66,6 +67,45 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
             return result;
         }
+        public static Models.Db.Evacuee ToModel(this ViewModels.Person source)
+        {
+            Models.Db.Evacuee result = null;
 
+            if (source != null)
+            {
+                result = new Models.Db.Evacuee();
+
+                if (source.Id != null)
+                {
+                    result.IncidentRegistrationId = Guid.Parse(source.Id);
+                }
+
+                result.FirstName = source.FirstName;
+                result.LastName = source.LastName;
+
+                if (source is ViewModels.Evacuee sourceEvacuee)
+                {
+                    result.EvacueeSequenceNumber = sourceEvacuee.EvacueeSequenceNumber;
+                    result.Nickname = sourceEvacuee.Nickname;
+                    result.Initials = sourceEvacuee.Initials;
+                    result.Gender = source.Gender;
+                    result.Dob = sourceEvacuee.Dob;
+                }
+
+                if (source is ViewModels.HeadOfHousehold sourceHoh)
+                {
+                    result.EvacueeSequenceNumber = 1;
+                    result.EvacueeTypeCode = FamilyRelationshipTypes.HeadOfHousehold.GetDisplayName();
+                }
+
+                if (source is ViewModels.FamilyMember sourceFm)
+                {
+                    result.EvacueeTypeCode = sourceFm.RelationshipToEvacuee.Code;
+                    result.SameLastNameAsEvacuee = sourceFm.SameLastNameAsEvacuee;
+                }
+            }
+
+            return result;
+        }
     }
 }

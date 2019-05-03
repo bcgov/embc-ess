@@ -13,7 +13,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public IncidentRegistration()
         {
             Evacuees = new List<Evacuee>();
-            RegistrationAddresses = new List<RegistrationAddress>();
+            IncidentRegistrationAddresses = new List<IncidentRegistrationAddress>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -73,6 +73,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public List<Evacuee> Evacuees { get; set; }
 
-        public List<RegistrationAddress> RegistrationAddresses { get; set; }
+        public List<IncidentRegistrationAddress> IncidentRegistrationAddresses { get; set; }
     }
 }

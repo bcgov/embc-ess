@@ -21,5 +21,21 @@ namespace Gov.Jag.Embc.Public.Models.Db
             [Description("Extended Family")]
             ExtendedFamily
         }
+
+        public enum AddressType
+        {
+            [DisplayName("Primary")]
+            Primary,
+            [DisplayName("Mailing")]
+            Mailing
+        }
+
+        public enum AddressSubType
+        {
+            [DisplayName("BCAD")]
+            BCAddress,
+            [DisplayName("OTAD")]
+            OtherAddress
+        }
     }
 }

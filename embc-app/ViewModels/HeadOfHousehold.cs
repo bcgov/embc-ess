@@ -11,7 +11,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
     public class HeadOfHousehold : Evacuee
     {
-        // evacuee information (HOH and family members)
         public string PhoneNumber { get; set; }
 
         public string PhoneNumberAlt { get; set; }
@@ -19,7 +18,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
         [EmailAddress]
         public string Email { get; set; }
 
-        // related entities
         public Address PrimaryResidence { get; set; }
 
         public Address MailingAddress { get; set; }

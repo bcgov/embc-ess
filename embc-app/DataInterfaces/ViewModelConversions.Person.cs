@@ -19,7 +19,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result.FirstName = source.FirstName;
                 result.LastName = source.LastName;
 
-                // TODO: Add fields for HOH, FMBR, VOLN
                 if (source is Models.Db.HeadOfHousehold sourceHoh)
                 {
                     var resultHoh = result as ViewModels.HeadOfHousehold;
@@ -107,57 +106,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         //    return result;
         //}
 
-        public static Models.Db.Evacuee ToModel(this ViewModels.Person source)
-        {
-            Models.Db.Evacuee result = null;
-
-            if(source != null)
-            {
-                result = new Models.Db.Evacuee();
-
-                //TODO: Evacuee RegistrationId
-                result.FirstName = source.FirstName;
-                result.LastName = source.LastName;
-
-                if (source is ViewModels.Evacuee sourceEvacuee)
-                {
-                    result.Nickname = sourceEvacuee.Nickname;
-                    result.Initials = sourceEvacuee.Initials;
-                    result.Gender = source.Gender;
-                    result.Dob = sourceEvacuee.Dob;
-                }
-
-                if (source is ViewModels.HeadOfHousehold sourceHoh)
-                {
-                    result.EvacueeSequenceNumber = 1;
-                    result.EvacueeTypeCode = FamilyRelationshipTypes.HeadOfHousehold.GetDisplayName();
-                    //var resultHoh = result as Models.Db.HeadOfHousehold;
-                    //resultHoh.PhoneNumber = sourceHoh.PhoneNumber;  //TODO - Goes to IncidentRegistration
-                    //resultHoh.PhoneNumberAlt = sourceHoh.PhoneNumberAlt; //TODO - Goes to IncidentRegistration
-                    //resultHoh.Email = sourceHoh.Email; //TODO - Goes to IncidentRegistration
-                    // related entities
-                    //result.PrimaryResidence = sourceHoh.PrimaryResidence.ToModel();  //TODO - Goes to RegistrationAddresses.Type
-                    //result.MailingAddress = sourceHoh.MailingAddress?.ToModel();  //TODO - Goes to RegistrationAddresses.Type
-                    //if (sourceHoh.FamilyMembers != null)
-                    //{
-                    //    resultHoh.FamilyMembers = new List<Models.Db.FamilyMember>();
-                    //    foreach (var familyMember in sourceHoh.FamilyMembers)
-                    //    {
-                    //        resultHoh.FamilyMembers.Add(familyMember.ToModel() as Models.Db.FamilyMember);
-                    //    }
-                    //}
-                }
-
-                if (source is ViewModels.FamilyMember sourceFm)
-                {
-                    //var resultFm = result as Models.Db.FamilyMember;
-                    //resultFm.RelationshipToEvacueeCode = sourceFm.RelationshipToEvacuee.Code;
-                    result.EvacueeTypeCode = sourceFm.RelationshipToEvacuee.Code;
-                    result.SameLastNameAsEvacuee = sourceFm.SameLastNameAsEvacuee;
-                }
-            }
-
-            return result;
-        }
+        
     }
 }
