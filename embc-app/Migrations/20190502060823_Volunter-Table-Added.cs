@@ -40,7 +40,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                     IsAdministrator = table.Column<bool>(nullable: true),
                     IsPrimaryContact = table.Column<bool>(nullable: true),
                     CanAccessRestrictedFiles = table.Column<bool>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: true),
+                    UserId = table.Column<string>(maxLength: 255, nullable: true),
                     OrganizationId = table.Column<Guid>(nullable: true),
                     PeopleId = table.Column<Guid>(nullable: false)
                 },
