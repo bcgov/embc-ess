@@ -479,7 +479,7 @@
         <h2 class="blue-header font-weight-bold">NEXT STEPS</h2>
         <p class="required">
           While you are evacuated do you require supports?<br>
-          This could be in the form of food / accommodation / clothing / incidentals or transportation.
+          This could be in the form of food / lodging / clothing / incidentals or transportation.
         </p>
         <div class="form-group mb-0">
           <div class="form-check">
@@ -504,8 +504,8 @@
             <label class="form-check-label" for="requiresClothing">Clothing</label>
           </div>
           <div class="form-check mt-3">
-            <input type="checkbox" class="form-check-input" value="" formControlName="requiresAccommodation" id="requiresAccommodation">
-            <label class="form-check-label" for="requiresAccommodation">Accommodation</label>
+            <input type="checkbox" class="form-check-input" value="" formControlName="requiresLodging" id="requiresLodging">
+            <label class="form-check-label" for="requiresLodging">Lodging</label>
           </div>
           <div class="form-check mt-3">
             <input type="checkbox" class="form-check-input" value="" formControlName="requiresIncidentals" id="requiresIncidentals">
@@ -866,8 +866,8 @@
           <label class="form-check-label">Clothing</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" disabled [checked]="registration?.requiresAccommodation">
-          <label class="form-check-label">Accommodation</label>
+          <input type="checkbox" class="form-check-input" disabled [checked]="registration?.requiresLodging">
+          <label class="form-check-label">Lodging</label>
         </div>
         <div class="form-check mt-2">
           <input type="checkbox" class="form-check-input" disabled [checked]="registration?.requiresIncidentals">

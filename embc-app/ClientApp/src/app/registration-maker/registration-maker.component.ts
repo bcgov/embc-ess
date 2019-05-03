@@ -283,7 +283,7 @@ export class RegistrationMakerComponent implements OnInit {
       hasPersonalServicesReferral: null,
       hasPetCareReferral: null,
       hasPets: [null, Validators.required],
-      requiresAccommodation: null,
+      requiresLodging: null,
       requiresClothing: null,
       requiresFood: null,
       requiresIncidentals: null,
@@ -458,7 +458,7 @@ export class RegistrationMakerComponent implements OnInit {
 
         hasPets: r.hasPets as boolean,
 
-        requiresAccommodation: r.requiresAccommodation as boolean,
+        requiresLodging: r.requiresLodging as boolean,
         requiresClothing: r.requiresClothing as boolean,
         requiresFood: r.requiresFood as boolean,
         requiresIncidentals: r.requiresIncidentals as boolean,
@@ -637,7 +637,7 @@ export class RegistrationMakerComponent implements OnInit {
       hasPets: values.hasPets as boolean,
 
       // requirements
-      requiresAccommodation: values.requiresAccommodation as boolean,
+      requiresLodging: values.requiresLodging as boolean,
       requiresClothing: values.requiresClothing as boolean,
       requiresFood: values.requiresFood as boolean,
       requiresIncidentals: values.requiresIncidentals as boolean,
@@ -702,7 +702,7 @@ export class RegistrationMakerComponent implements OnInit {
     if (!r.requiresSupport) {
       r.requiresFood = false;
       r.requiresClothing = false;
-      r.requiresAccommodation = false;
+      r.requiresLodging = false;
       r.requiresIncidentals = false;
       r.requiresTransportation = false;
     }
@@ -759,7 +759,7 @@ export class RegistrationMakerComponent implements OnInit {
       hasPersonalServicesReferral: null,
       hasPetCareReferral: null,
       hasPets: null,
-      requiresAccommodation: null,
+      requiresLodging: null,
       requiresClothing: null,
       requiresFood: null,
       requiresIncidentals: null,

@@ -135,7 +135,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
       requiresSupport: [null, Validators.required],
       requiresFood: null,
       requiresClothing: null,
-      requiresAccommodation: null,
+      requiresLodging: null,
       requiresIncidentals: null,
       requiresTransportation: null,
     });
@@ -174,7 +174,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
         requiresSupport: this.registration.requiresSupport,
         requiresFood: this.registration.requiresFood,
         requiresClothing: this.registration.requiresClothing,
-        requiresAccommodation: this.registration.requiresAccommodation,
+        requiresLodging: this.registration.requiresLodging,
         requiresIncidentals: this.registration.requiresIncidentals,
         requiresTransportation: this.registration.requiresTransportation,
       });
@@ -185,7 +185,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
     this.form.patchValue({
       requiresFood: null,
       requiresClothing: null,
-      requiresAccommodation: null,
+      requiresLodging: null,
       requiresIncidentals: null,
       requiresTransportation: null,
     });

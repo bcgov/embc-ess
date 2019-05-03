@@ -33,7 +33,7 @@ export interface Registration {
   hasPets: boolean;
 
   // requirements
-  requiresAccommodation: boolean;
+  requiresLodging: boolean;
   requiresClothing: boolean;
   requiresFood: boolean;
   requiresIncidentals: boolean;

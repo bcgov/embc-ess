@@ -31,9 +31,9 @@
           <label class="form-check-label" for="supportClothing">Clothing</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="accommodationReferrals.length > 0"
-            id="supportAccommodation">
-          <label class="form-check-label" for="supportAccommodation">Accommodation</label>
+          <input type="checkbox" class="form-check-input" [checked]="lodgingReferrals.length > 0"
+            id="supportLodging">
+          <label class="form-check-label" for="supportLodging">Lodging</label>
         </div>
         <div class="form-check mt-2">
           <input type="checkbox" class="form-check-input" [checked]="incidentalsReferrals.length > 0"
@@ -56,8 +56,8 @@
         <!-- <app-clothing-referral ([r])="r"></app-clothing-referral> -->
       </article>
 
-      <article *ngFor="let r of accommodationReferrals; let i = index" class="mt-4">
-        <!-- <app-accommodation-referral ([r])="r"></app-accommodation-referral> -->
+      <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-4">
+        <!-- <app-lodging-referral ([r])="r"></app-lodging-referral> -->
       </article>
 
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">

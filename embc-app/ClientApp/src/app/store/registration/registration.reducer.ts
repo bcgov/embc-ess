@@ -31,7 +31,7 @@ const newRegistration: Registration = {
   requiresSupport: null,
   requiresFood: null,
   requiresClothing: null,
-  requiresAccommodation: null,
+  requiresLodging: null,
   requiresIncidentals: null,
   requiresTransportation: null,
   facility: null,

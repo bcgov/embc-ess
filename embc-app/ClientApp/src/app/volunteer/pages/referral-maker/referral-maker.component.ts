@@ -10,7 +10,7 @@ import {
   IncidentalsReferral,
   FoodReferral,
   ClothingReferral,
-  AccommodationReferral,
+  LodgingReferral,
   TransportationReferral
 } from 'src/app/core/models';
 
@@ -33,7 +33,7 @@ export class ReferralMakerComponent implements OnInit {
 
   foodReferrals: Array<FoodReferral> = [];
   clothingReferrals: Array<ClothingReferral> = [];
-  accommodationReferrals: Array<AccommodationReferral> = [];
+  lodgingReferrals: Array<LodgingReferral> = [];
   incidentalsReferrals: Array<IncidentalsReferral> = [];
   transportationReferrals: Array<TransportationReferral> = [];
 

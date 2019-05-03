@@ -32,7 +32,7 @@ export interface IncidentalsReferral extends Referral {
 export interface ClothingReferral extends Referral { }
 
 // tslint:disable-next-line: no-empty-interface
-export interface AccommodationReferral extends Referral { }
+export interface LodgingReferral extends Referral { }
 
 // tslint:disable-next-line: no-empty-interface
 export interface TransportationReferral extends Referral { }
