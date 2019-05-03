@@ -3,8 +3,16 @@ import { RegistrationService } from 'src/app/core/services/registration.service'
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
-import { Registration } from 'src/app/core/models';
-import { IncidentalsReferral } from 'src/app/core/models';
+import {
+  Registration,
+  Supplier,
+  BcAddress,
+  IncidentalsReferral,
+  FoodReferral,
+  ClothingReferral,
+  AccommodationReferral,
+  TransportationReferral
+} from 'src/app/core/models';
 
 @Component({
   selector: 'app-referral-maker',
@@ -21,12 +29,13 @@ export class ReferralMakerComponent implements OnInit {
   path: string = null; // for relative routing
   regId: string = null;
   purchaser: string = null;
+  evacuees: Array<any> = [];
 
-  foodReferrals: Array<any> = [];
-  clothingReferrals: Array<any> = [];
-  accommodationReferrals: Array<any> = [];
+  foodReferrals: Array<FoodReferral> = [];
+  clothingReferrals: Array<ClothingReferral> = [];
+  accommodationReferrals: Array<AccommodationReferral> = [];
   incidentalsReferrals: Array<IncidentalsReferral> = [];
-  transportationReferrals: Array<any> = [];
+  transportationReferrals: Array<TransportationReferral> = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -57,9 +66,18 @@ export class ReferralMakerComponent implements OnInit {
           this.router.navigate([`/${this.path}`]);
         } else {
           this.registration = r;
+
+          // FOR TESTING
           if (this.registration.incidentTask) {
             // tslint:disable-next-line: no-string-literal
-            this.registration.incidentTask['startDate'] = Date.now(); // TODO: fix when startDate is implemented in incidentTask object
+            this.registration.incidentTask['startDate'] = Date.now();
+          }
+
+          // populate evacuees
+          const hoh = this.registration.headOfHousehold;
+          if (hoh) {
+            this.evacuees.push({ evacuee: hoh, selected: false });
+            hoh.familyMembers.forEach(fm => this.evacuees.push({ evacuee: fm, selected: false }));
           }
         }
       });
@@ -100,28 +118,92 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
+  foodReferralChange() {
+    if (this.foodReferrals.length > 0) {
+      this.clearFoodReferrals();
+    } else {
+      this.addFoodReferral();
+    }
+  }
+
   removeIncidentalsReferral(i: number) {
     this.incidentalsReferrals.splice(i, 1);
   }
 
+  removeFoodReferral(i: number) {
+    this.foodReferrals.splice(i, 1);
+  }
+
   addIncidentalsReferral() {
-    this.incidentalsReferrals.push({
+    const referral: IncidentalsReferral = {
       id: null, // is populated back BE after save
-      active: false,
+      active: true,
+      purchaser: this.purchaser,
       validFrom: new Date(2019, 0, 1), // TODO: for local testing only
       validTo: new Date(2019, 11, 31), // TODO: for local testing only
-      evacuees: [],
-      approvedItems: '',
-      maxTotal: 100,
+      evacuees: this.evacuees,
+      approvedItems: null,
+      totalAmt: 0,
+      supplier: this.newSupplier,
       comments: 'some comments here',
-      purchaser: this.purchaser
-    });
+    };
+
+    this.incidentalsReferrals.push(referral);
+  }
+
+  addFoodReferral() {
+    const referral: FoodReferral = {
+      id: null, // is populated back BE after save
+      active: true,
+      purchaser: this.purchaser,
+      validFrom: new Date(2019, 0, 1), // TODO: for local testing only
+      validTo: new Date(2019, 11, 31), // TODO: for local testing only
+      evacuees: this.evacuees,
+      foodType: null,
+      numBreakfasts: 0,
+      numLunches: 0,
+      numDinners: 0,
+      numDaysMeals: 0,
+      totalAmt: 0,
+      supplier: this.newSupplier,
+      comments: 'some comments here',
+    };
+
+    this.foodReferrals.push(referral);
+  }
+
+  private get newSupplier(): Supplier {
+    return {
+      id: null, // for future use
+      active: true,
+      name: 'name', // null,
+      address: this.newBcAddress,
+      phoneNumber: '123-456-7890', // null,
+      faxNumber: '321-654-0987', // null
+    };
+  }
+
+  private get newBcAddress(): BcAddress {
+    return {
+      id: null,
+      addressSubtype: 'BCAD',
+      addressLine1: 'addressLine1', // null,
+      postalCode: 'postalCode', // null,
+      community: null
+    };
   }
 
   clearIncidentalsReferrals(): void {
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Incidentals referrals?')) {
       while (this.incidentalsReferrals.length > 0) { this.incidentalsReferrals.pop(); }
+    }
+  }
+
+  clearFoodReferrals(): void {
+    // TODO: replace confirm with a better popup
+    if (confirm('Do you really want to clear all Food referrals?')) {
+      while (this.foodReferrals.length > 0) { this.foodReferrals.pop(); }
     }
   }
 

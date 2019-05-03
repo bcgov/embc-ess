@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Registration, IncidentalsReferral } from 'src/app/core/models';
+import { IncidentalsReferral } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
 import * as moment from 'moment';
 
@@ -10,7 +10,6 @@ import * as moment from 'moment';
   styleUrls: ['./incidentals-referral.component.scss']
 })
 export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() registration: Registration = null;
   @Input() referral: IncidentalsReferral = null;
   @Input() editMode = false;
   @Output() remove = new EventEmitter<any>();
@@ -30,9 +29,6 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.registration) {
-      console.log('registration =', changes.registration.currentValue);
-    }
     if (changes.referral) {
       console.log('referral =', changes.referral.currentValue);
     }
