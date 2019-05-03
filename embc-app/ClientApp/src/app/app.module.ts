@@ -66,6 +66,7 @@ import { TransportationRatesComponent } from './shared/modals/transportation-rat
 
 // TODO: move these to volunteer/local-authority/provincial-admin modules
 import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
+import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
 import { IncidentalsReferralComponent } from './volunteer/components/incidentals-referral/incidentals-referral.component';
 import { ReferralTableComponent } from './volunteer/components/referral-table/referral-table.component';
 import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid-from-to.component';
@@ -124,6 +125,7 @@ import { SupplierComponent } from './volunteer/components/supplier/supplier.comp
     TransportationRatesComponent,
 
     ReferralMakerComponent,
+    ReferralViewComponent,
     IncidentalsReferralComponent,
     ReferralTableComponent,
     ValidFromToComponent,
