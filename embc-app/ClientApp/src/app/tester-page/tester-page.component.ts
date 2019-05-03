@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationQueueService } from '../core/services/notification-queue.service';
-import { Registration } from 'src/app/core/models';
 import { ReferralDate } from '../core/models/referral-date';
+import { Registration } from 'src/app/core/models';
+import { Referral } from 'src/app/core/models';
 
 @Component({
   selector: 'app-tester-page',
@@ -9,7 +10,7 @@ import { ReferralDate } from '../core/models/referral-date';
   styleUrls: ['./tester-page.component.scss']
 })
 export class TesterPageComponent implements OnInit {
-  registration: Registration = null;
+  referral: Referral = null;
   page = 1;
   dateStub: any;
 

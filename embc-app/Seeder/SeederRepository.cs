@@ -1,15 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Gov.Jag.Embc.Public.Data.Extensions;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gov.Jag.Embc.Public.Seeder
 {
     public class SeederRepository : ISeederRepository
     {
-        readonly EmbcDbContext db;
+        private readonly EmbcDbContext db;
 
         public SeederRepository(EmbcDbContext ctx)
         {
@@ -74,10 +74,29 @@ namespace Gov.Jag.Embc.Public.Seeder
         {
             var existingEntities = db.Communities
                 .Where(ex =>
-                            communities.Exists(c => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) && c.RegionName == ex.RegionName)).ToList();
+                            communities.Exists(
+                                c => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) &&
+                                (
+                                    (!string.IsNullOrEmpty(ex.RegionName) && c.RegionName == ex.RegionName) || string.IsNullOrEmpty(ex.RegionName)
+                                )
+                            )
+                ).ToList();
+
             foreach (var entity in existingEntities)
             {
-                var updatedCommunity = communities.Single(c => c.Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase) && c.RegionName == entity.RegionName);
+                var updatedCommunity = default(Community);
+                if (!string.IsNullOrEmpty(entity.RegionName))
+                {
+                    updatedCommunity = communities.Single(c => c.Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase) &&
+                                                                                                c.RegionName == entity.RegionName);
+                }
+                else
+                {
+                    updatedCommunity = communities.First(c => c.Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase) &&
+                                                                                               !existingEntities.Exists(ex => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) && 
+                                                                                                        !string.IsNullOrEmpty(ex.RegionName) && c.RegionName == ex.RegionName));
+                }
+
                 entity.Name = updatedCommunity.Name;
                 entity.Active = updatedCommunity.Active;
                 entity.RegionName = updatedCommunity.RegionName;
@@ -104,6 +123,7 @@ namespace Gov.Jag.Embc.Public.Seeder
                 entity.Active = incidentTask.Active;
                 entity.RegionName = incidentTask.RegionName;
                 entity.CommunityId = incidentTask.CommunityId;
+                entity.StartDate = incidentTask.StartDate;
             }
             db.UpdateRange(existingEntities);
 
@@ -130,7 +150,6 @@ namespace Gov.Jag.Embc.Public.Seeder
                 entity.Name = organization.Name;
                 entity.RegionName = organization.RegionName;
                 entity.CommunityId = organization.CommunityId;
-
             }
             db.UpdateRange(existingEntities);
 
@@ -142,19 +161,18 @@ namespace Gov.Jag.Embc.Public.Seeder
 
         public void AddOrUpdateVolunteers(List<Volunteer> volunteers)
         {
-            var existingEntities = db.People.Where(x => x is Volunteer)
-                    .Cast<Volunteer>()
-                    .Where(v => volunteers.Exists(ex => ex.BceidAccountNumber == v.BceidAccountNumber))
+            var existingEntities = db.Volunteers
+                    .Where(v => volunteers.Exists(ex => ex.BceidAccountUserName == v.BceidAccountUserName))
                     .ToList();
 
             foreach (var entity in existingEntities)
             {
-                var volunteer = volunteers.Single(x => x.BceidAccountNumber == entity.BceidAccountNumber);
+                var volunteer = volunteers.Single(x => x.BceidAccountUserName == entity.BceidAccountUserName);
 
-                entity.BceidAccountNumber = volunteer.BceidAccountNumber;
+                entity.BceidAccountUserName = volunteer.BceidAccountUserName;
                 entity.FirstName = volunteer.FirstName;
                 entity.LastName = volunteer.LastName;
-                entity.Externaluseridentifier = volunteer.Externaluseridentifier;
+                entity.UserId = volunteer.UserId;
                 entity.Active = volunteer.Active;
                 entity.CanAccessRestrictedFiles = volunteer.CanAccessRestrictedFiles;
                 entity.Email = volunteer.Email;
@@ -164,7 +182,7 @@ namespace Gov.Jag.Embc.Public.Seeder
             }
             db.UpdateRange(existingEntities);
 
-            var newEntities = volunteers.Where(v => !existingEntities.Exists(ex => ex.BceidAccountNumber == v.BceidAccountNumber));
+            var newEntities = volunteers.Where(v => !existingEntities.Exists(ex => ex.BceidAccountUserName == v.BceidAccountUserName));
             db.AddRange(newEntities);
 
             db.SaveChanges();
@@ -189,7 +207,5 @@ namespace Gov.Jag.Embc.Public.Seeder
 
             db.SaveChanges();
         }
-
- 
     }
 }

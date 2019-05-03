@@ -1,6 +1,6 @@
 <div *ngIf="registration">
 
-  <div *ngIf="maker">
+  <div *ngIf="editMode">
     <h1>Identify Supports</h1>
 
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit amet pulvinar.
@@ -14,7 +14,7 @@
         <div *ngIf="registration?.incidentTask['startDate']">
           <label>Please confirm timing for commencement of supports:</label>
           <!-- <div>{{registration.incidentTask['startDate'] | date:'yyyy/MM/dd \'at\' HH:mm:ss a'}}</div> -->
-          <div>{{registration.incidentTask['startDate'] | dateTimeFormatPipe}}</div>
+          <div>Incident start date &amp; time: {{registration.incidentTask['startDate'] | dateTimeFormatPipe}}</div>
         </div>
       </div>
 
@@ -22,7 +22,8 @@
       <div class="card d-block border-0 p-4">
         <label>Select required supports:</label>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood">
+          <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood"
+            (change)="foodReferralChange()">
           <label class="form-check-label" for="supportFood">Food</label>
         </div>
         <div class="form-check mt-2">
@@ -60,8 +61,8 @@
       </article>
 
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
-        <app-incidentals-referral [registration]="registration" [(referral)]="r"
-          (remove)="removeIncidentalsReferral(i)" (add)="addIncidentalsReferral()"></app-incidentals-referral>
+        <app-incidentals-referral [(referral)]="r" [editMode]="true" (remove)="removeIncidentalsReferral(i)"
+          (add)="addIncidentalsReferral()"></app-incidentals-referral>
       </article>
 
       <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4">
@@ -78,14 +79,16 @@
     </div>
   </div>
 
-  <div *ngIf="!maker">
+  <div *ngIf="!editMode">
     <h1>Create Referrals</h1>
 
     <p>Please confirm that all details you entered are correct by reading through the summary below with the evacuee.
     </p>
 
     <section class="clearfix">
-      <!-- TODO: look through all referrals (by type) -->
+      <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
+        <app-incidentals-referral [(referral)]="r" [editMode]="false"></app-incidentals-referral>
+      </article>
     </section>
 
     <div class="mt-5 space-between">

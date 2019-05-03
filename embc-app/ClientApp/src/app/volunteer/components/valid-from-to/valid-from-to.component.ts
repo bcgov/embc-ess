@@ -9,9 +9,10 @@ import * as moment from 'moment';
   styleUrls: ['./valid-from-to.component.scss']
 })
 export class ValidFromToComponent implements OnInit {
+  @Input() editMode: boolean; // unimplemented
   @Input() referralDate: ReferralDate;
   @Output() dateStub = new EventEmitter<ReferralDate>();
-  days = range(1, 6); // [1,2,3,4,5]
+  days = range(1, 15); // [1..14]
 
   displayDate: string;
   displayTime: string;

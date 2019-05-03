@@ -5,10 +5,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static partial class ViewModelConversions
     {
-        public static ViewModels.Volunteer ToViewModel(this Models.Db.Volunteer source)
-        {
-            return (ViewModels.Volunteer)((Models.Db.Person)source).ToViewModel();
-        }
+
 
         public static ViewModels.Person ToViewModel(this Models.Db.Person source)
         {
@@ -46,26 +43,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     resultEvacuee.Nickname = evacuee.Nickname;
                     resultEvacuee.Initials = evacuee.Initials;
                     resultEvacuee.Gender = evacuee.Gender;
-                    resultEvacuee.Dob = evacuee.Dob;
+                    resultEvacuee.Dob = evacuee.Dob?.DateTime;
                 }
                 if (source is Models.Db.FamilyMember sourceFm)
                 {
                     var resultFm = result as ViewModels.FamilyMember;
                     resultFm.RelationshipToEvacuee = sourceFm.RelationshipToEvacuee.ToViewModel();
                     resultFm.SameLastNameAsEvacuee = sourceFm.SameLastNameAsEvacuee;
-                }
-                if (source is Models.Db.Volunteer sourceVol)
-                {
-                    var resultVol = result as ViewModels.Volunteer;
-                    resultVol.Email = sourceVol.Email;
-                    resultVol.BceidAccountNumber = sourceVol.BceidAccountNumber;
-                    resultVol.Externaluseridentifier = sourceVol.Externaluseridentifier;
-                    resultVol.IsAdministrator = sourceVol.IsAdministrator;
-                    resultVol.IsPrimaryContact = sourceVol.IsPrimaryContact;
-                    resultVol.CanAccessRestrictedFiles = sourceVol.CanAccessRestrictedFiles;
-                    // related entities
-                    resultVol.Organization = sourceVol.Organization.ToViewModel();
-                    result.Active = sourceVol.Active;
                 }
             }
             return result;
@@ -116,22 +100,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     var resultFm = result as Models.Db.FamilyMember;
                     resultFm.RelationshipToEvacueeCode = sourceFm.RelationshipToEvacuee.Code;
                     resultFm.SameLastNameAsEvacuee = sourceFm.SameLastNameAsEvacuee;
-                }
-                if (source is ViewModels.Volunteer sourceVol)
-                {
-                    var resultVol = result as Models.Db.Volunteer;
-                    resultVol.Email = sourceVol.Email;
-                    resultVol.BceidAccountNumber = sourceVol.BceidAccountNumber;
-                    resultVol.Externaluseridentifier = sourceVol.Externaluseridentifier;
-                    resultVol.IsAdministrator = sourceVol.IsAdministrator;
-                    resultVol.IsPrimaryContact = sourceVol.IsPrimaryContact;
-                    resultVol.CanAccessRestrictedFiles = sourceVol.CanAccessRestrictedFiles;
-                    // related entities
-                    resultVol.OrganizationId = sourceVol.Organization == null ? (Guid?)null : Guid.Parse(sourceVol.Organization.Id);
-                    if (sourceVol.Active.HasValue)
-                    {
-                        resultVol.Active = sourceVol.Active.Value;
-                    }
                 }
             }
             return result;

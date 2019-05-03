@@ -88,13 +88,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<Registration> Registrations { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Organization> Organizations { get; set; }
+        public DbSet<Volunteer> Volunteers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // this line is required so ef migrations will work.
             base.OnModelCreating(modelBuilder);
-
-            //modelBuilder.Entity<FamilyRelationshipType>().HasKey(k => k.Code);
 
             // Address hierarchy
             modelBuilder.Entity<BcAddress>().HasBaseType<Address>();
@@ -106,13 +105,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .HasValue<OtherAddress>(Address.OTHER_ADDRESS);
 
             // People hierarchy
-            modelBuilder.Entity<Volunteer>().HasBaseType<Person>();
             modelBuilder.Entity<HeadOfHousehold>().HasBaseType<Person>();
             modelBuilder.Entity<FamilyMember>().HasBaseType<Person>();
             modelBuilder.Entity<Person>()
                 .ToTable("People")
                 .HasDiscriminator(pers => pers.PersonType)
-                .HasValue<Volunteer>(Person.VOLUNTEER)
                 .HasValue<HeadOfHousehold>(Person.HOH)
                 .HasValue<FamilyMember>(Person.FAMILY_MEMBER);
 

@@ -20,7 +20,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     Community = source.Community?.ToViewModel(),
                     TotalAssociatedEvacuees = source.Registrations.Count() +
                                                                 source.Registrations.Select(r => r?.HeadOfHousehold?.FamilyMembers?.Count() ?? 0).Sum(),
-                    StartDate = source.StartDate
+                    StartDate = source.StartDate?.DateTime
                 };
             }
             return result;

@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Directive } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-side-box',
   styleUrls: ['./side-box.component.scss'],
   template: `
-    <mat-card class="side-box">
+    <mat-card class="side-box shadow">
       <mat-card-header>
         <h2 mat-card-avatar class="round-icon-material">
           <mat-icon class="icon" aria-label="description icon">{{icon}}</mat-icon>
@@ -22,12 +22,11 @@ import { Component, OnInit, Input, Directive } from '@angular/core';
     </mat-card>
   `,
 })
-export class SideBoxComponent implements OnInit {
+export class SideBoxComponent {
+
   @Input() title = 'Sample Title';
   @Input() icon = 'description';
 
   constructor() { }
 
-  ngOnInit() {
-  }
 }
