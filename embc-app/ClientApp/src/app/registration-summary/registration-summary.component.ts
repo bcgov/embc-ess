@@ -37,8 +37,7 @@ export class RegistrationSummaryComponent implements OnInit {
     const key = this.uniqueKeyService.getKey();
     // ensure we have a lookup key
     if (key) {
-      // this.registrationService.getSummaryById(key) // TODO: use this when BE completes API (re: some missing fields)
-      this.registrationService.getRegistrationById(key)
+      this.registrationService.getRegistrationSummaryById(key)
         .subscribe(r => {
           // ensure we have an ESS File Number
           if (!r.essFileNumber) {

@@ -1,0 +1,35 @@
+<div class="search-results">
+  <div *ngIf="rows.length; then searchResultsTable; else notFound"></div>
+</div>
+
+<ng-template #searchResultsTable>
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col" colspan="2">REFERRAL #</th>
+        <th scope="col">SUPPLIER NAME</th>
+        <th scope="col">VALID FROM...</th>
+        <th scope="col">VALID TO...</th>
+        <th scope="col">TYPE</th>
+        <th scope="col">ACTION</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr [class.table-danger]="rowItem.restrictedAccess" *ngFor="let rowItem of rows">
+        <td>(checkbox)
+          <app-font-awesome-icon class="float-left" *ngIf="rowItem.active" icon="user"></app-font-awesome-icon>
+        </td>
+        <td>{{rowItem.essFileNumber}}</td>
+        <td>{{rowItem.lastName}}</td>
+        <td>{{rowItem.firstName}}</td>
+        <td>{{rowItem.incidentTaskTaskNumber}}</td>
+        <td>{{rowItem.evacuatedFrom}}</td>
+        <td><a [routerLink]="" (click)="view(rowItem)">View</a></td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
+
+<ng-template #notFound>
+  <p>{{notFoundMessage}}</p>
+</ng-template>

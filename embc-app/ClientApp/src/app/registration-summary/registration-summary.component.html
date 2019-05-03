@@ -2,7 +2,7 @@
   <div *ngIf="registration">
     <h1>Evacuee Summary</h1>
 
-    <section class="clearfix" id="information">
+    <section class="clearfix">
       <h2 class="blue-header font-weight-bold">EVACUEE INFORMATION</h2>
       <ul class="summary mx-3">
         <li class="summary-heading">
@@ -101,8 +101,9 @@
       </div>
     </section>
 
-    <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix" id="referrals">
-      <h2 class="blue-header font-weight-bold">REFERRALS</h2>
+    <!-- safety check: no task number means this registration isn't finalized -->
+    <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
+      <h2 class="blue-header font-weight-bold">ADD REFERRALS</h2>
 
       <div class="feature-block card d-block border-0">
         <!-- TODO: only display 'and family' if familyMembers > 0 ? -->
@@ -133,10 +134,13 @@
           ADD REFERRALS
         </button>
       </div>
+    </section>
 
-      <div class="mt-4 mx-3">
-        <app-referral-table></app-referral-table>
-      </div>
+    <!-- safety check: no task number means this registration isn't finalized -->
+    <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
+      <h2 class="blue-header font-weight-bold">LIST OF REFERRALS</h2>
+
+      <app-referral-table [registration]="registration"></app-referral-table>
     </section>
   </div>
 </app-layout-main>
