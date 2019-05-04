@@ -21,6 +21,7 @@ import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-aw
 import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
 import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
+import { DateTimePickerComponent } from './components/date-time-picker/date-time-picker.component';
 
 import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent, CollectionNoticeComponent } from './components/side-boxes';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -58,6 +59,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     AddUserComponent,
     CollectionNoticeComponent,
     PageNotFoundComponent,
+    DateTimePickerComponent,
   ],
   imports: [
     CommonModule,
@@ -111,6 +113,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     AddTaskNumberComponent,
     AddUserComponent,
     CollectionNoticeComponent,
+    DateTimePickerComponent,
   ]
 })
 export class SharedModule { }

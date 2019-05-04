@@ -1,0 +1,17 @@
+<div class="row">
+  <section class="col">
+    <label class="small" for="startDate">Date</label>
+  </section>
+  <section class="col">
+    <label class="small" for="startTime">Time</label>
+  </section>
+</div>
+<div class="row">
+  <section class="col vertical-spacer">
+    <input type="text" class="form-control" [value]="localDate" (change)="updateDate($event.target.value)" placeholder="yyyy-mm-dd" id="startDate" autocomplete="off">
+    <small>(Format: yyyy-mm-dd)</small>
+  </section>
+  <section class="col">
+    <ngb-timepicker [meridian]="true" [ngModel]="localTime" (ngModelChange)="updateTime($event)" id="startTime"></ngb-timepicker>
+  </section>
+</div>
