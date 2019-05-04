@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IncidentTask } from '../../../core/models';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -20,7 +20,7 @@ export class TaskNumberMakerComponent implements OnInit {
   maker = true; // determines if the widget is in edit or confirmation mode
   editMode = false;
   submitting = false;
-  //path is for routing based on the user's role
+  // path is for routing based on the user's role
   path: string;
 
   // whatever is in the application state
@@ -28,11 +28,7 @@ export class TaskNumberMakerComponent implements OnInit {
   componentActive = true;
 
   // fields to collect
-  taskNumber: FormControl;
-  community: FormControl;
-  details: FormControl;
-  startDateField: FormControl;
-  startTimeField: FormControl;
+  form: FormGroup;
 
   incidentTask: IncidentTask = {
     id: '',
@@ -50,7 +46,12 @@ export class TaskNumberMakerComponent implements OnInit {
     private notificationQueueService: NotificationQueueService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
+    private fb: FormBuilder,
   ) { }
+
+  get pageTitle(): string {
+    return this.editMode ? 'Edit a Task Number' : 'Add a Task Number';
+  }
 
   ngOnInit() {
     // keep the current path up to date
@@ -76,25 +77,44 @@ export class TaskNumberMakerComponent implements OnInit {
   }
 
   initializeForm(): void {
-    this.taskNumber = new FormControl('');
-    this.details = new FormControl('');
-    this.community = new FormControl('');
-    this.startDateField = new FormControl('');
-    this.startTimeField = new FormControl({ hour: 0, minute: 0 });
+    this.form = this.fb.group({
+      taskNumber: ['', Validators.required],
+      community: ['', Validators.required],
+      startDateTime: [new Date(), Validators.required],
+      // startTime: [{ hour: 0, minute: 0 }, Validators.required],
+      details: ['', Validators.required],
+    });
+  }
+
+  validateForm(): void {
+    // TODO: Implement validation
+    // this.validationErrors = this.validationHelper.processMessages(this.form);
   }
 
   displayTaskNumber(task: IncidentTask): void {
-    this.taskNumber.setValue(task.taskNumber);
-    this.community.setValue(task.community);
-    this.details.setValue(task.details);
+    // Reset the form back to pristine
+    this.form.reset();
+
+    // flow data back into the form
+    this.form.patchValue({
+      taskNumber: task.taskNumber,
+      community: task.community,
+      details: task.details,
+      // TODO: split into date and time components...
+      // startDate: ,
+      // startTime: ,
+    });
 
     // TODO: split JS Date object into date and time components
-    this.startDateField.setValue(task.startDate);
+    // this.startDateField.setValue(task.startDate);
   }
 
   next(): void {
     // only go next if all fields are non null
-    if (this.taskNumber.value && this.community.value && this.details.value) {
+    this.validateForm();
+
+    if (this.form.valid) {
+      // navigate to the next page. AKA show the summary part of the form.
       this.maker = false;
       this.onSave();
     } else {
@@ -148,13 +168,9 @@ export class TaskNumberMakerComponent implements OnInit {
   }
 
   onSave(): void {
-    const incidentTask: IncidentTask = this.incidentTask;
-    incidentTask.id = this.incidentTask.id || null; // keep the id for updates
-    incidentTask.taskNumber = this.taskNumber.value;
-    incidentTask.community = this.community.value;
-    incidentTask.details = this.details.value;
-    this.incidentTask = incidentTask;
-    // stuff the data into an incidentTask object
-    // this.store.dispatch(new UpdateIncidentTask({ incidentTask }));
+    this.incidentTask.taskNumber = this.form.value.taskNumber;
+    this.incidentTask.community = this.form.value.community;
+    this.incidentTask.details = this.form.value.details;
+    // TODO: date and time
   }
 }
