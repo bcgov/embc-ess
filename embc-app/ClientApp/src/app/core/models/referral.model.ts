@@ -33,10 +33,42 @@ export interface IncidentalsReferral extends Referral {
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface ClothingReferral extends Referral { }
+export interface ClothingReferral extends Referral {
+  extremeWinterConditions: boolean;
+}
 
 // tslint:disable-next-line: no-empty-interface
-export interface AccommodationReferral extends Referral { }
+export interface AccommodationReferral extends Referral {
+  subType?: ('HOTEL' | 'BILLETING' | 'GROUP');
+  numNights: number;
+  numRooms?: number;
+}
 
 // tslint:disable-next-line: no-empty-interface
-export interface TransportationReferral extends Referral { }
+export interface TransportationReferral extends Referral {
+  subType?: ('TAXI' | 'OTHER');
+  fromAddress?: string;
+  toAddress?: string;
+  modeTransport?: string;
+}
+
+// --------------------HELPERS-----------------------------------------
+export function isFoodReferral(referral: Referral): boolean {
+  return referral && referral.type === 'FOOD';
+}
+
+export function isIncidentalsReferral(referral: Referral): boolean {
+  return referral && referral.type === 'INCIDENTALS';
+}
+
+export function isClothingReferral(referral: Referral): boolean {
+  return referral && referral.type === 'CLOTHING';
+}
+
+export function isAccommodationReferral(referral: Referral): boolean {
+  return referral && referral.type === 'ACCOMMODATION';
+}
+
+export function isTransportationReferral(referral: Referral): boolean {
+  return referral && referral.type === 'TRANSPORTATION';
+}

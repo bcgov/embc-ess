@@ -3,7 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { ReferralService } from 'src/app/core/services/referral.service';
-import { Referral } from 'src/app/core/models';
+import {
+  Referral, isIncidentalsReferral, isAccommodationReferral,
+  isClothingReferral, isFoodReferral, isTransportationReferral
+} from 'src/app/core/models';
 
 @Component({
   selector: 'app-referral-view',
@@ -75,6 +78,27 @@ export class ReferralViewComponent implements OnInit {
         console.log('err =', err);
         this.goHome();
       });
+  }
+
+  // --------------------HELPERS-----------------------------------------
+  isIncidentalsReferral(referral: Referral): boolean {
+    return isIncidentalsReferral(referral);
+  }
+
+  isAccommodationReferral(referral: Referral): boolean {
+    return isAccommodationReferral(referral);
+  }
+
+  isClothingReferral(referral: Referral): boolean {
+    return isClothingReferral(referral);
+  }
+
+  isFoodReferral(referral: Referral): boolean {
+    return isFoodReferral(referral);
+  }
+
+  isTransportationReferral(referral: Referral): boolean {
+    return isTransportationReferral(referral);
   }
 
 }
