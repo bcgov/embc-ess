@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbPaginationModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPaginationModule, NgbModalModule, NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 // ngrx + configuration
 import { AppComponent } from './app.component';
@@ -37,6 +37,7 @@ import { RegistrationMakerComponent } from './registration-maker/registration-ma
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { EvacueeSearchResultsComponent } from './components/evacuee-search-results/evacuee-search-results.component';
+import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
@@ -65,6 +66,7 @@ import { TransportationRatesComponent } from './shared/modals/transportation-rat
 
 // TODO: move these to volunteer/local-authority/provincial-admin modules
 import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
+import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
 import { IncidentalsReferralComponent } from './volunteer/components/incidentals-referral/incidentals-referral.component';
 import { ReferralTableComponent } from './volunteer/components/referral-table/referral-table.component';
 import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid-from-to.component';
@@ -100,6 +102,7 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
     SideboxCollectionNoticeComponent,
     AdminDashboardComponent,
     EvacueeSearchResultsComponent,
+    ReferralSearchResultsComponent,
     LayoutMainComponent,
     LayoutSideComponent,
     OrganizationListComponent,
@@ -123,6 +126,7 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
     TransportationRatesComponent,
 
     ReferralMakerComponent,
+    ReferralViewComponent,
     IncidentalsReferralComponent,
     ReferralTableComponent,
     ValidFromToComponent,
@@ -139,6 +143,8 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
     StoreModule.forRoot(rootReducer, { metaReducers }),
     NgbPaginationModule,
     NgbModalModule,
+    NgbDatepickerModule,
+    NgbTimepickerModule,
 
     // core & shared
     CoreModule,

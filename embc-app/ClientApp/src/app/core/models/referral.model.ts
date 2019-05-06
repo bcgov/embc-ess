@@ -1,31 +1,35 @@
 import { Evacuee, Supplier } from './';
+import { ReferralDate } from './referral-date';
+
+type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'ACCOMMODATION' | 'TRANSPORTATION');
 
 export interface Referral {
   id: string;
-  active?: boolean;
+  active: boolean;
+  type: ReferralType;
+  subType?: string;
   purchaser: string;
-  validFrom: Date;
-  validTo: Date;
+  dates: ReferralDate;
   evacuees: Array<{
     evacuee: Evacuee,
     selected: boolean
   }>;
+  totalAmount: number; // NB: set to 0 if not used
   supplier: Supplier;
   comments: string;
+  confirmChecked: boolean;
 }
 
 export interface FoodReferral extends Referral {
-  foodType: ('RESTAURANT' | 'GROCERIES');
+  subType?: ('RESTAURANT' | 'GROCERIES');
   numBreakfasts?: number;
   numLunches?: number;
   numDinners?: number;
   numDaysMeals?: number;
-  totalAmt: number;
 }
 
 export interface IncidentalsReferral extends Referral {
   approvedItems: string;
-  totalAmt: number;
 }
 
 // tslint:disable-next-line: no-empty-interface

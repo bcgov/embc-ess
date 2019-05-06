@@ -41,15 +41,14 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet(Name = nameof(GetAll))]
         public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters searchQuery)
         {
-            var items = await dataInterface.GetRegistrationsAsync(searchQuery);
-
+            var items = await dataInterface.GetEvacueeRegistrationsAsync(searchQuery);
             return Json(items);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOne(string id)
         {
-            var result = await dataInterface.GetRegistrationAsync(id);
+            var result = await dataInterface.GetEvacueeRegistrationAsync(id);
             if (result == null)
             {
                 return NotFound();
@@ -60,7 +59,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet("{id}/summary")]
         public async Task<IActionResult> GetOneSummary(string id)
         {
-            var result = await dataInterface.GetRegistrationSummaryAsync(id);
+            var result = await dataInterface.GetEvacueeRegistrationSummaryAsync(id);
             if (result == null)
             {
                 return NotFound();
@@ -84,7 +83,7 @@ namespace Gov.Jag.Embc.Public.Controllers
 
             item.Id = null;
             item.Active = true;
-            var result = await dataInterface.CreateRegistrationAsync(item);
+            var result = await dataInterface.CreateEvacueeRegistrationAsync(item);
             if (!string.IsNullOrWhiteSpace(result.HeadOfHousehold.Email))
             {
                 var registrationEmail = CreateEmailMessageForRegistration(result);
@@ -114,7 +113,7 @@ Your Emergency Support Services File Number is: <b>{registration.EssFileNumber}<
             {
                 body += $@"
 <br/><br/>
-- If you are under order and require food, clothing, accommodation, transportation, incidentals or other emergency supports, proceed to your nearest Reception Centre.
+- If you are under order and require food, clothing, lodging, transportation, incidentals or other emergency supports, proceed to your nearest Reception Centre.
 A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
 - If you do not require supports, or are under alert, no further actions are required.<br/>
 - If you are in a Reception Centre, proceed to one of the Emergency Support Services volunteers on site who will be able to assist you with completing your registration.<br/>
@@ -142,7 +141,7 @@ A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
                 return BadRequest(ModelState);
             }
 
-            await dataInterface.UpdateRegistrationAsync(item);
+            await dataInterface.UpdateEvacueeRegistrationAsync(item);
             return Ok();
         }
 
@@ -151,7 +150,7 @@ A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
         {
             if (string.IsNullOrWhiteSpace(id)) return BadRequest();
 
-            var result = await dataInterface.DeactivateRegistration(id);
+            var result = await dataInterface.DeactivateEvacueeRegistration(id);
             return Ok();
         }
     }
