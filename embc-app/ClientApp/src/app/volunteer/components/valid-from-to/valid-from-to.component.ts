@@ -9,7 +9,7 @@ import * as moment from 'moment';
   styleUrls: ['./valid-from-to.component.scss']
 })
 export class ValidFromToComponent implements OnInit {
-  @Input() editMode: boolean; // unimplemented editmode false is read only
+  @Input() editMode?: boolean = true; // false is read only fields
   @Input() referralDate: ReferralDate;
   // tslint:disable-next-line: no-inferrable-types
   @Input() id?: string = 'generic';
@@ -19,6 +19,8 @@ export class ValidFromToComponent implements OnInit {
   defaultDays = 1; // the default amount for the component to use as a duration
   displayDate: string;
   displayTime: string;
+  readOnlyFromDate;
+  readOnlyFromTime;
   // invalid date or time
   validDate = true; // begin with the assumption of validity
   validTime = true;
@@ -28,8 +30,6 @@ export class ValidFromToComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    // initialize the dates passed to this component
-
     // generate the referral date
     this.wrdForm = this.convertReferralDateToReferralDateForm(this.referralDate);
     this.updateDisplay();
@@ -72,6 +72,10 @@ export class ValidFromToComponent implements OnInit {
       this.wrdForm = this.calculate(w);
       this.displayDate = this.convertYmdToMoment(w.toDate).format('YYYY-MM-DD');
       this.displayTime = this.convertHmToMoment(w.toTime).format('h:mm a');
+      if (this.editMode === false) {
+        this.readOnlyFromDate = this.convertYmdToMoment(w.fromDate).format('YYYY-MM-DD');
+        this.readOnlyFromTime = this.convertHmToMoment(w.fromTime).format('h:mm a');
+      }
     }
     // emit referral date (whether valid or not)
     this.emitReferralDate();
