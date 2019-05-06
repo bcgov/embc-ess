@@ -75,6 +75,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public Community HostCommunity { get; set; }
 
+        [MaxLength(255)]
         public string CompletedById { get; set; }
     }
 }

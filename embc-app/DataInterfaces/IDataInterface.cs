@@ -10,17 +10,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         #region Registration
 
-        Task<IPagedResults<Registration>> GetIncidentRegistrationsAsync(SearchQueryParameters searchQuery);
+        Task<IPagedResults<Registration>> GetEvacueeRegistrationsAsync(SearchQueryParameters searchQuery);
 
-        Task<Registration> GetIncidentRegistrationAsync(string id);
+        Task<Registration> GetEvacueeRegistrationAsync(string id);
 
-        Task<RegistrationSummary> GetIncidentRegistrationSummaryAsync(string id);
+        Task<RegistrationSummary> GetEvacueeRegistrationSummaryAsync(string id);
 
-        Task<Registration> CreateIncidentRegistrationAsync(Registration registration);
+        Task<Registration> CreateEvacueeRegistrationAsync(Registration registration);
 
-        Task UpdateIncidentRegistrationAsync(Registration registration);
+        Task UpdateEvacueeRegistrationAsync(Registration registration);
 
-        Task<bool> DeactivateIncidentRegistration(string id);
+        Task<bool> DeactivateEvacueeRegistration(string id);
 
         #endregion Registration
 

@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
-    public class IncidentRegistration
+    public class EvacueeRegistration
     {
-        public IncidentRegistration()
+        public EvacueeRegistration()
         {
             Evacuees = new List<Evacuee>();
-            IncidentRegistrationAddresses = new List<IncidentRegistrationAddress>();
+            EvacueeRegistrationAddresses = new List<EvacueeRegistrationAddress>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -69,10 +69,11 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public Community HostCommunity { get; set; }
 
+        [MaxLength(255)]
         public string CompletedById { get; set; }
 
         public List<Evacuee> Evacuees { get; set; }
 
-        public List<IncidentRegistrationAddress> IncidentRegistrationAddresses { get; set; }
+        public List<EvacueeRegistrationAddress> EvacueeRegistrationAddresses { get; set; }
     }
 }

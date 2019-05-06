@@ -84,11 +84,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<Country> Countries { get; set; }
         public DbSet<Evacuee> Evacuees { get; set; }
         public DbSet<FamilyRelationshipType> FamilyRelationshipTypes { get; set; }
-        public DbSet<IncidentRegistration> IncidentRegistrations { get; set; }
+        public DbSet<EvacueeRegistration> EvacueeRegistrations { get; set; }
         public DbSet<IncidentTask> IncidentTasks { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Registration> Registrations { get; set; }
-        public DbSet<IncidentRegistrationAddress> RegistrationAddresses { get; set; }
+        public DbSet<EvacueeRegistrationAddress> EvacueeRegistrationAddresses { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Volunteer> Volunteers { get; set; }
@@ -99,10 +99,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Evacuee>()
-                .HasKey(e => new { e.IncidentRegistrationId, e.EvacueeSequenceNumber });
+                .HasKey(e => new { e.EvacueeRegistrationId, e.EvacueeSequenceNumber });
 
-            modelBuilder.Entity<IncidentRegistrationAddress>()
-                .HasKey(ira => new { ira.IncidentRegistrationId, ira.AddressSequenceNumber });
+            modelBuilder.Entity<EvacueeRegistrationAddress>()
+                .HasKey(ira => new { ira.EvacueeRegistrationId, ira.AddressSequenceNumber });
 
             // Address hierarchy
             modelBuilder.Entity<BcAddress>().HasBaseType<Address>();

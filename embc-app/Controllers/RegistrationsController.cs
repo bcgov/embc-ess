@@ -44,7 +44,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             try
             {
-                var items = await dataInterface.GetIncidentRegistrationsAsync(searchQuery);
+                var items = await dataInterface.GetEvacueeRegistrationsAsync(searchQuery);
 
                 return Json(new
                 {
@@ -62,7 +62,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOne(string id)
         {
-            var result = await dataInterface.GetIncidentRegistrationAsync(id);
+            var result = await dataInterface.GetEvacueeRegistrationAsync(id);
             if (result == null)
             {
                 return NotFound();
@@ -73,7 +73,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet("{id}/summary")]
         public async Task<IActionResult> GetOneSummary(string id)
         {
-            var result = await dataInterface.GetIncidentRegistrationSummaryAsync(id);
+            var result = await dataInterface.GetEvacueeRegistrationSummaryAsync(id);
             if (result == null)
             {
                 return NotFound();
@@ -99,7 +99,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 item.Id = null;
                 item.Active = true;
-                var result = await dataInterface.CreateIncidentRegistrationAsync(item);
+                var result = await dataInterface.CreateEvacueeRegistrationAsync(item);
                 if (!string.IsNullOrWhiteSpace(result.HeadOfHousehold.Email))
                 {
                     var registrationEmail = CreateEmailMessageForRegistration(result);
@@ -164,7 +164,7 @@ A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
             }
             try
             {
-                await dataInterface.UpdateIncidentRegistrationAsync(item);
+                await dataInterface.UpdateEvacueeRegistrationAsync(item);
                 return Ok();
             }
             catch (Exception e)
@@ -181,7 +181,7 @@ A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
 
             try
             {
-                var result = await dataInterface.DeactivateIncidentRegistration(id);
+                var result = await dataInterface.DeactivateEvacueeRegistration(id);
                 return Ok();
             }
             catch (Exception e)

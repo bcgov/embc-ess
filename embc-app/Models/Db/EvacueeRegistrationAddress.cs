@@ -10,16 +10,16 @@ using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
-    public class IncidentRegistrationAddress
+    public class EvacueeRegistrationAddress
     {
 
         [Key, Column(Order = 0)]
-        public Guid IncidentRegistrationId { get; set; }
+        public Guid EvacueeRegistrationId { get; set; }
 
         [Key, Column(Order = 1)]
         public int AddressSequenceNumber { get; set; }
 
-        public string IncidentRegSeqId => $"{IncidentRegistration}-{AddressSequenceNumber}";
+        public string EvacueeRegSeqId => $"{EvacueeRegistrationId}-{AddressSequenceNumber}";
 
         public string AddressTypeCode { get; set; }
 
@@ -52,9 +52,9 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public Country Country { get; set; }
 
-        public IncidentRegistration IncidentRegistration { get; set; }
+        public EvacueeRegistration EvacueeRegistration { get; set; }
 
-        public static Guid GetIncidentRegistrationIdFromIncidentRegSeqId(string incidentRegSeqId)
+        public static Guid GetEvacueeRegistrationIdFromIncidentRegSeqId(string incidentRegSeqId)
         {
             return Guid.Parse(incidentRegSeqId.Split(',')[0]);
         }
