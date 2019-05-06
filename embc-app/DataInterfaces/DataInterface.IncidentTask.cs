@@ -14,7 +14,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .Include(t => t.Region)
                 .Include(t => t.Community)
                     .ThenInclude(d => d.Region)
-                .Include(t => t.Registrations);
+                .Include(t => t.Registrations)
+                .Include(t => t.EvacueeRegistrations);
 
         public async Task<IPagedResults<IncidentTask>> GetIncidentTasksAsync(SearchQueryParameters searchQuery)
         {
