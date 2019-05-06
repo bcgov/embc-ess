@@ -10,7 +10,7 @@ using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
-    public class EvacueeRegistrationAddress
+    public class EvacueeRegistrationAddress : IAuditableEntity
     {
 
         [Key, Column(Order = 0)]
