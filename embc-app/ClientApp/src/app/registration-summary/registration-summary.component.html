@@ -79,7 +79,7 @@
             </div>
             <div class="form-check mt-2">
               <input class="form-check-input" [checked]="registration.requiresAccommodation" type="checkbox" disabled>
-              <label class="form-check-label">Accommodation</label>
+              <label class="form-check-label">Lodging</label>
             </div>
             <div class="form-check mt-2">
               <input class="form-check-input" [checked]="registration.requiresIncidentals" type="checkbox" disabled>
@@ -115,19 +115,16 @@
           <label for="purchaser">Who will be responsible for purchasing goods?</label>
           <select class="form-control w-25" id="purchaser" [(ngModel)]="selectedPurchaser">
             <option value="null">Please select--</option>
-            <option *ngIf="registration.headOfHousehold"
-              [value]="registration.headOfHousehold.lastName + ', ' + registration.headOfHousehold.firstName">
+            <option *ngIf="registration.headOfHousehold" [value]="registration.headOfHousehold.lastName + ', ' + registration.headOfHousehold.firstName">
               {{registration.headOfHousehold.lastName}}, {{registration.headOfHousehold.firstName}}
             </option>
-            <option *ngFor="let familyMember of registration.headOfHousehold?.familyMembers"
-              [value]="familyMember.lastName + ', ' + familyMember.firstName">
+            <option *ngFor="let familyMember of registration.headOfHousehold?.familyMembers" [value]="familyMember.lastName + ', ' + familyMember.firstName">
               {{familyMember.lastName}}, {{familyMember.firstName}}
             </option>
             <option value="other">Someone else...</option>
           </select>
 
-          <input type="text" *ngIf="selectedPurchaser === 'other'" class="form-control w-25 ml-3"
-            [(ngModel)]="otherPurchaser" placeholder="Please specify">
+          <input type="text" *ngIf="selectedPurchaser === 'other'" class="form-control w-25 ml-3" [(ngModel)]="otherPurchaser" placeholder="Please specify">
         </app-form-field>
 
         <button type="button" class="btn btn-primary d-block" [disabled]="!purchaser" (click)="addReferrals()">
