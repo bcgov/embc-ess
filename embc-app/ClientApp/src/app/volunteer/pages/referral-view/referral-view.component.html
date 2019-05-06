@@ -1,6 +1,12 @@
 <div>
   <h1>View Referral</h1>
+  <div *ngIf="loading">Loading...</div>
   <div *ngIf="referral">
     {{ referral | json }}
   </div>
+
+  <section class="mt-5 space-between">
+    <button type="button" class="btn btn-secondary" [disabled]="deactivating" (click)="deactivate()">DEACTIVATE REFERRAL</button>
+    <button class="btn btn-primary float-right" (click)="back()">BACK TO REFERRALS</button>
+  </section>
 </div>

@@ -16,6 +16,8 @@ export class ReferralViewComponent implements OnInit {
   registrationId: string = null;
   referralId: string = null;
   referral: Referral = null;
+  loading = true;
+  deactivating = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,40 +31,50 @@ export class ReferralViewComponent implements OnInit {
     // get path for routing
     this.authService.path.subscribe(p => this.path = p);
 
-    // get URL params
+    // get and verify URL params
     this.registrationId = this.route.snapshot.paramMap.get('regId');
     this.referralId = this.route.snapshot.paramMap.get('refId');
 
     if (!this.registrationId || !this.referralId) {
-      // error - return to summary page
-      this.uniqueKeyService.setKey(this.registrationId);
-      this.router.navigate([`/${this.path}/registration/summary`]);
+      console.log('err = registration ID or referral ID is falsey');
+      this.back();
     }
 
     // get referral data
     this.referralService.getReferralById(this.registrationId, this.referralId)
-      .subscribe(r => {
-        if (!r.id) {
-          // error - send them back to their home page
-          this.router.navigate([`/${this.path}`]);
-        } else {
-          this.referral = r;
-        }
+      .subscribe(value => {
+        this.loading = false;
+        this.referral = value;
       }, err => {
-        alert(err); // TODO: don't leave this here
-        // error - send them back to their home page
-        this.router.navigate([`/${this.path}`]);
+        this.loading = false;
+        console.log('err =', err);
+        this.goHome();
       });
   }
 
+  private goHome() {
+    // go back to their home page
+    this.router.navigate([`/${this.path}`]);
+  }
+
   back() {
-    // navigate back to summary page
+    // go back to summary page
     this.uniqueKeyService.setKey(this.registrationId);
     this.router.navigate([`/${this.path}/registration/summary`]);
   }
 
-  deactivateReferral() {
-    // TODO
+  deactivate() {
+    this.deactivating = true;
+    this.referralService.getReferralById(this.registrationId, this.referralId)
+      .subscribe(() => {
+        this.deactivating = false;
+        // return to summary page
+        this.back();
+      }, err => {
+        this.deactivating = false;
+        console.log('err =', err);
+        this.goHome();
+      });
   }
 
 }

@@ -20,6 +20,7 @@ export class ReferralTableComponent implements OnChanges {
   isLoadingResults = false;
   searchResults$: Observable<ReferralSearchResults>;
   pagination: PaginationSummary = null;
+  referrals: Array<Referral> = [];
 
   constructor(
     private referralService: ReferralService,
@@ -63,6 +64,7 @@ export class ReferralTableComponent implements OnChanges {
   }
 
   printReferrals() {
-    console.log('You clicked on Create PDF & Print!');
+    console.log('referrals to print =', this.referrals);
+    // TODO: call BE to print referrals and return PDF (automatically open/save)
   }
 }
