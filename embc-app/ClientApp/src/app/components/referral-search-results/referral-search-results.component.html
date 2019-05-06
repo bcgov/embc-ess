@@ -25,8 +25,8 @@
           <td col-span="2">{{r.data?.id}}</td>
         </ng-template>
         <td><strong>{{r.data?.supplier?.name}}</strong></td>
-        <td>{{r.data?.validFrom | date : 'MMM-dd-yyyy'}}</td>
-        <td>{{r.data?.validTo | date : 'MMM-dd-yyyy'}}</td>
+        <td>{{r.data?.dates?.from | date : 'MMM-dd-yyyy'}}</td>
+        <td>{{r.data?.dates?.to | date : 'MMM-dd-yyyy'}}</td>
         <td [innerHTML]="getType(r)"></td>
         <td><a [routerLink]="['/' + path + '/referral', r.registrationId, r.data?.id]">View</a></td>
       </tr>

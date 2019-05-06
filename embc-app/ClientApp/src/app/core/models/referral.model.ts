@@ -3,7 +3,7 @@ import { ReferralDate } from './referral-date';
 
 type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'ACCOMMODATION' | 'TRANSPORTATION');
 
-export interface Referral {
+interface ReferralBase {
   id: string;
   active: boolean;
   type: ReferralType;
@@ -20,7 +20,7 @@ export interface Referral {
   confirmChecked: boolean;
 }
 
-export interface FoodReferral extends Referral {
+export interface FoodReferral extends ReferralBase {
   subType?: ('RESTAURANT' | 'GROCERIES');
   numBreakfasts?: number;
   numLunches?: number;
@@ -28,29 +28,31 @@ export interface FoodReferral extends Referral {
   numDaysMeals?: number;
 }
 
-export interface IncidentalsReferral extends Referral {
+export interface IncidentalsReferral extends ReferralBase {
   approvedItems: string;
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface ClothingReferral extends Referral {
+export interface ClothingReferral extends ReferralBase {
   extremeWinterConditions: boolean;
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface AccommodationReferral extends Referral {
+export interface AccommodationReferral extends ReferralBase {
   subType?: ('HOTEL' | 'BILLETING' | 'GROUP');
   numNights: number;
   numRooms?: number;
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface TransportationReferral extends Referral {
+export interface TransportationReferral extends ReferralBase {
   subType?: ('TAXI' | 'OTHER');
   fromAddress?: string;
   toAddress?: string;
   modeTransport?: string;
 }
+
+export type Referral = FoodReferral | IncidentalsReferral | ClothingReferral | AccommodationReferral | TransportationReferral;
 
 // --------------------HELPERS-----------------------------------------
 export function isFoodReferral(referral: Referral): boolean {

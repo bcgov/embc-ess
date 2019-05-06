@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ReferralService } from 'src/app/core/services/referral.service';
@@ -26,7 +26,7 @@ export class ReferralTableComponent implements OnChanges {
     private referralService: ReferralService,
   ) { }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.registration && this.registration.id) {
       this.isLoadingResults = true;
 
@@ -48,11 +48,9 @@ export class ReferralTableComponent implements OnChanges {
               supplier: { name: y.supplier.name },
               type: y.type,
               dates: {
-                to: y.validTo,
                 from: y.validFrom,
+                to: y.validTo
               }
-              // validFrom: y.validFrom,
-              // validTo: y.validTo
             } as Referral;
           });
 

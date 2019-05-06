@@ -4,8 +4,8 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { ReferralService } from 'src/app/core/services/referral.service';
 import {
-  Referral, isIncidentalsReferral, isAccommodationReferral,
-  isClothingReferral, isFoodReferral, isTransportationReferral
+  Referral, isAccommodationReferral, isClothingReferral,
+  isFoodReferral, isIncidentalsReferral, isTransportationReferral
 } from 'src/app/core/models';
 
 @Component({
@@ -81,10 +81,6 @@ export class ReferralViewComponent implements OnInit {
   }
 
   // --------------------HELPERS-----------------------------------------
-  isIncidentalsReferral(referral: Referral): boolean {
-    return isIncidentalsReferral(referral);
-  }
-
   isAccommodationReferral(referral: Referral): boolean {
     return isAccommodationReferral(referral);
   }
@@ -95,6 +91,10 @@ export class ReferralViewComponent implements OnInit {
 
   isFoodReferral(referral: Referral): boolean {
     return isFoodReferral(referral);
+  }
+
+  isIncidentalsReferral(referral: Referral): boolean {
+    return isIncidentalsReferral(referral);
   }
 
   isTransportationReferral(referral: Referral): boolean {
