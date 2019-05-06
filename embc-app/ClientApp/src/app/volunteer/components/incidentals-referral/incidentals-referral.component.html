@@ -20,7 +20,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
         <app-font-awesome-icon icon="plus-circle"></app-font-awesome-icon>&nbsp;&nbsp;INCIDENTALS
       </h2>
       <div class="space-between align-items-end">
-        <app-valid-from-to [(referralDate)]="referral.dates"></app-valid-from-to>
+        <app-valid-from-to [(referralDate)]="referral.dates" [id]="uuid"></app-valid-from-to>
         <button type="button" class="btn btn-secondary" (click)="viewIncidentalsRates()">VIEW ESS RATES</button>
       </div>
 
