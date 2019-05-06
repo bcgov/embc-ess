@@ -25,10 +25,24 @@ And of course this component needs to be implemented as a 'maker' with both an e
       </div>
 
       <div class="feature-block card p-0 mt-4">
+        <div class="row">
+          <div class="col-5 pr-0">
+            <div class="pt-4 pl-4">
+              <app-evacuee-list></app-evacuee-list>
+            </div>
+          </div>
+          <div class="col-7">
+            <div class="pt-4 pr-4">
+              <!-- TODO: here, prompt for Food Required and # of Days for Meals -->
+              <div class="card">
+                <div class="card-body">
+                  <p>List approved items:</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <!-- TODO: <app-evacuee-list></app-evacuee-list> -->
-
-        <!-- TODO: here, prompt for Food Required and # of Days for Meals -->
 
         <app-supplier></app-supplier>
 
@@ -51,7 +65,6 @@ And of course this component needs to be implemented as a 'maker' with both an e
           <div class="row">
             <div class="col-6">
               <div class="h1 my-3">Incidentals</div>
-              <!-- TODO: use <app-valid-from-to> here -->
               <div>
                 <span class="name"><strong>Valid From:</strong></span>
                 <span class="value">{{referral.validFrom | date}}</span>

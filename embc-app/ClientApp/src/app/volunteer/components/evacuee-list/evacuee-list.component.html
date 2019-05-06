@@ -1,0 +1,9 @@
+<div class="card">
+  <div class="card-body">
+    <p>Please select the evacuees registered on your profile that require incidentals:</p>
+    <span *ngFor="let evacuee of evacuees">
+      <input type="checkbox" [(ngModel)]="evacuee.checked">
+      {{evacuee.lastName}}, {{evacuee.firstName}}
+    </span>
+  </div>
+</div>

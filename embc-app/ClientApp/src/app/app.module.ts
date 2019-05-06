@@ -69,6 +69,7 @@ import { IncidentalsReferralComponent } from './volunteer/components/incidentals
 import { ReferralTableComponent } from './volunteer/components/referral-table/referral-table.component';
 import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid-from-to.component';
 import { SupplierComponent } from './volunteer/components/supplier/supplier.component';
+import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
 
 @NgModule({
   declarations: [
@@ -126,6 +127,7 @@ import { SupplierComponent } from './volunteer/components/supplier/supplier.comp
     ReferralTableComponent,
     ValidFromToComponent,
     SupplierComponent,
+    EvacueeListComponent,
   ],
   imports: [
     // angular
