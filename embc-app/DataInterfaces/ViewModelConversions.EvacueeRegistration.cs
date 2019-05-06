@@ -48,8 +48,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     HasPetCareReferral = source.HasPetCareReferral,
                     SelfRegisteredDate = source.SelfRegisteredDate,
                     RegistrationCompletionDate = source.RegistrationCompletionDate,
-                    HeadOfHousehold = source.Evacuees.Single(e => e.EvacueeType == Models.Db.Enumerations.EvacueeType.HeadOfHousehold)
-                                                        .ToViewModel(source) as ViewModels.HeadOfHousehold,
+                    HeadOfHousehold = source.Evacuees.Single(e => e.EvacueeType == EvacueeType.HeadOfHousehold).ToViewModel(source) as ViewModels.HeadOfHousehold,
                     HostCommunity = source.HostCommunity?.ToViewModel(),
                     IncidentTask = source.IncidentTask?.ToViewModel(),
                     DeclarationAndConsent = source.DeclarationAndConsent

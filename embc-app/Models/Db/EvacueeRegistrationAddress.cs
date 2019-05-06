@@ -24,12 +24,12 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string AddressTypeCode { get; set; }
 
         public AddressType AddressType => string.IsNullOrEmpty(AddressTypeCode) ?
-            AddressType.NotSet : EnumHelper<AddressType>.GetValueFromName(AddressSubtypeCode);
+            AddressType.NotSet : EnumHelper<AddressType>.GetValueFromDisplayName(AddressTypeCode);
 
         public string AddressSubtypeCode { get; set; }
 
         public AddressSubType AddressSubType => string.IsNullOrEmpty(AddressSubtypeCode)
-            ? AddressSubType.NotSet : EnumHelper<AddressSubType>.GetValueFromName(AddressSubtypeCode);
+            ? AddressSubType.NotSet : EnumHelper<AddressSubType>.GetValueFromDisplayName(AddressSubtypeCode);
 
         public string AddressLine1 { get; set; }
 

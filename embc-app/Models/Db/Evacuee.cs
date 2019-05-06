@@ -42,7 +42,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public string EvacueeTypeCode { get; set; }
 
-        public EvacueeType EvacueeType => string.IsNullOrEmpty(EvacueeTypeCode) ? EvacueeType.NotSet : EnumHelper<EvacueeType>.GetValueFromName(EvacueeTypeCode);
+        public EvacueeType EvacueeType => string.IsNullOrEmpty(EvacueeTypeCode) ? EvacueeType.NotSet : EnumHelper<EvacueeType>.GetValueFromDisplayName(EvacueeTypeCode);
 
         public EvacueeRegistration EvacueeRegistration { get; set; }
 

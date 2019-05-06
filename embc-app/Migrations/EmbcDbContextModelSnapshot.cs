@@ -583,7 +583,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                         .HasForeignKey("HostCommunityId");
 
                     b.HasOne("Gov.Jag.Embc.Public.Models.Db.IncidentTask", "IncidentTask")
-                        .WithMany()
+                        .WithMany("EvacueeRegistrations")
                         .HasForeignKey("IncidentTaskId");
                 });
 

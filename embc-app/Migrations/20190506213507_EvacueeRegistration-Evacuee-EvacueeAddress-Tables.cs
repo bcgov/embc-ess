@@ -134,6 +134,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+
             migrationBuilder.Sql(@"INSERT INTO [dbo].[EvacueeRegistrations]
 												(Id,
 												Active,
@@ -364,6 +365,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                                                 WHERE
 	                                                ra.EvacueeRegistrationId IS NULL
                                                 ");
+
 
             migrationBuilder.CreateIndex(
                 name: "IX_EvacueeRegistrationAddresses_CommunityId",

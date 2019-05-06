@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gov.Jag.Embc.Public.Migrations
 {
     [DbContext(typeof(EmbcDbContext))]
-    [Migration("20190506200252_EvacueeRegistration-Evacuee-EvacueeAddress-Tables")]
+    [Migration("20190506213507_EvacueeRegistration-Evacuee-EvacueeAddress-Tables")]
     partial class EvacueeRegistrationEvacueeEvacueeAddressTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -585,7 +585,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                         .HasForeignKey("HostCommunityId");
 
                     b.HasOne("Gov.Jag.Embc.Public.Models.Db.IncidentTask", "IncidentTask")
-                        .WithMany()
+                        .WithMany("EvacueeRegistrations")
                         .HasForeignKey("IncidentTaskId");
                 });
 

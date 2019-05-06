@@ -13,7 +13,16 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         private IQueryable<Models.Db.EvacueeRegistration> EvacueeRegistrations => db.EvacueeRegistrations
             .AsNoTracking()
             .Include(ireg => ireg.Evacuees)
-            .Include(ireg => ireg.EvacueeRegistrationAddresses);
+            .Include(ireg => ireg.EvacueeRegistrationAddresses)
+                .Include(reg => reg.HostCommunity)
+                    .ThenInclude(c => c.Region)
+                .Include(reg => reg.IncidentTask)
+                    .ThenInclude(t => t.Region)
+                .Include(reg => reg.IncidentTask)
+                    .ThenInclude(d => d.Region)
+                .Include(reg => reg.IncidentTask)
+                    .ThenInclude(t => t.Community)
+                        .ThenInclude(d => d.Region);
 
 
 
