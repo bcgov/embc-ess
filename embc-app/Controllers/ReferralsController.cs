@@ -60,13 +60,30 @@ namespace Gov.Jag.Embc.Public.Controllers
             };
 
         [HttpGet]
-        public async Task<IActionResult> Get(string registrationId, [FromQuery] SearchQueryParameters searchQuery)
+        public async Task<IActionResult> Get(string registrationId, SearchQueryParameters searchQuery)
         {
             var results = referrals.AsQueryable().Where(r => r.Active).Sort(searchQuery.SortBy ?? "ValidFrom");
             return await Task.FromResult(Json(new
             {
                 RegistrationId = registrationId,
                 Referrals = new PaginatedList<ReferralListItem>(results, searchQuery.Offset, searchQuery.Limit)
+            }));
+        }
+
+        [HttpGet("{referralId}")]
+        public async Task<IActionResult> Get(string registrationId, string referralId)
+        {
+            var result = referrals.AsQueryable().SingleOrDefault(r => r.ReferralId == referralId);
+            if (result == null) return NotFound(new
+            {
+                registrationId = registrationId,
+                referralId = referralId
+            });
+
+            return await Task.FromResult(Json(new
+            {
+                RegistrationId = registrationId,
+                Referral = result
             }));
         }
 
