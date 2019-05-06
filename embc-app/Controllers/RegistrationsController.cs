@@ -41,10 +41,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet(Name = nameof(GetAll))]
         public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters searchQuery)
         {
-            try
-            {
-                var items = await dataInterface.GetEvacueeRegistrationsAsync(searchQuery);
-
+            var items = await dataInterface.GetEvacueeRegistrationsAsync(searchQuery);
             return Json(items);
         }
 
