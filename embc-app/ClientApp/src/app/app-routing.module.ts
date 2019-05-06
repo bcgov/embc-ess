@@ -42,7 +42,7 @@ import { ProvincialAdminTaskNumbersPageComponent } from './provincial-admin/page
 import { ProvincialAdminRegistrationsPageComponent } from './provincial-admin/pages/registrations/provincial-admin-registrations-page.component';
 import { LocalAuthorityVolunteersPageComponent } from './pages/local-authority/local-authority-volunteers-page/local-authority-volunteers-page.component';
 import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
-// import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
+import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
 
 /*
@@ -208,11 +208,11 @@ const routes: Routes = [
         component: ReferralMakerComponent,
         data: { expectedRole: VOLUNTEER },
       },
-      // {
-      //   path: 'referral/:id',
-      //   component: ReferralViewComponent,
-      //   data: { expectedRole: VOLUNTEER },
-      // },
+      {
+        path: 'referral/:regId/:refId',
+        component: ReferralViewComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
       {
         path: 'useful-info',
         component: UsefulInformationPageComponent,
@@ -263,11 +263,11 @@ const routes: Routes = [
         component: ReferralMakerComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
-      // {
-      //   path: 'referral/:id',
-      //   component: ReferralViewComponent,
-      //   data: { expectedRole: LOCAL_AUTHORITY },
-      // },
+      {
+        path: 'referral/:regId/:refId',
+        component: ReferralViewComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
       {
         path: 'volunteer',
         component: VolunteerMakerComponent,
@@ -333,11 +333,11 @@ const routes: Routes = [
         component: ReferralMakerComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
-      // {
-      //   path: 'referral/:id',
-      //   component: ReferralViewComponent,
-      //   data: { expectedRole: PROVINCIAL_ADMIN },
-      // },
+      {
+        path: 'referral/:regId/:refId',
+        component: ReferralViewComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
       {
         path: 'organization',
         component: OrganizationMakerComponent,

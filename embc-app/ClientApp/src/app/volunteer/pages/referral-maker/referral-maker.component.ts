@@ -6,7 +6,6 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import {
   Registration,
   Supplier,
-  BcAddress,
   IncidentalsReferral,
   FoodReferral,
   ClothingReferral,
@@ -138,14 +137,16 @@ export class ReferralMakerComponent implements OnInit {
     const referral: IncidentalsReferral = {
       id: null, // is populated back BE after save
       active: true,
+      type: 'INCIDENTALS',
       purchaser: this.purchaser,
       validFrom: new Date(2019, 0, 1), // TODO: for local testing only
       validTo: new Date(2019, 11, 31), // TODO: for local testing only
       evacuees: this.evacuees,
       approvedItems: null,
-      totalAmt: 0,
+      totalAmount: 0,
       supplier: this.newSupplier,
       comments: 'some comments here',
+      confirmChecked: false
     };
 
     this.incidentalsReferrals.push(referral);
@@ -155,18 +156,20 @@ export class ReferralMakerComponent implements OnInit {
     const referral: FoodReferral = {
       id: null, // is populated back BE after save
       active: true,
+      type: 'FOOD',
+      subType: null,
       purchaser: this.purchaser,
       validFrom: new Date(2019, 0, 1), // TODO: for local testing only
       validTo: new Date(2019, 11, 31), // TODO: for local testing only
       evacuees: this.evacuees,
-      foodType: null,
       numBreakfasts: 0,
       numLunches: 0,
       numDinners: 0,
       numDaysMeals: 0,
-      totalAmt: 0,
+      totalAmount: 0,
       supplier: this.newSupplier,
       comments: 'some comments here',
+      confirmChecked: false
     };
 
     this.foodReferrals.push(referral);
@@ -176,20 +179,13 @@ export class ReferralMakerComponent implements OnInit {
     return {
       id: null, // for future use
       active: true,
-      name: 'name', // null,
-      address: this.newBcAddress,
-      phoneNumber: '123-456-7890', // null,
-      faxNumber: '321-654-0987', // null
-    };
-  }
-
-  private get newBcAddress(): BcAddress {
-    return {
-      id: null,
-      addressSubtype: 'BCAD',
-      addressLine1: 'addressLine1', // null,
-      postalCode: 'postalCode', // null,
-      community: null
+      name: 'Supplier 1', // TODO: for testing only
+      address: '1050 Main Street', // TODO: for testing only
+      postalCode: 'V8R 1R4', // TODO: for testing only
+      city: 'Victoria', // TODO: for testing only
+      province: 'BC',
+      telephone: '250-123-4567', // TODO: for testing only
+      fax: '250-345-7789', // TODO: for testing only
     };
   }
 

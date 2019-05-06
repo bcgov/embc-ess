@@ -62,11 +62,12 @@ And of course this component needs to be implemented as a 'maker' with both an e
               </div>
             </div>
             <!-- TODO: use <app-supplier> here -->
+            <!-- TODO: this needs to be centered vertically -->
             <div class="col-6" *ngIf="referral.supplier">
               <div><strong>{{referral.supplier.name}}</strong></div>
-              <div>{{referral.supplier.address.addressLine1}}</div>
-              <div>{{referral.supplier.address.city + ', BC'}} &nbsp;&nbsp; {{referral.supplier.address.postalCode}}</div>
-              <div>Tel: {{referral.supplier.phoneNumber}} | Fax: {{referral.supplier.faxNumber}}</div>
+              <div>{{referral.supplier.address}}</div>
+              <div>{{referral.supplier.city + ', BC'}} &nbsp;&nbsp; {{referral.supplier.postalCode}}</div>
+              <div>Tel: {{referral.supplier.telephone}} | Fax: {{referral.supplier.fax}}</div>
             </div>
           </div>
         </div>

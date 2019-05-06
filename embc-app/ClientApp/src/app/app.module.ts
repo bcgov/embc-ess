@@ -37,6 +37,7 @@ import { RegistrationMakerComponent } from './registration-maker/registration-ma
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { EvacueeSearchResultsComponent } from './components/evacuee-search-results/evacuee-search-results.component';
+import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
@@ -65,6 +66,7 @@ import { TransportationRatesComponent } from './shared/modals/transportation-rat
 
 // TODO: move these to volunteer/local-authority/provincial-admin modules
 import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
+import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
 import { IncidentalsReferralComponent } from './volunteer/components/incidentals-referral/incidentals-referral.component';
 import { ReferralTableComponent } from './volunteer/components/referral-table/referral-table.component';
 import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid-from-to.component';
@@ -99,6 +101,7 @@ import { SupplierComponent } from './volunteer/components/supplier/supplier.comp
     SideboxCollectionNoticeComponent,
     AdminDashboardComponent,
     EvacueeSearchResultsComponent,
+    ReferralSearchResultsComponent,
     LayoutMainComponent,
     LayoutSideComponent,
     OrganizationListComponent,
@@ -122,6 +125,7 @@ import { SupplierComponent } from './volunteer/components/supplier/supplier.comp
     TransportationRatesComponent,
 
     ReferralMakerComponent,
+    ReferralViewComponent,
     IncidentalsReferralComponent,
     ReferralTableComponent,
     ValidFromToComponent,
