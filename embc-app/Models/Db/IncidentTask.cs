@@ -10,6 +10,13 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// </summary>
     public class IncidentTask
     {
+
+        public IncidentTask()
+        {
+            Registrations = new List<Registration>();
+            EvacueeRegistrations = new List<EvacueeRegistration>();
+        }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
