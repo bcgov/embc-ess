@@ -139,8 +139,9 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'INCIDENTALS',
       purchaser: this.purchaser,
-      validFrom: new Date(2019, 0, 1), // TODO: for local testing only
-      validTo: new Date(2019, 11, 31), // TODO: for local testing only
+      dates: {
+        from: new Date(2019, 0, 1),
+      },
       evacuees: this.evacuees,
       approvedItems: null,
       totalAmount: 0,
@@ -159,8 +160,9 @@ export class ReferralMakerComponent implements OnInit {
       type: 'FOOD',
       subType: null,
       purchaser: this.purchaser,
-      validFrom: new Date(2019, 0, 1), // TODO: for local testing only
-      validTo: new Date(2019, 11, 31), // TODO: for local testing only
+      dates: {
+        from: new Date(2019, 0, 1),
+      },
       evacuees: this.evacuees,
       numBreakfasts: 0,
       numLunches: 0,

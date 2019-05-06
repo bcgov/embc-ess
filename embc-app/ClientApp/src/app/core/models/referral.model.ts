@@ -1,4 +1,5 @@
 import { Evacuee, Supplier } from './';
+import { ReferralDate } from './referral-date';
 
 type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'ACCOMMODATION' | 'TRANSPORTATION');
 
@@ -8,8 +9,7 @@ export interface Referral {
   type: ReferralType;
   subType?: string;
   purchaser: string;
-  validFrom: Date;
-  validTo: Date;
+  dates: ReferralDate;
   evacuees: Array<{
     evacuee: Evacuee,
     selected: boolean

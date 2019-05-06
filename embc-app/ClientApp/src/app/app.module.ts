@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbPaginationModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPaginationModule, NgbModalModule, NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 // ngrx + configuration
 import { AppComponent } from './app.component';
@@ -141,6 +141,8 @@ import { SupplierComponent } from './volunteer/components/supplier/supplier.comp
     StoreModule.forRoot(rootReducer, { metaReducers }),
     NgbPaginationModule,
     NgbModalModule,
+    NgbDatepickerModule,
+    NgbTimepickerModule,
 
     // core & shared
     CoreModule,
