@@ -29,9 +29,9 @@ namespace Gov.Jag.Embc.Public.Authentication
         public string smgov_userdisplayname;
 
         private readonly static SiteMinderAuthenticationToken Anonymous = new SiteMinderAuthenticationToken();
-        public const string COOKIE_NAME = "sm.token";
+        public const string SM_TOKEN_NAME = "sm.token";
 
-        public static SiteMinderAuthenticationToken GetFromHttpHeaders(HttpRequest req)
+        public static SiteMinderAuthenticationToken CreateFromFwdHeaders(HttpRequest req)
         {
             return new SiteMinderAuthenticationToken
             {
@@ -45,9 +45,10 @@ namespace Gov.Jag.Embc.Public.Authentication
             };
         }
 
-        public static SiteMinderAuthenticationToken GetFromCookie(HttpRequest req)
+        public static SiteMinderAuthenticationToken CreateForDev(HttpRequest req)
         {
-            var str = req.Cookies[COOKIE_NAME]?.Base64Decode();
+            var str = req.Cookies[SM_TOKEN_NAME]?.Base64Decode();
+            if (string.IsNullOrEmpty(str)) str = req.Headers[SM_TOKEN_NAME].ToString().Base64Decode();
             if (string.IsNullOrWhiteSpace(str)) return Anonymous;
 
             var dict = str.Split(';').Select(p => p.Split('=')).ToDictionary(v => v[0], v => v[1]);
@@ -65,7 +66,7 @@ namespace Gov.Jag.Embc.Public.Authentication
 
         public static void AddToResponse(SiteMinderAuthenticationToken token, HttpResponse res)
         {
-            res.Cookies.Append(COOKIE_NAME, token.ToString().Base64Encode(), new CookieOptions()
+            res.Cookies.Append(SM_TOKEN_NAME, token.ToString().Base64Encode(), new CookieOptions()
             {
                 SameSite = SameSiteMode.Strict,
                 Expires = DateTimeOffset.Now.AddSeconds(30),

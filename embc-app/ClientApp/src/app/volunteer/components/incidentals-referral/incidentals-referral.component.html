@@ -13,8 +13,6 @@ I think this component needs to implement a form, and pass child forms to the su
 And of course this component needs to be implemented as a 'maker' with both an edit and view-only interface.
 -->
 
-<!-- TODO: change 'maker' to 'editMode' -->
-
 <div *ngIf="referral">
   <div *ngIf="editMode">
     <section>
@@ -22,7 +20,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
         <app-font-awesome-icon icon="plus-circle"></app-font-awesome-icon>&nbsp;&nbsp;INCIDENTALS
       </h2>
       <div class="space-between align-items-end">
-        <app-valid-from-to [validFrom]="referral.validFrom" [validTo]="referral.validTo"></app-valid-from-to>
+        <app-valid-from-to [(referralDate)]="referral.dates" [id]="uuid"></app-valid-from-to>
         <button type="button" class="btn btn-secondary" (click)="viewIncidentalsRates()">VIEW ESS RATES</button>
       </div>
 
@@ -48,69 +46,68 @@ And of course this component needs to be implemented as a 'maker' with both an e
 
   <div *ngIf="!editMode">
     <ul class="summary mx-3">
-        <li class="summary-heading">
-          <div class="container py-3">
-            <div class="row">
-              <div class="col-4">
-                <div class="h1 my-3">Incidentals</div>
-                <div>
-                  <span class="name"><strong>Valid From:</strong></span>
-                  <span class="value">{{referral.validFrom | date}}</span>
-                </div>
-                <div>
-                  <span class="name"><strong>Valid To:</strong></span>
-                  <span class="value">{{referral.validTo | date}}</span>
-                </div>
+      <li class="summary-heading">
+        <div class="container py-3">
+          <div class="row">
+            <div class="col-6">
+              <div class="h1 my-3">Incidentals</div>
+              <div>
+                <span class="name"><strong>Valid From:</strong></span>
+                <span>{{referral.dates.from | date}}</span>
               </div>
-              <!-- TODO: need Supplier model and object for this: -->
-              <div class="col-4" *ngIf="referral.supplier">
-                <span><strong>{{referral.supplier.name}}</strong></span>
-                <span>{{referral.supplier.address}}</span>
-                <span>{{referral.supplier.city + ', BC'}} &nbsp;&nbsp; {{referral.supplier.postalCode}}</span>
-                <span>Tel: {{referral.supplier.tel}} | Fax: {{referral.supplier.fax}}</span>
+              <div>
+                <span class="name"><strong>Valid To:</strong></span>
+                <span>{{referral.dates.to | date}}</span>
               </div>
+            </div>
+            <!-- TODO: use <app-supplier> here -->
+            <!-- TODO: this needs to be centered vertically -->
+            <div class="col-6" *ngIf="referral.supplier">
+              <div><strong>{{referral.supplier.name}}</strong></div>
+              <div>{{referral.supplier.address}}</div>
+              <div>{{referral.supplier.city + ', BC'}} &nbsp;&nbsp; {{referral.supplier.postalCode}}</div>
+              <div>Tel: {{referral.supplier.telephone}} | Fax: {{referral.supplier.fax}}</div>
             </div>
           </div>
-        </li>
-        <li>
-          <span class="name">Person responsible for purchasing goods:</span>
-          <span class="value">{{referral.purchaser}}</span>
-        </li>
-        <li *ngIf="referral.id">
-          <span class="name">Referral Status:</span>
-          <span class="value">{{referral.active ? 'ACTIVE' : 'DEACTIVATED'}}</span>
-        </li>
-        <li *ngIf="referral.id">
-          <span class="name">Referral #:</span>
-          <span class="value">{{referral.id}}</span>
-        </li>
-        <li>
-          <!-- TODO: iterate over all family members and only 'check' the selected ones -->
-          <span class="name">Evacuees Requiring Incidentals:</span>
-          <span class="value">
-            <div class="form-check mt-2" *ngIf="registration.headOfHousehold">
-              <input class="form-check-input" [checked]="true" type="checkbox" disabled>
-              <label class="form-check-label">{{registration.headOfHousehold.lastName}}, {{registration.headOfHousehold.firstName}}</label>
-            </div>
-            <div class="form-check mt-2" *ngFor="let familyMember of registration.headOfHousehold?.familyMembers">
-              <input class="form-check-input" [checked]="true" type="checkbox" disabled>
-              <label class="form-check-label">{{familyMember.lastName}}, {{familyMember.firstName}}</label>
-            </div>
-          </span>
-        </li>
-        <!-- TODO: can use this in Food Referral -->
-        <!-- <div># Days for Meals: {{numDays(referral.validFrom, referral.validTo)}}</div> -->
-        <li>
-          <span class="name">List of approved items:</span>
-          <span class="value">{{referral.approvedItems}}</span>
-        </li>
-        <li>
-          <span class="name">Up to a total of:</span>
-          <span class="value">${{referral.maxTotal}}</span>
-        </li>
-        <li>
-          <span>{{referral.comments}}</span>
-        </li>
-      </ul>
+        </div>
+      </li>
+      <li>
+        <span class="name">Person responsible for purchasing goods:</span>
+        <span class="value">{{referral.purchaser}}</span>
+      </li>
+      <li *ngIf="referral.id">
+        <span class="name">Referral Status:</span>
+        <span class="value">{{referral.active ? 'ACTIVE' : 'DEACTIVATED'}}</span>
+      </li>
+      <li *ngIf="referral.id">
+        <span class="name">Referral #:</span>
+        <span class="value">{{referral.id}}</span>
+      </li>
+      <li>
+        <!-- TODO: use <app-evacuee-list> here -->
+        <!-- TODO: iterate over all family members and only 'check' the selected ones -->
+        <span class="name">Evacuees Requiring Incidentals:</span>
+        <span class="value">
+          <div class="form-check mt-2" *ngFor="let e of referral.evacuees">
+            <input class="form-check-input" [checked]="e.selected" type="checkbox" disabled>
+            <label class="form-check-label">{{e.evacuee.lastName}}, {{e.evacuee.firstName}}</label>
+          </div>
+        </span>
+      </li>
+      <!-- TODO: can use this in Food Referral -->
+      <!-- <div># Days for Meals: {{numDays(referral.validFrom, referral.validTo)}}</div> -->
+      <li>
+        <span class="name">List of approved items:</span>
+        <span class="value">{{referral.approvedItems}}</span>
+      </li>
+      <li>
+        <span class="name">Up to a total of:</span>
+        <span class="value">${{referral.maxTotal}}</span>
+      </li>
+      <li>
+        <span>{{referral.comments}}</span>
+      </li>
+    </ul>
   </div>
 </div>
+<!-- <pre>{{referral.dates|json}}</pre> -->

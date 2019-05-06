@@ -84,6 +84,7 @@ namespace Gov.Jag.Embc.Public
                     opts.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
                     opts.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;
                     opts.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+                    opts.SerializerSettings.DateParseHandling = Newtonsoft.Json.DateParseHandling.DateTimeOffset;
 
                     // ReferenceLoopHandling is set to Ignore to prevent JSON parser issues with the
                     // user / roles model.

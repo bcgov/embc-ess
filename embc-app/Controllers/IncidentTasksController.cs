@@ -42,11 +42,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             var items = await dataInterface.GetIncidentTasksAsync(searchQuery);
 
-            return Json(new
-            {
-                data = items.Items,
-                metadata = items.Pagination
-            });
+            return Json(items);
         }
 
         [HttpGet("{id}")]
@@ -67,7 +63,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 ModelState.AddModelError("StartDate", "Incident task must have a start date");
             }
-            if (item.StartDate.HasValue && item.StartDate.Value > DateTimeOffset.Now)
+            if (item.StartDate.HasValue && item.StartDate.Value > DateTime.Now)
             {
                 ModelState.AddModelError("StartDate", "Incident start date cannot be in the future");
             }
@@ -92,7 +88,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 ModelState.AddModelError("StartDate", "Incident task must have a start date");
             }
-            if (item.StartDate.HasValue && item.StartDate.Value > DateTimeOffset.Now)
+            if (item.StartDate.HasValue && item.StartDate.Value > DateTime.Now)
             {
                 ModelState.AddModelError("StartDate", "Incident start date cannot be in the future");
             }

@@ -1,7 +1,7 @@
 [
     {
         "email": "dev1@ebmc",
-        "bceidAccountNumber": "ess.developerV1",
+        "BceidAccountUserName": "ess.developerV1",
         "isAdministrator": false,
         "isPrimaryContact": false,
         "canAccessRestrictedFiles": false,
@@ -15,7 +15,7 @@
     },
     {
         "email": "dev2@ebmc",
-        "bceidAccountNumber": "ess.developerV2",
+        "BceidAccountUserName": "ess.developerV2",
         "isAdministrator": false,
         "isPrimaryContact": false,
         "canAccessRestrictedFiles": false,
@@ -29,7 +29,7 @@
     },
     {
         "email": "adm1@ebmc",
-        "bceidAccountNumber": "ess.developerA1",
+        "BceidAccountUserName": "ess.developerA1",
         "isAdministrator": true,
         "isPrimaryContact": true,
         "canAccessRestrictedFiles": true,
@@ -43,7 +43,7 @@
     },
     {
         "email": "adm2@ebmc",
-        "bceidAccountNumber": "ess.developerA2",
+        "BceidAccountUserName": "ess.developerA2",
         "isAdministrator": true,
         "isPrimaryContact": true,
         "canAccessRestrictedFiles": false,

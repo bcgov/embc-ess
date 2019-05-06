@@ -84,19 +84,27 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Community> Communities { get; set; }
         public DbSet<Country> Countries { get; set; }
+        public DbSet<Evacuee> Evacuees { get; set; }
         public DbSet<FamilyRelationshipType> FamilyRelationshipTypes { get; set; }
+        public DbSet<EvacueeRegistration> EvacueeRegistrations { get; set; }
         public DbSet<IncidentTask> IncidentTasks { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Registration> Registrations { get; set; }
+        public DbSet<EvacueeRegistrationAddress> EvacueeRegistrationAddresses { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Organization> Organizations { get; set; }
+        public DbSet<Volunteer> Volunteers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // this line is required so ef migrations will work.
             base.OnModelCreating(modelBuilder);
 
-            //modelBuilder.Entity<FamilyRelationshipType>().HasKey(k => k.Code);
+            modelBuilder.Entity<Evacuee>()
+                .HasKey(e => new { e.EvacueeRegistrationId, e.EvacueeSequenceNumber });
+
+            modelBuilder.Entity<EvacueeRegistrationAddress>()
+                .HasKey(ira => new { ira.EvacueeRegistrationId, ira.AddressSequenceNumber });
 
             // Address hierarchy
             modelBuilder.Entity<BcAddress>().HasBaseType<Address>();
@@ -108,13 +116,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .HasValue<OtherAddress>(Address.OTHER_ADDRESS);
 
             // People hierarchy
-            modelBuilder.Entity<Volunteer>().HasBaseType<Person>();
             modelBuilder.Entity<HeadOfHousehold>().HasBaseType<Person>();
             modelBuilder.Entity<FamilyMember>().HasBaseType<Person>();
             modelBuilder.Entity<Person>()
                 .ToTable("People")
                 .HasDiscriminator(pers => pers.PersonType)
-                .HasValue<Volunteer>(Person.VOLUNTEER)
                 .HasValue<HeadOfHousehold>(Person.HOH)
                 .HasValue<FamilyMember>(Person.FAMILY_MEMBER);
 

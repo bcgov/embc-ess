@@ -41,6 +41,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public List<Registration> Registrations { get; set; }
 
+        public List<EvacueeRegistration> EvacueeRegistrations { get; set; }
+
         public DateTimeOffset? StartDate { get; set; }
     }
 }

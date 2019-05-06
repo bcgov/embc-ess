@@ -32,7 +32,7 @@ namespace Gov.Jag.Embc.Public
 
             var auth = string.IsNullOrEmpty(Configuration["DB_USER"])
                 ? "Trusted_Connection=True"
-                : "User Id=SA;Password=" + Configuration["DB_ADMIN_PASSWORD"];
+                : "User Id=sa;Password=" + Configuration["DB_ADMIN_PASSWORD"];
 
             return $"Server={server};Database={db};{auth};MultipleActiveResultSets=true;";
         }
@@ -71,7 +71,7 @@ namespace Gov.Jag.Embc.Public
                 cmd = new SqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
 
-                sql = "USE " + database + "; IF NOT EXISTS (SELECT su.name as DatabaseUser FROM sys.sysusers su join sys.syslogins sl on sl.sid = su.sid where sl.name = '" + username + "')\nBEGIN\nCREATE USER " + username + " FOR LOGIN " + username + ";END";
+                sql = "USE [" + database + "]; IF NOT EXISTS (SELECT su.name as DatabaseUser FROM sys.sysusers su join sys.syslogins sl on sl.sid = su.sid where sl.name = '" + username + "')\nBEGIN\nCREATE USER " + username + " FOR LOGIN " + username + ";END";
                 cmd = new SqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
 

@@ -3,8 +3,15 @@ import { RegistrationService } from 'src/app/core/services/registration.service'
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
-import { Registration } from 'src/app/core/models';
-import { IncidentalsReferral } from 'src/app/core/models';
+import {
+  Registration,
+  Supplier,
+  IncidentalsReferral,
+  FoodReferral,
+  ClothingReferral,
+  AccommodationReferral,
+  TransportationReferral
+} from 'src/app/core/models';
 
 @Component({
   selector: 'app-referral-maker',
@@ -21,12 +28,13 @@ export class ReferralMakerComponent implements OnInit {
   path: string = null; // for relative routing
   regId: string = null;
   purchaser: string = null;
+  evacuees: Array<any> = [];
 
-  foodReferrals: Array<any> = [];
-  clothingReferrals: Array<any> = [];
-  accommodationReferrals: Array<any> = [];
+  foodReferrals: Array<FoodReferral> = [];
+  clothingReferrals: Array<ClothingReferral> = [];
+  accommodationReferrals: Array<AccommodationReferral> = [];
   incidentalsReferrals: Array<IncidentalsReferral> = [];
-  transportationReferrals: Array<any> = [];
+  transportationReferrals: Array<TransportationReferral> = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -57,9 +65,18 @@ export class ReferralMakerComponent implements OnInit {
           this.router.navigate([`/${this.path}`]);
         } else {
           this.registration = r;
+
+          // FOR TESTING
           if (this.registration.incidentTask) {
             // tslint:disable-next-line: no-string-literal
-            this.registration.incidentTask['startDate'] = Date.now(); // TODO: fix when startDate is implemented in incidentTask object
+            this.registration.incidentTask['startDate'] = Date.now();
+          }
+
+          // populate evacuees
+          const hoh = this.registration.headOfHousehold;
+          if (hoh) {
+            this.evacuees.push({ evacuee: hoh, selected: false });
+            hoh.familyMembers.forEach(fm => this.evacuees.push({ evacuee: fm, selected: false }));
           }
         }
       });
@@ -100,28 +117,91 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
+  foodReferralChange() {
+    if (this.foodReferrals.length > 0) {
+      this.clearFoodReferrals();
+    } else {
+      this.addFoodReferral();
+    }
+  }
+
   removeIncidentalsReferral(i: number) {
     this.incidentalsReferrals.splice(i, 1);
   }
 
+  removeFoodReferral(i: number) {
+    this.foodReferrals.splice(i, 1);
+  }
+
   addIncidentalsReferral() {
-    this.incidentalsReferrals.push({
+    const referral: IncidentalsReferral = {
       id: null, // is populated back BE after save
-      active: false,
-      validFrom: new Date(2019, 0, 1), // TODO: for local testing only
-      validTo: new Date(2019, 11, 31), // TODO: for local testing only
-      evacuees: [],
-      approvedItems: '',
-      maxTotal: 100,
+      active: true,
+      type: 'INCIDENTALS',
+      purchaser: this.purchaser,
+      dates: {
+        from: new Date(2019, 0, 1),
+      },
+      evacuees: this.evacuees,
+      approvedItems: null,
+      totalAmount: 0,
+      supplier: this.newSupplier,
       comments: 'some comments here',
-      purchaser: this.purchaser
-    });
+      confirmChecked: false
+    };
+
+    this.incidentalsReferrals.push(referral);
+  }
+
+  addFoodReferral() {
+    const referral: FoodReferral = {
+      id: null, // is populated back BE after save
+      active: true,
+      type: 'FOOD',
+      subType: null,
+      purchaser: this.purchaser,
+      dates: {
+        from: new Date(2019, 0, 1),
+      },
+      evacuees: this.evacuees,
+      numBreakfasts: 0,
+      numLunches: 0,
+      numDinners: 0,
+      numDaysMeals: 0,
+      totalAmount: 0,
+      supplier: this.newSupplier,
+      comments: 'some comments here',
+      confirmChecked: false
+    };
+
+    this.foodReferrals.push(referral);
+  }
+
+  private get newSupplier(): Supplier {
+    return {
+      id: null, // for future use
+      active: true,
+      name: 'Supplier 1', // TODO: for testing only
+      address: '1050 Main Street', // TODO: for testing only
+      postalCode: 'V8R 1R4', // TODO: for testing only
+      city: 'Victoria', // TODO: for testing only
+      province: 'BC',
+      telephone: '250-123-4567', // TODO: for testing only
+      fax: '250-345-7789', // TODO: for testing only
+    };
   }
 
   clearIncidentalsReferrals(): void {
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Incidentals referrals?')) {
       while (this.incidentalsReferrals.length > 0) { this.incidentalsReferrals.pop(); }
+    }
+  }
+
+  clearFoodReferrals(): void {
+    // TODO: replace confirm with a better popup
+    if (confirm('Do you really want to clear all Food referrals?')) {
+      while (this.foodReferrals.length > 0) { this.foodReferrals.pop(); }
     }
   }
 

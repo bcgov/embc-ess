@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Registration, IncidentalsReferral } from 'src/app/core/models';
+import { IncidentalsReferral } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
 import * as moment from 'moment';
+import { ReferralDate } from 'src/app/core/models/referral-date';
 
 @Component({
   selector: 'app-incidentals-referral',
@@ -10,19 +11,22 @@ import * as moment from 'moment';
   styleUrls: ['./incidentals-referral.component.scss']
 })
 export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() registration: Registration = null;
   @Input() referral: IncidentalsReferral = null;
   @Input() editMode = false;
   @Output() remove = new EventEmitter<any>();
   @Output() add = new EventEmitter<any>();
 
   private incidentalsRatesModal: NgbModalRef = null;
-
+  uuid: string;
   constructor(
     private modals: NgbModal,
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    // for the purpose of accesibility this number is likely unique
+    // if it breaks and isn't unique it won't break the form. (poor man's guid)
+    this.uuid = new Date().valueOf().toString();
+  }
 
   ngOnDestroy() {
     // close modal if it's open
@@ -30,9 +34,6 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.registration) {
-      console.log('registration =', changes.registration.currentValue);
-    }
     if (changes.referral) {
       console.log('referral =', changes.referral.currentValue);
     }

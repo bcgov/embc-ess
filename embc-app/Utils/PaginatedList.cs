@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,10 @@ namespace Gov.Jag.Embc.Public.Utils
 {
     public interface IPagedResults<T>
     {
+        [JsonProperty(PropertyName = "metadata")]
         PaginationMetadata Pagination { get; }
+
+        [JsonProperty(PropertyName = "data")]
         IEnumerable<T> Items { get; }
     }
 

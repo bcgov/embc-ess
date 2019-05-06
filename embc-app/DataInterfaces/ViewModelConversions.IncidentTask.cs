@@ -18,9 +18,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     Active = source.Active,
                     Region = source.Region?.ToViewModel(),
                     Community = source.Community?.ToViewModel(),
-                    TotalAssociatedEvacuees = source.Registrations.Count() +
-                                                                source.Registrations.Select(r => r?.HeadOfHousehold?.FamilyMembers?.Count() ?? 0).Sum(),
-                    StartDate = source.StartDate ?? source.StartDate.Value.UtcDateTime
+                    TotalAssociatedEvacuees = source.EvacueeRegistrations.Count(),
+                    StartDate = source.StartDate?.DateTime
                 };
             }
             return result;

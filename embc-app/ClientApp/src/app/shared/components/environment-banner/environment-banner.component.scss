@@ -5,6 +5,12 @@ div {
   background-color: $bg-banner;
   text-align: center;
   font-size: 11px;
-  padding-top: 1.5px;
-  padding-bottom: 1.5px;
+  padding: 1rem;
+  font-size: x-large;
+}
+
+@media (max-width: 480px) {
+  div {
+    font-size: unset; // default is 14px
+  }
 }

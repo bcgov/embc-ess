@@ -8,8 +8,8 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public bool? RestrictedAccess { get; set; }
         public bool? DeclarationAndConsent { get; set; }
         public long? EssFileNumber { get; set; }
-        public DateTimeOffset? SelfRegisteredDate { get; set; }
-        public DateTimeOffset? RegistrationCompletionDate { get; set; }
+        public DateTime? SelfRegisteredDate { get; set; }
+        public DateTime? RegistrationCompletionDate { get; set; }
         public string RegisteringFamilyMembers { get; set; }  // one of ['yes', 'yes-later', 'no']
         public bool? RequiresAccommodation { get; set; }
         public bool? RequiresClothing { get; set; }
