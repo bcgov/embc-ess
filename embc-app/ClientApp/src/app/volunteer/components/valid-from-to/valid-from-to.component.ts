@@ -11,7 +11,8 @@ import * as moment from 'moment';
 export class ValidFromToComponent implements OnInit {
   @Input() editMode: boolean; // unimplemented editmode false is read only
   @Input() referralDate: ReferralDate;
-  @Input() id?: string;
+  // tslint:disable-next-line: no-inferrable-types
+  @Input() id?: string = 'generic';
   @Output() date = new EventEmitter<ReferralDate>();
 
   days = range(1, 15); // [1..14]
@@ -27,10 +28,6 @@ export class ValidFromToComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    // if the id is missing we set the component to generic
-    if (!this.id) {
-      this.id = 'generic';
-    }
     // initialize the dates passed to this component
 
     // generate the referral date
