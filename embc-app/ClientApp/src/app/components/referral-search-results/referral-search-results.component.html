@@ -3,9 +3,9 @@
 </div>
 
 <ng-template #searchResultsTable>
-  <table class="table">
-    <thead class="thead-light">
-      <tr>
+  <table class="table table-responsive-lg table-rates">
+    <thead>
+      <tr class="light">
         <th scope="col" colspan="2">REFERRAL #</th>
         <th scope="col">SUPPLIER NAME</th>
         <th scope="col">VALID FROM...</th>
@@ -15,20 +15,20 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let r of rows">
-        <ng-container *ngIf="r.data.active; then editable else deactivated"></ng-container>
+      <tr *ngFor="let r of rows" class="light" style="vertical-align:middle">
+        <ng-container *ngIf="r.data?.active; then editable else deactivated"></ng-container>
         <ng-template #editable>
-          <td><input type="checkbox"></td>
-          <td>{{r.data.id}}</td>
+          <td class="dark"><input type="checkbox"></td>
+          <td>{{r.data?.id}}</td>
         </ng-template>
         <ng-template #deactivated>
-          <td col-span="2">{{r.data.id}}</td>
+          <td col-span="2">{{r.data?.id}}</td>
         </ng-template>
-        <td>{{r.data.supplier?.name}}</td>
-        <td>{{r.data.validFrom | date : 'MMM-dd-yyyy'}}</td>
-        <td>{{r.data.validTo | date : 'MMM-dd-yyyy'}}</td>
+        <td><strong>{{r.data?.supplier?.name}}</strong></td>
+        <td>{{r.data?.validFrom | date : 'MMM-dd-yyyy'}}</td>
+        <td>{{r.data?.validTo | date : 'MMM-dd-yyyy'}}</td>
         <td [innerHTML]="getType(r)"></td>
-        <td><a [routerLink]="" (click)="view(r)">View</a></td>
+        <td><a [routerLink]="['/' + path + '/referral', r.registrationId, r.data?.id]">View</a></td>
       </tr>
     </tbody>
   </table>
