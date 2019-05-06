@@ -69,7 +69,7 @@ namespace Gov.Jag.Embc.Public.Controllers
                 Referrals = new PaginatedList<ReferralListItem>(results, searchQuery.Offset, searchQuery.Limit)
             }));
         }
-
+        
         [HttpGet("{referralId}")]
         public async Task<IActionResult> Get(string registrationId, string referralId)
         {

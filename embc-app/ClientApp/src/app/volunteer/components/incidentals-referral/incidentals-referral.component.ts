@@ -3,6 +3,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IncidentalsReferral } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
 import * as moment from 'moment';
+import { ReferralDate } from 'src/app/core/models/referral-date';
 
 @Component({
   selector: 'app-incidentals-referral',
@@ -16,12 +17,16 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
   @Output() add = new EventEmitter<any>();
 
   private incidentalsRatesModal: NgbModalRef = null;
-
+  uuid: string;
   constructor(
     private modals: NgbModal,
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    // for the purpose of accesibility this number is likely unique
+    // if it breaks and isn't unique it won't break the form. (poor man's guid)
+    this.uuid = new Date().valueOf().toString();
+  }
 
   ngOnDestroy() {
     // close modal if it's open
