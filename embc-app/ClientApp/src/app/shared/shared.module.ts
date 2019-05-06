@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbTypeaheadModule, NgbAlertModule, NgbPaginationModule, NgbModalModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeaheadModule, NgbAlertModule, NgbPaginationModule, NgbModalModule, NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { MaterialModule } from './material.module';
 import { EnvironmentBannerComponent } from './components/environment-banner/environment-banner.component';
@@ -73,6 +73,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     NgbModalModule,
     NgbTypeaheadModule,
     NgbAlertModule,
+    NgbDatepickerModule,
     NgbTimepickerModule,
   ],
   exports: [
@@ -85,6 +86,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     // ng-bootstrap components we want to re-export... (they are used outside of this SharedModule)
     NgbPaginationModule,
     NgbModalModule,
+    NgbDatepickerModule,
     NgbTimepickerModule,
 
     // components, pipes, etc
