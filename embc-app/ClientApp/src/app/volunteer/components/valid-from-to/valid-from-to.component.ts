@@ -13,7 +13,7 @@ export class ValidFromToComponent implements OnInit {
   @Input() referralDate: ReferralDate;
   // tslint:disable-next-line: no-inferrable-types
   @Input() id?: string = 'generic';
-  @Output() date = new EventEmitter<ReferralDate>();
+  @Output() referralDateChange = new EventEmitter<ReferralDate>();
 
   days = range(1, 15); // [1..14]
   defaultDays = 1; // the default amount for the component to use as a duration
@@ -39,10 +39,10 @@ export class ValidFromToComponent implements OnInit {
     // check validity of input
     if (this.validDate && this.validTime) {
       // After all changes are made
-      this.date.emit(this.convertReferralDateFormToReferralDate(this.wrdForm));
+      this.referralDateChange.emit(this.convertReferralDateFormToReferralDate(this.wrdForm));
     } else {
       // TODO: handle invalid inputs
-      this.date.emit({ from: null });
+      this.referralDateChange.emit({ from: null });
 
 
     }

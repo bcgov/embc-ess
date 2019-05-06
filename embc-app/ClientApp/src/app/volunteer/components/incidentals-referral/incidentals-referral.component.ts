@@ -52,8 +52,4 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
     const b = moment(validTo);
     return b.diff(a, 'days') + 1; // TODO: verify this
   }
-  onDate(event: ReferralDate) {
-    // collect the referral date from the event
-    this.referral.dates = event;
-  }
 }
