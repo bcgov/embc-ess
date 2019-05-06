@@ -1,7 +1,7 @@
-import { Registration, Volunteer } from 'src/app/core/models';
+import { Registration, Volunteer, Referral } from 'src/app/core/models';
 
 /**
- * The search results to be displayed on an "<evacuee-search-results>" component
+ * The search results to be displayed on an "<evacuee-search-results>" component.
  */
 export interface EvacueeSearchResults {
   query: string;
@@ -14,7 +14,15 @@ export interface VolunteerSearchResults {
 }
 
 /**
- * Represents the query parameters required for Pagination, Searching and Sorting
+ * The search results to be displayed on an "<referral-search-results>" component.
+ */
+export interface ReferralSearchResults {
+  registrationId: string;
+  results: Referral[];
+}
+
+/**
+ * The query parameters required for Pagination, Searching and Sorting.
  */
 export interface SearchQueryParameters {
   // pagination related
