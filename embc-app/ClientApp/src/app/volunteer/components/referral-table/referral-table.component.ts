@@ -46,8 +46,12 @@ export class ReferralTableComponent implements OnChanges {
               subType: y.subType,
               supplier: { name: y.supplier.name },
               type: y.type,
-              validFrom: y.validFrom,
-              validTo: y.validTo
+              dates: {
+                to: y.validTo,
+                from: y.validFrom,
+              }
+              // validFrom: y.validFrom,
+              // validTo: y.validTo
             } as Referral;
           });
 
