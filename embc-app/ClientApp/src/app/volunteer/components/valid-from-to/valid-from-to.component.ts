@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnChanges } from '@angular/core';
 import range from 'lodash/range';
 import { ReferralDate, ReferralDateForm, YearMonthDay, HourMinute } from 'src/app/core/models/referral-date';
 import * as moment from 'moment';
@@ -8,10 +8,10 @@ import * as moment from 'moment';
   templateUrl: './valid-from-to.component.html',
   styleUrls: ['./valid-from-to.component.scss']
 })
-export class ValidFromToComponent implements OnInit {
-  @Input() editMode?: boolean = true; // false is read only fields
+export class ValidFromToComponent implements OnInit, OnChanges {
   @Input() referralDate: ReferralDate;
   // tslint:disable-next-line: no-inferrable-types
+  @Input() editMode?: boolean = true; // false is read only fields
   @Input() id?: string = 'generic';
   @Output() referralDateChange = new EventEmitter<ReferralDate>();
 
@@ -19,8 +19,9 @@ export class ValidFromToComponent implements OnInit {
   defaultDays = 1; // the default amount for the component to use as a duration
   displayDate: string;
   displayTime: string;
-  readOnlyFromDate;
-  readOnlyFromTime;
+  readOnlyFromDate: string;
+  readOnlyFromTime: string;
+
   // invalid date or time
   validDate = true; // begin with the assumption of validity
   validTime = true;
@@ -31,10 +32,14 @@ export class ValidFromToComponent implements OnInit {
 
   ngOnInit() {
     // generate the referral date
-    this.wrdForm = this.convertReferralDateToReferralDateForm(this.referralDate);
+    this.wrdForm = this.convertReferralDateToReferralDateForm(this.handleMissingInputs(this.referralDate));
+
     this.updateDisplay();
   }
-
+  ngOnChanges(changes) {
+    // this reprocesses the input if the parent changes it
+    this.wrdForm = this.convertReferralDateToReferralDateForm(this.handleMissingInputs(this.referralDate));
+  }
   emitReferralDate(): void {
     // check validity of input
     if (this.validDate && this.validTime) {
@@ -43,12 +48,39 @@ export class ValidFromToComponent implements OnInit {
     } else {
       // TODO: handle invalid inputs
       this.referralDateChange.emit({ from: null });
-
-
     }
-
   }
+  handleMissingInputs(r: ReferralDate): ReferralDate {
+    // this function determines what to calculate from missing information
+    // if there is a from and to calcuate days
+    if (false) {
 
+    } else if (r.from && !r.days && r.to) {
+      // calculate the days between dates
+      const d1 = moment(r.from);
+      const d2 = moment(r.to);
+      r.days = d1.diff(d2, 'days');
+      return r;
+    } else if (!r.from && r.days && !r.to) {
+      // we caculate from today's date using the duration included ()
+      r.from = new Date();
+      return r;
+    }
+    // } else if (r.from && r.days && r.to) {
+    //   // we have all of the info so we simply return it (default)
+    // } else if (r.from && r.days && !r.to) {
+    //   // calculate will work with this much info (default)
+    // } else if (r.from && !r.days && !r.to) {
+    //   // we caclulate based on the the start date and default date value (default)
+    // } else if (!r.from && r.days && r.to) {
+    //   // something has gone wrong for date is mandatory. use default dates. (default)
+    // } else if (!r.from && !r.days && r.to) {
+    //   // this is an error we should calculate from defaults (default)
+    // } else if (!r.from && !r.days && !r.to) {
+    //   // use defaults
+    // }
+    return r;
+  }
   calculate(w: ReferralDateForm): ReferralDateForm {
     // calculate to date
     // set the hours and minutes on the to date to whatever the user picked
