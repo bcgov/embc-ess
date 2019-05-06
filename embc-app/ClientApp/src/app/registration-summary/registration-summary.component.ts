@@ -42,7 +42,7 @@ export class RegistrationSummaryComponent implements OnInit {
           // save the registration object
           this.registration = value;
         }, err => {
-          console.log('err =', err);
+          alert(`err = ${err}`);
           this.goHome();
         });
     } else {

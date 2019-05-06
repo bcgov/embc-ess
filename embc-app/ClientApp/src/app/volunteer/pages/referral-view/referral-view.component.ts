@@ -39,7 +39,7 @@ export class ReferralViewComponent implements OnInit {
     this.referralId = this.route.snapshot.paramMap.get('refId');
 
     if (!this.registrationId || !this.referralId) {
-      console.log('err = registration ID or referral ID is falsey');
+      alert(`err = invalid registration ID or referral ID`);
       this.back();
     }
 
@@ -50,7 +50,7 @@ export class ReferralViewComponent implements OnInit {
         this.referral = value;
       }, err => {
         this.loading = false;
-        console.log('err =', err);
+        alert(`err = ${err}`);
         this.goHome();
       });
   }
@@ -75,7 +75,7 @@ export class ReferralViewComponent implements OnInit {
         this.back();
       }, err => {
         this.deactivating = false;
-        console.log('err =', err);
+        alert(`err = ${err}`);
         this.goHome();
       });
   }
