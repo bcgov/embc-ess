@@ -32,7 +32,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             var created = await db.EvacueeRegistrations.AddAsync(registration.ToModel());
             await db.SaveChangesAsync();
-            return (await EvacueeRegistrations.SingleAsync(r => r.Id == created.Entity.Id)).ToViewModel();
+            return (await EvacueeRegistrations.SingleAsync(r => r.EssFileNumber == created.Entity.EssFileNumber)).ToViewModel();
         }
 
         public async Task UpdateEvacueeRegistrationAsync(Registration registration)
@@ -40,7 +40,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var evacueeRegistration = registration.ToModel();
             var evacueesToKeep = evacueeRegistration.Evacuees.Select(e => e.EvacueeSequenceNumber).ToArray();
             var evacueesToRemove = db.Evacuees
-                .Where(e => e.EvacueeRegistrationId == evacueeRegistration.Id && !evacueesToKeep.Contains(e.EvacueeSequenceNumber));
+                .Where(e => e.RegistrationId == evacueeRegistration.EssFileNumber && !evacueesToKeep.Contains(e.EvacueeSequenceNumber));
 
             db.EvacueeRegistrations.Update(evacueeRegistration);
             db.Evacuees.RemoveRange(evacueesToRemove);
@@ -61,7 +61,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         a.AddressSubType == AddressSubType.BCAddress && a.AddressType == AddressType.Primary &&
                         a.Community.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase)))
                     .Where(t => searchQuery.IncludeDeactivated || t.Active)
-                .Sort(searchQuery.SortBy ?? "id")
+                .Sort(searchQuery.SortBy ?? "EssFileNumber")
                 .ToArrayAsync();
 
             return new PaginatedList<Registration>(items.Select(r => r.ToViewModel()), searchQuery.Offset, searchQuery.Limit);
@@ -75,7 +75,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         private async Task<Models.Db.EvacueeRegistration> GetEvacueeRegistrationInternalAsync(string id)
         {
-            return await EvacueeRegistrations.SingleOrDefaultAsync(reg => reg.Id == Guid.Parse(id));
+            if (!long.TryParse(id, out var essFileNumber)) return null;
+
+            return await EvacueeRegistrations.SingleOrDefaultAsync(reg => reg.EssFileNumber == essFileNumber);
         }
 
         public async Task<RegistrationSummary> GetEvacueeRegistrationSummaryAsync(string id)
@@ -86,9 +88,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<bool> DeactivateEvacueeRegistration(string id)
         {
-            if (!Guid.TryParse(id, out var guid)) return false;
+            if (!long.TryParse(id, out var essFileNumber)) return false;
 
-            var item = await db.EvacueeRegistrations.SingleOrDefaultAsync(reg => reg.Id == guid);
+            var item = await db.EvacueeRegistrations.SingleOrDefaultAsync(reg => reg.EssFileNumber == essFileNumber);
             if (item == null) return false;
             item.Active = false;
             db.Update(item);

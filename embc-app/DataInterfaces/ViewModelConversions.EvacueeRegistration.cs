@@ -17,7 +17,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 result = new ViewModels.Registration()
                 {
-                    Id = source.Id.ToString(),
+                    Id = source.EssFileNumber.ToString(),
                     Active = source.Active,
                     EssFileNumber = source.EssFileNumber,
                     RestrictedAccess = source.RestrictedAccess,
@@ -90,7 +90,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-
         public static Models.Db.EvacueeRegistration ToModel(this ViewModels.Registration source)
         {
             Models.Db.EvacueeRegistration result = null;
@@ -141,7 +140,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 foreach (var familyMember in source.HeadOfHousehold.FamilyMembers)
                 {
                     var evacuee = familyMember.ToModel();
-                    if(string.IsNullOrEmpty(familyMember.Id))
+                    if (string.IsNullOrEmpty(familyMember.Id))
                     {
                         evacuee.EvacueeSequenceNumber = result.Evacuees.Count() + 1;
                     }
@@ -156,7 +155,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
                 if (source.Id != null)
                 {
-                    result.Id = Guid.Parse(source.Id);
+                    result.EssFileNumber = long.Parse(source.Id);
                 }
                 if (source.Active.HasValue)
                 {
@@ -166,9 +165,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             return result;
         }
-
-
-
 
         public static ViewModels.Person ToViewModel(this Models.Db.Evacuee source, Models.Db.EvacueeRegistration evacueeRegistration)
         {
@@ -186,7 +182,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     result = new ViewModels.FamilyMember();
                 }
 
-                result.Id = source.EvacueeRegSeqId;
+                result.Id = source.RegistrationIdSeq;
 
                 result.FirstName = source.FirstName;
                 result.LastName = source.LastName;
@@ -232,8 +228,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-
-
         public static Models.Db.Evacuee ToModel(this ViewModels.Person source)
         {
             Models.Db.Evacuee result = null;
@@ -244,7 +238,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
                 if (source.Id != null)
                 {
-                    result.EvacueeRegistrationId = Models.Db.Evacuee.GetEvacueeRegistrationIdFromIncidentRegSeqId(source.Id);
+                    result.RegistrationId = Models.Db.Evacuee.GetEvacueeRegistrationIdFromIncidentRegSeqId(source.Id);
                     result.EvacueeSequenceNumber = Models.Db.Evacuee.GetEvacueeSequenceNumberFromIncidentRegSeqId(source.Id);
                 }
 
@@ -275,14 +269,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-
         public static ViewModels.Address ToViewModel(this Models.Db.EvacueeRegistrationAddress source)
         {
             ViewModels.Address result = null;
             if (source != null)
             {
                 result = new ViewModels.Address();
-                result.Id = source.EvacueeRegSeqId;
+                result.Id = source.RegistrationIdSeq;
                 result.AddressLine1 = source.AddressLine1;
                 result.AddressLine2 = source.AddressLine2;
                 result.AddressLine3 = source.AddressLine3;
@@ -313,7 +306,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
                 if (source.Id != null)
                 {
-                    result.EvacueeRegistrationId = Models.Db.EvacueeRegistrationAddress.GetEvacueeRegistrationIdFromIncidentRegSeqId(source.Id);
+                    result.RegistrationId = Models.Db.EvacueeRegistrationAddress.GetEvacueeRegistrationIdFromIncidentRegSeqId(source.Id);
                     result.AddressSequenceNumber = Models.Db.EvacueeRegistrationAddress.GetAddressSequenceNumberFromIncidentRegSeqId(source.Id);
                 }
                 else
