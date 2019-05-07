@@ -560,6 +560,8 @@ export class RegistrationMakerComponent implements OnInit {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee added successfully');
+          // done adding the entry. Clear the reference key.
+          this.uniqueKeyService.clearKey();
           // go back to the main dashboard
           this.router.navigate([`/${this.path}/`]);
         });
@@ -570,6 +572,8 @@ export class RegistrationMakerComponent implements OnInit {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee updated successfully');
+          // done editing the entry. Clear the reference key.
+          this.uniqueKeyService.clearKey();
           // go back to the main dashboard
           this.router.navigate([`/${this.path}/`]);
         });
