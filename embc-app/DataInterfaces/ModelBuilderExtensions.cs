@@ -28,10 +28,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public static void SetAuditingShadowProperties<T>(ModelBuilder modelBuilder) where T : class, IAuditableEntity
         {
-            modelBuilder.Entity<T>().Property<DateTime>("CreatedDateTime").HasDefaultValueSql("GetUtcDate()");
-            modelBuilder.Entity<T>().Property<string>("CreatedByUserId").HasDefaultValueSql("System");
-            modelBuilder.Entity<T>().Property<DateTime>("UpdateDateTime").HasDefaultValueSql("GetUtcDate()");
-            modelBuilder.Entity<T>().Property<string>("UpdatedByUserId").HasDefaultValueSql("System");
+            modelBuilder.Entity<T>().Property<DateTime>("CreatedDateTime").IsRequired().HasDefaultValueSql("GetUtcDate()");
+            modelBuilder.Entity<T>().Property<string>("CreatedByUserId").IsRequired().HasDefaultValueSql("'System'");
+            modelBuilder.Entity<T>().Property<DateTime>("UpdateDateTime").IsRequired().HasDefaultValueSql("GetUtcDate()");
+            modelBuilder.Entity<T>().Property<string>("UpdatedByUserId").IsRequired().HasDefaultValueSql("'System'");
         }
     }
 }
