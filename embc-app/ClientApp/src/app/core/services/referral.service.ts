@@ -47,7 +47,7 @@ export class ReferralService extends RestService {
 
   // DELETE api/registrations/<id>/referral/<id> ???
   deactivateReferral(registrationId: string, referralId: string): Observable<HttpResponse<any>> {
-    return this.http.delete<HttpResponse<any>>(`api/registrations/${registrationId}/referral/${referralId}`, { headers: this.headers })
+    return this.http.delete<HttpResponse<any>>(`api/registrations/${registrationId}/referrals/${referralId}`, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -56,7 +56,7 @@ export class ReferralService extends RestService {
 
   // GET api/registrations/<id>/referral/<id> ???
   getReferralById(registrationId: string, referralId: string): Observable<Referral> {
-    return this.http.get<Referral>(`api/registrations/${registrationId}/referral/${referralId}`, { headers: this.headers })
+    return this.http.get<Referral>(`api/registrations/${registrationId}/referrals/${referralId}`, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError),

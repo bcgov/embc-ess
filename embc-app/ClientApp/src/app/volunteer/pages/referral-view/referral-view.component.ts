@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { ReferralService } from 'src/app/core/services/referral.service';
+import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import {
   Referral, isAccommodationReferral, isClothingReferral,
   isFoodReferral, isIncidentalsReferral, isTransportationReferral
@@ -13,21 +15,25 @@ import {
   templateUrl: './referral-view.component.html',
   styleUrls: ['./referral-view.component.scss']
 })
-export class ReferralViewComponent implements OnInit {
+export class ReferralViewComponent implements OnInit, OnDestroy {
 
-  path: string = null; // for relative routing
+  private confirmModal: NgbModalRef = null;
+  private path: string = null; // for relative routing
   registrationId: string = null;
   referralId: string = null;
   referral: Referral = null;
   loading = true;
   deactivating = false;
+  reason = 'null';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private modals: NgbModal,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private referralService: ReferralService,
+    private notifications: NotificationQueueService,
   ) { }
 
   ngOnInit() {
@@ -45,19 +51,25 @@ export class ReferralViewComponent implements OnInit {
 
     // get referral data
     this.referralService.getReferralById(this.registrationId, this.referralId)
-      .subscribe(value => {
+      .subscribe((x: any) => {
         this.loading = false;
-        if (!value.id || !value.type) {
-          console.log('ERROR - invalid referral object = ', value);
+        if (!x.registrationId || !x.referral) {
+          console.log('ERROR - invalid referral object = ', x);
           this.goHome();
         } else {
-          this.referral = value;
+          this.referral = x.referral;
+          this.referral.dates = { from: x.referral.validFrom, to: x.referral.validTo };
         }
       }, err => {
         this.loading = false;
         alert(`err = ${err}`);
         this.goHome();
       });
+  }
+
+  ngOnDestroy() {
+    // close modal if it's open
+    if (this.confirmModal) { this.confirmModal.dismiss(); }
   }
 
   private goHome() {
@@ -71,18 +83,35 @@ export class ReferralViewComponent implements OnInit {
     this.router.navigate([`/${this.path}/registration/summary`]);
   }
 
-  deactivate() {
+  deactivate(content: TemplateRef<any>) {
     this.deactivating = true;
-    this.referralService.deactivateReferral(this.registrationId, this.referralId)
-      .subscribe(() => {
-        this.deactivating = false;
-        // return to summary page
-        this.back();
-      }, err => {
-        this.deactivating = false;
-        alert(`err = ${err}`);
-        this.goHome();
-      });
+
+    this.confirmModal = this.modals.open(content);
+
+    // handle result
+    this.confirmModal.result.then(() => {
+      // modal was closed
+
+      this.confirmModal = null; // clear for next time
+
+      this.referralService.deactivateReferral(this.registrationId, this.referralId)
+        .subscribe(() => {
+          // deactivate succeeded
+          this.deactivating = false;
+          this.notifications.addNotification('Referral deactivated successfully');
+          // return to summary page
+          this.back();
+        }, err => {
+          // deactivate failed
+          this.deactivating = false;
+          alert(`err = ${err}`);
+          this.goHome();
+        });
+    }, () => {
+      // modal was dismissed
+      this.deactivating = false;
+      this.confirmModal = null; // clear for next time
+    });
   }
 
   // --------------------HELPERS-----------------------------------------

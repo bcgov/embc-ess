@@ -3,6 +3,7 @@ import { RegistrationService } from 'src/app/core/services/registration.service'
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import {
   Registration, Supplier, IncidentalsReferral, FoodReferral,
   ClothingReferral, AccommodationReferral, TransportationReferral
@@ -35,6 +36,7 @@ export class ReferralMakerComponent implements OnInit {
     private registrationService: RegistrationService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
+    private notifications: NotificationQueueService,
   ) { }
 
   ngOnInit() {
@@ -93,7 +95,10 @@ export class ReferralMakerComponent implements OnInit {
 
   finalize() {
     this.submitting = true;
+
     // TODO: save stuff, etc
+    this.notifications.addNotification('Referrals finalized successfully');
+
     this.submitting = false;
 
     // redirect to summary page
