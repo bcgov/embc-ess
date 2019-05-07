@@ -137,6 +137,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .Property(r => r.EssFileNumber)
                 .HasDefaultValueSql("NEXT VALUE FOR ESSFileNumbers");
 
+            modelBuilder.Entity<EvacueeRegistration>()
+                .Property(r => r.EssFileNumber)
+                .HasDefaultValueSql("NEXT VALUE FOR ESSFileNumbers");
+
             modelBuilder.ShadowProperties();
         }
 
@@ -172,10 +176,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     entry.Property("UpdatedByUserId").CurrentValue = userId;
                 }
             }
-
-            modelBuilder.Entity<EvacueeRegistration>()
-                .Property(r => r.EssFileNumber)
-                .HasDefaultValueSql("NEXT VALUE FOR ESSFileNumbers");
         }
     }
 }
