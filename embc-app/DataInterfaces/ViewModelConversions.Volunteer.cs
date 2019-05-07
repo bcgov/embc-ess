@@ -10,45 +10,41 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         public static ViewModels.Volunteer ToViewModel(this Models.Db.Volunteer source)
         {
-            ViewModels.Volunteer result = null;
-            if (source != null)
+            var result = new ViewModels.Volunteer
             {
-                result.Id = source.Id.ToString();
-                result.FirstName = source.FirstName;
-                result.LastName = source.LastName;
-                result.Email = source.Email;
-                result.BceidAccountNumber = source.BceidAccountUserName;
-                result.BceidAccountUserName = source.BceidAccountUserName;
-                result.Externaluseridentifier = source.UserId;
-                result.SiteMinderGuid = source.UserId;
-                result.IsAdministrator = source.IsAdministrator;
-                result.IsPrimaryContact = source.IsPrimaryContact;
-                result.CanAccessRestrictedFiles = source.CanAccessRestrictedFiles;
-                result.Organization = source.Organization.ToViewModel();
-                result.Active = source.Active;
-            }
+                Id = source.Id.ToString(),
+                FirstName = source.FirstName,
+                LastName = source.LastName,
+                Email = source.Email,
+                BceidAccountNumber = source.BceidAccountUserName,
+                BceidAccountUserName = source.BceidAccountUserName,
+                Externaluseridentifier = source.UserId,
+                SiteMinderGuid = source.UserId,
+                IsAdministrator = source.IsAdministrator,
+                IsPrimaryContact = source.IsPrimaryContact,
+                CanAccessRestrictedFiles = source.CanAccessRestrictedFiles,
+                Organization = source.Organization.ToViewModel(),
+                Active = source.Active
+            };
+
             return result;
         }
 
         public static Models.Db.Volunteer ToModel(this ViewModels.Volunteer source)
         {
-            Models.Db.Volunteer result = null;
-            if (source != null)
+            var result = new Models.Db.Volunteer
             {
-                result.FirstName = source.FirstName;
-                result.LastName = source.LastName;
-                result.Email = source.Email;
-                result.BceidAccountUserName = source.BceidAccountNumber;
-                result.UserId = source.Externaluseridentifier;
-                result.IsAdministrator = source.IsAdministrator;
-                result.IsPrimaryContact = source.IsPrimaryContact;
-                result.CanAccessRestrictedFiles = source.CanAccessRestrictedFiles;
-                result.OrganizationId = source.Organization == null ? (Guid?)null : Guid.Parse(source.Organization.Id);
-                if (source.Active.HasValue)
-                {
-                    result.Active = source.Active.Value;
-                }
-            }
+                FirstName = source.FirstName,
+                LastName = source.LastName,
+                Email = source.Email,
+                BceidAccountUserName = source.BceidAccountNumber,
+                UserId = source.Externaluseridentifier,
+                IsAdministrator = source.IsAdministrator,
+                IsPrimaryContact = source.IsPrimaryContact,
+                CanAccessRestrictedFiles = source.CanAccessRestrictedFiles,
+                OrganizationId = source.Organization == null ? (Guid?)null : Guid.Parse(source.Organization.Id),
+                Active = source.Active.HasValue ? source.Active.Value : false
+            };
             return result;
         }
     }
