@@ -56,7 +56,7 @@ export class ReferralTableComponent implements OnChanges {
                 from: y.validFrom,
                 to: y.validTo
               }
-            } as any;  // TODO: Fix this! - breaking the build!!
+            } as Referral;
           });
 
           // the search results need to be in this special format
