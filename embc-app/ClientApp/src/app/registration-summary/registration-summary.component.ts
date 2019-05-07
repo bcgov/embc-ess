@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { RegistrationService } from '../core/services/registration.service';
+import { Component, OnInit, TemplateRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { RegistrationService } from '../core/services/registration.service';
 import { Registration } from '../core/models';
 import { AuthService } from '../core/services/auth.service';
 import { UniqueKeyService } from '../core/services/unique-key.service';
@@ -10,13 +11,15 @@ import { UniqueKeyService } from '../core/services/unique-key.service';
   templateUrl: './registration-summary.component.html',
   styleUrls: ['./registration-summary.component.scss']
 })
-export class RegistrationSummaryComponent implements OnInit {
+export class RegistrationSummaryComponent implements OnInit, OnDestroy {
 
+  private confirmModal: NgbModalRef = null;
   registration: Registration = null;
   path: string = null; // for relative routing
   selectedPurchaser = 'null';
   otherPurchaser: string = null;
   loading = true;
+  reason = 'null';
 
   get purchaser() {
     const otherPurchaser = this.otherPurchaser ? this.otherPurchaser.trim() : null;
@@ -25,6 +28,7 @@ export class RegistrationSummaryComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private modals: NgbModal,
     private registrationService: RegistrationService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
@@ -61,18 +65,32 @@ export class RegistrationSummaryComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    // close modal if it's open
+    if (this.confirmModal) { this.confirmModal.dismiss(); }
+  }
+
   private goHome() {
     // send them back to their home page
     this.router.navigate([`/${this.path}`]);
   }
 
-  showFullProfile() {
-    // TODO: replace confirm with a better popup
-    if (confirm('By clicking continue you acknowledge that all changes to this information will be collected, audited, and your administrator may contact you about them.')) {
+  showFullProfile(content: TemplateRef<any>) {
+    this.confirmModal = this.modals.open(content);
+
+    // handle result
+    this.confirmModal.result.then(() => {
+      // modal was closed
+
+      this.confirmModal = null; // clear for next time
+
       // save the key for lookup
       this.uniqueKeyService.setKey(this.registration.id);
       this.router.navigate([`/${this.path}/registration/summary/full`]);
-    }
+    }, () => {
+      // modal was dismissed
+      this.confirmModal = null; // clear for next time
+    });
   }
 
   addReferrals() {
