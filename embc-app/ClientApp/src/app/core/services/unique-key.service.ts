@@ -18,8 +18,6 @@ export class UniqueKeyService {
   getKey(): string {
     // get the value of the key.
     const key = this.key;
-    // once the key has been used once it gets obliterated.
-    this.clearKey();
     // give the key back to the caller.
     return key;
   }
