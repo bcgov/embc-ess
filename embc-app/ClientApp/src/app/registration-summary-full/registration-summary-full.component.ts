@@ -35,10 +35,12 @@ export class RegistrationSummaryFullComponent implements OnInit {
         .subscribe(r => {
           // if there is nothing useful returned route somewhere else.
           if (!r.essFileNumber) {
+            // done with the key. It was useless. Clear the reference key.
+            this.uniqueKeyService.clearKey();
             // send them back to their home page
             this.router.navigate([`/${this.path}`]);
           } else {
-            // Save the registration into the
+            // Save the registration into the global var
             this.registration = r;
           }
         });
