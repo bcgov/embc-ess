@@ -37,7 +37,15 @@ And of course this component needs to be implemented as a 'maker' with both an e
               <!-- TODO: here, prompt for Food Required and # of Days for Meals -->
               <div class="card">
                 <div class="card-body">
-                  <p>List approved items:</p>
+                  <div class="form-group">
+                    <label for="approvedItems">List approved items:</label>
+                    <textarea class="form-control" id="approvedItems" rows="3"></textarea>
+                    <small><strong>NOTE:</strong> If more than one Referral Form is issued for incidentals, the total of all Referral Forms must not exceed maximum allowable rates.</small>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  Total Amount:
+                  <input type="number">
                 </div>
               </div>
             </div>
