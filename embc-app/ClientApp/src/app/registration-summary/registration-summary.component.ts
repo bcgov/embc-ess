@@ -38,20 +38,21 @@ export class RegistrationSummaryComponent implements OnInit {
     // ensure we have a lookup key
     if (key) {
       this.registrationService.getRegistrationSummaryById(key)
-        .subscribe(r => {
-          // ensure we have an ESS File Number
-          if (!r.essFileNumber) {
-            // send them back to their home page
-            this.router.navigate([`/${this.path}`]);
-          } else {
-            // save the registration object
-            this.registration = r;
-          }
+        .subscribe(value => {
+          // save the registration object
+          this.registration = value;
+        }, err => {
+          alert(`err = ${err}`);
+          this.goHome();
         });
     } else {
-      // send them back to their home page
-      this.router.navigate([`/${this.path}`]);
+      this.goHome();
     }
+  }
+
+  private goHome() {
+    // send them back to their home page
+    this.router.navigate([`/${this.path}`]);
   }
 
   showFullProfile() {

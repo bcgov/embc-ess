@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ReferralService } from 'src/app/core/services/referral.service';
@@ -20,12 +20,13 @@ export class ReferralTableComponent implements OnChanges {
   isLoadingResults = false;
   searchResults$: Observable<ReferralSearchResults>;
   pagination: PaginationSummary = null;
+  referrals: Array<Referral> = [];
 
   constructor(
     private referralService: ReferralService,
   ) { }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.registration && this.registration.id) {
       this.isLoadingResults = true;
 
@@ -47,11 +48,9 @@ export class ReferralTableComponent implements OnChanges {
               supplier: { name: y.supplier.name },
               type: y.type,
               dates: {
-                to: y.validTo,
                 from: y.validFrom,
+                to: y.validTo
               }
-              // validFrom: y.validFrom,
-              // validTo: y.validTo
             } as Referral;
           });
 
@@ -63,6 +62,7 @@ export class ReferralTableComponent implements OnChanges {
   }
 
   printReferrals() {
-    console.log('You clicked on Create PDF & Print!');
+    console.log('referrals to print =', this.referrals);
+    // TODO: call BE to print referrals and return PDF (automatically open/save)
   }
 }

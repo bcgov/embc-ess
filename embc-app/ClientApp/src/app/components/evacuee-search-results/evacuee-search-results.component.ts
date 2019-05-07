@@ -141,55 +141,57 @@ export class EvacueeSearchResultsComponent implements OnChanges, OnInit {
       listItems.push(hoh);
 
       // push the family members of the HOH as stubs
-      for (const familyMember of registration.headOfHousehold.familyMembers) {
-        const fmbr = {
-          // hold on to a copy of the source data
-          rowData: { ...registration },
+      if (registration.headOfHousehold && registration.headOfHousehold.familyMembers) {
+        for (const familyMember of registration.headOfHousehold.familyMembers) {
+          const fmbr = {
+            // hold on to a copy of the source data
+            rowData: { ...registration },
 
-          // populate row metadata
-          index,
-          count: array.length,
-          even: index % 2 === 0,
-          odd: Math.abs(index % 2) === 1,
-          first: index === 0,
-          last: index === array.length - 1,
+            // populate row metadata
+            index,
+            count: array.length,
+            even: index % 2 === 0,
+            odd: Math.abs(index % 2) === 1,
+            first: index === 0,
+            last: index === array.length - 1,
 
-          id: registration.id, // the guid to link them to their file
-          restrictedAccess: registration.restrictedAccess, // should this file be shown or not?
-          essFileNumber: registration.essFileNumber, // what is the ESS file number
-          firstName: familyMember.firstName,
-          lastName: familyMember.lastName,
-          incidentTaskTaskNumber: null,
-          requiresIncidentals: registration.requiresIncidentals, // do they need vouchers
-          personType: familyMember.personType, // HOH || FMBR || VOLN
-          headOfHousehold: false,
-          evacuatedFrom: null, // community name
-          evacuatedTo: null, // community name
-          hasReferrals: this.hasReferrals(registration),
-          registrationCompletionDate: registration.registrationCompletionDate
-        };
+            id: registration.id, // the guid to link them to their file
+            restrictedAccess: registration.restrictedAccess, // should this file be shown or not?
+            essFileNumber: registration.essFileNumber, // what is the ESS file number
+            firstName: familyMember.firstName,
+            lastName: familyMember.lastName,
+            incidentTaskTaskNumber: null,
+            requiresIncidentals: registration.requiresIncidentals, // do they need vouchers
+            personType: familyMember.personType, // HOH || FMBR || VOLN
+            headOfHousehold: false,
+            evacuatedFrom: null, // community name
+            evacuatedTo: null, // community name
+            hasReferrals: this.hasReferrals(registration),
+            registrationCompletionDate: registration.registrationCompletionDate
+          };
 
-        if (registration.incidentTask && registration.incidentTask.taskNumber) {
-          // check for nulls
-          fmbr.incidentTaskTaskNumber = registration.incidentTask.taskNumber;
-        } else {
-          fmbr.incidentTaskTaskNumber = '';
+          if (registration.incidentTask && registration.incidentTask.taskNumber) {
+            // check for nulls
+            fmbr.incidentTaskTaskNumber = registration.incidentTask.taskNumber;
+          } else {
+            fmbr.incidentTaskTaskNumber = '';
+          }
+          if (registration.headOfHousehold.primaryResidence
+            && registration.headOfHousehold.primaryResidence.community
+            && registration.headOfHousehold.primaryResidence.community.name) {
+            // check for nulls
+            fmbr.evacuatedFrom = registration.headOfHousehold.primaryResidence.community.name;
+          } else {
+            fmbr.evacuatedFrom = '';
+          }
+          if (registration.hostCommunity && registration.hostCommunity.name) {
+            // check for nulls
+            fmbr.evacuatedTo = registration.hostCommunity.name;
+          } else {
+            fmbr.evacuatedTo = '';
+          }
+          listItems.push(fmbr);
         }
-        if (registration.headOfHousehold.primaryResidence
-          && registration.headOfHousehold.primaryResidence.community
-          && registration.headOfHousehold.primaryResidence.community.name) {
-          // check for nulls
-          fmbr.evacuatedFrom = registration.headOfHousehold.primaryResidence.community.name;
-        } else {
-          fmbr.evacuatedFrom = '';
-        }
-        if (registration.hostCommunity && registration.hostCommunity.name) {
-          // check for nulls
-          fmbr.evacuatedTo = registration.hostCommunity.name;
-        } else {
-          fmbr.evacuatedTo = '';
-        }
-        listItems.push(fmbr);
       }
     });
     return listItems;
