@@ -25,10 +25,25 @@ And of course this component needs to be implemented as a 'maker' with both an e
       </div>
 
       <div class="feature-block card p-0 mt-4">
+        <div class="row">
+          <div class="col-5 pr-0">
+            <div class="pt-4 pl-4">
+              <app-evacuee-list [(evacuees)]="referral.evacuees"></app-evacuee-list>
+              {{referral.evacuees.length}}
+            </div>
+          </div>
+          <div class="col-7">
+            <div class="pt-4 pr-4">
+              <!-- TODO: here, prompt for Food Required and # of Days for Meals -->
+              <div class="card">
+                <div class="card-body">
+                  <p>List approved items:</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <!-- TODO: <app-evacuee-list></app-evacuee-list> -->
-
-        <!-- TODO: here, prompt for Food Required and # of Days for Meals -->
 
         <app-supplier></app-supplier>
 
