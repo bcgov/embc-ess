@@ -137,7 +137,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var volunteer = Volunteers.AsNoTracking().FirstOrDefault(x => x.BceidAccountUserName == bceidUserId);
             if (volunteer == null) return null;
 
-            return volunteer.ToViewModel();
+            return volunteer?.ToViewModel();
         }
 
         public Volunteer GetVolunteerByExternalId(string externalId)
@@ -145,7 +145,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var volunteer = Volunteers.FirstOrDefault(x => x.UserId.Equals(externalId, StringComparison.OrdinalIgnoreCase));
             if (volunteer == null) return null;
 
-            return volunteer.ToViewModel();
+            return volunteer?.ToViewModel();
         }
 
         public Volunteer GetVolunteerByName(string firstName, string lastName)
@@ -153,7 +153,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var volunteer = Volunteers.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
             if (volunteer == null) return null;
 
-            return volunteer.ToViewModel();
+            return volunteer?.ToViewModel();
         }
     }
 }
