@@ -8,8 +8,10 @@
     </section>
   </div>
 
-  <app-referral-search-results #searchResultsView [searchResults]="searchResults$ | async">
-  </app-referral-search-results>
+  <app-referral-search-results #searchResultsView [searchResults]="searchResults$ | async"
+    (referralsSelected)="referrals = $event"></app-referral-search-results>
 
-  <button class="btn btn-secondary float-right" (click)="printReferrals()">CREATE PDF &amp; PRINT</button>
+  <button class="btn btn-secondary float-right" [disabled]="!referrals.length" (click)="printReferrals()">
+    CREATE PDF &amp; PRINT
+  </button>
 </div>

@@ -1,6 +1,33 @@
 <div>
   <h1>View Referral</h1>
-  <div *ngIf="referral">
-    {{ referral | json }}
+
+  <div *ngIf="loading">Loading...</div>
+
+  <div *ngIf="!loading">
+    <div *ngIf="isAccommodationReferral(referral)">
+      <app-accommodation-referral [referral]="referral" [editMode]="false"></app-accommodation-referral>
+    </div>
+
+    <div *ngIf="isClothingReferral(referral)">
+      <app-clothing-referral [referral]="referral" [editMode]="false"></app-clothing-referral>
+    </div>
+
+    <div *ngIf="isFoodReferral(referral)">
+      <app-food-referral [referral]="referral" [editMode]="false"></app-food-referral>
+    </div>
+
+    <div *ngIf="isIncidentalsReferral(referral)">
+      <app-incidentals-referral [referral]="referral" [editMode]="false"></app-incidentals-referral>
+    </div>
+
+    <div *ngIf="isTransportationReferral(referral)">
+      <app-transportation-referral [referral]="referral" [editMode]="false"></app-transportation-referral>
+    </div>
+
+    <section class=" mt-5 space-between">
+      <button type="button" class="btn btn-secondary" [disabled]="deactivating" (click)="deactivate()">DEACTIVATE
+        REFERRAL</button>
+      <button class="btn btn-primary float-right" (click)="back()">BACK TO REFERRALS</button>
+    </section>
   </div>
 </div>

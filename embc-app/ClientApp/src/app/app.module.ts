@@ -57,17 +57,21 @@ import { SideboxAddVolunteerComponent } from './components/sidebox-add-volunteer
 import { SideboxCollectionNoticeComponent } from './components/sidebox-collection-notice/sidebox-collection-notice.component';
 
 // shared modals // TODO: move to shared module
+import { AccommodationRatesComponent } from './shared/modals/accommodation-rates/accommodation-rates.component';
 import { ClothingRatesComponent } from './shared/modals/clothing-rates/clothing-rates.component';
 import { FoodRatesComponent } from './shared/modals/food-rates/food-rates.component';
 import { IncidentalsRatesComponent } from './shared/modals/incidentals-rates/incidentals-rates.component';
-import { LodgingRatesComponent } from './shared/modals/lodging-rates/lodging-rates.component';
 import { SessionExpiringModalComponent } from './shared/modals/session-expiring/session-expiring.component';
 import { TransportationRatesComponent } from './shared/modals/transportation-rates/transportation-rates.component';
 
 // TODO: move these to volunteer/local-authority/provincial-admin modules
 import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
 import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
+import { AccommodationReferralComponent } from './volunteer/components/accommodation-referral/accommodation-referral.component';
+import { ClothingReferralComponent } from './volunteer/components/clothing-referral/clothing-referral.component';
+import { FoodReferralComponent } from './volunteer/components/food-referral/food-referral.component';
 import { IncidentalsReferralComponent } from './volunteer/components/incidentals-referral/incidentals-referral.component';
+import { TransportationReferralComponent } from './volunteer/components/transportation-referral/transportation-referral.component';
 import { ReferralTableComponent } from './volunteer/components/referral-table/referral-table.component';
 import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid-from-to.component';
 import { SupplierComponent } from './volunteer/components/supplier/supplier.component';
@@ -118,16 +122,20 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
     PaginationSummaryComponent,
     UsefulInformationPageComponent,
 
+    AccommodationRatesComponent,
     ClothingRatesComponent,
     FoodRatesComponent,
     IncidentalsRatesComponent,
-    LodgingRatesComponent,
     SessionExpiringModalComponent,
     TransportationRatesComponent,
 
     ReferralMakerComponent,
     ReferralViewComponent,
+    AccommodationReferralComponent,
+    ClothingReferralComponent,
+    FoodReferralComponent,
     IncidentalsReferralComponent,
+    TransportationReferralComponent,
     ReferralTableComponent,
     ValidFromToComponent,
     SupplierComponent,
@@ -156,10 +164,10 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
     VolunteerEditorModule,
   ],
   entryComponents: [
+    AccommodationRatesComponent,
     ClothingRatesComponent,
     FoodRatesComponent,
     IncidentalsRatesComponent,
-    LodgingRatesComponent,
     SessionExpiringModalComponent,
     TransportationRatesComponent,
   ],

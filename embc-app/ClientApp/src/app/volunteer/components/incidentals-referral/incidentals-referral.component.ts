@@ -3,7 +3,6 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IncidentalsReferral } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
 import * as moment from 'moment';
-import { ReferralDate } from 'src/app/core/models/referral-date';
 
 @Component({
   selector: 'app-incidentals-referral',
@@ -16,8 +15,9 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
   @Output() remove = new EventEmitter<any>();
   @Output() add = new EventEmitter<any>();
 
-  private incidentalsRatesModal: NgbModalRef = null;
+  private ratesModal: NgbModalRef = null;
   uuid: string;
+
   constructor(
     private modals: NgbModal,
   ) { }
@@ -30,7 +30,7 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
 
   ngOnDestroy() {
     // close modal if it's open
-    if (this.incidentalsRatesModal) { this.incidentalsRatesModal.dismiss(); }
+    if (this.ratesModal) { this.ratesModal.dismiss(); }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -42,11 +42,11 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
     }
   }
 
-  viewIncidentalsRates() {
-    this.incidentalsRatesModal = this.modals.open(IncidentalsRatesComponent, { size: 'lg' });
-    this.incidentalsRatesModal.result.then(
-      () => { this.incidentalsRatesModal = null; },
-      () => { this.incidentalsRatesModal = null; }
+  viewRates() {
+    this.ratesModal = this.modals.open(IncidentalsRatesComponent, { size: 'lg' });
+    this.ratesModal.result.then(
+      () => { this.ratesModal = null; },
+      () => { this.ratesModal = null; }
     );
   }
 

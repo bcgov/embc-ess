@@ -29,7 +29,7 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
   /**
    * Emitted when the user selects a search result
    */
-  @Output() resultSelected = new EventEmitter<RowItem>();
+  @Output() referralsSelected = new EventEmitter<Referral[]>();
 
   rows: RowItem[] = [];
   notFoundMessage = 'Searching ...';
@@ -47,8 +47,18 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
   ngOnInit() {
     this.authService.path.subscribe(p => this.path = p);
   }
-  onResultSelected(rowItem: RowItem, event: MouseEvent) {
-    this.resultSelected.emit(rowItem);
+
+  onReferralChange(rowItem: RowItem, event: MouseEvent) {
+    // TODO: emit new array of selected referrals
+    const referrals: Array<Referral> = [];
+
+    // FOR TESTING ONLY:
+    // tslint:disable-next-line: no-string-literal
+    if (event.target['checked']) {
+      referrals.push(rowItem.data);
+    }
+
+    this.referralsSelected.emit(referrals);
   }
 
   // map the search results (referrals) into row items suitable for display on a table

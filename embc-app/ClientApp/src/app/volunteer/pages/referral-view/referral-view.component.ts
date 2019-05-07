@@ -3,7 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { ReferralService } from 'src/app/core/services/referral.service';
-import { Referral } from 'src/app/core/models';
+import {
+  Referral, isAccommodationReferral, isClothingReferral,
+  isFoodReferral, isIncidentalsReferral, isTransportationReferral
+} from 'src/app/core/models';
 
 @Component({
   selector: 'app-referral-view',
@@ -16,6 +19,8 @@ export class ReferralViewComponent implements OnInit {
   registrationId: string = null;
   referralId: string = null;
   referral: Referral = null;
+  loading = true;
+  deactivating = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,40 +34,71 @@ export class ReferralViewComponent implements OnInit {
     // get path for routing
     this.authService.path.subscribe(p => this.path = p);
 
-    // get URL params
+    // get and verify URL params
     this.registrationId = this.route.snapshot.paramMap.get('regId');
     this.referralId = this.route.snapshot.paramMap.get('refId');
 
     if (!this.registrationId || !this.referralId) {
-      // error - return to summary page
-      this.uniqueKeyService.setKey(this.registrationId);
-      this.router.navigate([`/${this.path}/registration/summary`]);
+      alert(`err = invalid registration ID or referral ID`);
+      this.back();
     }
 
     // get referral data
     this.referralService.getReferralById(this.registrationId, this.referralId)
-      .subscribe(r => {
-        if (!r.id) {
-          // error - send them back to their home page
-          this.router.navigate([`/${this.path}`]);
-        } else {
-          this.referral = r;
-        }
+      .subscribe(value => {
+        this.loading = false;
+        this.referral = value;
       }, err => {
-        alert(err); // TODO: don't leave this here
-        // error - send them back to their home page
-        this.router.navigate([`/${this.path}`]);
+        this.loading = false;
+        alert(`err = ${err}`);
+        this.goHome();
       });
   }
 
+  private goHome() {
+    // go back to their home page
+    this.router.navigate([`/${this.path}`]);
+  }
+
   back() {
-    // navigate back to summary page
+    // go back to summary page
     this.uniqueKeyService.setKey(this.registrationId);
     this.router.navigate([`/${this.path}/registration/summary`]);
   }
 
-  deactivateReferral() {
-    // TODO
+  deactivate() {
+    this.deactivating = true;
+    this.referralService.getReferralById(this.registrationId, this.referralId)
+      .subscribe(() => {
+        this.deactivating = false;
+        // return to summary page
+        this.back();
+      }, err => {
+        this.deactivating = false;
+        alert(`err = ${err}`);
+        this.goHome();
+      });
+  }
+
+  // --------------------HELPERS-----------------------------------------
+  isAccommodationReferral(referral: Referral): boolean {
+    return isAccommodationReferral(referral);
+  }
+
+  isClothingReferral(referral: Referral): boolean {
+    return isClothingReferral(referral);
+  }
+
+  isFoodReferral(referral: Referral): boolean {
+    return isFoodReferral(referral);
+  }
+
+  isIncidentalsReferral(referral: Referral): boolean {
+    return isIncidentalsReferral(referral);
+  }
+
+  isTransportationReferral(referral: Referral): boolean {
+    return isTransportationReferral(referral);
   }
 
 }

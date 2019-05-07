@@ -4,13 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import {
-  Registration,
-  Supplier,
-  IncidentalsReferral,
-  FoodReferral,
-  ClothingReferral,
-  AccommodationReferral,
-  TransportationReferral
+  Registration, Supplier, IncidentalsReferral, FoodReferral,
+  ClothingReferral, AccommodationReferral, TransportationReferral
 } from 'src/app/core/models';
 
 @Component({
@@ -19,8 +14,6 @@ import {
   styleUrls: ['./referral-maker.component.scss']
 })
 export class ReferralMakerComponent implements OnInit {
-
-  // TODO: retrieve incidentTask (for start date/time) if not already attached to Registration object
 
   editMode = true; // when you first land on this page
   submitting = false;
@@ -60,24 +53,19 @@ export class ReferralMakerComponent implements OnInit {
     // get registration data
     this.registrationService.getRegistrationById(this.regId)
       .subscribe(r => {
-        if (!r.essFileNumber) {
-          // error - send them back to their home page
-          this.router.navigate([`/${this.path}`]);
-        } else {
-          this.registration = r;
+        this.registration = r;
 
-          // FOR TESTING
-          if (this.registration.incidentTask) {
-            // tslint:disable-next-line: no-string-literal
-            this.registration.incidentTask['startDate'] = Date.now();
-          }
+        // FOR TESTING
+        if (this.registration.incidentTask) {
+          // tslint:disable-next-line: no-string-literal
+          this.registration.incidentTask['startDate'] = Date.now();
+        }
 
-          // populate evacuees
-          const hoh = this.registration.headOfHousehold;
-          if (hoh) {
-            this.evacuees.push({ evacuee: hoh, selected: false });
-            hoh.familyMembers.forEach(fm => this.evacuees.push({ evacuee: fm, selected: false }));
-          }
+        // populate evacuees
+        const hoh = this.registration.headOfHousehold;
+        if (hoh) {
+          this.evacuees.push({ evacuee: hoh, selected: false });
+          hoh.familyMembers.forEach(fm => this.evacuees.push({ evacuee: fm, selected: false }));
         }
       });
   }
@@ -135,7 +123,7 @@ export class ReferralMakerComponent implements OnInit {
 
   addIncidentalsReferral() {
     const referral: IncidentalsReferral = {
-      id: null, // is populated back BE after save
+      id: null, // is populated by BE after save
       active: true,
       type: 'INCIDENTALS',
       purchaser: this.purchaser,
@@ -149,13 +137,12 @@ export class ReferralMakerComponent implements OnInit {
       comments: 'some comments here',
       confirmChecked: false
     };
-
     this.incidentalsReferrals.push(referral);
   }
 
   addFoodReferral() {
     const referral: FoodReferral = {
-      id: null, // is populated back BE after save
+      id: null, // is populated by BE after save
       active: true,
       type: 'FOOD',
       subType: null,
@@ -173,7 +160,6 @@ export class ReferralMakerComponent implements OnInit {
       comments: 'some comments here',
       confirmChecked: false
     };
-
     this.foodReferrals.push(referral);
   }
 
@@ -204,36 +190,5 @@ export class ReferralMakerComponent implements OnInit {
       while (this.foodReferrals.length > 0) { this.foodReferrals.pop(); }
     }
   }
-
-  // SAMPLE CODE
-  // family member formgroup
-  // createFamilyMember(fmbr?: FamilyMember): FormGroup {
-  //   if (fmbr) {
-  //     return this.formBuilder.group({
-  //       bcServicesNumber: fmbr.bcServicesNumber || null,
-  //       id: fmbr.id || null,
-  //       active: fmbr.active || null,
-  //       sameLastNameAsEvacuee: fmbr.sameLastNameAsEvacuee,
-  //       firstName: [fmbr.firstName, Validators.required],
-  //       lastName: [fmbr.lastName, Validators.required],
-  //       nickname: fmbr.nickname,
-  //       initials: fmbr.initials,
-  //       gender: fmbr.gender,
-  //       dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: check this!!
-  //       relationshipToEvacuee: [fmbr.relationshipToEvacuee, Validators.required],
-  //     });
-  //   } else {
-  //     // make a new family member blank and return it.
-  //     return this.formBuilder.group({
-  //       sameLastNameAsEvacuee: true,
-  //       firstName: ['', Validators.required],
-  //       lastName: ['', Validators.required],
-  //       initials: '',
-  //       gender: null,
-  //       dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
-  //       relationshipToEvacuee: [null, Validators.required],
-  //     });
-  //   }
-  // }
 
 }
