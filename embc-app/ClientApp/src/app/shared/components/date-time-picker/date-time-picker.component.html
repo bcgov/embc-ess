@@ -8,10 +8,10 @@
 </div>
 <div class="row">
   <section class="col vertical-spacer">
-    <input type="text" class="form-control" [value]="localDate" (change)="updateDate($event.target.value)" placeholder="yyyy-mm-dd" id="startDate" autocomplete="off">
+    <input type="text" class="form-control" [value]="dateString" (change)="updateDate($event.target.value)" placeholder="yyyy-mm-dd" id="startDate" autocomplete="off">
     <small>(Format: yyyy-mm-dd)</small>
   </section>
   <section class="col">
-    <ngb-timepicker [meridian]="true" [ngModel]="localTime" (ngModelChange)="updateTime($event)" id="startTime"></ngb-timepicker>
+    <ngb-timepicker [meridian]="true" [ngModel]="time" (ngModelChange)="updateTime($event)" id="startTime"></ngb-timepicker>
   </section>
 </div>

@@ -11,6 +11,13 @@ export const DATETIMEPICKER_VALUE_ACCESSOR: any = {
   multi: true
 };
 
+interface DateTimeStruct {
+  dateString: string;
+  hour: number;
+  minute: number;
+  second: number;
+}
+
 @Component({
   selector: 'app-date-time-picker',
   templateUrl: './date-time-picker.component.html',
@@ -23,8 +30,15 @@ export class DateTimePickerComponent implements OnInit, ControlValueAccessor {
   @Input() value: Date = null;
   @Output() valueChange = new EventEmitter<Date>();
 
-  localDate: string = null;
-  localTime: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
+  model: DateTimeStruct = {
+    dateString: null,
+    hour: 0,
+    minute: 0,
+    second: 0
+  };
+
+  dateString: string = null;
+  time: NgbTimeStruct = null;
 
   constructor() { }
 
@@ -39,9 +53,8 @@ export class DateTimePickerComponent implements OnInit, ControlValueAccessor {
 
   // This is a basic setter that the Angular forms API is going to use
   writeValue(value: any): void {
-    const model = this.fromDateObject(value);
-    this.localDate = model.localDate;
-    this.localTime = model.localTime;
+    const structValue = this.fromJSDate(value);
+    this.setModel(structValue);
   }
 
   // Allows Angular to register a function to call when the model changes.
@@ -55,38 +68,35 @@ export class DateTimePickerComponent implements OnInit, ControlValueAccessor {
 
   // end of ControlValueAccessor
 
+  isValid(model: DateTimeStruct): boolean {
+    if (model.dateString) {
+      const d = moment(model.dateString, 'YYYY-MM-DD', true);
+      return d.isValid();
+    }
+    return false;
+  }
+
   updateDate(newValue: string): void {
-    this.localDate = newValue;
+    this.setModel({ ...this.model, dateString: newValue });
     this.propagateModelChange();
   }
 
   updateTime(newValue: NgbTimeStruct): void {
-    this.localTime = newValue;
+    this.setModel({ ...this.model, ...newValue });
     this.propagateModelChange();
   }
 
-  private propagateModelChange(touched = true): void {
-    if (touched) {
-      this.onTouched();
-    }
-    // emit change events
-    const datetime = this.toDateObject({ localDate: this.localDate, localTime: this.localTime });
-    this.valueChange.emit(datetime);
-    this.onChange(datetime);
-  }
-
-  private formatDate(date: Date): string {
+  formatDate(date: Date): string {
     if (!date) {
       return null;
     }
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    // return moment(date).format('YYYY-MM-DD');
     return `${this.pad(year)}-${this.pad(month)}-${this.pad(day)}`;
   }
 
-  private formatTime(date: Date): NgbTimeStruct {
+  formatTime(date: Date): NgbTimeStruct {
     if (!date) {
       return null;
     }
@@ -96,25 +106,59 @@ export class DateTimePickerComponent implements OnInit, ControlValueAccessor {
     return { hour, minute, second };
   }
 
+  private setModel(newValue: DateTimeStruct): void {
+    this.model = newValue;
+    this.dateString = this.model.dateString;
+    this.time = {
+      hour: this.model.hour,
+      minute: this.model.minute,
+      second: this.model.second,
+    };
+  }
+
   private pad(i: number): string {
     return i < 10 ? `0${i}` : `${i}`;
   }
 
-  private fromDateObject(date: Date): { localDate: string, localTime: NgbTimeStruct } {
-    let localDate = null;
-    let localTime = { hour: 0, minute: 0, second: 0 };
-    if (date !== null) {
-      localDate = this.formatDate(date);
-      localTime = this.formatTime(date);
+  private fromJSDate(jsDate: Date): DateTimeStruct {
+    let structValue: DateTimeStruct = {
+      dateString: null,
+      hour: 0,
+      minute: 0,
+      second: 0
+    };
+    if (jsDate) {
+      const time = this.formatTime(jsDate);
+      const dateString = this.formatDate(jsDate);
+      structValue = { ...structValue, ...time, dateString }
     }
-    return { localDate, localTime };
+    return structValue;
   }
 
-  private toDateObject(model: { localDate: string, localTime: NgbTimeStruct }): Date {
-    const d = moment(model.localDate, 'YYYY-MM-DD', true);
-    d.hour(model.localTime.hour);
-    d.minute(model.localTime.minute);
-    d.second(model.localTime.second);
-    return d.toDate();
+  private toJSDate(model: DateTimeStruct): Date {
+    const d = moment(model.dateString, 'YYYY-MM-DD', true);
+    if (d.isValid()) {
+      d.hour(model.hour);
+      d.minute(model.minute);
+      d.second(model.second);
+      return d.toDate();
+    }
+    return null;
+  }
+
+  private propagateModelChange(touched = true): void {
+    if (touched) {
+      this.onTouched();
+    }
+
+    // emit change events
+    if (this.isValid(this.model)) {
+      const datetime = this.toJSDate(this.model);
+      this.valueChange.emit(datetime);
+      this.onChange(datetime);
+    } else {
+      this.valueChange.emit(null);
+      this.onChange(null);
+    }
   }
 }
