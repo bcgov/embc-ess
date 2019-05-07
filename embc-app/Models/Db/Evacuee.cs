@@ -9,7 +9,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// <summary>
     /// Person Database Model
     /// </summary>
-    public class Evacuee
+    public class Evacuee : IAuditableEntity
     {
         [Key, Column(Order = 0)]
         public Guid EvacueeRegistrationId { get; set; }

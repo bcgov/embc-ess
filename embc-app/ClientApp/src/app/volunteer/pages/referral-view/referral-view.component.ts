@@ -47,7 +47,12 @@ export class ReferralViewComponent implements OnInit {
     this.referralService.getReferralById(this.registrationId, this.referralId)
       .subscribe(value => {
         this.loading = false;
-        this.referral = value;
+        if (!value.id || !value.type) {
+          console.log('ERROR - invalid referral object = ', value);
+          this.goHome();
+        } else {
+          this.referral = value;
+        }
       }, err => {
         this.loading = false;
         alert(`err = ${err}`);
@@ -68,7 +73,7 @@ export class ReferralViewComponent implements OnInit {
 
   deactivate() {
     this.deactivating = true;
-    this.referralService.getReferralById(this.registrationId, this.referralId)
+    this.referralService.deactivateReferral(this.registrationId, this.referralId)
       .subscribe(() => {
         this.deactivating = false;
         // return to summary page

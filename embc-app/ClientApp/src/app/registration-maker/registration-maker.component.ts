@@ -200,7 +200,6 @@ export class RegistrationMakerComponent implements OnInit {
     if (key) {
       // this is a form with data flowing in.
       this.registrationService.getRegistrationById(key).subscribe(r => {
-
         // set registration mode to edit and save the previous content in an object.
         this.registration = r;
         this.editMode = true;
@@ -560,6 +559,8 @@ export class RegistrationMakerComponent implements OnInit {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee added successfully');
+          // done adding the entry. Clear the reference key.
+          this.uniqueKeyService.clearKey();
           // go back to the main dashboard
           this.router.navigate([`/${this.path}/`]);
         });
@@ -570,6 +571,8 @@ export class RegistrationMakerComponent implements OnInit {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee updated successfully');
+          // done editing the entry. Clear the reference key.
+          this.uniqueKeyService.clearKey();
           // go back to the main dashboard
           this.router.navigate([`/${this.path}/`]);
         });

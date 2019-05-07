@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
-    public class Region
+    public class Region : IAuditableEntity
     {
         [Key]
         [MaxLength(255)]

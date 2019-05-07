@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
-    public abstract class EvacueeOld : Person
+    public abstract class EvacueeOld : Person, IAuditableEntity
     {
         public string BcServicesNumber { get; set; }
     }

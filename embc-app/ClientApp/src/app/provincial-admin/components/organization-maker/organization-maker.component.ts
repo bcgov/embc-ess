@@ -144,6 +144,8 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
             // go back to the organization page
             this.router.navigate([`/${this.path}/organizations`]);
           }
+          // done editing the key. Clear it.
+          this.uniqueKeyService.clearKey();
         });
     } else {
       // if the organization has no id then we need to create a new one
@@ -162,6 +164,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
             // go back to the organization page
             this.router.navigate([`/${this.path}/organizations`]);
           }
+          // NB - there is no key in this scenario
         });
     }
   }

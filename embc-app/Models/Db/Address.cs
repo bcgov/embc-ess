@@ -7,7 +7,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// <summary>
     /// Address Database Model
     /// </summary>
-    public abstract class Address
+    public abstract class Address : IAuditableEntity
     {
         public const string BC_ADDRESS = "BCAD";
         public const string OTHER_ADDRESS = "OTAD";
@@ -64,7 +64,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         }
     }
 
-    public  class OtherAddress : Address
+    public class OtherAddress : Address
     {
         public string City { get; set; }
 

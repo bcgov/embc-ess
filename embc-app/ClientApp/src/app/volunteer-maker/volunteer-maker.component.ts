@@ -295,7 +295,8 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
     this.initVars();
     this.volunteer.organization = o;
     this.organizationName.setValue(o); // set form field
-
+    // done editing a entry. Clear the reference key.
+    this.uniqueKeyService.clearKey();
     // go back to the first page
     this.back();
   }

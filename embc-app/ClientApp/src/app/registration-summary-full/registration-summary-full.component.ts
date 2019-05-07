@@ -15,8 +15,8 @@ import { AuthService } from '../core/services/auth.service';
 export class RegistrationSummaryFullComponent implements OnInit {
 
   // local copy of the application state
-  registration: Registration;
-  path: string;
+  registration: Registration = null;
+  path: string = null; // for relative routing
 
   constructor(
     private router: Router,
@@ -28,24 +28,33 @@ export class RegistrationSummaryFullComponent implements OnInit {
   ngOnInit() {
     // get the path for routing
     this.authService.path.subscribe(p => this.path = p);
-    // get the key for lookup
+
+    // get lookup key and load registration data
     const key = this.uniqueKeyService.getKey();
     if (key) {
       this.registrationService.getRegistrationById(key)
         .subscribe(r => {
-          // if there is nothing useful returned route somewhere else.
-          if (!r.essFileNumber) {
-            // send them back to their home page
-            this.router.navigate([`/${this.path}`]);
+          if (!r.id || !r.essFileNumber) {
+            console.log('ERROR - invalid registration object = ', r);
+            // done with the key. It was useless. Clear the reference key.
+            this.uniqueKeyService.clearKey();
+            this.goHome();
           } else {
-            // Save the registration into the
+            // save the registration object
             this.registration = r;
           }
+        }, err => {
+          alert(`err = ${err}`);
+          this.goHome();
         });
     } else {
-      // send them back to their home page
-      this.router.navigate([`/${this.path}`]);
+      this.goHome();
     }
+  }
+
+  private goHome() {
+    // send them back to their home page
+    this.router.navigate([`/${this.path}`]);
   }
 
   isBcAddress(address: Address): boolean {

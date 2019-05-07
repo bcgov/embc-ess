@@ -13,7 +13,7 @@ import { UniqueKeyService } from '../core/services/unique-key.service';
 export class RegistrationSummaryComponent implements OnInit {
 
   registration: Registration = null;
-  path: string; // for relative routing
+  path: string = null; // for relative routing
   selectedPurchaser = 'null';
   otherPurchaser: string = null;
 
@@ -35,12 +35,18 @@ export class RegistrationSummaryComponent implements OnInit {
 
     // get lookup key and load registration data
     const key = this.uniqueKeyService.getKey();
-    // ensure we have a lookup key
     if (key) {
       this.registrationService.getRegistrationSummaryById(key)
         .subscribe(value => {
-          // save the registration object
-          this.registration = value;
+          if (!value.id || !value.essFileNumber) {
+            console.log('ERROR - invalid registration object = ', value);
+            // done with the key. It was useless. Clear the reference key.
+            this.uniqueKeyService.clearKey();
+            this.goHome();
+          } else {
+            // save the registration object
+            this.registration = value;
+          }
         }, err => {
           alert(`err = ${err}`);
           this.goHome();
