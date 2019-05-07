@@ -1,11 +1,12 @@
-import { Region, RegionalDistrict, Community } from '.';
+import { Region, Community } from '.';
 
 export interface IncidentTask {
   id: string | null;
   taskNumber: string;
   details: string;
+  active?: boolean;
   totalAssociatedEvacuees?: number;
-  // region: Region | null;
-  // regionalDistrict: RegionalDistrict | null;
+  region: Region | null;
   community: Community | null;
+  startDate: string | null; // datetime
 }

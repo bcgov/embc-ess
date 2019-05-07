@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbPaginationModule, NgbModalModule, NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 // ngrx + configuration
 import { AppComponent } from './app.component';
@@ -151,10 +150,6 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
 
     // 3rd party
     StoreModule.forRoot(rootReducer, { metaReducers }),
-    NgbPaginationModule,
-    NgbModalModule,
-    NgbDatepickerModule,
-    NgbTimepickerModule,
 
     // core & shared
     CoreModule,
