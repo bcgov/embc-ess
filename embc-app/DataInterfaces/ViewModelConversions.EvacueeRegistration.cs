@@ -66,7 +66,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 result = new ViewModels.RegistrationSummary()
                 {
-                    Id = fullViewModel.Id.ToString(),
+                    Id = fullViewModel.Id,
                     EssFileNumber = fullViewModel.EssFileNumber,
                     RestrictedAccess = fullViewModel.RestrictedAccess,
                     RegisteringFamilyMembers = fullViewModel.RegisteringFamilyMembers,
@@ -81,7 +81,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     HeadOfHousehold = fullViewModel.HeadOfHousehold,
                     IncidentTask = fullViewModel.IncidentTask,
                     HostCommunity = fullViewModel.HostCommunity,
-                    Active = fullViewModel.Active.HasValue ? fullViewModel.Active.Value : false,
+                    Active = fullViewModel.Active ?? false,
                     HasFollowUpDetails = !string.IsNullOrWhiteSpace(fullViewModel.FollowUpDetails),
                     Facility = fullViewModel.Facility
                 };

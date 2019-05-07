@@ -14,17 +14,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             .AsNoTracking()
             .Include(ireg => ireg.Evacuees)
             .Include(ireg => ireg.EvacueeRegistrationAddresses)
-                .Include(reg => reg.HostCommunity)
-                    .ThenInclude(c => c.Region)
-                .Include(reg => reg.IncidentTask)
-                    .ThenInclude(t => t.Region)
-                .Include(reg => reg.IncidentTask)
+                .ThenInclude(ireg => ireg.Community)
                     .ThenInclude(d => d.Region)
-                .Include(reg => reg.IncidentTask)
-                    .ThenInclude(t => t.Community)
-                        .ThenInclude(d => d.Region);
-
-
+            .Include(ireg => ireg.EvacueeRegistrationAddresses)
+                .ThenInclude(ireg => ireg.Country)
+            .Include(reg => reg.HostCommunity)
+                .ThenInclude(c => c.Region)
+            .Include(reg => reg.IncidentTask)
+                .ThenInclude(t => t.Region)
+            .Include(reg => reg.IncidentTask)
+                .ThenInclude(d => d.Region)
+            .Include(reg => reg.IncidentTask)
+                .ThenInclude(t => t.Community)
+                    .ThenInclude(d => d.Region);
 
         public async Task<Registration> CreateEvacueeRegistrationAsync(Registration registration)
         {
@@ -70,7 +72,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var entity = await GetEvacueeRegistrationInternalAsync(id);
             return entity?.ToViewModel();
         }
-
 
         private async Task<Models.Db.EvacueeRegistration> GetEvacueeRegistrationInternalAsync(string id)
         {

@@ -29,9 +29,9 @@ namespace Gov.Jag.Embc.Public.Models.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public long EssFileNumber { get; set; }
 
-        public string PhoneNumber { get; set; }  //TODO:  Moved from HOH
-        public string PhoneNumberAlt { get; set; } //TODO:  Moved from HOH
-        public string Email { get; set; } //TODO:  Moved from HOH
+        public string PhoneNumber { get; set; }  
+        public string PhoneNumberAlt { get; set; } 
+        public string Email { get; set; } 
 
         public bool? DietaryNeeds { get; set; }
         public string DietaryNeedsDetails { get; set; }
