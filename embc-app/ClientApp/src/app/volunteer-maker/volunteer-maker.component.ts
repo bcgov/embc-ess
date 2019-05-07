@@ -290,7 +290,6 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
 
   // FUTURE: why not just reload this page?
   resetForm() {
-
     // backup org, re-init vars, restore org
     const o = this.volunteer.organization;
     this.initVars();

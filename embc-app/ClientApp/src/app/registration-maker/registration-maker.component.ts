@@ -200,7 +200,6 @@ export class RegistrationMakerComponent implements OnInit {
     if (key) {
       // this is a form with data flowing in.
       this.registrationService.getRegistrationById(key).subscribe(r => {
-
         // set registration mode to edit and save the previous content in an object.
         this.registration = r;
         this.editMode = true;

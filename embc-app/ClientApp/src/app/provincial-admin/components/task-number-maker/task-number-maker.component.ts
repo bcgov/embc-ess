@@ -117,6 +117,7 @@ export class TaskNumberMakerComponent implements OnInit {
             this.submitting = false;
             // add a message to the UI
             this.notificationQueueService.addNotification('Task number added successfully');
+            // NB - there is no key in this scenario
             // go back to the task number list page
             this.router.navigate([`/${this.path}/task-numbers`], { preserveQueryParams: true });
           });

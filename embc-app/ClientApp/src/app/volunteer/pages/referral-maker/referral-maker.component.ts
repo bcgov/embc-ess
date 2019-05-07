@@ -53,19 +53,24 @@ export class ReferralMakerComponent implements OnInit {
     // get registration data
     this.registrationService.getRegistrationById(this.regId)
       .subscribe(r => {
-        this.registration = r;
+        if (!r.id || !r.essFileNumber) {
+          console.log('ERROR - invalid registration object = ', r);
+          this.cancel();
+        } else {
+          this.registration = r;
 
-        // FOR TESTING
-        if (this.registration.incidentTask) {
-          // tslint:disable-next-line: no-string-literal
-          this.registration.incidentTask['startDate'] = Date.now();
-        }
+          // FOR TESTING
+          if (this.registration.incidentTask) {
+            // tslint:disable-next-line: no-string-literal
+            this.registration.incidentTask['startDate'] = Date.now();
+          }
 
-        // populate evacuees
-        const hoh = this.registration.headOfHousehold;
-        if (hoh) {
-          this.evacuees.push({ evacuee: hoh, selected: false });
-          hoh.familyMembers.forEach(fm => this.evacuees.push({ evacuee: fm, selected: false }));
+          // populate evacuees
+          const hoh = this.registration.headOfHousehold;
+          if (hoh) {
+            this.evacuees.push({ evacuee: hoh, selected: false });
+            hoh.familyMembers.forEach(fm => this.evacuees.push({ evacuee: fm, selected: false }));
+          }
         }
       });
   }
