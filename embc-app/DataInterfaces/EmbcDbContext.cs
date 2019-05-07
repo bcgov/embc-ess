@@ -105,11 +105,25 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             // this line is required so ef migrations will work.
             base.OnModelCreating(modelBuilder);
 
+            //modelBuilder.Entity<Evacuee>
+
             modelBuilder.Entity<Evacuee>()
-                .HasKey(e => new { e.EvacueeRegistrationId, e.EvacueeSequenceNumber });
+                .HasKey(e => new { e.RegistrationId, e.EvacueeSequenceNumber });
+
+            modelBuilder.Entity<Evacuee>()
+                .HasOne(e => e.EvacueeRegistration)
+                .WithMany(r => r.Evacuees)
+                .HasForeignKey(e => e.RegistrationId)
+                .HasPrincipalKey(r => r.EssFileNumber);
 
             modelBuilder.Entity<EvacueeRegistrationAddress>()
-                .HasKey(ira => new { ira.EvacueeRegistrationId, ira.AddressSequenceNumber });
+                .HasKey(ira => new { ira.RegistrationId, ira.AddressSequenceNumber });
+
+            modelBuilder.Entity<EvacueeRegistrationAddress>()
+                .HasOne(e => e.EvacueeRegistration)
+                .WithMany(r => r.EvacueeRegistrationAddresses)
+                .HasForeignKey(e => e.RegistrationId)
+                .HasPrincipalKey(r => r.EssFileNumber);
 
             // Address hierarchy
             modelBuilder.Entity<BcAddress>().HasBaseType<Address>();
@@ -139,6 +153,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             modelBuilder.Entity<EvacueeRegistration>()
                 .Property(r => r.EssFileNumber)
+                .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("NEXT VALUE FOR ESSFileNumbers");
 
             modelBuilder.ShadowProperties();
