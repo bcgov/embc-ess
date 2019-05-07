@@ -8,7 +8,7 @@ import { IncidentTaskService } from '../../../core/services/incident-task.servic
 import { NotificationQueueService } from '../../../core/services/notification-queue.service';
 import { UniqueKeyService } from '../../../core/services/unique-key.service';
 import { AuthService } from '../../../core/services/auth.service';
-// import { UpdateIncidentTask } from '../store/incident-tasks/incident-tasks.actions';
+import { invalidField } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-task-number-maker',
@@ -29,6 +29,7 @@ export class TaskNumberMakerComponent implements OnInit {
 
   // fields to collect
   form: FormGroup;
+  shouldValidateForm = false; // run validation *after* the user clicks the NEXT button, not before.
 
   incidentTask: IncidentTask = {
     id: '',
@@ -80,13 +81,19 @@ export class TaskNumberMakerComponent implements OnInit {
     this.form = this.fb.group({
       taskNumber: ['', Validators.required],
       community: ['', Validators.required],
-      startDateTime: [new Date(), Validators.required],
-      // startTime: [{ hour: 0, minute: 0 }, Validators.required],
+      startDate: [new Date(), Validators.required],
       details: ['', Validators.required],
     });
   }
 
+
+  invalid(field: string, parent: FormGroup = this.form): boolean {
+    return invalidField(field, parent, this.shouldValidateForm);
+  }
+
+
   validateForm(): void {
+    this.shouldValidateForm = true;
     // TODO: Implement validation
     // this.validationErrors = this.validationHelper.processMessages(this.form);
   }
@@ -100,13 +107,9 @@ export class TaskNumberMakerComponent implements OnInit {
       taskNumber: task.taskNumber,
       community: task.community,
       details: task.details,
-      // TODO: split into date and time components...
-      // startDate: ,
-      // startTime: ,
+      startDate: new Date(task.startDate),
     });
 
-    // TODO: split JS Date object into date and time components
-    // this.startDateField.setValue(task.startDate);
   }
 
   next(): void {
@@ -117,8 +120,6 @@ export class TaskNumberMakerComponent implements OnInit {
       // navigate to the next page. AKA show the summary part of the form.
       this.maker = false;
       this.onSave();
-    } else {
-      alert('All fields are required to continue.');
     }
   }
 
@@ -168,9 +169,10 @@ export class TaskNumberMakerComponent implements OnInit {
   }
 
   onSave(): void {
-    this.incidentTask.taskNumber = this.form.value.taskNumber;
-    this.incidentTask.community = this.form.value.community;
-    this.incidentTask.details = this.form.value.details;
-    // TODO: date and time
+    const f = this.form.value;
+    this.incidentTask.taskNumber = f.taskNumber;
+    this.incidentTask.community = f.community;
+    this.incidentTask.details = f.details;
+    this.incidentTask.startDate = f.startDate;
   }
 }

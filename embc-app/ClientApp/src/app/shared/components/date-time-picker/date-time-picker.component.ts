@@ -65,15 +65,12 @@ export class DateTimePickerComponent implements OnInit, ControlValueAccessor {
     this.propagateModelChange();
   }
 
-  private propagateModelChange(): void {
-    // TODO: combine date, time components
-    // mocked for now
-    const datetime = this.toDateObject({
-      localDate: this.localDate,
-      localTime: this.localTime
-    });
-
+  private propagateModelChange(touched = true): void {
+    if (touched) {
+      this.onTouched();
+    }
     // emit change events
+    const datetime = this.toDateObject({ localDate: this.localDate, localTime: this.localTime });
     this.valueChange.emit(datetime);
     this.onChange(datetime);
   }
