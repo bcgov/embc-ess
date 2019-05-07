@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
-    public class EvacueeRegistration
+    public class EvacueeRegistration : IAuditableEntity
     {
         public EvacueeRegistration()
         {

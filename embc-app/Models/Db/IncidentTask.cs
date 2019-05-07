@@ -8,15 +8,18 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// <summary>
     /// Incident Task Database Model
     /// </summary>
-    public class IncidentTask
+    public class IncidentTask : IAuditableEntity
     {
-
         public IncidentTask()
         {
             Registrations = new List<Registration>();
             EvacueeRegistrations = new List<EvacueeRegistration>();
         }
 
+        /// <summary>
+        /// A system-generated unique identifier
+        /// </summary>
+        /// <value>A system-generated unique identifier for a Role</value>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }

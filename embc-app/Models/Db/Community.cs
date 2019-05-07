@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
-    public class Community
+    public class Community : IAuditableEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
