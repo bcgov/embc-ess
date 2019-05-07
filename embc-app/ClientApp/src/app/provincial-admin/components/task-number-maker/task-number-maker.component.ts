@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { IncidentTask } from '../../../core/models';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../store';
-import { IncidentTaskService } from '../../../core/services/incident-task.service';
-import { NotificationQueueService } from '../../../core/services/notification-queue.service';
-import { UniqueKeyService } from '../../../core/services/unique-key.service';
-import { AuthService } from '../../../core/services/auth.service';
+import * as moment from 'moment';
+
+import { AppState } from 'src/app/store';
+import { IncidentTask } from 'src/app/core/models';
+import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
+import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { invalidField } from 'src/app/shared/utils';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 
 @Component({
   selector: 'app-task-number-maker',
@@ -27,11 +31,6 @@ export class TaskNumberMakerComponent implements OnInit {
   currentIncidentTask$ = this.store.select(i => i.incidentTasks.currentIncidentTask);
   componentActive = true;
 
-  // fields to collect
-  form: FormGroup;
-  shouldValidateForm = false; // run validation *after* the user clicks the NEXT button, not before.
-  errorSummary = ''; // error summary to display; i.e. 'Some required fields have not been completed.'
-
   incidentTask: IncidentTask = {
     id: '',
     taskNumber: '',
@@ -41,6 +40,16 @@ export class TaskNumberMakerComponent implements OnInit {
     startDate: null // datetime
   };
 
+  // fields to collect
+  form: FormGroup;
+  shouldValidateForm = false; // run validation *after* the user clicks the NEXT button, not before.
+  errorSummary = ''; // error summary to display; i.e. 'Some required fields have not been completed.'
+  validationErrors: { [key: string]: any } = {}; // holds field-level validation errors to display in the form
+
+  // generic validation helper
+  private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
+  private validationHelper: ValidationHelper;
+
   constructor(
     private router: Router,
     private store: Store<AppState>,
@@ -49,11 +58,33 @@ export class TaskNumberMakerComponent implements OnInit {
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private fb: FormBuilder,
-  ) { }
+  ) {
+    // Define all of the validation messages for the form.
+    this.constraints = {
+      taskNumber: {
+        required: 'Please enter a task number',
+      },
+      community: {
+        required: 'Please select a community/region from the dropdown list where the incident took place',
+      },
+      startDate: {
+        required: 'Please enter a date and time for the incident',
+        maxDate: 'Date for the incident must be today or in the past',
+      },
+      details: {
+        required: 'Please enter incident details',
+      },
+    };
 
-  get pageTitle(): string {
-    return this.editMode ? 'Edit a Task Number' : 'Add a Task Number';
+    // Define an instance of the validation helper for this form,
+    // passing in this form's set of validation messages.
+    this.validationHelper = new ValidationHelper(this.constraints);
   }
+
+  // convenience getter for easy access to validation errors within the HTML template
+  get e(): any { return this.validationErrors; }
+
+  get pageTitle(): string { return this.editMode ? 'Edit a Task Number' : 'Add a Task Number'; }
 
   ngOnInit() {
     // keep the current path up to date
@@ -82,7 +113,7 @@ export class TaskNumberMakerComponent implements OnInit {
     this.form = this.fb.group({
       taskNumber: ['', Validators.required],
       community: ['', Validators.required],
-      startDate: [new Date(), Validators.required],
+      startDate: [null, [Validators.required, CustomValidators.maxDate(moment())]],
       details: ['', Validators.required],
     });
   }
@@ -93,8 +124,7 @@ export class TaskNumberMakerComponent implements OnInit {
 
   validateForm(): void {
     this.shouldValidateForm = true;
-    // TODO: Implement validation
-    // this.validationErrors = this.validationHelper.processMessages(this.form);
+    this.validationErrors = this.validationHelper.processMessages(this.form);
   }
 
   displayTaskNumber(task: IncidentTask): void {
@@ -132,7 +162,7 @@ export class TaskNumberMakerComponent implements OnInit {
   submit() {
     this.submitting = true;
     if (!(this.incidentTask.community && this.incidentTask.details && this.incidentTask.taskNumber)) {
-      // todo go somewhere useful for this provincial user after routing is fixed.
+      // TODO: go somewhere useful for this provincial user after routing is fixed.
       this.submitting = false;
       this.maker = true; // switch back into maker mode because information is somehow missed.
     } else {
@@ -174,6 +204,6 @@ export class TaskNumberMakerComponent implements OnInit {
     this.incidentTask.taskNumber = f.taskNumber;
     this.incidentTask.community = f.community;
     this.incidentTask.details = f.details;
-    this.incidentTask.startDate = f.startDate;
+    this.incidentTask.startDate = (f.startDate as Date).toJSON(); // make sure JS dates are properly serialized
   }
 }

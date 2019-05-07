@@ -5,7 +5,7 @@ import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 
 // tslint:disable: no-use-before-declare
-export const DATETIMEPICKER_VALUE_ACCESSOR: any = {
+const DATETIMEPICKER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DateTimePickerComponent),
   multi: true
@@ -96,7 +96,7 @@ export class DateTimePickerComponent implements OnInit, ControlValueAccessor {
     return `${this.pad(year)}-${this.pad(month)}-${this.pad(day)}`;
   }
 
-  formatTime(date: Date): NgbTimeStruct {
+  dateToNgbTimeStruct(date: Date): NgbTimeStruct {
     if (!date) {
       return null;
     }
@@ -121,21 +121,17 @@ export class DateTimePickerComponent implements OnInit, ControlValueAccessor {
   }
 
   private fromJSDate(jsDate: Date): DateTimeStruct {
-    let structValue: DateTimeStruct = {
-      dateString: null,
-      hour: 0,
-      minute: 0,
-      second: 0
-    };
+    let dateAndTime: DateTimeStruct = { dateString: null, hour: 0, minute: 0, second: 0 };
     if (jsDate) {
-      const time = this.formatTime(jsDate);
+      const timeStruct = this.dateToNgbTimeStruct(jsDate);
       const dateString = this.formatDate(jsDate);
-      structValue = { ...structValue, ...time, dateString }
+      dateAndTime = { ...dateAndTime, ...timeStruct, dateString };
     }
-    return structValue;
+    return dateAndTime;
   }
 
   private toJSDate(model: DateTimeStruct): Date {
+    // use moment 'strict' mode so it fails for any format other than 'YYYY-MM-DD' when parsing the date string
     const d = moment(model.dateString, 'YYYY-MM-DD', true);
     if (d.isValid()) {
       d.hour(model.hour);
@@ -153,9 +149,9 @@ export class DateTimePickerComponent implements OnInit, ControlValueAccessor {
 
     // emit change events
     if (this.isValid(this.model)) {
-      const datetime = this.toJSDate(this.model);
-      this.valueChange.emit(datetime);
-      this.onChange(datetime);
+      const jsDate = this.toJSDate(this.model);
+      this.valueChange.emit(jsDate);
+      this.onChange(jsDate);
     } else {
       this.valueChange.emit(null);
       this.onChange(null);
