@@ -30,6 +30,7 @@ export class TaskNumberMakerComponent implements OnInit {
   // fields to collect
   form: FormGroup;
   shouldValidateForm = false; // run validation *after* the user clicks the NEXT button, not before.
+  errorSummary = ''; // error summary to display; i.e. 'Some required fields have not been completed.'
 
   incidentTask: IncidentTask = {
     id: '',
@@ -86,11 +87,9 @@ export class TaskNumberMakerComponent implements OnInit {
     });
   }
 
-
   invalid(field: string, parent: FormGroup = this.form): boolean {
     return invalidField(field, parent, this.shouldValidateForm);
   }
-
 
   validateForm(): void {
     this.shouldValidateForm = true;
@@ -109,7 +108,6 @@ export class TaskNumberMakerComponent implements OnInit {
       details: task.details,
       startDate: new Date(task.startDate),
     });
-
   }
 
   next(): void {
@@ -119,7 +117,10 @@ export class TaskNumberMakerComponent implements OnInit {
     if (this.form.valid) {
       // navigate to the next page. AKA show the summary part of the form.
       this.maker = false;
+      this.errorSummary = null;
       this.onSave();
+    } else {
+      this.errorSummary = 'Some required fields have not been completed.';
     }
   }
 
