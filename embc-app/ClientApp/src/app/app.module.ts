@@ -59,6 +59,7 @@ import { SideboxCollectionNoticeComponent } from './components/sidebox-collectio
 // shared modals // TODO: move to shared module
 import { AccommodationRatesComponent } from './shared/modals/accommodation-rates/accommodation-rates.component';
 import { ClothingRatesComponent } from './shared/modals/clothing-rates/clothing-rates.component';
+import { ConfirmModalComponent } from './shared/modals/confirm/confirm.component';
 import { FoodRatesComponent } from './shared/modals/food-rates/food-rates.component';
 import { IncidentalsRatesComponent } from './shared/modals/incidentals-rates/incidentals-rates.component';
 import { SessionExpiringModalComponent } from './shared/modals/session-expiring/session-expiring.component';
@@ -124,6 +125,7 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
 
     AccommodationRatesComponent,
     ClothingRatesComponent,
+    ConfirmModalComponent,
     FoodRatesComponent,
     IncidentalsRatesComponent,
     SessionExpiringModalComponent,
@@ -166,6 +168,7 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
   entryComponents: [
     AccommodationRatesComponent,
     ClothingRatesComponent,
+    ConfirmModalComponent,
     FoodRatesComponent,
     IncidentalsRatesComponent,
     SessionExpiringModalComponent,
