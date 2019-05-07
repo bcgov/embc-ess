@@ -36,6 +36,11 @@ export class ReferralTableComponent implements OnChanges {
       // process server response into something we can display in the UI
       this.searchResults$ = this.resultsAndPagination$.pipe(
         map((x: any) => {
+          if (!x.registrationId || !x.referrals) {
+            console.log('ERROR - invalid referral list result = ', x);
+            return null;
+          }
+
           this.isLoadingResults = false;
           this.pagination = x.referrals.metadata;
 

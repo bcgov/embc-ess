@@ -164,6 +164,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
             // go back to the organization page
             this.router.navigate([`/${this.path}/organizations`]);
           }
+          // NB - there is no key in this scenario
         });
     }
   }

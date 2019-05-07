@@ -28,8 +28,8 @@ export class RegistrationListComponent implements OnInit {
   totalPages: number; // how many pages are returned?
   pageSize: number; // how many entries are on the page
   previousQuery: string; // a place to save the last query parameters
-  sort: string = '-registrationCompletionDate'; // how do we sort the list query param
-  collectionSize: number = 0; // how large is the collection?
+  sort = '-registrationCompletionDate'; // how do we sort the list query param
+  collectionSize = 0; // how large is the collection?
   maxSize = 10; // how many pages of results shoudl the UI show before collapsing?
   boundaryLinks = true; // do we show the jump to first and last page links?
 
@@ -61,6 +61,11 @@ export class RegistrationListComponent implements OnInit {
     // process server response into something we can display in the UI
     this.searchResults$ = this.resultsAndPagination$.pipe(
       map(x => {
+        if (!x.data || !x.metadata) {
+          console.log('ERROR - invalid registration list result = ', x);
+          return null;
+        }
+
         // Flip flag to show that loading has finished.
         this.isLoadingResults = false;
 
@@ -72,7 +77,7 @@ export class RegistrationListComponent implements OnInit {
 
         this.pagination = x.metadata;
 
-        //save the last query performed
+        // save the last query performed
         this.previousQuery = query;
 
         // the search results need to be in this special format
@@ -84,7 +89,7 @@ export class RegistrationListComponent implements OnInit {
   onPageChange(page: number = this.page) {
     // change the page that we want
     // search again on whatever the last query was (or blank)
-    this.search(this.previousQuery || '', page)
+    this.search(this.previousQuery || '', page);
   }
   onIncrementChange() {
     // this is a placeholder for handling a change to the maxSize
