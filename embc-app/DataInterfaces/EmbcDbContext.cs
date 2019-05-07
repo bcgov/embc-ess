@@ -1,8 +1,13 @@
+using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Models.Db;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.IO;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -138,16 +143,36 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public override int SaveChanges()
         {
-            ChangeTracker.SetShadowProperties(ctx?.HttpContext?.User);
+            SetShadowProperties(ctx?.HttpContext?.User);
 
             return base.SaveChanges();
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            ChangeTracker.SetShadowProperties(ctx?.HttpContext?.User);
+            SetShadowProperties(ctx?.HttpContext?.User);
 
             return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        public void SetShadowProperties(ClaimsPrincipal principal)
+        {
+            var timestamp = DateTime.UtcNow;
+            var userId = principal?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System";
+            foreach (var entry in ChangeTracker.Entries().Where(x => (x.State == EntityState.Added || x.State == EntityState.Modified)))
+            {
+                if (entry.Entity is IAuditableEntity)
+                {
+                    if (entry.State == EntityState.Added)
+                    {
+                        entry.Property("CreatedDateTime").CurrentValue = timestamp;
+                        entry.Property("CreatedByUserId").CurrentValue = userId;
+                    }
+
+                    entry.Property("UpdateDateTime").CurrentValue = timestamp;
+                    entry.Property("UpdatedByUserId").CurrentValue = userId;
+                }
+            }
         }
     }
 }

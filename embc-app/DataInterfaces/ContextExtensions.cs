@@ -1,11 +1,39 @@
+using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Models.Db;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
+    public static class ContextExtensions
+    { 
+        public static void AddOrUpdate(this DbContext ctx, object entity)
+        {
+            var entry = ctx.Entry(entity);
+            switch (entry.State)
+            {
+                case EntityState.Detached:
+                    ctx.Add(entity);
+                    break;
+                case EntityState.Modified:
+                    ctx.Update(entity);
+                    break;
+                case EntityState.Added:
+                    ctx.Add(entity);
+                    break;
+                case EntityState.Unchanged:
+                    //item already in db no need to do anything  
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+    }
     public static class ModelBuilderExtensions
     {
         public static void ShadowProperties(this ModelBuilder modelBuilder)
