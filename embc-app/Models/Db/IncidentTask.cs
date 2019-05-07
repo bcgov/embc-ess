@@ -11,7 +11,10 @@ namespace Gov.Jag.Embc.Public.Models.Db
     public class IncidentTask : IAuditableEntity
     {
         public IncidentTask()
-        { }
+        {
+            Registrations = new List<Registration>();
+            EvacueeRegistrations = new List<EvacueeRegistration>();
+        }
 
         /// <summary>
         /// A system-generated unique identifier
