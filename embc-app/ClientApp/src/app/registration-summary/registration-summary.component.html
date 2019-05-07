@@ -1,7 +1,9 @@
 <app-layout-main>
-  <div *ngIf="registration">
-    <h1>Evacuee Summary</h1>
+  <h1>Evacuee Summary</h1>
 
+  <div *ngIf="loading">Loading...</div>
+
+  <div *ngIf="registration">
     <section class="clearfix">
       <h2 class="blue-header font-weight-bold">EVACUEE INFORMATION</h2>
       <ul class="summary mx-3">

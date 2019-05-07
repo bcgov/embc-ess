@@ -16,6 +16,7 @@ export class RegistrationSummaryComponent implements OnInit {
   path: string = null; // for relative routing
   selectedPurchaser = 'null';
   otherPurchaser: string = null;
+  loading = true;
 
   get purchaser() {
     const otherPurchaser = this.otherPurchaser ? this.otherPurchaser.trim() : null;
@@ -38,20 +39,24 @@ export class RegistrationSummaryComponent implements OnInit {
     if (key) {
       this.registrationService.getRegistrationSummaryById(key)
         .subscribe(value => {
+          this.loading = false;
           if (!value.id || !value.essFileNumber) {
             console.log('ERROR - invalid registration object = ', value);
             // done with the key. It was useless. Clear the reference key.
             this.uniqueKeyService.clearKey();
             this.goHome();
           } else {
-            // save the registration object
+            // store the registration object
             this.registration = value;
           }
         }, err => {
+          this.loading = false;
           alert(`err = ${err}`);
           this.goHome();
         });
     } else {
+      // key was not found
+      this.loading = false;
       this.goHome();
     }
   }

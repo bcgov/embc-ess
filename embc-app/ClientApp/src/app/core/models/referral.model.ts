@@ -55,22 +55,26 @@ export interface TransportationReferral extends ReferralBase {
 export type Referral = FoodReferral | IncidentalsReferral | ClothingReferral | AccommodationReferral | TransportationReferral;
 
 // --------------------HELPERS-----------------------------------------
+
+// TODO: the BE should only provide type of type ReferralType
+// but for now it returns static data with type='Food'
+
 export function isFoodReferral(referral: Referral): boolean {
-  return referral && referral.type === 'FOOD';
+  return referral && referral.type.toUpperCase() === 'FOOD';
 }
 
 export function isIncidentalsReferral(referral: Referral): boolean {
-  return referral && referral.type === 'INCIDENTALS';
+  return referral && referral.type.toUpperCase() === 'INCIDENTALS';
 }
 
 export function isClothingReferral(referral: Referral): boolean {
-  return referral && referral.type === 'CLOTHING';
+  return referral && referral.type.toUpperCase() === 'CLOTHING';
 }
 
 export function isAccommodationReferral(referral: Referral): boolean {
-  return referral && referral.type === 'ACCOMMODATION';
+  return referral && referral.type.toUpperCase() === 'ACCOMMODATION';
 }
 
 export function isTransportationReferral(referral: Referral): boolean {
-  return referral && referral.type === 'TRANSPORTATION';
+  return referral && referral.type.toUpperCase() === 'TRANSPORTATION';
 }
