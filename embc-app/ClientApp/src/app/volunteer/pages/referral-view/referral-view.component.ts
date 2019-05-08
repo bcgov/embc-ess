@@ -17,14 +17,15 @@ import {
 })
 export class ReferralViewComponent implements OnInit, OnDestroy {
 
-  private confirmModal: NgbModalRef = null;
-  private path: string = null; // for relative routing
   registrationId: string = null;
   referralId: string = null;
   referral: Referral = null;
   loading = true;
   deactivating = false;
-  reason = 'null';
+  reason = null;
+
+  private path: string = null; // for relative routing
+  private confirmModal: NgbModalRef = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -81,6 +82,15 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
     // go back to summary page
     this.uniqueKeyService.setKey(this.registrationId);
     this.router.navigate([`/${this.path}/registration/summary`]);
+  }
+
+  onDeactivateCancel(): void {
+    this.confirmModal.dismiss();
+  }
+
+  onDeactivateConfirm(reason: string): void {
+    // TODO: Send reason code to server - once API becomes available
+    this.confirmModal.close();
   }
 
   deactivate(content: TemplateRef<any>) {
