@@ -38,13 +38,13 @@ And of course this component needs to be implemented as a 'maker' with both an e
                 <div class="card-body">
                   <div class="form-group">
                     <label for="approvedItems">List approved items:</label>
-                    <textarea class="form-control" id="approvedItems" rows="3"></textarea>
+                    <textarea class="form-control" id="approvedItems" rows="3" [(ngModel)]="referral.approvedItems"></textarea>
                     <small><strong>NOTE:</strong> If more than one Referral Form is issued for incidentals, the total of all Referral Forms must not exceed maximum allowable rates.</small>
                   </div>
                 </div>
                 <div class="card-footer">
                   Total Amount:
-                  <input type="number">
+                  <input type="number" [(ngModel)]="referral.totalAmount">
                 </div>
               </div>
             </div>
@@ -61,6 +61,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
         </div>
       </div>
     </section>
+    <!-- <pre>{{referral|json}}</pre> -->
   </div>
 
   <div *ngIf="!editMode">
