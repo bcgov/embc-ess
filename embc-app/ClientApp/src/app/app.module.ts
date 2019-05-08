@@ -12,12 +12,9 @@ import { HomeComponent } from './home/home.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
-import { VolunteerEditorModule } from './volunteer-editor';
-
 import { SelfRegistrationModule } from './self-registration';
 import { SharedModule } from './shared/shared.module';
 import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
-import { TopNavigationComponent } from './top-navigation/top-navigation.component';
 import { TaskNumberListComponent } from './provincial-admin/components/task-number-list/task-number-list.component';
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
 import { RegistrationListComponent } from './registration-list/registration-list.component';
@@ -108,7 +105,6 @@ import { VolunteerRegistrationsPageComponent } from './pages/volunteer-registrat
     TaskNumberMakerComponent,
     TopNavbarComponent,
     TesterPageComponent,
-    TopNavigationComponent,
     TaskNumberListComponent,
     SessionExpiredComponent,
     SearchBarComponent,
@@ -155,7 +151,6 @@ import { VolunteerRegistrationsPageComponent } from './pages/volunteer-registrat
     // app
     AppRoutingModule,
     SelfRegistrationModule,
-    VolunteerEditorModule,
   ],
   entryComponents: [
     AccommodationRatesComponent,
