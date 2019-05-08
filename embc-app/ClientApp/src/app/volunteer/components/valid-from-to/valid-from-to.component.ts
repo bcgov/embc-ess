@@ -21,8 +21,11 @@ export class ValidFromToComponent implements OnInit, OnChanges {
   displayTime: string;
   readOnlyFromDate: string;
   readOnlyFromTime: string;
+  meridian = true;
 
-  // invalid date or time
+  toggleMeridian() {
+    this.meridian = !this.meridian;
+  }  // invalid date or time
   validDate = true; // begin with the assumption of validity
   validTime = true;
 

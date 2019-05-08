@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tester-page.component.scss']
 })
 export class TesterPageComponent implements OnInit {
+  model;
   constructor(
   ) { }
-
   ngOnInit() { }
 }
