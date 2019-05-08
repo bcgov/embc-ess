@@ -52,11 +52,6 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     DateTimeFormatPipe,
     PluckPipe,
     YesNoPipe,
-    // AddEvacueeComponent,
-    // AddOrganizationComponent,
-    // AddTaskNumberComponent,
-    // AddUserComponent,
-    // CollectionNoticeComponent,
     PageNotFoundComponent,
   ],
   imports: [
@@ -96,11 +91,6 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     DateTimeFormatPipe,
     PluckPipe,
     YesNoPipe,
-    // AddEvacueeComponent,
-    // AddOrganizationComponent,
-    // AddTaskNumberComponent,
-    // AddUserComponent,
-    // CollectionNoticeComponent,
   ]
 })
 export class SharedModule { }

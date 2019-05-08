@@ -34,7 +34,6 @@ import { VolunteerOrganizationListComponent } from './provincial-admin/component
 import { LayoutMainComponent } from './components/layout-main/layout-main.component';
 import { LayoutSideComponent } from './components/layout-side/layout-side.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { EvacueeSearchResultsComponent } from './components/evacuee-search-results/evacuee-search-results.component';
 import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
@@ -105,7 +104,6 @@ import { VolunteerRegistrationsPageComponent } from './pages/volunteer-registrat
     SideboxAddTaskNumberComponent,
     SideboxAddVolunteerComponent,
     SideboxCollectionNoticeComponent,
-    AdminDashboardComponent,
     EvacueeSearchResultsComponent,
     ReferralSearchResultsComponent,
     LayoutMainComponent,
