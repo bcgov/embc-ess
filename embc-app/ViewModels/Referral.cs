@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Gov.Jag.Embc.Public.ViewModels
 {
@@ -22,9 +23,17 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
     public class Supplier
     {
+        public int? Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
+
+        [Required]
         public string Address { get; set; }
+
+        [Required]
         public string City { get; set; }
+
         public string Province { get; set; }
         public string PostalCode { get; set; }
         public string Telephone { get; set; }
@@ -33,15 +42,30 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
     public class Referral
     {
+        public string ReferralId { get; set; }
+
+        [Required]
         public string Purchaser { get; set; }
+
+        [Required]
         public string Type { get; set; }
+
         public string SubType { get; set; }
+
+        [Required]
         public DateTime ValidFrom { get; set; }
+
+        [Required]
         public DateTime ValidTo { get; set; }
+
         public IEnumerable<string> Evacuees { get; set; }
         public Supplier Supplier { get; set; }
         public string Comments { get; set; }
+
+        [Required]
         public decimal TotalAmount { get; set; }
+
+        [Required]
         public bool ConfirmChecked { get; set; }
     }
 }
