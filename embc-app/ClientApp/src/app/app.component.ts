@@ -13,7 +13,7 @@ import { UniqueKeyService } from './core/services/unique-key.service';
 })
 export class AppComponent implements OnInit {
 
-  public isIE = false;
+  isIE = false;
 
   constructor(
     private lookups: ControlledListService,
