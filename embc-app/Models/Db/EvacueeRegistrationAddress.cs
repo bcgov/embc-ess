@@ -1,25 +1,20 @@
 using Gov.Jag.Embc.Public.Utils;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
     public class EvacueeRegistrationAddress : IAuditableEntity
     {
-
         [Key, Column(Order = 0)]
-        public Guid EvacueeRegistrationId { get; set; }
+        public long RegistrationId { get; set; }
 
         [Key, Column(Order = 1)]
         public int AddressSequenceNumber { get; set; }
 
-        public string EvacueeRegSeqId => $"{EvacueeRegistrationId}-{AddressSequenceNumber}";
+        public string RegistrationIdSeq => $"{RegistrationId}-{AddressSequenceNumber}";
 
         public string AddressTypeCode { get; set; }
 
@@ -54,14 +49,14 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public EvacueeRegistration EvacueeRegistration { get; set; }
 
-        public static Guid GetEvacueeRegistrationIdFromIncidentRegSeqId(string incidentRegSeqId)
+        public static long GetEvacueeRegistrationIdFromIncidentRegSeqId(string incidentRegSeqId)
         {
-            return Guid.Parse(incidentRegSeqId.Split(',')[0]);
+            return long.Parse(incidentRegSeqId.Split(',')[0]);
         }
 
         public static int GetAddressSequenceNumberFromIncidentRegSeqId(string incidentRegSeqId)
         {
-            return Convert.ToInt32(incidentRegSeqId.Split(',')[1]);
+            return int.Parse(incidentRegSeqId.Split(',')[1]);
         }
     }
 }

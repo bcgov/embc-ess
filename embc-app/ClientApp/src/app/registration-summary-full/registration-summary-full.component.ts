@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { RegistrationService } from 'src/app/core/services/registration.service';
-import { Registration, Address, isBcAddress, User, Volunteer } from 'src/app/core/models';
+import { Registration, Address, isBcAddress } from 'src/app/core/models';
 import { GENDER_OPTIONS, INSURANCE_OPTIONS } from '../constants';
 import { UniqueKeyService } from '../core/services/unique-key.service';
 import { AuthService } from '../core/services/auth.service';
@@ -17,6 +16,7 @@ export class RegistrationSummaryFullComponent implements OnInit {
   // local copy of the application state
   registration: Registration = null;
   path: string = null; // for relative routing
+  loading = true;
 
   constructor(
     private router: Router,
@@ -34,20 +34,24 @@ export class RegistrationSummaryFullComponent implements OnInit {
     if (key) {
       this.registrationService.getRegistrationById(key)
         .subscribe(r => {
+          this.loading = false;
           if (!r.id || !r.essFileNumber) {
             console.log('ERROR - invalid registration object = ', r);
             // done with the key. It was useless. Clear the reference key.
             this.uniqueKeyService.clearKey();
             this.goHome();
           } else {
-            // save the registration object
+            // store the registration object
             this.registration = r;
           }
         }, err => {
+          this.loading = false;
           alert(`err = ${err}`);
           this.goHome();
         });
     } else {
+      // key was not found
+      this.loading = false;
       this.goHome();
     }
   }

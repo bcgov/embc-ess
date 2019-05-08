@@ -1,7 +1,9 @@
 <app-layout-main>
-  <div *ngIf="registration">
-    <h1>Evacuee Summary</h1>
+  <h1>Evacuee Summary</h1>
 
+  <div *ngIf="loading">Loading...</div>
+
+  <div *ngIf="registration">
     <section class="clearfix">
       <h2 class="blue-header font-weight-bold">EVACUEE INFORMATION</h2>
       <ul class="summary mx-3">
@@ -97,7 +99,7 @@
         </li>
       </ul>
       <div class="mt-4 mx-3">
-        <button type="button" class="btn btn-primary float-right" (click)="showFullProfile()">VIEW FULL PROFILE</button>
+        <button type="button" class="btn btn-primary float-right" (click)="showFullProfile(viewAlert)">VIEW FULL PROFILE</button>
       </div>
     </section>
 
@@ -143,5 +145,32 @@
 </app-layout-main>
 
 <app-layout-side>
-  <app-add-evacuee></app-add-evacuee>
+  <app-sidebox-add-registration></app-sidebox-add-registration>
 </app-layout-side>
+
+<!-- Alert to confirm evacuee file viewing -->
+<ng-template #viewAlert let-modal>
+  <div class="modal-header">
+    <h1 class="modal-title h2">Alert</h1>
+    <button type="button" class="close" aria-label="Close" (click)="confirmModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <p>You are requesting to view an evacuee file. Please confirm that you have permission by selecting a reason code below.</p>
+
+    <select class="form-control w-50" [(ngModel)]="reason">
+      <option value="null">Please select---</option>
+      <option value="error">Evacuee made an error</option>
+      <option value="error">Evacuee wants to make an addition</option>
+      <option value="error">Task number is incorrect</option>
+      <option value="error">Incomplete registration</option>
+      <option value="error">Administrative task</option>
+    </select>
+
+    <div class="mt-4">
+      <button type="button" class="btn btn-primary" [disabled]="reason === 'null'" (click)="confirmModal.close()">Submit</button>
+    </div>
+  </div>
+</ng-template>

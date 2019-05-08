@@ -3,9 +3,10 @@ import { RegistrationService } from 'src/app/core/services/registration.service'
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import {
   Registration, Supplier, IncidentalsReferral, FoodReferral,
-  ClothingReferral, AccommodationReferral, TransportationReferral
+  ClothingReferral, LodgingReferral, TransportationReferral
 } from 'src/app/core/models';
 
 @Component({
@@ -25,7 +26,7 @@ export class ReferralMakerComponent implements OnInit {
 
   foodReferrals: Array<FoodReferral> = [];
   clothingReferrals: Array<ClothingReferral> = [];
-  accommodationReferrals: Array<AccommodationReferral> = [];
+  lodgingReferrals: Array<LodgingReferral> = [];
   incidentalsReferrals: Array<IncidentalsReferral> = [];
   transportationReferrals: Array<TransportationReferral> = [];
 
@@ -35,6 +36,7 @@ export class ReferralMakerComponent implements OnInit {
     private registrationService: RegistrationService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
+    private notifications: NotificationQueueService,
   ) { }
 
   ngOnInit() {
@@ -62,7 +64,7 @@ export class ReferralMakerComponent implements OnInit {
           // FOR TESTING
           if (this.registration.incidentTask) {
             // tslint:disable-next-line: no-string-literal
-            this.registration.incidentTask['startDate'] = Date.now();
+            // this.registration.incidentTask['startDate'] = Date.now();
           }
 
           // populate evacuees
@@ -93,7 +95,10 @@ export class ReferralMakerComponent implements OnInit {
 
   finalize() {
     this.submitting = true;
+
     // TODO: save stuff, etc
+    this.notifications.addNotification('Referrals finalized successfully');
+
     this.submitting = false;
 
     // redirect to summary page
