@@ -61,11 +61,11 @@ export class ReferralMakerComponent implements OnInit {
         } else {
           this.registration = r;
 
-          // FOR TESTING
-          if (this.registration.incidentTask) {
-            // tslint:disable-next-line: no-string-literal
-            this.registration.incidentTask['startDate'] = Date.now();
-          }
+        // FOR TESTING
+        if (this.registration.incidentTask) {
+          // tslint:disable-next-line: no-string-literal
+          // this.registration.incidentTask['startDate'] = Date.now();
+        }
 
           // populate evacuees
           const hoh = this.registration.headOfHousehold;

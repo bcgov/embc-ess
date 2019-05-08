@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbTypeaheadModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeaheadModule, NgbAlertModule, NgbPaginationModule, NgbModalModule, NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { MaterialModule } from './material.module';
 import { EnvironmentBannerComponent } from './components/environment-banner/environment-banner.component';
@@ -21,6 +21,7 @@ import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-aw
 import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
 import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
+import { DateTimePickerComponent } from './components/date-time-picker/date-time-picker.component';
 
 // import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent, CollectionNoticeComponent } from './components/side-boxes';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -53,15 +54,22 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     PluckPipe,
     YesNoPipe,
     PageNotFoundComponent,
+    DateTimePickerComponent,
   ],
   imports: [
     CommonModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    MaterialModule,
+
+    // ng-bootstrap UI components
+    NgbPaginationModule,
+    NgbModalModule,
     NgbTypeaheadModule,
     NgbAlertModule,
-    MaterialModule,
+    NgbDatepickerModule,
+    NgbTimepickerModule,
   ],
   exports: [
     // modules
@@ -69,6 +77,12 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
+
+    // ng-bootstrap components we want to re-export... (they are used outside of this SharedModule)
+    NgbPaginationModule,
+    NgbModalModule,
+    NgbDatepickerModule,
+    NgbTimepickerModule,
 
     // components, pipes, etc
     EnvironmentBannerComponent,
@@ -91,6 +105,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     DateTimeFormatPipe,
     PluckPipe,
     YesNoPipe,
+    DateTimePickerComponent,
   ]
 })
 export class SharedModule { }

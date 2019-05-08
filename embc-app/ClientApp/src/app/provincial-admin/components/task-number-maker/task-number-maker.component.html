@@ -1,39 +1,54 @@
 <div *ngIf="maker">
-  <div class="mb-4">
-    <h1 *ngIf="editMode">Edit a Task Number</h1>
-    <h1 *ngIf="!editMode">Add a Task Number</h1>
-    <p>
-      The Emergency Coordination Centre is responsible for adding task numbers to the system.
-      If you need a new task number, contact the ECC at 1-800-663-3456.
-    </p>
-    <small>All fields are required</small>
-    <h3 class="blue-header">
-      Task Details
-    </h3>
-    <div class="col mb-4">
-      <label class="required" for="taskNumber">Task Number</label>
-      <input class="form-control" type="text" [formControl]="taskNumber" id="taskNumber">
+  <form novalidate [formGroup]="form" (ngSubmit)="next()">
+    <div class="mb-4">
+      <h1>{{ pageTitle }}</h1>
+      <p>
+        The Emergency Coordination Centre is responsible for adding task numbers to the system.
+        If you need a new task number, contact the ECC at 1-800-663-3456.
+      </p>
+      <small>All fields are required</small>
+      <h3 class="blue-header">
+        Task Details
+      </h3>
+      <div class="col mb-4">
+        <label class="required" for="taskNumber">Task Number</label>
+        <input type="text" class="form-control" [class.is-invalid]="invalid('taskNumber')" formControlName="taskNumber" id="taskNumber">
+        <span class="invalid-feedback">{{e.taskNumber}}</span>
+      </div>
+      <div class="col mb-4">
+        <label class="required" for="community">Incident Location</label>
+        <app-communities-select [class.is-invalid]="invalid('community')" [myParent]="form" myFormControlName="community" myId="community" [myRequired]="true"></app-communities-select>
+        <span class="invalid-feedback">{{e.community}}</span>
+      </div>
+      <div class="col mb-4">
+        <label class="required">Incident Date &amp; Time</label>
+        <app-date-time-picker [class.is-invalid]="invalid('startDate')" formControlName="startDate"></app-date-time-picker>
+        <span class="invalid-feedback">{{e.startDate}}</span>
+      </div>
+      <div class="col mb-4">
+        <label class="required" for="details">Details of Incident</label>
+        <textarea class="form-control" [class.is-invalid]="invalid('details')" placeholder="Please specify" formControlName="details" id="details" rows="4"></textarea>
+        <span class="invalid-feedback">{{e.details}}</span>
+      </div>
     </div>
-    <div class="col mb-4">
-      <label class="required" for="community">Incident Location</label>
-      <app-communities-select [myFormControl]="community" myId="community" [myRequired]="true"></app-communities-select>
+
+    <div *ngIf="errorSummary" class="text-danger mt-5 pl-5">
+      <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>
+      &nbsp;{{ errorSummary }}
     </div>
-    <div class="col mb-4">
-      <label class="required" for="details">Details of Incident</label>
-      <input class="form-control" type="text" placeholder="Please specify" [formControl]="details" id="details">
+
+    <div class="mt-5 space-between">
+      <section>
+        <a routerLink="" (click)="cancel()">
+          <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+          <span class="ml-2">Cancel &amp; Close</span>
+        </a>
+      </section>
+      <section>
+        <button type="submit" class="btn btn-primary float-right">NEXT</button>
+      </section>
     </div>
-  </div>
-  <div class="mt-5 space-between">
-    <section>
-      <a [routerLink]="taskNumbersRoute">
-        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
-        <span class="ml-2">Cancel &amp; Close</span>
-      </a>
-    </section>
-    <section>
-      <button class="btn btn-primary float-right" (click)="next()">NEXT</button>
-    </section>
-  </div>
+  </form>
 </div>
 
 <!-- TODO Need yellow horizontal rule -->
@@ -51,6 +66,10 @@
         <li>
           <span class="name">Incident Location:</span>
           <span class="value">{{incidentTask.community.name}}</span>
+        </li>
+        <li>
+          <span class="name">Incident Date &amp; Time:</span>
+          <span class="value">{{incidentTask.startDate | dateTimeFormatPipe}}</span>
         </li>
         <li>
           <span class="name">Details of Incident:</span>
