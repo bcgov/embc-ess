@@ -34,7 +34,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public string PostalCode { get; set; }
 
-        public Guid CommunityId { get; set; }
+        public Guid? CommunityId { get; set; }
 
         public Community Community { get; set; }
 
