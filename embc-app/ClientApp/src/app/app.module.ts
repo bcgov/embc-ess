@@ -32,9 +32,9 @@ import { ReferralSearchResultsComponent } from './components/referral-search-res
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 import { UsefulInformationPageComponent } from './volunteer/pages/useful-information-page/useful-information-page.component';
-import { LocalAuthorityRegistrationsPageComponent } from './local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
+import { LocalAuthorityRegistrationsPageComponent } from './local-authority/pages/local-authority-registrations-page/local-authority-registrations-page.component';
 import { ProvincialAdminRegistrationsPageComponent } from './provincial-admin/pages/registrations/provincial-admin-registrations-page.component';
-import { LocalAuthorityVolunteersPageComponent } from './local-authority/local-authority-volunteers-page/local-authority-volunteers-page.component';
+import { LocalAuthorityVolunteersPageComponent } from './local-authority/pages/local-authority-volunteers-page/local-authority-volunteers-page.component';
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
 import { ProvincialAdminOrganizationsPageComponent } from './provincial-admin/pages/organizations/provincial-admin-organizations-page.component';
 import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
