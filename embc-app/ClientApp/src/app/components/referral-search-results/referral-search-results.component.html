@@ -15,14 +15,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let r of rows" class="light">
+      <tr *ngFor="let r of rows" class="light" [ngClass]="{'hasCheckbox': r.data?.active}">
         <ng-container *ngIf="r.data?.active; then editable else deactivated"></ng-container>
         <ng-template #editable>
           <td class="dark"><input type="checkbox" (change)="onReferralChange(r, $event)"></td>
           <td>{{r.data?.id}}</td>
         </ng-template>
         <ng-template #deactivated>
-          <td col-span="2">{{r.data?.id}}</td>
+          <td colspan="2">{{r.data?.id}}</td>
         </ng-template>
         <td><strong>{{r.data?.supplier?.name}}</strong></td>
         <td>{{r.data?.dates?.from | date : 'MMM-dd-yyyy'}}</td>
