@@ -23,7 +23,6 @@ import { TaskNumberListComponent } from './provincial-admin/components/task-numb
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
 import { RegistrationListComponent } from './registration-list/registration-list.component';
 import { OrganizationListComponent } from './provincial-admin/components/organization-list/organization-list.component';
-import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
 import { VolunteerEditorContainerComponent } from './volunteer-editor-container/volunteer-editor-container.component';
 import { TaskNumberMakerComponent } from './provincial-admin/components/task-number-maker/task-number-maker.component';
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
@@ -108,7 +107,6 @@ import { VolunteerRegistrationsPageComponent } from './pages/volunteer-registrat
     LayoutSideComponent,
     OrganizationListComponent,
     OrganizationMakerComponent,
-    UsefulInformationContentComponent,
     TaskNumberMakerComponent,
     TopNavbarComponent,
     TesterPageComponent,
