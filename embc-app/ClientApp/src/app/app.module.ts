@@ -31,10 +31,10 @@ import { EvacueeSearchResultsComponent } from './components/evacuee-search-resul
 import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
-import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
-import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
+import { UsefulInformationPageComponent } from './volunteer/pages/useful-information-page/useful-information-page.component';
+import { LocalAuthorityRegistrationsPageComponent } from './local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
 import { ProvincialAdminRegistrationsPageComponent } from './provincial-admin/pages/registrations/provincial-admin-registrations-page.component';
-import { LocalAuthorityVolunteersPageComponent } from './pages/local-authority/local-authority-volunteers-page/local-authority-volunteers-page.component';
+import { LocalAuthorityVolunteersPageComponent } from './local-authority/local-authority-volunteers-page/local-authority-volunteers-page.component';
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
 import { ProvincialAdminOrganizationsPageComponent } from './provincial-admin/pages/organizations/provincial-admin-organizations-page.component';
 import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
@@ -66,7 +66,7 @@ import { ReferralTableComponent } from './volunteer/components/referral-table/re
 import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid-from-to.component';
 import { SupplierComponent } from './volunteer/components/supplier/supplier.component';
 import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
-import { VolunteerRegistrationsPageComponent } from './pages/volunteer-registrations-page/volunteer-registrations-page.component';
+import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
 
 @NgModule({
   declarations: [
