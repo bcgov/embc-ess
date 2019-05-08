@@ -29,7 +29,6 @@ And of course this component needs to be implemented as a 'maker' with both an e
           <div class="col-5 pr-0">
             <div class="pt-4 pl-4">
               <app-evacuee-list [(evacuees)]="referral.evacuees"></app-evacuee-list>
-              {{referral.evacuees.length}}
             </div>
           </div>
           <div class="col-7">
@@ -37,16 +36,21 @@ And of course this component needs to be implemented as a 'maker' with both an e
               <!-- TODO: here, prompt for Food Required and # of Days for Meals -->
               <div class="card">
                 <div class="card-body">
-                  <p>List approved items:</p>
+                  <div class="form-group">
+                    <label for="approvedItems">List approved items:</label>
+                    <textarea class="form-control" id="approvedItems" rows="3" [(ngModel)]="referral.approvedItems"></textarea>
+                    <small><strong>NOTE:</strong> If more than one Referral Form is issued for incidentals, the total of all Referral Forms must not exceed maximum allowable rates.</small>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  Total Amount:
+                  $<input type="number" [(ngModel)]="referral.totalAmount">
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-
-        <app-supplier></app-supplier>
-
+        <app-supplier [supplier]="referral.supplier"></app-supplier>
         <div class="card-footer">
           <app-fa-link icon="times" class="float-left" (click)="remove.emit()">
             Remove this referral
@@ -57,6 +61,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
         </div>
       </div>
     </section>
+    <!-- <pre>{{referral|json}}</pre> -->
   </div>
 
   <div *ngIf="!editMode">
