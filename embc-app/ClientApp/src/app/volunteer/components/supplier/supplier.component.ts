@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Supplier } from 'src/app/core/models';
-import { Alert } from 'selenium-webdriver';
 
 @Component({
   selector: 'app-supplier',
