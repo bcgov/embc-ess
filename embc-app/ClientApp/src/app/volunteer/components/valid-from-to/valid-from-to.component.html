@@ -5,7 +5,7 @@
       <div class="col">
         <div class="input-group mb-0">
           <label for="validFromDate_{{id}}">Date</label>
-          <input class="form-control" placeholder="yyyy-mm-dd" id="validFromDate_{{id}}" ngbDatepicker #fromDate="ngbDatepicker" [firstDayOfWeek]="7" navigation="arrows" [(ngModel)]="wrdForm.fromDate" (click)="fromDate.close();" (ngModelChange)="updateDisplay()" required aria-required="true">
+          <input class="form-control" placeholder="yyyy-mm-dd" id="validFromDate_{{id}}" ngbDatepicker #fromDate="ngbDatepicker" [firstDayOfWeek]="7" navigation="arrows" [(ngModel)]="wrdForm.fromDate" (click)="fromDate.close();" (change)="updateDisplay()" required aria-required="true">
           <div class="input-group-append">
             <button class="btn btn-icon picker-patch" (click)="fromDate.toggle()" type="button" tabindex="-1">
               <i class="material-icons">date_range</i>
@@ -17,7 +17,7 @@
       <div class="col-3 pl-0 pr-0">
         <div class="form-group mb-0">
           <label for="validFromTime_{{id}}">Time</label>
-          <ngb-timepicker id="validFromTime_{{id}}" [(ngModel)]="wrdForm.fromTime" [meridian]="true" [spinners]="false" (ngModelChange)="updateDisplay()"></ngb-timepicker>
+          <ngb-timepicker id="validFromTime_{{id}}" [(ngModel)]="wrdForm.fromTime" [meridian]="meridian" [spinners]="false" (change)="updateDisplay()"></ngb-timepicker>
           <span *ngIf="!validTime" class="invalid-feedback" style="display: block;">Please enter a valid time.</span>
         </div>
       </div>
