@@ -22,7 +22,7 @@ import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
 import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
 
-import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent, CollectionNoticeComponent } from './components/side-boxes';
+// import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent, CollectionNoticeComponent } from './components/side-boxes';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 import { ByIdPipe } from './pipes/by-id.pipe';
@@ -52,11 +52,11 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     DateTimeFormatPipe,
     PluckPipe,
     YesNoPipe,
-    AddEvacueeComponent,
-    AddOrganizationComponent,
-    AddTaskNumberComponent,
-    AddUserComponent,
-    CollectionNoticeComponent,
+    // AddEvacueeComponent,
+    // AddOrganizationComponent,
+    // AddTaskNumberComponent,
+    // AddUserComponent,
+    // CollectionNoticeComponent,
     PageNotFoundComponent,
   ],
   imports: [
@@ -96,11 +96,11 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     DateTimeFormatPipe,
     PluckPipe,
     YesNoPipe,
-    AddEvacueeComponent,
-    AddOrganizationComponent,
-    AddTaskNumberComponent,
-    AddUserComponent,
-    CollectionNoticeComponent,
+    // AddEvacueeComponent,
+    // AddOrganizationComponent,
+    // AddTaskNumberComponent,
+    // AddUserComponent,
+    // CollectionNoticeComponent,
   ]
 })
 export class SharedModule { }
