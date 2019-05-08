@@ -34,6 +34,7 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
   rows: RowItem[] = [];
   notFoundMessage = 'Searching ...';
   path: string; // the routing path
+  referrals: Array<Referral> = [];
 
   ngOnChanges(changes: SimpleChanges) {
     this.rows = this.processSearchResults(this.searchResults);
@@ -49,16 +50,22 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
   }
 
   onReferralChange(rowItem: RowItem, event: MouseEvent) {
-    // TODO: emit new array of selected referrals
-    const referrals: Array<Referral> = [];
-
-    // FOR TESTING ONLY:
     // tslint:disable-next-line: no-string-literal
     if (event.target['checked']) {
-      referrals.push(rowItem.data);
+      // add item to array
+      const index = this.referrals.indexOf(rowItem.data);
+      if (index === -1) {
+        this.referrals.push(rowItem.data);
+      }
+    } else {
+      // remove item from array
+      const index = this.referrals.indexOf(rowItem.data);
+      if (index !== -1) {
+        this.referrals.splice(index, 1);
+      }
     }
 
-    this.referralsSelected.emit(referrals);
+    this.referralsSelected.emit(this.referrals);
   }
 
   // map the search results (referrals) into row items suitable for display on a table
