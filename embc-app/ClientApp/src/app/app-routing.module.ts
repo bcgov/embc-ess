@@ -10,31 +10,20 @@ import {
   SelfRegistrationFourComponent,
   SelfRegistrationErrorComponent,
 } from './self-registration';
-import { RegistrationPageComponent } from './registration-page/registration-page.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
-import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
 import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { LoggedInGuard } from './core/guards/logged-in.guard';
 import { RoleGuard } from './core/guards/role.guard';
 import { RedirectGuard } from './core/guards/redirect.guard';
 import { VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from './constants';
 import { LandingPageGuard } from './core/guards/landing-page.guard';
-import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
-import { TaskNumberListComponent } from './provincial-admin/components/task-number-list/task-number-list.component';
-import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
-import { OrganizationListComponent } from './provincial-admin/components/organization-list/organization-list.component';
 import { OrganizationMakerComponent } from './provincial-admin/components/organization-maker/organization-maker.component';
 import { TaskNumberMakerComponent } from './provincial-admin/components/task-number-maker/task-number-maker.component';
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
-import { RegistrationListComponent } from './registration-list/registration-list.component';
-import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { RegistrationSummaryFullComponent } from './registration-summary-full/registration-summary-full.component';
-import { VolunteerOrganizationListComponent } from './provincial-admin/components/volunteer-organization-list/volunteer-organization-list.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
-import { VolunteerRegistrationsPageComponent } from './pages/volunteer/volunteer-registrations-page/volunteer-registrations-page.component';
 import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
 import { ProvincialAdminOrganizationsPageComponent } from './provincial-admin/pages/organizations/provincial-admin-organizations-page.component';
@@ -44,6 +33,7 @@ import { LocalAuthorityVolunteersPageComponent } from './pages/local-authority/l
 import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
 import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
+import { VolunteerRegistrationsPageComponent } from './pages/volunteer-registrations-page/volunteer-registrations-page.component';
 
 /*
   /

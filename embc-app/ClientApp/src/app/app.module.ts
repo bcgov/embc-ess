@@ -41,7 +41,6 @@ import { ReferralSearchResultsComponent } from './components/referral-search-res
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 import { RegistrationPageComponent } from './registration-page/registration-page.component';
-import { VolunteerRegistrationsPageComponent } from './pages/volunteer/volunteer-registrations-page/volunteer-registrations-page.component';
 import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
 import { ProvincialAdminRegistrationsPageComponent } from './provincial-admin/pages/registrations/provincial-admin-registrations-page.component';
@@ -77,6 +76,7 @@ import { ReferralTableComponent } from './volunteer/components/referral-table/re
 import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid-from-to.component';
 import { SupplierComponent } from './volunteer/components/supplier/supplier.component';
 import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
+import { VolunteerRegistrationsPageComponent } from './pages/volunteer-registrations-page/volunteer-registrations-page.component';
 
 @NgModule({
   declarations: [
