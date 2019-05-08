@@ -5,8 +5,8 @@
     <div *ngIf="loading">Loading...</div>
 
     <div *ngIf="!loading">
-      <div *ngIf="isAccommodationReferral(referral)">
-        <app-accommodation-referral [referral]="referral" [editMode]="false"></app-accommodation-referral>
+      <div *ngIf="isLodgingReferral(referral)">
+        <app-lodging-referral [referral]="referral" [editMode]="false"></app-lodging-referral>
       </div>
 
       <div *ngIf="isClothingReferral(referral)">

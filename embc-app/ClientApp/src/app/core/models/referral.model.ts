@@ -1,7 +1,7 @@
 import { Evacuee, Supplier } from './';
 import { ReferralDate } from './referral-date';
 
-type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'ACCOMMODATION' | 'TRANSPORTATION');
+type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'LODGING' | 'TRANSPORTATION');
 
 interface ReferralBase {
   id: string;
@@ -38,7 +38,7 @@ export interface ClothingReferral extends ReferralBase {
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface AccommodationReferral extends ReferralBase {
+export interface LodgingReferral extends ReferralBase {
   subType?: ('HOTEL' | 'BILLETING' | 'GROUP');
   numNights: number;
   numRooms?: number;
@@ -52,7 +52,7 @@ export interface TransportationReferral extends ReferralBase {
   modeTransport?: string;
 }
 
-export type Referral = FoodReferral | IncidentalsReferral | ClothingReferral | AccommodationReferral | TransportationReferral;
+export type Referral = FoodReferral | IncidentalsReferral | ClothingReferral | LodgingReferral | TransportationReferral;
 
 // --------------------HELPERS-----------------------------------------
 
@@ -71,8 +71,8 @@ export function isClothingReferral(referral: Referral): boolean {
   return referral && referral.type.toUpperCase() === 'CLOTHING';
 }
 
-export function isAccommodationReferral(referral: Referral): boolean {
-  return referral && referral.type.toUpperCase() === 'ACCOMMODATION';
+export function isLodgingReferral(referral: Referral): boolean {
+  return referral && referral.type.toUpperCase() === 'LODGING';
 }
 
 export function isTransportationReferral(referral: Referral): boolean {
