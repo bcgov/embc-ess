@@ -11,20 +11,13 @@ import { HomeComponent } from './home/home.component';
 import { TesterPageComponent } from './tester-page/tester-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
-import { VolunteerEditorModule } from './volunteer-editor';
-
 import { SelfRegistrationModule } from './self-registration';
 import { SharedModule } from './shared/shared.module';
-import { VolunteerTeamDashboardComponent } from './volunteer-team-dashboard/volunteer-team-dashboard.component';
-import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
-import { TopNavigationComponent } from './top-navigation/top-navigation.component';
 import { TaskNumberListComponent } from './provincial-admin/components/task-number-list/task-number-list.component';
 import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
 import { RegistrationListComponent } from './registration-list/registration-list.component';
 import { OrganizationListComponent } from './provincial-admin/components/organization-list/organization-list.component';
-import { UsefulInformationContentComponent } from './useful-information-content/useful-information-content.component';
-import { VolunteerEditorContainerComponent } from './volunteer-editor-container/volunteer-editor-container.component';
 import { TaskNumberMakerComponent } from './provincial-admin/components/task-number-maker/task-number-maker.component';
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
 import { OrganizationMakerComponent } from './provincial-admin/components/organization-maker/organization-maker.component';
@@ -33,18 +26,15 @@ import { VolunteerOrganizationListComponent } from './provincial-admin/component
 import { LayoutMainComponent } from './components/layout-main/layout-main.component';
 import { LayoutSideComponent } from './components/layout-side/layout-side.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { EvacueeSearchResultsComponent } from './components/evacuee-search-results/evacuee-search-results.component';
 import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
-import { RegistrationPageComponent } from './registration-page/registration-page.component';
-import { VolunteerRegistrationsPageComponent } from './pages/volunteer/volunteer-registrations-page/volunteer-registrations-page.component';
-import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
-import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
+import { UsefulInformationPageComponent } from './volunteer/pages/useful-information-page/useful-information-page.component';
+import { LocalAuthorityRegistrationsPageComponent } from './local-authority/pages/local-authority-registrations-page/local-authority-registrations-page.component';
 import { ProvincialAdminRegistrationsPageComponent } from './provincial-admin/pages/registrations/provincial-admin-registrations-page.component';
-import { LocalAuthorityVolunteersPageComponent } from './pages/local-authority/local-authority-volunteers-page/local-authority-volunteers-page.component';
+import { LocalAuthorityVolunteersPageComponent } from './local-authority/pages/local-authority-volunteers-page/local-authority-volunteers-page.component';
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
 import { ProvincialAdminOrganizationsPageComponent } from './provincial-admin/pages/organizations/provincial-admin-organizations-page.component';
 import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
@@ -76,6 +66,7 @@ import { ReferralTableComponent } from './volunteer/components/referral-table/re
 import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid-from-to.component';
 import { SupplierComponent } from './volunteer/components/supplier/supplier.component';
 import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
+import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
 
 @NgModule({
   declarations: [
@@ -86,13 +77,9 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
     RegistrationSummaryComponent,
     RegistrationListComponent,
     RegistrationMakerComponent,
-    RegistrationPageComponent,
     RegistrationSummaryFullComponent,
     VolunteerMakerComponent,
-    VolunteerTeamDashboardComponent,
-    VolunteerUsefulInformationComponent,
     VolunteerListComponent,
-    VolunteerEditorContainerComponent,
     VolunteerOrganizationListComponent,
     VolunteerRegistrationsPageComponent,
     ProvincialAdminRegistrationsPageComponent,
@@ -104,18 +91,15 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
     SideboxAddTaskNumberComponent,
     SideboxAddVolunteerComponent,
     SideboxCollectionNoticeComponent,
-    AdminDashboardComponent,
     EvacueeSearchResultsComponent,
     ReferralSearchResultsComponent,
     LayoutMainComponent,
     LayoutSideComponent,
     OrganizationListComponent,
     OrganizationMakerComponent,
-    UsefulInformationContentComponent,
     TaskNumberMakerComponent,
     TopNavbarComponent,
     TesterPageComponent,
-    TopNavigationComponent,
     TaskNumberListComponent,
     SessionExpiredComponent,
     SearchBarComponent,
@@ -158,7 +142,6 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
     // app
     AppRoutingModule,
     SelfRegistrationModule,
-    VolunteerEditorModule,
   ],
   entryComponents: [
     AccommodationRatesComponent,
