@@ -8,7 +8,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// <summary>
     /// Volunteer Database Model
     /// </summary>
-    public class Volunteer
+    public class Volunteer : IAuditableEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
@@ -30,6 +30,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public bool? IsAdministrator { get; set; }
         public bool? IsPrimaryContact { get; set; }
         public bool? CanAccessRestrictedFiles { get; set; }
+
         [MaxLength(255)]
         public string UserId { get; set; }
 
