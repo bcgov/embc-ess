@@ -68,7 +68,7 @@ export class TaskNumberMakerComponent implements OnInit {
         required: 'Please select a community/region from the dropdown list where the incident took place',
       },
       startDate: {
-        required: 'Please enter a date and time for the incident',
+        required: 'Please enter a valid date and time for the incident',
         maxDate: 'Date for the incident must be today or in the past',
       },
       details: {
