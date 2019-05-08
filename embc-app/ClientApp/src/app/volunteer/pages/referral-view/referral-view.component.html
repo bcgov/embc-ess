@@ -46,7 +46,7 @@
 <ng-template #content let-modal>
   <div class="modal-header">
     <h1 class="modal-title h2">Alert</h1>
-    <button type="button" class="close" aria-label="Close" (click)="confirmModal.dismiss()">
+    <button type="button" class="close" aria-label="Close" (click)="onDeactivateCancel()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -55,12 +55,12 @@
     <p>You are requesting to deactivate this referral. Please select a reason below.</p>
 
     <select class="form-control w-50" [(ngModel)]="reason">
-      <option value="null">Please select---</option>
+      <option [ngValue]="null">Please select---</option>
       <option value="error">Error on referral</option>
     </select>
 
     <div class="mt-4">
-      <button type="button" class="btn btn-primary" [disabled]="reason === 'null'" (click)="confirmModal.close()">Submit</button>
+      <button type="button" class="btn btn-primary" [disabled]="reason == null" (click)="onDeactivateConfirm(reason)">Submit</button>
     </div>
   </div>
 </ng-template>

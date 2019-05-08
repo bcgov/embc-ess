@@ -10,7 +10,7 @@ using System.Security.Claims;
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static class ContextExtensions
-    { 
+    {
         public static void AddOrUpdate(this DbContext ctx, object entity)
         {
             var entry = ctx.Entry(entity);
@@ -19,14 +19,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 case EntityState.Detached:
                     ctx.Add(entity);
                     break;
+
                 case EntityState.Modified:
                     ctx.Update(entity);
                     break;
+
                 case EntityState.Added:
                     ctx.Add(entity);
                     break;
+
                 case EntityState.Unchanged:
-                    //item already in db no need to do anything  
+                    //item already in db no need to do anything
                     break;
 
                 default:
@@ -34,6 +37,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
     }
+
     public static class ModelBuilderExtensions
     {
         public static void ShadowProperties(this ModelBuilder modelBuilder)
@@ -57,9 +61,15 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public static void SetAuditingShadowProperties<T>(ModelBuilder modelBuilder) where T : class, IAuditableEntity
         {
             modelBuilder.Entity<T>().Property<DateTime>("CreatedDateTime").IsRequired().HasDefaultValueSql("GetUtcDate()");
-            modelBuilder.Entity<T>().Property<string>("CreatedByUserId").IsRequired().HasDefaultValueSql("'System'");
+            modelBuilder.Entity<T>().Property<string>("CreatedByUserId")
+                .HasMaxLength(255)
+                .IsRequired()
+                .HasDefaultValueSql("'System'");
             modelBuilder.Entity<T>().Property<DateTime>("UpdateDateTime").IsRequired().HasDefaultValueSql("GetUtcDate()");
-            modelBuilder.Entity<T>().Property<string>("UpdatedByUserId").IsRequired().HasDefaultValueSql("'System'");
+            modelBuilder.Entity<T>().Property<string>("UpdatedByUserId")
+                .HasMaxLength(255)
+                .IsRequired()
+                .HasDefaultValueSql("'System'");
         }
     }
 }

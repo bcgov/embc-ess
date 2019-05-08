@@ -4,14 +4,16 @@ using Gov.Jag.Embc.Public.DataInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Gov.Jag.Embc.Public.Migrations
 {
     [DbContext(typeof(EmbcDbContext))]
-    partial class EmbcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190508172808_Make-Volunteer-IAuditableEntity-ID-Max-255")]
+    partial class MakeVolunteerIAuditableEntityIDMax255
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -324,7 +326,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<string>("City");
 
-                    b.Property<Guid?>("CommunityId");
+                    b.Property<Guid>("CommunityId");
 
                     b.Property<string>("CountryCode");
 
@@ -855,7 +857,8 @@ namespace Gov.Jag.Embc.Public.Migrations
                 {
                     b.HasOne("Gov.Jag.Embc.Public.Models.Db.Community", "Community")
                         .WithMany()
-                        .HasForeignKey("CommunityId");
+                        .HasForeignKey("CommunityId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Gov.Jag.Embc.Public.Models.Db.Country", "Country")
                         .WithMany()
