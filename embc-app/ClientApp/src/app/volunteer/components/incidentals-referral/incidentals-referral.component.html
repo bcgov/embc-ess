@@ -14,7 +14,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
 -->
 
 <div *ngIf="referral">
-  <div *ngIf="editMode">
+  <div *ngIf="!readOnly">
     <section>
       <h2 class="blue-header">
         <app-font-awesome-icon icon="plus-circle"></app-font-awesome-icon>&nbsp;&nbsp;INCIDENTALS
@@ -64,7 +64,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
     <!-- <pre>{{referral|json}}</pre> -->
   </div>
 
-  <div *ngIf="!editMode">
+  <div *ngIf="readOnly">
     <ul class="summary mx-3">
       <li class="summary-heading">
         <div class="container py-3">

@@ -56,7 +56,7 @@
       </article>
 
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
-        <app-incidentals-referral [(referral)]="r" [editMode]="true" (remove)="removeIncidentalsReferral(i)" (add)="addIncidentalsReferral()"></app-incidentals-referral>
+        <app-incidentals-referral [(referral)]="r" [readOnly]="false" (remove)="removeIncidentalsReferral(i)" (add)="addIncidentalsReferral()"></app-incidentals-referral>
       </article>
 
       <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4">
@@ -81,7 +81,7 @@
 
     <section class="clearfix">
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
-        <app-incidentals-referral [(referral)]="r" [editMode]="false"></app-incidentals-referral>
+        <app-incidentals-referral [referral]="r" [readOnly]="true"></app-incidentals-referral>
       </article>
     </section>
 
@@ -96,8 +96,7 @@
           <app-font-awesome-icon icon="times"></app-font-awesome-icon>
           <span class="ml-2">Cancel &amp; Close</span>
         </a>
-        <button type="button" *ngIf="!submitting" class="btn btn-primary ml-5" (click)="finalize()">FINALIZE
-          REFERRALS</button>
+        <button type="button" *ngIf="!submitting" class="btn btn-primary ml-5" (click)="finalize()">FINALIZE REFERRALS</button>
         <button type="button" *ngIf="submitting" class="btn btn-primary ml-5" disabled>FINALIZING...</button>
       </section>
     </div>

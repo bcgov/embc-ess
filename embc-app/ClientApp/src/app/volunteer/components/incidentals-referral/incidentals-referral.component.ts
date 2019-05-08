@@ -10,7 +10,7 @@ import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rat
 })
 export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChanges {
   @Input() referral: IncidentalsReferral = null;
-  @Input() editMode = false;
+  @Input() readOnly = false;
   @Output() remove = new EventEmitter<any>();
   @Output() add = new EventEmitter<any>();
 
@@ -36,8 +36,8 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
     if (changes.referral) {
       // console.log('referral =', changes.referral.currentValue);
     }
-    if (changes.editMode) {
-      // console.log('editMode =', changes.editMode.currentValue);
+    if (changes.readOnly) {
+      // console.log('readOnly =', changes.readOnly.currentValue);
     }
   }
 
@@ -48,4 +48,7 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
       () => { this.ratesModal = null; }
     );
   }
+
+  // --------------------HELPERS-----------------------------------------
+  numDays(validFrom: Date, validTo: Date) { return numberOfDays(validFrom, validTo); }
 }

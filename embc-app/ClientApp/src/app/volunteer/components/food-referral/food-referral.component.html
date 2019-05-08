@@ -1,17 +1,17 @@
 <div *ngIf="referral">
-  <div *ngIf="editMode">
+  <div *ngIf="!readOnly">
     <section>
       <h2 class="blue-header">
         <app-font-awesome-icon icon="utensils"></app-font-awesome-icon>&nbsp;&nbsp;FOOD
       </h2>
       <div class="space-between align-items-end">
-        <app-valid-from-to [(referralDate)]="referral.dates" [id]="uuid"></app-valid-from-to>
+        <!-- TODO: <app-valid-from-to [(referralDate)]="referral.dates" [id]="uuid"></app-valid-from-to> -->
         <button type="button" class="btn btn-secondary" (click)="viewRates()">VIEW ESS RATES</button>
       </div>
     </section>
   </div>
 
-  <div *ngIf="!editMode">
+  <div *ngIf="readOnly">
     <ul class="summary mx-3">
       <li class="summary-heading">
         <div class="container py-3">

@@ -10,7 +10,7 @@ import { FoodRatesComponent } from 'src/app/shared/modals/food-rates/food-rates.
 })
 export class FoodReferralComponent implements OnInit, OnDestroy, OnChanges {
   @Input() referral: FoodReferral = null;
-  @Input() editMode = false;
+  @Input() readOnly = false;
   @Output() remove = new EventEmitter<any>();
   @Output() add = new EventEmitter<any>();
 

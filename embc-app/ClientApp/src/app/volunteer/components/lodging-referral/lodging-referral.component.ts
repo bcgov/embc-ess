@@ -10,7 +10,7 @@ import { LodgingRatesComponent } from 'src/app/shared/modals/lodging-rates/lodgi
 })
 export class LodgingReferralComponent implements OnInit, OnDestroy, OnChanges {
   @Input() referral: LodgingReferral = null;
-  @Input() editMode = false;
+  @Input() readOnly = false;
   @Output() remove = new EventEmitter<any>();
   @Output() add = new EventEmitter<any>();
 
