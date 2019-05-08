@@ -1,15 +1,15 @@
 import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AccommodationReferral } from 'src/app/core/models';
-import { AccommodationRatesComponent } from 'src/app/shared/modals/accommodation-rates/accommodation-rates.component';
+import { LodgingReferral } from 'src/app/core/models';
+import { LodgingRatesComponent } from 'src/app/shared/modals/lodging-rates/lodging-rates.component';
 
 @Component({
-  selector: 'app-accommodation-referral',
-  templateUrl: './accommodation-referral.component.html',
-  styleUrls: ['./accommodation-referral.component.scss']
+  selector: 'app-lodging-referral',
+  templateUrl: './lodging-referral.component.html',
+  styleUrls: ['./lodging-referral.component.scss']
 })
-export class AccommodationReferralComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() referral: AccommodationReferral = null;
+export class LodgingReferralComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() referral: LodgingReferral = null;
   @Input() editMode = false;
   @Output() remove = new EventEmitter<any>();
   @Output() add = new EventEmitter<any>();
@@ -30,7 +30,7 @@ export class AccommodationReferralComponent implements OnInit, OnDestroy, OnChan
   ngOnChanges(changes: SimpleChanges) { }
 
   viewRates() {
-    this.ratesModal = this.modals.open(AccommodationRatesComponent, { size: 'lg' });
+    this.ratesModal = this.modals.open(LodgingRatesComponent, { size: 'lg' });
     this.ratesModal.result.then(
       () => { this.ratesModal = null; },
       () => { this.ratesModal = null; }

@@ -1,16 +1,16 @@
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
-import { AccommodationRatesComponent } from './accommodation-rates.component';
+import { LodgingRatesComponent } from './lodging-rates.component';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-describe('AccomodationRatesComponent', () => {
-  let component: AccommodationRatesComponent;
-  let fixture: ComponentFixture<AccommodationRatesComponent>;
+describe('LodgingRatesComponent', () => {
+  let component: LodgingRatesComponent;
+  let fixture: ComponentFixture<LodgingRatesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AccommodationRatesComponent
+        LodgingRatesComponent
       ],
       imports: [
         FormsModule
@@ -23,7 +23,7 @@ describe('AccomodationRatesComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccommodationRatesComponent);
+    fixture = TestBed.createComponent(LodgingRatesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

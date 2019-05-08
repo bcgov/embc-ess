@@ -6,7 +6,7 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import {
   Registration, Supplier, IncidentalsReferral, FoodReferral,
-  ClothingReferral, AccommodationReferral, TransportationReferral
+  ClothingReferral, LodgingReferral, TransportationReferral
 } from 'src/app/core/models';
 
 @Component({
@@ -26,7 +26,7 @@ export class ReferralMakerComponent implements OnInit {
 
   foodReferrals: Array<FoodReferral> = [];
   clothingReferrals: Array<ClothingReferral> = [];
-  accommodationReferrals: Array<AccommodationReferral> = [];
+  lodgingReferrals: Array<LodgingReferral> = [];
   incidentalsReferrals: Array<IncidentalsReferral> = [];
   transportationReferrals: Array<TransportationReferral> = [];
 
@@ -61,11 +61,11 @@ export class ReferralMakerComponent implements OnInit {
         } else {
           this.registration = r;
 
-        // FOR TESTING
-        if (this.registration.incidentTask) {
-          // tslint:disable-next-line: no-string-literal
-          // this.registration.incidentTask['startDate'] = Date.now();
-        }
+          // FOR TESTING
+          if (this.registration.incidentTask) {
+            // tslint:disable-next-line: no-string-literal
+            // this.registration.incidentTask['startDate'] = Date.now();
+          }
 
           // populate evacuees
           const hoh = this.registration.headOfHousehold;
