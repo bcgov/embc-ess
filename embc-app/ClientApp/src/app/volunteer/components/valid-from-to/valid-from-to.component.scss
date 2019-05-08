@@ -1,4 +1,4 @@
-// remove up/down arrows from date and time inputss
+// remove up/down arrows from date and time inputs
 input[type=date]::-webkit-inner-spin-button,
 input[type=date]::-webkit-outer-spin-button,
 input[type=time]::-webkit-inner-spin-button,
@@ -9,5 +9,10 @@ input[type=time]::-webkit-outer-spin-button {
 
 .picker-patch {
   position: relative;
-  right: 46px;
+  right: 48px;
+  z-index: 3; // above input element
+
+  &:focus, &:hover {
+    color: unset;
+  }
 }
