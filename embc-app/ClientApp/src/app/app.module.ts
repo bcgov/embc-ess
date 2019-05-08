@@ -46,7 +46,7 @@ import { SideboxAddVolunteerComponent } from './components/sidebox-add-volunteer
 import { SideboxCollectionNoticeComponent } from './components/sidebox-collection-notice/sidebox-collection-notice.component';
 
 // shared modals // TODO: move to shared module
-import { AccommodationRatesComponent } from './shared/modals/accommodation-rates/accommodation-rates.component';
+import { LodgingRatesComponent } from './shared/modals/lodging-rates/lodging-rates.component';
 import { ClothingRatesComponent } from './shared/modals/clothing-rates/clothing-rates.component';
 import { ConfirmModalComponent } from './shared/modals/confirm/confirm.component';
 import { FoodRatesComponent } from './shared/modals/food-rates/food-rates.component';
@@ -57,7 +57,7 @@ import { TransportationRatesComponent } from './shared/modals/transportation-rat
 // TODO: move these to volunteer/local-authority/provincial-admin modules
 import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
 import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
-import { AccommodationReferralComponent } from './volunteer/components/accommodation-referral/accommodation-referral.component';
+import { LodgingReferralComponent } from './volunteer/components/lodging-referral/lodging-referral.component';
 import { ClothingReferralComponent } from './volunteer/components/clothing-referral/clothing-referral.component';
 import { FoodReferralComponent } from './volunteer/components/food-referral/food-referral.component';
 import { IncidentalsReferralComponent } from './volunteer/components/incidentals-referral/incidentals-referral.component';
@@ -106,7 +106,7 @@ import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer
     PaginationSummaryComponent,
     UsefulInformationPageComponent,
 
-    AccommodationRatesComponent,
+    LodgingRatesComponent,
     ClothingRatesComponent,
     ConfirmModalComponent,
     FoodRatesComponent,
@@ -116,7 +116,7 @@ import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer
 
     ReferralMakerComponent,
     ReferralViewComponent,
-    AccommodationReferralComponent,
+    LodgingReferralComponent,
     ClothingReferralComponent,
     FoodReferralComponent,
     IncidentalsReferralComponent,
@@ -144,7 +144,7 @@ import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer
     SelfRegistrationModule,
   ],
   entryComponents: [
-    AccommodationRatesComponent,
+    LodgingRatesComponent,
     ClothingRatesComponent,
     ConfirmModalComponent,
     FoodRatesComponent,

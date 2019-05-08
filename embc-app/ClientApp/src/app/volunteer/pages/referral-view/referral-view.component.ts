@@ -6,7 +6,7 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { ReferralService } from 'src/app/core/services/referral.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import {
-  Referral, isAccommodationReferral, isClothingReferral,
+  Referral, isLodgingReferral, isClothingReferral,
   isFoodReferral, isIncidentalsReferral, isTransportationReferral
 } from 'src/app/core/models';
 
@@ -115,8 +115,8 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
   }
 
   // --------------------HELPERS-----------------------------------------
-  isAccommodationReferral(referral: Referral): boolean {
-    return isAccommodationReferral(referral);
+  isLodgingReferral(referral: Referral): boolean {
+    return isLodgingReferral(referral);
   }
 
   isClothingReferral(referral: Referral): boolean {
