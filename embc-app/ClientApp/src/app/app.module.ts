@@ -32,7 +32,6 @@ import { EvacueeSearchResultsComponent } from './components/evacuee-search-resul
 import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
-import { RegistrationPageComponent } from './registration-page/registration-page.component';
 import { UsefulInformationPageComponent } from './pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './pages/local-authority/local-authority-registrations-page/local-authority-registrations-page.component';
 import { ProvincialAdminRegistrationsPageComponent } from './provincial-admin/pages/registrations/provincial-admin-registrations-page.component';
@@ -79,7 +78,6 @@ import { VolunteerRegistrationsPageComponent } from './pages/volunteer-registrat
     RegistrationSummaryComponent,
     RegistrationListComponent,
     RegistrationMakerComponent,
-    RegistrationPageComponent,
     RegistrationSummaryFullComponent,
     VolunteerMakerComponent,
     VolunteerListComponent,
