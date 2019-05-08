@@ -16,7 +16,6 @@ import { VolunteerEditorModule } from './volunteer-editor';
 
 import { SelfRegistrationModule } from './self-registration';
 import { SharedModule } from './shared/shared.module';
-import { VolunteerUsefulInformationComponent } from './volunteer-useful-information/volunteer-useful-information.component';
 import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
 import { TopNavigationComponent } from './top-navigation/top-navigation.component';
 import { TaskNumberListComponent } from './provincial-admin/components/task-number-list/task-number-list.component';
@@ -87,7 +86,6 @@ import { VolunteerRegistrationsPageComponent } from './pages/volunteer-registrat
     RegistrationPageComponent,
     RegistrationSummaryFullComponent,
     VolunteerMakerComponent,
-    VolunteerUsefulInformationComponent,
     VolunteerListComponent,
     VolunteerEditorContainerComponent,
     VolunteerOrganizationListComponent,
