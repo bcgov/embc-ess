@@ -13,7 +13,7 @@ import { UniqueKeyService } from '../core/services/unique-key.service';
 })
 export class RegistrationSummaryComponent implements OnInit, OnDestroy {
 
-  confirmModal: NgbModalRef = null;
+  private confirmModal: NgbModalRef = null;
   registration: Registration = null;
   path: string = null; // for relative routing
   selectedPurchaser = 'null';
