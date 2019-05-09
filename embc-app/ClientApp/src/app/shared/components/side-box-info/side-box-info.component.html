@@ -1,12 +1,10 @@
-
 <!-- TODO: Refactor into a common component Stepper -->
 <section class="step shadow" style="display: block; background-color: #F1F4FA">
   <h3 class="blue-header">{{title}}</h3>
-  <section class="content-styling" role="content">
+  <div class="content-styling" role="content">
     <p>{{content}}</p>
-    <span class="float-right">
+    <span class="float-right mt-2">
       <button class="btn btn-primary" (click)="continue()">{{button}}</button>
     </span>
-  </section>
-
+  </div>
 </section>

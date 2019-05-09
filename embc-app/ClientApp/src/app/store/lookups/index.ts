@@ -1,5 +1,6 @@
 import { combineReducers, ActionReducer, Action } from '@ngrx/store';
 
+import * as fromConfig from './config.reducer';
 import * as fromCountries from './country.reducer';
 import * as fromRegions from './region.reducer';
 import * as fromRegionalDistricts from './regional-district.reducer';
@@ -8,6 +9,7 @@ import * as fromRelationshipTypes from './relationship-type.reducer';
 
 // TODO: <-- more lookups here...
 export interface State {
+  config: fromConfig.State;
   countries: fromCountries.State;
   regions: fromRegions.State;
   regionalDistricts: fromRegionalDistricts.State;
@@ -16,6 +18,7 @@ export interface State {
 }
 
 export const initialState: State = {
+  config: fromConfig.initialState,
   countries: fromCountries.initialState,
   regions: fromRegions.initialState,
   regionalDistricts: fromRegionalDistricts.initialState,
@@ -24,6 +27,7 @@ export const initialState: State = {
 };
 
 const combined = combineReducers<State>({
+  config: fromConfig.reducer,
   countries: fromCountries.reducer,
   regions: fromRegions.reducer,
   regionalDistricts: fromRegionalDistricts.reducer,

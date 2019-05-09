@@ -1,0 +1,16 @@
+@import "~src/styles/_defaults.scss";
+
+div {
+  color: $font-color;
+  background-color: $bg-banner;
+  text-align: center;
+  font-size: 11px;
+  padding: 1rem;
+  font-size: x-large;
+}
+
+@media (max-width: 480px) {
+  div {
+    font-size: unset; // default is 14px
+  }
+}

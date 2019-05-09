@@ -1,11 +1,19 @@
 <div class="row">
-  <div class="col clearfix">
-    <!-- <ngb-pagination [collectionSize]="120" [(page)]="page" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination> -->
-    <!-- <app-notification-banner></app-notification-banner> -->
-  </div>
   <div class="col">
-    <button (click)="notify('Warning!','warning')">Warning</button>
-    <button (click)="notify('Danger!','danger')">Danger</button>
-    <button (click)="notify('Success!','success')">Success</button>
+    <form class="form-inline">
+      <div class="form-group">
+        <div class="input-group">
+          <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">CALENDAR</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <pre>Model: {{ model | json }}</pre>
   </div>
 </div>

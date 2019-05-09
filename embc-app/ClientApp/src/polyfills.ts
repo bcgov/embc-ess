@@ -84,4 +84,3 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 // import 'intl';  // Run `npm install --save intl`.
 
 import 'hammerjs';
-import 'web-animations-js';

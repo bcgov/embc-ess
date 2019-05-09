@@ -1,5 +1,3 @@
-@import "~src/styles/_defaults.scss";
-
 // allow list to scroll
 ::ng-deep ngb-typeahead-window {
   overflow-y: auto;
@@ -7,26 +5,9 @@
 }
 
 :host.is-invalid input {
-  border-color:var(--danger);
+  border-color: var(--danger);
 }
 
 div {
   position: relative;
-}
-
-button {
-  position: absolute;
-  top: 0.28rem;
-  right: 0.32em;
-  bottom: 0.28rem;
-  padding: 0.15rem;
-  color: $gray7;
-  background-color: $white;
-
-  &:active,
-  &:focus,
-  &:hover {
-    color: $gray9;
-    background-color: $gray2;
-  }
 }

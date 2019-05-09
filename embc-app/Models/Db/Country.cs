@@ -4,11 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
-    public class Country
+    public class Country : IAuditableEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public Guid Id { get; set; }
+        public string CountryCode { get; set; }
 
         [MaxLength(255)]
         public string Name { get; set; }

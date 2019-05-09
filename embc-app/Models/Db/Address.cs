@@ -7,7 +7,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// <summary>
     /// Address Database Model
     /// </summary>
-    public abstract partial class Address
+    public abstract class Address : IAuditableEntity
     {
         public const string BC_ADDRESS = "BCAD";
         public const string OTHER_ADDRESS = "OTAD";
@@ -46,12 +46,13 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public string Province { get; set; }
 
-        public Guid CountryId { get; set; }
+        [ForeignKey("Country")]
+        public string CountryCode { get; set; }
 
         public Country Country { get; set; }
     }
 
-    public partial class BcAddress : Address
+    public class BcAddress : Address
     {
         public Guid CommunityId { get; set; }
 
@@ -63,7 +64,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         }
     }
 
-    public partial class OtherAddress : Address
+    public class OtherAddress : Address
     {
         public string City { get; set; }
 

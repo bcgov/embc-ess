@@ -1,0 +1,1 @@
+This folder contains views and components for this particular role. If a component is shared between roles then it should go in the components folder beside the pages folder.

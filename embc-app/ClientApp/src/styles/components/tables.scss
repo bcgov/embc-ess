@@ -1,0 +1,48 @@
+@import "../defaults.scss";
+
+.summary-table table {
+  border-spacing: 5px;
+  border-collapse: separate;
+  width: 100%;
+}
+
+.summary-table th {
+  background-color: #38598a;
+  color: #fff;
+  padding: 5px 5px 3px 10px;
+}
+
+.summary-table td {
+  padding: 5px;
+  background-color: #e1e8f2;
+}
+
+.summary-table .row-alt {
+  background-color: #f1f4fa !important;
+}
+
+.table-rates {
+  color: $font-color;
+  background-color: $summary-bg;
+
+  // specific overrides for mygovbc theme
+  thead tr th,
+  thead tr td,
+  tbody tr th,
+  tbody tr td {
+    border: 3px solid $summary-bg;
+  }
+
+  thead tr th,
+  thead tr td {
+    border-bottom-width: 6px;
+  }
+
+  .light {
+    background-color: $summary-alt-row-bg;
+  }
+
+  .dark {
+    background-color: $summary-row-bg;
+  }
+}

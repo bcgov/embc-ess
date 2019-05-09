@@ -228,7 +228,7 @@
         </div>
         <div class="form-check mt-2">
           <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresAccommodation">
-          <label class="form-check-label">Accommodation</label>
+          <label class="form-check-label">Lodging</label>
         </div>
         <div class="form-check mt-2">
           <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresIncidentals">
@@ -248,7 +248,7 @@
     <button type="button" class="btn btn-secondary" (click)="back()">EDIT SELF-REGISTRATION</button>
   </section>
   <section>
-    <a routerLink="/dashboard">
+    <a routerLink="/">
       <app-font-awesome-icon icon="times"></app-font-awesome-icon>
       <span class="ml-2">Cancel &amp; Close</span>
     </a>

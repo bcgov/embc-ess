@@ -4,12 +4,15 @@
 @import "styles/defaults.scss";
 @import "styles/mixins.scss";
 
+// Bootstrap 4
+@import "~bootstrap/dist/css/bootstrap.css";
+
 // Components
 @import "styles/components/cards.scss";
 @import "styles/components/feature-blocks.scss";
 @import "styles/components/form-elements.scss";
-@import "styles/components/summary.scss";
 @import "styles/components/restricted.scss";
+@import "styles/components/summary.scss";
 
 // Angular Material - define custom theme
 @import "~@angular/material/theming";
@@ -26,6 +29,9 @@ $custom-typography: mat-typography-config(
   $font-family: "Myriad-Pro, Calibri, Arial, sans-serif"
 );
 @include angular-material-typography($custom-typography);
+
+// Components (that come after mygovbc theme)
+@import "styles/components/tables.scss";
 
 html {
   background: #fff;
@@ -168,31 +174,10 @@ select.form-control:not([size]):not([multiple]) {
   padding-top: 12px;
 }
 
-.summary-table table {
-  border-spacing: 5px;
-  border-collapse: separate;
-  width: 100%;
-}
-
-.summary-table th {
-  background-color: #38598a;
-  color: #fff;
-  padding: 5px 5px 3px 10px;
-}
-
-.summary-table td {
-  padding: 5px;
-  background-color: #e1e8f2;
-}
-
-.summary-table .row-alt {
-  background-color: #f1f4fa !important;
-}
-
 .blue-header {
   background-color: #38598a;
   color: #fff;
-  padding: 10px 7px 7px 15px;
+  padding: 8px 8px 8px 15px;
   font-size: 16px;
   font-weight: semi-bold;
 }
@@ -344,10 +329,19 @@ ul.arrow > li:before {
 }
 
 // overrides for mygovbc-bootstrap-theme
+.modal.fade .modal-dialog {
+  transform: none; // original value pushes modal above top of page
+}
+
 .modal-backdrop.fade {
   opacity: 0.5;
 }
 
 .modal.show {
   opacity: 1;
+}
+
+input[type=checkbox],
+input[type=radio] {
+  top: 3px;
 }

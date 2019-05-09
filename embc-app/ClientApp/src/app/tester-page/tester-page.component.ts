@@ -1,19 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { VolunteerService } from '../core/services/volunteer.service';
-import { Volunteer, Registration, User } from '../core/models';
-import { Store } from '@ngrx/store';
-import { AppState } from '../store';
-import { takeWhile, delay } from 'rxjs/operators';
-import { state } from '@angular/animations';
-import { AuthService } from '../core/services/auth.service';
-import { NotificationQueueService } from '../core/services/notification-queue.service';
-// import { Store } from '@ngrx/store';
 
-// import { IncidentTaskService } from '../core/services/incident-task.service';
-// import { RegistrationService } from '../core/services/registration.service';
-// import { AppState } from '../store';
-// import { Country, RegionalDistrict, Region, IncidentTask, Registration, User } from '../core/models';
-// import { ControlledListService } from '../core/services/controlled-list.service';
 
 @Component({
   selector: 'app-tester-page',
@@ -21,15 +7,8 @@ import { NotificationQueueService } from '../core/services/notification-queue.se
   styleUrls: ['./tester-page.component.scss']
 })
 export class TesterPageComponent implements OnInit {
-  page = 1;
-
+  model;
   constructor(
-    private notifications: NotificationQueueService
   ) { }
-
   ngOnInit() { }
-
-  notify(message?: string, type?: string) {
-    this.notifications.addNotification(message, 6000, type);
-  }
 }

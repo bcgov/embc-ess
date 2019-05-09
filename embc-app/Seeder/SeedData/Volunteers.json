@@ -1,0 +1,62 @@
+[
+    {
+        "email": "dev1@ebmc",
+        "BceidAccountUserName": "ess.developerV1",
+        "Active": true,
+        "isAdministrator": false,
+        "isPrimaryContact": false,
+        "canAccessRestrictedFiles": false,
+        "organization": {
+            "BCeIDBusinessGuid": "15F6FD8BC6C6401DB319311853FC518E"
+        },
+        "externaluseridentifier": null,
+        "personType": "VOLN",
+        "firstName": "developerV1",
+        "lastName": "ess"
+    },
+    {
+        "email": "dev2@ebmc",
+        "BceidAccountUserName": "ess.developerV2",
+        "Active": true,
+        "isAdministrator": false,
+        "isPrimaryContact": false,
+        "canAccessRestrictedFiles": false,
+        "organization": {
+            "BCeIDBusinessGuid": "25F6FD8BC6C6401DB319311853FC518E"
+        },
+        "externaluseridentifier": null,
+        "personType": "VOLN",
+        "firstName": "developerV2",
+        "lastName": "ess"
+    },
+    {
+        "email": "adm1@ebmc",
+        "BceidAccountUserName": "ess.developerA1",
+        "Active": true,
+        "isAdministrator": true,
+        "isPrimaryContact": true,
+        "canAccessRestrictedFiles": true,
+        "organization": {
+            "BCeIDBusinessGuid": "15F6FD8BC6C6401DB319311853FC518E"
+        },
+        "externaluseridentifier": null,
+        "personType": "VOLN",
+        "firstName": "developerA1",
+        "lastName": "ess"
+    },
+    {
+        "email": "adm2@ebmc",
+        "BceidAccountUserName": "ess.developerA2",
+        "Active": true,
+        "isAdministrator": true,
+        "isPrimaryContact": true,
+        "canAccessRestrictedFiles": false,
+        "organization": {
+            "BCeIDBusinessGuid": "25F6FD8BC6C6401DB319311853FC518E"
+        },
+        "externaluseridentifier": null,
+        "personType": "VOLN",
+        "firstName": "developerA2",
+        "lastName": "ess"
+    }
+]

@@ -3,11 +3,14 @@ import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SessionExpiringModalComponent } from 'src/app/shared/modals/session-expiring/session-expiring.component';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store';
+import { Config } from 'src/app/core/models';
 import debounce from 'lodash/debounce';
 
-// defaults (used for non-session users, ie, evacuees)
-const DEFAULT_WARNING_IN_SECONDS = 5 * 60;
-const DEFAULT_WARNING_DURATION_IN_SECONDS = 2 * 60;
+// defaults (in case of empty config)
+const DEFAULT_WARNING_IN_MINUTES = 5;
+const DEFAULT_WARNING_DURATION_IN_MINUTES = 2;
 
 export enum RefreshReason {
   ResponseOk,
@@ -23,11 +26,13 @@ export class WatchdogService {
   private sessionWatchdogTimer: number = null;
   private sessionExpiringModal: NgbModalRef = null;
   private attachedEventListener: EventListenerOrEventListenerObject = null;
+  private config: Config = null;
 
   constructor(
     private router: Router,
     protected auth: AuthService,
     private modals: NgbModal,
+    private store: Store<AppState>, // ngrx app state
   ) {
     // watch for login changes
     this.auth.user.subscribe(user => {
@@ -40,6 +45,14 @@ export class WatchdogService {
       }
       this.refreshWatchdog(RefreshReason.LoginChange);
     });
+
+    // get config
+    this.store.select(s => s.lookups.config.config).subscribe(config => {
+      this.config = config;
+    });
+
+    // first time
+    this.refreshWatchdog(RefreshReason.LoginChange);
   }
 
   private watchUserActions() {
@@ -75,18 +88,18 @@ export class WatchdogService {
     // don't time out if we're on the session-expired page
     if (this.router.url === '/session-expired') { return; }
 
-    const timeoutWarningInSeconds = this.auth.currentUser
-      ? (this.auth.currentUser.clientTimeoutWarningInMinutes * 60)
-      : DEFAULT_WARNING_IN_SECONDS;
-    const timeoutWarningDurationInSeconds = this.auth.currentUser
-      ? (this.auth.currentUser.clientTimeoutWarningDurationInMinutes * 60)
-      : DEFAULT_WARNING_DURATION_IN_SECONDS;
+    const timeoutWarningInMinutes = this.config ?
+      (this.auth.currentUser ? this.config.clientTimeoutWarningInMinutes : this.config.defaultTimeoutWarningInMinutes)
+      : DEFAULT_WARNING_IN_MINUTES;
+    const timeoutWarningDurationInMinutes = this.config ?
+      (this.auth.currentUser ? this.config.clientTimeoutWarningDurationInMinutes : this.config.defaultWarningDurationInMinutes)
+      : DEFAULT_WARNING_DURATION_IN_MINUTES;
 
     // start a new session watchdog timer
     this.sessionWatchdogTimer = window.setTimeout(() => {
       this.sessionWatchdogTimer = null;
-      this.openModal(timeoutWarningDurationInSeconds);
-    }, timeoutWarningInSeconds * 1000);
+      this.openModal(timeoutWarningDurationInMinutes * 60);
+    }, timeoutWarningInMinutes * 60 * 1000);
   }, 1000);
 
   private clearWatchdog() {
@@ -97,8 +110,7 @@ export class WatchdogService {
   }
 
   private openModal(durationInSeconds: number) {
-    this.sessionExpiringModal = this.modals.open(SessionExpiringModalComponent,
-      { backdrop: 'static', keyboard: false, centered: true });
+    this.sessionExpiringModal = this.modals.open(SessionExpiringModalComponent, { backdrop: 'static', keyboard: false });
     this.sessionExpiringModal.componentInstance.durationInSeconds = durationInSeconds;
 
     // handle result

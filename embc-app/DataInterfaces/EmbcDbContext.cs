@@ -1,8 +1,15 @@
+using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Models.Db;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.IO;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -23,8 +30,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     /// </summary>
     public class EmbcDbContextFactory : IEmbcDbContextFactory
     {
-        private readonly DbContextOptions<EmbcDbContext> _options;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly DbContextOptions<EmbcDbContext> options;
+        private readonly IHttpContextAccessor ctx;
 
         /// <summary>
         /// Database Context Factory Constructor
@@ -33,8 +40,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <param name="options"></param>
         public EmbcDbContextFactory(IHttpContextAccessor httpContextAccessor, DbContextOptions<EmbcDbContext> options)
         {
-            _options = options;
-            _httpContextAccessor = httpContextAccessor;
+            this.options = options;
+            ctx = httpContextAccessor;
         }
 
         /// <summary>
@@ -43,13 +50,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         /// <returns></returns>
         public EmbcDbContext Create()
         {
-            return new EmbcDbContext(_httpContextAccessor, _options);
+            return new EmbcDbContext(ctx, options);
         }
     }
 
     public class EmbcDbContext : DbContext
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor ctx;
 
         public EmbcDbContext(DbContextOptions<EmbcDbContext> options) : base(options)
         {
@@ -59,7 +66,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public EmbcDbContext(IHttpContextAccessor httpContextAccessor, DbContextOptions<EmbcDbContext> options) : base(options)
         {
-            _httpContextAccessor = httpContextAccessor;
+            ctx = httpContextAccessor;
 
             // override the default timeout as some operations are time intensive
             Database?.SetCommandTimeout(180);
@@ -82,20 +89,41 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Community> Communities { get; set; }
         public DbSet<Country> Countries { get; set; }
+        public DbSet<Evacuee> Evacuees { get; set; }
         public DbSet<FamilyRelationshipType> FamilyRelationshipTypes { get; set; }
+        public DbSet<EvacueeRegistration> EvacueeRegistrations { get; set; }
         public DbSet<IncidentTask> IncidentTasks { get; set; }
-        public DbSet<RegionalDistrict> RegionalDistricts { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Registration> Registrations { get; set; }
+        public DbSet<EvacueeRegistrationAddress> EvacueeRegistrationAddresses { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Organization> Organizations { get; set; }
+        public DbSet<Volunteer> Volunteers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // this line is required so ef migrations will work.
             base.OnModelCreating(modelBuilder);
 
-            //modelBuilder.Entity<FamilyRelationshipType>().HasKey(k => k.Code);
+            //modelBuilder.Entity<Evacuee>
+
+            modelBuilder.Entity<Evacuee>()
+                .HasKey(e => new { e.RegistrationId, e.EvacueeSequenceNumber });
+
+            modelBuilder.Entity<Evacuee>()
+                .HasOne(e => e.EvacueeRegistration)
+                .WithMany(r => r.Evacuees)
+                .HasForeignKey(e => e.RegistrationId)
+                .HasPrincipalKey(r => r.EssFileNumber);
+
+            modelBuilder.Entity<EvacueeRegistrationAddress>()
+                .HasKey(ira => new { ira.RegistrationId, ira.AddressSequenceNumber });
+
+            modelBuilder.Entity<EvacueeRegistrationAddress>()
+                .HasOne(e => e.EvacueeRegistration)
+                .WithMany(r => r.EvacueeRegistrationAddresses)
+                .HasForeignKey(e => e.RegistrationId)
+                .HasPrincipalKey(r => r.EssFileNumber);
 
             // Address hierarchy
             modelBuilder.Entity<BcAddress>().HasBaseType<Address>();
@@ -107,13 +135,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .HasValue<OtherAddress>(Address.OTHER_ADDRESS);
 
             // People hierarchy
-            modelBuilder.Entity<Volunteer>().HasBaseType<Person>();
             modelBuilder.Entity<HeadOfHousehold>().HasBaseType<Person>();
             modelBuilder.Entity<FamilyMember>().HasBaseType<Person>();
             modelBuilder.Entity<Person>()
                 .ToTable("People")
                 .HasDiscriminator(pers => pers.PersonType)
-                .HasValue<Volunteer>(Person.VOLUNTEER)
                 .HasValue<HeadOfHousehold>(Person.HOH)
                 .HasValue<FamilyMember>(Person.FAMILY_MEMBER);
 
@@ -124,6 +150,47 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             modelBuilder.Entity<Registration>()
                 .Property(r => r.EssFileNumber)
                 .HasDefaultValueSql("NEXT VALUE FOR ESSFileNumbers");
+
+            modelBuilder.Entity<EvacueeRegistration>()
+                .Property(r => r.EssFileNumber)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("NEXT VALUE FOR ESSFileNumbers");
+
+            modelBuilder.ShadowProperties();
+        }
+
+        public override int SaveChanges()
+        {
+            SetShadowProperties(ctx?.HttpContext?.User);
+
+            return base.SaveChanges();
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            SetShadowProperties(ctx?.HttpContext?.User);
+
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        public void SetShadowProperties(ClaimsPrincipal principal)
+        {
+            var timestamp = DateTime.UtcNow;
+            var userId = principal?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System";
+            foreach (var entry in ChangeTracker.Entries().Where(x => (x.State == EntityState.Added || x.State == EntityState.Modified)))
+            {
+                if (entry.Entity is IAuditableEntity)
+                {
+                    if (entry.State == EntityState.Added)
+                    {
+                        entry.Property("CreatedDateTime").CurrentValue = timestamp;
+                        entry.Property("CreatedByUserId").CurrentValue = userId;
+                    }
+
+                    entry.Property("UpdateDateTime").CurrentValue = timestamp;
+                    entry.Property("UpdatedByUserId").CurrentValue = userId;
+                }
+            }
         }
     }
 }

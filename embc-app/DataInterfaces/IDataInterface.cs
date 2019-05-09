@@ -10,17 +10,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         #region Registration
 
-        Task<IPagedResults<Registration>> GetRegistrationsAsync(SearchQueryParameters searchQuery);
+        Task<IPagedResults<Registration>> GetEvacueeRegistrationsAsync(SearchQueryParameters searchQuery);
 
-        Task<Registration> GetRegistrationAsync(string id);
+        Task<Registration> GetEvacueeRegistrationAsync(string id);
 
-        Task<RegistrationSummary> GetRegistrationSummaryAsync(string id);
+        Task<RegistrationSummary> GetEvacueeRegistrationSummaryAsync(string id);
 
-        Task<Registration> CreateRegistrationAsync(Registration registration);
+        Task<Registration> CreateEvacueeRegistrationAsync(Registration registration);
 
-        Task UpdateRegistrationAsync(Registration registration);
+        Task UpdateEvacueeRegistrationAsync(Registration registration);
 
-        Task<bool> DeactivateRegistration(string id);
+        Task<bool> DeactivateEvacueeRegistration(string id);
 
         #endregion Registration
 
@@ -46,8 +46,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<IEnumerable<Region>> GetRegionsAsync();
 
-        Task<IEnumerable<RegionalDistrict>> GetRegionalDistrictsAsync();
-
         Task<IEnumerable<FamilyRelationshipType>> GetFamilyRelationshipTypesAsync();
 
         #endregion Lookup data
@@ -56,7 +54,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<IPagedResults<Organization>> GetOrganizationsAsync(SearchQueryParameters searchQuery);
 
-        Organization GetOrganizationBCeIDGuid(string guid);
+        Task<Organization> GetOrganizationByBCeIDGuidAsync(string guid);
 
         Task<string> CreateOrganizationAsync(Organization item);
 

@@ -40,61 +40,41 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] SearchQueryParameters searchQuery)
         {
-            try
-            {
-                var items = await dataInterface.GetIncidentTasksAsync(searchQuery);
+            var items = await dataInterface.GetIncidentTasksAsync(searchQuery);
 
-                return Json(new
-                {
-                    data = items.Items,
-                    metadata = items.Pagination
-                });
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+            return Json(items);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            try
+            var result = await dataInterface.GetIncidentTaskAsync(id);
+            if (result == null)
             {
-                var result = await dataInterface.GetIncidentTaskAsync(id);
-                if (result == null)
-                {
-                    return NotFound();
-                }
-                return Json(result);
+                return NotFound();
             }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+            return Json(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] IncidentTask item)
         {
+            if (!item.StartDate.HasValue)
+            {
+                ModelState.AddModelError("StartDate", "Incident task must have a start date");
+            }
+            if (item.StartDate.HasValue && item.StartDate.Value > DateTime.Now)
+            {
+                ModelState.AddModelError("StartDate", "Incident start date cannot be in the future");
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            try
-            {
-                item.Id = null;
-                item.Active = true;
-                var result = await dataInterface.CreateIncidentTaskAsync(item);
-                return Json(result);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+            item.Id = null;
+            item.Active = true;
+            var result = await dataInterface.CreateIncidentTaskAsync(item);
+            return Json(result);
         }
 
         [HttpPut("{id}")]
@@ -104,21 +84,21 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest();
             }
+            if (!item.StartDate.HasValue)
+            {
+                ModelState.AddModelError("StartDate", "Incident task must have a start date");
+            }
+            if (item.StartDate.HasValue && item.StartDate.Value > DateTime.Now)
+            {
+                ModelState.AddModelError("StartDate", "Incident start date cannot be in the future");
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            try
-            {
-                await dataInterface.UpdateIncidentTaskAsync(item);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e.ToString());
-            }
+            await dataInterface.UpdateIncidentTaskAsync(item);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -126,16 +106,8 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             if (string.IsNullOrWhiteSpace(id)) return BadRequest();
 
-            try
-            {
-                var result = await dataInterface.DeactivateIncidentTaskAsync(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e.ToString());
-                return BadRequest(e);
-            }
+            var result = await dataInterface.DeactivateIncidentTaskAsync(id);
+            return Ok();
         }
     }
 }
