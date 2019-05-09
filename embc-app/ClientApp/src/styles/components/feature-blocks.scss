@@ -1,5 +1,11 @@
 @import "../defaults.scss";
 
+.feature-block-header {
+  background-color: $feature-block-header-bg;
+  color: $feature-block-color;
+  padding: 0.5rem 1.5rem;
+}
+
 .feature-block {
   background-color: $feature-block-bg;
   color: $feature-block-color;

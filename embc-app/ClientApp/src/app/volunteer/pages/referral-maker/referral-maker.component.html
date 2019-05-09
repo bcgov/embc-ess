@@ -10,10 +10,13 @@
 
     <section class="clearfix">
       <!-- confirm task start time -->
-      <div class="feature-block card d-block border-0">
-        <div *ngIf="registration?.incidentTask['startDate']">
-          <label>Please confirm timing for commencement of supports:</label>
-          <div>Incident start date &amp; time: {{registration.incidentTask['startDate'] | dateTimeFormatPipe}}</div>
+      <div *ngIf="registration?.incidentTask?.startDate">
+        <div class="feature-block-header">
+          <label class="m-0 p-0">Please confirm timing for commencement of supports:</label>
+        </div>
+        <div class="feature-block card d-block border-0">
+          <div>Incident start date &amp; time: {{registration?.incidentTask?.startDate | dateTimeFormatPipe}}</div>
+          <h3 class="mt-3">Support start date &amp; time: {{registration?.incidentTask?.startDate | dateTimeFormatPipe}}</h3>
         </div>
       </div>
 
@@ -25,20 +28,20 @@
           <label class="form-check-label" for="supportFood">Food</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="clothingReferrals.length > 0" id="supportClothing">
-          <label class="form-check-label" for="supportClothing">Clothing</label>
-        </div>
-        <div class="form-check mt-2">
           <input type="checkbox" class="form-check-input" [checked]="lodgingReferrals.length > 0" id="supportLodging">
           <label class="form-check-label" for="supportLodging">Lodging</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="incidentalsReferrals.length > 0" id="supportIncidentals" (change)="incidentalsReferralChange()">
-          <label class="form-check-label" for="supportIncidentals">Incidentals</label>
+          <input type="checkbox" class="form-check-input" [checked]="clothingReferrals.length > 0" id="supportClothing">
+          <label class="form-check-label" for="supportClothing">Clothing</label>
         </div>
         <div class="form-check mt-2">
           <input type="checkbox" class="form-check-input" [checked]="transportationReferrals.length > 0" id="supportTransportation">
           <label class="form-check-label" for="supportTransportation">Transportation</label>
+        </div>
+        <div class="form-check mt-2">
+          <input type="checkbox" class="form-check-input" [checked]="incidentalsReferrals.length > 0" id="supportIncidentals" (change)="incidentalsReferralChange()">
+          <label class="form-check-label" for="supportIncidentals">Incidentals</label>
         </div>
       </div>
 
@@ -47,20 +50,20 @@
         <!-- <app-food-referral ([r])="r"></app-food-referral> -->
       </article>
 
-      <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4">
-        <!-- <app-clothing-referral ([r])="r"></app-clothing-referral> -->
-      </article>
-
       <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-4">
         <!-- <app-lodging-referral ([r])="r"></app-lodging-referral> -->
       </article>
 
-      <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
-        <app-incidentals-referral [(referral)]="r" [readOnly]="false" (remove)="removeIncidentalsReferral(i)" (add)="addIncidentalsReferral()"></app-incidentals-referral>
+      <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4">
+        <!-- <app-clothing-referral ([r])="r"></app-clothing-referral> -->
       </article>
 
       <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4">
         <!-- <app-transportation-referral ([r])="r"></app-transportation-referral> -->
+      </article>
+
+      <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
+        <app-incidentals-referral [(referral)]="r" [readOnly]="false" (remove)="removeIncidentalsReferral(i)" (add)="addIncidentalsReferral()"></app-incidentals-referral>
       </article>
     </section>
 
