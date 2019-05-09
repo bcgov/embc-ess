@@ -41,7 +41,7 @@
         <label class="form-check-label" for="hasPetsFalse">No</label>
       </div>
       <span [class.d-block]="invalid('hasPets')" class="invalid-feedback">{{validationErrors['hasPets']}}</span>
-  </div>
+    </div>
   </section>
 
   <h2 class="blue-header h3">INSURANCE</h2>
@@ -72,7 +72,7 @@
   <section class="padded-section">
     <p class="required">
       While you are evacuated do you require supports?<br>
-      This could be in the form of food / accommodation / clothing / incidentals or transportation.
+      This could be in the form of food / lodging / clothing / incidentals or transportation.
     </p>
     <div class="form-group">
       <div class="form-check">
@@ -103,8 +103,8 @@
           </div>
           <div class="row">
             <div class="form-check col-md-6">
-              <input type="checkbox" class="form-check-input" formControlName="requiresAccommodation" id="requiresAccommodation">
-              <label class="form-check-label" for="requiresAccommodation">Accommodation</label>
+              <input type="checkbox" class="form-check-input" formControlName="requiresAccommodation" id="requiresLodging">
+              <label class="form-check-label" for="requiresLodging">Lodging</label>
             </div>
           </div>
           <div class="row">
@@ -129,7 +129,7 @@
       <button type="button" class="btn btn-secondary" (click)="back()">EDIT SELF-REGISTRATION</button>
     </section>
     <section>
-      <a routerLink="/dashboard">
+      <a routerLink="/">
         <app-font-awesome-icon icon="times"></app-font-awesome-icon>
         <span class="ml-2">Cancel &amp; Close</span>
       </a>

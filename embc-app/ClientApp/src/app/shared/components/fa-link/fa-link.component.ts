@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IconSizes } from '../font-awesome-icon/font-awesome-icon.component';
 
 @Component({
@@ -20,7 +20,6 @@ import { IconSizes } from '../font-awesome-icon/font-awesome-icon.component';
   styles: []
 })
 export class FontAwesomeLinkComponent {
-
   @Input() icon: string;
   @Input() border = false;
   @Input() color = 'inherit';

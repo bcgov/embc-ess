@@ -1,9 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { concat } from 'rxjs';
+import { forkJoin } from 'rxjs';
 // import { User } from './core/models';
 import { detectIE10orLower } from './shared/utils';
 import { ControlledListService } from './core/services/controlled-list.service';
 import { AuthService } from './core/services/auth.service';
+import { UniqueKeyService } from './core/services/unique-key.service';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit {
   constructor(
     private lookups: ControlledListService,
     public authService: AuthService,
+    public uniqueKeyService: UniqueKeyService,
   ) { }
 
   ngOnInit() {
@@ -61,11 +63,10 @@ export class AppComponent implements OnInit {
   }
 
   private getLookups() {
-    return concat(
+    return forkJoin(
       this.lookups.getConfig(),
       this.lookups.getAllCountries(),
       this.lookups.getAllRegions(),
-      this.lookups.getAllRegionalDistricts(),
       this.lookups.getAllCommunities(),
       this.lookups.getAllFamilyRelationshipTypes(),
       // ...add more

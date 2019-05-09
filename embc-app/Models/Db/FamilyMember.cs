@@ -3,7 +3,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// <summary>
     /// Person Database Model
     /// </summary>
-    public class FamilyMember : Evacuee
+    public class FamilyMember : EvacueeOld
     {
         public bool SameLastNameAsEvacuee { get; set; }
 

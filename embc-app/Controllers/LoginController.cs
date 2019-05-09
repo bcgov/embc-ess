@@ -1,162 +1,102 @@
 using Gov.Jag.Embc.Public.Authentication;
-using Gov.Jag.Embc.Public.Utils;
+using Gov.Jag.Embc.Public.DataInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("login")]
+    [Authorize]
     public class LoginController : Controller
     {
-        private readonly IConfiguration Configuration;
-        private readonly IHostingEnvironment _env;
-        private readonly SiteMinderAuthOptions _options = new SiteMinderAuthOptions();
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ILogger _logger;
+        private readonly IConfiguration configuration;
+        private readonly IHostingEnvironment env;
+        private readonly IHttpContextAccessor httpCtx;
+        private readonly ILogger logger;
+        private readonly IDataInterface dataInterface;
 
-        public LoginController(IConfiguration configuration, IHostingEnvironment env, IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory)
+        public LoginController(IConfiguration configuration, IHostingEnvironment env, IHttpContextAccessor httpCtx, ILoggerFactory loggerFactory, IDataInterface dataInterface)
         {
-            Configuration = configuration;
-            _env = env;
-            _httpContextAccessor = httpContextAccessor;
-            _logger = loggerFactory.CreateLogger(typeof(LoginController));
+            this.dataInterface = dataInterface;
+            this.configuration = configuration;
+            this.env = env;
+            this.httpCtx = httpCtx;
+            logger = loggerFactory.CreateLogger(typeof(LoginController));
         }
 
         [HttpGet]
-        [Authorize]
-        public ActionResult Login(string path)
-        {
-            // check to see if we have a local path.  (do not allow a redirect to another website)
-            if (!string.IsNullOrEmpty(path) && (Url.IsLocalUrl(path) || (!_env.IsProduction() && path.Equals("headers"))))
-            {
-                // diagnostic feature for development - echo headers back.
-                if ((!_env.IsProduction()) && path.Equals("headers"))
-                {
-                    StringBuilder html = new StringBuilder();
-                    html.AppendLine("<html>");
-                    html.AppendLine("<body>");
-                    html.AppendLine("<b>Request Headers:</b>");
-                    html.AppendLine("<ul style=\"list-style-type:none\">");
-                    foreach (var item in Request.Headers)
-                    {
-                        html.AppendFormat("<li><b>{0}</b> = {1}</li>\r\n", item.Key, ExpandValue(item.Value));
-                    }
-                    html.AppendLine("</ul>");
-                    html.AppendLine("</body>");
-                    html.AppendLine("</html>");
-                    ContentResult contentResult = new ContentResult();
-                    contentResult.Content = html.ToString();
-                    contentResult.ContentType = "text/html";
-                    return contentResult;
-                }
-                return LocalRedirect(path);
-            }
-            else
-            {
-                string basePath = string.IsNullOrEmpty(Configuration["BASE_PATH"]) ? "/" : Configuration["BASE_PATH"];
-                // we want to redirect to the dashboard if the user is a returning user.
-
-                // get UserSettings from the session
-                string temp = _httpContextAccessor.HttpContext.Session.GetString("UserSettings");
-                string dashboard = "dashboard";
-
-                return Redirect(basePath + "/" + dashboard);
-            }
-        }
-
-        private bool isBusinessProfileSubmitted(UserSettings userSettings)
-        {
-            var isSubmitted = false;
-            // query the Dynamics system to get the account record.
-            if (userSettings.AccountId != null && userSettings.AccountId.Length > 0)
-            {
-                var accountId = GuidUtility.SanitizeGuidString(userSettings.AccountId);
-            }
-
-            return isSubmitted;
-        }
-
-        /// <summary>
-        /// Utility function used to expand headers.
-        /// </summary>
-        /// <param name="values"></param>
-        /// <returns></returns>
-        private static string ExpandValue(IEnumerable<string> values)
-        {
-            StringBuilder value = new StringBuilder();
-
-            foreach (string item in values)
-            {
-                if (value.Length > 0)
-                {
-                    value.Append(", ");
-                }
-                value.Append(item);
-            }
-            return value.ToString();
-        }
-
-        /// <summary>
-        /// Injects an authentication token cookie into the response for use with the
-        /// SiteMinder authentication middleware
-        /// </summary>
-        [HttpGet]
-        [Route("token/{userid}")]
         [AllowAnonymous]
-        public virtual IActionResult GetDevAuthenticationCookie(string userId)
+        public async Task<ActionResult> Login(string path)
         {
-            // if (_env.IsProduction()) return BadRequest("This API is not available outside a development environment.");
+            if (!env.IsProduction() && "headers".Equals(path, StringComparison.OrdinalIgnoreCase))
+            {
+                return Content(string.Join(Environment.NewLine, Request.Headers.Select(header => $"{header.Key}={string.Join(",", header.Value.ToArray())}")), "text/plain", Encoding.UTF8);
+            }
 
-            if (string.IsNullOrEmpty(userId)) return BadRequest("Missing required userid query parameter.");
+            if (ControllerContext.HttpContext.User == null || !ControllerContext.HttpContext.User.Identity.IsAuthenticated) return Unauthorized();
 
-            if (userId.ToLower() == "default")
-                userId = _options.DevDefaultUserId;
+            return await Task.FromResult(LocalRedirect($"{configuration["BASE_PATH"]}/{path}"));
+        }
 
-            // clear session
+        [HttpGet]
+        [Route("token/{userName}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> LoginDevelopment(string userName)
+        {
+            if (env.IsProduction() || string.IsNullOrWhiteSpace(userName)) return Unauthorized();
+
             HttpContext.Session.Clear();
 
-            // expire "dev" user cookie
-            string temp = HttpContext.Request.Cookies[_options.DevBCSCAuthenticationTokenKey];
-            if (temp == null)
+            var secToken = await (userName.StartsWith("idir", StringComparison.OrdinalIgnoreCase)
+                ? CreateDevTokenForIdir(userName)
+                : CreateDevTokenForBceid(userName)
+            );
+
+            SiteMinderAuthenticationToken.AddToResponse(secToken, Response);
+
+            return LocalRedirect($"{configuration["BASE_PATH"]}/login");
+        }
+
+        private async Task<SiteMinderAuthenticationToken> CreateDevTokenForIdir(string userName)
+        {
+            var guidBytes = Guid.Empty.ToByteArray();
+            guidBytes[guidBytes.Length - 1] += (byte)userName.GetHashCode();
+            return await Task.FromResult(new SiteMinderAuthenticationToken
             {
-                temp = "";
-            }
-            Response.Cookies.Append(
-                _options.DevBCSCAuthenticationTokenKey,
-                temp,
-                new CookieOptions
-                {
-                    Path = "/",
-                    SameSite = SameSiteMode.None,
-                    Expires = DateTime.UtcNow.AddDays(-1)
-                }
-            );
-            // create new "dev" user cookie
-            Response.Cookies.Append(
-                _options.DevAuthenticationTokenKey,
-                userId,
-                new CookieOptions
-                {
-                    Path = "/",
-                    SameSite = SameSiteMode.None,
-                    Expires = DateTime.UtcNow.AddDays(7)
-                }
-            );
+                smgov_businessguid = null,
+                smgov_businesslegalname = null,
+                smgov_userdisplayname = $"{userName} (IDIR)",
+                smgov_userguid = new Guid(guidBytes).ToString(),
+                smgov_usertype = "internal",
+                sm_universalid = userName,
+                sm_user = userName
+            });
+        }
 
-            string basePath = string.IsNullOrEmpty(Configuration["BASE_PATH"]) ? "" : Configuration["BASE_PATH"];
-            // always send the user to the business profile.
-            string businessprofile = "dashboard";
-            basePath += "/" + businessprofile;
-
-            return Redirect(basePath);
+        private async Task<SiteMinderAuthenticationToken> CreateDevTokenForBceid(string userName)
+        {
+            //TODO: convert GetVolunteerByBceidUserId to async
+            var volunteer = await Task.FromResult(dataInterface.GetVolunteerByBceidUserId(userName));
+            if (volunteer == null) return null;
+            var secToken = new SiteMinderAuthenticationToken
+            {
+                smgov_businessguid = volunteer.Organization.BCeIDBusinessGuid,
+                smgov_businesslegalname = volunteer.Organization.LegalName,
+                smgov_userdisplayname = $"{volunteer.LastName}, {volunteer.FirstName}",
+                smgov_userguid = volunteer.Externaluseridentifier ?? Guid.NewGuid().ToString(),
+                smgov_usertype = "business",
+                sm_universalid = volunteer.BceidAccountNumber,
+                sm_user = volunteer.BceidAccountNumber
+            };
+            return secToken;
         }
     }
 }

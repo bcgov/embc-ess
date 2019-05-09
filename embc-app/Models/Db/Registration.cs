@@ -7,7 +7,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// <summary>
     /// Evacuee Registration Database Model
     /// </summary>
-    public class Registration
+    public class Registration : IAuditableEntity
     {
         /// <summary>
         /// A system-generated unique identifier
@@ -75,8 +75,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public Community HostCommunity { get; set; }
 
-        public Guid? CompletedById { get; set; }
-
-        public Volunteer CompletedBy { get; set; }
+        [MaxLength(255)]
+        public string CompletedById { get; set; }
     }
 }

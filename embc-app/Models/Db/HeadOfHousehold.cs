@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
-    public abstract class Evacuee : Person
+    public abstract class EvacueeOld : Person, IAuditableEntity
     {
         public string BcServicesNumber { get; set; }
     }
 
-    public class HeadOfHousehold : Evacuee
+    public class HeadOfHousehold : EvacueeOld
     {
         // evacuee information (HOH and family members)
         public string PhoneNumber { get; set; }

@@ -1,6 +1,6 @@
 # JAG EMBC-ESS
 
-Emergency Management BC - Emergency Social Services Modernization
+Emergency Management BC - Emergency Support Services Modernization
 
 ## Run SQL Server container images with Docker
 

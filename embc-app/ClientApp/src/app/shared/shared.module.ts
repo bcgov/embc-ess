@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbTypeaheadModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeaheadModule, NgbAlertModule, NgbPaginationModule, NgbModalModule, NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { MaterialModule } from './material.module';
 import { EnvironmentBannerComponent } from './components/environment-banner/environment-banner.component';
@@ -20,15 +20,16 @@ import { DisableControlDirective } from './directives/disable-control.directive'
 import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
 import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
-import { SearchBarComponent, EvacueeSearchResultsComponent } from './components/search/';
 import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
+import { DateTimePickerComponent } from './components/date-time-picker/date-time-picker.component';
 
-import { YesNoPipe } from './pipes/yes-no.pipe';
-import { ByIdPipe } from './pipes/by-id.pipe';
-import { PluckPipe } from './pipes/pluck.pipe';
-import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent, CollectionNoticeComponent } from './components/side-boxes';
+// import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent, CollectionNoticeComponent } from './components/side-boxes';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
+
+import { ByIdPipe } from './pipes/by-id.pipe';
+import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
+import { PluckPipe } from './pipes/pluck.pipe';
+import { YesNoPipe } from './pipes/yes-no.pipe';
 
 @NgModule({
   declarations: [
@@ -47,28 +48,28 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     FontAwesomeIconComponent,
     FontAwesomeLinkComponent,
     AttentionIconComponent,
-    SearchBarComponent,
-    EvacueeSearchResultsComponent,
     CommunitiesSelectComponent,
-    YesNoPipe,
     ByIdPipe,
+    DateTimeFormatPipe,
     PluckPipe,
-    AddEvacueeComponent,
-    AddOrganizationComponent,
-    AddTaskNumberComponent,
-    AddUserComponent,
-    CollectionNoticeComponent,
+    YesNoPipe,
     PageNotFoundComponent,
-    PaginationSummaryComponent,
+    DateTimePickerComponent,
   ],
   imports: [
     CommonModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    MaterialModule,
+
+    // ng-bootstrap UI components
+    NgbPaginationModule,
+    NgbModalModule,
     NgbTypeaheadModule,
     NgbAlertModule,
-    MaterialModule,
+    NgbDatepickerModule,
+    NgbTimepickerModule,
   ],
   exports: [
     // modules
@@ -76,6 +77,12 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
+
+    // ng-bootstrap components we want to re-export... (they are used outside of this SharedModule)
+    NgbPaginationModule,
+    NgbModalModule,
+    NgbDatepickerModule,
+    NgbTimepickerModule,
 
     // components, pipes, etc
     EnvironmentBannerComponent,
@@ -93,18 +100,12 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     FontAwesomeIconComponent,
     FontAwesomeLinkComponent,
     AttentionIconComponent,
-    SearchBarComponent,
-    EvacueeSearchResultsComponent,
     CommunitiesSelectComponent,
-    YesNoPipe,
     ByIdPipe,
+    DateTimeFormatPipe,
     PluckPipe,
-    AddEvacueeComponent,
-    AddOrganizationComponent,
-    AddTaskNumberComponent,
-    AddUserComponent,
-    CollectionNoticeComponent,
-    PaginationSummaryComponent,
+    YesNoPipe,
+    DateTimePickerComponent,
   ]
 })
 export class SharedModule { }

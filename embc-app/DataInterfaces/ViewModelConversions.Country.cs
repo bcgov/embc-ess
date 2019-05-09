@@ -4,16 +4,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         public static ViewModels.Country ToViewModel(this Models.Db.Country source)
         {
-            ViewModels.Country result = null;
-            if (source != null)
+            var result = new ViewModels.Country
             {
-                result = new ViewModels.Country()
-                {
-                    Id = source.Id.ToString(),
-                    Name = source.Name,
-                    Active = source.Active
-                };
-            }
+                Id = source.CountryCode,
+                CountryCode = source.CountryCode,
+                Name = source.Name,
+                Active = source.Active
+            };
             return result;
         }
     }

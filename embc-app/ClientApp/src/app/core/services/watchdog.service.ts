@@ -110,8 +110,7 @@ export class WatchdogService {
   }
 
   private openModal(durationInSeconds: number) {
-    this.sessionExpiringModal = this.modals.open(SessionExpiringModalComponent,
-      { backdrop: 'static', keyboard: false, centered: true });
+    this.sessionExpiringModal = this.modals.open(SessionExpiringModalComponent, { backdrop: 'static', keyboard: false });
     this.sessionExpiringModal.componentInstance.durationInSeconds = durationInSeconds;
 
     // handle result

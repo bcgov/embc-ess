@@ -8,10 +8,13 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// <summary>
     /// Incident Task Database Model
     /// </summary>
-    public class IncidentTask
+    public class IncidentTask : IAuditableEntity
     {
         public IncidentTask()
-        { }
+        {
+            Registrations = new List<Registration>();
+            EvacueeRegistrations = new List<EvacueeRegistration>();
+        }
 
         /// <summary>
         /// A system-generated unique identifier
@@ -30,18 +33,19 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public bool Active { get; set; }
 
         // only one of the following will be set; ie a regional incident vs a community one, etc
-        public Guid? RegionId { get; set; }
+        [ForeignKey("Region")]
+        public string RegionName { get; set; }
 
         public Region Region { get; set; }
-
-        public Guid? RegionalDistrictId { get; set; }
-
-        public RegionalDistrict RegionalDistrict { get; set; }
 
         public Guid? CommunityId { get; set; }
 
         public Community Community { get; set; }
 
         public List<Registration> Registrations { get; set; }
+
+        public List<EvacueeRegistration> EvacueeRegistrations { get; set; }
+
+        public DateTimeOffset? StartDate { get; set; }
     }
 }

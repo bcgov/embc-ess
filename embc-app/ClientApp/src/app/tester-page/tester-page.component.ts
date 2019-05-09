@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificationQueueService } from '../core/services/notification-queue.service';
+
 
 @Component({
   selector: 'app-tester-page',
@@ -7,15 +7,8 @@ import { NotificationQueueService } from '../core/services/notification-queue.se
   styleUrls: ['./tester-page.component.scss']
 })
 export class TesterPageComponent implements OnInit {
-  page = 1;
-
+  model;
   constructor(
-    private notifications: NotificationQueueService
   ) { }
-
   ngOnInit() { }
-
-  notify(message?: string, type?: string) {
-    this.notifications.addNotification(message, 6000, type);
-  }
 }

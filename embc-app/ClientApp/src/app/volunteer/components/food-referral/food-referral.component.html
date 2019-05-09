@@ -1,0 +1,38 @@
+<div *ngIf="referral">
+  <div *ngIf="editMode">
+    <section>
+      <h2 class="blue-header">
+        <app-font-awesome-icon icon="utensils"></app-font-awesome-icon>&nbsp;&nbsp;FOOD
+      </h2>
+      <div class="space-between align-items-end">
+        <app-valid-from-to [(referralDate)]="referral.dates" [id]="uuid"></app-valid-from-to>
+        <button type="button" class="btn btn-secondary" (click)="viewRates()">VIEW ESS RATES</button>
+      </div>
+    </section>
+  </div>
+
+  <div *ngIf="!editMode">
+    <ul class="summary mx-3">
+      <li class="summary-heading">
+        <div class="container py-3">
+          <div class="row">
+            <div class="col-6">
+              <div class="h1 my-3">Food</div>
+              <div>
+                <span class="name"><strong>Valid From:</strong></span>
+                <span>{{referral.dates?.from | date}}</span>
+              </div>
+              <div>
+                <span class="name"><strong>Valid To:</strong></span>
+                <span>{{referral.dates?.to | date}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <!-- FOR TESTING ONLY -->
+    <pre class="m-3">{{ referral | json }}</pre>
+  </div>
+</div>

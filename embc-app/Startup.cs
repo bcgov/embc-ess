@@ -1,16 +1,13 @@
-using Gov.Embc.Public.Seeders;
-using Gov.Jag.Embc.Interfaces;
+using AutoMapper;
 using Gov.Jag.Embc.Public.Authentication;
-using Gov.Jag.Embc.Public.Authorization;
 using Gov.Jag.Embc.Public.DataInterfaces;
-using Gov.Jag.Embc.Public.Models;
+using Gov.Jag.Embc.Public.Seeder;
 using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -21,7 +18,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Net.Http.Headers;
 using NWebsec.AspNetCore.Mvc;
 using NWebsec.AspNetCore.Mvc.Csp;
@@ -89,8 +85,10 @@ namespace Gov.Jag.Embc.Public
                     opts.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
                     opts.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;
                     opts.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+                    opts.SerializerSettings.DateParseHandling = Newtonsoft.Json.DateParseHandling.DateTimeOffset;
 
-                    // ReferenceLoopHandling is set to Ignore to prevent JSON parser issues with the user / roles model.
+                    // ReferenceLoopHandling is set to Ignore to prevent JSON parser issues with the
+                    // user / roles model.
                     opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
 
@@ -103,14 +101,6 @@ namespace Gov.Jag.Embc.Public
             {
             });
 
-            // setup authorization
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("Business-User", policy =>
-                                  policy.RequireClaim(User.UserTypeClaim, "Business"));
-            });
-            services.RegisterPermissionHandler();
-
             // setup key ring to persist in storage.
             if (!string.IsNullOrEmpty(Configuration["KEY_RING_DIRECTORY"]))
             {
@@ -121,12 +111,6 @@ namespace Gov.Jag.Embc.Public
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
-            });
-
-            // allow for large files to be uploaded
-            services.Configure<FormOptions>(options =>
-            {
-                options.MultipartBodyLengthLimit = 1073741824; // 1 GB
             });
 
             // health checks
@@ -143,6 +127,9 @@ namespace Gov.Jag.Embc.Public
 
             services.AddTransient<IDataInterface, DataInterface>();
 
+            //Automapper
+            services.AddAutoMapper(typeof(Startup));
+
             // Enable the IURLHelper to be able to build links within Controllers
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IUrlHelper>(x =>
@@ -154,39 +141,6 @@ namespace Gov.Jag.Embc.Public
             services.AddTransient<IEmailSender, EmailSender>();
         }
 
-        private void SetupDynamics(IServiceCollection services)
-        {
-            string dynamicsOdataUri = Configuration["DYNAMICS_ODATA_URI"];
-            string aadTenantId = Configuration["DYNAMICS_AAD_TENANT_ID"];
-            string serverAppIdUri = Configuration["DYNAMICS_SERVER_APP_ID_URI"];
-            string clientKey = Configuration["DYNAMICS_CLIENT_KEY"];
-            string clientId = Configuration["DYNAMICS_CLIENT_ID"];
-
-            string ssgUsername = Configuration["SSG_USERNAME"];
-            string ssgPassword = Configuration["SSG_PASSWORD"];
-
-            AuthenticationResult authenticationResult = null;
-            // authenticate using ADFS.
-            if (string.IsNullOrEmpty(ssgUsername) || string.IsNullOrEmpty(ssgPassword))
-            {
-                var authenticationContext = new AuthenticationContext(
-                    "https://login.windows.net/" + aadTenantId);
-                ClientCredential clientCredential = new ClientCredential(clientId, clientKey);
-                var task = authenticationContext.AcquireTokenAsync(serverAppIdUri, clientCredential);
-                task.Wait();
-                authenticationResult = task.Result;
-            }
-
-            // add BCeID Web Services
-
-            string bceidUrl = Configuration["BCEID_SERVICE_URL"];
-            string bceidSvcId = Configuration["BCEID_SERVICE_SVCID"];
-            string bceidUserid = Configuration["BCEID_SERVICE_USER"];
-            string bceidPasswd = Configuration["BCEID_SERVICE_PASSWD"];
-
-            services.AddTransient<BCeIDBusinessQuery>(_ => new BCeIDBusinessQuery(bceidSvcId, bceidUserid, bceidPasswd, bceidUrl));
-        }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -196,7 +150,9 @@ namespace Gov.Jag.Embc.Public
 
             log.LogInformation("Fetching the application's database context ...");
 
-            var adminCtx = new EmbcDbContext(new DbContextOptionsBuilder<EmbcDbContext>().UseSqlServer(DatabaseTools.GetSaConnectionString(Configuration)).Options);
+            var adminCtx = new EmbcDbContext(new DbContextOptionsBuilder<EmbcDbContext>()
+                .UseLoggerFactory(loggerFactory)
+                .UseSqlServer(DatabaseTools.GetSaConnectionString(Configuration)).Options);
 
             if (!string.IsNullOrEmpty(Configuration["DB_FULL_REFRESH"]) && Configuration["DB_FULL_REFRESH"].ToLowerInvariant() == "true")
             {
@@ -213,7 +169,14 @@ namespace Gov.Jag.Embc.Public
                     Configuration["DB_USER"],
                     Configuration["DB_PASSWORD"]);
             }
-            adminCtx.Database.EnsureCreated();
+
+            //Check if the database exists
+            var databaseExists = adminCtx.Database.CanConnect();
+            if (databaseExists)
+            {
+                log.LogInformation("Syncing migrations prior to migrating...");
+                DatabaseTools.SyncInitialMigration(DatabaseTools.GetSaConnectionString(Configuration));
+            }
 
             log.LogInformation("Migrating the database ...");
             adminCtx.Database.Migrate();
@@ -225,8 +188,11 @@ namespace Gov.Jag.Embc.Public
                 // run the database seeders
                 log.LogInformation("Adding/Updating seed data ...");
 
-                SeedFactory<EmbcDbContext> seederFactory = new SeedFactory<EmbcDbContext>(Configuration, env, loggerFactory);
-                seederFactory.Seed(adminCtx);
+                ISeederRepository seederRepository = new SeederRepository(adminCtx);
+                var seedDataLoader = new SeedDataLoader(loggerFactory);
+                var seeder = new EmbcSeeder(loggerFactory, seederRepository, env, seedDataLoader);
+                seeder.SeedData();
+
                 log.LogInformation("Seeding operations are complete.");
             }
             catch (Exception e)
@@ -298,8 +264,7 @@ namespace Gov.Jag.Embc.Public
 
             app.UseSpa(spa =>
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
+                // To learn more about options for serving an Angular SPA from ASP.NET Core, see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
 
