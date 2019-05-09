@@ -23,6 +23,10 @@ export class ReferralMakerComponent implements OnInit {
   regId: string = null;
   purchaser: string = null;
   evacuees: Array<any> = [];
+  // the date that is given to subcomponents as the initial date
+  defaultDate: Date = null;
+  showDefaultDatePicker = false;
+  showReferralMakers = false;
 
   foodReferrals: Array<FoodReferral> = [];
   clothingReferrals: Array<ClothingReferral> = [];
@@ -60,6 +64,9 @@ export class ReferralMakerComponent implements OnInit {
           this.cancel();
         } else {
           this.registration = r;
+
+          // collect the default date
+          this.defaultDate = new Date(r.incidentTask.startDate);
 
           // populate evacuees
           const hoh = this.registration.headOfHousehold;

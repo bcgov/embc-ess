@@ -10,36 +10,64 @@
 
     <section class="clearfix">
       <!-- confirm task start time -->
-      <div class="feature-block card d-block border-0">
-        <div *ngIf="registration?.incidentTask['startDate']">
-          <label>Please confirm timing for commencement of supports:</label>
-          <!-- <div>{{registration.incidentTask['startDate'] | date:'yyyy/MM/dd \'at\' HH:mm:ss a'}}</div> -->
-          <div>Incident start date &amp; time: {{registration.incidentTask['startDate'] | dateTimeFormatPipe}}</div>
+      <div class="card">
+        <div class="card-header">
+          Please confirm timing for commencement of supports:
+        </div>
+        <div class="card-body">
+          <div *ngIf="registration?.incidentTask['startDate']">
+            <!-- <div>{{registration.incidentTask['startDate'] | date:'yyyy/MM/dd \'at\' HH:mm:ss a'}}</div> -->
+            <div>Incident start date &amp; time: {{registration.incidentTask['startDate'] | dateTimeFormatPipe}}</div>
+
+            <div class="row">
+              <div class="col">
+                <span class="align-bottom">
+                  <span class="h3">Support start date &amp; time: {{defaultDate | dateTimeFormatPipe}}</span>
+                </span>
+              </div>
+              <div class="col-2">
+                <span class="align-bottom">
+                  <a href="javascript:void(0)">
+                    <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+                    <span class="ml-2" (click)="showDefaultDatePicker=!showDefaultDatePicker">Override start time</span>
+                  </a>
+                </span>
+              </div>
+              <div class="col-2">
+                <button class="btn btn-primary" (click)="showReferralMakers=!showReferralMakers">NEXT</button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="showDefaultDatePicker">
+            <strong>Valid From</strong>
+            <app-date-time-picker [(value)]="defaultDate"></app-date-time-picker>
+          </div>
         </div>
       </div>
-
-      <!-- select required supports -->
-      <div class="card d-block border-0 p-4">
-        <label>Select required supports:</label>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood" (change)="foodReferralChange()">
-          <label class="form-check-label" for="supportFood">Food</label>
-        </div>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="clothingReferrals.length > 0" id="supportClothing">
-          <label class="form-check-label" for="supportClothing">Clothing</label>
-        </div>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="lodgingReferrals.length > 0" id="supportLodging">
-          <label class="form-check-label" for="supportLodging">Lodging</label>
-        </div>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="incidentalsReferrals.length > 0" id="supportIncidentals" (change)="incidentalsReferralChange()">
-          <label class="form-check-label" for="supportIncidentals">Incidentals</label>
-        </div>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="transportationReferrals.length > 0" id="supportTransportation">
-          <label class="form-check-label" for="supportTransportation">Transportation</label>
+      <div *ngIf="showReferralMakers">
+        <!-- select required supports -->
+        <div class="card d-block border-0 p-4">
+          <label>Select required supports:</label>
+          <div class="form-check mt-2">
+            <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood" (change)="foodReferralChange()">
+            <label class="form-check-label" for="supportFood">Food</label>
+          </div>
+          <div class="form-check mt-2">
+            <input type="checkbox" class="form-check-input" [checked]="clothingReferrals.length > 0" id="supportClothing">
+            <label class="form-check-label" for="supportClothing">Clothing</label>
+          </div>
+          <div class="form-check mt-2">
+            <input type="checkbox" class="form-check-input" [checked]="lodgingReferrals.length > 0" id="supportLodging">
+            <label class="form-check-label" for="supportLodging">Lodging</label>
+          </div>
+          <div class="form-check mt-2">
+            <input type="checkbox" class="form-check-input" [checked]="incidentalsReferrals.length > 0" id="supportIncidentals" (change)="incidentalsReferralChange()">
+            <label class="form-check-label" for="supportIncidentals">Incidentals</label>
+          </div>
+          <div class="form-check mt-2">
+            <input type="checkbox" class="form-check-input" [checked]="transportationReferrals.length > 0" id="supportTransportation">
+            <label class="form-check-label" for="supportTransportation">Transportation</label>
+          </div>
         </div>
       </div>
 
@@ -47,23 +75,23 @@
       <article *ngFor="let r of foodReferrals; let i = index" class="mt-4">
         <!-- <app-food-referral ([r])="r"></app-food-referral> -->
       </article>
-
       <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4">
         <!-- <app-clothing-referral ([r])="r"></app-clothing-referral> -->
       </article>
-
       <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-4">
         <!-- <app-lodging-referral ([r])="r"></app-lodging-referral> -->
       </article>
-
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
         <app-incidentals-referral [(referral)]="r" [editMode]="true" (remove)="removeIncidentalsReferral(i)" (add)="addIncidentalsReferral()"></app-incidentals-referral>
       </article>
-
       <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4">
         <!-- <app-transportation-referral ([r])="r"></app-transportation-referral> -->
       </article>
     </section>
+    <div *ngIf="!showReferralMakers">
+
+    </div>
+
 
     <div class="mt-5 space-between">
       <a routerLink="" (click)="cancel()">
