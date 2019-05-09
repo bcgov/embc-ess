@@ -18,8 +18,6 @@ export class SideboxAddRegistrationComponent implements OnInit {
 
   ngOnInit() {
     this.authService.path.subscribe(p => {
-      // this is a "new" organization
-      this.uniqueKeyService.clearKey();
       this.route = `/${p}/registration`;
     });
   }
