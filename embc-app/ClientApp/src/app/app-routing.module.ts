@@ -153,16 +153,16 @@ const routes: Routes = [
     component: PageNotFoundComponent, // TODO: See if we can remove this component here without breaking routing
     data: {
       navigateByRole: {
-        role_volunteer: 'volunteer-',
-        role_local_authority: 'local-authority-',
-        role_provincial_admin: 'provincial-admin-',
+        role_volunteer: 'volunteer',
+        role_local_authority: 'local-authority',
+        role_provincial_admin: 'provincial-admin',
       }
     },
   },
 
   // VOLUNTEER routes
   {
-    path: 'volunteer-',
+    path: 'volunteer',
     canActivate: [LoggedInGuard],
     canActivateChild: [RoleGuard],
     data: { expectedRole: VOLUNTEER },
@@ -213,7 +213,7 @@ const routes: Routes = [
 
   // LOCAL AUTHORITY routes
   {
-    path: 'local-authority-',
+    path: 'local-authority',
     canActivate: [LoggedInGuard],
     canActivateChild: [RoleGuard],
     children: [
@@ -273,7 +273,7 @@ const routes: Routes = [
 
   // PROVINCIAL_ADMIN routes
   {
-    path: 'provincial-admin-',
+    path: 'provincial-admin',
     canActivate: [LoggedInGuard],
     canActivateChild: [RoleGuard],
     children: [
