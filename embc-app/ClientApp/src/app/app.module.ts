@@ -66,6 +66,7 @@ import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid
 import { SupplierComponent } from './volunteer/components/supplier/supplier.component';
 import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
 import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
+import { ReferralListItemComponent } from './volunteer/components/referral-list-item/referral-list-item.component';
 
 @NgModule({
   declarations: [
@@ -123,6 +124,7 @@ import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer
     ValidFromToComponent,
     SupplierComponent,
     EvacueeListComponent,
+    ReferralListItemComponent,
   ],
   imports: [
     // angular
