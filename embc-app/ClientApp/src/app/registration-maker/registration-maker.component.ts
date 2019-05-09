@@ -718,7 +718,12 @@ export class RegistrationMakerComponent implements OnInit {
     const s = value as string;
     return s ? s.trim() : null;
   }
-
+  cancel() {
+    // clear the loaded record if available
+    this.uniqueKeyService.clearKey();
+    // navigate back home
+    this.router.navigate([`/${this.path}/registrations`]);
+  }
   // --------------------HELPERS-----------------------------------------
   isBcAddress(address: Address): boolean {
     return isBcAddress(address);
