@@ -4,16 +4,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         public static ViewModels.Region ToViewModel(this Models.Db.Region source)
         {
-            ViewModels.Region result = null;
-            if (source != null)
+            var result = new ViewModels.Region()
             {
-                result = new ViewModels.Region()
-                {
-                    Id = source.Name,
-                    Name = source.Name,
-                    Active = source.Active
-                };
-            }
+                Id = source.Name,
+                Name = source.Name,
+                Active = source.Active
+            };
             return result;
         }
     }

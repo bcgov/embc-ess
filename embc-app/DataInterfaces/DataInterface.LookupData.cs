@@ -24,7 +24,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .Include(d => d.Region)
                 .OrderBy(c => c.Name)
                 .ToArrayAsync())
-                .Select(d => d.ToViewModel());
+                .Select(mapper.Map<Community>);
         }
 
         public async Task<IEnumerable<FamilyRelationshipType>> GetFamilyRelationshipTypesAsync()

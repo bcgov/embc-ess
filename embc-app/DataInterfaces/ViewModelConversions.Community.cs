@@ -4,17 +4,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         public static ViewModels.Community ToViewModel(this Models.Db.Community source)
         {
-            ViewModels.Community result = null;
-            if (source != null)
+            var result = new ViewModels.Community()
             {
-                result = new ViewModels.Community()
-                {
-                    Id = source.Id.ToString(),
-                    Name = source.Name,
-                    Active = source.Active,
-                    Region = source.Region.ToViewModel()
-                };
-            }
+                Id = source.Id.ToString(),
+                Name = source.Name,
+                Active = source.Active,
+                Region = source.Region.ToViewModel()
+            };
             return result;
         }
     }

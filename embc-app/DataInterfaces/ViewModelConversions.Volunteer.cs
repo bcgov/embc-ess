@@ -34,6 +34,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             var result = new Models.Db.Volunteer
             {
+                Id = string.IsNullOrEmpty(source.Id) ? 0 : int.Parse(source.Id),
                 FirstName = source.FirstName,
                 LastName = source.LastName,
                 Email = source.Email,
