@@ -65,7 +65,9 @@ export class ReferralMakerComponent implements OnInit {
           const hoh = this.registration.headOfHousehold;
           if (hoh) {
             this.evacuees.push({ evacuee: hoh, selected: false });
-            hoh.familyMembers.forEach(fm => this.evacuees.push({ evacuee: fm, selected: false }));
+            if (hoh.familyMembers) {
+              hoh.familyMembers.forEach(fm => this.evacuees.push({ evacuee: fm, selected: false }));
+            }
           }
         }
       });
