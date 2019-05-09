@@ -12,7 +12,7 @@ export class SideboxAddOrganizationComponent implements OnInit {
 
   // TODO: THIS MUST BE IMPORTED AND MODIFIED BEFORE USE
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
   ) { }
 
   ngOnInit() {
