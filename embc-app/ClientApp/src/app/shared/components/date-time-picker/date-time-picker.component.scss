@@ -1,7 +1,3 @@
-.vertical-spacer {
-  padding-top: 34px; // we need this to align the DATE field with the time picker
-}
-
 :host.is-invalid input {
   border-color: var(--danger);
 }
