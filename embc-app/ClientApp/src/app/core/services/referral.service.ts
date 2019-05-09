@@ -12,10 +12,11 @@ import { RestService } from './rest.service';
 export class ReferralService extends RestService {
 
   // GET api/registrations/<id>/referrals
-  getReferrals(id: string): Observable<ListResult<Referral>> {
+  getReferrals(id: string, getActive: boolean = true): Observable<ListResult<Referral>> {
     // NB: hard-coded server limit is 500
     // NB: default sort order is validFrom
-    const params = { limit: '500', offset: '0', q: '', sort: '' };
+    // NB: if not specified, default active flag is True
+    const params = { limit: '500', offset: '0', q: '', sort: '', active: getActive ? 'true' : 'false' };
     return this.http.get<ListResult<Referral>>(`api/registrations/${id}/referrals`, { headers: this.headers, params })
       .pipe(
         retry(3),

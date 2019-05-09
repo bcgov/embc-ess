@@ -17,7 +17,7 @@ export class ReferralTableComponent implements OnChanges {
   resultsAndPagination$: Observable<ListResult<Referral>>;
 
   // search related
-  isLoadingResults = false;
+  showActive = true;
   searchResults$: Observable<ReferralSearchResults>;
   pagination: PaginationSummary = null;
   referrals: Array<Referral> = [];
@@ -27,11 +27,13 @@ export class ReferralTableComponent implements OnChanges {
   ) { }
 
   ngOnChanges() {
-    if (this.registration && this.registration.id) {
-      this.isLoadingResults = true;
+    this.doSearch();
+  }
 
+  doSearch() {
+    if (this.registration && this.registration.id) {
       // get the collection of meta and data
-      this.resultsAndPagination$ = this.referralService.getReferrals(this.registration.id);
+      this.resultsAndPagination$ = this.referralService.getReferrals(this.registration.id, this.showActive);
 
       // process server response into something we can display in the UI
       this.searchResults$ = this.resultsAndPagination$.pipe(
@@ -41,7 +43,6 @@ export class ReferralTableComponent implements OnChanges {
             return null;
           }
 
-          this.isLoadingResults = false;
           this.pagination = x.referrals.metadata;
 
           // convert data[] to Referral[]
@@ -64,6 +65,11 @@ export class ReferralTableComponent implements OnChanges {
         })
       );
     }
+  }
+
+  toggleShow() {
+    this.showActive = !this.showActive;
+    this.doSearch();
   }
 
   printReferrals() {

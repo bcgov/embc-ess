@@ -2,8 +2,10 @@
   <div class="space-between align-items-center my-3">
     <section>
       <app-pagination-summary [value]="pagination">
-        <span class="font-weight-bold">ACTIVE</span> evacuees
-        <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
+        <span class="font-weight-bold">{{showActive ? 'ACTIVE' : 'DEACTIVATED'}}</span> referrals
+        <small class="ml-1">
+          <a href="javascript:void(0)" (click)="toggleShow()"> (show {{showActive ? 'deactivated' : 'active'}})</a>
+        </small>
       </app-pagination-summary>
     </section>
   </div>
