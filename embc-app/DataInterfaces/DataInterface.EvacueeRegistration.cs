@@ -46,7 +46,21 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var mailingAddressToDrop = db.EvacueeRegistrationAddresses
                 .SingleOrDefault(a => a.RegistrationId == evacueeRegistration.EssFileNumber && !addresses.Contains(a.AddressSequenceNumber));
 
+            var mailingAddressNeedsToBeUpdated = false;
+            if (addresses.Contains(2) && mailingAddressToDrop == null)
+            {
+                mailingAddressNeedsToBeUpdated = db.EvacueeRegistrationAddresses
+                    .Any(e => e.RegistrationId == evacueeRegistration.EssFileNumber && e.AddressSequenceNumber == 2);
+            }
+
             db.EvacueeRegistrations.Update(evacueeRegistration);
+
+            if (mailingAddressNeedsToBeUpdated)
+            {
+                var mailingAddress = db.EvacueeRegistrationAddresses
+                    .Single(e => e.RegistrationId == evacueeRegistration.EssFileNumber && e.AddressSequenceNumber == 2);
+                db.Entry(mailingAddress).State = EntityState.Modified;
+            }
 
             db.Evacuees.RemoveRange(evacueesToRemove);
             if (mailingAddressToDrop != null)
