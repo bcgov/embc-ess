@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
 @Component({
   selector: 'app-sidebox-add-organization',
@@ -12,11 +13,14 @@ export class SideboxAddOrganizationComponent implements OnInit {
 
   // TODO: THIS MUST BE IMPORTED AND MODIFIED BEFORE USE
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private uniqueKeyService: UniqueKeyService,
   ) { }
 
   ngOnInit() {
     this.authService.path.subscribe(p => {
+      // this is a "new" organization
+      this.uniqueKeyService.clearKey();
       this.route = `/${p}/organization`;
     });
   }
