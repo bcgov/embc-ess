@@ -113,13 +113,13 @@ export class AuthService extends RestService {
     // set the correct path for routing the user in the application
     switch (this.role.getValue()) {
       case PROVINCIAL_ADMIN:
-        this.path.next('provincial-admin-');
+        this.path.next('provincial-admin');
         break;
       case LOCAL_AUTHORITY:
-        this.path.next('local-authority-');
+        this.path.next('local-authority');
         break;
       case VOLUNTEER:
-        this.path.next('volunteer-');
+        this.path.next('volunteer');
         break;
       default:
         this.path.next('');
