@@ -86,7 +86,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        public DbSet<Address> Addresses { get; set; }
+        [Obsolete]
+        private DbSet<Address> Addresses { get; set; }
+
         public DbSet<Community> Communities { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Evacuee> Evacuees { get; set; }
@@ -94,11 +96,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<EvacueeRegistration> EvacueeRegistrations { get; set; }
         public DbSet<IncidentTask> IncidentTasks { get; set; }
         public DbSet<Region> Regions { get; set; }
-        public DbSet<Registration> Registrations { get; set; }
+
+        [Obsolete]
+        private DbSet<Registration> Registrations { get; set; }
+
         public DbSet<EvacueeRegistrationAddress> EvacueeRegistrationAddresses { get; set; }
-        public DbSet<Person> People { get; set; }
+
+        [Obsolete]
+        private DbSet<Person> People { get; set; }
+
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Volunteer> Volunteers { get; set; }
+        public DbSet<Referral> Referrals { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -156,7 +166,46 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("NEXT VALUE FOR ESSFileNumbers");
 
-            modelBuilder.ShadowProperties();
+            modelBuilder.HasSequence<long>("seq_ReferralIds")
+               .StartsAt(1000001)
+               .IncrementsBy(1);
+
+            modelBuilder.Entity<Referral>()
+              .Property(r => r.Id)
+              .ValueGeneratedOnAdd()
+              .HasDefaultValueSql("NEXT VALUE FOR seq_ReferralIds");
+
+            modelBuilder.Entity<ReferralEvacuee>()
+                .HasKey(e => new { e.RegistrationId, e.EvacueeId, e.ReferralId });
+
+            modelBuilder.Entity<ReferralEvacuee>()
+                .HasOne(e => e.Referral)
+                .WithMany(e => e.Evacuees)
+                .HasForeignKey(e => e.ReferralId);
+
+            modelBuilder.Entity<ReferralEvacuee>()
+                .HasOne(e => e.Evacuee)
+                .WithMany()
+                .HasForeignKey(e => new { e.RegistrationId, e.EvacueeId })
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            modelBuilder.Entity<Referral>()
+                .Property<string>("Type")
+                .HasMaxLength(15);
+
+            modelBuilder.Entity<Referral>()
+                .HasDiscriminator<string>("Type")
+                .HasValue<ClothingReferral>(ReferralType.Clothing.ToString())
+                .HasValue<IncidentalsReferral>(ReferralType.Incidentals.ToString())
+                .HasValue<GroceriesFoodReferral>(ReferralType.Food_Groceries.ToString())
+                .HasValue<RestaurantFoodReferral>(ReferralType.Food_Restaurant.ToString())
+                .HasValue<TaxiTransportationReferral>(ReferralType.Transportation_Taxi.ToString())
+                .HasValue<OtherTransportationReferral>(ReferralType.Transportation_Other.ToString())
+                .HasValue<HotelLodgingReferral>(ReferralType.Lodging_Hotel.ToString())
+                .HasValue<GroupLodgingReferral>(ReferralType.Lodging_Group.ToString())
+                .HasValue<BilletingLodgingReferral>(ReferralType.Lodging_Billeting.ToString());
+
+            modelBuilder.AddShadowProperties();
         }
 
         public override int SaveChanges()
@@ -173,7 +222,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return await base.SaveChangesAsync(cancellationToken);
         }
 
-        public void SetShadowProperties(ClaimsPrincipal principal)
+        private void SetShadowProperties(ClaimsPrincipal principal)
         {
             var timestamp = DateTime.UtcNow;
             var userId = principal?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System";

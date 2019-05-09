@@ -13,60 +13,185 @@ namespace Gov.Jag.Embc.Public.Controllers
     [Authorize]
     public class ReferralsController : Controller
     {
-        private static int nextId = 1000005;
+        private static int nextId = 1000010;
 
-        private static readonly List<ReferralListItem> referrals = new List<ReferralListItem>()
+        private static readonly List<Referral> referrals = new List<Referral>()
             {
-                new ReferralListItem
+                new Referral
                 {
                     ReferralId = "D1000001",
+                    Active = true,
                     Supplier = new Supplier { Name = "Supplier1" },
                     ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Evacuees = new[]
+                    {
+                        new Evacuee{Id="1"},
+                        new Evacuee{Id="2"},
+                        new Evacuee{Id="3"}
+                    },
                     Type = "Food",
                     SubType = "Groceries",
-                    Active = true,
+                    NumDaysMeals = 3,
+                    TotalAmount = 100.00m
                 },
-                new ReferralListItem
+                new Referral
                 {
                     ReferralId = "D1000002",
+                    Active = true,
                     Supplier = new Supplier { Name = "Supplier1" },
                     ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
-                    Type = "Food",
-                    SubType = "Groceries",
-                    Active = true,
+                    Evacuees = new[]
+                    {
+                        new Evacuee{Id="1"},
+                        new Evacuee{Id="2"},
+                        new Evacuee{Id="3"}
+                    },
+                     Type = "Food",
+                    SubType = "Restaurant",
+                    NumBreakfasts=3,
+                    NumLunches=4,
+                    NumDinners=5,
+                    TotalAmount = 505.30m
                 },
-                new ReferralListItem
+                new Referral
                 {
                     ReferralId = "D1000003",
+                    Active = true,
                     Supplier = new Supplier { Name = "Supplier2" },
                     ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
-                    Type = "Clothing",
-                    SubType = (string)null,
-                    Active = true,
+                    Evacuees = new[]
+                    {
+                        new Evacuee{Id="1"},
+                        new Evacuee{Id="2"},
+                        new Evacuee{Id="3"}
+                    },
+                     Type = "Clothing",
+                    SubType = string.Empty,
+                    TotalAmount = 100.12m
                 },
-                new ReferralListItem
+                new Referral
                 {
                     ReferralId = "D1000004",
+                    Active = true,
                     Supplier = new Supplier { Name = "Supplier2" },
                     ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Evacuees = new[]
+                    {
+                        new Evacuee{Id="1"},
+                        new Evacuee{Id="2"},
+                        new Evacuee{Id="3"}
+                    },
                     Type = "Incidentals",
                     SubType = (string)null,
-                    Active = true,
+                    ApprovedItems = "approved stuff",
+                    TotalAmount = 1050.44m
                 },
-            };
+                new Referral
+                {
+                    ReferralId = "D1000005",
+                    Active = true,
+                    Supplier = new Supplier { Name = "Supplier2" },
+                    ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
+                    ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Evacuees = new[]
+                    {
+                        new Evacuee{Id="1"},
+                        new Evacuee{Id="2"},
+                        new Evacuee{Id="3"}
+                    },
+                    Type = "Transportation",
+                    SubType = "Taxi",
+                    FromAddress = "here",
+                    ToAddress = "there",
+                    TotalAmount = 200m
+                },
+                new Referral
+                {
+                    ReferralId = "D1000006",
+                    Active = true,
+                    Supplier = new Supplier { Name = "Supplier2" },
+                    ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
+                    ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Evacuees = new[]
+                    {
+                        new Evacuee{Id="1"},
+                        new Evacuee{Id="2"},
+                        new Evacuee{Id="3"}
+                    },
+                    Type = "Transportation",
+                    SubType = "Other",
+                    OtherTransportModeDetails = "other transport",
+                    TotalAmount = 200m
+                },
+                new Referral
+                {
+                    ReferralId = "D1000007",
+                    Active = true,
+                    Supplier = new Supplier { Name = "Supplier2" },
+                    ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
+                    ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Evacuees = new[]
+                    {
+                        new Evacuee{Id="1"},
+                        new Evacuee{Id="2"},
+                        new Evacuee{Id="3"}
+                    },
+                    Type = "Lodging",
+                    SubType = "Hotel",
+                    NumNights = 5,
+                    NumRooms = 3,
+                    TotalAmount = 200m
+                },
+                new Referral
+                {
+                    ReferralId = "D1000008",
+                    Active = true,
+                    Supplier = new Supplier { Name = "Supplier2" },
+                    ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
+                    ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Evacuees = new[]
+                    {
+                        new Evacuee{Id="1"},
+                        new Evacuee{Id="2"},
+                        new Evacuee{Id="3"}
+                    },
+                    Type = "Lodging",
+                    SubType = "Group",
+                    NumNights = 5,
+                    TotalAmount = 200m
+                },                new Referral
+                {
+                    ReferralId = "D1000009",
+                    Active = true,
+                    Supplier = new Supplier { Name = "Supplier2" },
+                    ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
+                    ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Evacuees = new[]
+                    {
+                        new Evacuee{Id="1"},
+                        new Evacuee{Id="2"},
+                        new Evacuee{Id="3"}
+                    },
+                    Type = "Lodging",
+                    SubType = "Billeting",
+                    NumNights = 5,
+                    TotalAmount = 200m
+                }
+        };
 
         [HttpGet]
         public async Task<IActionResult> Get(string registrationId, SearchQueryParameters searchQuery)
+
         {
             var results = referrals.AsQueryable().Where(r => r.Active).Sort(searchQuery.SortBy ?? "ValidFrom");
             return await Task.FromResult(Json(new
             {
                 RegistrationId = registrationId,
-                Referrals = new PaginatedList<ReferralListItem>(results, searchQuery.Offset, searchQuery.Limit)
+                Referrals = new PaginatedList<ReferralListItem>(results.Select(r => r.ToListItem()), searchQuery.Offset, searchQuery.Limit)
             }));
         }
 
@@ -95,16 +220,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 var referralId = ($"D{nextId:D7}");
                 referralsList.Add(referralId);
-                referrals.Add(new ReferralListItem
-                {
-                    ReferralId = referralId,
-                    Active = true,
-                    Type = referral.Type,
-                    SubType = referral.SubType,
-                    Supplier = referral.Supplier,
-                    ValidFrom = referral.ValidFrom,
-                    ValidTo = referral.ValidTo
-                });
+                referrals.Add(referral);
                 nextId++;
             }
 

@@ -28,5 +28,10 @@ namespace Gov.Jag.Embc.Public
         {
             return conf.GetValue("DEFAULT_TIMEOUT_WARNING_DURATION_MINUTES", 2);
         }
+
+        public static bool DbFullRefresh(this IConfiguration conf)
+        {
+            return conf.GetValue("DB_FULL_REFRESH", "false").ToLowerInvariant() == "true";
+        }
     }
 }

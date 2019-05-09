@@ -154,7 +154,7 @@ namespace Gov.Jag.Embc.Public
                 .UseLoggerFactory(loggerFactory)
                 .UseSqlServer(DatabaseTools.GetSaConnectionString(Configuration)).Options);
 
-            if (!string.IsNullOrEmpty(Configuration["DB_FULL_REFRESH"]) && Configuration["DB_FULL_REFRESH"].ToLowerInvariant() == "true")
+            if (Configuration.DbFullRefresh())
             {
                 log.LogWarning("DROPPING the database! ...");
                 adminCtx.Database.EnsureDeleted();
