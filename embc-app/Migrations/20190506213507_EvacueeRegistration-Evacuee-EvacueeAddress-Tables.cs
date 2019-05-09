@@ -78,7 +78,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                     AddressLine2 = table.Column<string>(nullable: true),
                     AddressLine3 = table.Column<string>(nullable: true),
                     PostalCode = table.Column<string>(nullable: true),
-                    CommunityId = table.Column<Guid>(nullable: false),
+                    CommunityId = table.Column<Guid>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     Province = table.Column<string>(nullable: true),
                     CountryCode = table.Column<string>(nullable: true)
@@ -92,7 +92,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                         column: x => x.CommunityId,
                         principalTable: "Communities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_EvacueeRegistrationAddresses_Countries_CountryCode",
                         column: x => x.CountryCode,
@@ -134,7 +134,6 @@ namespace Gov.Jag.Embc.Public.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-
             migrationBuilder.Sql(@"INSERT INTO [dbo].[EvacueeRegistrations]
 												(Id,
 												Active,
@@ -173,7 +172,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 												IncidentTaskId,
 												HostCommunityId,
 												CompletedById)
-											SELECT 
+											SELECT
 												r.Id,
 												r.Active,
 												r.RestrictedAccess,
@@ -211,7 +210,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 												r.IncidentTaskId,
 												r.HostCommunityId,
 												r.CompletedById
-											FROM 
+											FROM
 												Registrations r
 											INNER JOIN
 												People p
@@ -228,8 +227,8 @@ namespace Gov.Jag.Embc.Public.Migrations
 	                                                SELECT reg.Id as RegistrationId, p.Id as HohId
 	                                                FROM
 		                                                Registrations reg
-	                                                INNER JOIN	
-		                                                People p 
+	                                                INNER JOIN
+		                                                People p
 		                                                ON reg.HeadOfHouseholdId = p.Id
                                                 ),
                                                 RegToEvacuee
@@ -242,7 +241,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 		                                                HeadOfHousehold hoh
 		                                                ON p.id = hoh.HohId OR p.HeadOfHouseholdId = hoh.HohId
 	                                                LEFT OUTER JOIN
-		                                                People fam 
+		                                                People fam
 		                                                ON p.Id = fam.HeadOfHouseholdId
                                                 )
                                                 INSERT INTO [dbo].[Evacuees]
@@ -257,7 +256,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                                                            ,[Dob]
                                                            ,[BcServicesNumber]
                                                            ,[EvacueeTypeCode])
-                                                SELECT 
+                                                SELECT
                                                            reg.RegistrationId,
                                                            ROW_NUMBER() OVER(PARTITION BY reg.RegistrationId ORDER BY reg.RegistrationId),
                                                            p.FirstName,
@@ -278,8 +277,9 @@ namespace Gov.Jag.Embc.Public.Migrations
 
             migrationBuilder.Sql(@"WITH newAddresses AS
                                                 (
-	                                                SELECT 
-		                                                p.Id PeopleId,
+	                                                SELECT
+		                                                r.Id as RegistrationId,
+														1 AS AddressSequence,
 		                                                p.PrimaryResidenceId,
 		                                                'Primary' AS AddressType,
 		                                                addr.AddressSubtype,
@@ -296,9 +296,13 @@ namespace Gov.Jag.Embc.Public.Migrations
 	                                                INNER JOIN
 		                                                Addresses addr
 		                                                ON p.PrimaryResidenceId = addr.Id
+	                                                INNER JOIN
+		                                                Registrations r
+														ON p.Id = r.HeadOfHouseholdId
 	                                                UNION
-	                                                SELECT 
-		                                                p.Id PeopleId,
+	                                                SELECT
+		                                                r.Id as RegistrationId,
+														2 AS AddressSequence,
 		                                                p.PrimaryResidenceId,
 		                                                'Mailing' AS AddressType,
 		                                                addr.AddressSubtype,
@@ -309,41 +313,19 @@ namespace Gov.Jag.Embc.Public.Migrations
 		                                                addr.Province,
 		                                                addr.CommunityId,
 		                                                addr.City,
-		                                                addr.CountryCode 
+		                                                addr.CountryCode
 	                                                FROM
 		                                                People p
 	                                                INNER JOIN
 		                                                Addresses addr
 		                                                ON p.MailingAddressId = addr.Id
-                                                ),
-                                                MappedRegistration
-                                                AS
-                                                (
-	                                                SELECT 
-		                                                r.Id as RegistrationId,
-		                                                ROW_NUMBER() OVER(PARTITION BY r.id ORDER BY r.id) AS sequenceNumber,
-		                                                a.PeopleId
-	                                                FROM
+	                                                INNER JOIN
 		                                                Registrations r
-	                                                INNER JOIN	
-		                                                newAddresses a
-	                                                ON a.PeopleId = r.HeadOfHouseholdId
+														ON p.Id = r.HeadOfHouseholdId
                                                 )
-                                                INSERT INTO [dbo].[EvacueeRegistrationAddresses]
-                                                           ([EvacueeRegistrationId]
-                                                           ,[AddressSequenceNumber]
-                                                           ,[AddressTypeCode]
-                                                           ,[AddressSubtypeCode]
-                                                           ,[AddressLine1]
-                                                           ,[AddressLine2]
-                                                           ,[AddressLine3]
-                                                           ,[PostalCode]
-                                                           ,[CommunityId]
-                                                           ,[City]
-                                                           ,[Province])
-                                                SELECT 
-	                                                r.RegistrationId,
-                                                    r.sequenceNumber,
+                                                SELECT DISTINCT
+	                                                a.RegistrationId,
+                                                    a.AddressSequence,
 	                                                a.AddressType,
 	                                                a.AddressSubtype,
 	                                                a.AddressLine1,
@@ -355,17 +337,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 	                                                a.Province
                                                 FROM
 	                                                newAddresses a
-                                                INNER JOIN
-	                                                MappedRegistration r
-	                                                ON a.PeopleId = r.PeopleId
-                                                LEFT OUTER JOIN
-	                                                EvacueeRegistrationAddresses ra
-	                                                ON r.RegistrationId = ra.EvacueeRegistrationId
-	                                                AND r.sequenceNumber = ra.AddressSequenceNumber
-                                                WHERE
-	                                                ra.EvacueeRegistrationId IS NULL
                                                 ");
-
 
             migrationBuilder.CreateIndex(
                 name: "IX_EvacueeRegistrationAddresses_CommunityId",
