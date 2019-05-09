@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
 @Component({
   selector: 'app-sidebox-add-registration',
@@ -13,7 +12,6 @@ export class SideboxAddRegistrationComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private uniqueKeyService: UniqueKeyService,
   ) { }
 
   ngOnInit() {
