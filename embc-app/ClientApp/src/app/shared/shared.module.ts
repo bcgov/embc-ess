@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextMaskModule } from 'angular2-text-mask';
-import { NgbTypeaheadModule, NgbAlertModule, NgbPaginationModule, NgbModalModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeaheadModule, NgbAlertModule, NgbPaginationModule, NgbModalModule, NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { MaterialModule } from './material.module';
 import { EnvironmentBannerComponent } from './components/environment-banner/environment-banner.component';
@@ -71,6 +71,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     NgbTypeaheadModule,
     NgbAlertModule,
     NgbDatepickerModule,
+    NgbTimepickerModule,
   ],
   exports: [
     // modules
@@ -84,6 +85,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     NgbPaginationModule,
     NgbModalModule,
     NgbDatepickerModule,
+    NgbTimepickerModule,
 
     // components, pipes, etc
     EnvironmentBannerComponent,
