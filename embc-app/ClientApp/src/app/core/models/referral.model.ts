@@ -1,7 +1,7 @@
 import { Evacuee, Supplier } from './';
 import { ReferralDate } from './referral-date';
 
-type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'LODGING' | 'TRANSPORTATION');
+export type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'LODGING' | 'TRANSPORTATION');
 
 interface ReferralBase {
   id: string;

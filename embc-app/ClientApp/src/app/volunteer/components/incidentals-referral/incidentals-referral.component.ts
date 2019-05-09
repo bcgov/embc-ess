@@ -11,8 +11,6 @@ import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rat
 export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChanges {
   @Input() referral: IncidentalsReferral = null;
   @Input() readOnly = false;
-  @Output() remove = new EventEmitter<any>();
-  @Output() add = new EventEmitter<any>();
 
   private ratesModal: NgbModalRef = null;
   uuid: string;

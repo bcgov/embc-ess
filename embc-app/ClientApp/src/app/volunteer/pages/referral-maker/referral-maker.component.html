@@ -47,23 +47,33 @@
 
       <!-- loop through all referrals by type -->
       <article *ngFor="let r of foodReferrals; let i = index" class="mt-4">
-        <!-- <app-food-referral ([r])="r"></app-food-referral> -->
+        <app-referral-list-item type="FOOD" (remove)="remove(foodReferrals, i)">
+          <!-- <app-food-referral ([r])="r"></app-food-referral> -->
+        </app-referral-list-item>
       </article>
 
       <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-4">
-        <!-- <app-lodging-referral ([r])="r"></app-lodging-referral> -->
+        <app-referral-list-item type="LODGING" (remove)="remove(lodgingReferrals, i)">
+          <!-- <app-lodging-referral ([r])="r"></app-lodging-referral> -->
+        </app-referral-list-item>
       </article>
 
       <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4">
-        <!-- <app-clothing-referral ([r])="r"></app-clothing-referral> -->
+        <app-referral-list-item type="CLOTHING" (remove)="remove(clothingReferrals, i)">
+          <!-- <app-clothing-referral ([r])="r"></app-clothing-referral> -->
+        </app-referral-list-item>
       </article>
 
       <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4">
-        <!-- <app-transportation-referral ([r])="r"></app-transportation-referral> -->
+        <app-referral-list-item type="TRANSPORTATION" (remove)="remove(transportationReferrals, i)">
+          <!-- <app-transportation-referral ([r])="r"></app-transportation-referral> -->
+        </app-referral-list-item>
       </article>
 
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
-        <app-incidentals-referral [(referral)]="r" [readOnly]="false" (remove)="removeIncidentalsReferral(i)" (add)="addIncidentalsReferral()"></app-incidentals-referral>
+        <app-referral-list-item type="INCIDENTALS" (remove)="remove(incidentalsReferrals, i)" (add)="addIncidentalsReferral()">
+          <app-incidentals-referral [(referral)]="r" [readOnly]="false"></app-incidentals-referral>
+        </app-referral-list-item>
       </article>
     </section>
 

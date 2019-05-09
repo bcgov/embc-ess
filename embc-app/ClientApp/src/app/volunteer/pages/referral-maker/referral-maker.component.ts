@@ -64,11 +64,9 @@ export class ReferralMakerComponent implements OnInit {
 
           // populate evacuees
           const hoh = this.registration.headOfHousehold;
+          const family = hoh && hoh.familyMembers ? hoh.familyMembers : [];
           if (hoh) {
-            this.evacuees.push({ evacuee: hoh, selected: false });
-            if (hoh.familyMembers) {
-              hoh.familyMembers.forEach(fm => this.evacuees.push({ evacuee: fm, selected: false }));
-            }
+            this.evacuees = [hoh, ...family].map(x => ({ evacuee: x, selected: false }));
           }
         }
       });
@@ -122,12 +120,8 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
-  removeIncidentalsReferral(i: number) {
-    this.incidentalsReferrals.splice(i, 1);
-  }
-
-  removeFoodReferral(i: number) {
-    this.foodReferrals.splice(i, 1);
+  remove(arr: [], i: number) {
+    arr.splice(i, 1);
   }
 
   addIncidentalsReferral() {
