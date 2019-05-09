@@ -1,3 +1,4 @@
+using AutoMapper;
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Seeder;
@@ -125,6 +126,9 @@ namespace Gov.Jag.Embc.Public
             // add a data interface
 
             services.AddTransient<IDataInterface, DataInterface>();
+
+            //Automapper
+            services.AddAutoMapper(typeof(Startup));
 
             // Enable the IURLHelper to be able to build links within Controllers
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();

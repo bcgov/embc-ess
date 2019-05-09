@@ -11,10 +11,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// </summary>
     public class Evacuee : IAuditableEntity
     {
-        [Key, Column(Order = 0)]
         public long RegistrationId { get; set; }
 
-        [Key, Column(Order = 1)]
         public int EvacueeSequenceNumber { get; set; }
 
         public string RegistrationIdSeq => $"{RegistrationId.ToString()}-{EvacueeSequenceNumber}";
@@ -48,12 +46,12 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public static long GetEvacueeRegistrationIdFromIncidentRegSeqId(string incidentRegSeqId)
         {
-            return long.Parse(incidentRegSeqId.Split(',')[0]);
+            return long.Parse(incidentRegSeqId.Split('-')[0]);
         }
 
         public static int GetEvacueeSequenceNumberFromIncidentRegSeqId(string incidentRegSeqId)
         {
-            return int.Parse(incidentRegSeqId.Split(',')[1]);
+            return int.Parse(incidentRegSeqId.Split('-')[1]);
         }
     }
 }
