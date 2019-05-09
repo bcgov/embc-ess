@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sidebox-collection-notice.component.scss']
 })
 export class SideboxCollectionNoticeComponent implements OnInit {
-  // TODO: THIS MUST BE IMPORTED AND MODIFIED BEFORE USE
 
   constructor() { }
 

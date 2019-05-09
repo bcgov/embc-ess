@@ -10,7 +10,7 @@ export class SideboxAddTaskNumberComponent implements OnInit {
 
   route: string;
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
   ) { }
 
   ngOnInit() {

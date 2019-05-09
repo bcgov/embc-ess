@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
 @Component({
   selector: 'app-side-box-info',
@@ -13,9 +14,16 @@ export class SideBoxInfoComponent {
   @Input() route = '/'; // home by default
   @Input() absoluteRouting = true;
 
-  constructor(private router: Router, private current: ActivatedRoute) { }
+  constructor(
+    private router: Router,
+    private current: ActivatedRoute,
+    private uniqueKeyService: UniqueKeyService,
+  ) { }
 
   continue() {
+    // new link is clicked. Clear the unique key for lookup.
+    this.uniqueKeyService.clearKey();
+
     // send the user along to the next page submitted
     if (this.absoluteRouting) {
       this.router.navigateByUrl(this.route);

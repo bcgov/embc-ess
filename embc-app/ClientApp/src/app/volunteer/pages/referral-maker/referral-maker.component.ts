@@ -78,6 +78,8 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   cancel() {
+    // clear the loaded record if available
+    this.uniqueKeyService.clearKey();
     // navigate back to evacuee list
     this.router.navigate([`/${this.path}/registrations`]);
   }

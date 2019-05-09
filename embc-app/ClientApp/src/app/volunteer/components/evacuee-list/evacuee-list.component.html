@@ -3,7 +3,7 @@
     <p><strong>Please select the evacuees registered on your profile that require incidentals:</strong></p>
     <p><a href="javascript:void(0);" (click)="selectAll()">Select All</a></p>
     <p *ngFor="let e of evacuees">
-      <input type="checkbox" [(ngModel)]="e.selected" (ngModelChange)="emitList()">
+      <input type="checkbox" [(ngModel)]="e.selected" (change)="emitList()">
       {{e.evacuee.lastName}}, {{e.evacuee.firstName}}
     </p>
   </div>

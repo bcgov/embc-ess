@@ -170,6 +170,8 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
   }
 
   cancel() {
+    // clear the loaded record if available
+    this.uniqueKeyService.clearKey();
     // navigate back home
     this.router.navigate([`/${this.path}/organizations`]);
   }
