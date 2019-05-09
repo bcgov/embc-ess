@@ -8,13 +8,9 @@ namespace Gov.Jag.Embc.Public.Models.Db
 {
     public class EvacueeRegistrationAddress : IAuditableEntity
     {
-        [Key, Column(Order = 0)]
         public long RegistrationId { get; set; }
 
-        [Key, Column(Order = 1)]
         public int AddressSequenceNumber { get; set; }
-
-        public string RegistrationIdSeq => $"{RegistrationId}-{AddressSequenceNumber}";
 
         public string AddressTypeCode { get; set; }
 
@@ -48,15 +44,5 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public Country Country { get; set; }
 
         public EvacueeRegistration EvacueeRegistration { get; set; }
-
-        public static long GetEvacueeRegistrationIdFromIncidentRegSeqId(string incidentRegSeqId)
-        {
-            return long.Parse(incidentRegSeqId.Split(',')[0]);
-        }
-
-        public static int GetAddressSequenceNumberFromIncidentRegSeqId(string incidentRegSeqId)
-        {
-            return int.Parse(incidentRegSeqId.Split(',')[1]);
-        }
     }
 }

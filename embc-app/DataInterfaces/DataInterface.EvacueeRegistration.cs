@@ -42,8 +42,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var evacueesToRemove = db.Evacuees
                 .Where(e => e.RegistrationId == evacueeRegistration.EssFileNumber && !evacueesToKeep.Contains(e.EvacueeSequenceNumber));
 
+            var addresses = evacueeRegistration.EvacueeRegistrationAddresses.Select(a => a.AddressSequenceNumber).ToArray();
+            var mailingAddressToDrop = db.EvacueeRegistrationAddresses
+                .SingleOrDefault(a => a.RegistrationId == evacueeRegistration.EssFileNumber && !addresses.Contains(a.AddressSequenceNumber));
+
             db.EvacueeRegistrations.Update(evacueeRegistration);
+
             db.Evacuees.RemoveRange(evacueesToRemove);
+            if (mailingAddressToDrop != null)
+            {
+                db.EvacueeRegistrationAddresses.Remove(mailingAddressToDrop);
+            }
 
             await db.SaveChangesAsync();
         }
