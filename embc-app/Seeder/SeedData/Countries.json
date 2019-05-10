@@ -1,1246 +1,1495 @@
 [
     {
         "name": "Afghanistan",
+        "active": true,
         "countrycode": "AFG",
         "iso-country-code": "004"
     },
     {
         "name": "Åland Islands",
+        "active": true,
         "countrycode": "ALA",
         "iso-country-code": "248"
     },
     {
         "name": "Albania",
+        "active": true,
         "countrycode": "ALB",
         "iso-country-code": "008"
     },
     {
         "name": "Algeria",
+        "active": true,
         "countrycode": "DZA",
         "iso-country-code": "012"
     },
     {
         "name": "American Samoa",
+        "active": true,
         "countrycode": "ASM",
         "iso-country-code": "016"
     },
     {
         "name": "Andorra",
+        "active": true,
         "countrycode": "AND",
         "iso-country-code": "020"
     },
     {
         "name": "Angola",
+        "active": true,
         "countrycode": "AGO",
         "iso-country-code": "024"
     },
     {
         "name": "Anguilla",
+        "active": true,
         "countrycode": "AIA",
         "iso-country-code": "660"
     },
     {
         "name": "Antarctica",
+        "active": true,
         "countrycode": "ATA",
         "iso-country-code": "010"
     },
     {
         "name": "Antigua and Barbuda",
+        "active": true,
         "countrycode": "ATG",
         "iso-country-code": "028"
     },
     {
         "name": "Argentina",
+        "active": true,
         "countrycode": "ARG",
         "iso-country-code": "032"
     },
     {
         "name": "Armenia",
+        "active": true,
         "countrycode": "ARM",
         "iso-country-code": "051"
     },
     {
         "name": "Aruba",
+        "active": true,
         "countrycode": "ABW",
         "iso-country-code": "533"
     },
     {
         "name": "Australia",
+        "active": true,
         "countrycode": "AUS",
         "iso-country-code": "036"
     },
     {
         "name": "Austria",
+        "active": true,
         "countrycode": "AUT",
         "iso-country-code": "040"
     },
     {
         "name": "Azerbaijan",
+        "active": true,
         "countrycode": "AZE",
         "iso-country-code": "031"
     },
     {
         "name": "Bahamas",
+        "active": true,
         "countrycode": "BHS",
         "iso-country-code": "044"
     },
     {
         "name": "Bahrain",
+        "active": true,
         "countrycode": "BHR",
         "iso-country-code": "048"
     },
     {
         "name": "Bangladesh",
+        "active": true,
         "countrycode": "BGD",
         "iso-country-code": "050"
     },
     {
         "name": "Barbados",
+        "active": true,
         "countrycode": "BRB",
         "iso-country-code": "052"
     },
     {
         "name": "Belarus",
+        "active": true,
         "countrycode": "BLR",
         "iso-country-code": "112"
     },
     {
         "name": "Belgium",
+        "active": true,
         "countrycode": "BEL",
         "iso-country-code": "056"
     },
     {
         "name": "Belize",
+        "active": true,
         "countrycode": "BLZ",
         "iso-country-code": "084"
     },
     {
         "name": "Benin",
+        "active": true,
         "countrycode": "BEN",
         "iso-country-code": "204"
     },
     {
         "name": "Bermuda",
+        "active": true,
         "countrycode": "BMU",
         "iso-country-code": "060"
     },
     {
         "name": "Bhutan",
+        "active": true,
         "countrycode": "BTN",
         "iso-country-code": "064"
     },
     {
         "name": "Bolivia (Plurinational State of)",
+        "active": true,
         "countrycode": "BOL",
         "iso-country-code": "068"
     },
     {
         "name": "Bonaire, Sint Eustatius and Saba",
+        "active": true,
         "countrycode": "BES",
         "iso-country-code": "535"
     },
     {
         "name": "Bosnia and Herzegovina",
+        "active": true,
         "countrycode": "BIH",
         "iso-country-code": "070"
     },
     {
         "name": "Botswana",
+        "active": true,
         "countrycode": "BWA",
         "iso-country-code": "072"
     },
     {
         "name": "Bouvet Island",
+        "active": true,
         "countrycode": "BVT",
         "iso-country-code": "074"
     },
     {
         "name": "Brazil",
+        "active": true,
         "countrycode": "BRA",
         "iso-country-code": "076"
     },
     {
         "name": "British Indian Ocean Territory",
+        "active": true,
         "countrycode": "IOT",
         "iso-country-code": "086"
     },
     {
         "name": "Brunei Darussalam",
+        "active": true,
         "countrycode": "BRN",
         "iso-country-code": "096"
     },
     {
         "name": "Bulgaria",
+        "active": true,
         "countrycode": "BGR",
         "iso-country-code": "100"
     },
     {
         "name": "Burkina Faso",
+        "active": true,
         "countrycode": "BFA",
         "iso-country-code": "854"
     },
     {
         "name": "Burundi",
+        "active": true,
         "countrycode": "BDI",
         "iso-country-code": "108"
     },
     {
         "name": "Cabo Verde",
+        "active": true,
         "countrycode": "CPV",
         "iso-country-code": "132"
     },
     {
         "name": "Cambodia",
+        "active": true,
         "countrycode": "KHM",
         "iso-country-code": "116"
     },
     {
         "name": "Cameroon",
+        "active": true,
         "countrycode": "CMR",
         "iso-country-code": "120"
     },
     {
         "name": "Canada",
+        "active": true,
         "countrycode": "CAN",
         "iso-country-code": "124"
     },
     {
         "name": "Cayman Islands",
+        "active": true,
         "countrycode": "CYM",
         "iso-country-code": "136"
     },
     {
         "name": "Central African Republic",
+        "active": true,
         "countrycode": "CAF",
         "iso-country-code": "140"
     },
     {
         "name": "Chad",
+        "active": true,
         "countrycode": "TCD",
         "iso-country-code": "148"
     },
     {
         "name": "Chile",
+        "active": true,
         "countrycode": "CHL",
         "iso-country-code": "152"
     },
     {
         "name": "China",
+        "active": true,
         "countrycode": "CHN",
         "iso-country-code": "156"
     },
     {
         "name": "Christmas Island",
+        "active": true,
         "countrycode": "CXR",
         "iso-country-code": "162"
     },
     {
         "name": "Cocos (Keeling) Islands",
+        "active": true,
         "countrycode": "CCK",
         "iso-country-code": "166"
     },
     {
         "name": "Colombia",
+        "active": true,
         "countrycode": "COL",
         "iso-country-code": "170"
     },
     {
         "name": "Comoros",
+        "active": true,
         "countrycode": "COM",
         "iso-country-code": "174"
     },
     {
         "name": "Congo",
+        "active": true,
         "countrycode": "COG",
         "iso-country-code": "178"
     },
     {
         "name": "Congo, Democratic Republic of the",
+        "active": true,
         "countrycode": "COD",
         "iso-country-code": "180"
     },
     {
         "name": "Cook Islands",
+        "active": true,
         "countrycode": "COK",
         "iso-country-code": "184"
     },
     {
         "name": "Costa Rica",
+        "active": true,
         "countrycode": "CRI",
         "iso-country-code": "188"
     },
     {
         "name": "Côte d'Ivoire",
+        "active": true,
         "countrycode": "CIV",
         "iso-country-code": "384"
     },
     {
         "name": "Croatia",
+        "active": true,
         "countrycode": "HRV",
         "iso-country-code": "191"
     },
     {
         "name": "Cuba",
+        "active": true,
         "countrycode": "CUB",
         "iso-country-code": "192"
     },
     {
         "name": "Curaçao",
+        "active": true,
         "countrycode": "CUW",
         "iso-country-code": "531"
     },
     {
         "name": "Cyprus",
+        "active": true,
         "countrycode": "CYP",
         "iso-country-code": "196"
     },
     {
         "name": "Czechia",
+        "active": true,
         "countrycode": "CZE",
         "iso-country-code": "203"
     },
     {
         "name": "Denmark",
+        "active": true,
         "countrycode": "DNK",
         "iso-country-code": "208"
     },
     {
         "name": "Djibouti",
+        "active": true,
         "countrycode": "DJI",
         "iso-country-code": "262"
     },
     {
         "name": "Dominica",
+        "active": true,
         "countrycode": "DMA",
         "iso-country-code": "212"
     },
     {
         "name": "Dominican Republic",
+        "active": true,
         "countrycode": "DOM",
         "iso-country-code": "214"
     },
     {
         "name": "Ecuador",
+        "active": true,
         "countrycode": "ECU",
         "iso-country-code": "218"
     },
     {
         "name": "Egypt",
+        "active": true,
         "countrycode": "EGY",
         "iso-country-code": "818"
     },
     {
         "name": "El Salvador",
+        "active": true,
         "countrycode": "SLV",
         "iso-country-code": "222"
     },
     {
         "name": "Equatorial Guinea",
+        "active": true,
         "countrycode": "GNQ",
         "iso-country-code": "226"
     },
     {
         "name": "Eritrea",
+        "active": true,
         "countrycode": "ERI",
         "iso-country-code": "232"
     },
     {
         "name": "Estonia",
+        "active": true,
         "countrycode": "EST",
         "iso-country-code": "233"
     },
     {
         "name": "Eswatini",
+        "active": true,
         "countrycode": "SWZ",
         "iso-country-code": "748"
     },
     {
         "name": "Ethiopia",
+        "active": true,
         "countrycode": "ETH",
         "iso-country-code": "231"
     },
     {
         "name": "Falkland Islands (Malvinas)",
+        "active": true,
         "countrycode": "FLK",
         "iso-country-code": "238"
     },
     {
         "name": "Faroe Islands",
+        "active": true,
         "countrycode": "FRO",
         "iso-country-code": "234"
     },
     {
         "name": "Fiji",
+        "active": true,
         "countrycode": "FJI",
         "iso-country-code": "242"
     },
     {
         "name": "Finland",
+        "active": true,
         "countrycode": "FIN",
         "iso-country-code": "246"
     },
     {
         "name": "France",
+        "active": true,
         "countrycode": "FRA",
         "iso-country-code": "250"
     },
     {
         "name": "French Guiana",
+        "active": true,
         "countrycode": "GUF",
         "iso-country-code": "254"
     },
     {
         "name": "French Polynesia",
+        "active": true,
         "countrycode": "PYF",
         "iso-country-code": "258"
     },
     {
         "name": "French Southern Territories",
+        "active": true,
         "countrycode": "ATF",
         "iso-country-code": "260"
     },
     {
         "name": "Gabon",
+        "active": true,
         "countrycode": "GAB",
         "iso-country-code": "266"
     },
     {
         "name": "Gambia",
+        "active": true,
         "countrycode": "GMB",
         "iso-country-code": "270"
     },
     {
         "name": "Georgia",
+        "active": true,
         "countrycode": "GEO",
         "iso-country-code": "268"
     },
     {
         "name": "Germany",
+        "active": true,
         "countrycode": "DEU",
         "iso-country-code": "276"
     },
     {
         "name": "Ghana",
+        "active": true,
         "countrycode": "GHA",
         "iso-country-code": "288"
     },
     {
         "name": "Gibraltar",
+        "active": true,
         "countrycode": "GIB",
         "iso-country-code": "292"
     },
     {
         "name": "Greece",
+        "active": true,
         "countrycode": "GRC",
         "iso-country-code": "300"
     },
     {
         "name": "Greenland",
+        "active": true,
         "countrycode": "GRL",
         "iso-country-code": "304"
     },
     {
         "name": "Grenada",
+        "active": true,
         "countrycode": "GRD",
         "iso-country-code": "308"
     },
     {
         "name": "Guadeloupe",
+        "active": true,
         "countrycode": "GLP",
         "iso-country-code": "312"
     },
     {
         "name": "Guam",
+        "active": true,
         "countrycode": "GUM",
         "iso-country-code": "316"
     },
     {
         "name": "Guatemala",
+        "active": true,
         "countrycode": "GTM",
         "iso-country-code": "320"
     },
     {
         "name": "Guernsey",
+        "active": true,
         "countrycode": "GGY",
         "iso-country-code": "831"
     },
     {
         "name": "Guinea",
+        "active": true,
         "countrycode": "GIN",
         "iso-country-code": "324"
     },
     {
         "name": "Guinea-Bissau",
+        "active": true,
         "countrycode": "GNB",
         "iso-country-code": "624"
     },
     {
         "name": "Guyana",
+        "active": true,
         "countrycode": "GUY",
         "iso-country-code": "328"
     },
     {
         "name": "Haiti",
+        "active": true,
         "countrycode": "HTI",
         "iso-country-code": "332"
     },
     {
         "name": "Heard Island and McDonald Islands",
+        "active": true,
         "countrycode": "HMD",
         "iso-country-code": "334"
     },
     {
         "name": "Holy See",
+        "active": true,
         "countrycode": "VAT",
         "iso-country-code": "336"
     },
     {
         "name": "Honduras",
+        "active": true,
         "countrycode": "HND",
         "iso-country-code": "340"
     },
     {
         "name": "Hong Kong",
+        "active": true,
         "countrycode": "HKG",
         "iso-country-code": "344"
     },
     {
         "name": "Hungary",
+        "active": true,
         "countrycode": "HUN",
         "iso-country-code": "348"
     },
     {
         "name": "Iceland",
+        "active": true,
         "countrycode": "ISL",
         "iso-country-code": "352"
     },
     {
         "name": "India",
+        "active": true,
         "countrycode": "IND",
         "iso-country-code": "356"
     },
     {
         "name": "Indonesia",
+        "active": true,
         "countrycode": "IDN",
         "iso-country-code": "360"
     },
     {
         "name": "Iran (Islamic Republic of)",
+        "active": true,
         "countrycode": "IRN",
         "iso-country-code": "364"
     },
     {
         "name": "Iraq",
+        "active": true,
         "countrycode": "IRQ",
         "iso-country-code": "368"
     },
     {
         "name": "Ireland",
+        "active": true,
         "countrycode": "IRL",
         "iso-country-code": "372"
     },
     {
         "name": "Isle of Man",
+        "active": true,
         "countrycode": "IMN",
         "iso-country-code": "833"
     },
     {
         "name": "Israel",
+        "active": true,
         "countrycode": "ISR",
         "iso-country-code": "376"
     },
     {
         "name": "Italy",
+        "active": true,
         "countrycode": "ITA",
         "iso-country-code": "380"
     },
     {
         "name": "Jamaica",
+        "active": true,
         "countrycode": "JAM",
         "iso-country-code": "388"
     },
     {
         "name": "Japan",
+        "active": true,
         "countrycode": "JPN",
         "iso-country-code": "392"
     },
     {
         "name": "Jersey",
+        "active": true,
         "countrycode": "JEY",
         "iso-country-code": "832"
     },
     {
         "name": "Jordan",
+        "active": true,
         "countrycode": "JOR",
         "iso-country-code": "400"
     },
     {
         "name": "Kazakhstan",
+        "active": true,
         "countrycode": "KAZ",
         "iso-country-code": "398"
     },
     {
         "name": "Kenya",
+        "active": true,
         "countrycode": "KEN",
         "iso-country-code": "404"
     },
     {
         "name": "Kiribati",
+        "active": true,
         "countrycode": "KIR",
         "iso-country-code": "296"
     },
     {
         "name": "Korea (Democratic People's Republic of)",
+        "active": true,
         "countrycode": "PRK",
         "iso-country-code": "408"
     },
     {
         "name": "Korea, Republic of",
+        "active": true,
         "countrycode": "KOR",
         "iso-country-code": "410"
     },
     {
         "name": "Kuwait",
+        "active": true,
         "countrycode": "KWT",
         "iso-country-code": "414"
     },
     {
         "name": "Kyrgyzstan",
+        "active": true,
         "countrycode": "KGZ",
         "iso-country-code": "417"
     },
     {
         "name": "Lao People's Democratic Republic",
+        "active": true,
         "countrycode": "LAO",
         "iso-country-code": "418"
     },
     {
         "name": "Latvia",
+        "active": true,
         "countrycode": "LVA",
         "iso-country-code": "428"
     },
     {
         "name": "Lebanon",
+        "active": true,
         "countrycode": "LBN",
         "iso-country-code": "422"
     },
     {
         "name": "Lesotho",
+        "active": true,
         "countrycode": "LSO",
         "iso-country-code": "426"
     },
     {
         "name": "Liberia",
+        "active": true,
         "countrycode": "LBR",
         "iso-country-code": "430"
     },
     {
         "name": "Libya",
+        "active": true,
         "countrycode": "LBY",
         "iso-country-code": "434"
     },
     {
         "name": "Liechtenstein",
+        "active": true,
         "countrycode": "LIE",
         "iso-country-code": "438"
     },
     {
         "name": "Lithuania",
+        "active": true,
         "countrycode": "LTU",
         "iso-country-code": "440"
     },
     {
         "name": "Luxembourg",
+        "active": true,
         "countrycode": "LUX",
         "iso-country-code": "442"
     },
     {
         "name": "Macao",
+        "active": true,
         "countrycode": "MAC",
         "iso-country-code": "446"
     },
     {
         "name": "Madagascar",
+        "active": true,
         "countrycode": "MDG",
         "iso-country-code": "450"
     },
     {
         "name": "Malawi",
+        "active": true,
         "countrycode": "MWI",
         "iso-country-code": "454"
     },
     {
         "name": "Malaysia",
+        "active": true,
         "countrycode": "MYS",
         "iso-country-code": "458"
     },
     {
         "name": "Maldives",
+        "active": true,
         "countrycode": "MDV",
         "iso-country-code": "462"
     },
     {
         "name": "Mali",
+        "active": true,
         "countrycode": "MLI",
         "iso-country-code": "466"
     },
     {
         "name": "Malta",
+        "active": true,
         "countrycode": "MLT",
         "iso-country-code": "470"
     },
     {
         "name": "Marshall Islands",
+        "active": true,
         "countrycode": "MHL",
         "iso-country-code": "584"
     },
     {
         "name": "Martinique",
+        "active": true,
         "countrycode": "MTQ",
         "iso-country-code": "474"
     },
     {
         "name": "Mauritania",
+        "active": true,
         "countrycode": "MRT",
         "iso-country-code": "478"
     },
     {
         "name": "Mauritius",
+        "active": true,
         "countrycode": "MUS",
         "iso-country-code": "480"
     },
     {
         "name": "Mayotte",
+        "active": true,
         "countrycode": "MYT",
         "iso-country-code": "175"
     },
     {
         "name": "Mexico",
+        "active": true,
         "countrycode": "MEX",
         "iso-country-code": "484"
     },
     {
         "name": "Micronesia (Federated States of)",
+        "active": true,
         "countrycode": "FSM",
         "iso-country-code": "583"
     },
     {
         "name": "Moldova, Republic of",
+        "active": true,
         "countrycode": "MDA",
         "iso-country-code": "498"
     },
     {
         "name": "Monaco",
+        "active": true,
         "countrycode": "MCO",
         "iso-country-code": "492"
     },
     {
         "name": "Mongolia",
+        "active": true,
         "countrycode": "MNG",
         "iso-country-code": "496"
     },
     {
         "name": "Montenegro",
+        "active": true,
         "countrycode": "MNE",
         "iso-country-code": "499"
     },
     {
         "name": "Montserrat",
+        "active": true,
         "countrycode": "MSR",
         "iso-country-code": "500"
     },
     {
         "name": "Morocco",
+        "active": true,
         "countrycode": "MAR",
         "iso-country-code": "504"
     },
     {
         "name": "Mozambique",
+        "active": true,
         "countrycode": "MOZ",
         "iso-country-code": "508"
     },
     {
         "name": "Myanmar",
+        "active": true,
         "countrycode": "MMR",
         "iso-country-code": "104"
     },
     {
         "name": "Namibia",
+        "active": true,
         "countrycode": "NAM",
         "iso-country-code": "516"
     },
     {
         "name": "Nauru",
+        "active": true,
         "countrycode": "NRU",
         "iso-country-code": "520"
     },
     {
         "name": "Nepal",
+        "active": true,
         "countrycode": "NPL",
         "iso-country-code": "524"
     },
     {
         "name": "Netherlands",
+        "active": true,
         "countrycode": "NLD",
         "iso-country-code": "528"
     },
     {
         "name": "New Caledonia",
+        "active": true,
         "countrycode": "NCL",
         "iso-country-code": "540"
     },
     {
         "name": "New Zealand",
+        "active": true,
         "countrycode": "NZL",
         "iso-country-code": "554"
     },
     {
         "name": "Nicaragua",
+        "active": true,
         "countrycode": "NIC",
         "iso-country-code": "558"
     },
     {
         "name": "Niger",
+        "active": true,
         "countrycode": "NER",
         "iso-country-code": "562"
     },
     {
         "name": "Nigeria",
+        "active": true,
         "countrycode": "NGA",
         "iso-country-code": "566"
     },
     {
         "name": "Niue",
+        "active": true,
         "countrycode": "NIU",
         "iso-country-code": "570"
     },
     {
         "name": "Norfolk Island",
+        "active": true,
         "countrycode": "NFK",
         "iso-country-code": "574"
     },
     {
         "name": "North Macedonia",
+        "active": true,
         "countrycode": "MKD",
         "iso-country-code": "807"
     },
     {
         "name": "Northern Mariana Islands",
+        "active": true,
         "countrycode": "MNP",
         "iso-country-code": "580"
     },
     {
         "name": "Norway",
+        "active": true,
         "countrycode": "NOR",
         "iso-country-code": "578"
     },
     {
         "name": "Oman",
+        "active": true,
         "countrycode": "OMN",
         "iso-country-code": "512"
     },
     {
         "name": "Pakistan",
+        "active": true,
         "countrycode": "PAK",
         "iso-country-code": "586"
     },
     {
         "name": "Palau",
+        "active": true,
         "countrycode": "PLW",
         "iso-country-code": "585"
     },
     {
         "name": "Palestine, State of",
+        "active": true,
         "countrycode": "PSE",
         "iso-country-code": "275"
     },
     {
         "name": "Panama",
+        "active": true,
         "countrycode": "PAN",
         "iso-country-code": "591"
     },
     {
         "name": "Papua New Guinea",
+        "active": true,
         "countrycode": "PNG",
         "iso-country-code": "598"
     },
     {
         "name": "Paraguay",
+        "active": true,
         "countrycode": "PRY",
         "iso-country-code": "600"
     },
     {
         "name": "Peru",
+        "active": true,
         "countrycode": "PER",
         "iso-country-code": "604"
     },
     {
         "name": "Philippines",
+        "active": true,
         "countrycode": "PHL",
         "iso-country-code": "608"
     },
     {
         "name": "Pitcairn",
+        "active": true,
         "countrycode": "PCN",
         "iso-country-code": "612"
     },
     {
         "name": "Poland",
+        "active": true,
         "countrycode": "POL",
         "iso-country-code": "616"
     },
     {
         "name": "Portugal",
+        "active": true,
         "countrycode": "PRT",
         "iso-country-code": "620"
     },
     {
         "name": "Puerto Rico",
+        "active": true,
         "countrycode": "PRI",
         "iso-country-code": "630"
     },
     {
         "name": "Qatar",
+        "active": true,
         "countrycode": "QAT",
         "iso-country-code": "634"
     },
     {
         "name": "Réunion",
+        "active": true,
         "countrycode": "REU",
         "iso-country-code": "638"
     },
     {
         "name": "Romania",
+        "active": true,
         "countrycode": "ROU",
         "iso-country-code": "642"
     },
     {
         "name": "Russian Federation",
+        "active": true,
         "countrycode": "RUS",
         "iso-country-code": "643"
     },
     {
         "name": "Rwanda",
+        "active": true,
         "countrycode": "RWA",
         "iso-country-code": "646"
     },
     {
         "name": "Saint Barthélemy",
+        "active": true,
         "countrycode": "BLM",
         "iso-country-code": "652"
     },
     {
         "name": "Saint Helena, Ascension and Tristan da Cunha",
+        "active": true,
         "countrycode": "SHN",
         "iso-country-code": "654"
     },
     {
         "name": "Saint Kitts and Nevis",
+        "active": true,
         "countrycode": "KNA",
         "iso-country-code": "659"
     },
     {
         "name": "Saint Lucia",
+        "active": true,
         "countrycode": "LCA",
         "iso-country-code": "662"
     },
     {
         "name": "Saint Martin (French part)",
+        "active": true,
         "countrycode": "MAF",
         "iso-country-code": "663"
     },
     {
         "name": "Saint Pierre and Miquelon",
+        "active": true,
         "countrycode": "SPM",
         "iso-country-code": "666"
     },
     {
         "name": "Saint Vincent and the Grenadines",
+        "active": true,
         "countrycode": "VCT",
         "iso-country-code": "670"
     },
     {
         "name": "Samoa",
+        "active": true,
         "countrycode": "WSM",
         "iso-country-code": "882"
     },
     {
         "name": "San Marino",
+        "active": true,
         "countrycode": "SMR",
         "iso-country-code": "674"
     },
     {
         "name": "Sao Tome and Principe",
+        "active": true,
         "countrycode": "STP",
         "iso-country-code": "678"
     },
     {
         "name": "Saudi Arabia",
+        "active": true,
         "countrycode": "SAU",
         "iso-country-code": "682"
     },
     {
         "name": "Senegal",
+        "active": true,
         "countrycode": "SEN",
         "iso-country-code": "686"
     },
     {
         "name": "Serbia",
+        "active": true,
         "countrycode": "SRB",
         "iso-country-code": "688"
     },
     {
         "name": "Seychelles",
+        "active": true,
         "countrycode": "SYC",
         "iso-country-code": "690"
     },
     {
         "name": "Sierra Leone",
+        "active": true,
         "countrycode": "SLE",
         "iso-country-code": "694"
     },
     {
         "name": "Singapore",
+        "active": true,
         "countrycode": "SGP",
         "iso-country-code": "702"
     },
     {
         "name": "Sint Maarten (Dutch part)",
+        "active": true,
         "countrycode": "SXM",
         "iso-country-code": "534"
     },
     {
         "name": "Slovakia",
+        "active": true,
         "countrycode": "SVK",
         "iso-country-code": "703"
     },
     {
         "name": "Slovenia",
+        "active": true,
         "countrycode": "SVN",
         "iso-country-code": "705"
     },
     {
         "name": "Solomon Islands",
+        "active": true,
         "countrycode": "SLB",
         "iso-country-code": "090"
     },
     {
         "name": "Somalia",
+        "active": true,
         "countrycode": "SOM",
         "iso-country-code": "706"
     },
     {
         "name": "South Africa",
+        "active": true,
         "countrycode": "ZAF",
         "iso-country-code": "710"
     },
     {
         "name": "South Georgia and the South Sandwich Islands",
+        "active": true,
         "countrycode": "SGS",
         "iso-country-code": "239"
     },
     {
         "name": "South Sudan",
+        "active": true,
         "countrycode": "SSD",
         "iso-country-code": "728"
     },
     {
         "name": "Spain",
+        "active": true,
         "countrycode": "ESP",
         "iso-country-code": "724"
     },
     {
         "name": "Sri Lanka",
+        "active": true,
         "countrycode": "LKA",
         "iso-country-code": "144"
     },
     {
         "name": "Sudan",
+        "active": true,
         "countrycode": "SDN",
         "iso-country-code": "729"
     },
     {
         "name": "Suriname",
+        "active": true,
         "countrycode": "SUR",
         "iso-country-code": "740"
     },
     {
         "name": "Svalbard and Jan Mayen",
+        "active": true,
         "countrycode": "SJM",
         "iso-country-code": "744"
     },
     {
         "name": "Sweden",
+        "active": true,
         "countrycode": "SWE",
         "iso-country-code": "752"
     },
     {
         "name": "Switzerland",
+        "active": true,
         "countrycode": "CHE",
         "iso-country-code": "756"
     },
     {
         "name": "Syrian Arab Republic",
+        "active": true,
         "countrycode": "SYR",
         "iso-country-code": "760"
     },
     {
         "name": "Taiwan, Province of China",
+        "active": true,
         "countrycode": "TWN",
         "iso-country-code": "158"
     },
     {
         "name": "Tajikistan",
+        "active": true,
         "countrycode": "TJK",
         "iso-country-code": "762"
     },
     {
         "name": "Tanzania, United Republic of",
+        "active": true,
         "countrycode": "TZA",
         "iso-country-code": "834"
     },
     {
         "name": "Thailand",
+        "active": true,
         "countrycode": "THA",
         "iso-country-code": "764"
     },
     {
         "name": "Timor-Leste",
+        "active": true,
         "countrycode": "TLS",
         "iso-country-code": "626"
     },
     {
         "name": "Togo",
+        "active": true,
         "countrycode": "TGO",
         "iso-country-code": "768"
     },
     {
         "name": "Tokelau",
+        "active": true,
         "countrycode": "TKL",
         "iso-country-code": "772"
     },
     {
         "name": "Tonga",
+        "active": true,
         "countrycode": "TON",
         "iso-country-code": "776"
     },
     {
         "name": "Trinidad and Tobago",
+        "active": true,
         "countrycode": "TTO",
         "iso-country-code": "780"
     },
     {
         "name": "Tunisia",
+        "active": true,
         "countrycode": "TUN",
         "iso-country-code": "788"
     },
     {
         "name": "Turkey",
+        "active": true,
         "countrycode": "TUR",
         "iso-country-code": "792"
     },
     {
         "name": "Turkmenistan",
+        "active": true,
         "countrycode": "TKM",
         "iso-country-code": "795"
     },
     {
         "name": "Turks and Caicos Islands",
+        "active": true,
         "countrycode": "TCA",
         "iso-country-code": "796"
     },
     {
         "name": "Tuvalu",
+        "active": true,
         "countrycode": "TUV",
         "iso-country-code": "798"
     },
     {
         "name": "Uganda",
+        "active": true,
         "countrycode": "UGA",
         "iso-country-code": "800"
     },
     {
         "name": "Ukraine",
+        "active": true,
         "countrycode": "UKR",
         "iso-country-code": "804"
     },
     {
         "name": "United Arab Emirates",
+        "active": true,
         "countrycode": "ARE",
         "iso-country-code": "784"
     },
     {
         "name": "United Kingdom of Great Britain and Northern Ireland",
+        "active": true,
         "countrycode": "GBR",
         "iso-country-code": "826"
     },
     {
         "name": "United States of America",
+        "active": true,
         "countrycode": "USA",
         "iso-country-code": "840"
     },
     {
         "name": "United States Minor Outlying Islands",
+        "active": true,
         "countrycode": "UMI",
         "iso-country-code": "581"
     },
     {
         "name": "Uruguay",
+        "active": true,
         "countrycode": "URY",
         "iso-country-code": "858"
     },
     {
         "name": "Uzbekistan",
+        "active": true,
         "countrycode": "UZB",
         "iso-country-code": "860"
     },
     {
         "name": "Vanuatu",
+        "active": true,
         "countrycode": "VUT",
         "iso-country-code": "548"
     },
     {
         "name": "Venezuela (Bolivarian Republic of)",
+        "active": true,
         "countrycode": "VEN",
         "iso-country-code": "862"
     },
     {
         "name": "Viet Nam",
+        "active": true,
         "countrycode": "VNM",
         "iso-country-code": "704"
     },
     {
         "name": "Virgin Islands (British)",
+        "active": true,
         "countrycode": "VGB",
         "iso-country-code": "092"
     },
     {
         "name": "Virgin Islands (U.S.)",
+        "active": true,
         "countrycode": "VIR",
         "iso-country-code": "850"
     },
     {
         "name": "Wallis and Futuna",
+        "active": true,
         "countrycode": "WLF",
         "iso-country-code": "876"
     },
     {
         "name": "Western Sahara",
+        "active": true,
         "countrycode": "ESH",
         "iso-country-code": "732"
     },
     {
         "name": "Yemen",
+        "active": true,
         "countrycode": "YEM",
         "iso-country-code": "887"
     },
     {
         "name": "Zambia",
+        "active": true,
         "countrycode": "ZMB",
         "iso-country-code": "894"
     },
     {
         "name": "Zimbabwe",
+        "active": true,
         "countrycode": "ZWE",
         "iso-country-code": "716"
     }
