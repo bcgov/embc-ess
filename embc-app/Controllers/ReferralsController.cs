@@ -26,9 +26,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
                     Evacuees = new[]
                     {
-                        new Evacuee{Id="1"},
-                        new Evacuee{Id="2"},
-                        new Evacuee{Id="3"}
+                        new ReferralEvacuee{Id="1"},
+                        new ReferralEvacuee{Id="2"},
+                        new ReferralEvacuee{Id="3"}
                     },
                     Type = "Food",
                     SubType = "Groceries",
@@ -44,9 +44,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
                     Evacuees = new[]
                     {
-                        new Evacuee{Id="1"},
-                        new Evacuee{Id="2"},
-                        new Evacuee{Id="3"}
+                        new ReferralEvacuee{Id="1"},
+                        new ReferralEvacuee{Id="2"},
+                        new ReferralEvacuee{Id="3"}
                     },
                      Type = "Food",
                     SubType = "Restaurant",
@@ -64,9 +64,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
                     Evacuees = new[]
                     {
-                        new Evacuee{Id="1"},
-                        new Evacuee{Id="2"},
-                        new Evacuee{Id="3"}
+                        new ReferralEvacuee{Id="1"},
+                        new ReferralEvacuee{Id="2"},
+                        new ReferralEvacuee{Id="3"}
                     },
                      Type = "Clothing",
                     SubType = string.Empty,
@@ -81,9 +81,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
                     Evacuees = new[]
                     {
-                        new Evacuee{Id="1"},
-                        new Evacuee{Id="2"},
-                        new Evacuee{Id="3"}
+                        new ReferralEvacuee{Id="1"},
+                        new ReferralEvacuee{Id="2"},
+                        new ReferralEvacuee{Id="3"}
                     },
                     Type = "Incidentals",
                     SubType = (string)null,
@@ -99,9 +99,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
                     Evacuees = new[]
                     {
-                        new Evacuee{Id="1"},
-                        new Evacuee{Id="2"},
-                        new Evacuee{Id="3"}
+                        new ReferralEvacuee{Id="1"},
+                        new ReferralEvacuee{Id="2"},
+                        new ReferralEvacuee{Id="3"}
                     },
                     Type = "Transportation",
                     SubType = "Taxi",
@@ -118,9 +118,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
                     Evacuees = new[]
                     {
-                        new Evacuee{Id="1"},
-                        new Evacuee{Id="2"},
-                        new Evacuee{Id="3"}
+                        new ReferralEvacuee{Id="1"},
+                        new ReferralEvacuee{Id="2"},
+                        new ReferralEvacuee{Id="3"}
                     },
                     Type = "Transportation",
                     SubType = "Other",
@@ -136,9 +136,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
                     Evacuees = new[]
                     {
-                        new Evacuee{Id="1"},
-                        new Evacuee{Id="2"},
-                        new Evacuee{Id="3"}
+                        new ReferralEvacuee{Id="1"},
+                        new ReferralEvacuee{Id="2"},
+                        new ReferralEvacuee{Id="3"}
                     },
                     Type = "Lodging",
                     SubType = "Hotel",
@@ -155,9 +155,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
                     Evacuees = new[]
                     {
-                        new Evacuee{Id="1"},
-                        new Evacuee{Id="2"},
-                        new Evacuee{Id="3"}
+                        new ReferralEvacuee{Id="1"},
+                        new ReferralEvacuee{Id="2"},
+                        new ReferralEvacuee{Id="3"}
                     },
                     Type = "Lodging",
                     SubType = "Group",
@@ -172,9 +172,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
                     Evacuees = new[]
                     {
-                        new Evacuee{Id="1"},
-                        new Evacuee{Id="2"},
-                        new Evacuee{Id="3"}
+                        new ReferralEvacuee{Id="1"},
+                        new ReferralEvacuee{Id="2"},
+                        new ReferralEvacuee{Id="3"}
                     },
                     Type = "Lodging",
                     SubType = "Billeting",
