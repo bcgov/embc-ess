@@ -112,7 +112,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
     public class ClothingReferral : Referral
     {
-        public bool ExtremeWeatherConditions { get; set; }
+        public bool ExtremeWinterConditions { get; set; }
     }
 
     public class IncidentalsReferral : Referral

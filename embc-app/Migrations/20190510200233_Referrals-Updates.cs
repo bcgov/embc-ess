@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Gov.Jag.Embc.Public.Migrations
 {
@@ -25,6 +25,12 @@ namespace Gov.Jag.Embc.Public.Migrations
                 table: "Referrals",
                 nullable: false,
                 defaultValue: false);
+
+            migrationBuilder.RenameColumn(
+                name: "ExtremeWeatherConditions",
+                table: "Referrals",
+                newName: "ExtremeWinterConditions"
+                );
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

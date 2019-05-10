@@ -13,14 +13,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
             CreateMap<Referral, Models.Db.Referral>()
                 .ForMember(d => d.Id, m => m.MapFrom(s => s.ReferralId))
                 .ForMember(d => d.Registration, m => m.Ignore())
-                .ForMember(d => d.RegistrationId, m => m.MapFrom(s => long.Parse(s.RegistrationId)))
-                .ForMember(d => d.TotalAmount, m => m.MapFrom(s => s.TotalAmount))
-                .ForMember(d => d.ValidFrom, m => m.MapFrom(s => s.ValidFrom))
-                .ForMember(d => d.ValidTo, m => m.MapFrom(s => s.ValidTo))
-                .ForMember(d => d.Supplier, m => m.MapFrom(s => s.Supplier))
-                .ForMember(d => d.Comments, m => m.MapFrom(s => s.Comments))
-                .ForMember(d => d.ConfirmChecked, m => m.MapFrom(s => s.ConfirmChecked))
-                .ForMember(d => d.Active, m => m.MapFrom(s => s.Active))
                 .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Select(e => new Models.Db.ReferralEvacuee
                 {
                     EvacueeId = int.Parse(e.Id),
@@ -33,15 +25,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
                     RegistrationId = long.Parse(s.RegistrationId)
                 })))
                 .ReverseMap()
-                .ForMember(d => d.ReferralId, m => m.MapFrom(s => s.ReferralId))
-                .ForMember(d => d.RegistrationId, m => m.MapFrom(s => s.RegistrationId.ToString()))
-                .ForMember(d => d.TotalAmount, m => m.MapFrom(s => s.TotalAmount))
-                .ForMember(d => d.ValidFrom, m => m.MapFrom(s => s.ValidFrom))
-                .ForMember(d => d.ValidTo, m => m.MapFrom(s => s.ValidTo))
-                .ForMember(d => d.Supplier, m => m.MapFrom(s => s.Supplier))
-                .ForMember(d => d.Comments, m => m.MapFrom(s => s.Comments))
-                .ForMember(d => d.ConfirmChecked, m => m.MapFrom(s => s.ConfirmChecked))
-                .ForMember(d => d.Active, m => m.MapFrom(s => s.Active))
                 .ForMember(d => d.Purchaser, m => m.MapFrom(s => s.Evacuees.Single(e => e.IsPurchaser).EvacueeId))
                 .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Where(e => !e.IsPurchaser).Select(e => new ReferralEvacuee
                 {
@@ -53,14 +36,12 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
             CreateMap<Referral, Models.Db.ClothingReferral>()
                 .IncludeBase<Referral, Models.Db.Referral>()
-                .ForMember(d => d.ExtremeWeatherConditions, m => m.MapFrom(s => s.ExtremeWinterConditions))
                 .ReverseMap()
                 .IncludeBase<Models.Db.Referral, Referral>()
                 .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Clothing.ToString()));
 
             CreateMap<Referral, Models.Db.IncidentalsReferral>()
                 .IncludeBase<Referral, Models.Db.Referral>()
-                .ForMember(d => d.ApprovedItems, m => m.MapFrom(s => s.ApprovedItems))
                 .ReverseMap()
                 .IncludeBase<Models.Db.Referral, Referral>()
                 .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Incidentals.ToString()));
@@ -73,8 +54,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
             CreateMap<Referral, Models.Db.TaxiTransportationReferral>()
                 .IncludeBase<Referral, Models.Db.TransportationReferral>()
-                .ForMember(d => d.FromAddress, m => m.MapFrom(s => s.FromAddress))
-                .ForMember(d => d.ToAddress, m => m.MapFrom(s => s.ToAddress))
                 .ReverseMap()
                 .IncludeBase<Models.Db.TransportationReferral, Referral>()
                 .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Transportation_Taxi.ToString().Split('_')[1]));
