@@ -40,7 +40,7 @@ export class DateTimePickerComponent implements ControlValueAccessor {
   // This is a basic setter that the Angular forms API is going to use.
   writeValue(value: any): void {
     if (value) {
-      const m = moment(value).local();
+      const m = moment(value);
       this.dateString = m.format('YYYY-MM-DD');
       this.timeString = m.format('hh:mm a');
     }
@@ -75,7 +75,7 @@ export class DateTimePickerComponent implements ControlValueAccessor {
     }
 
     const dateTime = this.dateString + ' ' + this.timeString;
-    const m = moment(dateTime, 'YYYY-MM-DD hh:mm a', true).utc();
+    const m = moment(dateTime, 'YYYY-MM-DD hh:mm a', true);
 
     // emit change events
     if (m.isValid()) {

@@ -65,7 +65,9 @@ export class ReferralMakerComponent implements OnInit {
           const hoh = this.registration.headOfHousehold;
           if (hoh) {
             this.evacuees.push({ evacuee: hoh, selected: false });
-            hoh.familyMembers.forEach(fm => this.evacuees.push({ evacuee: fm, selected: false }));
+            if (hoh.familyMembers) {
+              hoh.familyMembers.forEach(fm => this.evacuees.push({ evacuee: fm, selected: false }));
+            }
           }
         }
       });
@@ -134,7 +136,8 @@ export class ReferralMakerComponent implements OnInit {
       type: 'INCIDENTALS',
       purchaser: this.purchaser,
       dates: {
-        from: new Date(2019, 0, 1),
+        from: new Date(2019, 3, 15, 17, 30, 0), // FOR TESTING ONLY
+        days: 2, // FOR TESTING ONLY
       },
       evacuees: this.evacuees,
       approvedItems: null,
