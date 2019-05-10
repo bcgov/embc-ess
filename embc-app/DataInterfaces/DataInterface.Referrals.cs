@@ -41,6 +41,21 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return await results.Select(r => mapper.Map<ViewModels.Referral>(r)).ToArrayAsync();
         }
 
+        public async Task<bool> DeactivateReferralAsync(string referralId)
+        {
+            if (!long.TryParse(referralId.Substring(1), out var id)) throw new ArgumentException($"{referralId} is not valid", nameof(referralId));
+            var entity = await db.Referrals.SingleOrDefaultAsync(x => x.Id == id);
+            if (entity == null)
+            {
+                return false;
+            }
+            entity.Active = false;
+            db.Referrals.Update(entity);
+            await db.SaveChangesAsync();
+
+            return true;
+        }
+
         private Type GetReferralType(string type, string subType)
         {
             var typeName = $"{subType}{type}Referral";

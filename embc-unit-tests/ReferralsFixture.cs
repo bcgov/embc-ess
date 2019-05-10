@@ -124,6 +124,21 @@ namespace embc_unit_tests
             Assert.NotEmpty(referrals);
             Assert.All(referrals, r => Assert.Equal(registrationId, r.RegistrationId));
         }
+
+        [Fact]
+        public async Task CanDeactivateReferral()
+        {
+            var ctx = EmbcDb;
+
+            var di = new DataInterface(ctx, mapper);
+
+            var referralId = "D1000001";
+            var result = await di.DeactivateReferralAsync(referralId);
+            Assert.True(result);
+
+            var referral = await di.GetReferralAsync(referralId);
+            Assert.False(referral.Active);
+        }
     }
 
     public class ReferralTestData : IEnumerable<object[]>
