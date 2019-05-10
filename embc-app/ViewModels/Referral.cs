@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Gov.Jag.Embc.Public.ViewModels
 {
-    public class EvacueeRegistrationMappingProfile : Profile
+    public class ReferralMappingProfile : Profile
     {
-        public EvacueeRegistrationMappingProfile()
+        public ReferralMappingProfile()
         {
             CreateMap<Referral, Models.Db.Referral>()
                 .ForMember(d => d.Id, m => m.MapFrom(s => s.ReferralId))
@@ -32,7 +32,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
                     IsPurchaser = true,
                     RegistrationId = long.Parse(s.RegistrationId)
                 })))
-                //.IncludeAllDerived()
                 .ReverseMap()
                 .ForMember(d => d.ReferralId, m => m.MapFrom(s => s.ReferralId))
                 .ForMember(d => d.RegistrationId, m => m.MapFrom(s => s.RegistrationId.ToString()))
