@@ -4,7 +4,7 @@ import { ReferralType } from 'src/app/core/models';
 @Component({
   selector: 'app-referral-list-item',
   templateUrl: './referral-list-item.component.html',
-  styleUrls: ['./referral-list-item.component.css']
+  styleUrls: ['./referral-list-item.component.scss']
 })
 export class ReferralListItemComponent {
   @Input() type: ReferralType;
