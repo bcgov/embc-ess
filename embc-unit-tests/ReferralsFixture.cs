@@ -25,7 +25,7 @@ namespace embc_unit_tests
             var referral = new ClothingReferral()
             {
                 Comments = "comments",
-                ExtremeWeatherConditions = true,
+                ExtremeWinterConditions = true,
                 RegistrationId = registrationID,
                 ValidFrom = DateTime.Parse("2019-02-28T03:30:44"),
                 ValidTo = DateTime.Parse("2019-03-04T11:00:00"),
