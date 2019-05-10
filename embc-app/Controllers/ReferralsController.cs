@@ -24,9 +24,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     Supplier = new Supplier { Name = "Supplier1" },
                     ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Purchaser =  new ReferralEvacuee{Id="1"},
                     Evacuees = new[]
                     {
-                        new ReferralEvacuee{Id="1"},
                         new ReferralEvacuee{Id="2"},
                         new ReferralEvacuee{Id="3"}
                     },
@@ -42,9 +42,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     Supplier = new Supplier { Name = "Supplier1" },
                     ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Purchaser =  new ReferralEvacuee{Id="1"},
                     Evacuees = new[]
                     {
-                        new ReferralEvacuee{Id="1"},
                         new ReferralEvacuee{Id="2"},
                         new ReferralEvacuee{Id="3"}
                     },
@@ -62,9 +62,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     Supplier = new Supplier { Name = "Supplier2" },
                     ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Purchaser =  new ReferralEvacuee{Id="1"},
                     Evacuees = new[]
                     {
-                        new ReferralEvacuee{Id="1"},
                         new ReferralEvacuee{Id="2"},
                         new ReferralEvacuee{Id="3"}
                     },
@@ -79,9 +79,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     Supplier = new Supplier { Name = "Supplier2" },
                     ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Purchaser =  new ReferralEvacuee{Id="1"},
                     Evacuees = new[]
                     {
-                        new ReferralEvacuee{Id="1"},
                         new ReferralEvacuee{Id="2"},
                         new ReferralEvacuee{Id="3"}
                     },
@@ -97,9 +97,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     Supplier = new Supplier { Name = "Supplier2" },
                     ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Purchaser =  new ReferralEvacuee{Id="1"},
                     Evacuees = new[]
                     {
-                        new ReferralEvacuee{Id="1"},
                         new ReferralEvacuee{Id="2"},
                         new ReferralEvacuee{Id="3"}
                     },
@@ -116,9 +116,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     Supplier = new Supplier { Name = "Supplier2" },
                     ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Purchaser =  new ReferralEvacuee{Id="1"},
                     Evacuees = new[]
                     {
-                        new ReferralEvacuee{Id="1"},
                         new ReferralEvacuee{Id="2"},
                         new ReferralEvacuee{Id="3"}
                     },
@@ -134,9 +134,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     Supplier = new Supplier { Name = "Supplier2" },
                     ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Purchaser =  new ReferralEvacuee{Id="1"},
                     Evacuees = new[]
                     {
-                        new ReferralEvacuee{Id="1"},
                         new ReferralEvacuee{Id="2"},
                         new ReferralEvacuee{Id="3"}
                     },
@@ -153,9 +153,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     Supplier = new Supplier { Name = "Supplier2" },
                     ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Purchaser =  new ReferralEvacuee{Id="1"},
                     Evacuees = new[]
                     {
-                        new ReferralEvacuee{Id="1"},
                         new ReferralEvacuee{Id="2"},
                         new ReferralEvacuee{Id="3"}
                     },
@@ -170,9 +170,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                     Supplier = new Supplier { Name = "Supplier2" },
                     ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
                     ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
+                    Purchaser =  new ReferralEvacuee{Id="1"},
                     Evacuees = new[]
                     {
-                        new ReferralEvacuee{Id="1"},
                         new ReferralEvacuee{Id="2"},
                         new ReferralEvacuee{Id="3"}
                     },

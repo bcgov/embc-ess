@@ -20,17 +20,27 @@ namespace Gov.Jag.Embc.Public.ViewModels
                     RegistrationId = long.Parse(s.RegistrationId)
                 }).Append(new Models.Db.ReferralEvacuee
                 {
-                    EvacueeId = int.Parse(s.Purchaser),
+                    EvacueeId = int.Parse(s.Purchaser.Id),
                     IsPurchaser = true,
                     RegistrationId = long.Parse(s.RegistrationId)
                 })))
                 .ReverseMap()
-                .ForMember(d => d.Purchaser, m => m.MapFrom(s => s.Evacuees.Single(e => e.IsPurchaser).EvacueeId))
+                .ForMember(d => d.Purchaser, m => m.MapFrom((s, _) =>
+                {
+                    var purchaser = s.Evacuees.Single(e => e.IsPurchaser).Evacuee;
+                    return new ReferralEvacuee
+                    {
+                        Id = purchaser.EvacueeSequenceNumber.ToString(),
+                        FirstName = purchaser.FirstName,
+                        LastName = purchaser.LastName
+                    };
+                }))
                 .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Where(e => !e.IsPurchaser).Select(e => new ReferralEvacuee
                 {
-                    Id = e.EvacueeId.ToString(),
-                })))
-            ;
+                    Id = e.Evacuee.EvacueeSequenceNumber.ToString(),
+                    FirstName = e.Evacuee.FirstName,
+                    LastName = e.Evacuee.LastName
+                })));
 
             CreateMap<Supplier, Models.Db.Supplier>();
 
@@ -159,7 +169,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public bool Active { get; set; }
 
         [Required]
-        public string Purchaser { get; set; }
+        public ReferralEvacuee Purchaser { get; set; }
 
         [Required]
         public string Type { get; set; }
@@ -212,5 +222,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
     public class ReferralEvacuee
     {
         public string Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }
