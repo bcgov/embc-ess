@@ -9,6 +9,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        public bool Active { get; set; }
+
         [Required]
         [MaxLength(255)]
         public string Name { get; set; }
