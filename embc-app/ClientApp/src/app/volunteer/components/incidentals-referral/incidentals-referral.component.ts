@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, S
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IncidentalsReferral } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
+import { numberOfDays } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-incidentals-referral',
