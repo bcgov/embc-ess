@@ -1,95 +1,32 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
+﻿using AutoMapper;
+using Gov.Jag.Embc.Public;
+using Gov.Jag.Embc.Public.DataInterfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
 namespace embc_unit_tests
 {
-    public class BaseTest : IWriter
+    public class BaseTest
     {
-        public ITestOutputHelper Output { get; }
+        private ServiceProvider serviceProvider;
+
+        protected IMapper mapper => serviceProvider.GetService<IMapper>();
+
+        protected EmbcDbContext EmbcDb => serviceProvider.GetService<EmbcDbContext>();
 
         public BaseTest(ITestOutputHelper output)
         {
-            Output = output;
-        }
+            var services = new ServiceCollection()
+                .AddLogging(builder => builder.AddProvider(new XUnitLoggerProvider(output)))
+                .AddAutoMapper(typeof(Startup))
+                .AddDbContext<EmbcDbContext>(options => options
+                    .EnableSensitiveDataLogging()
+                    .UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ESS_develop;Integrated Security=True;"))
+                ;
 
-        public void WriteLine(string str)
-        {
-            Output.WriteLine(str ?? Environment.NewLine);
-        }
-    }
-
-    public interface IWriter
-    {
-        void WriteLine(string str);
-    }
-
-    public class XUnitLoggerProvider : ILoggerProvider
-    {
-        public IWriter Writer { get; private set; }
-
-        public XUnitLoggerProvider(IWriter writer)
-        {
-            Writer = writer;
-        }
-
-        public void Dispose()
-        {
-        }
-
-        public ILogger CreateLogger(string categoryName)
-        {
-            return new XUnitLogger(Writer);
-        }
-
-        public class XUnitLogger : ILogger
-        {
-            public IWriter Writer { get; }
-
-            public XUnitLogger(IWriter writer)
-            {
-                Writer = writer;
-                Name = nameof(XUnitLogger);
-            }
-
-            public string Name { get; set; }
-
-            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
-            {
-                if (!this.IsEnabled(logLevel))
-                    return;
-
-                if (formatter == null)
-                    throw new ArgumentNullException(nameof(formatter));
-
-                string message = formatter(state, exception);
-                if (string.IsNullOrEmpty(message) && exception == null)
-                    return;
-
-                string line = $"{logLevel}: {this.Name}: {message}";
-
-                Writer.WriteLine(line);
-
-                if (exception != null)
-                    Writer.WriteLine(exception.ToString());
-            }
-
-            public bool IsEnabled(LogLevel logLevel)
-            {
-                return true;
-            }
-
-            public IDisposable BeginScope<TState>(TState state)
-            {
-                return new XUnitScope();
-            }
-        }
-
-        public class XUnitScope : IDisposable
-        {
-            public void Dispose()
-            {
-            }
+            serviceProvider = services.BuildServiceProvider();
         }
     }
 }

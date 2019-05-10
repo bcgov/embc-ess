@@ -11,6 +11,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
+        public bool Active { get; set; }
+
         [NotMapped]
         public string ReferralId => $"D{Id}";
 
