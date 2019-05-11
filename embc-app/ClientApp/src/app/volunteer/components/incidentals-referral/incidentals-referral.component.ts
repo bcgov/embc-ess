@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IncidentalsReferral } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
 import { numberOfDays } from 'src/app/shared/utils';
+import { SupplierComponent } from '../supplier/supplier.component';
 
 @Component({
   selector: 'app-incidentals-referral',
@@ -15,6 +16,8 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
 
   private ratesModal: NgbModalRef = null;
   uuid: string;
+
+  @ViewChild(SupplierComponent) supplier: SupplierComponent;
 
   constructor(
     private modals: NgbModal,

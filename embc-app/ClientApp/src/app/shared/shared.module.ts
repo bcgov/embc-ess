@@ -17,7 +17,6 @@ import { FormFieldComponent } from './components/form-field/form-field.component
 import { AddressSelectorComponent } from './components/address-form/address-selector.component';
 import { BcAddressComponent } from './components/address-form/bc-address/bc-address.component';
 import { OtherAddressComponent } from './components/address-form/other-address/other-address.component';
-import { DisableControlDirective } from './directives/disable-control.directive';
 import { UpperCaseDirective } from './directives/upper-case.directive';
 import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
 import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
@@ -35,6 +34,10 @@ import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
 import { NewlinesPipe } from './pipes/newlines.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
 import { YesNoPipe } from './pipes/yes-no.pipe';
+
+// directives
+import { DisableControlDirective } from './directives/disable-control.directive';
+import { ValidationBorderDirective } from './directives/validation-border.directive';
 
 @NgModule({
   declarations: [
@@ -64,6 +67,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     DateTimePickerComponent,
     CaptchaComponent,
     PaginatorComponent,
+    ValidationBorderDirective,
   ],
   imports: [
     CommonModule,
@@ -121,6 +125,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     DateTimePickerComponent,
     CaptchaComponent,
     PaginatorComponent,
+    ValidationBorderDirective,
   ]
 })
 export class SharedModule { }
