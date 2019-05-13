@@ -13,7 +13,6 @@
       <div class="feature-block card d-block border-0">
         <div *ngIf="registration?.incidentTask['startDate']">
           <label>Please confirm timing for commencement of supports:</label>
-          <!-- <div>{{registration.incidentTask['startDate'] | date:'yyyy/MM/dd \'at\' HH:mm:ss a'}}</div> -->
           <div>Incident start date &amp; time: {{registration.incidentTask['startDate'] | dateTimeFormatPipe}}</div>
         </div>
       </div>

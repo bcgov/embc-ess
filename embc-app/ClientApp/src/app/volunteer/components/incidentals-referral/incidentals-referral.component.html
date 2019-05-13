@@ -73,11 +73,11 @@ And of course this component needs to be implemented as a 'maker' with both an e
               <div class="h1 my-3">Incidentals</div>
               <div>
                 <span class="name"><strong>Valid From:</strong></span>
-                <span>{{referral.dates.from | date}}</span>
+                <span>{{referral.dates.from | date : 'MMM-dd-yyyy'}}</span>
               </div>
               <div>
                 <span class="name"><strong>Valid To:</strong></span>
-                <span>{{referral.dates.to | date}}</span>
+                <span>{{referral.dates.to | date : 'MMM-dd-yyyy'}}</span>
               </div>
             </div>
             <!-- TODO: use <app-supplier> here -->
