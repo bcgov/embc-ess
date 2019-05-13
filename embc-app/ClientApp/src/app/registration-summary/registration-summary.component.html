@@ -22,9 +22,9 @@
               <div class="col-3">
                 Task #: {{registration.incidentTask?.taskNumber}}
               </div>
-              <div class="col">
+              <div class="col px-0">
                 Self Registration Date &amp; Time:
-                {{registration.selfRegisteredDate | date : 'MMM-dd-yyyy, hh:mm a'}}
+                {{registration.selfRegisteredDate | dateTimeFormatPipe}}
               </div>
               <div class="col-3">
                 File Status:
@@ -36,9 +36,9 @@
               <div class="col-3">
                 ESS File #: {{registration.essFileNumber}}
               </div>
-              <div class="col">
+              <div class="col px-0">
                 Registration Completed Date &amp; Time:
-                {{registration.registrationCompletionDate | date : 'MMM-dd-yyyy, hh:mm a'}}
+                {{registration.registrationCompletionDate | dateTimeFormatPipe}}
               </div>
               <div class="col-3">
                 <!-- Restricted File:
