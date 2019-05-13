@@ -57,6 +57,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 referral.RegistrationId = registrationId;
                 referral.ConfirmChecked = request.ConfirmChecked;
+                referral.Active = true;
+                referral.Supplier.Active = true;
                 referralsList.Add(await dataInterface.CreateReferralAsync(referral));
             }
 
