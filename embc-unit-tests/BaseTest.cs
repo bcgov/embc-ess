@@ -21,10 +21,12 @@ namespace embc_unit_tests
             var services = new ServiceCollection()
                 .AddLogging(builder => builder.AddProvider(new XUnitLoggerProvider(output)))
                 .AddAutoMapper(typeof(Startup))
+                .AddEntityFrameworkInMemoryDatabase()
                 .AddDbContext<EmbcDbContext>(options => options
                     .EnableSensitiveDataLogging()
-                    .UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ESS_develop;Integrated Security=True;"))
-                ;
+                    //.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ESS_develop;Integrated Security=True;")
+                    .UseInMemoryDatabase("ESS_Test")
+                    );
 
             serviceProvider = services.BuildServiceProvider();
         }
