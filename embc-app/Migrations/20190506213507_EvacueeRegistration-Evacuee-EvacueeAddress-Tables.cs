@@ -324,7 +324,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 														ON p.Id = r.HeadOfHouseholdId
                                                 )
 												INSERT INTO [dbo].[EvacueeRegistrationAddresses]
-														   ([RegistrationId]
+														   ([EvacueeRegistrationId]
 														   ,[AddressSequenceNumber]
 														   ,[AddressTypeCode]
 														   ,[AddressSubtypeCode]
