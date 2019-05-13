@@ -278,7 +278,7 @@ namespace Gov.Jag.Embc.Public.Migrations
             migrationBuilder.Sql(@"WITH newAddresses AS
                                                 (
 	                                                SELECT
-		                                                r.EssFileNumber as RegistrationId,
+		                                                r.Id as RegistrationId,
 														1 AS AddressSequence,
 		                                                p.PrimaryResidenceId,
 		                                                'Primary' AS AddressType,
@@ -301,7 +301,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 														ON p.Id = r.HeadOfHouseholdId
 	                                                UNION
 	                                                SELECT
-		                                                r.EssFileNumber as RegistrationId,
+		                                                r.Id as RegistrationId,
 														2 AS AddressSequence,
 		                                                p.PrimaryResidenceId,
 		                                                'Mailing' AS AddressType,
