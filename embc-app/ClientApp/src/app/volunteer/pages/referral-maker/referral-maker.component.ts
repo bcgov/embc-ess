@@ -27,6 +27,8 @@ export class ReferralMakerComponent implements OnInit {
   defaultDate: Date = null;
   showDefaultDatePicker = false;
   showReferralMakers = false;
+  // has the supervisor confirmed these referrals?
+  confirmChecked = false;
 
   foodReferrals: Array<FoodReferral> = [];
   clothingReferrals: Array<ClothingReferral> = [];
