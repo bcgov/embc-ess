@@ -7,13 +7,13 @@ import { NgControl } from '@angular/forms';
 export class ValidationBorderDirective {
 
   // tslint:disable-next-line: no-input-rename
-  @Input('appValidationBorderForce') force = false;
+  @Input('appValidationBorderShow') show = false;
 
   @HostBinding('class.is-invalid')
   get showBorder(): boolean {
-    if (!this.formControl) { return false; }
+    if (!this.formControl || !this.show) { return false; }
     const { dirty, touched } = this.formControl;
-    return this.invalid ? (this.force || dirty || touched) : false;
+    return this.invalid ? (dirty || touched) : false;
   }
 
   get invalid(): boolean {
