@@ -2,6 +2,9 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Supplier } from 'src/app/core/models';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
+// poor man's uuid
+let identifier = 0;
+
 @Component({
   selector: 'app-supplier',
   templateUrl: './supplier.component.html',
@@ -9,18 +12,14 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class SupplierComponent implements OnInit {
 
+  @Input() readOnly = false;
   @Input() supplier: Supplier;
-  // tslint:disable-next-line: no-inferrable-types
-  @Input() editMode?: boolean = true; // false is read only fields
-  @Input() id?: string = 'generic';
   @Output() supplierChange = new EventEmitter<Supplier>();
 
   // The model for the form data collected
   form: FormGroup;
 
-  validSupplierName = true;
-  validSupplierAddress = true;
-  validSupplierCity = true;
+  uuid = `${identifier++}`;
 
   readonly phoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]; // 999-999-9999
 
@@ -28,9 +27,11 @@ export class SupplierComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+    this.handleFormChange();
     this.displaySupplier(this.supplier);
   }
 
+  // Create form controls
   initForm(): void {
     this.form = this.fb.group({
       name: ['', Validators.required],
@@ -40,6 +41,11 @@ export class SupplierComponent implements OnInit {
       telephone: '',
       fax: ''
     });
+  }
+
+  // validate the whole form as we capture data
+  handleFormChange(): void {
+    this.form.valueChanges.subscribe(() => this.validate());
   }
 
   displaySupplier(supplier: Supplier) {
@@ -60,39 +66,10 @@ export class SupplierComponent implements OnInit {
     this.supplierChange.emit(supplier);
   }
 
+  // if all required information is in the form we emit
   validate() {
-    // these are the required validations
-    this.validateSupplierAddress();
-    this.validateSupplierCity();
-    this.validateSupplierName();
-
-    // if all required information is in the form we emit
-    if (this.validSupplierAddress && this.validSupplierCity && this.validSupplierName) {
-      this.emitSupplier(this.supplier);
-    }
-  }
-
-  validateSupplierName(): void {
-    if (this.supplier.name) {
-      this.validSupplierName = true;
-    } else {
-      this.validSupplierName = false;
-    }
-  }
-
-  validateSupplierAddress(): void {
-    if (this.supplier.address) {
-      this.validSupplierAddress = true;
-    } else {
-      this.validSupplierAddress = false;
-    }
-  }
-
-  validateSupplierCity(): void {
-    if (this.supplier.city) {
-      this.validSupplierCity = true;
-    } else {
-      this.validSupplierCity = false;
+    if (this.form.valid) {
+      this.emitSupplier({ ...this.form.value });
     }
   }
 }
