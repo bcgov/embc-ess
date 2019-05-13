@@ -31,6 +31,9 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public bool ConfirmChecked { get; set; }
         public string Comments { get; set; }
+
+        [MaxLength(255)]
+        public string Purchaser { get; set; }
     }
 
     [Table("ReferralEvacuees")]
@@ -41,7 +44,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public long RegistrationId { get; set; }
         public int EvacueeId { get; set; }
         public Evacuee Evacuee { get; set; }
-        public bool IsPurchaser { get; set; }
     }
 
     public enum ReferralType
