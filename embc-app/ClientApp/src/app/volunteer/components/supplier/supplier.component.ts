@@ -17,6 +17,8 @@ export class SupplierComponent implements OnInit {
   validSupplierAddress = true;
   validSupplierCity = true;
 
+  readonly phoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]; // 999-999-9999
+
   constructor() { }
 
   ngOnInit() { }

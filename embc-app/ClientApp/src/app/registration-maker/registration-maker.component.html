@@ -284,17 +284,16 @@
           <div class="row mt-0">
             <div class="col">
               <label for="phoneNumber">Telephone / Mobile Number</label>
-              <input type="text" [class.is-invalid]="invalid('phoneNumber')" class="form-control" formControlName="phoneNumber" id="phoneNumber" autocomplete="off">
-              <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 9999999999)</small>
+              <input type="text" [class.is-invalid]="invalid('phoneNumber')" class="form-control" [textMask]="{mask: phoneMask, showMask: true}" formControlName="phoneNumber" id="phoneNumber" autocomplete="off">
+              <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 999-999-9999)</small>
               <span *ngIf="submitted" class="invalid-feedback">{{e.phoneNumber}}</span>
             </div>
             <div class="col">
               <label for="phoneNumberAlt">Alternate Telephone / Mobile Number</label>
-              <input type="text" [class.is-invalid]="invalid('phoneNumberAlt')" class="form-control" formControlName="phoneNumberAlt" id="phoneNumberAlt" autocomplete="off">
-              <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 9999999999)</small>
+              <input type="text" [class.is-invalid]="invalid('phoneNumberAlt')" class="form-control" [textMask]="{mask: phoneMask, showMask: true}" formControlName="phoneNumberAlt" id="phoneNumberAlt" autocomplete="off">
+              <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 999-999-9999)</small>
               <span *ngIf="submitted" class="invalid-feedback">{{e.phoneNumberAlt}}</span>
             </div>
-            <span [class.d-block]="invalid('phoneNumberAlt')" class="invalid-feedback">{{e.phoneNumberAlt}}</span>
           </div>
           <div class="row mt-4">
             <div class="col">

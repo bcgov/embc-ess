@@ -18,8 +18,8 @@ function isDate(obj: any): boolean {
 // US/Canadian phones - spaces (and other separators) allowed in the phone number
 const FORGIVING_PHONE_REGEXP = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
-// US/Canadian phones - max 10 numbers, no spaces allowed
-const STRICT_PHONE_REGEXP = /^([0-9]{3})([0-9]{3})([0-9]{4})$/;
+// US/Canadian phones - 10 numbers with hyphens (eg, 999-999-9999)
+const STRICT_PHONE_REGEXP = /^([0-9]{3})[-]([0-9]{3})[-]([0-9]{4})$/;
 
 // Canadian Postal Codes
 const POSTALCODE_REGEXP = /^[A-Za-z][0-9][A-Za-z][ ]?[0-9][A-Za-z][0-9]$/;
