@@ -311,12 +311,12 @@ const routes: Routes = [
       {
         path: 'registration/summary',
         component: RegistrationSummaryComponent,
-        data: { expectedRole: LOCAL_AUTHORITY },
+        data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         path: 'registration/summary/full',
         component: RegistrationSummaryFullComponent,
-        data: { expectedRole: LOCAL_AUTHORITY },
+        data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         path: 'referrals/:id/:purchaser',
