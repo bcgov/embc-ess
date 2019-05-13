@@ -3,6 +3,7 @@ using Gov.Jag.Embc.Public.Models.Db;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
@@ -71,10 +72,7 @@ namespace embc_unit_tests
             Assert.Equal(referral.ValidFrom, result.ValidFrom);
             Assert.Equal(referral.ValidTo, result.ValidTo);
             Assert.Equal(referral.ConfirmChecked, result.ConfirmChecked);
-            foreach (var evacuee in referral.Evacuees)
-            {
-                Assert.Contains(result.Evacuees, e => e.Id == evacuee.Id);
-            }
+            Assert.All(result.Evacuees, e => referral.Evacuees.Any(re => re.Id == e.Id));
             Assert.NotNull(result.Supplier);
             Assert.Equal(referral.Supplier.Name, result.Supplier.Name);
             Assert.Equal(referral.Supplier.Address, result.Supplier.Address);
@@ -120,7 +118,10 @@ namespace embc_unit_tests
 
             var di = new DataInterface(ctx, mapper);
 
-            var registrationId = "100001";
+            var referral = ReferralGenerator.Generate(ReferralType.Incidentals);
+            await di.CreateReferralAsync(referral);
+            var registrationId = referral.RegistrationId;
+
             var referrals = await di.GetReferralsAsync(registrationId);
             Assert.NotEmpty(referrals);
             Assert.All(referrals, r => Assert.Equal(registrationId, r.RegistrationId));
@@ -133,7 +134,8 @@ namespace embc_unit_tests
 
             var di = new DataInterface(ctx, mapper);
 
-            var referralId = "D1000001";
+            var referralId = await di.CreateReferralAsync(ReferralGenerator.Generate(ReferralType.Clothing));
+
             var result = await di.DeactivateReferralAsync(referralId);
             Assert.True(result);
 
