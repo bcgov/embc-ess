@@ -38,6 +38,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   // error summary to display; i.e. 'Some required fields have not been completed.'
   errorSummary = '';
 
+  readonly phoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]; // 999-999-9999
+
   // generic validation helper
   private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
   private validationHelper: ValidationHelper;
@@ -179,7 +181,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       }),
       registeringFamilyMembers: [null, Validators.required],
       familyMembers: this.fb.array([]),
-      phoneNumber: '', // only BC phones will be validates so keep validators out of here...
+      phoneNumber: '', // only BC phones will be validated so keep validators out of here...
       phoneNumberAlt: '',
       email: ['', Validators.email],
       primaryResidenceInBC: [null, Validators.required],
