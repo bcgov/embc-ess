@@ -93,5 +93,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<bool> VolunteerExistsAsync(string id);
 
         #endregion Volunteer
+
+        #region Referral
+
+        Task<string> CreateReferralAsync(Referral referral);
+
+        Task<Referral> GetReferralAsync(string referralId);
+
+        Task<IEnumerable<Referral>> GetReferralsAsync(string registrationId);
+
+        Task<bool> DeactivateReferralAsync(string referralId);
+
+        #endregion Referral
     }
 }

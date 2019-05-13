@@ -16,21 +16,15 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Select(e => new Models.Db.ReferralEvacuee
                 {
                     EvacueeId = int.Parse(e.Id),
-                    IsPurchaser = false,
-                    RegistrationId = long.Parse(s.RegistrationId)
-                }).Append(new Models.Db.ReferralEvacuee
-                {
-                    EvacueeId = int.Parse(s.Purchaser),
-                    IsPurchaser = true,
                     RegistrationId = long.Parse(s.RegistrationId)
                 })))
                 .ReverseMap()
-                .ForMember(d => d.Purchaser, m => m.MapFrom(s => s.Evacuees.Single(e => e.IsPurchaser).EvacueeId))
-                .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Where(e => !e.IsPurchaser).Select(e => new ReferralEvacuee
+                .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Select(e => new ReferralEvacuee
                 {
-                    Id = e.EvacueeId.ToString(),
-                })))
-            ;
+                    Id = e.Evacuee.EvacueeSequenceNumber.ToString(),
+                    FirstName = e.Evacuee.FirstName,
+                    LastName = e.Evacuee.LastName
+                })));
 
             CreateMap<Supplier, Models.Db.Supplier>();
 
@@ -159,6 +153,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public bool Active { get; set; }
 
         [Required]
+        [MaxLength(100)]
         public string Purchaser { get; set; }
 
         [Required]
@@ -212,5 +207,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
     public class ReferralEvacuee
     {
         public string Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

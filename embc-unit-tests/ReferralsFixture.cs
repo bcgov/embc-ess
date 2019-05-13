@@ -25,6 +25,7 @@ namespace embc_unit_tests
             var referral = new ClothingReferral()
             {
                 Comments = "comments",
+                Purchaser = "purchaser name",
                 ExtremeWinterConditions = true,
                 RegistrationId = registrationID,
                 ValidFrom = DateTime.Parse("2019-02-28T03:30:44"),
@@ -37,8 +38,8 @@ namespace embc_unit_tests
                 },
                 Evacuees = new[]
                 {
-                    new ReferralEvacuee{ RegistrationId = registrationID, EvacueeId=1, IsPurchaser=true },
-                    new ReferralEvacuee{ RegistrationId = registrationID, EvacueeId=2, IsPurchaser=false }
+                    new ReferralEvacuee{ RegistrationId = registrationID, EvacueeId=1 },
+                    new ReferralEvacuee{ RegistrationId = registrationID, EvacueeId=2 }
                 },
                 TotalAmount = 100.23m,
                 ConfirmChecked = true
@@ -56,7 +57,8 @@ namespace embc_unit_tests
 
             var di = new DataInterface(ctx, mapper);
 
-            var result = await di.CreateReferral(referral);
+            var referralId = await di.CreateReferralAsync(referral);
+            var result = await di.GetReferralAsync(referralId);
 
             Assert.NotNull(result);
             Assert.Equal(referral.RegistrationId, result.RegistrationId);
@@ -68,7 +70,6 @@ namespace embc_unit_tests
             Assert.Equal(referral.Supplier.Fax, result.Supplier.Fax);
             Assert.Equal(referral.ValidFrom, result.ValidFrom);
             Assert.Equal(referral.ValidTo, result.ValidTo);
-            Assert.Equal(referral.Purchaser, result.Purchaser);
             Assert.Equal(referral.ConfirmChecked, result.ConfirmChecked);
             foreach (var evacuee in referral.Evacuees)
             {
@@ -105,10 +106,39 @@ namespace embc_unit_tests
 
             var di = new DataInterface(ctx, mapper);
 
-            var result = await di.CreateReferral(referral);
+            var referralId = await di.CreateReferralAsync(referral);
+            var result = await di.GetReferralAsync(referralId);
 
             Assert.Null(result.FromAddress);
             Assert.Null(result.ToAddress);
+        }
+
+        [Fact]
+        public async Task CanGetAllReferralsForRegistration()
+        {
+            var ctx = EmbcDb;
+
+            var di = new DataInterface(ctx, mapper);
+
+            var registrationId = "100001";
+            var referrals = await di.GetReferralsAsync(registrationId);
+            Assert.NotEmpty(referrals);
+            Assert.All(referrals, r => Assert.Equal(registrationId, r.RegistrationId));
+        }
+
+        [Fact]
+        public async Task CanDeactivateReferral()
+        {
+            var ctx = EmbcDb;
+
+            var di = new DataInterface(ctx, mapper);
+
+            var referralId = "D1000001";
+            var result = await di.DeactivateReferralAsync(referralId);
+            Assert.True(result);
+
+            var referral = await di.GetReferralAsync(referralId);
+            Assert.False(referral.Active);
         }
     }
 
@@ -137,10 +167,10 @@ namespace embc_unit_tests
             Active = true,
             TotalAmount = 124m,
             Comments = "comments",
-            Purchaser = "1",
+            Purchaser = "purchaser name",
             Evacuees = new[]
-                {
-                    new Gov.Jag.Embc.Public.ViewModels.ReferralEvacuee{ Id="2" }
+            {
+                    new Gov.Jag.Embc.Public.ViewModels.ReferralEvacuee { Id="2" }
             },
             ConfirmChecked = true,
             RegistrationId = "100001",
