@@ -1,6 +1,5 @@
 ﻿using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,40 +15,6 @@ namespace embc_unit_tests
         {
         }
 
-        [Fact]
-        public void CanInsertNewClothingReferral()
-        {
-            var ctx = EmbcDb;
-
-            var registrationID = 100001L;
-
-            var referral = new ClothingReferral()
-            {
-                Comments = "comments",
-                Purchaser = "purchaser name",
-                ExtremeWinterConditions = true,
-                RegistrationId = registrationID,
-                ValidFrom = DateTime.Parse("2019-02-28T03:30:44"),
-                ValidTo = DateTime.Parse("2019-03-04T11:00:00"),
-                Supplier = new Supplier()
-                {
-                    Name = "supplier1",
-                    Address = "address",
-                    City = "vancity"
-                },
-                Evacuees = new[]
-                {
-                    new ReferralEvacuee{ RegistrationId = registrationID, EvacueeId=1 },
-                    new ReferralEvacuee{ RegistrationId = registrationID, EvacueeId=2 }
-                },
-                TotalAmount = 100.23m,
-                ConfirmChecked = true
-            };
-
-            ctx.Add(referral);
-            ctx.SaveChanges();
-        }
-
         [Theory]
         [ClassData(typeof(ReferralTestData))]
         public async Task CanInsertReferralViewModel(Gov.Jag.Embc.Public.ViewModels.Referral referral)
@@ -57,6 +22,10 @@ namespace embc_unit_tests
             var ctx = EmbcDb;
 
             var di = new DataInterface(ctx, mapper);
+
+            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.Generate());
+
+            referral.RegistrationId = registration.Id;
 
             var referralId = await di.CreateReferralAsync(referral);
             var result = await di.GetReferralAsync(referralId);
@@ -73,6 +42,7 @@ namespace embc_unit_tests
             Assert.Equal(referral.ValidTo, result.ValidTo);
             Assert.Equal(referral.ConfirmChecked, result.ConfirmChecked);
             Assert.All(result.Evacuees, e => referral.Evacuees.Any(re => re.Id == e.Id));
+            Assert.Equal(referral.Evacuees.Count(), result.Evacuees.Count());
             Assert.NotNull(result.Supplier);
             Assert.Equal(referral.Supplier.Name, result.Supplier.Name);
             Assert.Equal(referral.Supplier.Address, result.Supplier.Address);
@@ -118,12 +88,23 @@ namespace embc_unit_tests
 
             var di = new DataInterface(ctx, mapper);
 
-            var referral = ReferralGenerator.Generate(ReferralType.Incidentals);
-            await di.CreateReferralAsync(referral);
-            var registrationId = referral.RegistrationId;
+            var registrationId = "100001";
 
-            var referrals = await di.GetReferralsAsync(registrationId);
-            Assert.NotEmpty(referrals);
+            var referrals = new[]{
+                ReferralGenerator.Generate(ReferralType.Incidentals, registrationId),
+                ReferralGenerator.Generate(ReferralType.Clothing, registrationId),
+                ReferralGenerator.Generate(ReferralType.Lodging_Group, registrationId),
+                ReferralGenerator.Generate(ReferralType.Transportation_Taxi, registrationId),
+                ReferralGenerator.Generate(ReferralType.Food_Restaurant, registrationId)
+            };
+            foreach (var referral in referrals)
+            {
+                await di.CreateReferralAsync(referral);
+            }
+
+            var result = await di.GetReferralsAsync(registrationId);
+            Assert.NotEmpty(result);
+            Assert.Equal(referrals.Length, result.Count());
             Assert.All(referrals, r => Assert.Equal(registrationId, r.RegistrationId));
         }
 
@@ -160,111 +141,5 @@ namespace embc_unit_tests
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    }
-
-    public class ReferralGenerator
-    {
-        private static Func<Gov.Jag.Embc.Public.ViewModels.Referral> baseReferral = () => new Gov.Jag.Embc.Public.ViewModels.Referral
-        {
-            Active = true,
-            TotalAmount = 124m,
-            Comments = "comments",
-            Purchaser = "purchaser name",
-            Evacuees = new[]
-            {
-                    new Gov.Jag.Embc.Public.ViewModels.ReferralEvacuee { Id="2" }
-            },
-            ConfirmChecked = true,
-            RegistrationId = "100001",
-            Supplier = new Gov.Jag.Embc.Public.ViewModels.Supplier
-            {
-                Active = true,
-                Name = "supplier1",
-                Address = "test",
-                City = "city",
-                Province = "prov",
-                PostalCode = "12334",
-                Fax = "112325",
-                Telephone = "54356"
-            },
-            ValidFrom = DateTime.Parse("2019-01-01T11:00"),
-            ValidTo = DateTime.Parse("2019-01-05T11:00")
-        };
-
-        public static Gov.Jag.Embc.Public.ViewModels.Referral Generate(ReferralType type)
-        {
-            var referral = baseReferral();
-            switch (type)
-            {
-                case ReferralType.Food_Groceries:
-                    referral.Type = "Food";
-                    referral.SubType = "Groceries";
-                    referral.NumDaysMeals = 3;
-                    break;
-
-                case ReferralType.Food_Restaurant:
-                    referral.Type = "Food";
-                    referral.SubType = "Restaurant";
-                    referral.NumBreakfasts = 4;
-                    referral.NumLunches = 5;
-                    referral.NumDinners = 6;
-                    break;
-
-                case ReferralType.Transportation_Taxi:
-                    referral.Type = "Transportation";
-                    referral.SubType = "Taxi";
-                    referral.FromAddress = "here";
-                    referral.ToAddress = "there";
-                    break;
-
-                case ReferralType.Transportation_Other:
-                    referral.Type = "Transportation";
-                    referral.SubType = "Other";
-                    referral.OtherTransportModeDetails = "skytrain and seabus";
-                    break;
-
-                case ReferralType.Lodging_Hotel:
-                    referral.Type = "Lodging";
-                    referral.SubType = "Billeting";
-                    referral.NumNights = 5;
-                    referral.NumRooms = 2;
-                    break;
-
-                case ReferralType.Lodging_Group:
-                    referral.Type = "Lodging";
-                    referral.SubType = "Group";
-                    referral.NumNights = 5;
-                    break;
-
-                case ReferralType.Lodging_Billeting:
-                    referral.Type = "Lodging";
-                    referral.SubType = "Billeting";
-                    referral.NumNights = 5;
-                    break;
-
-                case ReferralType.Incidentals:
-                    referral.Type = "Incidentals";
-                    referral.SubType = null;
-                    referral.ApprovedItems = "approved items";
-                    break;
-
-                case ReferralType.Clothing:
-                    referral.Type = "Clothing";
-                    referral.SubType = null;
-                    referral.ExtremeWinterConditions = true;
-                    break;
-            }
-
-            return referral;
-        }
-
-        public static Gov.Jag.Embc.Public.ViewModels.Referral GenerateWithExcessiveProperties()
-        {
-            var referral = Generate(ReferralType.Transportation_Other);
-            referral.FromAddress = "from";
-            referral.ToAddress = "to";
-
-            return referral;
-        }
     }
 }

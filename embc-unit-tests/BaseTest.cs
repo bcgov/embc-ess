@@ -24,7 +24,7 @@ namespace embc_unit_tests
                 .AddEntityFrameworkInMemoryDatabase()
                 .AddDbContext<EmbcDbContext>(options => options
                     .EnableSensitiveDataLogging()
-                    //.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ESS_develop;Integrated Security=True;"))
+                    //.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ESS_develop;Integrated Security=True;")
                     .UseInMemoryDatabase("ESS_Test")
                     );
 
