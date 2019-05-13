@@ -12,7 +12,7 @@
       <!-- confirm task start time -->
       <div class="card">
         <div class="card-header">
-          Please confirm timing for commencement of supports:
+          <strong>Please confirm timing for commencement of supports:</strong>
         </div>
         <div class="card-body">
           <div *ngIf="registration?.incidentTask['startDate']">
@@ -33,14 +33,13 @@
                   </a>
                 </span>
               </div>
-              <div class="col-2">
-                <button class="btn btn-primary" (click)="showReferralMakers=!showReferralMakers">NEXT</button>
-              </div>
             </div>
           </div>
           <div *ngIf="showDefaultDatePicker">
             <strong>Valid From</strong>
             <app-date-time-picker [(value)]="defaultDate"></app-date-time-picker>
+            <button class="btn btn-primary mt-2" (click)="showReferralMakers=!showReferralMakers">NEXT</button>
+
           </div>
         </div>
       </div>
