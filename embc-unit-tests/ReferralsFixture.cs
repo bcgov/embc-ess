@@ -123,6 +123,27 @@ namespace embc_unit_tests
             var referral = await di.GetReferralAsync(referralId);
             Assert.False(referral.Active);
         }
+
+        [Fact]
+        public async Task CanMapToReferralListItem()
+        {
+            var ctx = EmbcDb;
+
+            var di = new DataInterface(ctx, mapper);
+
+            var referralId = await di.CreateReferralAsync(ReferralGenerator.Generate(ReferralType.Clothing));
+            var referral = await di.GetReferralAsync(referralId);
+
+            var item = referral.ToListItem();
+
+            Assert.Equal(referral.ReferralId, item.ReferralId);
+            Assert.StartsWith("D", item.ReferralId);
+            Assert.Equal(referral.SubType, item.SubType);
+            Assert.Equal(referral.Type, item.Type);
+            Assert.Equal(referral.ValidFrom, item.ValidFrom);
+            Assert.Equal(referral.ValidTo, item.ValidTo);
+            Assert.Equal(referral.Supplier.Name, item.Supplier.Name);
+        }
     }
 
     public class ReferralTestData : IEnumerable<object[]>
