@@ -25,6 +25,7 @@ namespace embc_unit_tests
             var referral = new ClothingReferral()
             {
                 Comments = "comments",
+                Purchaser = "purchaser name",
                 ExtremeWinterConditions = true,
                 RegistrationId = registrationID,
                 ValidFrom = DateTime.Parse("2019-02-28T03:30:44"),
@@ -37,8 +38,8 @@ namespace embc_unit_tests
                 },
                 Evacuees = new[]
                 {
-                    new ReferralEvacuee{ RegistrationId = registrationID, EvacueeId=1, IsPurchaser=true },
-                    new ReferralEvacuee{ RegistrationId = registrationID, EvacueeId=2, IsPurchaser=false }
+                    new ReferralEvacuee{ RegistrationId = registrationID, EvacueeId=1 },
+                    new ReferralEvacuee{ RegistrationId = registrationID, EvacueeId=2 }
                 },
                 TotalAmount = 100.23m,
                 ConfirmChecked = true
@@ -64,7 +65,7 @@ namespace embc_unit_tests
             Assert.NotEmpty(result.ReferralId);
             Assert.Equal(referral.Type, result.Type);
             Assert.Equal(referral.SubType, result.SubType);
-            Assert.Equal(referral.Purchaser.Id, result.Purchaser.Id);
+            Assert.Equal(referral.Purchaser, result.Purchaser);
             Assert.Equal(referral.TotalAmount, result.TotalAmount);
             Assert.Equal(referral.Supplier.Fax, result.Supplier.Fax);
             Assert.Equal(referral.ValidFrom, result.ValidFrom);
@@ -166,7 +167,7 @@ namespace embc_unit_tests
             Active = true,
             TotalAmount = 124m,
             Comments = "comments",
-            Purchaser = new Gov.Jag.Embc.Public.ViewModels.ReferralEvacuee { Id = "1" },
+            Purchaser = "purchaser name",
             Evacuees = new[]
             {
                     new Gov.Jag.Embc.Public.ViewModels.ReferralEvacuee { Id="2" }
