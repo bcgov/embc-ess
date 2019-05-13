@@ -278,7 +278,7 @@ namespace Gov.Jag.Embc.Public.Migrations
             migrationBuilder.Sql(@"WITH newAddresses AS
                                                 (
 	                                                SELECT
-		                                                r.Id as RegistrationId,
+		                                                r.EssFileNumber as RegistrationId,
 														1 AS AddressSequence,
 		                                                p.PrimaryResidenceId,
 		                                                'Primary' AS AddressType,
@@ -301,7 +301,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 														ON p.Id = r.HeadOfHouseholdId
 	                                                UNION
 	                                                SELECT
-		                                                r.Id as RegistrationId,
+		                                                r.EssFileNumber as RegistrationId,
 														2 AS AddressSequence,
 		                                                p.PrimaryResidenceId,
 		                                                'Mailing' AS AddressType,
@@ -323,6 +323,19 @@ namespace Gov.Jag.Embc.Public.Migrations
 		                                                Registrations r
 														ON p.Id = r.HeadOfHouseholdId
                                                 )
+												INSERT INTO [dbo].[EvacueeRegistrationAddresses]
+														   ([RegistrationId]
+														   ,[AddressSequenceNumber]
+														   ,[AddressTypeCode]
+														   ,[AddressSubtypeCode]
+														   ,[AddressLine1]
+														   ,[AddressLine2]
+														   ,[AddressLine3]
+														   ,[PostalCode]
+														   ,[CommunityId]
+														   ,[City]
+														   ,[Province]
+														   ,[CountryCode])
                                                 SELECT DISTINCT
 	                                                a.RegistrationId,
                                                     a.AddressSequence,
@@ -334,7 +347,8 @@ namespace Gov.Jag.Embc.Public.Migrations
 	                                                a.PostalCode,
 	                                                a.CommunityId,
 	                                                a.City,
-	                                                a.Province
+	                                                a.Province,
+													a.CountryCode
                                                 FROM
 	                                                newAddresses a
                                                 ");
