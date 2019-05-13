@@ -56,19 +56,19 @@ namespace embc_unit_tests
 
             var di = new DataInterface(ctx, mapper);
 
-            var result = await di.CreateReferral(referral);
+            var referralId = await di.CreateReferralAsync(referral);
+            var result = await di.GetReferralAsync(referralId);
 
             Assert.NotNull(result);
             Assert.Equal(referral.RegistrationId, result.RegistrationId);
             Assert.NotEmpty(result.ReferralId);
             Assert.Equal(referral.Type, result.Type);
             Assert.Equal(referral.SubType, result.SubType);
-            Assert.Equal(referral.Purchaser, result.Purchaser);
+            Assert.Equal(referral.Purchaser.Id, result.Purchaser.Id);
             Assert.Equal(referral.TotalAmount, result.TotalAmount);
             Assert.Equal(referral.Supplier.Fax, result.Supplier.Fax);
             Assert.Equal(referral.ValidFrom, result.ValidFrom);
             Assert.Equal(referral.ValidTo, result.ValidTo);
-            Assert.Equal(referral.Purchaser, result.Purchaser);
             Assert.Equal(referral.ConfirmChecked, result.ConfirmChecked);
             foreach (var evacuee in referral.Evacuees)
             {
@@ -105,10 +105,39 @@ namespace embc_unit_tests
 
             var di = new DataInterface(ctx, mapper);
 
-            var result = await di.CreateReferral(referral);
+            var referralId = await di.CreateReferralAsync(referral);
+            var result = await di.GetReferralAsync(referralId);
 
             Assert.Null(result.FromAddress);
             Assert.Null(result.ToAddress);
+        }
+
+        [Fact]
+        public async Task CanGetAllReferralsForRegistration()
+        {
+            var ctx = EmbcDb;
+
+            var di = new DataInterface(ctx, mapper);
+
+            var registrationId = "100001";
+            var referrals = await di.GetReferralsAsync(registrationId);
+            Assert.NotEmpty(referrals);
+            Assert.All(referrals, r => Assert.Equal(registrationId, r.RegistrationId));
+        }
+
+        [Fact]
+        public async Task CanDeactivateReferral()
+        {
+            var ctx = EmbcDb;
+
+            var di = new DataInterface(ctx, mapper);
+
+            var referralId = "D1000001";
+            var result = await di.DeactivateReferralAsync(referralId);
+            Assert.True(result);
+
+            var referral = await di.GetReferralAsync(referralId);
+            Assert.False(referral.Active);
         }
     }
 
@@ -137,10 +166,10 @@ namespace embc_unit_tests
             Active = true,
             TotalAmount = 124m,
             Comments = "comments",
-            Purchaser = "1",
+            Purchaser = new Gov.Jag.Embc.Public.ViewModels.ReferralEvacuee { Id = "1" },
             Evacuees = new[]
-                {
-                    new Gov.Jag.Embc.Public.ViewModels.ReferralEvacuee{ Id="2" }
+            {
+                    new Gov.Jag.Embc.Public.ViewModels.ReferralEvacuee { Id="2" }
             },
             ConfirmChecked = true,
             RegistrationId = "100001",
