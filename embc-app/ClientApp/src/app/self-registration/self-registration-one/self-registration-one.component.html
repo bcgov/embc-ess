@@ -102,9 +102,8 @@
           </select>
         </app-form-field>
         <div class="col-md-4">
-          <!-- TODO: Split DOB into 3 inputs [MM] [DD] [YYYY] -->
           <label class="required" for="dob">Date of Birth</label>
-          <input type="text" placeholder="yyyy-mm-dd" [class.is-invalid]="invalid('headOfHousehold.dob')" class="form-control" formControlName="dob" id="dob" autocomplete="off">
+          <input type="text" placeholder="yyyy-mm-dd" [textMask]="{mask: dateMask, showMask: true}" [class.is-invalid]="invalid('headOfHousehold.dob')" class="form-control" formControlName="dob" id="dob" autocomplete="off">
           <small>(Format: yyyy-mm-dd)</small>
           <span *ngIf="submitted" class="invalid-feedback">{{validationErrors['headOfHousehold'].dob}}</span>
         </div>
@@ -182,7 +181,7 @@
                 </div>
                 <div class="col">
                   <label class="required" for="dob-{{i}}">Date of Birth</label>
-                  <input type="text" placeholder="yyyy-mm-dd" [class.is-invalid]="invalid('dob', entry)" class="form-control" formControlName="dob" id="dob-{{i}}" autocomplete="off">
+                  <input type="text" placeholder="yyyy-mm-dd" [textMask]="{mask: dateMask, showMask: true}" [class.is-invalid]="invalid('dob', entry)" class="form-control" formControlName="dob" id="dob-{{i}}" autocomplete="off">
                   <small>(Format: yyyy-mm-dd)</small>
                   <span *ngIf="submitted && hasErrors('dob', entry, ['required'])" class="invalid-feedback">Please enter a date of birth.</span>
                   <ng-container *ngIf="submitted && hasErrors('dob', entry, ['date', 'maxDate'])">
