@@ -69,6 +69,9 @@ export class RegistrationMakerComponent implements OnInit {
   // path for this user to route from
   path: string;
 
+  readonly dateMask = [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]; // yyyy-mm-dd
+  readonly phoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]; // 999-999-9999
+
   // generic validation helper
   private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
   private validationHelper: ValidationHelper;
@@ -241,7 +244,7 @@ export class RegistrationMakerComponent implements OnInit {
         nickname: fmbr.nickname,
         initials: fmbr.initials,
         gender: fmbr.gender,
-        dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: check this!!
+        dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
         relationshipToEvacuee: [fmbr.relationshipToEvacuee, Validators.required],
       });
     } else {
@@ -252,7 +255,7 @@ export class RegistrationMakerComponent implements OnInit {
         lastName: ['', Validators.required],
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
         relationshipToEvacuee: [null, Validators.required],
       });
     }
@@ -290,8 +293,9 @@ export class RegistrationMakerComponent implements OnInit {
       requiresSupport: [null, Validators.required],
 
       // HOH fields that we decided to put at the parent form level to simplify things
-      phoneNumber: '', // only BC phones will be validates so keep validators out of here...
+      phoneNumber: '', // only BC phones will be validated so keep validators out of here...
       phoneNumberAlt: '',
+
       email: ['', Validators.email],
 
       primaryResidence: this.formBuilder.group({
@@ -320,7 +324,7 @@ export class RegistrationMakerComponent implements OnInit {
         nickname: '',
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
       }),
 
       familyMembers: this.formBuilder.array([]), // array of formGroups
@@ -480,6 +484,7 @@ export class RegistrationMakerComponent implements OnInit {
         // these belong to the HOH but we placed them here to simplify the HTML markup...
         phoneNumber: r.headOfHousehold.phoneNumber as string,
         phoneNumberAlt: r.headOfHousehold.phoneNumberAlt as string,
+
         email: r.headOfHousehold.email as string,
 
         // primaryResidence: r.headOfHousehold.primaryResidence as Address,

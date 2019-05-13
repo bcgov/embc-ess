@@ -10,9 +10,11 @@
 
     <section class="clearfix">
       <!-- confirm task start time -->
-      <div class="card">
-        <div class="card-header">
-          <strong>Please confirm timing for commencement of supports:</strong>
+
+      <div class="feature-block card d-block border-0">
+        <div *ngIf="registration?.incidentTask['startDate']">
+          <label>Please confirm timing for commencement of supports:</label>
+          <div>Incident start date &amp; time: {{registration.incidentTask['startDate'] | dateTimeFormatPipe}}</div>
         </div>
         <div class="card-body">
           <div *ngIf="registration?.incidentTask['startDate']">

@@ -55,11 +55,12 @@ export class ReferralMakerComponent implements OnInit {
 
     if (!this.regId || !this.purchaser) {
       // error - return to list
+      console.log('ERROR - reg id or purchaser was not provided');
       this.router.navigate([`/${this.path}/registrations`]);
     }
 
     // get registration data
-    this.registrationService.getRegistrationById(this.regId)
+    this.registrationService.getRegistrationSummaryById(this.regId)
       .subscribe(r => {
         if (!r.id || !r.essFileNumber) {
           console.log('ERROR - invalid registration object = ', r);

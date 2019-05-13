@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 import { CoreModule } from '../core.module';
-import { Registration, ListResult } from '../models';
 import { RestService } from './rest.service';
-import { HttpResponse } from '@angular/common/http';
+import { Registration, ListResult } from '../models';
 import { SearchQueryParameters } from '../models/search-interfaces';
 
 @Injectable({
@@ -52,8 +52,10 @@ export class RegistrationService extends RestService {
       );
   }
 
-  getRegistrationById(id: string): Observable<Registration> {
-    return this.http.get<Registration>(`api/registrations/${id}`, { headers: this.headers })
+  // NB: if registration is not finalized and no reason is provided, this will fail with response 400
+  getRegistrationById(id: string, reason: string = null): Observable<Registration> {
+    const params = { reason };
+    return this.http.get<Registration>(`api/registrations/${id}`, { headers: this.headers, params })
       .pipe(
         retry(3),
         catchError(this.handleError),

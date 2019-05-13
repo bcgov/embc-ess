@@ -60,16 +60,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public EmbcDbContext(DbContextOptions<EmbcDbContext> options) : base(options)
         {
-            // override the default timeout as some operations are time intensive
-            Database?.SetCommandTimeout(180);
         }
 
-        public EmbcDbContext(IHttpContextAccessor httpContextAccessor, DbContextOptions<EmbcDbContext> options) : base(options)
+        public EmbcDbContext(IHttpContextAccessor httpContextAccessor, DbContextOptions<EmbcDbContext> options) : this(options)
         {
             ctx = httpContextAccessor;
-
-            // override the default timeout as some operations are time intensive
-            Database?.SetCommandTimeout(180);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

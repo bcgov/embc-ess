@@ -19,6 +19,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
                     RegistrationId = long.Parse(s.RegistrationId)
                 })))
                 .ReverseMap()
+                .ForMember(d => d.ReferralId, m => m.MapFrom(s => s.ReferralId))
                 .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Select(e => new ReferralEvacuee
                 {
                     Id = e.Evacuee.EvacueeSequenceNumber.ToString(),
