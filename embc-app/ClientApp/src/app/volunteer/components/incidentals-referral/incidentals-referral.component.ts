@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, S
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IncidentalsReferral } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
-import { numberOfDays } from 'src/app/shared/utils';
+import { numberOfDays, uuid } from 'src/app/shared/utils';
 import { SupplierComponent } from '../supplier/supplier.component';
 
 @Component({
@@ -15,7 +15,10 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
   @Input() readOnly = false;
 
   private ratesModal: NgbModalRef = null;
-  uuid: string;
+
+  // For the purpose of accessibility this number is likely unique.
+  // If it breaks and isn't unique it won't break the form. (poor man's guid)
+  uuid = uuid();
 
   @ViewChild(SupplierComponent) supplier: SupplierComponent;
 
@@ -23,11 +26,7 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
     private modals: NgbModal,
   ) { }
 
-  ngOnInit() {
-    // for the purpose of accessibility this number is likely unique
-    // if it breaks and isn't unique it won't break the form. (poor man's guid)
-    this.uuid = new Date().valueOf().toString();
-  }
+  ngOnInit() { }
 
   ngOnDestroy() {
     // close modal if it's open
