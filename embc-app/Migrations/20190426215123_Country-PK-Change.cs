@@ -156,7 +156,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                                                 UPDATE Countries SET CountryCode = 'LTU' WHERE Name = 'Lithuania'
                                                 UPDATE Countries SET CountryCode = 'LUX' WHERE Name = 'Luxembourg'
                                                 UPDATE Countries SET CountryCode = 'MAC' WHERE Name = 'Macao'
-                                                DELETE FROM Countries WHERE Name = 'Macedonia' 
+                                                DELETE FROM Countries WHERE Name = 'Macedonia'
                                                 UPDATE Countries SET CountryCode = 'MDG' WHERE Name = 'Madagascar'
                                                 UPDATE Countries SET CountryCode = 'MWI' WHERE Name = 'Malawi'
                                                 UPDATE Countries SET CountryCode = 'MYS' WHERE Name = 'Malaysia'
@@ -284,6 +284,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                                                 UPDATE Countries SET CountryCode = 'VNM' WHERE Name = 'Viet Nam'
                                                 UPDATE Countries SET Name = 'Virgin Islands (British)' WHERE Name = 'Virgin Islands, British'
                                                 UPDATE Countries SET CountryCode = 'VGB' WHERE Name = 'Virgin Islands (British)'
+                                                UPDATE Countries SET Name = 'Virgin Islands (U.S.)' WHERE Name = 'Virgin Islands, U.S.'
                                                 UPDATE Countries SET CountryCode = 'VIR' WHERE Name = 'Virgin Islands (U.S.)'
                                                 DELETE FROM Countries WHERE Name = 'Wales'
                                                 UPDATE Countries SET CountryCode = 'WLF' WHERE Name = 'Wallis and Futuna'
@@ -294,7 +295,6 @@ namespace Gov.Jag.Embc.Public.Migrations
                                                 UPDATE Countries SET CountryCode = 'ZWE' WHERE Name = 'Zimbabwe'
                                                 DELETE FROM Countries WHERE CountryCode = ''
                                                 ");
-
 
             migrationBuilder.AddColumn<string>(
                 name: "CountryCode",

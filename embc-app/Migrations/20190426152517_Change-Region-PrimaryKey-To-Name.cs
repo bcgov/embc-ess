@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Gov.Jag.Embc.Public.Migrations
@@ -7,6 +7,27 @@ namespace Gov.Jag.Embc.Public.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<string>(
+                name: "RegionName",
+                table: "Organizations",
+                nullable: true);
+
+            migrationBuilder.Sql("UPDATE Organizations SET RegionName = r.Name FROM Organizations o INNER JOIN Regions r ON o.RegionId = r.Id");
+
+            migrationBuilder.AddColumn<string>(
+                name: "RegionName",
+                table: "IncidentTasks",
+                nullable: true);
+
+            migrationBuilder.Sql("UPDATE IncidentTasks SET RegionName = r.Name FROM IncidentTasks i INNER JOIN Regions r ON i.RegionId = r.Id");
+
+            migrationBuilder.AddColumn<string>(
+                name: "RegionName",
+                table: "Communities",
+                nullable: true);
+
+            migrationBuilder.Sql("UPDATE Communities SET RegionName = r.Name FROM Communities c INNER JOIN Regions r ON c.RegionId = r.Id");
+
             migrationBuilder.DropForeignKey(
                 name: "FK_Communities_Regions_RegionId",
                 table: "Communities");
@@ -59,21 +80,6 @@ namespace Gov.Jag.Embc.Public.Migrations
                 oldClrType: typeof(string),
                 oldMaxLength: 255,
                 oldNullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "RegionName",
-                table: "Organizations",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "RegionName",
-                table: "IncidentTasks",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "RegionName",
-                table: "Communities",
-                nullable: true);
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Regions",

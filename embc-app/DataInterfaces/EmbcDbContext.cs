@@ -191,7 +191,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             modelBuilder.Entity<Referral>()
                 .Property<string>("Type")
-                .HasMaxLength(15);
+                .HasMaxLength(50);
 
             modelBuilder.Entity<Referral>()
                 .HasDiscriminator<string>("Type")
