@@ -67,7 +67,7 @@ namespace embc_unit_tests
 
                 case ReferralType.Lodging_Hotel:
                     referral.Type = "Lodging";
-                    referral.SubType = "Billeting";
+                    referral.SubType = "Hotel";
                     referral.NumNights = 5;
                     referral.NumRooms = 2;
                     break;
