@@ -71,7 +71,7 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
   }
 
   showFullProfile(content: TemplateRef<any>) {
-    this.confirmModal = this.modals.open(content);
+    this.confirmModal = this.modals.open(content, { centered: true });
 
     // handle result
     this.confirmModal.result.then(() => {

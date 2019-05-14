@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthService } from '../core/services/auth.service';
 import { VolunteerService, VolunteerSearchQueryParameters } from '../core/services/volunteer.service';
@@ -14,7 +14,10 @@ import { SearchQueryParameters } from '../core/models/search-interfaces';
   templateUrl: './volunteer-list.component.html',
   styleUrls: ['./volunteer-list.component.scss']
 })
-export class VolunteerListComponent implements OnInit {
+export class VolunteerListComponent implements OnInit, OnDestroy {
+
+  @ViewChild('viewAlert') viewAlert: TemplateRef<any>;
+
   // simple server response
   resultsAndPagination: ListResult<Volunteer>;
   notFoundMessage = 'Searching ...';
@@ -29,17 +32,21 @@ export class VolunteerListComponent implements OnInit {
   // this is the correct path prefix for the user routing
   path: string;
 
+  private confirmModal: NgbModalRef = null;
+
   constructor(
     private router: Router,
     private volunteerService: VolunteerService,
     private authService: AuthService,
-    private uniqueKeyService: UniqueKeyService
+    private uniqueKeyService: UniqueKeyService,
+    private modals: NgbModal,
   ) { }
 
   ngOnInit() {
-    // save the path for routing later
+    // save the base url path
     this.authService.path.subscribe(p => this.path = p);
-    // initialize the global variables. When done get volunteers associated with the organization
+
+    // initialize the global variables
     this.authService.getCurrentUser()
       .subscribe(u => {
         // collect the current user
@@ -53,16 +60,18 @@ export class VolunteerListComponent implements OnInit {
                 .subscribe(r => {
                   this.resultsAndPagination = r;
                 });
-            },
-            err => {
+            }, err => {
               this.notFoundMessage = err;
             }
           );
-      },
-        err => {
-          this.notFoundMessage = err;
-        }
-      );
+      }, err => {
+        this.notFoundMessage = err;
+      });
+  }
+
+  ngOnDestroy() {
+    // close modal if it's open
+    if (this.confirmModal) { this.confirmModal.dismiss(); }
   }
 
   getVolunteers(query: SearchQueryParameters = this.defaultSearchQuery): Observable<ListResult<Volunteer>> {
@@ -97,12 +106,30 @@ export class VolunteerListComponent implements OnInit {
       this.resultsAndPagination = r;
     });
   }
+
   modifyVolunteer(id?: string) {
-    if (id) {
-      // save the unique ID for lookup in the new component
-      this.uniqueKeyService.setKey(id);
+    if (!id) {
+      // no id means 'add user' -> clear unique key
+      this.uniqueKeyService.clearKey();
+      this.router.navigate([`/${this.path}/volunteer`]);
+      return;
     }
-    // save the volunteer
-    this.router.navigate([`/${this.path}/volunteer`]);
+
+    this.confirmModal = this.modals.open(this.viewAlert, { centered: true, windowClass: 'modal-small' });
+    this.confirmModal.result.then(
+      () => {
+        // modal was closed
+        this.confirmModal = null;
+
+        // save the volunteer ID for lookup in the new component
+        this.uniqueKeyService.setKey(id);
+        this.router.navigate([`/${this.path}/volunteer`]);
+      },
+      () => {
+        // modal was dismissed
+        this.confirmModal = null;
+      }
+    );
   }
+
 }

@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, of, Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { OrganizationService } from '../../../core/services/organization.service';
-import { VolunteerService, VolunteerSearchQueryParameters } from '../../../core/services/volunteer.service';
+import { VolunteerService } from '../../../core/services/volunteer.service';
 import { ListResult, Volunteer, PaginationSummary, User, Organization } from '../../../core/models';
 import { UniqueKeyService } from '../../../core/services/unique-key.service';
 
@@ -15,25 +16,26 @@ import { UniqueKeyService } from '../../../core/services/unique-key.service';
   templateUrl: './volunteer-organization-list.component.html',
   styleUrls: ['./volunteer-organization-list.component.scss']
 })
-export class VolunteerOrganizationListComponent implements OnInit {
+export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
+
+  @ViewChild('viewAlert') viewAlert: TemplateRef<any>;
 
   // simple server response
   resultsAndPagination: ListResult<Volunteer>;
   notFoundMessage = 'Searching ...';
-  // what route should this component route to
-  path: string;
+
   // who's accessing this list component
   currentUser: User;
   isLocalAuthority: boolean;
   isProvincialAdmin: boolean;
 
   // the parent organization of all volunteers shown in this list
-  currentOrganization: Organization | null = null;
+  currentOrganization: Organization = null;
 
   // local constants used in the FORM
-  readonly SHOW_ALL = 1;
-  readonly SHOW_ADMINS_ONLY = 2;
-  readonly SHOW_ESS_USERS_ONLY = 3;
+  readonly SHOW_ALL = '1';
+  readonly SHOW_ADMINS_ONLY = '2';
+  readonly SHOW_ESS_USERS_ONLY = '3';
 
   // collection of pagination parameters for UI pagination
   // display and pagination
@@ -43,13 +45,18 @@ export class VolunteerOrganizationListComponent implements OnInit {
   totalPages: number; // how many pages are returned?
   pageSize: number; // how many entries are on the page
   previousQuery: string; // a place to save the last query parameters
-  sort: string = ''; // how do we sort the list
-  collectionSize: number = 0; // how large is the collection?
+  sort = ''; // how do we sort the list
+  collectionSize = 0; // how large is the collection?
   maxSize = 20; // how many records should the UI show?
   boundaryLinks = true; // do we show the jump to first and last page links?
 
   // the search form and associated toggles (show all, show only admins, show only regular users)
   form: FormGroup;
+
+  // this is the correct path prefix for the user
+  path: string;
+
+  private confirmModal: NgbModalRef = null;
 
   constructor(
     private router: Router,
@@ -59,6 +66,7 @@ export class VolunteerOrganizationListComponent implements OnInit {
     private organizations: OrganizationService,
     private auth: AuthService,
     private uniqueKeyService: UniqueKeyService,
+    private modals: NgbModal,
   ) { }
 
   // convenience getters
@@ -75,9 +83,11 @@ export class VolunteerOrganizationListComponent implements OnInit {
   ngOnInit() {
     // save the base url path
     this.auth.path.subscribe(p => this.path = p);
+
     // initialize the form component
     this.initSearchForm();
-    // initialize the global variables. When done get volunteers associated with the organization
+
+    // initialize the global variables
     this.initVars()
       .subscribe(org => {
         // save into the global state
@@ -85,7 +95,11 @@ export class VolunteerOrganizationListComponent implements OnInit {
         // fetch volunteers now that we may know the org
         this.getVolunteers();
       });
+  }
 
+  ngOnDestroy() {
+    // close modal if it's open
+    if (this.confirmModal) { this.confirmModal.dismiss(); }
   }
 
   initSearchForm(): void {
@@ -163,9 +177,9 @@ export class VolunteerOrganizationListComponent implements OnInit {
       // the organization is the one in the global state
       org_id: this.currentOrganization.id,
       // if the user toggle is set to the ESS users only set to true
-      ess_only: this.form.value.userToggle == this.SHOW_ESS_USERS_ONLY,
+      ess_only: (this.form.value.userToggle === this.SHOW_ESS_USERS_ONLY),
       // if the user toggle is set to the admin users only set to true
-      admin_only: this.form.value.userToggle == this.SHOW_ADMINS_ONLY,
+      admin_only: (this.form.value.userToggle === this.SHOW_ADMINS_ONLY),
       // pagination is calculated
       offset: (this.page * this.maxSize) - this.maxSize,
       // how many records we want
@@ -184,7 +198,7 @@ export class VolunteerOrganizationListComponent implements OnInit {
         this.collectionSize = v.metadata.totalCount;
         this.maxSize = v.metadata.pageSize;
         // alert(v.metadata.pageSize)
-        //save the last query performed
+        // save the last query performed
         this.previousQuery = params.q || '';
         // Set the not found result message. It should be hidden when results flow into the form
         this.notFoundMessage = 'No results found.';
@@ -208,9 +222,32 @@ export class VolunteerOrganizationListComponent implements OnInit {
     }
     this.getVolunteers();
   }
+
   modifyOrganizationVolunteer(id?: string) {
-    // save the organization id for loading
-    this.uniqueKeyService.setKey(id);
-    this.router.navigate([`/${this.path}/volunteer`]);
+    if (!id) {
+      // no id means 'add user' -> clear unique key
+      this.uniqueKeyService.clearKey();
+      this.router.navigate([`/${this.path}/volunteer`]);
+      return;
+    }
+
+    this.confirmModal = this.modals.open(this.viewAlert, { centered: true, windowClass: 'modal-small' });
+
+    // handle result
+    this.confirmModal.result.then(
+      () => {
+        // modal was closed
+        this.confirmModal = null;
+
+        // save the volunteer ID for lookup in the new component
+        this.uniqueKeyService.setKey(id);
+        this.router.navigate([`/${this.path}/volunteer`]);
+      },
+      () => {
+        // modal was dismissed
+        this.confirmModal = null;
+      }
+    );
   }
+
 }
