@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { VolunteerService } from '../core/services/volunteer.service';
 
 
 @Component({
@@ -7,8 +8,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tester-page.component.scss']
 })
 export class TesterPageComponent implements OnInit {
-  model;
+  page: number;
+  params = {
+    limit: 10,
+    offset: 0,
+  };
+  volunteers;
   constructor(
+    private volunteerService: VolunteerService
   ) { }
-  ngOnInit() { }
+  ngOnInit() {
+    this.getVolunteers();
+  }
+  getVolunteers() {
+    this.volunteerService.getVolunteers(this.params).subscribe(v => this.volunteers = v);
+  }
+  onEvent(event) {
+    this.params = event;
+  }
 }

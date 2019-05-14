@@ -31,6 +31,7 @@ import { ByIdPipe } from './pipes/by-id.pipe';
 import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
 import { YesNoPipe } from './pipes/yes-no.pipe';
+import { PaginatorComponent } from './components/paginator/paginator.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     YesNoPipe,
     PageNotFoundComponent,
     DateTimePickerComponent,
+    PaginatorComponent
   ],
   imports: [
     CommonModule,
@@ -109,6 +111,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     PluckPipe,
     YesNoPipe,
     DateTimePickerComponent,
+    PaginatorComponent
   ]
 })
 export class SharedModule { }
