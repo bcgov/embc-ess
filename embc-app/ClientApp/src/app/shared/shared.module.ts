@@ -30,6 +30,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 
 import { ByIdPipe } from './pipes/by-id.pipe';
 import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
+import { NewlinesPipe } from './pipes/newlines.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
 import { YesNoPipe } from './pipes/yes-no.pipe';
 
@@ -53,6 +54,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     CommunitiesSelectComponent,
     ByIdPipe,
     DateTimeFormatPipe,
+    NewlinesPipe,
     PluckPipe,
     YesNoPipe,
     PageNotFoundComponent,
@@ -108,6 +110,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     CommunitiesSelectComponent,
     ByIdPipe,
     DateTimeFormatPipe,
+    NewlinesPipe,
     PluckPipe,
     YesNoPipe,
     DateTimePickerComponent,
