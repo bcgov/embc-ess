@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { VolunteerService } from '../core/services/volunteer.service';
+import { SearchQueryParameters } from '../core/models/search-interfaces';
+import { PaginationSummary } from '../core/models';
 
 
 @Component({
@@ -9,7 +11,8 @@ import { VolunteerService } from '../core/services/volunteer.service';
 })
 export class TesterPageComponent implements OnInit {
   page: number;
-  params = {
+  paginationSummary: PaginationSummary;
+  params: SearchQueryParameters = {
     limit: 10,
     offset: 0,
   };
@@ -18,12 +21,15 @@ export class TesterPageComponent implements OnInit {
     private volunteerService: VolunteerService
   ) { }
   ngOnInit() {
-    this.getVolunteers();
+    this.getVolunteers(this.params);
   }
-  getVolunteers() {
-    this.volunteerService.getVolunteers(this.params).subscribe(v => this.volunteers = v);
+  getVolunteers(params) {
+    this.volunteerService.getVolunteers(params).subscribe(v => {
+      this.volunteers = v;
+      this.paginationSummary = v.metadata;
+    });
   }
-  onEvent(event) {
+  onEvent(event: SearchQueryParameters) {
     this.params = event;
   }
 }

@@ -1,2 +1,6 @@
-<ngb-pagination [collectionSize]="70" [(page)]="page" [pageSize]="maxSize" [boundaryLinks]="boundaryLinks" (click)="emitParameters()"></ngb-pagination>
-<pre>{{metaData|json}}</pre>
+<ngb-pagination [collectionSize]="totalCount" [(page)]="page" [pageSize]="pageSize" [boundaryLinks]="boundaryLinks" (pageChange)="emitParameters()"></ngb-pagination>
+<!-- <pre>
+  pageSize: {{pageSize}}
+  totalCount: {{totalCount}}
+  page: {{page}}
+</pre> -->
