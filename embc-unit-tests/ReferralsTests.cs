@@ -9,9 +9,9 @@ using Xunit.Abstractions;
 
 namespace embc_unit_tests
 {
-    public class ReferralsFixture : BaseTest
+    public class ReferralsTests : BaseTest
     {
-        public ReferralsFixture(ITestOutputHelper output) : base(output)
+        public ReferralsTests(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -33,8 +33,8 @@ namespace embc_unit_tests
             Assert.NotNull(result);
             Assert.Equal(referral.RegistrationId, result.RegistrationId);
             Assert.NotEmpty(result.ReferralId);
-            Assert.Equal(referral.Type, result.Type);
-            Assert.Equal(referral.SubType, result.SubType);
+            Assert.Equal(referral.Type.ToUpperInvariant(), result.Type);
+            Assert.Equal(referral.SubType?.ToUpperInvariant(), result.SubType);
             Assert.Equal(referral.Purchaser, result.Purchaser);
             Assert.Equal(referral.TotalAmount, result.TotalAmount);
             Assert.Equal(referral.Supplier.Fax, result.Supplier.Fax);
@@ -106,6 +106,50 @@ namespace embc_unit_tests
             Assert.NotEmpty(result);
             Assert.Equal(referrals.Length, result.Count());
             Assert.All(referrals, r => Assert.Equal(registrationId, r.RegistrationId));
+        }
+
+        [Fact]
+        public async Task CanGetReferralsInOrder()
+        {
+            var ctx = EmbcDb;
+
+            var di = new DataInterface(ctx, mapper);
+
+            var registrationId = "100001";
+
+            var referrals = new[]{
+                ReferralGenerator.Generate(ReferralType.Incidentals, registrationId),
+                ReferralGenerator.Generate(ReferralType.Incidentals, registrationId),
+                ReferralGenerator.Generate(ReferralType.Clothing, registrationId),
+                ReferralGenerator.Generate(ReferralType.Clothing, registrationId),
+                ReferralGenerator.Generate(ReferralType.Lodging_Group, registrationId),
+                ReferralGenerator.Generate(ReferralType.Lodging_Hotel, registrationId),
+                ReferralGenerator.Generate(ReferralType.Transportation_Taxi, registrationId),
+                ReferralGenerator.Generate(ReferralType.Food_Restaurant, registrationId),
+                ReferralGenerator.Generate(ReferralType.Food_Groceries, registrationId)
+            };
+
+            int days = 0;
+            foreach (var referral in referrals)
+            {
+                referral.ValidFrom = referral.ValidFrom.AddDays(days);
+                referral.ValidTo = referral.ValidTo.AddDays(days);
+                days++;
+            }
+            var referralTypeOrder = new List<string> { "FOOD", "LODGING", "CLOTHING", "TRANSPORTATION", "INCIDENTALS" };
+            var expectedReferralsOrder = referrals
+                .OrderBy(r => referralTypeOrder.IndexOf(r.Type.ToUpperInvariant()))
+                .ThenByDescending(r => r.ValidFrom)
+                .Select(r => (r.Type.ToUpperInvariant(), r.ValidFrom))
+                .ToArray();
+
+            foreach (var referral in referrals)
+            {
+                await di.CreateReferralAsync(referral);
+            }
+
+            var result = await di.GetReferralsAsync(registrationId);
+            Assert.Equal(expectedReferralsOrder, result.Select(r => (r.Type, r.ValidFrom)).ToArray());
         }
 
         [Fact]
