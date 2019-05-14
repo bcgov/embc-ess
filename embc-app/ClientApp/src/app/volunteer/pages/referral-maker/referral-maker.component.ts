@@ -9,6 +9,11 @@ import {
   ClothingReferral, LodgingReferral, TransportationReferral
 } from 'src/app/core/models';
 
+interface ReferralFormControl<T = any> {
+  value: T;
+  valid: boolean;
+}
+
 @Component({
   selector: 'app-referral-maker',
   templateUrl: './referral-maker.component.html',
@@ -24,11 +29,11 @@ export class ReferralMakerComponent implements OnInit {
   purchaser: string = null;
   evacuees: Array<any> = [];
 
-  foodReferrals: Array<FoodReferral> = [];
-  clothingReferrals: Array<ClothingReferral> = [];
-  lodgingReferrals: Array<LodgingReferral> = [];
-  incidentalsReferrals: Array<IncidentalsReferral> = [];
-  transportationReferrals: Array<TransportationReferral> = [];
+  foodReferrals: Array<ReferralFormControl<FoodReferral>> = [];
+  lodgingReferrals: Array<ReferralFormControl<LodgingReferral>> = [];
+  clothingReferrals: Array<ReferralFormControl<ClothingReferral>> = [];
+  transportationReferrals: Array<ReferralFormControl<TransportationReferral>> = [];
+  incidentalsReferrals: Array<ReferralFormControl<IncidentalsReferral>> = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -86,6 +91,9 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   createReferral() {
+
+    // TODO: Validate here BEFORE going to review portion of this page....
+
     this.editMode = false;
     window.scrollTo(0, 0); // scroll to top
   }
@@ -120,10 +128,6 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
-  remove(arr: [], i: number) {
-    arr.splice(i, 1);
-  }
-
   addIncidentalsReferral() {
     const referral: IncidentalsReferral = {
       id: null, // is populated by BE after save
@@ -141,7 +145,7 @@ export class ReferralMakerComponent implements OnInit {
       comments: 'some comments here',
       confirmChecked: false
     };
-    this.incidentalsReferrals.push(referral);
+    this.incidentalsReferrals.push({ value: referral, valid: false });
   }
 
   addFoodReferral() {
@@ -164,7 +168,7 @@ export class ReferralMakerComponent implements OnInit {
       comments: 'some comments here',
       confirmChecked: false
     };
-    this.foodReferrals.push(referral);
+    this.foodReferrals.push({ value: referral, valid: false });
   }
 
   private get newSupplier(): Supplier {
@@ -195,4 +199,24 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
+  // --------------------HELPERS-----------------------------------------
+  remove(arr: [], i: number) {
+    if (arr) { arr.splice(i, 1); }
+  }
+
+  updateValidity(entry: ReferralFormControl, valid: boolean) {
+    if (entry) { entry.valid = valid; }
+  }
+
+  // Checks that all referrals are valid within their respective categories (food, lodging, etc)
+  get formIsValid(): boolean {
+    const status = {
+      food: true,  // TODO: Include the other arrays here...
+      lodging: true,
+      clothing: true,
+      transportation: true,
+      incidentals: this.incidentalsReferrals.every(e => e.valid)
+    };
+    return Object.keys(status).every(key => !!status[key]);
+  }
 }
