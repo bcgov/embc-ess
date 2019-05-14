@@ -323,6 +323,19 @@ namespace Gov.Jag.Embc.Public.Migrations
 		                                                Registrations r
 														ON p.Id = r.HeadOfHouseholdId
                                                 )
+												INSERT INTO [dbo].[EvacueeRegistrationAddresses]
+														   ([EvacueeRegistrationId]
+														   ,[AddressSequenceNumber]
+														   ,[AddressTypeCode]
+														   ,[AddressSubtypeCode]
+														   ,[AddressLine1]
+														   ,[AddressLine2]
+														   ,[AddressLine3]
+														   ,[PostalCode]
+														   ,[CommunityId]
+														   ,[City]
+														   ,[Province]
+														   ,[CountryCode])
                                                 SELECT DISTINCT
 	                                                a.RegistrationId,
                                                     a.AddressSequence,
