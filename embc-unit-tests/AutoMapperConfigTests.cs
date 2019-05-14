@@ -4,7 +4,7 @@ using Xunit;
 
 namespace embc_unit_tests
 {
-    public class AutoMapperConfigFixture
+    public class AutoMapperConfigTests
     {
         [Fact]
         public void AssertConfig()

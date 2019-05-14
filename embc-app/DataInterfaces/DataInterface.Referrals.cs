@@ -9,6 +9,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public partial class DataInterface
     {
+        private static List<string> referralOrder = new List<string> { "FOOD", "LODGING", "CLOTHING", "TRANSPORTATION", "INCIDENTALS" };
+
         private IQueryable<Models.Db.Referral> Referrals => db.Referrals
                 .AsNoTracking()
                 .Include(r => r.Supplier)
@@ -38,7 +40,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             var results = Referrals.Where(r => r.RegistrationId == long.Parse(registrationId));
 
-            return await results.Select(r => mapper.Map<ViewModels.Referral>(r)).ToArrayAsync();
+            return await results
+                .Select(r => mapper.Map<ViewModels.Referral>(r))
+                .OrderBy(r => referralOrder.IndexOf(r.Type))
+                    .ThenByDescending(r => r.ValidFrom)
+                .ToArrayAsync();
         }
 
         public async Task<bool> DeactivateReferralAsync(string referralId)
