@@ -38,13 +38,15 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<IEnumerable<ViewModels.Referral>> GetReferralsAsync(string registrationId)
         {
-            var results = Referrals.Where(r => r.RegistrationId == long.Parse(registrationId));
-
-            return await results
+            var results = await Referrals
+                .Where(r => r.RegistrationId == long.Parse(registrationId))
                 .Select(r => mapper.Map<ViewModels.Referral>(r))
+                .ToArrayAsync();
+
+            return results
                 .OrderBy(r => referralOrder.IndexOf(r.Type))
                     .ThenByDescending(r => r.ValidFrom)
-                .ToArrayAsync();
+                .ToArray();
         }
 
         public async Task<bool> DeactivateReferralAsync(string referralId)
