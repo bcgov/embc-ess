@@ -140,7 +140,7 @@ export class ReferralMakerComponent implements OnInit {
       },
       evacuees: this.evacuees,
       approvedItems: null,
-      totalAmount: 0,
+      totalAmount: null,
       supplier: this.newSupplier,
       comments: 'some comments here',
       confirmChecked: false
