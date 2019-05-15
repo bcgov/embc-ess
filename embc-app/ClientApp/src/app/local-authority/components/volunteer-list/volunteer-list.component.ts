@@ -26,7 +26,8 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
     limit: 20
   };
   queryString: string;
-  previousQuery: SearchQueryParameters = {}; // a place to save the last query parameters
+  // a place to save the last query parameters
+  previousQuery: SearchQueryParameters = {};
   sort = ''; // how do we sort the list
 
   // this is the correct path prefix for the user routing
