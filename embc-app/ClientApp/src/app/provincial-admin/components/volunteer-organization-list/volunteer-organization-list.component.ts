@@ -26,8 +26,6 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
 
   // who's accessing this list component
   currentUser: User;
-  isLocalAuthority: boolean;
-  isProvincialAdmin: boolean;
 
   // the parent organization of all volunteers shown in this list
   currentOrganization: Organization = null;
@@ -62,11 +60,11 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private volunteers: VolunteerService,
-    private organizations: OrganizationService,
-    private auth: AuthService,
-    private uniqueKeyService: UniqueKeyService,
     private modals: NgbModal,
+    private volunteerService: VolunteerService,
+    private organizationService: OrganizationService,
+    private authService: AuthService,
+    private uniqueKeyService: UniqueKeyService,
   ) { }
 
   // convenience getters
@@ -82,7 +80,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // save the base url path
-    this.auth.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe(p => this.path = p);
 
     // initialize the form component
     this.initSearchForm();
@@ -115,21 +113,19 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
   initVars(): Observable<Organization> {
     // combine everything we need to display this form into one Observable
     const combined$ = combineLatest(
-      this.auth.getCurrentUser(),
-      this.auth.isLocalAuthority$,
-      this.auth.isProvincialAdmin$,
+      this.authService.getCurrentUser(),
+      this.authService.isLocalAuthority$,
+      this.authService.isProvincialAdmin$,
       this.route.queryParamMap,
     );
 
     // subscribe to the single observable, giving us all the data we need
     return combined$
       .pipe(
-        tap(([user, isLocalAuthority, isProvincialAdmin]) => {
+        tap(([user]) => {
           this.currentUser = user;
-          this.isLocalAuthority = isLocalAuthority;
-          this.isProvincialAdmin = isProvincialAdmin;
         }),
-        switchMap(([user, isLocalAuthority, isProvincialAdmin, queryParams]) => {
+        switchMap(([user, isLocalAuthority, isProvincialAdmin]) => {
           // get the organization matching the query parameter passed in (if any)
           if (isProvincialAdmin) {
             const orgId = this.uniqueKeyService.getKey();
@@ -152,7 +148,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
       return of(null as Organization);
     }
     // if there is an organization id included look up the organization in the service by its ID
-    return this.organizations.getOrganizationById(orgId);
+    return this.organizationService.getOrganizationById(orgId);
   }
 
   getVolunteerOrganization(volunteerId: string): Observable<Organization> {
@@ -162,9 +158,9 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
       return of(null as Organization);
     }
     // get a volunteer by their ID and collect their organization by its ID
-    return this.volunteers
+    return this.volunteerService
       .getVolunteerById(volunteerId)
-      .pipe(switchMap(v => this.organizations.getOrganizationById(v.organization.id)));
+      .pipe(switchMap(v => this.organizationService.getOrganizationById(v.organization.id)));
   }
 
   // get volunteers with supplied params defaults defined in
@@ -188,7 +184,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
 
     // go get the collection of meta and data
     // get the volunteers using the parameters supplied
-    this.volunteers.getVolunteers(params)
+    this.volunteerService.getVolunteers(params)
       .subscribe((v: ListResult<Volunteer>) => {
         // save the result of the service into an object with both the result and service
         this.resultsAndPagination = v;
