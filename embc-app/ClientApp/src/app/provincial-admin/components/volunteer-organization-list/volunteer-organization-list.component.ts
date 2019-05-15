@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../../core/services/auth.service';
@@ -131,7 +130,9 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
       .subscribe((v: ListResult<Volunteer>) => {
         // save the result of the service into an object with both the result and service
         this.resultsAndPagination = v;
-        // Set the not found result message. It should be hidden when results flow into the form
+        // Set the not found result message. It should be hidden when results flow into the 
+      
+      
         this.notFoundMessage = 'No results found.';
       });
   }
