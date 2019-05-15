@@ -31,6 +31,9 @@ export class ReferralTableComponent implements OnChanges {
   }
 
   doSearch() {
+    // empty the previous array
+    this.referrals.length = 0;
+
     if (this.registration && this.registration.id) {
       // get the collection of meta and data
       this.resultsAndPagination$ = this.referralService.getReferrals(this.registration.id, this.showActive);
