@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/registrations/{registrationId}/[controller]")]
-    [Authorize]
+    [AllowAnonymous]
     public class ReferralsController : Controller
     {
         private readonly IDataInterface dataInterface;
@@ -69,7 +69,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpPost("referralPdfs")]
-        public async Task<FileContentResult> GetReferralPdfs([FromBody] PrintReferrals printReferrals)
+        public async Task<IActionResult> GetReferralPdfs([FromBody] PrintReferrals printReferrals)
         {
             var content = $@"<!DOCTYPE html><html><body>This is a referral</body></html>";
 
