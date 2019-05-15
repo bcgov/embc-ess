@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-import { AuthService } from '../core/services/auth.service';
-import { VolunteerService, VolunteerSearchQueryParameters } from '../core/services/volunteer.service';
-import { ListResult, Volunteer } from '../core/models';
-import { UniqueKeyService } from '../core/services/unique-key.service';
-import { SearchQueryParameters } from '../core/models/search-interfaces';
+import { AuthService } from '../../../core/services/auth.service';
+import { VolunteerService, VolunteerSearchQueryParameters } from '../../../core/services/volunteer.service';
+import { ListResult, Volunteer } from '../../../core/models';
+import { UniqueKeyService } from '../../../core/services/unique-key.service';
+import { SearchQueryParameters } from '../../../core/models/search-interfaces';
 
 @Component({
   selector: 'app-volunteer-list',
