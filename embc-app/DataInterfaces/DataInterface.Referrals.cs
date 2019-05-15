@@ -1,3 +1,4 @@
+using Gov.Jag.Embc.Public.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -36,17 +37,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return mapper.Map<ViewModels.Referral>(result);
         }
 
-        public async Task<IEnumerable<ViewModels.Referral>> GetReferralsAsync(string registrationId)
+        public async Task<IPagedResults<ViewModels.ReferralListItem>> GetReferralsAsync(string registrationId, SearchQueryParameters searchQuery)
         {
             var results = await Referrals
-                .Where(r => r.RegistrationId == long.Parse(registrationId))
+                .Where(r => r.RegistrationId == long.Parse(registrationId) && r.Active == searchQuery.Active)
                 .Select(r => mapper.Map<ViewModels.Referral>(r))
                 .ToArrayAsync();
 
-            return results
+            return new PaginatedList<ViewModels.ReferralListItem>(
+                results.Select(r => r.ToListItem())
                 .OrderBy(r => referralOrder.IndexOf(r.Type))
                     .ThenByDescending(r => r.ValidFrom)
-                .ToArray();
+                .ToArray(),
+                searchQuery.Offset, searchQuery.Limit);
         }
 
         public async Task<bool> DeactivateReferralAsync(string referralId)
