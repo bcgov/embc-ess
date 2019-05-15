@@ -52,9 +52,6 @@ export class VolunteerListComponent implements OnInit {
               // get the results
               this.getVolunteers(this.defaultSearchQuery).subscribe(r => {
                 this.resultsAndPagination = r;
-                if (r.data.length <= 0) {
-                  this.notFoundMessage = 'No results found.';
-                }
               });
             },
             err => {
@@ -81,11 +78,16 @@ export class VolunteerListComponent implements OnInit {
     // submit and collect search with a query string
     const query = this.defaultSearchQuery;
     query.q = this.queryString;
-    this.getVolunteers(query).subscribe(r => this.resultsAndPagination = r);
+    this.getVolunteers(query).subscribe(r => {
+      if (r.data.length <= 0) { this.notFoundMessage = 'No results found.'; } else { this.notFoundMessage = 'Searching ...'; }
+      this.resultsAndPagination = r;
+    });
   }
   onPaginationEvent(event: SearchQueryParameters) {
     // save the pagination into the previous query and execute the query again
-    this.getVolunteers(event).subscribe(r => this.resultsAndPagination = r);
+    this.getVolunteers(event).subscribe(r => {
+      this.resultsAndPagination = r;
+    });
   }
   modifyVolunteer(id?: string) {
     if (id) {
