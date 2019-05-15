@@ -60,7 +60,7 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
     YesNoPipe,
     PageNotFoundComponent,
     DateTimePickerComponent,
-    PaginatorComponent
+    PaginatorComponent,
     CaptchaComponent,
   ],
   imports: [
@@ -116,7 +116,7 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
     PluckPipe,
     YesNoPipe,
     DateTimePickerComponent,
-    PaginatorComponent
+    PaginatorComponent,
 
     CaptchaComponent,
   ]
