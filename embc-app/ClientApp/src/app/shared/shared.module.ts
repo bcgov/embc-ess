@@ -33,6 +33,7 @@ import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
 import { NewlinesPipe } from './pipes/newlines.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
 import { YesNoPipe } from './pipes/yes-no.pipe';
+import { PaginatorComponent } from './components/paginator/paginator.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     YesNoPipe,
     PageNotFoundComponent,
     DateTimePickerComponent,
+    PaginatorComponent,
     CaptchaComponent,
   ],
   imports: [
@@ -114,6 +116,8 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     PluckPipe,
     YesNoPipe,
     DateTimePickerComponent,
+    PaginatorComponent,
+
     CaptchaComponent,
   ]
 })
