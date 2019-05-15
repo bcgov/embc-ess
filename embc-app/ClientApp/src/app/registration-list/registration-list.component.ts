@@ -30,7 +30,7 @@ export class RegistrationListComponent implements OnInit {
   previousQuery: string; // a place to save the last query parameters
   sort = '-registrationCompletionDate'; // how do we sort the list query param
   collectionSize = 0; // how large is the collection?
-  maxSize = 10; // how many pages of results shoudl the UI show before collapsing?
+  maxSize = 500; // how many pages of results shoudl the UI show before collapsing?
   boundaryLinks = true; // do we show the jump to first and last page links?
 
   constructor(
