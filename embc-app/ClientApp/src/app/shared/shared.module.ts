@@ -23,14 +23,17 @@ import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
 import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
 import { DateTimePickerComponent } from './components/date-time-picker/date-time-picker.component';
+import { CaptchaComponent } from './components/captcha/captcha.component';
 
 // import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent, CollectionNoticeComponent } from './components/side-boxes';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 import { ByIdPipe } from './pipes/by-id.pipe';
 import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
+import { NewlinesPipe } from './pipes/newlines.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
 import { YesNoPipe } from './pipes/yes-no.pipe';
+import { PaginatorComponent } from './components/paginator/paginator.component';
 
 @NgModule({
   declarations: [
@@ -52,10 +55,13 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     CommunitiesSelectComponent,
     ByIdPipe,
     DateTimeFormatPipe,
+    NewlinesPipe,
     PluckPipe,
     YesNoPipe,
     PageNotFoundComponent,
     DateTimePickerComponent,
+    PaginatorComponent,
+    CaptchaComponent,
   ],
   imports: [
     CommonModule,
@@ -106,9 +112,13 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     CommunitiesSelectComponent,
     ByIdPipe,
     DateTimeFormatPipe,
+    NewlinesPipe,
     PluckPipe,
     YesNoPipe,
     DateTimePickerComponent,
+    PaginatorComponent,
+
+    CaptchaComponent,
   ]
 })
 export class SharedModule { }

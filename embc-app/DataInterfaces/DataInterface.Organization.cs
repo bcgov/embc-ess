@@ -31,7 +31,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .Where(o => (!communityId.HasValue || o.Community.Id == communityId) ||
                     (string.IsNullOrEmpty(regionName) || o.RegionName.Equals(regionName, StringComparison.OrdinalIgnoreCase))
                 )
-                .Where(t => searchQuery.IncludeDeactivated || t.Active)
+                .Where(t => searchQuery.Active == t.Active)
                 .Sort(searchQuery.SortBy ?? "id")
                 .Join(Volunteers.Where(v => v.IsPrimaryContact ?? false), o => o.Id, pc => pc.Organization.Id, (org, pc) => new { org, pc })//Assume a single primary contact
                 .ToArrayAsync();

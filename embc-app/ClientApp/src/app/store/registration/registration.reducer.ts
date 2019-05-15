@@ -38,7 +38,7 @@ const newRegistration: Registration = {
   disasterAffectDetails: null,
   externalReferralsDetails: null,
   familyRecoveryPlan: null,
-  followUpDetails: null,
+  internalCaseNotes: null,
   hasInquiryReferral: null,
   hasHealthServicesReferral: null,
   hasFirstAidReferral: null,

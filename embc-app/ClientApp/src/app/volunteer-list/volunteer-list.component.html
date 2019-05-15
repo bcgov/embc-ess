@@ -4,24 +4,21 @@
   <p>Use this section to add new Emergency Support Services users, as well as edit existing user information and permissions.</p>
 
   <h3 class="blue-header">USERS LIST</h3>
-  <form novalidate role="search" [formGroup]="form">
-    <div class="form-row">
-      <div class="col-md">
-        <input type="text" aria-label="search" class="form-control mb-2" placeholder="Search by last name &hellip;" formControlName="searchbox" (keydown.enter)="search()">
-      </div>
-      <div class="col-md-auto">
-        <button class="btn btn-primary" (click)="search()">SEARCH</button>
-      </div>
+  <div class="form-row">
+    <div class="col-md">
+      <input type="text" aria-label="search" class="form-control mb-2" placeholder="Search by last name &hellip;" [(ngModel)]="queryString" (keydown.enter)="search()">
     </div>
-  </form>
-  <div class="search-results mt-4">
-    <div *ngIf="results && results.length > 0; then searchResultsTable; else notFound"></div>
+    <div class="col-md-auto">
+      <button class="btn btn-primary" (click)="search()">SEARCH</button>
+    </div>
   </div>
-
+  <div class="search-results mt-4">
+    <div *ngIf="resultsAndPagination?.data?.length > 0; then searchResultsTable; else notFound"></div>
+  </div>
   <ng-template #searchResultsTable>
     <div class="space-between align-items-center my-3">
       <section>
-        <app-pagination-summary [value]="pagination">
+        <app-pagination-summary [value]="resultsAndPagination.metadata">
           <span class="font-weight-bold">ACTIVE</span> users
           <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
         </app-pagination-summary>
@@ -39,14 +36,10 @@
         <th scope="col">ACTION</th>
       </thead>
       <tbody>
-        <tr *ngFor="let volunteer of results">
+        <tr *ngFor="let volunteer of resultsAndPagination.data">
           <td>{{volunteer.lastName}}</td>
           <td>{{volunteer.firstName}}</td>
           <td>{{volunteer.bceidAccountNumber}}</td>
-          <!-- <td>
-              <span *ngIf="volunteer.canAccessRestrictedFiles">Yes</span>
-              <span *ngIf="!volunteer.canAccessRestrictedFiles">No</span>
-            </td> -->
           <td>
             <a routerLink="" (click)="modifyVolunteer(volunteer.id)">Edit</a>
           </td>
@@ -55,7 +48,9 @@
     </table>
     <!-- Pagination area -->
     <div class="col clearfix" *ngIf="totalPages > 1">
-      <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
+      <div class="float-right">
+        <app-paginator [metaData]="resultsAndPagination.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+      </div>
     </div>
     <div>
       <button class="btn btn-primary" routerLink="" (click)="modifyVolunteer()">ADD USERS</button>
@@ -68,12 +63,3 @@
     </p>
   </ng-template>
 </div>
-<!--
-<ul>
-  <li>page:{{page|json}}</li>
-  <li>totalPages:{{totalPages|json}}</li>
-  <li>collectionSize:{{collectionSize|json}}</li>
-  <li>maxSize:{{maxSize|json}}</li>
-  <li>previousQuery:{{previousQuery|json}}</li>
-  <li>sort:{{sort|json}}</li>
-</ul> -->
