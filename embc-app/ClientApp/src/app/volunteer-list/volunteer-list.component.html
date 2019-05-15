@@ -47,11 +47,11 @@
       </tbody>
     </table>
     <!-- Pagination area -->
-    <!-- <div class="col clearfix" *ngIf="totalPages > 1"> -->
-    <div class="float-right">
-      <app-paginator [metaData]="resultsAndPagination.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+    <div class="col clearfix" *ngIf="totalPages > 1">
+      <div class="float-right">
+        <app-paginator [metaData]="resultsAndPagination.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+      </div>
     </div>
-    <!-- </div> -->
     <div>
       <button class="btn btn-primary" routerLink="" (click)="modifyVolunteer()">ADD USERS</button>
     </div>
@@ -63,13 +63,3 @@
     </p>
   </ng-template>
 </div>
-<!-- <pre>{{previousQuery|json}}</pre> -->
-<!--
-<ul>
-  <li>page:{{page|json}}</li>
-  <li>totalPages:{{totalPages|json}}</li>
-  <li>collectionSize:{{collectionSize|json}}</li>
-  <li>maxSize:{{maxSize|json}}</li>
-  <li>previousQuery:{{previousQuery|json}}</li>
-  <li>sort:{{sort|json}}</li>
-</ul> -->
