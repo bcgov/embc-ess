@@ -73,7 +73,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 IncidentTask = fullViewModel.IncidentTask,
                 HostCommunity = fullViewModel.HostCommunity,
                 Active = fullViewModel.Active ?? false,
-                HasFollowUpDetails = !string.IsNullOrWhiteSpace(fullViewModel.InternalCaseNotes),
+                HasInternalCaseNotes = !string.IsNullOrWhiteSpace(fullViewModel.InternalCaseNotes),
                 Facility = fullViewModel.Facility
             };
 
