@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-import { AuthService } from '../core/services/auth.service';
-import { VolunteerService, VolunteerSearchQueryParameters } from '../core/services/volunteer.service';
-import { ListResult, Volunteer } from '../core/models';
-import { UniqueKeyService } from '../core/services/unique-key.service';
-import { SearchQueryParameters } from '../core/models/search-interfaces';
+import { AuthService } from '../../../core/services/auth.service';
+import { VolunteerService, VolunteerSearchQueryParameters } from '../../../core/services/volunteer.service';
+import { ListResult, Volunteer } from '../../../core/models';
+import { UniqueKeyService } from '../../../core/services/unique-key.service';
+import { SearchQueryParameters } from '../../../core/models/search-interfaces';
 
 @Component({
   selector: 'app-volunteer-list',
@@ -26,7 +26,8 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
     limit: 20
   };
   queryString: string;
-  previousQuery: SearchQueryParameters = {}; // a place to save the last query parameters
+  // a place to save the last query parameters
+  previousQuery: SearchQueryParameters = {};
   sort = ''; // how do we sort the list
 
   // this is the correct path prefix for the user routing
