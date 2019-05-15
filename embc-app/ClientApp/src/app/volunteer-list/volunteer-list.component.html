@@ -13,7 +13,7 @@
     </div>
   </div>
   <div class="search-results mt-4">
-    <div *ngIf="resultsAndPagination && resultsAndPagination.data.length > 0; then searchResultsTable; else notFound"></div>
+    <div *ngIf="resultsAndPagination?.data?.length > 0; then searchResultsTable; else notFound"></div>
   </div>
   <ng-template #searchResultsTable>
     <div class="space-between align-items-center my-3">
