@@ -10,26 +10,26 @@ import { PaginationSummary } from '../core/models';
   styleUrls: ['./tester-page.component.scss']
 })
 export class TesterPageComponent implements OnInit {
-  page: number;
-  paginationSummary: PaginationSummary;
-  params: SearchQueryParameters = {
-    limit: 10,
-    offset: 0,
-  };
-  volunteers;
+  // page: number;
+  // paginationSummary: PaginationSummary;
+  // params: SearchQueryParameters = {
+  //   limit: 10,
+  //   offset: 0,
+  // };
+  // volunteers;
   constructor(
-    private volunteerService: VolunteerService
+    // private volunteerService: VolunteerService
   ) { }
   ngOnInit() {
-    this.getVolunteers(this.params);
+    // this.getVolunteers(this.params);
   }
-  getVolunteers(params) {
-    this.volunteerService.getVolunteers(params).subscribe(v => {
-      this.volunteers = v;
-      this.paginationSummary = v.metadata;
-    });
-  }
-  onEvent(event: SearchQueryParameters) {
-    this.params = event;
-  }
+  // getVolunteers(params) {
+  //   this.volunteerService.getVolunteers(params).subscribe(v => {
+  //     this.volunteers = v;
+  //     this.paginationSummary = v.metadata;
+  //   });
+  // }
+  // onEvent(event: SearchQueryParameters) {
+  //   this.params = event;
+  // }
 }
