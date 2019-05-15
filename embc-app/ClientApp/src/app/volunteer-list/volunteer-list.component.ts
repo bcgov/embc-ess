@@ -58,7 +58,11 @@ export class VolunteerListComponent implements OnInit {
               this.notFoundMessage = err;
             }
           );
-      });
+      },
+        err => {
+          this.notFoundMessage = err;
+        }
+      );
   }
 
   getVolunteers(query: SearchQueryParameters = this.defaultSearchQuery): Observable<ListResult<Volunteer>> {
