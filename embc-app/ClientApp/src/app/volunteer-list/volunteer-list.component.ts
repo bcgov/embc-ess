@@ -49,9 +49,10 @@ export class VolunteerListComponent implements OnInit {
               // save the organization ID for future search queries
               this.defaultSearchQuery.org_id = v.organization.id;
               // get the results
-              this.getVolunteers(this.defaultSearchQuery).subscribe(r => {
-                this.resultsAndPagination = r;
-              });
+              this.getVolunteers(this.defaultSearchQuery)
+                .subscribe(r => {
+                  this.resultsAndPagination = r;
+                });
             },
             err => {
               this.notFoundMessage = err;
@@ -78,7 +79,11 @@ export class VolunteerListComponent implements OnInit {
     const query = this.defaultSearchQuery;
     query.q = this.queryString;
     this.getVolunteers(query).subscribe(r => {
-      if (r.data.length <= 0) { this.notFoundMessage = 'No results found.'; } else { this.notFoundMessage = 'Searching ...'; }
+      if (r.data.length <= 0) {
+        this.notFoundMessage = 'No results found.';
+      } else {
+        this.notFoundMessage = 'Searching ...';
+      }
       this.resultsAndPagination = r;
     });
   }
