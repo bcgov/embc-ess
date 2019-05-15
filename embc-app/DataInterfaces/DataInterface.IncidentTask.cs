@@ -2,7 +2,6 @@ using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,7 +20,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             var items = await IncidentTasks
                 .Where(t => !searchQuery.HasQuery() || t.Community.Id == Guid.Parse(searchQuery.Query))
-                .Where(t => searchQuery.IncludeDeactivated || t.Active)
+                .Where(t => searchQuery.Active == t.Active)
                 .Sort(searchQuery.SortBy ?? "id")
                 .ToArrayAsync();
 

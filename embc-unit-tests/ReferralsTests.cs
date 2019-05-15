@@ -1,5 +1,6 @@
 ﻿using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
+using Gov.Jag.Embc.Public.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -102,7 +103,7 @@ namespace embc_unit_tests
                 await di.CreateReferralAsync(referral);
             }
 
-            var result = await di.GetReferralsAsync(registrationId);
+            var result = (await di.GetReferralsAsync(registrationId, new SearchQueryParameters())).Items;
             Assert.NotEmpty(result);
             Assert.Equal(referrals.Length, result.Count());
             Assert.All(referrals, r => Assert.Equal(registrationId, r.RegistrationId));
@@ -148,7 +149,7 @@ namespace embc_unit_tests
                 await di.CreateReferralAsync(referral);
             }
 
-            var result = await di.GetReferralsAsync(registrationId);
+            var result = (await di.GetReferralsAsync(registrationId, new SearchQueryParameters())).Items;
             Assert.Equal(expectedReferralsOrder, result.Select(r => (r.Type, r.ValidFrom)).ToArray());
         }
 
@@ -166,6 +167,29 @@ namespace embc_unit_tests
 
             var referral = await di.GetReferralAsync(referralId);
             Assert.False(referral.Active);
+        }
+
+        [Fact]
+        public async Task CanQueryReferralsByStatus()
+        {
+            var ctx = EmbcDb;
+
+            var di = new DataInterface(ctx, mapper);
+
+            var registrationId = "100001";
+            var referral1 = ReferralGenerator.Generate(ReferralType.Clothing, registrationId);
+            var referral2 = ReferralGenerator.Generate(ReferralType.Clothing, registrationId);
+            var referralId1 = await di.CreateReferralAsync(referral1);
+            var referralId2 = await di.CreateReferralAsync(referral1);
+            await di.DeactivateReferralAsync(referralId2);
+
+            var activeReferrals = await di.GetReferralsAsync(registrationId, new SearchQueryParameters { Active = true });
+            var inactiveReferrals = await di.GetReferralsAsync(registrationId, new SearchQueryParameters { Active = false });
+
+            Assert.Single(activeReferrals.Items);
+            Assert.True(activeReferrals.Items.First().Active);
+            Assert.Single(activeReferrals.Items);
+            Assert.False(inactiveReferrals.Items.First().Active);
         }
 
         [Fact]

@@ -24,11 +24,11 @@ namespace Gov.Jag.Embc.Public.Controllers
         public async Task<IActionResult> Get(string registrationId, SearchQueryParameters searchQuery)
 
         {
-            var results = await dataInterface.GetReferralsAsync(registrationId);
+            var results = await dataInterface.GetReferralsAsync(registrationId, searchQuery);
             return await Task.FromResult(Json(new
             {
                 RegistrationId = registrationId,
-                Referrals = new PaginatedList<ReferralListItem>(results.Select(r => r.ToListItem()), searchQuery.Offset, searchQuery.Limit)
+                Referrals = results
             }));
         }
 
