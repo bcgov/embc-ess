@@ -19,7 +19,7 @@ namespace Gov.Jag.Embc.Public.PdfUtility
         private async Task<FileContentResult> GetPdfConversion(string content)
         {
             //var pdfHost = Environment.GetEnvironmentVariable("PDF_SERVICE_NAME");
-            var pdfHost = "http://127.0.0.1:5001";
+            var pdfHost = "http://weasyprint-develop-jhnamn.pathfinder.gov.bc.ca";
             string targetUrl = pdfHost + "/pdf";
 
             var client = new HttpClient();
