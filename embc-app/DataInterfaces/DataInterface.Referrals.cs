@@ -1,3 +1,4 @@
+using Gov.Jag.Embc.Public.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public partial class DataInterface
     {
+        private static List<string> referralOrder = new List<string> { "FOOD", "LODGING", "CLOTHING", "TRANSPORTATION", "INCIDENTALS" };
+
         private IQueryable<Models.Db.Referral> Referrals => db.Referrals
                 .AsNoTracking()
                 .Include(r => r.Supplier)
@@ -34,11 +37,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return mapper.Map<ViewModels.Referral>(result);
         }
 
-        public async Task<IEnumerable<ViewModels.Referral>> GetReferralsAsync(string registrationId)
+        public async Task<IPagedResults<ViewModels.ReferralListItem>> GetReferralsAsync(string registrationId, SearchQueryParameters searchQuery)
         {
-            var results = Referrals.Where(r => r.RegistrationId == long.Parse(registrationId));
+            var results = await Referrals
+                .Where(r => r.RegistrationId == long.Parse(registrationId) && r.Active == searchQuery.Active)
+                .Select(r => mapper.Map<ViewModels.Referral>(r))
+                .ToArrayAsync();
 
-            return await results.Select(r => mapper.Map<ViewModels.Referral>(r)).ToArrayAsync();
+            return new PaginatedList<ViewModels.ReferralListItem>(
+                results.Select(r => r.ToListItem())
+                .OrderBy(r => referralOrder.IndexOf(r.Type))
+                    .ThenByDescending(r => r.ValidFrom)
+                .ToArray(),
+                searchQuery.Offset, searchQuery.Limit);
         }
 
         public async Task<bool> DeactivateReferralAsync(string referralId)

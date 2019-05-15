@@ -205,7 +205,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 var resultFm = result as ViewModels.FamilyMember;
                 resultFm.RelationshipToEvacuee = source.EvacueeTypeCode == EvacueeType.ImmediateFamily.GetDisplayName()
-                    ? EvacueeType.ImmediateFamily.ToViewModel() : EvacueeType.HeadOfHousehold.ToViewModel();
+                    ? EvacueeType.ImmediateFamily.ToViewModel() : EvacueeType.ExtendedFamily.ToViewModel();
                 resultFm.SameLastNameAsEvacuee = source.SameLastNameAsEvacuee;
             }
             return result;

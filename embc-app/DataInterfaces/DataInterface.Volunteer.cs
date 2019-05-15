@@ -72,7 +72,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                  .Where(v => !onlyEssUsers || !v.IsAdministrator.Value)
                  .Where(v => !onlyAdmins || v.IsAdministrator.Value)
                  .Where(v => searchQuery.OrganizationId == null || v.Organization.Id == Guid.Parse(searchQuery.OrganizationId))
-                 .Where(t => searchQuery.IncludeDeactivated || t.Active)
+                 .Where(t => searchQuery.Active == t.Active)
                  .Sort(searchQuery.SortBy ?? "lastname")
                  .ToArrayAsync();
 

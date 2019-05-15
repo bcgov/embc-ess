@@ -530,15 +530,6 @@
         <textarea class="form-control" placeholder="Details" rows="4" formControlName="familyRecoveryPlan"></textarea>
       </div>
 
-      <!-- FOLLOW-UP REQUIRED -->
-      <div class="mb-4">
-        <h2 class="blue-header font-weight-bold">FOLLOW-UP REQUIRED</h2>
-        <div class="form-row mx-0">
-          <app-attention-icon [alignCenter]="false"></app-attention-icon>
-          <textarea class="form-control" placeholder="Details" rows="4" formControlName="followUpDetails"></textarea>
-        </div>
-      </div>
-
       <!-- REFERRALS MADE WITHIN RECEPTION CENTRE -->
       <div class="mb-4">
         <h2 class="blue-header font-weight-bold">REFERRALS MADE WITHIN RECEPTION CENTRE</h2>
@@ -579,8 +570,21 @@
         <h2 class="blue-header font-weight-bold">OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE</h2>
         <div class="form-row mx-0">
           <app-attention-icon [alignCenter]="false"></app-attention-icon>
-          <textarea class="form-control" placeholder="Details" rows="4" formControlName="externalReferralsDetails"></textarea>
+          <textarea class="form-control" placeholder="Please specify" rows="4" formControlName="externalReferralsDetails"></textarea>
         </div>
+      </div>
+
+      <!-- INTERNAL CASE NOTES -->
+      <div class="mb-4">
+        <h2 class="blue-header font-weight-bold">INTERNAL CASE NOTES</h2>
+        <div class="form-row mx-0">
+          <app-attention-icon [alignCenter]="false"></app-attention-icon>
+          <p class="col">
+            Please do not include any personal/medical information pertaining to the evacuee and their family.<br>
+            Initial and date each comment that you add. Do not delete any previous case notes.
+            </p>
+        </div>
+        <textarea class="form-control" placeholder="Details" rows="8" formControlName="internalCaseNotes"></textarea>
       </div>
 
       <div *ngIf="errorSummary" class="text-danger mt-5 pl-5">
@@ -883,7 +887,7 @@
   <h2>Family Recovery Plan</h2>
   <ul class="summary">
     <li>
-      <span>&nbsp;{{registration?.familyRecoveryPlan}}</span>
+      <span>{{registration?.familyRecoveryPlan || '&nbsp;'}}</span>
     </li>
   </ul>
 
@@ -918,14 +922,14 @@
   <h2>Other Agency Referrals</h2>
   <ul class="summary">
     <li>
-      <span>&nbsp;{{registration?.externalReferralsDetails}}</span>
+      <span>{{registration?.externalReferralsDetails || '&nbsp;'}}</span>
     </li>
   </ul>
 
-  <h2>Internal Case Notes</h2>
+  <h2 class="blue-header font-weight-bold">INTERNAL CASE NOTES</h2>
   <ul class="summary">
     <li>
-      <span>&nbsp;{{registration?.followUpDetails}}</span>
+      <span class='internal-case-notes'>{{registration?.internalCaseNotes || '&nbsp;'}}</span>
     </li>
   </ul>
 
