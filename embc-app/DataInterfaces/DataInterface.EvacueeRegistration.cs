@@ -83,7 +83,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     r.EvacueeRegistrationAddresses.Any(a =>
                         a.AddressSubType == AddressSubType.BCAddress && a.AddressType == AddressType.Primary &&
                         a.Community.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase)))
-                    .Where(t => searchQuery.IncludeDeactivated || t.Active)
+                    .Where(t => searchQuery.Active == t.Active)
                 .Sort(searchQuery.SortBy ?? "EssFileNumber")
                 .ToArrayAsync();
 

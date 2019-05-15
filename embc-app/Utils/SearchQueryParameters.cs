@@ -33,8 +33,8 @@ namespace Gov.Jag.Embc.Public.Utils
         [FromQuery(Name = "sort")]
         public string SortBy { get; set; }  // e.g. "+name" for ASC, "-name" for DESC
 
-        [FromQuery(Name = "notactive")]
-        public bool IncludeDeactivated { get; set; } = false;
+        [FromQuery(Name = "active")]
+        public bool Active { get; set; } = true;
 
         public bool HasQuery()
         {

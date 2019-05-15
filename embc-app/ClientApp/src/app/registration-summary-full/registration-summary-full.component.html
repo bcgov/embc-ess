@@ -286,7 +286,7 @@
       <h2>Family Recovery Plan</h2>
       <ul class="summary">
         <li>
-          <span>&nbsp;{{registration.familyRecoveryPlan}}</span>
+          <span>{{registration.familyRecoveryPlan || '&nbsp;'}}</span>
         </li>
       </ul>
     </div>
@@ -325,17 +325,17 @@
       <h2>Other Agency Referrals</h2>
       <ul class="summary">
         <li>
-          <span>&nbsp;{{registration.externalReferralsDetails}}</span>
+          <span>{{registration.externalReferralsDetails || '&nbsp;'}}</span>
         </li>
       </ul>
     </div>
   </section>
 
-  <section *ngIf="registration.followUpDetails" class="mt-4">
+  <section *ngIf="registration.hasInternalCaseNotes" class="mt-4">
     <h2 class="blue-header font-weight-bold">INTERNAL CASE NOTES</h2>
     <ul class="summary mx-3">
       <li>
-        <span>&nbsp;{{registration.followUpDetails}}</span>
+        <span class='internal-case-notes'>{{registration.internalCaseNotes || '&nbsp;'}}</span>
       </li>
     </ul>
   </section>
