@@ -21,7 +21,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public IncidentTask IncidentTask { get; set; }
         public Community HostCommunity { get; set; }
         public bool Active { get; set; }
-        public bool HasFollowUpDetails { get; set; }
+        public bool HasInternalCaseNotes { get; set; }
         public string Facility { get; set; }
     }
 }

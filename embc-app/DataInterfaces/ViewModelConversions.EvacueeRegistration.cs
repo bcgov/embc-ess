@@ -34,7 +34,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 DisasterAffectDetails = source.DisasterAffectDetails,
                 ExternalReferralsDetails = source.ExternalReferralsDetails,
                 FamilyRecoveryPlan = source.FamilyRecoveryPlan,
-                FollowUpDetails = source.FollowUpDetails,
+                InternalCaseNotes = source.FollowUpDetails,
                 HasInquiryReferral = source.HasInquiryReferral,
                 HasHealthServicesReferral = source.HasHealthServicesReferral,
                 HasFirstAidReferral = source.HasFirstAidReferral,
@@ -73,7 +73,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 IncidentTask = fullViewModel.IncidentTask,
                 HostCommunity = fullViewModel.HostCommunity,
                 Active = fullViewModel.Active ?? false,
-                HasFollowUpDetails = !string.IsNullOrWhiteSpace(fullViewModel.FollowUpDetails),
+                HasInternalCaseNotes = !string.IsNullOrWhiteSpace(fullViewModel.InternalCaseNotes),
                 Facility = fullViewModel.Facility
             };
 
@@ -108,7 +108,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 DisasterAffectDetails = source.DisasterAffectDetails,
                 ExternalReferralsDetails = source.ExternalReferralsDetails,
                 FamilyRecoveryPlan = source.FamilyRecoveryPlan,
-                FollowUpDetails = source.FollowUpDetails,
+                FollowUpDetails = source.InternalCaseNotes,
                 HasInquiryReferral = source.HasInquiryReferral,
                 HasHealthServicesReferral = source.HasHealthServicesReferral,
                 HasFirstAidReferral = source.HasFirstAidReferral,
