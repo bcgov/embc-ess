@@ -62,6 +62,7 @@ export class IncidentalsReferralComponent implements OnInit, AfterViewInit, OnDe
   // Create form controls
   initForm(): void {
     this.form = this.fb.group({
+      evacuees: [null, Validators.required],
       approvedItems: '',
       totalAmount: ['', [CustomValidators.number, Validators.required, Validators.min(0)]],
     });
@@ -78,6 +79,7 @@ export class IncidentalsReferralComponent implements OnInit, AfterViewInit, OnDe
     if (referral) {
       this.form.reset();
       this.form.patchValue({
+        evacuees: referral.evacuees,
         approvedItems: referral.approvedItems,
         totalAmount: referral.totalAmount,
       });
