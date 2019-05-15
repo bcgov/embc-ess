@@ -30,7 +30,7 @@ export class LodgingReferralComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges) { }
 
   viewRates() {
-    this.ratesModal = this.modals.open(LodgingRatesComponent, { size: 'lg' });
+    this.ratesModal = this.modals.open(LodgingRatesComponent, { size: 'lg', centered: true });
     this.ratesModal.result.then(
       () => { this.ratesModal = null; },
       () => { this.ratesModal = null; }

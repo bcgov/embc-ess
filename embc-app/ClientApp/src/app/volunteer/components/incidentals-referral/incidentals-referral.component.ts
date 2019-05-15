@@ -42,7 +42,7 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
   }
 
   viewRates() {
-    this.ratesModal = this.modals.open(IncidentalsRatesComponent, { size: 'lg' });
+    this.ratesModal = this.modals.open(IncidentalsRatesComponent, { size: 'lg', centered: true });
     this.ratesModal.result.then(
       () => { this.ratesModal = null; },
       () => { this.ratesModal = null; }

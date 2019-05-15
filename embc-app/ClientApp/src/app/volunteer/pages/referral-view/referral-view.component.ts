@@ -96,7 +96,7 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
   deactivate(content: TemplateRef<any>) {
     this.deactivating = true;
 
-    this.confirmModal = this.modals.open(content);
+    this.confirmModal = this.modals.open(content, { centered: true });
 
     // handle result
     this.confirmModal.result.then(() => {

@@ -24,7 +24,7 @@
         </app-pagination-summary>
       </section>
       <section>
-        <button class="btn btn-primary" routerLink="" (click)="modifyVolunteer()">ADD USERS</button>
+        <button class="btn btn-primary" (click)="modifyVolunteer()">ADD USERS</button>
       </section>
     </div>
     <table class="table">
@@ -41,7 +41,7 @@
           <td>{{volunteer.firstName}}</td>
           <td>{{volunteer.bceidAccountNumber}}</td>
           <td>
-            <a routerLink="" (click)="modifyVolunteer(volunteer.id)">Edit</a>
+            <a href="javascript:void(0)" (click)="modifyVolunteer(volunteer.id)">Edit</a>
           </td>
         </tr>
       </tbody>
@@ -53,7 +53,7 @@
       </div>
     </div>
     <div>
-      <button class="btn btn-primary" routerLink="" (click)="modifyVolunteer()">ADD USERS</button>
+      <button class="btn btn-primary" (click)="modifyVolunteer()">ADD USERS</button>
     </div>
   </ng-template>
 
@@ -63,3 +63,28 @@
     </p>
   </ng-template>
 </div>
+
+<!-- Alert to confirm editing user details -->
+<ng-template #viewAlert let-modal>
+  <div class="modal-header">
+    <h1 class="modal-title h2">Alert</h1>
+    <button type="button" class="close" aria-label="Close" (click)="confirmModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <p>
+      You are requesting to edit user details.<br>
+      Are you sure you want to do this?
+    </p>
+
+    <div class="mt-4 space-between">
+      <a href="javascript:void(0)" (click)="confirmModal.dismiss()">
+        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+        <span class="ml-2">Cancel &amp; Close</span>
+      </a>
+      <button class="btn btn-primary float-right" (click)="confirmModal.close()">YES</button>
+    </div>
+  </div>
+</ng-template>
