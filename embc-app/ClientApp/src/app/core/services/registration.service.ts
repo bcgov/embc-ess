@@ -61,4 +61,31 @@ export class RegistrationService extends RestService {
         catchError(this.handleError),
       );
   }
+
+  async printReferrals(registrationId: string, referralIds: string[], addSummary: boolean): Promise<void> {
+    const blob = await this.getReferralPdfs(registrationId, referralIds, addSummary);
+
+    // check if IE, Edge, etc
+    if (window.navigator.msSaveOrOpenBlob) {
+      // save PDF file
+      const filename = `${registrationId}.pdf`; // FUTURE: add date stamp to filename?
+      window.navigator.msSaveBlob(blob, filename);
+    } else {
+      // open PDF in new tab
+      const tab = window.open();
+      const fileURL = URL.createObjectURL(blob);
+      tab.location.href = fileURL;
+    }
+  }
+
+  private getReferralPdfs(registrationId: string, referralIds: string[], addSummary: boolean): Promise<Blob> {
+    const data = { ReferralIds: referralIds, AddSummary: addSummary };
+    return this.http.post<Blob>(`api/registrations/${registrationId}/referrals/referralPdfs`, data, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
 }
