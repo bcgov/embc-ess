@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 
 import { AuthService } from '../core/services/auth.service';
 import { VolunteerService, VolunteerSearchQueryParameters } from '../core/services/volunteer.service';
-import { ListResult, Volunteer, PaginationSummary, User, Organization } from '../core/models';
+import { ListResult, Volunteer } from '../core/models';
 import { UniqueKeyService } from '../core/services/unique-key.service';
 import { SearchQueryParameters } from '../core/models/search-interfaces';
 
