@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ListResult, Registration, PaginationSummary, isBcAddress, isOtherAddress } from '../core/models';
+import { ListResult, Registration, PaginationSummary, isBcAddress, isOtherAddress } from '../../../core/models';
 import { Observable } from 'rxjs';
-import { RegistrationService } from '../core/services/registration.service';
+import { RegistrationService } from '../../../core/services/registration.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../core/services/auth.service';
-import { SearchQueryParameters } from '../core/models/search-interfaces';
-import { UniqueKeyService } from '../core/services/unique-key.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { SearchQueryParameters } from '../../../core/models/search-interfaces';
+import { UniqueKeyService } from '../../../core/services/unique-key.service';
 import get from 'lodash/get';
 
 interface RowItem {
