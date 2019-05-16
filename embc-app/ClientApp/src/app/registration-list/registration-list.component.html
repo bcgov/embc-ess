@@ -5,9 +5,14 @@
     self- registration, or if needed, search and edit evacuee information.</p>
   <h3 class="blue-header">LIST OF EVACUEES</h3>
 
-  <app-search-bar #searchBar (valueChange)="doSearch($event)" placeholder="Search by task number / last name / registration number / community ...">
-  </app-search-bar>
-
+  <div role="search" class="form-row">
+    <div class="col">
+      <input [(ngModel)]="queryString" type="text" aria-label="search" class="form-control mb-2" placeholder="Search by task number / last name / registration number / community ..." (keydown.enter)="doSearch()">
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" (click)="doSearch()">SEARCH</button>
+    </div>
+  </div>
   <!-- TODO: <a class="small" href="">advanced search</a> -->
   <!-- TODO: show icons for HOH, RESTRICTED FILE -->
   <div class="clearfix my-3">
@@ -34,9 +39,50 @@
       </select>
     </section>
   </div>
-  <!-- SORT:{{sort}} -->
-  <app-evacuee-search-results #searchResultsView [searchResults]="searchResults$ | async">
-  </app-evacuee-search-results>
+
+  <!-- <div class="search-results">
+    <div *ngIf="rows.length; then searchResultsTable; else notFound"></div>
+  </div> -->
+
+  <!-- <ng-template #searchResultsTable>
+    <table class="table">
+      <thead class="thead-light">
+        <th scope="col"></th>
+        <th scope="col">Last Name</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Task #</th>
+        <th scope="col">ESS File #</th>
+        <th scope="col">Evacuated From</th>
+        <th scope="col">Evacuated To</th>
+        <th scope="col">Action</th>
+      </thead>
+      <tbody>
+        <tr [class.table-danger]="rowItem.restrictedAccess" *ngFor="let rowItem of rows">
+          <th scope="row">
+            <app-font-awesome-icon class="mr-1 float-left" *ngIf="rowItem.headOfHousehold" icon="user">
+            </app-font-awesome-icon>
+            <app-font-awesome-icon class="float-right" *ngIf="rowItem.restrictedAccess" icon="lock">
+            </app-font-awesome-icon>
+          </th>
+          <td>{{rowItem.lastName}}</td>
+          <td>{{rowItem.firstName}}</td>
+          <td>{{rowItem.incidentTaskTaskNumber}}</td>
+          <td>{{rowItem.essFileNumber}}</td>
+          <td>{{rowItem.evacuatedFrom}}</td>
+          <td>{{rowItem.evacuatedTo}}</td>
+          <td> -->
+  <!-- TODO: These always route to the same places. I'm going to cheat and hard code for now so we don't have to re-test int the component's output -->
+  <!-- <a *ngIf="!rowItem.incidentTaskTaskNumber" (click)="finalize(rowItem)">Finalize</a>
+            <a *ngIf="rowItem.incidentTaskTaskNumber" (click)="view(rowItem)">View</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-template>
+
+  <ng-template #notFound>
+    <p>{{notFoundMessage}}</p>
+  </ng-template> -->
 
   <!-- <select class="form-control" [(ngModel)]="maxSize">
     <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option>
