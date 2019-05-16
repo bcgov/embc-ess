@@ -25,15 +25,6 @@ export class ReferralService extends RestService {
   }
 
   // POST api/registrations/<id>/referrals ???
-  // printReferrals(registrationId: string, referralIds: string[]): Observable<HttpResponse<any>> {
-  //   return this.http.post<HttpResponse<any>>(`api/registrations/${registrationId}/referrals`, referralIds, { headers: this.headers })
-  //     .pipe(
-  //       retry(3),
-  //       catchError(this.handleError)
-  //     );
-  // }
-
-  // POST api/registrations/<id>/referrals ???
   createReferrals(registrationId: string, referrals: Referral[]): Observable<HttpResponse<any>> {
     // TODO: assemble data object for BE
     // TODO: add id [1..n] to referrals
