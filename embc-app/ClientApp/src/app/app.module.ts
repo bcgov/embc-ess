@@ -67,6 +67,7 @@ import { SupplierComponent } from './volunteer/components/supplier/supplier.comp
 import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
 import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
 import { ReferralListItemComponent } from './volunteer/components/referral-list-item/referral-list-item.component';
+import { AbstractReferralComponent } from './volunteer/components/abstract-referral/abstract-referral.component';
 
 @NgModule({
   declarations: [
@@ -125,6 +126,7 @@ import { ReferralListItemComponent } from './volunteer/components/referral-list-
     SupplierComponent,
     EvacueeListComponent,
     ReferralListItemComponent,
+    AbstractReferralComponent,
   ],
   imports: [
     // angular
