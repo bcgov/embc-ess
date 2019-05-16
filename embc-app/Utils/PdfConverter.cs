@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Gov.Jag.Embc.Public.PdfUtility
+namespace Gov.Jag.Embc.Public.Utils
 {
     public class PdfConverter : IPdfConverter
     {

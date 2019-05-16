@@ -1,0 +1,198 @@
+* {
+    font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Helvetica, Arial, sans-serif;    font-style: normal;
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    background-color: #fff;
+}
+
+strong {
+    font-weight: bold;
+}
+
+.page {
+    position: relative;
+    width: 21.6cm;
+    height: 27.9cm;
+    padding: 0.75cm;
+}
+
+.row {
+    display: flex;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.col-6 {
+    float: left;
+    width: 50%;
+    padding-left: 15px;
+    padding-right: 30px;
+}
+
+.page-border {
+    position: absolute;
+    z-index: 1;
+    border: 1px solid black;
+    width: 20.2cm;
+    height: 25.5cm;
+    margin-left: -0.1cm;
+}
+
+.one-time-use {
+    position: absolute;
+    z-index: 5;
+    width: 5cm;
+    background-color: #fff;
+    top: 0.5cm;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color: #ddd;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.form-header {
+    height: 4.5cm;
+    position: relative;
+    background-color: #fff;
+}
+
+    .gov-logo {
+        width: 5cm;
+        position: absolute;
+        z-index: 0;
+        margin-top: 0.5cm;
+        margin-left: 0.5cm;
+    }
+
+    .referral-block {
+        position: absolute;
+        width: 10cm;
+        height: 4.5cm;
+        z-index: 3;
+        margin-left: -3px;
+        margin-top: -1px;
+        background-color: #fff;
+    }
+    
+        .referral-info {
+            position: absolute;
+            width: 10cm;
+            padding: 0.3cm 0.15cm;
+            z-index: 3;
+            margin-top: 2.5cm;
+            background-color: #ddd;
+            margin-bottom: 1cm;
+        }
+
+        .referral-info h1,
+        .referral-info h1 label {
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .referral-info h1 label {
+            padding-right: 0.25cm;
+        }
+
+        .referral-info p {
+            margin-top: 0.25cm;
+            text-transform: uppercase;
+        }
+
+        .referral-info p span {
+            display: inline-block;
+            width: 4.5cm;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .referral-info p label {
+            width: 1cm;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+
+.stamp-goes-here {
+    height: 4cm;
+    padding-top: 2cm;
+}
+
+.stamp-goes-here p {
+    color: #ddd;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.info-block {
+    margin: 0.1cm;
+    padding: 0.2cm;
+    padding-left: 0.5cm;
+}
+
+.outlined {
+    border: 3px double black;
+    margin: 0cm;
+    padding: 0.2cm;
+    padding-left: 0.7cm;
+    height: 100%;
+}
+
+.info-block h3 {
+    display: inline-block;
+    text-transform: uppercase;
+    border-bottom: 1px solid black;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 0.25cm;
+    padding-bottom: 0.1cm;
+}
+
+.info-block h3.with-icon {
+    background-repeat: no-repeat;
+    background-size: 0.45cm 0.45cm;
+    padding-left: 0.5cm;
+    margin-left: -0.5cm;
+}
+
+.info-block h3.with-icon.supplier {
+    background-image: url(images/address-book-regular.png);
+}
+
+.info-block h3.with-icon.dates {
+    background-image: url(images/clock-regular.png);
+}
+
+.info-block h3.with-icon.meals {
+    background-image: url(images/utensils-solid.png);
+}
+
+.sample-only {
+    text-align: center;
+    font-size: 50px;
+    margin: 3cm 0;
+
+}
+
+ul {
+
+}
+ul li {
+    font-size: 11px;
+    margin-bottom: 0.2cm;
+}
