@@ -1,8 +1,8 @@
-import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ValidationErrors } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+
 import { Evacuee } from 'src/app/core/models';
-import { ValueAccessorBase } from 'src/app/shared/components/value-accessor';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 // poor man's uuid
 let identifier = 0;
@@ -20,6 +20,10 @@ export class EvacueeListComponent {
 
   touched = false;
 
+  @Input() showErrors = true;
+
+  @Input() errors: ValidationErrors | null = null;
+
   // Sub-set of evacuees that have been selected through the UI (i.e. via checkboxes)
   @Input() selected: Evacuee[];
 
@@ -35,6 +39,11 @@ export class EvacueeListComponent {
     private modalService: NgbModal
   ) { }
 
+  get invalid(): boolean {
+    if (!this.showErrors) { return false; }
+    return this.errors && this.touched;
+  }
+
   exists(value: Evacuee) {
     if (!this.selected) { return false; }
     return this.selected.some(x => x.id === value.id);
@@ -44,12 +53,12 @@ export class EvacueeListComponent {
     return this.exists(value);
   }
 
-  onSelect(value: Evacuee) {
+  selectEvacuee(value: Evacuee) {
     this.touched = true;
     this.select.emit(value);
   }
 
-  onSelectAll() {
+  selectAllEvacuees() {
     this.touched = true;
     this.selectAll.emit();
   }
