@@ -81,9 +81,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        [Obsolete]
-        private DbSet<Address> Addresses { get; set; }
-
         public DbSet<Community> Communities { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Evacuee> Evacuees { get; set; }
@@ -91,15 +88,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<EvacueeRegistration> EvacueeRegistrations { get; set; }
         public DbSet<IncidentTask> IncidentTasks { get; set; }
         public DbSet<Region> Regions { get; set; }
-
-        [Obsolete]
-        private DbSet<Registration> Registrations { get; set; }
-
         public DbSet<EvacueeRegistrationAddress> EvacueeRegistrationAddresses { get; set; }
-
-        [Obsolete]
-        private DbSet<Person> People { get; set; }
-
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Volunteer> Volunteers { get; set; }
         public DbSet<Referral> Referrals { get; set; }

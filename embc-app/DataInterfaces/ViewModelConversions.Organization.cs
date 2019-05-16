@@ -12,8 +12,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 Name = source.Name,
                 Active = source.Active,
                 BCeIDBusinessGuid = source.BCeIDBusinessGuid,
-                Region = source.Region?.ToViewModel(),
-                Community = source.Community?.ToViewModel(),
+                Region = mapper.Map<ViewModels.Region>(source.Region),
+                Community = mapper.Map<ViewModels.Community>(source.Community),
                 AdminBCeID = primaryContact?.BceidAccountUserName,
                 AdminFirstName = primaryContact?.FirstName,
                 AdminLastName = primaryContact?.LastName
