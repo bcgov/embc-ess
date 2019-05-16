@@ -10,7 +10,7 @@
       <input [(ngModel)]="queryString" type="text" aria-label="search" class="form-control mb-2" placeholder="Search by task number / last name / registration number / community ..." (keydown.enter)="doSearch()">
     </div>
     <div class="col-auto">
-      <button class="btn btn-primary" (click)="doSearch()">SEARCH</button>
+      <button class="btn btn-primary" (click)="search()">SEARCH</button>
     </div>
   </div>
   <!-- TODO: <a class="small" href="">advanced search</a> -->
@@ -39,12 +39,11 @@
       </select>
     </section>
   </div>
-
-  <!-- <div class="search-results">
+  <div class="search-results">
     <div *ngIf="rows.length; then searchResultsTable; else notFound"></div>
-  </div> -->
+  </div>
 
-  <!-- <ng-template #searchResultsTable>
+  <ng-template #searchResultsTable>
     <table class="table">
       <thead class="thead-light">
         <th scope="col"></th>
@@ -70,9 +69,8 @@
           <td>{{rowItem.essFileNumber}}</td>
           <td>{{rowItem.evacuatedFrom}}</td>
           <td>{{rowItem.evacuatedTo}}</td>
-          <td> -->
-  <!-- TODO: These always route to the same places. I'm going to cheat and hard code for now so we don't have to re-test int the component's output -->
-  <!-- <a *ngIf="!rowItem.incidentTaskTaskNumber" (click)="finalize(rowItem)">Finalize</a>
+          <td>
+            <a *ngIf="!rowItem.incidentTaskTaskNumber" (click)="finalize(rowItem)">Finalize</a>
             <a *ngIf="rowItem.incidentTaskTaskNumber" (click)="view(rowItem)">View</a>
           </td>
         </tr>
@@ -82,13 +80,14 @@
 
   <ng-template #notFound>
     <p>{{notFoundMessage}}</p>
-  </ng-template> -->
+  </ng-template>
 
   <!-- <select class="form-control" [(ngModel)]="maxSize">
     <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option>
   </select> -->
-  <div class="col clearfix" *ngIf="this.totalPages > 1">
-    <app-paginator [metaData]="metaData" (params)="onPaginationEvent($event)"></app-paginator>
-    <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
+  <div class="col clearfix" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
+    <div class="float-right">
+      <app-paginator [metaData]="resultsAndPagination.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+    </div>
   </div>
 </div>
