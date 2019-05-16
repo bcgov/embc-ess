@@ -214,7 +214,7 @@ export class ReferralMakerComponent implements OnInit {
     return {
       id: null, // for future use
       active: true,
-      name: '', // TODO: for testing only
+      name: 'Supplier 1', // TODO: for testing only
       address: '1050 Main Street', // TODO: for testing only
       postalCode: 'V8R 1R4', // TODO: for testing only
       city: 'Victoria', // TODO: for testing only
@@ -231,18 +231,6 @@ export class ReferralMakerComponent implements OnInit {
     const family = hoh.familyMembers || [];
     return [hoh, ...family];
   }
-
-  // TODO: Remove this after testing
-  // private createEvacueeList(reg: Registration): EvacueeListItem[] {
-  //   if (!reg) { return []; }
-  //   const hoh = reg.headOfHousehold;
-  //   const family = hoh && hoh.familyMembers ? hoh.familyMembers : [];
-  //   if (hoh) {
-  //     return [hoh, ...family].map(x => ({ evacuee: x, selected: false }));
-  //   } else {
-  //     return [];
-  //   }
-  // }
 
   // --------------------HELPERS-----------------------------------------
   remove(arr: [], i: number) {
