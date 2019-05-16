@@ -1,4 +1,4 @@
-APP_NAME = "embcess"
+APP_NAME = "embcess-training"
 PROJECT_NAMESPACE = "jhnamn"
 
 class AppEnvironment {
@@ -10,7 +10,7 @@ class AppEnvironment {
 // EDIT LINE BELOW (Edit your environment TAG names)
 environments = [
   dev:new AppEnvironment(name:"Development",tag:"dev",previousTag:"dev-previous"),
-  test:new AppEnvironment(name:"Test",tag:"prod",previousTag:"prod-previous"),
+  test:new AppEnvironment(name:"Test",tag:"training",previousTag:"training-previous"),
   prod:new AppEnvironment(name:"Prod",tag:"prod",previousTag:"prod-previous")
 ]
 
@@ -85,11 +85,11 @@ def tagLatestStable(environment, backupTag, imageStream) {
 }
 
 def deployAndVerify(srcHash, environment, imageStream) {
-  echo "Deploying ${APP_NAME}-training to ${environment}"
+  echo "Deploying ${APP_NAME} to ${environment}"
   tagImage(srcHash, environment, imageStream)
   // verify deployment to an environment; e.g. [your-project-name]-dev
   openshiftVerifyDeployment(
-    deploymentConfig: "${APP_NAME}-training",
+    deploymentConfig: "${APP_NAME}",
     namespace: "${PROJECT_NAMESPACE}-${environment}",
     waitTime: '900000'
   )
