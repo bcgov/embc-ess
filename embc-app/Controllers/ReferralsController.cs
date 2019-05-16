@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("api/registrations/{registrationId}/[controller]")]
-    [AllowAnonymous]
+    [Authorize]
     public class ReferralsController : Controller
     {
         private readonly IDataInterface dataInterface;
