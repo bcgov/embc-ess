@@ -72,7 +72,7 @@
 
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
         <app-referral-list-item type="INCIDENTALS" (remove)="remove(incidentalsReferrals, i)" (add)="addIncidentalsReferral()">
-          <app-incidentals-referral [(referral)]="r.value" [readOnly]="false" (validityChange)="updateValidity(r, $event)"></app-incidentals-referral>
+          <app-incidentals-referral [(referral)]="r.value" [evacuees]="evacuees" [readOnly]="false" (validityChange)="updateValidity(r, $event)"></app-incidentals-referral>
         </app-referral-list-item>
       </article>
     </section>

@@ -6,7 +6,7 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import {
   Registration, Supplier, IncidentalsReferral, FoodReferral,
-  ClothingReferral, LodgingReferral, TransportationReferral
+  ClothingReferral, LodgingReferral, TransportationReferral, Evacuee
 } from 'src/app/core/models';
 
 interface ReferralFormControl<T = any> {
@@ -27,7 +27,7 @@ export class ReferralMakerComponent implements OnInit {
   path: string = null; // for relative routing
   regId: string = null;
   purchaser: string = null;
-  evacuees: Array<any> = [];
+  evacuees: Array<Evacuee> = [];
 
   foodReferrals: Array<ReferralFormControl<FoodReferral>> = [];
   lodgingReferrals: Array<ReferralFormControl<LodgingReferral>> = [];
@@ -66,13 +66,7 @@ export class ReferralMakerComponent implements OnInit {
           this.cancel();
         } else {
           this.registration = r;
-
-          // populate evacuees
-          const hoh = this.registration.headOfHousehold;
-          const family = hoh && hoh.familyMembers ? hoh.familyMembers : [];
-          if (hoh) {
-            this.evacuees = [hoh, ...family].map(x => ({ evacuee: x, selected: false }));
-          }
+          this.evacuees = this.createEvacueeList(r);
         }
       });
   }
@@ -138,10 +132,10 @@ export class ReferralMakerComponent implements OnInit {
         from: new Date(2019, 3, 15, 17, 30, 0), // FOR TESTING ONLY
         days: 2, // FOR TESTING ONLY
       },
-      evacuees: this.evacuees,
+      evacuees: [],
       approvedItems: null,
       totalAmount: null,
-      supplier: this.newSupplier,
+      supplier: this.createSupplier(),
       comments: 'some comments here',
       confirmChecked: false
     };
@@ -158,31 +152,17 @@ export class ReferralMakerComponent implements OnInit {
       dates: {
         from: new Date(2019, 0, 1),
       },
-      evacuees: this.evacuees,
+      evacuees: [],
       numBreakfasts: 0,
       numLunches: 0,
       numDinners: 0,
       numDaysMeals: 0,
       totalAmount: 0,
-      supplier: this.newSupplier,
+      supplier: this.createSupplier(),
       comments: 'some comments here',
       confirmChecked: false
     };
     this.foodReferrals.push({ value: referral, valid: false });
-  }
-
-  private get newSupplier(): Supplier {
-    return {
-      id: null, // for future use
-      active: true,
-      name: 'Supplier 1', // TODO: for testing only
-      address: '1050 Main Street', // TODO: for testing only
-      postalCode: 'V8R 1R4', // TODO: for testing only
-      city: 'Victoria', // TODO: for testing only
-      province: 'BC',
-      telephone: '250-123-4567', // TODO: for testing only
-      fax: '250-345-7789', // TODO: for testing only
-    };
   }
 
   clearIncidentalsReferrals(): void {
@@ -198,6 +178,40 @@ export class ReferralMakerComponent implements OnInit {
       while (this.foodReferrals.length > 0) { this.foodReferrals.pop(); }
     }
   }
+
+  private createSupplier(): Supplier {
+    return {
+      id: null, // for future use
+      active: true,
+      name: 'Supplier 1', // TODO: for testing only
+      address: '1050 Main Street', // TODO: for testing only
+      postalCode: 'V8R 1R4', // TODO: for testing only
+      city: 'Victoria', // TODO: for testing only
+      province: 'BC',
+      telephone: '250-123-4567', // TODO: for testing only
+      fax: '250-345-7789', // TODO: for testing only
+    };
+  }
+
+  // populate evacuees
+  private createEvacueeList(reg: Registration): Evacuee[] {
+    if (!reg || !reg.headOfHousehold) { return []; }
+    const hoh = reg.headOfHousehold;
+    const family = hoh.familyMembers || [];
+    return [hoh, ...family];
+  }
+
+  // TODO: Remove this after testing
+  // private createEvacueeList(reg: Registration): EvacueeListItem[] {
+  //   if (!reg) { return []; }
+  //   const hoh = reg.headOfHousehold;
+  //   const family = hoh && hoh.familyMembers ? hoh.familyMembers : [];
+  //   if (hoh) {
+  //     return [hoh, ...family].map(x => ({ evacuee: x, selected: false }));
+  //   } else {
+  //     return [];
+  //   }
+  // }
 
   // --------------------HELPERS-----------------------------------------
   remove(arr: [], i: number) {

@@ -26,12 +26,11 @@ And of course this component needs to be implemented as a 'maker' with both an e
           <div class="row">
             <div class="col-5 pr-0">
               <div class="pt-4 pl-4">
-                <app-evacuee-list formControlName="evacuees"></app-evacuee-list>
+                <app-evacuee-list [evacuees]="evacuees" [selected]="array.value" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()"></app-evacuee-list>
               </div>
             </div>
             <div class="col-7">
               <div class="pt-4 pr-4">
-                <!-- TODO: here, prompt for Food Required and # of Days for Meals -->
                 <div class="card">
                   <div class="card-body">
                     <div class="form-group">
@@ -64,10 +63,6 @@ And of course this component needs to be implemented as a 'maker' with both an e
         </div>
       </section>
     </form>
-    <div>
-      <pre>{{form.value | json}}</pre>
-    </div>
-    <!-- <pre>{{referral|json}}</pre> -->
   </div>
 
   <div *ngIf="readOnly">
@@ -115,8 +110,8 @@ And of course this component needs to be implemented as a 'maker' with both an e
         <span class="name">Evacuees Requiring Incidentals:</span>
         <span class="value">
           <div class="form-check mt-2" *ngFor="let e of referral.evacuees">
-            <input class="form-check-input" [checked]="e.selected" type="checkbox" disabled>
-            <label class="form-check-label">{{e.evacuee.lastName}}, {{e.evacuee.firstName}}</label>
+            <!-- <input class="form-check-input" [checked]="e.selected" type="checkbox" disabled> -->
+            <label class="form-check-label">{{e.lastName}}, {{e.firstName}}</label>
           </div>
         </span>
       </li>

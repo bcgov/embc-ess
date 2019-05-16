@@ -1,11 +1,11 @@
 <div class="card">
   <div class="card-body">
     <p><strong>Please select the evacuees registered on your profile that require incidentals:</strong></p>
-    <p><a href="javascript:void(0);" (click)="selectAll()">Select All</a></p>
-    <p *ngFor="let e of value">
-      <input type="checkbox" [(ngModel)]="e.selected">
-      {{e.evacuee.lastName}}, {{e.evacuee.firstName}}
-    </p>
+    <p><a href="javascript:void(0);" (click)="onSelectAll()">Select All</a></p>
+    <div class="form-check mt-2" *ngFor="let e of evacuees; index as i">
+      <input type="checkbox" class="form-check-input" [checked]="isSelected(e)" (change)="onSelect(e)" id="{{identifier}}-person-{{i}}">
+      <label class="form-check-label" for="{{identifier}}-person-{{i}}">{{e.lastName}}, {{e.firstName}}</label>
+    </div>
   </div>
   <!-- <div class="card-footer">
     <app-fa-link icon="plus-circle" class="float-left" (click)="open(content)">Someone missing? Add them now.</app-fa-link>

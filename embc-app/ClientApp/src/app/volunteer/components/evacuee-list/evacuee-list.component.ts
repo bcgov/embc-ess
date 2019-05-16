@@ -1,54 +1,62 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, forwardRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Evacuee } from 'src/app/core/models';
 import { ValueAccessorBase } from 'src/app/shared/components/value-accessor';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
-// tslint:disable: no-use-before-declare
-const EVACUEE_LIST_PROVIDER = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => EvacueeListComponent),
-  multi: true
-};
-
-interface EvacueeSelector {
-  evacuee: Evacuee;
-  selected: boolean;
-}
+// poor man's uuid
+let identifier = 0;
 
 @Component({
   selector: 'app-evacuee-list',
   templateUrl: './evacuee-list.component.html',
-  styleUrls: ['./evacuee-list.component.scss'],
-  providers: [EVACUEE_LIST_PROVIDER]
+  styleUrls: ['./evacuee-list.component.scss']
 })
-export class EvacueeListComponent extends ValueAccessorBase<EvacueeSelector[]> implements OnInit, OnDestroy {
-  @Output() evacueesChange = new EventEmitter<EvacueeSelector[]>();
+export class EvacueeListComponent {
 
   closeResult: string;
 
+  identifier = `evacuee-list-${identifier++}`;
+
+  touched = false;
+
+  // Sub-set of evacuees that have been selected through the UI (i.e. via checkboxes)
+  @Input() selected: Evacuee[];
+
+  // List of all evacuees that we want to show in this component
+  @Input() evacuees: Evacuee[];
+
+  // Event emitted when an evacuee is selected (or unselected)
+  @Output() select = new EventEmitter<Evacuee>();
+
+  @Output() selectAll = new EventEmitter<any>();
+
   constructor(
     private modalService: NgbModal
-  ) {
-    super();
+  ) { }
+
+  exists(value: Evacuee) {
+    return this.selected.some(x => x.id === value.id);
   }
 
-  ngOnInit() {
-  }
-  ngOnDestroy() {
+  isSelected(value: Evacuee) {
+    return this.exists(value);
   }
 
-  selectAll() {
+  onSelect(value: Evacuee) {
+    this.touched = true;
+    this.select.emit(value);
+  }
+
+  onSelectAll() {
     // select all evacuees
-    this.value = this.value.map(evacuee => {
-      evacuee.selected = true;
-      return evacuee;
-    });
-  }
-
-  emitList() {
-    // output the modified list
-    this.evacueesChange.emit(this.value);
+    // this.value = this.value.map(evacuee => {
+    //   evacuee.selected = true;
+    //   return evacuee;
+    // });
+    // this.onSelect();
+    this.touched = true;
+    this.selectAll.emit();
   }
 
   open(content) {
