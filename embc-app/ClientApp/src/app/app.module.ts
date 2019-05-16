@@ -27,7 +27,6 @@ import { LayoutMainComponent } from './components/layout-main/layout-main.compon
 import { LayoutSideComponent } from './components/layout-side/layout-side.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
-import { EvacueeSearchResultsComponent } from './components/evacuee-search-results/evacuee-search-results.component';
 import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
@@ -91,7 +90,6 @@ import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer
     SideboxAddTaskNumberComponent,
     SideboxAddVolunteerComponent,
     SideboxCollectionNoticeComponent,
-    EvacueeSearchResultsComponent,
     ReferralSearchResultsComponent,
     LayoutMainComponent,
     LayoutSideComponent,
