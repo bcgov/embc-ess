@@ -36,6 +36,7 @@ export class EvacueeListComponent {
   ) { }
 
   exists(value: Evacuee) {
+    if (!this.selected) { return false; }
     return this.selected.some(x => x.id === value.id);
   }
 
@@ -49,12 +50,6 @@ export class EvacueeListComponent {
   }
 
   onSelectAll() {
-    // select all evacuees
-    // this.value = this.value.map(evacuee => {
-    //   evacuee.selected = true;
-    //   return evacuee;
-    // });
-    // this.onSelect();
     this.touched = true;
     this.selectAll.emit();
   }
