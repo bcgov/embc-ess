@@ -27,7 +27,8 @@ export class ReferralTableComponent implements OnChanges, OnDestroy {
   pagination: PaginationSummary = null;
   referrals: Array<Referral> = [];
 
-  private summaryModal: NgbModalRef = null;
+  summaryModal: NgbModalRef = null;
+  includeSummary: boolean;
 
   constructor(
     private referralService: ReferralService,

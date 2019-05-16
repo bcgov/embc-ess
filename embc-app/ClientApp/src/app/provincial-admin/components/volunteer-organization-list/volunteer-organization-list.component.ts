@@ -39,14 +39,12 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
   // this is the correct path prefix for the user
   path: string;
 
-
   // local constants used in the FORM
   readonly SHOW_ALL = '1';
   readonly SHOW_ADMINS_ONLY = '2';
   readonly SHOW_ESS_USERS_ONLY = '3';
 
-
-  private confirmModal: NgbModalRef = null;
+  confirmModal: NgbModalRef = null;
 
   constructor(
     private router: Router,
@@ -88,6 +86,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     // close modal if it's open
     if (this.confirmModal) { this.confirmModal.dismiss(); }
   }
+
   copyProperties(obj: {}): {} {
     const fresh = {};
     for (const k in obj) {
@@ -95,6 +94,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     }
     return fresh;
   }
+
   // get volunteers with supplied params defaults defined in
   getVolunteers() {
     // the check if the numeric value of the toggle matches the global constant for view
@@ -107,7 +107,6 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     this.previousQuery.offset = this.previousQuery.offset;
     // how many records we want
     this.previousQuery.limit = this.previousQuery.limit;
-
 
     // set parameter flags according to what is checked.
     switch (this.userType) {
@@ -130,9 +129,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
       .subscribe((v: ListResult<Volunteer>) => {
         // save the result of the service into an object with both the result and service
         this.resultsAndPagination = v;
-        // Set the not found result message. It should be hidden when results flow into the 
-      
-      
+        // Set the not found result message. It should be hidden when results flow into the form.
         this.notFoundMessage = 'No results found.';
       });
   }
@@ -143,6 +140,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     this.previousQuery.offset = event.offset;
     this.getVolunteers();
   }
+
   search() {
     // on search return to page 1
     this.getVolunteers();
