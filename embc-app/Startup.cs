@@ -1,6 +1,7 @@
 using AutoMapper;
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.PdfUtility;
 using Gov.Jag.Embc.Public.Seeder;
 using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -139,6 +140,7 @@ namespace Gov.Jag.Embc.Public
                 return factory.GetUrlHelper(actionContext);
             });
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IPdfConverter, PdfConverter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
