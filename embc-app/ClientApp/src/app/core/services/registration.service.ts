@@ -66,15 +66,19 @@ export class RegistrationService extends RestService {
     const isMS = window.navigator.msSaveOrOpenBlob ? true : false; // check if IE, Edge, etc
     const blob = await this.getReferralPdfs(registrationId, referralIds, addSummary);
 
+    // as of May 2019 ...
+    // - IE11 can't open a "blob" URL
+    // - Edge throws an error creating URL or referencing it
+    // ... so call the MS-specific feature for them
     if (isMS) {
       // save PDF file
-      const filename = `${registrationId}.pdf`; // FUTURE: add date stamp to filename?
-      window.navigator.msSaveBlob(blob, filename);
+      const filename = `ESS${registrationId}.pdf`; // FUTURE: add date stamp to filename?
+      window.navigator.msSaveOrOpenBlob(blob, filename);
     } else {
       // open PDF in new tab
       const tab = window.open();
-      const fileURL = URL.createObjectURL(blob);
-      tab.location.href = fileURL;
+      const url = URL.createObjectURL(blob);
+      tab.location.href = url;
     }
   }
 
