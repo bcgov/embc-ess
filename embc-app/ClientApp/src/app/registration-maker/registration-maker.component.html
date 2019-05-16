@@ -128,7 +128,7 @@
         <h2 class="blue-header font-weight-bold">EVACUEE DETAILS</h2>
         <app-form-field required="true">
           <label for="lastName">Last Name</label>
-          <input type="text" [class.is-invalid]="invalid('headOfHousehold.lastName')" class="form-control" formControlName="lastName" id="lastName" autocomplete="off">
+          <input type="text" [class.is-invalid]="invalid('headOfHousehold.lastName')" class="form-control text-uppercase" appUpperCase="blur" formControlName="lastName" id="lastName" autocomplete="off">
           <span *ngIf="submitted" class="invalid-feedback">{{e.headOfHousehold?.lastName}}</span>
         </app-form-field>
         <app-form-field required="true">
@@ -189,7 +189,7 @@
               <div class="row mt-0">
                 <div class="col">
                   <label class="required" for="lastName-{{i}}">Last Name</label>
-                  <input type="text" [class.is-invalid]="invalid('lastName', entry)" class="form-control" formControlName="lastName" id="lastName-{{i}}" autocomplete="off">
+                  <input type="text" [class.is-invalid]="invalid('lastName', entry)" class="form-control text-uppercase" appUpperCase="blur" formControlName="lastName" id="lastName-{{i}}" autocomplete="off">
                   <span *ngIf="submitted" class="invalid-feedback">Please enter a last name.</span>
                 </div>
                 <div class="col">

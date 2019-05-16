@@ -448,6 +448,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // set the value of the restricted form element
     this.form.patchValue({ restrictedAccess: state });
   }
+
   nullMailingAddress() {
     this.f.mailingAddressInBC.setValidators(null);
   }

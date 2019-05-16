@@ -18,12 +18,14 @@ import { AddressSelectorComponent } from './components/address-form/address-sele
 import { BcAddressComponent } from './components/address-form/bc-address/bc-address.component';
 import { OtherAddressComponent } from './components/address-form/other-address/other-address.component';
 import { DisableControlDirective } from './directives/disable-control.directive';
+import { UpperCaseDirective } from './directives/upper-case.directive';
 import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
 import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
 import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
 import { DateTimePickerComponent } from './components/date-time-picker/date-time-picker.component';
 import { CaptchaComponent } from './components/captcha/captcha.component';
+import { PaginatorComponent } from './components/paginator/paginator.component';
 
 // import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent, CollectionNoticeComponent } from './components/side-boxes';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -33,7 +35,6 @@ import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
 import { NewlinesPipe } from './pipes/newlines.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
 import { YesNoPipe } from './pipes/yes-no.pipe';
-import { PaginatorComponent } from './components/paginator/paginator.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
     BcAddressComponent,
     OtherAddressComponent,
     DisableControlDirective,
+    UpperCaseDirective,
     FontAwesomeIconComponent,
     FontAwesomeLinkComponent,
     AttentionIconComponent,
@@ -60,8 +62,8 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
     YesNoPipe,
     PageNotFoundComponent,
     DateTimePickerComponent,
-    PaginatorComponent,
     CaptchaComponent,
+    PaginatorComponent,
   ],
   imports: [
     CommonModule,
@@ -106,6 +108,7 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
     BcAddressComponent,
     OtherAddressComponent,
     DisableControlDirective,
+    UpperCaseDirective,
     FontAwesomeIconComponent,
     FontAwesomeLinkComponent,
     AttentionIconComponent,
@@ -116,9 +119,8 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
     PluckPipe,
     YesNoPipe,
     DateTimePickerComponent,
-    PaginatorComponent,
-
     CaptchaComponent,
+    PaginatorComponent,
   ]
 })
 export class SharedModule { }
