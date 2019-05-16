@@ -20,19 +20,15 @@ export class EvacueeListComponent {
 
   touched = false;
 
-  @Input() showErrors = true;
-
+  @Input() showErrorsWhen = true;
   @Input() errors: ValidationErrors | null = null;
 
   // Sub-set of evacuees that have been selected through the UI (i.e. via checkboxes)
   @Input() selected: Evacuee[];
-
   // List of all evacuees that we want to show in this component
   @Input() evacuees: Evacuee[];
 
-  // Event emitted when an evacuee is selected (or unselected)
   @Output() select = new EventEmitter<Evacuee>();
-
   @Output() selectAll = new EventEmitter<any>();
 
   constructor(
@@ -40,13 +36,15 @@ export class EvacueeListComponent {
   ) { }
 
   get invalid(): boolean {
-    if (!this.showErrors) { return false; }
-    return this.errors && this.touched;
+    return this.errors && this.showErrorsWhen;
+  }
+
+  get valid(): boolean {
+    return !this.invalid;
   }
 
   exists(value: Evacuee) {
-    if (!this.selected) { return false; }
-    return this.selected.some(x => x.id === value.id);
+    return this.selected && this.selected.some(x => x.id === value.id);
   }
 
   isSelected(value: Evacuee) {

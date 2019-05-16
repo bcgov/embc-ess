@@ -8,6 +8,7 @@ import {
   Registration, Supplier, IncidentalsReferral, FoodReferral,
   ClothingReferral, LodgingReferral, TransportationReferral, Evacuee
 } from 'src/app/core/models';
+import { LOAD_FAIL } from 'src/app/store/lookups/country.actions';
 
 interface ReferralFormControl<T = any> {
   value: T;
@@ -28,6 +29,12 @@ export class ReferralMakerComponent implements OnInit {
   regId: string = null;
   purchaser: string = null;
   evacuees: Array<Evacuee> = [];
+
+  // avoid showing validation errors until the NEXT button is clicked
+  userClickedNext = false;
+
+  // Is this maker form valid?
+  valid = false;
 
   foodReferrals: Array<ReferralFormControl<FoodReferral>> = [];
   lodgingReferrals: Array<ReferralFormControl<LodgingReferral>> = [];
@@ -71,9 +78,31 @@ export class ReferralMakerComponent implements OnInit {
       });
   }
 
+  updateValidationStatus(referralForm: ReferralFormControl, valid: boolean): void {
+    if (referralForm) {
+      referralForm.valid = valid;
+    }
+    this.valid = this.calculateStatus();
+  }
+
+  // Recalculates the validation status of this maker form
+  private calculateStatus(): boolean {
+    const allValid = (arr: Array<ReferralFormControl<any>>) => arr.every(e => e.valid);
+
+    // TODO: check the other arrays here...
+    const food = true;
+    const lodging = true;
+    const clothing = true;
+    const transportation = true;
+    const incidentals = allValid(this.incidentalsReferrals);
+
+    return (food && lodging && clothing && transportation && incidentals);
+  }
+
   back() {
     // show the editing parts of the form
     this.editMode = true;
+    this.userClickedNext = false;
     window.scrollTo(0, 0); // scroll to top
   }
 
@@ -85,11 +114,13 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   createReferral() {
+    this.userClickedNext = true;
 
-    // TODO: Validate here BEFORE going to review portion of this page....
-
-    this.editMode = false;
-    window.scrollTo(0, 0); // scroll to top
+    // Validate here BEFORE going to review portion of this page....
+    if (this.valid) {
+      this.editMode = false;
+      window.scrollTo(0, 0); // scroll to top
+    }
   }
 
   finalize() {
@@ -183,7 +214,7 @@ export class ReferralMakerComponent implements OnInit {
     return {
       id: null, // for future use
       active: true,
-      name: 'Supplier 1', // TODO: for testing only
+      name: '', // TODO: for testing only
       address: '1050 Main Street', // TODO: for testing only
       postalCode: 'V8R 1R4', // TODO: for testing only
       city: 'Victoria', // TODO: for testing only
@@ -216,21 +247,5 @@ export class ReferralMakerComponent implements OnInit {
   // --------------------HELPERS-----------------------------------------
   remove(arr: [], i: number) {
     if (arr) { arr.splice(i, 1); }
-  }
-
-  updateValidity(entry: ReferralFormControl, valid: boolean) {
-    if (entry) { entry.valid = valid; }
-  }
-
-  // Checks that all referrals are valid within their respective categories (food, lodging, etc)
-  get formIsValid(): boolean {
-    const status = {
-      food: true,  // TODO: Include the other arrays here...
-      lodging: true,
-      clothing: true,
-      transportation: true,
-      incidentals: this.incidentalsReferrals.every(e => e.valid)
-    };
-    return Object.keys(status).every(key => !!status[key]);
   }
 }

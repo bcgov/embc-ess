@@ -2,21 +2,16 @@ import { Directive, Self, HostBinding, Input } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 @Directive({
-  selector: '[appValidationBorder]'
+  selector: '[appErrorBorder]'
 })
 export class ValidationBorderDirective {
+  @Input() when = true;
 
-  // tslint:disable-next-line: no-input-rename
-  @Input('appValidationBorderShowOnError') showOnError = true;
-
-  @HostBinding('class.is-invalid')
-  get showBorder(): boolean {
-    if (!this.formControl || !this.showOnError) { return false; }
-    const { dirty, touched } = this.formControl;
-    return this.invalid ? (dirty || touched) : false;
+  @HostBinding('class.is-invalid') get show() {
+    return this.invalid && this.when;
   }
 
-  get invalid(): boolean {
+  get invalid() {
     return this.formControl ? this.formControl.invalid : false;
   }
 

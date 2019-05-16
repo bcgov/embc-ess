@@ -26,7 +26,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
           <div class="row">
             <div class="col-5 pr-0">
               <div class="pt-4 pl-4">
-                <app-evacuee-list [evacuees]="evacuees" [selected]="array.value" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()"></app-evacuee-list>
+                <app-evacuee-list [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()"></app-evacuee-list>
               </div>
             </div>
             <div class="col-7">
@@ -44,7 +44,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
                       <label class="col-form-label">Total Amount:</label>
                       <div class="col d-flex input-with-icon">
                         <span aria-hidden="true">$</span>
-                        <input type="text" appValidationBorder #amountInput class="form-control" formControlName="totalAmount">
+                        <input type="text" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control" formControlName="totalAmount">
                       </div>
                     </div>
                   </div>
@@ -57,7 +57,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
           </div>
           <div class="card m-4">
             <div class="card-body">
-              <app-supplier [supplier]="referral.supplier"></app-supplier>
+              <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen"></app-supplier>
             </div>
           </div>
         </div>

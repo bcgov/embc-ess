@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { IncidentalsReferral, Evacuee } from 'src/app/core/models';
+import { IncidentalsReferral } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
-import { numberOfDays, uuid, clearFormArray } from 'src/app/shared/utils';
+import { numberOfDays, uuid } from 'src/app/shared/utils';
 import { SupplierComponent } from '../supplier/supplier.component';
-import { FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
@@ -14,9 +14,8 @@ import { AbstractReferralComponent } from '../abstract-referral/abstract-referra
   styleUrls: ['./incidentals-referral.component.scss']
 })
 export class IncidentalsReferralComponent extends AbstractReferralComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
-
+  @Input() showErrorsWhen = true;
   @Input() referral: IncidentalsReferral = null;
-
   @ViewChild(SupplierComponent) supplier: SupplierComponent;
 
   private ratesModal: NgbModalRef = null;
@@ -35,7 +34,6 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent impl
   }
 
   ngOnInit() {
-    super.ngOnInit();
     this.handleFormChange();
     this.displayReferral(this.referral);
   }

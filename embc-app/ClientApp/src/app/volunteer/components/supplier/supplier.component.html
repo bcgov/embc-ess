@@ -4,12 +4,12 @@
     <div class="row">
       <div class="col-md-6">
         <label class="required" for="supplierName-{{uuid}}">Supplier Name</label>
-        <input type="text" appValidationBorder id="supplierName-{{uuid}}" class="form-control" autocomplete="on" formControlName="name">
+        <input type="text" appErrorBorder [when]="showErrorsWhen" id="supplierName-{{uuid}}" class="form-control" autocomplete="on" formControlName="name">
         <span class="invalid-feedback">Please enter supplier name.</span>
       </div>
       <div class="col-md-6">
         <label class="required" for="supplierAddress-{{uuid}}">Supplier Address</label>
-        <input type="text" appValidationBorder id="supplierAddress-{{uuid}}" class="form-control" autocomplete="on" formControlName="address">
+        <input type="text" appErrorBorder [when]="showErrorsWhen" id="supplierAddress-{{uuid}}" class="form-control" autocomplete="on" formControlName="address">
         <span class="invalid-feedback">Please enter supplier address.</span>
       </div>
     </div>
@@ -18,7 +18,7 @@
         <div class="row">
           <div class="col-8">
             <label class="required" for="city-{{uuid}}">City</label>
-            <input type="text" appValidationBorder id="city-{{uuid}}" class="form-control" autocomplete="on" formControlName="city">
+            <input type="text" appErrorBorder [when]="showErrorsWhen" id="city-{{uuid}}" class="form-control" autocomplete="on" formControlName="city">
             <span class="invalid-feedback">Please enter supplier city.</span>
           </div>
           <div class="col-4">

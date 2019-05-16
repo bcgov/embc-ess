@@ -12,6 +12,7 @@ let identifier = 0;
 })
 export class SupplierComponent implements OnInit {
 
+  @Input() showErrorsWhen = true;
   @Input() readOnly = false;
   @Input() supplier: Supplier;
   @Output() supplierChange = new EventEmitter<Supplier>();
