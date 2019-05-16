@@ -95,13 +95,4 @@ export class RegistrationSummaryFullComponent implements OnInit {
     this.router.navigate([`/${this.path}/registration`]);
   }
 
-  get hasReferrals(): boolean {
-    return this.registration.hasInquiryReferral
-      || this.registration.hasHealthServicesReferral
-      || this.registration.hasFirstAidReferral
-      || this.registration.hasPersonalServicesReferral
-      || this.registration.hasChildCareReferral
-      || this.registration.hasPetCareReferral;
-  }
-
 }
