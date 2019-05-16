@@ -1,7 +1,6 @@
 using Gov.Jag.Embc.Public.Utils;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
 
 namespace Gov.Jag.Embc.Public.Models.Db
@@ -11,6 +10,9 @@ namespace Gov.Jag.Embc.Public.Models.Db
     /// </summary>
     public class Evacuee : IAuditableEntity
     {
+        public const string HOH = "HOH";
+        public const string FAMILY_MEMBER = "FMBR";
+
         public long RegistrationId { get; set; }
 
         public int EvacueeSequenceNumber { get; set; }

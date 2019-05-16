@@ -4,14 +4,16 @@ using Gov.Jag.Embc.Public.DataInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Gov.Jag.Embc.Public.Migrations
 {
     [DbContext(typeof(EmbcDbContext))]
-    partial class EmbcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190516225741_Old-Registrations-Cleanup")]
+    partial class OldRegistrationsCleanup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
