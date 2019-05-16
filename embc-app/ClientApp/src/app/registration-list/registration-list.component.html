@@ -42,6 +42,7 @@
     <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option>
   </select> -->
   <div class="col clearfix" *ngIf="this.totalPages > 1">
+    <app-paginator [metaData]="metaData" (params)="onPaginationEvent($event)"></app-paginator>
     <ngb-pagination class="float-right" [collectionSize]="collectionSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
   </div>
 </div>

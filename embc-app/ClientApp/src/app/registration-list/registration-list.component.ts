@@ -22,12 +22,13 @@ export class RegistrationListComponent implements OnInit {
   isLoadingResults = false;
   searchResults$: Observable<EvacueeSearchResults>;
   increments: number[] = [5, 10, 25, 50, 100, 1000];
+  metaData: PaginationSummary;
   // collection of pagination parameters for UI pagination
   // doesn't need to be an object besides it provides a visual seper
   page: number; // the current displayed page
   totalPages: number; // how many pages are returned?
   pageSize: number; // how many entries are on the page
-  previousQuery: string; // a place to save the last query parameters
+  previousQuery: SearchQueryParameters; // a place to save the last query parameters
   sort = '-registrationCompletionDate'; // how do we sort the list query param
   collectionSize = 0; // how large is the collection?
   maxSize = 10; // how many pages of results shoudl the UI show before collapsing?
@@ -43,20 +44,20 @@ export class RegistrationListComponent implements OnInit {
     // go get the data
     this.doSearch();
   }
-  search(query: string = '', page: number = 1, maxSize: number = this.maxSize) {
+  search(query: SearchQueryParameters = this.previousQuery) {
     // update form state
     this.isLoadingResults = true;
 
     // go get a fresh list of registrations from the service
-    const queryParams: SearchQueryParameters = {
-      offset: (page * maxSize) - maxSize,
-      limit: maxSize,
-      sort: this.sort,
-      q: query
-    };
+    // const queryParams: SearchQueryParameters = {
+    //   offset: (page * maxSize) - maxSize,
+    //   limit: maxSize,
+    //   sort: this.sort,
+    //   q: query
+    // };
 
     // go get the collection of meta and data
-    this.resultsAndPagination$ = this.registrationService.getRegistrations(queryParams);
+    this.resultsAndPagination$ = this.registrationService.getRegistrations(query);
 
     // process server response into something we can display in the UI
     this.searchResults$ = this.resultsAndPagination$.pipe(
@@ -68,7 +69,7 @@ export class RegistrationListComponent implements OnInit {
 
         // Flip flag to show that loading has finished.
         this.isLoadingResults = false;
-
+        this.metaData = x.metadata;
         // collect all of the meta into variables
         this.page = x.metadata.page;
         this.totalPages = x.metadata.totalPages;
@@ -104,5 +105,8 @@ export class RegistrationListComponent implements OnInit {
     // TODO: this seems like bad practice but fix when we have time
     this.router.navigate(['register-evacuee/fill/' + essFileNumber]);
   }
+  onPaginationEvent(event: SearchQueryParameters) {
 
+    console.log(event);
+  }
 }
