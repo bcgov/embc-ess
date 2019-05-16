@@ -16,26 +16,11 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Select(e => new Models.Db.ReferralEvacuee
                 {
                     EvacueeId = int.Parse(e.Id),
-                    IsPurchaser = false,
-                    RegistrationId = long.Parse(s.RegistrationId)
-                }).Append(new Models.Db.ReferralEvacuee
-                {
-                    EvacueeId = int.Parse(s.Purchaser.Id),
-                    IsPurchaser = true,
                     RegistrationId = long.Parse(s.RegistrationId)
                 })))
                 .ReverseMap()
-                .ForMember(d => d.Purchaser, m => m.MapFrom((s, _) =>
-                {
-                    var purchaser = s.Evacuees.Single(e => e.IsPurchaser).Evacuee;
-                    return new ReferralEvacuee
-                    {
-                        Id = purchaser.EvacueeSequenceNumber.ToString(),
-                        FirstName = purchaser.FirstName,
-                        LastName = purchaser.LastName
-                    };
-                }))
-                .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Where(e => !e.IsPurchaser).Select(e => new ReferralEvacuee
+                .ForMember(d => d.ReferralId, m => m.MapFrom(s => s.ReferralId))
+                .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Select(e => new ReferralEvacuee
                 {
                     Id = e.Evacuee.EvacueeSequenceNumber.ToString(),
                     FirstName = e.Evacuee.FirstName,
@@ -48,45 +33,45 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .IncludeBase<Referral, Models.Db.Referral>()
                 .ReverseMap()
                 .IncludeBase<Models.Db.Referral, Referral>()
-                .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Clothing.ToString()));
+                .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Clothing.ToString().ToUpperInvariant()));
 
             CreateMap<Referral, Models.Db.IncidentalsReferral>()
                 .IncludeBase<Referral, Models.Db.Referral>()
                 .ReverseMap()
                 .IncludeBase<Models.Db.Referral, Referral>()
-                .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Incidentals.ToString()));
+                .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Incidentals.ToString().ToUpperInvariant()));
 
             CreateMap<Referral, Models.Db.TransportationReferral>()
                 .IncludeBase<Referral, Models.Db.Referral>()
                 .ReverseMap()
                 .IncludeBase<Models.Db.Referral, Referral>()
-                .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Transportation_Other.ToString().Split('_')[0]));
+                .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Transportation_Other.ToString().Split('_')[0].ToUpperInvariant()));
 
             CreateMap<Referral, Models.Db.TaxiTransportationReferral>()
                 .IncludeBase<Referral, Models.Db.TransportationReferral>()
                 .ReverseMap()
                 .IncludeBase<Models.Db.TransportationReferral, Referral>()
-                .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Transportation_Taxi.ToString().Split('_')[1]));
+                .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Transportation_Taxi.ToString().Split('_')[1].ToUpperInvariant()));
 
             CreateMap<Referral, Models.Db.OtherTransportationReferral>()
                 .IncludeBase<Referral, Models.Db.TransportationReferral>()
                 .ForMember(d => d.TransportMode, m => m.MapFrom(s => s.OtherTransportModeDetails))
                 .ReverseMap()
                 .IncludeBase<Models.Db.TransportationReferral, Referral>()
-                .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Transportation_Other.ToString().Split('_')[1]));
+                .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Transportation_Other.ToString().Split('_')[1].ToUpperInvariant()));
 
             CreateMap<Referral, Models.Db.FoodReferral>()
                 .IncludeBase<Referral, Models.Db.Referral>()
                 .ReverseMap()
                 .IncludeBase<Models.Db.Referral, Referral>()
-                .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Food_Groceries.ToString().Split('_')[0]));
+                .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Food_Groceries.ToString().Split('_')[0].ToUpperInvariant()));
 
             CreateMap<Referral, Models.Db.GroceriesFoodReferral>()
                 .IncludeBase<Referral, Models.Db.FoodReferral>()
                 .ForMember(d => d.NumberOfMeals, m => m.MapFrom(s => s.NumDaysMeals))
                 .ReverseMap()
                 .IncludeBase<Models.Db.FoodReferral, Referral>()
-                .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Food_Groceries.ToString().Split('_')[1]));
+                .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Food_Groceries.ToString().Split('_')[1].ToUpperInvariant()));
 
             CreateMap<Referral, Models.Db.RestaurantFoodReferral>()
                 .IncludeBase<Referral, Models.Db.FoodReferral>()
@@ -95,33 +80,33 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .ForMember(d => d.NumberOfDinners, m => m.MapFrom(s => s.NumDinners))
                 .ReverseMap()
                 .IncludeBase<Models.Db.FoodReferral, Referral>()
-                .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Food_Restaurant.ToString().Split('_')[1]));
+                .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Food_Restaurant.ToString().Split('_')[1].ToUpperInvariant()));
 
             CreateMap<Referral, Models.Db.LodgingReferral>()
                 .IncludeBase<Referral, Models.Db.Referral>()
                 .ForMember(d => d.NumberOfNights, m => m.MapFrom(s => s.NumNights))
                 .ReverseMap()
                 .IncludeBase<Models.Db.Referral, Referral>()
-                .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Lodging_Hotel.ToString().Split('_')[0]));
+                .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Lodging_Hotel.ToString().Split('_')[0].ToUpperInvariant()));
 
             CreateMap<Referral, Models.Db.HotelLodgingReferral>()
                 .IncludeBase<Referral, Models.Db.LodgingReferral>()
                 .ForMember(d => d.NumberOfRooms, m => m.MapFrom(s => s.NumRooms))
                 .ReverseMap()
                 .IncludeBase<Models.Db.Referral, Referral>()
-                .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Lodging_Hotel.ToString().Split('_')[1]));
+                .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Lodging_Hotel.ToString().Split('_')[1].ToUpperInvariant()));
 
             CreateMap<Referral, Models.Db.GroupLodgingReferral>()
                 .IncludeBase<Referral, Models.Db.LodgingReferral>()
                 .ReverseMap()
                 .IncludeBase<Models.Db.Referral, Referral>()
-                .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Lodging_Group.ToString().Split('_')[1]));
+                .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Lodging_Group.ToString().Split('_')[1].ToUpperInvariant()));
 
             CreateMap<Referral, Models.Db.BilletingLodgingReferral>()
                 .IncludeBase<Referral, Models.Db.LodgingReferral>()
                 .ReverseMap()
                 .IncludeBase<Models.Db.Referral, Referral>()
-                .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Lodging_Billeting.ToString().Split('_')[1]));
+                .ForMember(d => d.SubType, m => m.MapFrom((s, _) => Models.Db.ReferralType.Lodging_Billeting.ToString().Split('_')[1].ToUpperInvariant()));
         }
     }
 
@@ -169,7 +154,8 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public bool Active { get; set; }
 
         [Required]
-        public ReferralEvacuee Purchaser { get; set; }
+        [MaxLength(100)]
+        public string Purchaser { get; set; }
 
         [Required]
         public string Type { get; set; }

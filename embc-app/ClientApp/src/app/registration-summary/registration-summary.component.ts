@@ -13,18 +13,13 @@ import { UniqueKeyService } from '../core/services/unique-key.service';
 })
 export class RegistrationSummaryComponent implements OnInit, OnDestroy {
 
-  private confirmModal: NgbModalRef = null;
+  confirmModal: NgbModalRef = null;
   registration: Registration = null;
   path: string = null; // for relative routing
-  selectedPurchaser = 'null';
+  selectedPurchaser: string = null;
   otherPurchaser: string = null;
   loading = true;
-  reason = 'null';
-
-  get purchaser() {
-    const otherPurchaser = this.otherPurchaser ? this.otherPurchaser.trim() : null;
-    return (this.selectedPurchaser === 'other') ? otherPurchaser : (this.selectedPurchaser !== 'null') ? this.selectedPurchaser : null;
-  }
+  reason: string = null;
 
   constructor(
     private router: Router,
@@ -76,25 +71,30 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
   }
 
   showFullProfile(content: TemplateRef<any>) {
-    this.confirmModal = this.modals.open(content);
+    this.confirmModal = this.modals.open(content, { centered: true });
 
     // handle result
     this.confirmModal.result.then(() => {
       // modal was closed
-
       this.confirmModal = null; // clear for next time
 
       // save the key for lookup
       this.uniqueKeyService.setKey(this.registration.id);
-      this.router.navigate([`/${this.path}/registration/summary/full`]);
+      this.router.navigate([`/${this.path}/registration/summary/full`, { reason: this.reason }]);
     }, () => {
       // modal was dismissed
       this.confirmModal = null; // clear for next time
     });
   }
 
+  getPurchaser() {
+    const otherPurchaser = this.otherPurchaser ? this.otherPurchaser.trim() : null;
+    return (this.selectedPurchaser === 'other') ? otherPurchaser : this.selectedPurchaser;
+  }
+
+
   addReferrals() {
-    this.router.navigate([`/${this.path}/referrals`, this.registration.id, this.purchaser]);
+    this.router.navigate([`/${this.path}/referrals`, this.registration.id, this.getPurchaser()]);
   }
 
 }

@@ -158,7 +158,7 @@
           </app-form-field>
           <app-form-field class="col" required="true">
             <label for="dob">Date of Birth</label>
-            <input type="text" placeholder="yyyy-mm-dd" [class.is-invalid]="invalid('headOfHousehold.dob')" class="form-control" formControlName="dob" id="dob" autocomplete="off">
+            <input type="text" placeholder="yyyy-mm-dd" [textMask]="{mask: dateMask, showMask: true}" [class.is-invalid]="invalid('headOfHousehold.dob')" class="form-control" formControlName="dob" id="dob" autocomplete="off">
             <small>(Format: yyyy-mm-dd)</small>
             <span *ngIf="submitted" class="invalid-feedback">{{e.headOfHousehold.dob}}</span>
           </app-form-field>
@@ -233,7 +233,7 @@
                 </div>
                 <div class="col">
                   <label class="required" for="dob-{{i}}">Date of Birth</label>
-                  <input type="text" placeholder="yyyy-mm-dd" [class.is-invalid]="invalid('dob', entry)" class="form-control" formControlName="dob" id="dob-{{i}}" autocomplete="off">
+                  <input type="text" placeholder="yyyy-mm-dd" [textMask]="{mask: dateMask, showMask: true}" [class.is-invalid]="invalid('dob', entry)" class="form-control" formControlName="dob" id="dob-{{i}}" autocomplete="off">
                   <small>(Format: yyyy-mm-dd)</small>
                   <span *ngIf="submitted && hasErrors('dob', entry, ['required'])" class="invalid-feedback">Please enter a date of birth.</span>
                   <ng-container *ngIf="submitted && hasErrors('dob', entry, ['date', 'maxDate'])">
@@ -284,17 +284,16 @@
           <div class="row mt-0">
             <div class="col">
               <label for="phoneNumber">Telephone / Mobile Number</label>
-              <input type="text" [class.is-invalid]="invalid('phoneNumber')" class="form-control" formControlName="phoneNumber" id="phoneNumber" autocomplete="off">
-              <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 9999999999)</small>
+              <input type="text" [class.is-invalid]="invalid('phoneNumber')" class="form-control" [textMask]="{mask: phoneMask, showMask: true}" formControlName="phoneNumber" id="phoneNumber" autocomplete="off">
+              <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 999-999-9999)</small>
               <span *ngIf="submitted" class="invalid-feedback">{{e.phoneNumber}}</span>
             </div>
             <div class="col">
               <label for="phoneNumberAlt">Alternate Telephone / Mobile Number</label>
-              <input type="text" [class.is-invalid]="invalid('phoneNumberAlt')" class="form-control" formControlName="phoneNumberAlt" id="phoneNumberAlt" autocomplete="off">
-              <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 9999999999)</small>
+              <input type="text" [class.is-invalid]="invalid('phoneNumberAlt')" class="form-control" [textMask]="{mask: phoneMask, showMask: true}" formControlName="phoneNumberAlt" id="phoneNumberAlt" autocomplete="off">
+              <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 999-999-9999)</small>
               <span *ngIf="submitted" class="invalid-feedback">{{e.phoneNumberAlt}}</span>
             </div>
-            <span [class.d-block]="invalid('phoneNumberAlt')" class="invalid-feedback">{{e.phoneNumberAlt}}</span>
           </div>
           <div class="row mt-4">
             <div class="col">
@@ -531,15 +530,6 @@
         <textarea class="form-control" placeholder="Details" rows="4" formControlName="familyRecoveryPlan"></textarea>
       </div>
 
-      <!-- FOLLOW-UP REQUIRED -->
-      <div class="mb-4">
-        <h2 class="blue-header font-weight-bold">FOLLOW-UP REQUIRED</h2>
-        <div class="form-row mx-0">
-          <app-attention-icon [alignCenter]="false"></app-attention-icon>
-          <textarea class="form-control" placeholder="Details" rows="4" formControlName="followUpDetails"></textarea>
-        </div>
-      </div>
-
       <!-- REFERRALS MADE WITHIN RECEPTION CENTRE -->
       <div class="mb-4">
         <h2 class="blue-header font-weight-bold">REFERRALS MADE WITHIN RECEPTION CENTRE</h2>
@@ -580,8 +570,21 @@
         <h2 class="blue-header font-weight-bold">OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE</h2>
         <div class="form-row mx-0">
           <app-attention-icon [alignCenter]="false"></app-attention-icon>
-          <textarea class="form-control" placeholder="Details" rows="4" formControlName="externalReferralsDetails"></textarea>
+          <textarea class="form-control" placeholder="Please specify" rows="4" formControlName="externalReferralsDetails"></textarea>
         </div>
+      </div>
+
+      <!-- INTERNAL CASE NOTES -->
+      <div class="mb-4">
+        <h2 class="blue-header font-weight-bold">INTERNAL CASE NOTES</h2>
+        <div class="form-row mx-0">
+          <app-attention-icon [alignCenter]="false"></app-attention-icon>
+          <p class="col">
+            Please do not include any personal/medical information pertaining to the evacuee and their family.<br>
+            Initial and date each comment that you add. Do not delete any previous case notes.
+            </p>
+        </div>
+        <textarea class="form-control" placeholder="Details" rows="8" formControlName="internalCaseNotes"></textarea>
       </div>
 
       <div *ngIf="errorSummary" class="text-danger mt-5 pl-5">
@@ -663,7 +666,7 @@
     </li>
     <li>
       <span class="name">Date of Birth:</span>
-      <span class="value">{{registration?.headOfHousehold?.dob | date : 'MM/dd/yyyy'}}</span>
+      <span class="value">{{registration?.headOfHousehold?.dob | date : 'MMM-dd-yyyy'}}</span>
     </li>
   </ul>
 
@@ -692,7 +695,7 @@
       </li>
       <li>
         <span class="name">Date of Birth:</span>
-        <span class="value">{{fm?.dob | date : 'MM/dd/yyyy'}}</span>
+        <span class="value">{{fm?.dob | date : 'MMM-dd-yyyy'}}</span>
       </li>
     </ul>
   </div>
@@ -884,7 +887,7 @@
   <h2>Family Recovery Plan</h2>
   <ul class="summary">
     <li>
-      <span>&nbsp;{{registration?.familyRecoveryPlan}}</span>
+      <span>{{registration?.familyRecoveryPlan || '&nbsp;'}}</span>
     </li>
   </ul>
 
@@ -919,14 +922,14 @@
   <h2>Other Agency Referrals</h2>
   <ul class="summary">
     <li>
-      <span>&nbsp;{{registration?.externalReferralsDetails}}</span>
+      <span>{{registration?.externalReferralsDetails || '&nbsp;'}}</span>
     </li>
   </ul>
 
-  <h2>Internal Case Notes</h2>
+  <h2 class="blue-header font-weight-bold">INTERNAL CASE NOTES</h2>
   <ul class="summary">
     <li>
-      <span>&nbsp;{{registration?.followUpDetails}}</span>
+      <span class='internal-case-notes'>{{registration?.internalCaseNotes || '&nbsp;'}}</span>
     </li>
   </ul>
 

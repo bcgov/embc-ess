@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Referral } from 'src/app/core/models';
 import { ReferralSearchResults } from 'src/app/core/models/search-interfaces';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -41,7 +40,6 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
   }
 
   constructor(
-    private router: Router,
     private authService: AuthService
   ) { }
 

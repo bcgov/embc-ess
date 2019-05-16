@@ -19,6 +19,7 @@ import { UniqueKeyService } from '../core/services/unique-key.service';
   styleUrls: ['./volunteer-maker.component.scss']
 })
 export class VolunteerMakerComponent implements OnInit, AfterViewInit {
+
   maker = true;
   editMode: boolean;
   submitting = false; // tracks if in the process of submitting for the UI
@@ -306,4 +307,5 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
     // navigate back to the volunteers list
     this.router.navigate([`/${this.path}/volunteers`], { preserveQueryParams: true });
   }
+
 }

@@ -30,7 +30,7 @@ export class TransportationReferralComponent implements OnInit, OnDestroy, OnCha
   ngOnChanges(changes: SimpleChanges) { }
 
   viewRates() {
-    this.ratesModal = this.modals.open(TransportationRatesComponent, { size: 'lg' });
+    this.ratesModal = this.modals.open(TransportationRatesComponent, { size: 'lg', centered: true });
     this.ratesModal.result.then(
       () => { this.ratesModal = null; },
       () => { this.ratesModal = null; }

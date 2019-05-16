@@ -31,12 +31,12 @@
       <div class="row">
         <div class="col-6">
           <label for="telephone_{{id}}">Telephone</label>
-          <input type="text" id="telephone_{{id}}" class="form-control" [(ngModel)]="supplier.telephone" (change)="validate()" autocomplete="on">
+          <input type="text" id="telephone_{{id}}" class="form-control" [textMask]="{mask: phoneMask, showMask: true}" [(ngModel)]="supplier.telephone" (change)="validate()" autocomplete="on">
           <!-- <span class="invalid-feedback" style="display: block;">Please enter a valid telephone number.</span> -->
         </div>
         <div class="col-6">
           <label for="fax_{{id}}">Fax</label>
-          <input type="text" id="fax_{{id}}" class="form-control" [(ngModel)]="supplier.fax" (change)="validate()" autocomplete="on">
+          <input type="text" id="fax_{{id}}" class="form-control" [textMask]="{mask: phoneMask, showMask: true}" [(ngModel)]="supplier.fax" (change)="validate()" autocomplete="on">
           <!-- <span class="invalid-feedback" style="display: block;">Please enter a valid fax number.</span> -->
         </div>
       </div>

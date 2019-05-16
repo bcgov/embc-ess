@@ -13,6 +13,7 @@ import { UniqueKeyService } from '../../../core/services/unique-key.service';
   styleUrls: ['./organization-maker.component.scss']
 })
 export class OrganizationMakerComponent implements OnInit, AfterViewInit {
+
   maker: boolean;
   editMode: boolean;
   submitting = false; // tracks if in the process of submitting for the UI
@@ -45,7 +46,6 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
     this.adminLastName = new FormControl('');
     this.adminFirstName = new FormControl('');
     this.community = new FormControl('');
-
 
     const key = this.uniqueKeyService.getKey();
     if (key) {
@@ -175,4 +175,5 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
     // navigate back home
     this.router.navigate([`/${this.path}/organizations`]);
   }
+
 }

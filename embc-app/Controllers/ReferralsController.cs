@@ -27,11 +27,11 @@ namespace Gov.Jag.Embc.Public.Controllers
         public async Task<IActionResult> Get(string registrationId, SearchQueryParameters searchQuery)
 
         {
-            var results = await dataInterface.GetReferralsAsync(registrationId);
+            var results = await dataInterface.GetReferralsAsync(registrationId, searchQuery);
             return await Task.FromResult(Json(new
             {
                 RegistrationId = registrationId,
-                Referrals = new PaginatedList<ReferralListItem>(results.Select(r => r.ToListItem()), searchQuery.Offset, searchQuery.Limit)
+                Referrals = results
             }));
         }
 
@@ -53,11 +53,15 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(string registrationId, [FromBody] IEnumerable<Referral> newReferrals)
+        public async Task<IActionResult> Post(string registrationId, [FromBody] PostRequest request)
         {
             var referralsList = new List<string>();
-            foreach (var referral in newReferrals)
+            foreach (var referral in request.Referrals)
             {
+                referral.RegistrationId = registrationId;
+                referral.ConfirmChecked = request.ConfirmChecked;
+                referral.Active = true;
+                referral.Supplier.Active = true;
                 referralsList.Add(await dataInterface.CreateReferralAsync(referral));
             }
 
@@ -88,5 +92,11 @@ namespace Gov.Jag.Embc.Public.Controllers
 
             return Ok();
         }
+    }
+
+    public class PostRequest
+    {
+        public bool ConfirmChecked { get; set; }
+        public IEnumerable<Referral> Referrals { get; set; }
     }
 }

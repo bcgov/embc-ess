@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ɵConsole } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { takeWhile } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { INSURANCE_OPTIONS, GENDER_OPTIONS } from 'src/app/constants/lookups';
 import { Registration, isBcAddress, Address } from 'src/app/core/models';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { RegistrationService } from 'src/app/core/services/registration.service';
+import { SupportedLanguages } from 'src/app/shared/components/captcha/captcha.component';
 
 @Component({
   selector: 'app-self-registration-three',
@@ -20,10 +21,14 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
   // state needed by this FORM
   currentRegistration$ = this.store.select(state => state.registrations.currentRegistration);
 
-
   componentActive = true;
   submitting = false;
   registration: Registration | null;
+
+  // CAPTCHA stuff
+  supportedLanguages = SupportedLanguages;
+  selectedLanguage = 'en';
+  captchaVerified = false;
 
   constructor(
     private store: Store<AppState>,
@@ -118,4 +123,10 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
   clearRegistration(): void {
     this.store.dispatch(new RegistrationActions.ClearCurrentRegistration());
   }
+
+  public handleAuthToken(token: any) {
+    console.log('Valid token received: ', token);
+    this.captchaVerified = true;
+  }
+
 }
