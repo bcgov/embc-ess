@@ -24,8 +24,9 @@
 
   <div class="space-between align-items-center my-3">
     <section>
-      <app-pagination-summary [value]="pagination">
-        <span class="font-weight-bold">ACTIVE</span> evacuees
+      <app-pagination-summary [value]="resultsAndPagination?.metadata">
+        <!-- <span class="font-weight-bold">ACTIVE</span> evacuees -->
+        <span class="font-weight-bold">ACTIVE</span> registrations
         <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
       </app-pagination-summary>
     </section>
@@ -70,8 +71,8 @@
           <td>{{rowItem.evacuatedFrom}}</td>
           <td>{{rowItem.evacuatedTo}}</td>
           <td>
-            <a *ngIf="!rowItem.incidentTaskTaskNumber" (click)="finalize(rowItem)">Finalize</a>
-            <a *ngIf="rowItem.incidentTaskTaskNumber" (click)="view(rowItem)">View</a>
+            <a href="javascript:void(0)" *ngIf="!rowItem.incidentTaskTaskNumber" (click)="finalize(rowItem)">Finalize</a>
+            <a href="javascript:void(0)" *ngIf="rowItem.incidentTaskTaskNumber" (click)="view(rowItem)">View</a>
           </td>
         </tr>
       </tbody>
@@ -87,7 +88,7 @@
   </select> -->
   <div class="col clearfix" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
     <div class="float-right">
-      <app-paginator [metaData]="resultsAndPagination.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+      <app-paginator [metaData]="resultsAndPagination?.metadata" (params)="onPaginationEvent($event)"></app-paginator>
     </div>
   </div>
 </div>

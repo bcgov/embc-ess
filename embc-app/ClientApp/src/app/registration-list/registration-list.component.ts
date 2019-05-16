@@ -93,7 +93,6 @@ export class RegistrationListComponent implements OnInit {
       } else {
         this.notFoundMessage = 'Searching ...';
       }
-      //
       this.resultsAndPagination = r;
       this.rows = this.processSearchResults(r.data);
     });
@@ -237,5 +236,13 @@ export class RegistrationListComponent implements OnInit {
   view(r: RowItem) {
     this.uniqueKeyService.setKey(r.rowData.id);
     this.router.navigate([`/${this.path}/registration/summary`]);
+  }
+  peopleCount(registration: ListResult<Registration>): ListResult<Registration> {
+    // this returns the right count of users
+    const count = registration.data
+      .map((curr: Registration) => curr.headOfHousehold.familyMembers ? curr.headOfHousehold.familyMembers.length + 1 : 1
+      ).reduce((acc, curr) => acc + curr);
+    registration.metadata.totalCount = count;
+    return registration;
   }
 }
