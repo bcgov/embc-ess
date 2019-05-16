@@ -63,10 +63,10 @@ export class RegistrationService extends RestService {
   }
 
   async printReferrals(registrationId: string, referralIds: string[], addSummary: boolean): Promise<void> {
+    const isMS = window.navigator.msSaveOrOpenBlob ? true : false; // check if IE, Edge, etc
     const blob = await this.getReferralPdfs(registrationId, referralIds, addSummary);
 
-    // check if IE, Edge, etc
-    if (window.navigator.msSaveOrOpenBlob) {
+    if (isMS) {
       // save PDF file
       const filename = `${registrationId}.pdf`; // FUTURE: add date stamp to filename?
       window.navigator.msSaveBlob(blob, filename);
