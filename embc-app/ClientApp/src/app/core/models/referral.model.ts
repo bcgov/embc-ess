@@ -1,19 +1,16 @@
 import { Evacuee, Supplier } from './';
 import { ReferralDate } from './referral-date';
 
-type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'LODGING' | 'TRANSPORTATION');
+export type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'LODGING' | 'TRANSPORTATION');
 
-interface ReferralBase {
+export interface ReferralBase {
   id: string;
   active: boolean;
   type: ReferralType;
   subType?: string;
   purchaser: string;
   dates: ReferralDate;
-  evacuees: Array<{
-    evacuee: Evacuee,
-    selected: boolean
-  }>;
+  evacuees: Array<Evacuee>;
   totalAmount: number; // NB: set to 0 if not used
   supplier: Supplier;
   comments: string;

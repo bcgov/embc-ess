@@ -10,7 +10,7 @@ import { TransportationRatesComponent } from 'src/app/shared/modals/transportati
 })
 export class TransportationReferralComponent implements OnInit, OnDestroy, OnChanges {
   @Input() referral: TransportationReferral = null;
-  @Input() editMode = false;
+  @Input() readOnly = false;
   @Output() remove = new EventEmitter<any>();
   @Output() add = new EventEmitter<any>();
 

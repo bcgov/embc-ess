@@ -1,0 +1,26 @@
+<h2 class="blue-header font-weight-bold py-4" [ngSwitch]="type">
+  <ng-container *ngSwitchCase="'FOOD'">
+    <app-font-awesome-icon icon="utensils"></app-font-awesome-icon>&nbsp;&nbsp;FOOD
+  </ng-container>
+  <ng-container *ngSwitchCase="'LODGING'">
+    <app-font-awesome-icon icon="home"></app-font-awesome-icon>&nbsp;&nbsp;LODGING
+  </ng-container>
+  <ng-container *ngSwitchCase="'CLOTHING'">
+    <app-font-awesome-icon icon="tshirt"></app-font-awesome-icon>&nbsp;&nbsp;CLOTHING
+  </ng-container>
+  <ng-container *ngSwitchCase="'TRANSPORTATION'">
+    <app-font-awesome-icon icon="car"></app-font-awesome-icon>&nbsp;&nbsp;TRANSPORT
+  </ng-container>
+  <ng-container *ngSwitchCase="'INCIDENTALS'">
+    <app-font-awesome-icon icon="plus-circle"></app-font-awesome-icon>&nbsp;&nbsp;INCIDENTALS
+  </ng-container>
+</h2>
+
+<section class="content">
+  <ng-content></ng-content>
+</section>
+
+<div class="card-footer space-between align-items-center">
+  <app-fa-link icon="times" (click)="onRemove()">Remove this referral</app-fa-link>
+  <button type="button" class="btn btn-primary" (click)="onAdd()">{{addReferralString}}</button>
+</div>

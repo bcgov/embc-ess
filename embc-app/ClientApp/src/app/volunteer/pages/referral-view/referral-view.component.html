@@ -6,23 +6,23 @@
 
     <div *ngIf="!loading">
       <div *ngIf="isLodgingReferral(referral)">
-        <app-lodging-referral [referral]="referral" [editMode]="false"></app-lodging-referral>
+        <app-lodging-referral [referral]="referral" [readOnly]="true"></app-lodging-referral>
       </div>
 
       <div *ngIf="isClothingReferral(referral)">
-        <app-clothing-referral [referral]="referral" [editMode]="false"></app-clothing-referral>
+        <app-clothing-referral [referral]="referral" [readOnly]="true"></app-clothing-referral>
       </div>
 
       <div *ngIf="isFoodReferral(referral)">
-        <app-food-referral [referral]="referral" [editMode]="false"></app-food-referral>
+        <app-food-referral [referral]="referral" [readOnly]="true"></app-food-referral>
       </div>
 
       <div *ngIf="isIncidentalsReferral(referral)">
-        <app-incidentals-referral [referral]="referral" [editMode]="false"></app-incidentals-referral>
+        <app-incidentals-referral [referral]="referral" [readOnly]="true"></app-incidentals-referral>
       </div>
 
       <div *ngIf="isTransportationReferral(referral)">
-        <app-transportation-referral [referral]="referral" [editMode]="false"></app-transportation-referral>
+        <app-transportation-referral [referral]="referral" [readOnly]="true"></app-transportation-referral>
       </div>
 
       <section class=" mt-5 space-between">
