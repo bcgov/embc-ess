@@ -60,11 +60,15 @@
 
   <ItemGroup>
     <None Remove="Services\Referrals\Views\layout.hbs" />
+    <None Remove="Services\Referrals\Views\summary.hbs" />
   </ItemGroup>
 
 
   <ItemGroup>
     <Content Include="Services\Referrals\Views\layout.hbs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Services\Referrals\Views\summary.hbs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
