@@ -39,6 +39,7 @@ export class SupplierComponent implements OnInit {
       name: ['', Validators.required],
       address: ['', Validators.required],
       city: ['', Validators.required],
+      province: '',
       postalCode: '',
       telephone: '',
       fax: ''
@@ -57,6 +58,7 @@ export class SupplierComponent implements OnInit {
         name: supplier.name,
         address: supplier.address,
         city: supplier.city,
+        province: supplier.province,
         postalCode: supplier.postalCode,
         telephone: supplier.telephone,
         fax: supplier.fax,
@@ -74,4 +76,5 @@ export class SupplierComponent implements OnInit {
       this.emitSupplier({ ...this.form.value });
     }
   }
+
 }

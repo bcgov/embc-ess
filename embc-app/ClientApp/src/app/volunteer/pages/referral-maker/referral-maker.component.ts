@@ -5,10 +5,9 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import {
-  Registration, Supplier, IncidentalsReferral, FoodReferral,
+  Registration, IncidentalsReferral, FoodReferral,
   ClothingReferral, LodgingReferral, TransportationReferral, Evacuee
 } from 'src/app/core/models';
-import { LOAD_FAIL } from 'src/app/store/lookups/country.actions';
 
 interface ReferralFormControl<T = any> {
   value: T;
@@ -36,11 +35,11 @@ export class ReferralMakerComponent implements OnInit {
   // Is this maker form valid?
   valid = false;
 
-  foodReferrals: Array<ReferralFormControl<FoodReferral>> = [];
+  foodReferrals: Array<ReferralFormControl<Partial<FoodReferral>>> = [];
   lodgingReferrals: Array<ReferralFormControl<LodgingReferral>> = [];
   clothingReferrals: Array<ReferralFormControl<ClothingReferral>> = [];
   transportationReferrals: Array<ReferralFormControl<TransportationReferral>> = [];
-  incidentalsReferrals: Array<ReferralFormControl<IncidentalsReferral>> = [];
+  incidentalsReferrals: Array<ReferralFormControl<Partial<IncidentalsReferral>>> = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -188,44 +187,28 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   addIncidentalsReferral() {
-    const referral: IncidentalsReferral = {
+    const referral: Partial<IncidentalsReferral> = {
       id: null, // is populated by BE after save
       active: true,
       type: 'INCIDENTALS',
       purchaser: this.purchaser,
-      dates: {
-        from: new Date(2019, 3, 15, 17, 30, 0), // FOR TESTING ONLY
-        days: 2, // FOR TESTING ONLY
-      },
+      dates: { from: null, to: null, days: null },
       evacuees: [],
-      approvedItems: null,
-      totalAmount: null,
-      supplier: this.createSupplier(),
-      comments: 'some comments here',
+      supplier: { id: null, active: true, province: 'BC' },
       confirmChecked: false
     };
     this.incidentalsReferrals.push({ value: referral, valid: false });
   }
 
   addFoodReferral() {
-    const referral: FoodReferral = {
+    const referral: Partial<FoodReferral> = {
       id: null, // is populated by BE after save
       active: true,
       type: 'FOOD',
-      subType: null,
       purchaser: this.purchaser,
-      dates: {
-        from: new Date(2019, 3, 15, 17, 30, 0), // FOR TESTING ONLY
-        days: 2, // FOR TESTING ONLY
-      },
+      dates: { from: null, to: null, days: null },
       evacuees: [],
-      numBreakfasts: 0,
-      numLunches: 0,
-      numDinners: 0,
-      numDaysMeals: 0,
-      totalAmount: 0,
-      supplier: this.createSupplier(),
-      comments: 'some comments here',
+      supplier: { id: null, active: true, province: 'BC' },
       confirmChecked: false
     };
     this.foodReferrals.push({ value: referral, valid: false });
@@ -276,20 +259,6 @@ export class ReferralMakerComponent implements OnInit {
     if (confirm('Do you really want to clear all Transportation referrals?')) {
       while (this.transportationReferrals.length > 0) { this.transportationReferrals.pop(); }
     }
-  }
-
-  private createSupplier(): Supplier {
-    return {
-      id: null, // for future use
-      active: true,
-      name: 'Supplier 1', // TODO: for testing only
-      address: '1050 Main Street', // TODO: for testing only
-      postalCode: 'V8R 1R4', // TODO: for testing only
-      city: 'Victoria', // TODO: for testing only
-      province: 'BC',
-      telephone: '250-123-4567', // TODO: for testing only
-      fax: '250-345-7789', // TODO: for testing only
-    };
   }
 
   // populate evacuees

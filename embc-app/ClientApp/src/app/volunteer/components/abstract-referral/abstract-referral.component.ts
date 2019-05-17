@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormArray, FormControl, FormGroup } from '@angular/forms';
 
-import { Evacuee, ReferralBase } from 'src/app/core/models';
+import { Evacuee, ReferralBase, Referral } from 'src/app/core/models';
 import { clearFormArray, uuid } from 'src/app/shared/utils';
 
 /**
@@ -16,6 +16,9 @@ import { clearFormArray, uuid } from 'src/app/shared/utils';
  */
 @Component({ template: '' })
 export class AbstractReferralComponent implements OnInit {
+  @Input() referral: Referral;
+  @Input() showErrorsWhen = true;
+
   // List of all evacuees that we want to show in this component
   @Input() evacuees: Evacuee[] = [];
   @Input() readOnly = false;
@@ -34,7 +37,7 @@ export class AbstractReferralComponent implements OnInit {
 
   constructor(public fb: FormBuilder) {
     this.form = this.fb.group({
-      evacuees: this.fb.array([], Validators.required),
+      evacuees: this.fb.array([], Validators.required), // TODO: this may not need to part of form (ie, same as valid-from-to and supplier)
       comments: '',
     });
   }

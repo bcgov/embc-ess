@@ -25,6 +25,7 @@ export class EvacueeListComponent {
 
   // Sub-set of evacuees that have been selected through the UI (i.e. via checkboxes)
   @Input() selected: Evacuee[];
+
   // List of all evacuees that we want to show in this component
   @Input() evacuees: Evacuee[];
 
@@ -78,4 +79,5 @@ export class EvacueeListComponent {
       return `with: ${reason}`;
     }
   }
+
 }
