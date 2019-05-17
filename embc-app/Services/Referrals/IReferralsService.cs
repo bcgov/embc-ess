@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+using Gov.Jag.Embc.Public.ViewModels;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Services.Referrals
 {
     public interface IReferralsService
     {
-        Task<string> GetReferralHtmlPages(IEnumerable<string> referralIds);
+        Task<string> GetReferralHtmlPages(PrintReferrals printReferrals);
     }
 }

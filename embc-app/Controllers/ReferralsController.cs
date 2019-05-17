@@ -77,7 +77,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPost("referralPdfs")]
         public async Task<IActionResult> GetReferralPdfs([FromBody] PrintReferrals printReferrals)
         {
-            var content = await referralsService.GetReferralHtmlPages(printReferrals.ReferralIds);
+            var content = await referralsService.GetReferralHtmlPages(printReferrals);
 
             if (string.IsNullOrWhiteSpace(content))
             {
