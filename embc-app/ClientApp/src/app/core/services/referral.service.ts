@@ -13,6 +13,7 @@ export class ReferralService extends RestService {
 
   // GET api/registrations/<id>/referrals
   getReferrals(id: string, getActive: boolean = true): Observable<ListResult<Referral>> {
+    // TODO: THIS DOESN'T RETURN WHAT IT SAYS IT DOES but to change it results in cascading component changes.
     // NB: hard-coded server limit is 500
     // NB: default sort order is validFrom
     // NB: if not specified, default active flag is True
@@ -32,8 +33,15 @@ export class ReferralService extends RestService {
     return this.http.get<RawReferralCollection>(`api/registrations/${id}/referrals`, { headers: this.headers, params })
       .pipe(
         retry(3),
-        map((response: RawReferralCollection) => {
-          return response.referrals;
+        map((rCollection: RawReferralCollection) => {
+          const referrals: ListResult<Referral> = rCollection.referrals;
+          referrals.data.map((referral: Referral): Referral => {
+            const cleanReferral = referral;
+            cleanReferral.id = referral.referralId;
+            cleanReferral.essNumber = rCollection.registrationId;
+            return cleanReferral;
+          });
+          return referrals;
         }),
         catchError(this.handleError)
       );

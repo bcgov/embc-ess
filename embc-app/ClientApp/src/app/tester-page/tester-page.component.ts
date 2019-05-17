@@ -19,15 +19,12 @@ export class TesterPageComponent implements OnInit {
   ) { }
   ngOnInit() {
     const id = '100035';
-    this.referralService.getReferrals(id, true)
+    this.referralService.getCleanReferrals(id, true)
       .subscribe(r => {
-        // this.referrals = r;
+        this.referrals = r;
         this.referralsModified = r.data.map(d => {
           d.supplier.name = d.supplier.name + '!';
           return d;
-        });
-        this.referralService.createReferrals(id, this.referralsModified).subscribe(() => {
-          this.referralService.getReferralById(id)
         });
       });
   }

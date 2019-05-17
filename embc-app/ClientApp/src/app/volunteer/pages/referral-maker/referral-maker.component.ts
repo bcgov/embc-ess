@@ -162,6 +162,8 @@ export class ReferralMakerComponent implements OnInit {
   addIncidentalsReferral() {
     const referral: IncidentalsReferral = {
       id: null, // is populated by BE after save
+      referralId: null, // is populated by BE after save: The actual property returned
+      essNumber: null,
       active: true,
       type: 'INCIDENTALS',
       purchaser: this.purchaser,
@@ -182,6 +184,8 @@ export class ReferralMakerComponent implements OnInit {
   addFoodReferral() {
     const referral: FoodReferral = {
       id: null, // is populated by BE after save
+      referralId: null, // is populated by BE after save: The actual property returned
+      essNumber: null,
       active: true,
       type: 'FOOD',
       subType: null,

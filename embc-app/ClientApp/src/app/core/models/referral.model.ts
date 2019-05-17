@@ -6,6 +6,8 @@ export type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'LODGING' | 'T
 
 export interface ReferralBase {
   id: string;
+  essNumber: string;
+  referralId: string;
   active: boolean;
   type: ReferralType;
   subType?: string;
