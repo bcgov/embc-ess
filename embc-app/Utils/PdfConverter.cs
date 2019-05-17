@@ -28,7 +28,7 @@ namespace Gov.Jag.Embc.Public.Utils
 
             var response = await client.SendAsync(request);
 
-            if (response.StatusCode == HttpStatusCode.OK) // success
+            if (response.StatusCode == HttpStatusCode.OK)
             {
                 var bytetask = response.Content.ReadAsByteArrayAsync();
                 bytetask.Wait();
