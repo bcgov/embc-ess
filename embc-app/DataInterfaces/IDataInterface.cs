@@ -102,6 +102,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<IPagedResults<ReferralListItem>> GetReferralsAsync(string registrationId, SearchQueryParameters searchQuery);
 
+        Task<IEnumerable<Referral>> GetReferralsAsync(IEnumerable<string> referralIds);
+
         Task<bool> DeactivateReferralAsync(string referralId);
 
         #endregion Referral
