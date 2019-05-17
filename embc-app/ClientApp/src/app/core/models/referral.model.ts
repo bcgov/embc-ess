@@ -52,6 +52,42 @@ export interface TransportationReferral extends ReferralBase {
   modeTransport?: string;
 }
 
+export interface ReferralPost {
+  confirmChecked: boolean;
+  referrals: [
+    {
+      referralId: string;
+      purchaser: string;
+      supplier: {
+        name: string;
+      };
+      validFrom: string;
+      validTo: string;
+      type: 'Food' | 'Clothing' | 'Incidentals' | 'Lodging' | 'Transportation';
+      subType: 'Groceries' | 'Hotel' | 'Group' | 'Billeting' | 'Taxi' | 'Other' | null;
+      confirmChecked: boolean;
+      totalAmount: number;
+      comments: string;
+      active: boolean;
+      evacuees: [
+        {
+          id: number;
+        }
+      ],
+      numDaysMeals?: number;
+      numBreakfasts?: number;
+      numLunches?: number;
+      numDinners?: number;
+      ExtremeWinterConditions?: boolean;
+      ApprovedItems?: string;
+      NumNights?: number;
+      FromAddress?: string;
+      toAddress?: string;
+      OtherTransportModeDetails?: string;
+    }
+  ];
+}
+
 export type Referral = FoodReferral | IncidentalsReferral | ClothingReferral | LodgingReferral | TransportationReferral;
 export interface RawReferralCollection {
   registrationId: string;

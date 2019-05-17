@@ -51,7 +51,13 @@ export class ReferralService extends RestService {
     // TODO: assemble data object for BE
     // TODO: add id [1..n] to referrals
     // TODO: only send array of selected evacuees (evacuee[] not evacuees[])
-    const data = referrals;
+    const data = {
+      referrals: referrals.map((r: Referral) => {
+        const fr: ReferralPost = r;
+        return r;
+      }),
+      confirmChecked: true,
+    };
     return this.http.post<HttpResponse<any>>(`api/registrations/${registrationId}/referrals`, data, { headers: this.headers })
       .pipe(
         retry(3),
