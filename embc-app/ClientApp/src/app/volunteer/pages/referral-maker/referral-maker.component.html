@@ -28,15 +28,15 @@
           <label class="form-check-label" for="supportFood">Food</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="lodgingReferrals.length > 0" id="supportLodging">
+          <input type="checkbox" class="form-check-input" [checked]="lodgingReferrals.length > 0" id="supportLodging" (change)="lodgingReferralChange()">
           <label class="form-check-label" for="supportLodging">Lodging</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="clothingReferrals.length > 0" id="supportClothing">
+          <input type="checkbox" class="form-check-input" [checked]="clothingReferrals.length > 0" id="supportClothing" (change)="clothingReferralChange()">
           <label class="form-check-label" for="supportClothing">Clothing</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="transportationReferrals.length > 0" id="supportTransportation">
+          <input type="checkbox" class="form-check-input" [checked]="transportationReferrals.length > 0" id="supportTransportation" (change)="transportationReferralChange()">
           <label class="form-check-label" for="supportTransportation">Transportation</label>
         </div>
         <div class="form-check mt-2">
@@ -47,34 +47,41 @@
 
       <!-- loop through all referrals by type -->
       <article *ngFor="let r of foodReferrals; let i = index" class="mt-4">
-        <app-referral-list-item type="FOOD" (remove)="remove(foodReferrals, i)">
-          <!-- <app-food-referral ([r])="r"></app-food-referral> -->
+        <app-referral-list-item type="FOOD" (remove)="remove(foodReferrals, i)" (add)="addFoodReferral()">
+          <app-food-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [readOnly]="false"
+            (validationStatusChange)="updateValidationStatus(r, $event)" (referralChange)="updateReferral(r, $event)">
+          </app-food-referral>
         </app-referral-list-item>
       </article>
 
-      <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-4">
+      <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-4" (add)="addLodgingReferral()">
         <app-referral-list-item type="LODGING" (remove)="remove(lodgingReferrals, i)">
-          <!-- <app-lodging-referral ([r])="r"></app-lodging-referral> -->
+          <!-- <app-lodging-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [readOnly]="false"
+            (validationStatusChange)="updateValidationStatus(r, $event)" (referralChange)="updateReferral(r, $event)">
+          </app-lodging-referral> -->
         </app-referral-list-item>
       </article>
 
       <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4">
-        <app-referral-list-item type="CLOTHING" (remove)="remove(clothingReferrals, i)">
-          <!-- <app-clothing-referral ([r])="r"></app-clothing-referral> -->
+        <app-referral-list-item type="CLOTHING" (remove)="remove(clothingReferrals, i)" (add)="addClothingReferral()">
+          <!-- <app-clothing-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [readOnly]="false"
+            (validationStatusChange)="updateValidationStatus(r, $event)" (referralChange)="updateReferral(r, $event)">
+          </app-clothing-referral> -->
         </app-referral-list-item>
       </article>
 
       <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4">
-        <app-referral-list-item type="TRANSPORTATION" (remove)="remove(transportationReferrals, i)">
-          <!-- <app-transportation-referral ([r])="r"></app-transportation-referral> -->
+        <app-referral-list-item type="TRANSPORTATION" (remove)="remove(transportationReferrals, i)" (add)="addTransportationReferral()">
+          <!-- <app-transportation-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [readOnly]="false"
+            (validationStatusChange)="updateValidationStatus(r, $event)" (referralChange)="updateReferral(r, $event)">
+          </app-transportation-referral> -->
         </app-referral-list-item>
       </article>
 
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
         <app-referral-list-item type="INCIDENTALS" (remove)="remove(incidentalsReferrals, i)" (add)="addIncidentalsReferral()">
           <app-incidentals-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [readOnly]="false"
-            (validationStatusChange)="updateValidationStatus(r, $event)"
-            (referralChange)="updateReferral(r, $event)">
+            (validationStatusChange)="updateValidationStatus(r, $event)" (referralChange)="updateReferral(r, $event)">
           </app-incidentals-referral>
         </app-referral-list-item>
       </article>
@@ -93,10 +100,27 @@
   <div *ngIf="!editMode">
     <h1>Create Referrals</h1>
 
-    <p>Please confirm that all details you entered are correct by reading through the summary below with the evacuee.
+    <p>
+      Please confirm that all details you entered are correct by reading through the summary below with the evacuee.
     </p>
 
     <section class="clearfix">
+      <article *ngFor="let r of foodReferrals; let i = index" class="mt-4">
+        <app-food-referral [referral]="r.value" [readOnly]="true"></app-food-referral>
+      </article>
+
+      <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-4">
+        <app-lodging-referral [referral]="r.value" [readOnly]="true"></app-lodging-referral>
+      </article>
+
+      <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4">
+        <app-clothing-referral [referral]="r.value" [readOnly]="true"></app-clothing-referral>
+      </article>
+
+      <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4">
+        <app-transportation-referral [referral]="r.value" [readOnly]="true"></app-transportation-referral>
+      </article>
+
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
         <app-incidentals-referral [referral]="r.value" [readOnly]="true"></app-incidentals-referral>
       </article>
@@ -120,3 +144,5 @@
   </div>
 
 </div>
+
+<!-- <pre>{{foodReferrals|json}}</pre> -->

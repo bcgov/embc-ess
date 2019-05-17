@@ -133,7 +133,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
         .subscribe(() => {
           this.submitting = false;
           // add a message to the UI
-          this.notificationQueueService.addNotification('Organization updated successfully');
+          this.notificationQueueService.addNotification('Organization updated successfully', 'success');
           // if addUsers then route to the add users page
           // else route back to the organizations list
           if (addUsers) {
@@ -153,7 +153,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
         .subscribe(o => {
           this.submitting = false;
           // add a message to the UI
-          this.notificationQueueService.addNotification('Organization added successfully');
+          this.notificationQueueService.addNotification('Organization added successfully', 'success');
           // if addUsers then route to the add users page
           // else route back to the organizations list
           if (addUsers) {

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextMaskModule } from 'angular2-text-mask';
-import { NgbTypeaheadModule, NgbAlertModule, NgbPaginationModule, NgbModalModule, NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeaheadModule, NgbPaginationModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { MaterialModule } from './material.module';
 import { EnvironmentBannerComponent } from './components/environment-banner/environment-banner.component';
@@ -17,7 +17,6 @@ import { FormFieldComponent } from './components/form-field/form-field.component
 import { AddressSelectorComponent } from './components/address-form/address-selector.component';
 import { BcAddressComponent } from './components/address-form/bc-address/bc-address.component';
 import { OtherAddressComponent } from './components/address-form/other-address/other-address.component';
-import { UpperCaseDirective } from './directives/upper-case.directive';
 import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
 import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
@@ -37,6 +36,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
 
 // directives
 import { DisableControlDirective } from './directives/disable-control.directive';
+import { UpperCaseDirective } from './directives/upper-case.directive';
 import { ValidationBorderDirective } from './directives/validation-border.directive';
 
 @NgModule({
@@ -52,8 +52,6 @@ import { ValidationBorderDirective } from './directives/validation-border.direct
     AddressSelectorComponent,
     BcAddressComponent,
     OtherAddressComponent,
-    DisableControlDirective,
-    UpperCaseDirective,
     FontAwesomeIconComponent,
     FontAwesomeLinkComponent,
     AttentionIconComponent,
@@ -67,6 +65,8 @@ import { ValidationBorderDirective } from './directives/validation-border.direct
     DateTimePickerComponent,
     CaptchaComponent,
     PaginatorComponent,
+    DisableControlDirective,
+    UpperCaseDirective,
     ValidationBorderDirective,
   ],
   imports: [
@@ -78,12 +78,9 @@ import { ValidationBorderDirective } from './directives/validation-border.direct
     MaterialModule,
 
     // ng-bootstrap UI components
+    NgbTypeaheadModule,
     NgbPaginationModule,
     NgbModalModule,
-    NgbTypeaheadModule,
-    NgbAlertModule,
-    NgbDatepickerModule,
-    NgbTimepickerModule,
   ],
   exports: [
     // modules
@@ -96,8 +93,6 @@ import { ValidationBorderDirective } from './directives/validation-border.direct
     // ng-bootstrap components we want to re-export... (they are used outside of this SharedModule)
     NgbPaginationModule,
     NgbModalModule,
-    NgbDatepickerModule,
-    NgbTimepickerModule,
 
     // components, pipes, etc
     EnvironmentBannerComponent,
@@ -111,8 +106,6 @@ import { ValidationBorderDirective } from './directives/validation-border.direct
     AddressSelectorComponent,
     BcAddressComponent,
     OtherAddressComponent,
-    DisableControlDirective,
-    UpperCaseDirective,
     FontAwesomeIconComponent,
     FontAwesomeLinkComponent,
     AttentionIconComponent,
@@ -125,6 +118,8 @@ import { ValidationBorderDirective } from './directives/validation-border.direct
     DateTimePickerComponent,
     CaptchaComponent,
     PaginatorComponent,
+    DisableControlDirective,
+    UpperCaseDirective,
     ValidationBorderDirective,
   ]
 })

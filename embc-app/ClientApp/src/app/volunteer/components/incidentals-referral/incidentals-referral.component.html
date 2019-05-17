@@ -60,7 +60,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
           </div>
         </div>
         <div class="col p-4">
-          <textarea class="form-control" formControlName="comments" placeholder="Add comments" rows="4"></textarea>
+          <textarea class="form-control" formControlName="comments" placeholder="Add comments" rows="4" maxlength="250"></textarea>
         </div>
       </div>
     </form>
@@ -116,8 +116,6 @@ And of course this component needs to be implemented as a 'maker' with both an e
           </div>
         </span>
       </li>
-      <!-- TODO: can use this in Food Referral -->
-      <!-- <div># Days for Meals: {{numDays(referral.validFrom, referral.validTo)}}</div> -->
       <li>
         <span class="name">List of approved items:</span>
         <span class="value">{{referral.approvedItems}}</span>
