@@ -840,7 +840,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Gov.Jag.Embc.Public.Models.Db.Evacuee", "Evacuee")
-                        .WithMany()
+                        .WithMany("Referrals")
                         .HasForeignKey("RegistrationId", "EvacueeId");
                 });
 

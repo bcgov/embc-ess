@@ -145,7 +145,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             modelBuilder.Entity<ReferralEvacuee>()
                 .HasOne(e => e.Evacuee)
-                .WithMany()
+                .WithMany(r => r.Referrals)
                 .HasForeignKey(e => new { e.RegistrationId, e.EvacueeId })
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
