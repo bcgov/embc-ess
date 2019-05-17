@@ -14,7 +14,8 @@ namespace Gov.Jag.Embc.Public.Utils
         public async Task<IActionResult> ConvertHtmlToPdfAsync(string content)
         {
             var pdfHost = Environment.GetEnvironmentVariable("PDF_SERVICE_NAME");
-            string targetUrl = pdfHost + "/pdf";
+            var fileName = $"?filename=referral_{DateTime.Now.ToString("ddMMMMyyyy")}_{DateTime.Now.ToString("HHmmtt")}.pdf";
+            string targetUrl = $"{pdfHost}/pdf{fileName}";
 
             var client = new HttpClient();
 

@@ -1,3 +1,4 @@
+using Gov.Jag.Embc.Public.DataInterfaces;
 using HandlebarsDotNet;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,15 @@ using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Services.Referrals
 {
-    public class ReferralsService
+    public class ReferralsService : IReferralsService
     {
+        private readonly IDataInterface dataInterface;
+
+        public ReferralsService(IDataInterface dataInterface)
+        {
+            this.dataInterface = dataInterface;
+        }
+
         //Restaurant Meals
         //GROCERIES
         //Hotel/Motel
@@ -19,18 +27,27 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
         //Taxi
         //Incidentals
 
-        public string GetHtmlContent()
+        public async Task<string> GetReferralHtmlPages(IEnumerable<string> referralIds)
         {
-            var data = new
-            {
-                title = "My new post",
-                body = "This is my first post!"
-            };
+            var html = string.Empty;
 
+            var referrals = await dataInterface.GetReferralsAsync(referralIds);
+
+            foreach (var referral in referrals)
+            {
+                var newHtml = CreateReferralHtmlContent(referral);
+                html = $"{html}{newHtml}";
+            }
+
+            return html;
+        }
+
+        private string CreateReferralHtmlContent(ViewModels.Referral referral)
+        {
             var handleBars = Handlebars.Create(new HandlebarsConfiguration { FileSystem = new DiskFileSystem() });
 
-            var template = handleBars.CompileView("Services/Referrals/Views/test.hbs");
-            var result = template(data);
+            var template = handleBars.CompileView("Services/Referrals/Views/layout.hbs");
+            var result = template(referral);
 
             return result;
         }
