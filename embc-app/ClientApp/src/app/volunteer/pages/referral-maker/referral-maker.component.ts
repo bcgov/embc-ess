@@ -78,6 +78,12 @@ export class ReferralMakerComponent implements OnInit {
       });
   }
 
+  updateReferral(referralForm: ReferralFormControl, value: any): void {
+    if (referralForm) {
+      referralForm.value = value;
+    }
+  }
+
   updateValidationStatus(referralForm: ReferralFormControl, valid: boolean): void {
     if (referralForm) {
       referralForm.valid = valid;
@@ -117,7 +123,7 @@ export class ReferralMakerComponent implements OnInit {
     this.userClickedNext = true;
 
     // Validate here BEFORE going to review portion of this page....
-    if (this.valid) {
+    if (this.valid || true) {
       this.editMode = false;
       window.scrollTo(0, 0); // scroll to top
     }

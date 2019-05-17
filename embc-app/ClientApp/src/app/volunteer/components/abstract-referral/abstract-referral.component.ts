@@ -1,7 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormArray, FormControl, FormGroup } from '@angular/forms';
 
-import { Evacuee } from 'src/app/core/models';
+import { Evacuee, ReferralBase } from 'src/app/core/models';
 import { clearFormArray } from 'src/app/shared/utils';
 
 /**
@@ -10,15 +10,19 @@ import { clearFormArray } from 'src/app/shared/utils';
  * It provides some of the shared behavior that all referral components have, like
  * calculating validation status and handling selection of evacuees from a list. It
  * also defines the properties that are shared between all sub-classes, like `form`
- * and `array`.
+ * and `array` and `comments`.
  *
  * It shouldn't be instantiated directly.
  */
 @Component({ template: '' })
-export class AbstractReferralComponent {
+export class AbstractReferralComponent implements OnInit {
   // List of all evacuees that we want to show in this component
   @Input() evacuees: Evacuee[] = [];
   @Input() readOnly = false;
+  // @Input() emitChangeEvent = false;
+
+  @Output() formReady = new EventEmitter<FormGroup>();
+  @Output() formChange = new EventEmitter<ReferralBase>();
   @Output() validationStatusChange = new EventEmitter<boolean>();
 
   // The model for the form data collected
@@ -26,13 +30,26 @@ export class AbstractReferralComponent {
 
   constructor(public fb: FormBuilder) {
     this.form = this.fb.group({
-      selectedEvacuees: this.fb.array([], Validators.required),
+      evacuees: this.fb.array([], Validators.required),
+      comments: '',
     });
-    this.form.statusChanges.subscribe(status => this.validationStatusChange.emit(status === 'VALID'));
+  }
+
+  ngOnInit() {
+    // status === 'VALID'
+    this.form.statusChanges.subscribe(status => this.validationStatusChange.emit(true));
+    this.formReady.emit(this.form);
+  }
+
+  /**
+   * After a sub-form is initialized, we link it to our main form
+   */
+  formInitialized(name: string, form: FormGroup) {
+    this.form.setControl(name, form);
   }
 
   get selected() {
-    return this.form.get('selectedEvacuees') as FormArray;
+    return this.form.get('evacuees') as FormArray;
   }
 
   addEvacuee(evacuee: Evacuee) {

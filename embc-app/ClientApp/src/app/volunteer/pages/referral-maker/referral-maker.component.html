@@ -72,7 +72,10 @@
 
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
         <app-referral-list-item type="INCIDENTALS" (remove)="remove(incidentalsReferrals, i)" (add)="addIncidentalsReferral()">
-          <app-incidentals-referral [showErrorsWhen]="userClickedNext" [(referral)]="r.value" [evacuees]="evacuees" [readOnly]="false" (validationStatusChange)="updateValidationStatus(r, $event)"></app-incidentals-referral>
+          <app-incidentals-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [readOnly]="false"
+            (validationStatusChange)="updateValidationStatus(r, $event)"
+            (referralChange)="updateReferral(r, $event)">
+          </app-incidentals-referral>
         </app-referral-list-item>
       </article>
     </section>
@@ -86,6 +89,7 @@
     </div>
   </div>
 
+  <!-- *********************************SUMMARY BELOW****************************************** -->
   <div *ngIf="!editMode">
     <h1>Create Referrals</h1>
 
@@ -94,7 +98,7 @@
 
     <section class="clearfix">
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
-        <app-incidentals-referral [referral]="r" [readOnly]="true"></app-incidentals-referral>
+        <app-incidentals-referral [referral]="r.value" [readOnly]="true"></app-incidentals-referral>
       </article>
     </section>
 

@@ -15,6 +15,7 @@ export class SupplierComponent implements OnInit {
   @Input() showErrorsWhen = true;
   @Input() readOnly = false;
   @Input() supplier: Supplier;
+  @Output() formReady = new EventEmitter<FormGroup>();
   @Output() supplierChange = new EventEmitter<Supplier>();
 
   // The model for the form data collected

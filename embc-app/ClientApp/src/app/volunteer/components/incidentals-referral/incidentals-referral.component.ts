@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { IncidentalsReferral } from 'src/app/core/models';
+import { IncidentalsReferral, Supplier } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
 import { numberOfDays, uuid } from 'src/app/shared/utils';
 import { SupplierComponent } from '../supplier/supplier.component';
@@ -16,7 +16,10 @@ import { AbstractReferralComponent } from '../abstract-referral/abstract-referra
 export class IncidentalsReferralComponent extends AbstractReferralComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   @Input() showErrorsWhen = true;
   @Input() referral: IncidentalsReferral = null;
-  @ViewChild(SupplierComponent) supplier: SupplierComponent;
+  @Output() referralChange = new EventEmitter<IncidentalsReferral>();
+
+  // TODO: replace this with formReady event on supplier form
+  @ViewChild(SupplierComponent) supplierRef: SupplierComponent;
 
   private ratesModal: NgbModalRef = null;
 
@@ -39,9 +42,11 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent impl
   }
 
   ngAfterViewInit() {
-    // connect child form(s) to parent
-    this.form.addControl('supplier', this.supplier.form);
-    this.supplier.form.setParent(this.form);
+    // connect child form to parent
+    if (this.supplierRef && !this.form.get('supplier')) {
+      this.form.addControl('supplier', this.supplierRef.form);
+      this.supplierRef.form.setParent(this.form);
+    }
   }
 
   ngOnDestroy() {
@@ -60,7 +65,7 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent impl
 
   // validate the whole form as we capture data
   handleFormChange(): void {
-    this.form.valueChanges.subscribe(() => this.validate());
+    this.form.valueChanges.subscribe(() => this.saveChanges());
   }
 
   displayReferral(referral: IncidentalsReferral) {
@@ -70,15 +75,30 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent impl
         evacuees: referral.evacuees,
         approvedItems: referral.approvedItems,
         totalAmount: referral.totalAmount,
+        comments: referral.comments,
       });
+
+      // populate the evacuee list with existing selection
+      (referral.evacuees || []).forEach(x => this.selectEvacuee(x));
+
+      // TODO: Dates FROM and TO
     }
   }
 
-  // TODO: if all required information is in the form we emit
-  validate() {
-    if (this.form.valid) {
-      // ...
+  // if all required information is in the form we emit
+  saveChanges() {
+    if (!this.form.valid) {
+      return;
     }
+    // Copy over all of the original referral properties
+    // Then copy over the values from the form
+    // This ensures values not on the form, such as the Id, are retained
+    const p = { ...this.referral, ...this.form.value };
+    this.referralChange.emit(p);
+  }
+
+  updateSupplier(value: Supplier) {
+    this.referral.supplier = value;
   }
 
   viewRates() {

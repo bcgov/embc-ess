@@ -3,7 +3,7 @@ import { ReferralDate } from './referral-date';
 
 export type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'LODGING' | 'TRANSPORTATION');
 
-interface ReferralBase {
+export interface ReferralBase {
   id: string;
   active: boolean;
   type: ReferralType;
