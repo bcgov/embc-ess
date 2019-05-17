@@ -105,5 +105,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<bool> DeactivateReferralAsync(string referralId);
 
         #endregion Referral
+
+        #region Evacuee
+
+        Task<IPagedResults<EvacueeListItem>> GetEvacueesAsync(SearchQueryParameters query);
+
+        #endregion Evacuee
     }
 }
