@@ -1,7 +1,10 @@
-import { Component, OnChanges, Input } from '@angular/core';
+import { Component, OnChanges, OnDestroy, ViewChild, TemplateRef, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
 import { ReferralService } from 'src/app/core/services/referral.service';
+import { RegistrationService } from 'src/app/core/services/registration.service';
 import { Registration, ListResult, PaginationSummary, Referral } from 'src/app/core/models';
 import { ReferralSearchResults } from 'src/app/core/models/search-interfaces';
 
@@ -10,7 +13,9 @@ import { ReferralSearchResults } from 'src/app/core/models/search-interfaces';
   templateUrl: './referral-table.component.html',
   styleUrls: ['./referral-table.component.scss']
 })
-export class ReferralTableComponent implements OnChanges {
+export class ReferralTableComponent implements OnChanges, OnDestroy {
+
+  @ViewChild('summaryAlert') summaryAlert: TemplateRef<any>;
   @Input() registration: Registration = null;
 
   // server response
@@ -22,12 +27,22 @@ export class ReferralTableComponent implements OnChanges {
   pagination: PaginationSummary = null;
   referrals: Array<Referral> = [];
 
+  summaryModal: NgbModalRef = null;
+  includeSummary: boolean;
+
   constructor(
     private referralService: ReferralService,
+    private registrationService: RegistrationService,
+    private modals: NgbModal,
   ) { }
 
   ngOnChanges() {
     this.doSearch();
+  }
+
+  ngOnDestroy() {
+    // close modal if it's open
+    if (this.summaryModal) { this.summaryModal.dismiss(); }
   }
 
   doSearch() {
@@ -76,7 +91,22 @@ export class ReferralTableComponent implements OnChanges {
   }
 
   printReferrals() {
-    console.log('referrals to print =', this.referrals);
-    // TODO: call BE to print referrals and return PDF (automatically open/save)
+    this.summaryModal = this.modals.open(this.summaryAlert, { centered: true, windowClass: 'modal-small' });
+
+    // handle result
+    this.summaryModal.result.then(
+      (includeSummary: boolean) => {
+        // modal was closed
+        this.summaryModal = null;
+
+        const referralIds = this.referrals.map(r => r.id);
+        this.registrationService.printReferrals(this.registration.id, referralIds, includeSummary);
+      },
+      () => {
+        // modal was dismissed
+        this.summaryModal = null;
+      }
+    );
   }
+
 }

@@ -33,7 +33,7 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
   // this is the correct path prefix for the user routing
   path: string;
 
-  private confirmModal: NgbModalRef = null;
+  confirmModal: NgbModalRef = null;
 
   constructor(
     private router: Router,

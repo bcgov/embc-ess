@@ -81,9 +81,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
         }
 
-        [Obsolete]
-        private DbSet<Address> Addresses { get; set; }
-
         public DbSet<Community> Communities { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Evacuee> Evacuees { get; set; }
@@ -91,15 +88,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<EvacueeRegistration> EvacueeRegistrations { get; set; }
         public DbSet<IncidentTask> IncidentTasks { get; set; }
         public DbSet<Region> Regions { get; set; }
-
-        [Obsolete]
-        private DbSet<Registration> Registrations { get; set; }
-
         public DbSet<EvacueeRegistrationAddress> EvacueeRegistrationAddresses { get; set; }
-
-        [Obsolete]
-        private DbSet<Person> People { get; set; }
-
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Volunteer> Volunteers { get; set; }
         public DbSet<Referral> Referrals { get; set; }
@@ -109,8 +98,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             // this line is required so ef migrations will work.
             base.OnModelCreating(modelBuilder);
-
-            //modelBuilder.Entity<Evacuee>
 
             modelBuilder.Entity<Evacuee>()
                 .HasKey(e => new { e.RegistrationId, e.EvacueeSequenceNumber });
@@ -130,31 +117,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .HasForeignKey(e => e.RegistrationId)
                 .HasPrincipalKey(r => r.EssFileNumber);
 
-            // Address hierarchy
-            modelBuilder.Entity<BcAddress>().HasBaseType<Address>();
-            modelBuilder.Entity<OtherAddress>().HasBaseType<Address>();
-            modelBuilder.Entity<Address>()
-                .ToTable("Addresses")
-                .HasDiscriminator(addr => addr.AddressSubtype)
-                .HasValue<BcAddress>(Address.BC_ADDRESS)
-                .HasValue<OtherAddress>(Address.OTHER_ADDRESS);
-
-            // People hierarchy
-            modelBuilder.Entity<HeadOfHousehold>().HasBaseType<Person>();
-            modelBuilder.Entity<FamilyMember>().HasBaseType<Person>();
-            modelBuilder.Entity<Person>()
-                .ToTable("People")
-                .HasDiscriminator(pers => pers.PersonType)
-                .HasValue<HeadOfHousehold>(Person.HOH)
-                .HasValue<FamilyMember>(Person.FAMILY_MEMBER);
-
             modelBuilder.HasSequence<long>("ESSFileNumbers")
                 .StartsAt(100000)
                 .IncrementsBy(1);
-
-            modelBuilder.Entity<Registration>()
-                .Property(r => r.EssFileNumber)
-                .HasDefaultValueSql("NEXT VALUE FOR ESSFileNumbers");
 
             modelBuilder.Entity<EvacueeRegistration>()
                 .Property(r => r.EssFileNumber)

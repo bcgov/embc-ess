@@ -12,7 +12,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
     {
         public IncidentTask()
         {
-            Registrations = new List<Registration>();
             EvacueeRegistrations = new List<EvacueeRegistration>();
         }
 
@@ -41,8 +40,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public Guid? CommunityId { get; set; }
 
         public Community Community { get; set; }
-
-        public List<Registration> Registrations { get; set; }
 
         public List<EvacueeRegistration> EvacueeRegistrations { get; set; }
 

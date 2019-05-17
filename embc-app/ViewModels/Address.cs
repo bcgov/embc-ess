@@ -1,3 +1,4 @@
+using Gov.Jag.Embc.Public.Utils;
 using Newtonsoft.Json;
 
 namespace Gov.Jag.Embc.Public.ViewModels
@@ -23,9 +24,9 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public Country Country { get; set; }
 
         [JsonIgnore]
-        public bool isBcAddress => this.AddressSubtype == Models.Db.Address.BC_ADDRESS;  // omitted from response
+        public bool isBcAddress => this.AddressSubtype == Models.Db.Enumerations.AddressSubType.BCAddress.GetDisplayName();  // omitted from response
 
         [JsonIgnore]
-        public bool isOtherAddress => this.AddressSubtype == Models.Db.Address.OTHER_ADDRESS;  // omitted from response
+        public bool isOtherAddress => this.AddressSubtype == Models.Db.Enumerations.AddressSubType.OtherAddress.GetDisplayName();  // omitted from response
     }
 }
