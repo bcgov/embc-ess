@@ -26,44 +26,42 @@
   </section>
 
   <h3 class="blue-header">USERS LIST</h3>
-  <form novalidate role="search" [formGroup]="form">
-    <div class="form-row">
-      <div class="col-md">
-        <input type="text" aria-label="search" class="form-control mb-2" placeholder="Search by last name &hellip;" formControlName="searchbox" (keydown.enter)="search()">
-      </div>
-      <div class="col-md-auto">
-        <button class="btn btn-primary" (click)="search()">SEARCH</button>
-      </div>
+  <div class="form-row">
+    <div class="col-md">
+      <input type="text" aria-label="search" class="form-control mb-2" placeholder="Search by last name &hellip;" [(ngModel)]="queryString" (keydown.enter)="search()">
     </div>
-    <div class="form-row">
-      <div class="form-check form-check-inline">
-        <input type="radio" class="form-check-input" formControlName="userToggle" [value]="SHOW_ALL">
-        <label class="form-check-label">Show all</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input type="radio" class="form-check-input" formControlName="userToggle" [value]="SHOW_ADMINS_ONLY">
-        <label class="form-check-label">Show only admin users</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input type="radio" class="form-check-input" formControlName="userToggle" [value]="SHOW_ESS_USERS_ONLY">
-        <label class="form-check-label">Show only Emergency Support Services users</label>
-      </div>
+    <div class="col-md-auto">
+      <button class="btn btn-primary" (click)="search()">SEARCH</button>
     </div>
-  </form>
+  </div>
+  <div class="form-row">
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" id="showAll" [(ngModel)]="userType" value="SHOW_ALL">
+      <label class="form-check-label" for="showAll">Show all</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" id="showAdminsOnly" [(ngModel)]="userType" value="SHOW_ADMINS_ONLY">
+      <label class="form-check-label" for="showAdminsOnly">Show only admin users</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="radio" class="form-check-input" id="essUsersOnly" [(ngModel)]="userType" value="SHOW_ESS_USERS_ONLY">
+      <label class="form-check-label" for="essUsersOnly">Show only Emergency Support Services users</label>
+    </div>
+  </div>
   <div class="search-results mt-4">
-    <div *ngIf="results && results.length > 0; then adminSearchResultsTable; else adminNotFound"></div>
+    <div *ngIf="resultsAndPagination?.data?.length > 0; then adminSearchResultsTable; else adminNotFound"></div>
   </div>
 
   <ng-template #adminSearchResultsTable>
     <div class="space-between align-items-center my-3">
       <section>
-        <app-pagination-summary [value]="pagination">
+        <app-pagination-summary [value]="resultsAndPagination.metadata">
           <span class="font-weight-bold">ACTIVE</span> users
           <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
         </app-pagination-summary>
       </section>
       <section>
-        <button class="btn btn-primary float-right" routerLink="" (click)="modifyOrganizationVolunteer()">ADD USERS</button>
+        <button class="btn btn-primary float-right" (click)="modifyOrganizationVolunteer()">ADD USERS</button>
       </section>
     </div>
     <table class="table">
@@ -77,7 +75,7 @@
         <th scope="col">ACTION</th>
       </thead>
       <tbody>
-        <tr *ngFor="let volunteer of results">
+        <tr *ngFor="let volunteer of resultsAndPagination.data">
           <td>{{volunteer.lastName}}</td>
           <td>{{volunteer.firstName}}</td>
           <td>{{volunteer.bceidAccountNumber}}</td>
@@ -88,18 +86,19 @@
           <td>{{!!volunteer.isAdministrator ? 'Admin' : 'ESS User'}}</td>
           <td>{{!!volunteer.isAdministrator ? (!!volunteer.isPrimaryContact | yesNo) : 'n/a'}}</td>
           <td>
-            <a routerLink="" (click)="modifyOrganizationVolunteer(volunteer.id)">Edit</a>
+            <a href="javascript:void(0)" (click)="modifyOrganizationVolunteer(volunteer.id)">Edit</a>
           </td>
         </tr>
       </tbody>
     </table>
     <!-- Pagination area -->
-    <div class="col clearfix" *ngIf="totalPages > 1">
-      <ngb-pagination class="float-right" [collectionSize]="collectionSize" [pageSize]="maxSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination>
+    <div class="col clearfix" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
+      <app-paginator class="float-right" [metaData]="resultsAndPagination.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+      <!-- <ngb-pagination class="float-right" [collectionSize]="collectionSize" [pageSize]="maxSize" [(page)]="page" [boundaryLinks]="boundaryLinks" (pageChange)="onPageChange($event)"></ngb-pagination> -->
     </div>
 
     <div class="clearfix">
-      <button class="btn btn-primary float-right" routerLink="" (click)="modifyOrganizationVolunteer()">ADD USERS</button>
+      <button class="btn btn-primary float-right" (click)="modifyOrganizationVolunteer()">ADD USERS</button>
     </div>
   </ng-template>
 
@@ -109,8 +108,8 @@
     </p>
   </ng-template>
 </div>
-<!--
-<ul>
+
+<!-- <ul>
   <li>page:{{page|json}}</li>
   <li>totalPages:{{totalPages|json}}</li>
   <li>collectionSize:{{collectionSize|json}}</li>
@@ -118,3 +117,28 @@
   <li>previousQuery:{{previousQuery|json}}</li>
   <li>sort:{{sort|json}}</li>
 </ul> -->
+
+<!-- Alert to confirm editing user details -->
+<ng-template #viewAlert let-modal>
+  <div class="modal-header">
+    <h1 class="modal-title h2">Alert</h1>
+    <button type="button" class="close" aria-label="Close" (click)="confirmModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <p>
+      You are requesting to edit user details.<br>
+      Are you sure you want to do this?
+    </p>
+
+    <div class="mt-4 space-between">
+      <a href="javascript:void(0)" (click)="confirmModal.dismiss()">
+        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+        <span class="ml-2">Cancel &amp; Close</span>
+      </a>
+      <button class="btn btn-primary float-right" (click)="confirmModal.close()">YES</button>
+    </div>
+  </div>
+</ng-template>

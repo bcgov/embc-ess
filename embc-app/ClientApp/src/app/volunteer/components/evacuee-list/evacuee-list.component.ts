@@ -1,44 +1,68 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Evacuee } from 'src/app/core/models';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ValidationErrors } from '@angular/forms';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
-interface EvacueeSelector {
-  evacuee: Evacuee;
-  selected: boolean;
-}
+import { Evacuee } from 'src/app/core/models';
+
+// poor man's uuid
+let identifier = 0;
+
 @Component({
   selector: 'app-evacuee-list',
   templateUrl: './evacuee-list.component.html',
   styleUrls: ['./evacuee-list.component.scss']
 })
-export class EvacueeListComponent implements OnInit, OnDestroy {
-  @Input() evacuees: EvacueeSelector[];
-  @Output() evacueesChange = new EventEmitter<EvacueeSelector[]>();
-  closeResult:string;
+export class EvacueeListComponent {
+
+  closeResult: string;
+
+  identifier = `evacuee-list-${identifier++}`;
+
+  touched = false;
+
+  @Input() showErrorsWhen = true;
+  @Input() errors: ValidationErrors | null = null;
+
+  // Sub-set of evacuees that have been selected through the UI (i.e. via checkboxes)
+  @Input() selected: Evacuee[];
+  // List of all evacuees that we want to show in this component
+  @Input() evacuees: Evacuee[];
+
+  @Output() select = new EventEmitter<Evacuee>();
+  @Output() selectAll = new EventEmitter<any>();
+
   constructor(
     private modalService: NgbModal
   ) { }
 
-  ngOnInit() {
-  }
-  ngOnDestroy() {
-  }
-
-  selectAll() {
-    // select all evacuees
-    this.evacuees = this.evacuees.map(evacuee => {
-      evacuee.selected = true;
-      return evacuee;
-    });
-  }
-  emitList() {
-    // output the modified list
-    this.evacueesChange.emit(this.evacuees);
+  get invalid(): boolean {
+    return this.errors && this.showErrorsWhen;
   }
 
+  get valid(): boolean {
+    return !this.invalid;
+  }
+
+  exists(value: Evacuee) {
+    return this.selected && this.selected.some(x => x.id === value.id);
+  }
+
+  isSelected(value: Evacuee) {
+    return this.exists(value);
+  }
+
+  selectEvacuee(value: Evacuee) {
+    this.touched = true;
+    this.select.emit(value);
+  }
+
+  selectAllEvacuees() {
+    this.touched = true;
+    this.selectAll.emit();
+  }
 
   open(content) {
-    this.modalService.open(content, {size: 'lg', ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(content, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -51,7 +75,7 @@ export class EvacueeListComponent implements OnInit, OnDestroy {
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
-      return  `with: ${reason}`;
+      return `with: ${reason}`;
     }
   }
 }

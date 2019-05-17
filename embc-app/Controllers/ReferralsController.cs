@@ -1,4 +1,5 @@
 using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.Services.Referrals;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -14,10 +15,14 @@ namespace Gov.Jag.Embc.Public.Controllers
     public class ReferralsController : Controller
     {
         private readonly IDataInterface dataInterface;
+        private readonly IPdfConverter pdfConverter;
+        private readonly IReferralsService referralsService;
 
-        public ReferralsController(IDataInterface dataInterface)
+        public ReferralsController(IDataInterface dataInterface, IReferralsService referralsService, IPdfConverter pdfConverter)
         {
             this.dataInterface = dataInterface;
+            this.pdfConverter = pdfConverter;
+            this.referralsService = referralsService;
         }
 
         [HttpGet]
@@ -67,6 +72,19 @@ namespace Gov.Jag.Embc.Public.Controllers
                 RegistrationId = registrationId,
                 Referrals = referralsList.Select(r => new { ReferralId = r }).ToArray()
             }));
+        }
+
+        [HttpPost("referralPdfs")]
+        public async Task<IActionResult> GetReferralPdfs([FromBody] PrintReferrals printReferrals)
+        {
+            var content = await referralsService.GetReferralHtmlPages(printReferrals);
+
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                return NotFound(printReferrals.ReferralIds);
+            }
+
+            return await pdfConverter.ConvertHtmlToPdfAsync(content);
         }
 
         [HttpDelete("{referralId}")]

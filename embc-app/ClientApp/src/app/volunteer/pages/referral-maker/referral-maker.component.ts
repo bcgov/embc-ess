@@ -6,8 +6,14 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import {
   Registration, Supplier, IncidentalsReferral, FoodReferral,
-  ClothingReferral, LodgingReferral, TransportationReferral
+  ClothingReferral, LodgingReferral, TransportationReferral, Evacuee
 } from 'src/app/core/models';
+import { LOAD_FAIL } from 'src/app/store/lookups/country.actions';
+
+interface ReferralFormControl<T = any> {
+  value: T;
+  valid: boolean;
+}
 
 @Component({
   selector: 'app-referral-maker',
@@ -22,13 +28,19 @@ export class ReferralMakerComponent implements OnInit {
   path: string = null; // for relative routing
   regId: string = null;
   purchaser: string = null;
-  evacuees: Array<any> = [];
+  evacuees: Array<Evacuee> = [];
 
-  foodReferrals: Array<FoodReferral> = [];
-  clothingReferrals: Array<ClothingReferral> = [];
-  lodgingReferrals: Array<LodgingReferral> = [];
-  incidentalsReferrals: Array<IncidentalsReferral> = [];
-  transportationReferrals: Array<TransportationReferral> = [];
+  // avoid showing validation errors until the NEXT button is clicked
+  userClickedNext = false;
+
+  // Is this maker form valid?
+  valid = false;
+
+  foodReferrals: Array<ReferralFormControl<FoodReferral>> = [];
+  lodgingReferrals: Array<ReferralFormControl<LodgingReferral>> = [];
+  clothingReferrals: Array<ReferralFormControl<ClothingReferral>> = [];
+  transportationReferrals: Array<ReferralFormControl<TransportationReferral>> = [];
+  incidentalsReferrals: Array<ReferralFormControl<IncidentalsReferral>> = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -61,22 +73,42 @@ export class ReferralMakerComponent implements OnInit {
           this.cancel();
         } else {
           this.registration = r;
-
-          // populate evacuees
-          const hoh = this.registration.headOfHousehold;
-          if (hoh) {
-            this.evacuees.push({ evacuee: hoh, selected: false });
-            if (hoh.familyMembers) {
-              hoh.familyMembers.forEach(fm => this.evacuees.push({ evacuee: fm, selected: false }));
-            }
-          }
+          this.evacuees = this.createEvacueeList(r);
         }
       });
+  }
+
+  updateReferral(referralForm: ReferralFormControl, value: any): void {
+    if (referralForm) {
+      referralForm.value = value;
+    }
+  }
+
+  updateValidationStatus(referralForm: ReferralFormControl, valid: boolean): void {
+    if (referralForm) {
+      referralForm.valid = valid;
+    }
+    this.valid = this.calculateStatus();
+  }
+
+  // Recalculates the validation status of this maker form
+  private calculateStatus(): boolean {
+    const allValid = (arr: Array<ReferralFormControl<any>>) => arr.every(e => e.valid);
+
+    // TODO: check the other arrays here...
+    const food = true;
+    const lodging = true;
+    const clothing = true;
+    const transportation = true;
+    const incidentals = allValid(this.incidentalsReferrals);
+
+    return (food && lodging && clothing && transportation && incidentals);
   }
 
   back() {
     // show the editing parts of the form
     this.editMode = true;
+    this.userClickedNext = false;
     window.scrollTo(0, 0); // scroll to top
   }
 
@@ -88,8 +120,13 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   createReferral() {
-    this.editMode = false;
-    window.scrollTo(0, 0); // scroll to top
+    this.userClickedNext = true;
+
+    // Validate here BEFORE going to review portion of this page....
+    if (this.valid || true) {
+      this.editMode = false;
+      window.scrollTo(0, 0); // scroll to top
+    }
   }
 
   finalize() {
@@ -122,14 +159,6 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
-  removeIncidentalsReferral(i: number) {
-    this.incidentalsReferrals.splice(i, 1);
-  }
-
-  removeFoodReferral(i: number) {
-    this.foodReferrals.splice(i, 1);
-  }
-
   addIncidentalsReferral() {
     const referral: IncidentalsReferral = {
       id: null, // is populated by BE after save
@@ -140,14 +169,14 @@ export class ReferralMakerComponent implements OnInit {
         from: new Date(2019, 3, 15, 17, 30, 0), // FOR TESTING ONLY
         days: 2, // FOR TESTING ONLY
       },
-      evacuees: this.evacuees,
+      evacuees: [],
       approvedItems: null,
-      totalAmount: 0,
-      supplier: this.newSupplier,
+      totalAmount: null,
+      supplier: this.createSupplier(),
       comments: 'some comments here',
       confirmChecked: false
     };
-    this.incidentalsReferrals.push(referral);
+    this.incidentalsReferrals.push({ value: referral, valid: false });
   }
 
   addFoodReferral() {
@@ -160,31 +189,17 @@ export class ReferralMakerComponent implements OnInit {
       dates: {
         from: new Date(2019, 0, 1),
       },
-      evacuees: this.evacuees,
+      evacuees: [],
       numBreakfasts: 0,
       numLunches: 0,
       numDinners: 0,
       numDaysMeals: 0,
       totalAmount: 0,
-      supplier: this.newSupplier,
+      supplier: this.createSupplier(),
       comments: 'some comments here',
       confirmChecked: false
     };
-    this.foodReferrals.push(referral);
-  }
-
-  private get newSupplier(): Supplier {
-    return {
-      id: null, // for future use
-      active: true,
-      name: 'Supplier 1', // TODO: for testing only
-      address: '1050 Main Street', // TODO: for testing only
-      postalCode: 'V8R 1R4', // TODO: for testing only
-      city: 'Victoria', // TODO: for testing only
-      province: 'BC',
-      telephone: '250-123-4567', // TODO: for testing only
-      fax: '250-345-7789', // TODO: for testing only
-    };
+    this.foodReferrals.push({ value: referral, valid: false });
   }
 
   clearIncidentalsReferrals(): void {
@@ -201,4 +216,30 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
+  private createSupplier(): Supplier {
+    return {
+      id: null, // for future use
+      active: true,
+      name: 'Supplier 1', // TODO: for testing only
+      address: '1050 Main Street', // TODO: for testing only
+      postalCode: 'V8R 1R4', // TODO: for testing only
+      city: 'Victoria', // TODO: for testing only
+      province: 'BC',
+      telephone: '250-123-4567', // TODO: for testing only
+      fax: '250-345-7789', // TODO: for testing only
+    };
+  }
+
+  // populate evacuees
+  private createEvacueeList(reg: Registration): Evacuee[] {
+    if (!reg || !reg.headOfHousehold) { return []; }
+    const hoh = reg.headOfHousehold;
+    const family = hoh.familyMembers || [];
+    return [hoh, ...family];
+  }
+
+  // --------------------HELPERS-----------------------------------------
+  remove(arr: [], i: number) {
+    if (arr) { arr.splice(i, 1); }
+  }
 }

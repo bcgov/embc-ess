@@ -15,8 +15,8 @@ import { SelfRegistrationModule } from './self-registration';
 import { SharedModule } from './shared/shared.module';
 import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
 import { TaskNumberListComponent } from './provincial-admin/components/task-number-list/task-number-list.component';
-import { VolunteerListComponent } from './volunteer-list/volunteer-list.component';
-import { RegistrationListComponent } from './registration-list/registration-list.component';
+import { VolunteerListComponent } from './local-authority/components/volunteer-list/volunteer-list.component';
+import { RegistrationListComponent } from './volunteer/components/registration-list/registration-list.component';
 import { OrganizationListComponent } from './provincial-admin/components/organization-list/organization-list.component';
 import { TaskNumberMakerComponent } from './provincial-admin/components/task-number-maker/task-number-maker.component';
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
@@ -27,7 +27,6 @@ import { LayoutMainComponent } from './components/layout-main/layout-main.compon
 import { LayoutSideComponent } from './components/layout-side/layout-side.component';
 import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
-import { EvacueeSearchResultsComponent } from './components/evacuee-search-results/evacuee-search-results.component';
 import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
@@ -67,6 +66,8 @@ import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid
 import { SupplierComponent } from './volunteer/components/supplier/supplier.component';
 import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
 import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
+import { ReferralListItemComponent } from './volunteer/components/referral-list-item/referral-list-item.component';
+import { AbstractReferralComponent } from './volunteer/components/abstract-referral/abstract-referral.component';
 
 @NgModule({
   declarations: [
@@ -91,7 +92,6 @@ import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer
     SideboxAddTaskNumberComponent,
     SideboxAddVolunteerComponent,
     SideboxCollectionNoticeComponent,
-    EvacueeSearchResultsComponent,
     ReferralSearchResultsComponent,
     LayoutMainComponent,
     LayoutSideComponent,
@@ -125,6 +125,8 @@ import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer
     ValidFromToComponent,
     SupplierComponent,
     EvacueeListComponent,
+    ReferralListItemComponent,
+    AbstractReferralComponent,
   ],
   imports: [
     // angular

@@ -52,6 +52,16 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 searchQuery.Offset, searchQuery.Limit);
         }
 
+        public async Task<IEnumerable<ViewModels.Referral>> GetReferralsAsync(IEnumerable<string> referralIds)
+        {
+            var results = await Referrals
+                .Where(r => referralIds.Contains(r.ReferralId))
+                .Select(r => mapper.Map<ViewModels.Referral>(r))
+                .ToArrayAsync();
+
+            return results;
+        }
+
         public async Task<bool> DeactivateReferralAsync(string referralId)
         {
             if (!long.TryParse(referralId.Substring(1), out var id)) throw new ArgumentException($"{referralId} is not valid", nameof(referralId));

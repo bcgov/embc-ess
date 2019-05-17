@@ -1,12 +1,13 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, OnInit } from '@angular/core';
-import { Registration, isBcAddress, isOtherAddress } from 'src/app/core/models';
-import { Router, ActivatedRoute } from '@angular/router';
-import { EvacueeSearchResults } from 'src/app/core/models/search-interfaces';
-import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { ListResult, Registration, PaginationSummary, isBcAddress, isOtherAddress } from '../../../core/models';
+import { Observable } from 'rxjs';
+import { RegistrationService } from '../../../core/services/registration.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
+import { SearchQueryParameters } from '../../../core/models/search-interfaces';
+import { UniqueKeyService } from '../../../core/services/unique-key.service';
 import get from 'lodash/get';
 
-// TODO: Rename this
 interface RowItem {
   // The underlying data for any given row within the table view.
   rowData: Registration;
@@ -32,62 +33,95 @@ interface RowItem {
   personType: string; // HOH || FMBR || VOLN
   evacuatedFrom: string; // community name
   evacuatedTo: string; // community name
-  hasReferrals: boolean;
   registrationCompletionDate: string | null;
 }
-
-/**
- * A basic TableView component to display search results in groups
- */
 @Component({
-  selector: 'app-evacuee-search-results',
-  templateUrl: './evacuee-search-results.component.html',
-  styleUrls: ['./evacuee-search-results.component.scss']
+  selector: 'app-registration-list',
+  templateUrl: './registration-list.component.html',
+  styleUrls: ['./registration-list.component.scss']
 })
-export class EvacueeSearchResultsComponent implements OnChanges, OnInit {
-
-  /**
-   * The results to display
-   */
-  @Input() searchResults: EvacueeSearchResults;
-
-  /**
-   * Emitted when the user selects a search result
-   */
-  @Output() resultSelected = new EventEmitter<RowItem>();
-
+export class RegistrationListComponent implements OnInit {
+  // server response
+  resultsAndPagination: ListResult<Registration>;
   rows: RowItem[] = [];
+  pagination: PaginationSummary = null;
   notFoundMessage = 'Searching ...';
-  // the routing path
+  defaultSearchQuery: SearchQueryParameters = {
+    offset: 0,
+    limit: 10
+  };
+  queryString: string;
+  // a place to save the last query parameters
+  previousQuery: SearchQueryParameters = {};
+  sort = '-registrationCompletionDate'; // how do we sort the list query param
+
+  // this is the correct path prefix for the user routing
   path: string;
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.rows = this.processSearchResults(this.searchResults);
-  }
-
   constructor(
+    private registrationService: RegistrationService,
     private router: Router,
-    private route: ActivatedRoute,
+    private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
-    private authService: AuthService
   ) { }
 
   ngOnInit() {
+    // save the base url path
     this.authService.path.subscribe(p => this.path = p);
-  }
-  onResultSelected(rowItem: RowItem, event: MouseEvent) {
-    this.resultSelected.emit(rowItem);
+    this.getRegistrations().subscribe(r => {
+      this.resultsAndPagination = r;
+      this.rows = this.processSearchResults(r.data);
+    });
   }
 
+  getRegistrations(query: SearchQueryParameters = this.defaultSearchQuery): Observable<ListResult<Registration>> {
+    // store the sorting
+    query.sort = this.sort;
+    // save the generic query for repeat searches
+    this.previousQuery = query;
+    // save the organization id into the query from the default
+    return this.registrationService.getRegistrations(query);
+  }
+
+  search() {
+    // submit and collect search with a query string
+    const query = this.defaultSearchQuery;
+    query.q = this.queryString;
+    this.getRegistrations(query).subscribe(r => {
+      if (r.data.length <= 0) {
+        this.notFoundMessage = 'No results found.';
+      } else {
+        this.notFoundMessage = 'Searching ...';
+      }
+      this.resultsAndPagination = r;
+      this.rows = this.processSearchResults(r.data);
+    });
+  }
+
+  onPaginationEvent(event: SearchQueryParameters) {
+    // save the pagination into the previous query and execute the query again
+    this.getRegistrations(event).subscribe(r => {
+      this.resultsAndPagination = r;
+      this.rows = this.processSearchResults(r.data);
+    });
+  }
+
+  modifyRegistration(id: string) {
+    // no id means 'add user' -> clear unique key
+    this.uniqueKeyService.setKey(id);
+    this.router.navigate([`/${this.path}/registration`]);
+  }
+
+  //*******/
   // Map the search results (i.e. Registrations) into row items suitable for display on a table
-  private processSearchResults(search: EvacueeSearchResults): RowItem[] {
-    if (!search) {
+  private processSearchResults(results: Registration[]): RowItem[] {
+    if (!results) {
       return [];
     }
 
     this.notFoundMessage = 'No results found.';
     const listItems: RowItem[] = [];
-    search.results.forEach((registration, index, array) => {
+    results.forEach((registration, index, array) => {
       if (!registration) {
         return;  // bad data; should fix
       }
@@ -116,7 +150,6 @@ export class EvacueeSearchResultsComponent implements OnChanges, OnInit {
         incidentTaskTaskNumber: null,
         evacuatedFrom: null, // community name
         evacuatedTo: null, // community name
-        hasReferrals: this.hasReferrals(registration),
         registrationCompletionDate: registration.registrationCompletionDate
       };
 
@@ -166,7 +199,6 @@ export class EvacueeSearchResultsComponent implements OnChanges, OnInit {
             headOfHousehold: false,
             evacuatedFrom: null, // community name
             evacuatedTo: null, // community name
-            hasReferrals: this.hasReferrals(registration),
             registrationCompletionDate: registration.registrationCompletionDate
           };
 
@@ -196,13 +228,6 @@ export class EvacueeSearchResultsComponent implements OnChanges, OnInit {
     });
     return listItems;
   }
-
-  hasReferrals(r: Registration): boolean {
-    // TODO we need to check business logic for this because there is deeper discussion with the client about
-    // how this becomes a meaningful flag. This also should probably be handled server-side instead of here.
-    return false;
-  }
-
   finalize(r: RowItem) {
     this.uniqueKeyService.setKey(r.rowData.id);
     this.router.navigate([`/${this.path}/registration`]);
@@ -210,8 +235,6 @@ export class EvacueeSearchResultsComponent implements OnChanges, OnInit {
 
   view(r: RowItem) {
     this.uniqueKeyService.setKey(r.rowData.id);
-    this.router.navigate([`/${this.path}/registration/summary`]
-      // , { relativeTo: this.route }
-    );
+    this.router.navigate([`/${this.path}/registration/summary`]);
   }
 }

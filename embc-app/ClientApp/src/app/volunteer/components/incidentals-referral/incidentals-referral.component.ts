@@ -1,30 +1,52 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { IncidentalsReferral } from 'src/app/core/models';
+import { IncidentalsReferral, Supplier } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
+import { numberOfDays, uuid } from 'src/app/shared/utils';
+import { SupplierComponent } from '../supplier/supplier.component';
+import { FormBuilder, Validators } from '@angular/forms';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
 @Component({
   selector: 'app-incidentals-referral',
   templateUrl: './incidentals-referral.component.html',
   styleUrls: ['./incidentals-referral.component.scss']
 })
-export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChanges {
+export class IncidentalsReferralComponent extends AbstractReferralComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
+  @Input() showErrorsWhen = true;
   @Input() referral: IncidentalsReferral = null;
-  @Input() editMode = false;
-  @Output() remove = new EventEmitter<any>();
-  @Output() add = new EventEmitter<any>();
+  @Output() referralChange = new EventEmitter<IncidentalsReferral>();
+
+  // TODO: replace this with formReady event on supplier form
+  @ViewChild(SupplierComponent) supplierRef: SupplierComponent;
 
   private ratesModal: NgbModalRef = null;
-  uuid: string;
+
+  // For the purpose of accessibility this number is likely unique.
+  // If it breaks and isn't unique it won't break the form. (poor man's guid)
+  uuid = uuid();
 
   constructor(
-    private modals: NgbModal,
-  ) { }
+    public fb: FormBuilder,
+    public modals: NgbModal,
+  ) {
+    super(fb);
+    this.form.addControl('approvedItems', this.fb.control(''));
+    this.form.addControl('totalAmount', this.fb.control('', [CustomValidators.number, Validators.required, Validators.min(0)]));
+  }
 
   ngOnInit() {
-    // for the purpose of accesibility this number is likely unique
-    // if it breaks and isn't unique it won't break the form. (poor man's guid)
-    this.uuid = new Date().valueOf().toString();
+    this.handleFormChange();
+    this.displayReferral(this.referral);
+  }
+
+  ngAfterViewInit() {
+    // connect child form to parent
+    if (this.supplierRef && !this.form.get('supplier')) {
+      this.form.addControl('supplier', this.supplierRef.form);
+      this.supplierRef.form.setParent(this.form);
+    }
   }
 
   ngOnDestroy() {
@@ -36,16 +58,58 @@ export class IncidentalsReferralComponent implements OnInit, OnDestroy, OnChange
     if (changes.referral) {
       // console.log('referral =', changes.referral.currentValue);
     }
-    if (changes.editMode) {
-      // console.log('editMode =', changes.editMode.currentValue);
+    if (changes.readOnly) {
+      // console.log('readOnly =', changes.readOnly.currentValue);
     }
   }
 
+  // validate the whole form as we capture data
+  handleFormChange(): void {
+    this.form.valueChanges.subscribe(() => this.saveChanges());
+  }
+
+  displayReferral(referral: IncidentalsReferral) {
+    if (referral) {
+      this.form.reset();
+      this.form.patchValue({
+        evacuees: referral.evacuees,
+        approvedItems: referral.approvedItems,
+        totalAmount: referral.totalAmount,
+        comments: referral.comments,
+      });
+
+      // populate the evacuee list with existing selection
+      (referral.evacuees || []).forEach(x => this.selectEvacuee(x));
+
+      // TODO: Dates FROM and TO
+    }
+  }
+
+  // if all required information is in the form we emit
+  saveChanges() {
+    if (!this.form.valid) {
+      return;
+    }
+    // Copy over all of the original referral properties
+    // Then copy over the values from the form
+    // This ensures values not on the form, such as the Id, are retained
+    const p = { ...this.referral, ...this.form.value };
+    this.referralChange.emit(p);
+  }
+
+  updateSupplier(value: Supplier) {
+    this.referral.supplier = value;
+  }
+
   viewRates() {
-    this.ratesModal = this.modals.open(IncidentalsRatesComponent, { size: 'lg' });
+    this.ratesModal = this.modals.open(IncidentalsRatesComponent, { size: 'lg', centered: true });
     this.ratesModal.result.then(
       () => { this.ratesModal = null; },
       () => { this.ratesModal = null; }
     );
   }
+
+  // --------------------HELPERS-----------------------------------------
+  numDays(validFrom: Date, validTo: Date) { return numberOfDays(validFrom, validTo); }
+
 }

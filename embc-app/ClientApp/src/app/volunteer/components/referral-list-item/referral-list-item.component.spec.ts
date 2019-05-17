@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { EvacueeSearchResultsComponent } from './evacuee-search-results.component';
+import { ReferralListItemComponent } from './referral-list-item.component';
 
-describe('EvacueeSearchResultsComponent', () => {
-  let component: EvacueeSearchResultsComponent;
-  let fixture: ComponentFixture<EvacueeSearchResultsComponent>;
+describe('ReferralListItemComponent', () => {
+  let component: ReferralListItemComponent;
+  let fixture: ComponentFixture<ReferralListItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EvacueeSearchResultsComponent ]
+      declarations: [ ReferralListItemComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EvacueeSearchResultsComponent);
+    fixture = TestBed.createComponent(ReferralListItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

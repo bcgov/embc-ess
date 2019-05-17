@@ -10,7 +10,7 @@ import { ClothingRatesComponent } from 'src/app/shared/modals/clothing-rates/clo
 })
 export class ClothingReferralComponent implements OnInit, OnDestroy, OnChanges {
   @Input() referral: ClothingReferral = null;
-  @Input() editMode = false;
+  @Input() readOnly = false;
   @Output() remove = new EventEmitter<any>();
   @Output() add = new EventEmitter<any>();
 
@@ -30,7 +30,7 @@ export class ClothingReferralComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges) { }
 
   viewRates() {
-    this.ratesModal = this.modals.open(ClothingRatesComponent, { size: 'lg' });
+    this.ratesModal = this.modals.open(ClothingRatesComponent, { size: 'lg', centered: true });
     this.ratesModal.result.then(
       () => { this.ratesModal = null; },
       () => { this.ratesModal = null; }

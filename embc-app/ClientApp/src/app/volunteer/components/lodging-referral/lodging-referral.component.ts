@@ -10,7 +10,7 @@ import { LodgingRatesComponent } from 'src/app/shared/modals/lodging-rates/lodgi
 })
 export class LodgingReferralComponent implements OnInit, OnDestroy, OnChanges {
   @Input() referral: LodgingReferral = null;
-  @Input() editMode = false;
+  @Input() readOnly = false;
   @Output() remove = new EventEmitter<any>();
   @Output() add = new EventEmitter<any>();
 
@@ -30,7 +30,7 @@ export class LodgingReferralComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges) { }
 
   viewRates() {
-    this.ratesModal = this.modals.open(LodgingRatesComponent, { size: 'lg' });
+    this.ratesModal = this.modals.open(LodgingRatesComponent, { size: 'lg', centered: true });
     this.ratesModal.result.then(
       () => { this.ratesModal = null; },
       () => { this.ratesModal = null; }

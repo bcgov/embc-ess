@@ -14,57 +14,60 @@ And of course this component needs to be implemented as a 'maker' with both an e
 -->
 
 <div *ngIf="referral">
-  <div *ngIf="editMode">
-    <section>
-      <h2 class="blue-header">
-        <app-font-awesome-icon icon="plus-circle"></app-font-awesome-icon>&nbsp;&nbsp;INCIDENTALS
-      </h2>
+  <div *ngIf="!readOnly">
+    <form novalidate [formGroup]="form">
       <div class="space-between align-items-center">
-        <app-valid-from-to [(referralDate)]="referral.dates" [id]="uuid"></app-valid-from-to>
+        <app-valid-from-to [referralDate]="referral.dates" (referralDateChange)="referral.dates = $event" [id]="uuid"></app-valid-from-to>
         <button type="button" class="btn btn-secondary" (click)="viewRates()">VIEW ESS RATES</button>
       </div>
 
-      <div class="feature-block card p-0 mt-4">
+      <div class="feature-block card border-0 p-0 mt-4">
         <div class="row">
           <div class="col-5 pr-0">
             <div class="pt-4 pl-4">
-              <app-evacuee-list [(evacuees)]="referral.evacuees"></app-evacuee-list>
+              <app-evacuee-list [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()"></app-evacuee-list>
             </div>
           </div>
           <div class="col-7">
             <div class="pt-4 pr-4">
-              <!-- TODO: here, prompt for Food Required and # of Days for Meals -->
               <div class="card">
                 <div class="card-body">
                   <div class="form-group">
                     <label for="approvedItems">List approved items:</label>
-                    <textarea class="form-control" id="approvedItems" rows="3" [(ngModel)]="referral.approvedItems"></textarea>
+                    <textarea class="form-control" id="approvedItems" rows="3" placeholder="Details" formControlName="approvedItems"></textarea>
                     <small><strong>NOTE:</strong> If more than one Referral Form is issued for incidentals, the total of all Referral Forms must not exceed maximum allowable rates.</small>
                   </div>
                 </div>
-                <div class="card-footer">
-                  Total Amount:
-                  $<input type="number" [(ngModel)]="referral.totalAmount">
+                <div class="card-footer blue-header d-flex justify-content-end">
+                  <div class="form-group row mb-0">
+                    <label class="col-form-label">Total Amount:</label>
+                    <div class="col d-flex input-with-icon">
+                      <span aria-hidden="true">$</span>
+                      <input type="text" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control" formControlName="totalAmount">
+                    </div>
+                  </div>
                 </div>
               </div>
+              <span class="invalid-feedback justify-content-end" [class.d-flex]="amountInput.classList.contains('is-invalid')">
+                Please enter a total amount for incidentals
+              </span>
             </div>
           </div>
         </div>
-        <app-supplier [supplier]="referral.supplier"></app-supplier>
-        <div class="card-footer">
-          <app-fa-link icon="times" class="float-left" (click)="remove.emit()">
-            Remove this referral
-          </app-fa-link>
-          <app-fa-link icon="plus-circle" color="#669900" class="float-right" (click)="add.emit()">
-            ADD ANOTHER INCIDENTALS REFERRAL
-          </app-fa-link>
+        <div class="card m-4">
+          <div class="card-body">
+            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (supplierChange)="updateSupplier($event)"></app-supplier>
+          </div>
+        </div>
+        <div class="col p-4">
+          <textarea class="form-control" formControlName="comments" placeholder="Add comments" rows="4"></textarea>
         </div>
       </div>
-    </section>
-    <!-- <pre>{{referral|json}}</pre> -->
+    </form>
   </div>
 
-  <div *ngIf="!editMode">
+  <!-- *********************************SUMMARY BELOW****************************************** -->
+  <div *ngIf="readOnly">
     <ul class="summary mx-3">
       <li class="summary-heading">
         <div class="container py-3">
@@ -73,20 +76,20 @@ And of course this component needs to be implemented as a 'maker' with both an e
               <div class="h1 my-3">Incidentals</div>
               <div>
                 <span class="name"><strong>Valid From:</strong></span>
-                <span>{{referral.dates.from | date : 'MMM-dd-yyyy'}}</span>
+                <span>{{referral.dates?.from | date : 'MMM-dd-yyyy'}}</span>
               </div>
               <div>
                 <span class="name"><strong>Valid To:</strong></span>
-                <span>{{referral.dates.to | date : 'MMM-dd-yyyy'}}</span>
+                <span>{{referral.dates?.to | date : 'MMM-dd-yyyy'}}</span>
               </div>
             </div>
             <!-- TODO: use <app-supplier> here -->
             <!-- TODO: this needs to be centered vertically -->
             <div class="col-6" *ngIf="referral.supplier">
-              <div><strong>{{referral.supplier.name}}</strong></div>
-              <div>{{referral.supplier.address}}</div>
-              <div>{{referral.supplier.city + ', BC'}} &nbsp;&nbsp; {{referral.supplier.postalCode}}</div>
-              <div>Tel: {{referral.supplier.telephone}} | Fax: {{referral.supplier.fax}}</div>
+              <div><strong>{{referral.supplier?.name}}</strong></div>
+              <div>{{referral.supplier?.address}}</div>
+              <div>{{referral.supplier?.city + ', BC'}} &nbsp;&nbsp; {{referral.supplier?.postalCode}}</div>
+              <div>Tel: {{referral.supplier?.telephone}} | Fax: {{referral.supplier?.fax}}</div>
             </div>
           </div>
         </div>
@@ -108,9 +111,8 @@ And of course this component needs to be implemented as a 'maker' with both an e
         <!-- TODO: iterate over all family members and only 'check' the selected ones -->
         <span class="name">Evacuees Requiring Incidentals:</span>
         <span class="value">
-          <div class="form-check mt-2" *ngFor="let e of referral.evacuees">
-            <input class="form-check-input" [checked]="e.selected" type="checkbox" disabled>
-            <label class="form-check-label">{{e.evacuee.lastName}}, {{e.evacuee.firstName}}</label>
+          <div class="mt-2" *ngFor="let e of referral.evacuees">
+            <label>{{e.lastName}}, {{e.firstName}}</label>
           </div>
         </span>
       </li>

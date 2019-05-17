@@ -341,6 +341,10 @@ ul.arrow > li:before {
   opacity: 1;
 }
 
+.modal-small .modal-dialog {
+  max-width: 350px;
+}
+
 input[type=checkbox],
 input[type=radio] {
   top: 3px;

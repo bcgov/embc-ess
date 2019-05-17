@@ -61,4 +61,35 @@ export class RegistrationService extends RestService {
         catchError(this.handleError),
       );
   }
+
+  async printReferrals(registrationId: string, referralIds: string[], addSummary: boolean): Promise<void> {
+    const isMS = window.navigator.msSaveOrOpenBlob ? true : false; // check if IE, Edge, etc
+    const blob = await this.getReferralPdfs(registrationId, referralIds, addSummary);
+
+    // as of May 2019 ...
+    // - IE11 can't open a "blob" URL
+    // - Edge throws an error creating URL or referencing it
+    // ... so call the MS-specific feature for them
+    if (isMS) {
+      // save PDF file
+      const filename = `ESS${registrationId}.pdf`; // FUTURE: add date stamp to filename?
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else {
+      // open PDF in new tab
+      const tab = window.open();
+      const url = URL.createObjectURL(blob);
+      tab.location.href = url;
+    }
+  }
+
+  private getReferralPdfs(registrationId: string, referralIds: string[], addSummary: boolean): Promise<Blob> {
+    const data = { ReferralIds: referralIds, AddSummary: addSummary };
+    return this.http.post<Blob>(`api/registrations/${registrationId}/referrals/referralPdfs`, data, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
 }

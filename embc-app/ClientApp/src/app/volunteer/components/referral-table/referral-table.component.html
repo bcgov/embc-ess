@@ -17,3 +17,36 @@
     CREATE PDF &amp; PRINT
   </button>
 </div>
+
+<!-- Alert to prompt for summary page -->
+<ng-template #summaryAlert let-modal>
+    <div class="modal-header">
+      <h1 class="modal-title h2">Alert</h1>
+      <button type="button" class="close" aria-label="Close" (click)="summaryModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form>
+        <p>
+          Do you want to include the evacuee summary page?
+        </p>
+        <div class="form-row mx-0">
+          <div class="form-check form-check-inline">
+            <input type="radio" class="form-check-input" name="includeSummary" [(ngModel)]="includeSummary" [value]="true" id="includeSummaryYes">
+            <label class="form-check-label" for="includeSummaryYes">Yes</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input type="radio" class="form-check-input" name="includeSummary" [(ngModel)]="includeSummary" [value]="false" id="includeSummaryNo">
+            <label class="form-check-label" for="includeSummaryNo">No</label>
+          </div>
+        </div>
+
+        <div class="mt-5">
+          <button type="button" class="btn btn-primary" [disabled]="includeSummary === undefined" (click)="summaryModal.close(includeSummary)">CREATE PDF</button>
+        </div>
+      </form>
+    </div>
+  </ng-template>

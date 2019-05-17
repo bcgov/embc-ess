@@ -13,8 +13,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 TaskNumber = source.TaskNumber,
                 Details = source.Details,
                 Active = source.Active,
-                Region = source.Region?.ToViewModel(),
-                Community = source.Community?.ToViewModel(),
+                Region = mapper.Map<ViewModels.Region>(source.Region),
+                Community = mapper.Map<ViewModels.Community>(source.Community),
                 TotalAssociatedEvacuees = source.EvacueeRegistrations?.Count(),
                 StartDate = source.StartDate?.DateTime
             };
