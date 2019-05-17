@@ -128,10 +128,8 @@ namespace Gov.Jag.Embc.Public
 
             services.AddTransient<IDataInterface, DataInterface>();
 
-            //Automapper
+            //AutoMapper
             services.AddAutoMapper(typeof(Startup));
-            //Initialize the static mapper for viewmodel.extensions extension methods
-            Mapper.Initialize(cfg => cfg.AddMaps(typeof(Startup)));
 
             // Enable the IURLHelper to be able to build links within Controllers
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -146,12 +144,16 @@ namespace Gov.Jag.Embc.Public
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app)
         {
-            var log = loggerFactory.CreateLogger("Startup");
+            var env = app.ApplicationServices.GetService<IHostingEnvironment>();
+            var loggerFactory = app.ApplicationServices.GetService<ILoggerFactory>();
+            var log = loggerFactory.CreateLogger<Startup>();
+
+            //Initialize the static AutoMapper
+            Mapper.Initialize(cfg => cfg.AddMaps(typeof(Startup)));
 
             // DATABASE SETUP
-
             log.LogInformation("Fetching the application's database context ...");
 
             var adminCtx = new EmbcDbContext(new DbContextOptionsBuilder<EmbcDbContext>()
