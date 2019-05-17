@@ -23,6 +23,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 EF.Functions.Like(e.EvacueeRegistration.IncidentTask.Community.Name, $"%{searchQuery.Query}%")
             );
 
+            if (searchQuery.HasSortBy())
+                query = query.Sort(searchQuery.SortBy);
+            else
+                query = query.Sort("-EvacueeRegistration.EssFileNumber");
+
             var results = await query.ToArrayAsync();
 
             return new PaginatedList<EvacueeListItem>(results.Select(mapper.Map<EvacueeListItem>), searchQuery.Offset, searchQuery.Limit);
