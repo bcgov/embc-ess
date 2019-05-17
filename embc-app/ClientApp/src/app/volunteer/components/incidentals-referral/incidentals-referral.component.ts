@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, S
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IncidentalsReferral, Supplier } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
-import { numberOfDays, uuid } from 'src/app/shared/utils';
 import { SupplierComponent } from '../supplier/supplier.component';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
@@ -22,10 +21,6 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent impl
   @ViewChild(SupplierComponent) supplierRef: SupplierComponent;
 
   private ratesModal: NgbModalRef = null;
-
-  // For the purpose of accessibility this number is likely unique.
-  // If it breaks and isn't unique it won't break the form. (poor man's guid)
-  uuid = uuid();
 
   constructor(
     public fb: FormBuilder,
@@ -108,8 +103,5 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent impl
       () => { this.ratesModal = null; }
     );
   }
-
-  // --------------------HELPERS-----------------------------------------
-  numDays(validFrom: Date, validTo: Date) { return numberOfDays(validFrom, validTo); }
 
 }

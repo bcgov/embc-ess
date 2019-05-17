@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormArray, FormControl, FormGroup } from '@angular/forms';
 
 import { Evacuee, ReferralBase } from 'src/app/core/models';
-import { clearFormArray } from 'src/app/shared/utils';
+import { clearFormArray, uuid } from 'src/app/shared/utils';
 
 /**
  * This is the base class for `FoodReferralComponent`, `ClothingReferralComponent`, etc.
@@ -27,6 +27,10 @@ export class AbstractReferralComponent implements OnInit {
 
   // The model for the form data collected
   form: FormGroup;
+
+  // For the purpose of accessibility this number is likely unique.
+  // If it breaks and isn't unique it won't break the form. (poor man's guid)
+  uuid = uuid();
 
   constructor(public fb: FormBuilder) {
     this.form = this.fb.group({
