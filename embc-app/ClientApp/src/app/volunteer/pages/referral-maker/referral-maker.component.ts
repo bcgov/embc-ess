@@ -133,7 +133,7 @@ export class ReferralMakerComponent implements OnInit {
     this.submitting = true;
 
     // TODO: save stuff, etc
-    this.notifications.addNotification('Referrals finalized successfully');
+    this.notifications.addNotification('Referrals finalized successfully', 'success');
 
     this.submitting = false;
 

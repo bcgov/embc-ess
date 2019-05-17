@@ -563,7 +563,7 @@ export class RegistrationMakerComponent implements OnInit {
         .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
-          this.notificationQueueService.addNotification('Evacuee added successfully');
+          this.notificationQueueService.addNotification('Evacuee added successfully', 'success');
           // done adding the entry. Clear the reference key.
           this.uniqueKeyService.clearKey();
           // go back to the main dashboard
@@ -575,7 +575,7 @@ export class RegistrationMakerComponent implements OnInit {
         .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
-          this.notificationQueueService.addNotification('Evacuee updated successfully');
+          this.notificationQueueService.addNotification('Evacuee updated successfully', 'success');
           // done editing the entry. Clear the reference key.
           this.uniqueKeyService.clearKey();
           // go back to the main dashboard

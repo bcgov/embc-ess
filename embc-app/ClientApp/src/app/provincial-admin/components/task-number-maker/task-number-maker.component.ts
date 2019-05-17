@@ -173,7 +173,7 @@ export class TaskNumberMakerComponent implements OnInit {
           .subscribe(() => {
             this.submitting = false;
             // add a message to the UI
-            this.notificationQueueService.addNotification('Task number updated successfully');
+            this.notificationQueueService.addNotification('Task number updated successfully', 'success');
             // done editing the entry. Clear the reference key.
             this.uniqueKeyService.clearKey();
             // go back to the task number list page
@@ -185,7 +185,7 @@ export class TaskNumberMakerComponent implements OnInit {
           .subscribe(i => {
             this.submitting = false;
             // add a message to the UI
-            this.notificationQueueService.addNotification('Task number added successfully');
+            this.notificationQueueService.addNotification('Task number added successfully', 'success');
             // NB - there is no key in this scenario
             // go back to the task number list page
             this.router.navigate([`/${this.path}/task-numbers`], { preserveQueryParams: true });
