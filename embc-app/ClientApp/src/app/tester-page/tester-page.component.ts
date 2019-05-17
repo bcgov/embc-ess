@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { VolunteerService } from '../core/services/volunteer.service';
-import { SearchQueryParameters } from '../core/models/search-interfaces';
-import { PaginationSummary } from '../core/models';
+
+import { ReferralService } from '../core/services/referral.service';
+import { ListResult, Referral } from '../core/models';
 
 
 @Component({
@@ -10,26 +10,26 @@ import { PaginationSummary } from '../core/models';
   styleUrls: ['./tester-page.component.scss']
 })
 export class TesterPageComponent implements OnInit {
-  // page: number;
-  // paginationSummary: PaginationSummary;
-  // params: SearchQueryParameters = {
-  //   limit: 10,
-  //   offset: 0,
-  // };
-  // volunteers;
+
+  referrals: ListResult<Referral>;
+  referralsModified: Referral[];
+
   constructor(
-    // private volunteerService: VolunteerService
+    private referralService: ReferralService
   ) { }
   ngOnInit() {
-    // this.getVolunteers(this.params);
+    const id = '100035';
+    this.referralService.getReferrals(id, true)
+      .subscribe(r => {
+        // this.referrals = r;
+        this.referralsModified = r.data.map(d => {
+          d.supplier.name = d.supplier.name + '!';
+          return d;
+        });
+        this.referralService.createReferrals(id, this.referralsModified).subscribe(() => {
+          this.referralService.getReferralById(id)
+        });
+      });
   }
-  // getVolunteers(params) {
-  //   this.volunteerService.getVolunteers(params).subscribe(v => {
-  //     this.volunteers = v;
-  //     this.paginationSummary = v.metadata;
-  //   });
-  // }
-  // onEvent(event: SearchQueryParameters) {
-  //   this.params = event;
-  // }
+
 }

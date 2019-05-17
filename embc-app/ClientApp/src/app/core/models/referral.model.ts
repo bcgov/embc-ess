@@ -1,5 +1,6 @@
 import { Evacuee, Supplier } from './';
 import { ReferralDate } from './referral-date';
+import { ListResult } from './list-result';
 
 export type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'LODGING' | 'TRANSPORTATION');
 
@@ -50,7 +51,10 @@ export interface TransportationReferral extends ReferralBase {
 }
 
 export type Referral = FoodReferral | IncidentalsReferral | ClothingReferral | LodgingReferral | TransportationReferral;
-
+export interface RawReferralCollection {
+  registrationId: string;
+  referrals: ListResult<Referral>;
+}
 // --------------------HELPERS-----------------------------------------
 
 // TODO: the BE should only provide type of type ReferralType
@@ -75,3 +79,4 @@ export function isLodgingReferral(referral: Referral): boolean {
 export function isTransportationReferral(referral: Referral): boolean {
   return referral && referral.type.toUpperCase() === 'TRANSPORTATION';
 }
+

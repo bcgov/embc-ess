@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map } from 'rxjs/operators';
 import { CoreModule } from '../core.module';
-import { Referral, ListResult } from '../models';
+import { Referral, ListResult, RawReferralCollection } from '../models';
 import { RestService } from './rest.service';
 
 @Injectable({
@@ -23,7 +23,21 @@ export class ReferralService extends RestService {
         catchError(this.handleError)
       );
   }
-
+  // GET api/registrations/<id>/referrals
+  getCleanReferrals(id: string, getActive: boolean = true): Observable<ListResult<Referral>> {
+    // NB: hard-coded server limit is 500
+    // NB: default sort order is validFrom
+    // NB: if not specified, default active flag is True
+    const params = { limit: '500', offset: '0', q: '', sort: '', active: getActive ? 'true' : 'false' };
+    return this.http.get<RawReferralCollection>(`api/registrations/${id}/referrals`, { headers: this.headers, params })
+      .pipe(
+        retry(3),
+        map((response: RawReferralCollection) => {
+          return response.referrals;
+        }),
+        catchError(this.handleError)
+      );
+  }
   // POST api/registrations/<id>/referrals ???
   createReferrals(registrationId: string, referrals: Referral[]): Observable<HttpResponse<any>> {
     // TODO: assemble data object for BE
