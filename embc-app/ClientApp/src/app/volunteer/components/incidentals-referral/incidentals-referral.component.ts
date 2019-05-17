@@ -83,11 +83,13 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent impl
   // if all required information is in the form we emit
   saveChanges() {
     if (!this.form.valid) {
-      return;
+      console.log('form is invalid'); // TODO: fix
+      // return;
     }
-    // Copy over all of the original referral properties
-    // Then copy over the values from the form
-    // This ensures values not on the form, such as the Id, are retained
+
+    // Copy over all of the original referral properties.
+    // Then copy over the values from the form.
+    // This ensures values not on the form, such as the Id, are retained.
     const p = { ...this.referral, ...this.form.value };
     this.referralChange.emit(p);
   }

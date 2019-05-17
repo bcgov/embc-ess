@@ -20,6 +20,7 @@ const GROCERIES = 22.50;
   styleUrls: ['./food-referral.component.scss']
 })
 export class FoodReferralComponent extends AbstractReferralComponent implements OnInit, AfterViewInit, OnDestroy {
+  @Input() referral: FoodReferral;
   @Output() referralChange = new EventEmitter<FoodReferral>();
 
   // TODO: replace this with formReady event on supplier form
@@ -34,7 +35,7 @@ export class FoodReferralComponent extends AbstractReferralComponent implements 
 
   get subType() { return this.f.subType.value; }
 
-  get totalAmount() {
+  get maximumAmount() {
     if (this.subType === 'RESTAURANT') {
       const b = this.f.numBreakfasts.value * BREAKFAST;
       const l = this.f.numLunches.value * LUNCH;
@@ -47,14 +48,8 @@ export class FoodReferralComponent extends AbstractReferralComponent implements 
       const n = this.selected.length;
       return d * GROCERIES * n;
     }
+    return 0;
   }
-
-  // helper to format dollar amounts
-  currency = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2
-  });
 
   constructor(
     public fb: FormBuilder,
@@ -113,14 +108,16 @@ export class FoodReferralComponent extends AbstractReferralComponent implements 
   // if all required information is in the form we emit
   private saveChanges() {
     if (!this.form.valid) {
-      return;
+      console.log('form is invalid'); // TODO: fix
+      // return;
     }
-    // Copy over all of the original referral properties
-    // Then copy over the values from the form
-    // This ensures values not on the form, such as the Id, are retained
-    console.log('referral =', this.referral);
-    console.log('form =', this.form.value);
-    const p = { ...this.referral, ...this.form.value, totalAmount: this.totalAmount };
+
+    // Copy over all of the original referral properties.
+    // Then copy over the values from the form.
+    // This ensures values not on the form, such as the Id, are retained.
+    const p = { ...this.referral, ...this.form.value };
+    // if RESTAURANT then assign maximumAmount; otherwise leave whatever the user entered
+    if (this.subType === 'RESTAURANT') { p.totalAmount = this.maximumAmount; }
     this.referralChange.emit(p);
   }
 

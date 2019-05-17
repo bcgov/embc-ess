@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormArray, FormControl, FormGroup } from '@angular/forms';
 
-import { Evacuee, ReferralBase, Referral } from 'src/app/core/models';
+import { Evacuee, ReferralBase } from 'src/app/core/models';
 import { clearFormArray, uuid } from 'src/app/shared/utils';
 
 /**
@@ -16,7 +16,6 @@ import { clearFormArray, uuid } from 'src/app/shared/utils';
  */
 @Component({ template: '' })
 export class AbstractReferralComponent implements OnInit {
-  @Input() referral: Referral;
   @Input() showErrorsWhen = true;
 
   // List of all evacuees that we want to show in this component
@@ -34,6 +33,13 @@ export class AbstractReferralComponent implements OnInit {
   // For the purpose of accessibility this number is likely unique.
   // If it breaks and isn't unique it won't break the form. (poor man's guid)
   uuid = uuid();
+
+  // helper to format dollar amounts
+  currency = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2
+  });
 
   constructor(public fb: FormBuilder) {
     this.form = this.fb.group({
