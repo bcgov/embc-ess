@@ -105,6 +105,7 @@ export class ReferralMakerComponent implements OnInit {
     return (food && lodging && clothing && transportation && incidentals);
   }
 
+  // user clicked Back button
   back() {
     // show the editing parts of the form
     this.editMode = true;
@@ -112,6 +113,7 @@ export class ReferralMakerComponent implements OnInit {
     window.scrollTo(0, 0); // scroll to top
   }
 
+  // user clicked Cancel & Close button
   cancel() {
     // clear the loaded record if available
     this.uniqueKeyService.clearKey();
@@ -119,6 +121,7 @@ export class ReferralMakerComponent implements OnInit {
     this.router.navigate([`/${this.path}/registrations`]);
   }
 
+  // user clicked Create Referral button
   createReferral() {
     this.userClickedNext = true;
 
@@ -129,6 +132,7 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
+  // user clicked Finalize button
   finalize() {
     this.submitting = true;
 
@@ -156,6 +160,30 @@ export class ReferralMakerComponent implements OnInit {
       this.clearFoodReferrals();
     } else {
       this.addFoodReferral();
+    }
+  }
+
+  lodgingReferralChange() {
+    if (this.lodgingReferrals.length > 0) {
+      this.clearLodgingReferrals();
+    } else {
+      this.addLodgingReferral();
+    }
+  }
+
+  clothingReferralChange() {
+    if (this.clothingReferrals.length > 0) {
+      this.clearClothingReferrals();
+    } else {
+      this.addClothingReferral();
+    }
+  }
+
+  transportationReferralChange() {
+    if (this.transportationReferrals.length > 0) {
+      this.clearTransportationReferrals();
+    } else {
+      this.addTransportationReferral();
     }
   }
 
@@ -187,7 +215,8 @@ export class ReferralMakerComponent implements OnInit {
       subType: null,
       purchaser: this.purchaser,
       dates: {
-        from: new Date(2019, 0, 1),
+        from: new Date(2019, 3, 15, 17, 30, 0), // FOR TESTING ONLY
+        days: 2, // FOR TESTING ONLY
       },
       evacuees: [],
       numBreakfasts: 0,
@@ -202,6 +231,18 @@ export class ReferralMakerComponent implements OnInit {
     this.foodReferrals.push({ value: referral, valid: false });
   }
 
+  addLodgingReferral() {
+    // TODO
+  }
+
+  addClothingReferral() {
+    // TODO
+  }
+
+  addTransportationReferral() {
+    // TODO
+  }
+
   clearIncidentalsReferrals(): void {
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Incidentals referrals?')) {
@@ -213,6 +254,27 @@ export class ReferralMakerComponent implements OnInit {
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Food referrals?')) {
       while (this.foodReferrals.length > 0) { this.foodReferrals.pop(); }
+    }
+  }
+
+  clearLodgingReferrals(): void {
+    // TODO: replace confirm with a better popup
+    if (confirm('Do you really want to clear all Lodging referrals?')) {
+      while (this.lodgingReferrals.length > 0) { this.lodgingReferrals.pop(); }
+    }
+  }
+
+  clearClothingReferrals(): void {
+    // TODO: replace confirm with a better popup
+    if (confirm('Do you really want to clear all Clothing referrals?')) {
+      while (this.clothingReferrals.length > 0) { this.clothingReferrals.pop(); }
+    }
+  }
+
+  clearTransportationReferrals(): void {
+    // TODO: replace confirm with a better popup
+    if (confirm('Do you really want to clear all Transportation referrals?')) {
+      while (this.transportationReferrals.length > 0) { this.transportationReferrals.pop(); }
     }
   }
 
