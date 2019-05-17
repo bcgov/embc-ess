@@ -7,19 +7,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
 {
     public abstract class Person
     {
-        public static Person Create(string subType)
-        {
-            if (subType == Models.Db.Person.HOH)
-            {
-                return new HeadOfHousehold();
-            }
-            if (subType == Models.Db.Person.FAMILY_MEMBER)
-            {
-                return new FamilyMember();
-            }
-            return null;
-        }
-
         public string Id { get; set; }
         public bool? Active { get; set; }  // no deletions from DB this is a soft delete.
         public string PersonType { get; set; }  // one of 'VOLN' (volunteer), 'HOH' (head of household), 'FMBR' (family member)

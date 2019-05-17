@@ -25,9 +25,9 @@ namespace Gov.Jag.Embc.Public.Seeder
             return db.Regions.ToArray();
         }
 
-        public void AddOrUpdateRegions(List<Region> regions)
+        public void AddOrUpdateRegions(IEnumerable<Region> regions)
         {
-            var existingEntities = db.Regions.Where(r => regions.Exists(ex => ex.Name.Equals(r.Name, StringComparison.OrdinalIgnoreCase))).ToList();
+            var existingEntities = db.Regions.Where(r => regions.Any(ex => ex.Name.Equals(r.Name, StringComparison.OrdinalIgnoreCase))).ToList();
 
             foreach (var entity in existingEntities)
             {
@@ -44,9 +44,9 @@ namespace Gov.Jag.Embc.Public.Seeder
             db.SaveChanges();
         }
 
-        public void AddOrUpdateFamilyRelationshipTypes(List<FamilyRelationshipType> familyRelationshipTypes)
+        public void AddOrUpdateFamilyRelationshipTypes(IEnumerable<FamilyRelationshipType> familyRelationshipTypes)
         {
-            var existingEntities = db.FamilyRelationshipTypes.Where(f => familyRelationshipTypes.Exists(ex => ex.Code == f.Code)).ToList();
+            var existingEntities = db.FamilyRelationshipTypes.Where(f => familyRelationshipTypes.Any(ex => ex.Code == f.Code)).ToList();
 
             foreach (var entity in existingEntities)
             {
@@ -69,11 +69,11 @@ namespace Gov.Jag.Embc.Public.Seeder
             return db.Communities.ToArray();
         }
 
-        public void AddOrUpdateCommunities(List<Community> communities)
+        public void AddOrUpdateCommunities(IEnumerable<Community> communities)
         {
             var existingEntities = db.Communities
                 .Where(ex =>
-                            communities.Exists(
+                            communities.Any(
                                 c => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) &&
                                 (
                                     (!string.IsNullOrEmpty(ex.RegionName) && c.RegionName == ex.RegionName) || string.IsNullOrEmpty(ex.RegionName)
@@ -92,7 +92,7 @@ namespace Gov.Jag.Embc.Public.Seeder
                 else
                 {
                     updatedCommunity = communities.First(c => c.Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase) &&
-                                                                                               !existingEntities.Exists(ex => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) && 
+                                                                                               !existingEntities.Exists(ex => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) &&
                                                                                                         !string.IsNullOrEmpty(ex.RegionName) && c.RegionName == ex.RegionName));
                 }
 
@@ -110,9 +110,9 @@ namespace Gov.Jag.Embc.Public.Seeder
             db.SaveChanges();
         }
 
-        public void AddOrUpdateIncidentTasks(List<IncidentTask> incidentTasks)
+        public void AddOrUpdateIncidentTasks(IEnumerable<IncidentTask> incidentTasks)
         {
-            var existingEntities = db.IncidentTasks.Where(it => incidentTasks.Exists(ex => ex.TaskNumber == it.TaskNumber)).ToList();
+            var existingEntities = db.IncidentTasks.Where(it => incidentTasks.Any(ex => ex.TaskNumber == it.TaskNumber)).ToList();
 
             foreach (var entity in existingEntities)
             {
@@ -137,9 +137,9 @@ namespace Gov.Jag.Embc.Public.Seeder
             return db.Organizations.ToArray();
         }
 
-        public void AddOrUpdateOrganizations(List<Organization> organizations)
+        public void AddOrUpdateOrganizations(IEnumerable<Organization> organizations)
         {
-            var existingEntities = db.Organizations.Where(o => organizations.Exists(ex => ex.BCeIDBusinessGuid == o.BCeIDBusinessGuid)).ToList();
+            var existingEntities = db.Organizations.Where(o => organizations.Any(ex => ex.BCeIDBusinessGuid == o.BCeIDBusinessGuid)).ToList();
 
             foreach (var entity in existingEntities)
             {
@@ -158,10 +158,10 @@ namespace Gov.Jag.Embc.Public.Seeder
             db.SaveChanges();
         }
 
-        public void AddOrUpdateVolunteers(List<Volunteer> volunteers)
+        public void AddOrUpdateVolunteers(IEnumerable<Volunteer> volunteers)
         {
             var existingEntities = db.Volunteers
-                    .Where(v => volunteers.Exists(ex => ex.BceidAccountUserName == v.BceidAccountUserName))
+                    .Where(v => volunteers.Any(ex => ex.BceidAccountUserName == v.BceidAccountUserName))
                     .ToList();
 
             foreach (var entity in existingEntities)
@@ -187,11 +187,10 @@ namespace Gov.Jag.Embc.Public.Seeder
             db.SaveChanges();
         }
 
-        public void AddOrUpdateCountries(List<Country> countries)
+        public void AddOrUpdateCountries(IEnumerable<Country> countries)
         {
             var existingEntities = db.Countries
-                .Where(ex =>
-                            countries.Exists(c => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase))).ToList();
+                .Where(ex => countries.Any(c => ex.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase))).ToList();
             foreach (var entity in existingEntities)
             {
                 var updateCountry = countries.Single(c => c.Name.Equals(entity.Name, StringComparison.OrdinalIgnoreCase));
