@@ -3,11 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Gov.Jag.Embc.Public.ViewModels
 {
-    public class Evacuee : Person
-    {
-        public string BcServicesNumber { get; set; }
-    }
-
     public class HeadOfHousehold : Evacuee
     {
         public string PhoneNumber { get; set; }

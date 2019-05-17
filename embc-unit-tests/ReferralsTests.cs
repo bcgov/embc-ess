@@ -24,7 +24,7 @@ namespace embc_unit_tests
 
             var di = new DataInterface(ctx, mapper);
 
-            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.Generate());
+            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
             referral.RegistrationId = registration.Id;
 

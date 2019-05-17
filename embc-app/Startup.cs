@@ -130,6 +130,8 @@ namespace Gov.Jag.Embc.Public
 
             //Automapper
             services.AddAutoMapper(typeof(Startup));
+            //Initialize the static mapper for viewmodel.extensions extension methods
+            Mapper.Initialize(cfg => cfg.AddMaps(typeof(Startup)));
 
             // Enable the IURLHelper to be able to build links within Controllers
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
