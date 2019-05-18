@@ -17,18 +17,19 @@ import { clearFormArray, uuid } from 'src/app/shared/utils';
  */
 @Component({ template: '' })
 export class AbstractReferralComponent<T extends ReferralBase> implements OnInit, OnDestroy {
-  @Input() referral: T = null;
+  @Input() readOnly = false;
+  @Input() showErrorsWhen = false; // wait until the user click NEXT before showing any validation errors
+
   @Input() showErrorsWhen = true;
 
   // List of all evacuees that we want to show in this component
   @Input() evacuees: Evacuee[] = [];
-  @Input() readOnly = false;
+
+  // the referral to show
+  @Input() referral: T = null;
 
   private subscription: Subscription;
   @Input() formChangeTrigger: Observable<void>;
-
-  // @Input() emitChangesWhen = false; // formChange will NOT be fired until this flag is set to TRUE
-  @Input() showErrorsWhen = false; // wait until the user click NEXT before showing any validation errors
 
   @Output() formReady = new EventEmitter<FormGroup>();
   @Output() formChange = new EventEmitter<T>();
@@ -56,7 +57,7 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   ngOnInit() {
     if (!this.readOnly) {
       // this allows the parent form (the list "maker") to trigger a form submission
-      // we need this because we have no submit buttons on each individual referral form
+      // we need this because we don't have submit buttons on individual referral forms
       this.subscription = this.formChangeTrigger.subscribe(() => this.onSubmit());
 
       // inform the parent form about this sub-form validation status
@@ -68,7 +69,9 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   onValidate(status: any) {
@@ -85,7 +88,7 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
     // Copy over all of the original referral properties
     // Then copy over the values from the form
     // This ensures values not on the form, such as the Id, are retained
-    const p: T = { ...this.referral, ...this.form.value };
+    const p: T = { ...this.referral, ...formValue };
     return p;
   }
 
