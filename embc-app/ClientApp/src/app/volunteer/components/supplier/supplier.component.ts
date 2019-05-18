@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Supplier } from 'src/app/core/models';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -10,16 +10,24 @@ let identifier = 0;
   templateUrl: './supplier.component.html',
   styleUrls: ['./supplier.component.scss']
 })
-export class SupplierComponent implements OnInit {
-
+export class SupplierComponent implements OnInit, OnChanges {
   @Input() showErrorsWhen = true;
   @Input() readOnly = false;
   @Input() supplier: Supplier;
+
   @Output() formReady = new EventEmitter<FormGroup>();
   @Output() supplierChange = new EventEmitter<Supplier>();
 
   // The model for the form data collected
-  form: FormGroup;
+  supplierForm = this.fb.group({
+    name: ['', Validators.required],
+    address: ['', Validators.required],
+    city: ['', Validators.required],
+    province: '',
+    postalCode: '',
+    telephone: '',
+    fax: ''
+  });
 
   uuid = `${identifier++}`;
 
@@ -28,43 +36,46 @@ export class SupplierComponent implements OnInit {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.initForm();
-    this.handleFormChange();
-    this.displaySupplier(this.supplier);
+    // Emit the form group to the father to do whatever it wishes
+    this.formReady.emit(this.supplierForm);
   }
 
-  // Create form controls
-  private initForm(): void {
-    this.form = this.fb.group({
-      name: ['', Validators.required],
-      address: ['', Validators.required],
-      city: ['', Validators.required],
-      province: '',
-      postalCode: '',
-      telephone: '',
-      fax: ''
-    });
-  }
-
-  // validate the whole form as we capture data
-  private handleFormChange(): void {
-    this.form.valueChanges.subscribe(() => this.validate());
-  }
-
-  private displaySupplier(supplier: Supplier) {
-    if (supplier) {
-      this.form.reset();
-      this.form.patchValue({
-        name: supplier.name,
-        address: supplier.address,
-        city: supplier.city,
-        province: supplier.province,
-        postalCode: supplier.postalCode,
-        telephone: supplier.telephone,
-        fax: supplier.fax,
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.supplier && this.supplier) {
+      this.supplierForm.patchValue({
+        name: this.supplier.name,
+        address: this.supplier.address,
+        city: this.supplier.city,
+        province: this.supplier.province,
+        postalCode: this.supplier.postalCode,
+        telephone: this.supplier.telephone,
+        fax: this.supplier.fax,
       });
     }
   }
+
+  // validate the whole form as we capture data
+  // handleFormChange(): void {
+  //   this.supplierForm.valueChanges.subscribe(() => this.validate());
+  // }
+
+  // displaySupplier(supplier: Supplier) {
+  //   if (supplier) {
+  //     this.supplierForm.reset();
+  //     this.supplierForm.patchValue({
+  //       name: supplier.name,
+  //       address: supplier.address,
+  //       city: supplier.city,
+  //       postalCode: supplier.postalCode,
+  //       telephone: supplier.telephone,
+  //       fax: supplier.fax,
+  //     });
+  //   }
+  // }
+
+  // emitSupplier(supplier: Supplier) {
+  //   this.supplierChange.emit(supplier);
+  // }
 
   // if all required information is in the form we emit
   private validate() {

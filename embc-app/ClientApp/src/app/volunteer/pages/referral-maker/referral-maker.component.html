@@ -88,11 +88,11 @@
       </article>
 
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
-        <app-referral-list-item type="INCIDENTALS" (remove)="remove(incidentalsReferrals, i)"
-          (add)="addIncidentalsReferral()">
-          <app-incidentals-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees"
-            [readOnly]="false" (validationStatusChange)="updateValidationStatus(r, $event)"
-            (referralChange)="updateReferral(r, $event)">
+        <app-referral-list-item type="INCIDENTALS" (remove)="remove(incidentalsReferrals, i)" (add)="addIncidentalsReferral()">
+          <app-incidentals-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [readOnly]="false"
+            [formChangeTrigger]="submitTrigger"
+            (formValidationChange)="updateValidationStatus(r, $event)"
+            (formChange)="updateReferral(r, $event)">
           </app-incidentals-referral>
         </app-referral-list-item>
       </article>
