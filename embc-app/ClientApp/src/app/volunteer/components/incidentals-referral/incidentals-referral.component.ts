@@ -41,6 +41,8 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent<Inci
   }
 
   ngOnDestroy() {
+    super.ngOnDestroy();
+
     // close modal if it's open
     if (this.ratesModal) { this.ratesModal.dismiss(); }
   }
@@ -60,7 +62,7 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent<Inci
   // }
 
   displayReferral(referral: IncidentalsReferral) {
-    if (referral) {
+    if (referral && !this.readOnly) {
       this.form.reset();
       this.form.patchValue({
         evacuees: referral.evacuees,

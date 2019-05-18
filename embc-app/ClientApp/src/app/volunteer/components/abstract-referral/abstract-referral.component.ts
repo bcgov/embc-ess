@@ -20,8 +20,6 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   @Input() readOnly = false;
   @Input() showErrorsWhen = false; // wait until the user click NEXT before showing any validation errors
 
-  @Input() showErrorsWhen = true;
-
   // List of all evacuees that we want to show in this component
   @Input() evacuees: Evacuee[] = [];
 
@@ -35,15 +33,15 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   @Output() formChange = new EventEmitter<T>();
   @Output() formValidationChange = new EventEmitter<boolean>();
 
+  // For the purpose of accessibility this number is likely unique.
+  // If it breaks and isn't unique it won't break the form. (poor man's guid)
+  uuid = uuid();
+
   // The model for the form data collected
   form = this.fb.group({
     evacuees: this.fb.array([], Validators.required),
     comments: '',
   });
-
-  // For the purpose of accessibility this number is likely unique.
-  // If it breaks and isn't unique it won't break the form. (poor man's guid)
-  uuid = uuid();
 
   // helper to format dollar amounts
   currency = new Intl.NumberFormat('en-US', {

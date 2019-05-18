@@ -41,7 +41,7 @@ export class SupplierComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.supplier && this.supplier) {
+    if (changes.supplier && this.supplier && !this.readOnly) {
       this.supplierForm.patchValue({
         name: this.supplier.name,
         address: this.supplier.address,
