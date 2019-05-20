@@ -34,11 +34,12 @@ export class SupplierComponent implements OnInit {
   }
 
   // Create form controls
-  initForm(): void {
+  private initForm(): void {
     this.form = this.fb.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
       city: ['', Validators.required],
+      province: '',
       postalCode: '',
       telephone: '',
       fax: ''
@@ -46,17 +47,18 @@ export class SupplierComponent implements OnInit {
   }
 
   // validate the whole form as we capture data
-  handleFormChange(): void {
+  private handleFormChange(): void {
     this.form.valueChanges.subscribe(() => this.validate());
   }
 
-  displaySupplier(supplier: Supplier) {
+  private displaySupplier(supplier: Supplier) {
     if (supplier) {
       this.form.reset();
       this.form.patchValue({
         name: supplier.name,
         address: supplier.address,
         city: supplier.city,
+        province: supplier.province,
         postalCode: supplier.postalCode,
         telephone: supplier.telephone,
         fax: supplier.fax,
@@ -64,14 +66,15 @@ export class SupplierComponent implements OnInit {
     }
   }
 
-  emitSupplier(supplier: Supplier) {
-    this.supplierChange.emit(supplier);
-  }
-
   // if all required information is in the form we emit
-  validate() {
+  private validate() {
     if (this.form.valid) {
-      this.emitSupplier({ ...this.form.value });
+      const supplier: Supplier = { ...this.form.value };
+      // if telephone or fax are blank then delete them from object
+      if (supplier.telephone === '___-___-____') { delete supplier.telephone; }
+      if (supplier.fax === '___-___-____') { delete supplier.fax; }
+      this.supplierChange.emit(supplier);
     }
   }
+
 }

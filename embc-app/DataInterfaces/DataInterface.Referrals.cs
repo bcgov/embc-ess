@@ -14,6 +14,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         private IQueryable<Models.Db.Referral> Referrals => db.Referrals
                 .AsNoTracking()
+                .Include(r => r.Registration)
                 .Include(r => r.Supplier)
                 .Include(r => r.Evacuees)
                     .ThenInclude(re => re.Evacuee);

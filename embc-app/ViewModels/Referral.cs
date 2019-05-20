@@ -11,21 +11,27 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public ReferralMappingProfile()
         {
             CreateMap<Referral, Models.Db.Referral>()
-                .ForMember(d => d.Id, m => m.MapFrom(s => s.ReferralId))
+                .ForMember(d => d.Id, m => m.MapFrom(s => s.Id))
                 .ForMember(d => d.Registration, m => m.Ignore())
+                .ForMember(d => d.RegistrationId, opts => opts.MapFrom(s => s.EssNumber))
+                .ForMember(d => d.ValidFrom, opts => opts.MapFrom(s => s.ValidDates.From))
+                .ForMember(d => d.ValidTo, opts => opts.MapFrom(s => s.ValidDates.To))
                 .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Select(e => new Models.Db.ReferralEvacuee
                 {
                     EvacueeId = int.Parse(e.Id),
-                    RegistrationId = long.Parse(s.RegistrationId)
+                    RegistrationId = long.Parse(s.EssNumber)
                 })))
                 .ReverseMap()
-                .ForMember(d => d.ReferralId, m => m.MapFrom(s => s.ReferralId))
+                .ForMember(d => d.Id, m => m.MapFrom(s => s.ReferralId))
+                .ForMember(d => d.EssNumber, m => m.MapFrom(s => s.Registration.EssFileNumber.ToString()))
                 .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Select(e => new ReferralEvacuee
                 {
                     Id = e.Evacuee.EvacueeSequenceNumber.ToString(),
                     FirstName = e.Evacuee.FirstName,
                     LastName = e.Evacuee.LastName
-                })));
+                })))
+                .ForMember(d => d.ValidDates, opts => opts.MapFrom(s => new DateRange { From = s.ValidFrom.DateTime, To = s.ValidTo.DateTime }))
+                ;
 
             CreateMap<Supplier, Models.Db.Supplier>();
 
@@ -147,10 +153,19 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string Fax { get; set; }
     }
 
+    public class DateRange
+    {
+        [Required]
+        public DateTime From { get; set; }
+
+        [Required]
+        public DateTime To { get; set; }
+    }
+
     public class Referral
     {
-        public string ReferralId { get; set; }
-        public string RegistrationId { get; set; }
+        public string Id { get; set; }
+        public string EssNumber { get; set; }
         public bool Active { get; set; }
 
         [Required]
@@ -162,11 +177,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
         public string SubType { get; set; }
 
-        [Required]
-        public DateTime ValidFrom { get; set; }
-
-        [Required]
-        public DateTime ValidTo { get; set; }
+        public DateRange ValidDates { get; set; }
 
         public IEnumerable<ReferralEvacuee> Evacuees { get; set; }
         public Supplier Supplier { get; set; }
@@ -195,12 +206,12 @@ namespace Gov.Jag.Embc.Public.ViewModels
             return new ReferralListItem
             {
                 Active = Active,
-                ReferralId = ReferralId,
+                ReferralId = Id,
                 SubType = SubType,
                 Type = Type,
                 Supplier = Supplier,
-                ValidFrom = ValidFrom,
-                ValidTo = ValidTo
+                ValidFrom = ValidDates.From,
+                ValidTo = ValidDates.To
             };
         }
     }

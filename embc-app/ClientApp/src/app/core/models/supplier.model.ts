@@ -1,11 +1,11 @@
 export interface Supplier {
   id: string | null;
-  active?: boolean;
-  name: string | null;
-  address: string;
-  city: string;
+  active: boolean;
+  name?: string;
+  address?: string;
+  city?: string;
   province: 'BC';
-  postalCode: string;
-  telephone: string | null;
-  fax: string | null;
+  postalCode?: string;
+  telephone?: string;
+  fax?: string;
 }
