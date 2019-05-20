@@ -1,7 +1,5 @@
 ﻿using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
-using Gov.Jag.Embc.Public.Services.Referrals;
-using Gov.Jag.Embc.Public.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,30 +34,30 @@ namespace embc_unit_tests
             Assert.Equal(referralIds.Count(), result.Count());
         }
 
-        [Fact]
-        public async Task CanGetReferralHtmlPages()
-        {
-            var ctx = EmbcDb;
+        //[Fact]
+        //public async Task CanGetReferralHtmlPages()
+        //{
+        //    var ctx = EmbcDb;
 
-            var di = new DataInterface(ctx, mapper);
+        //    var di = new DataInterface(ctx, mapper);
 
-            var service = new ReferralsService(di);
-            var referrals = GetReferrals().Take(1);
+        //    var service = new ReferralsService(di);
+        //    var referrals = GetReferrals().Take(1);
 
-            var referralIds = new List<string>();
-            foreach (var referral in referrals)
-            {
-                var id = await di.CreateReferralAsync(referral);
-                referralIds.Add(id);
-            }
+        //    var referralIds = new List<string>();
+        //    foreach (var referral in referrals)
+        //    {
+        //        var id = await di.CreateReferralAsync(referral);
+        //        referralIds.Add(id);
+        //    }
 
-            //var result = service.CreateReferralHtmlContent();
-            var content = await service.GetReferralHtmlPages(referralIds);
+        //    //var result = service.CreateReferralHtmlContent();
+        //    var content = await service.GetReferralHtmlPages(referralIds);
 
-            //var pdfConverter = new PdfConverter();
-            //await pdfConverter.ConvertHtmlToPdfAsync(content);
-            Assert.False(string.IsNullOrEmpty(content));
-        }
+        //    //var pdfConverter = new PdfConverter();
+        //    //await pdfConverter.ConvertHtmlToPdfAsync(content);
+        //    Assert.False(string.IsNullOrEmpty(content));
+        //}
 
         private IEnumerable<Gov.Jag.Embc.Public.ViewModels.Referral> GetReferrals()
         {
@@ -74,14 +72,6 @@ namespace embc_unit_tests
                 ReferralGenerator.Generate(ReferralType.Food_Restaurant, registrationId),
                 ReferralGenerator.Generate(ReferralType.Food_Groceries, registrationId)
             };
-
-            int days = 0;
-            foreach (var referral in referrals)
-            {
-                referral.ValidFrom = referral.ValidFrom.AddDays(days);
-                referral.ValidTo = referral.ValidTo.AddDays(days);
-                days++;
-            }
 
             return referrals;
         }

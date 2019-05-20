@@ -259,7 +259,7 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
         .subscribe(() => {
           this.submitting = false;
           // add a notification about the update
-          this.notificationQueueService.addNotification('User updated successfuly');
+          this.notificationQueueService.addNotification('User updated successfully', 'success');
           // if addAnother route then reset this form
           // else route back to the volunteers list
           if (addAnother) {
@@ -275,7 +275,7 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
         .subscribe(v => {
           this.submitting = false;
           // add a notification about the creation
-          this.notificationQueueService.addNotification('User added successfuly');
+          this.notificationQueueService.addNotification('User added successfully', 'success');
           // if addAnother route then reset this form
           // else route back to the volunteers list
           if (addAnother) {

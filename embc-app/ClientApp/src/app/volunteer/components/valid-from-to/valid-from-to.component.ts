@@ -43,9 +43,12 @@ export class ValidFromToComponent implements OnInit {
 
   // this function determines what to calculate from missing information
   private handleMissingInputs(r: ReferralDate): ReferralDate {
+    // if all inputs exist, return right away
     if (r.from && r.to && r.days) {
       return r;
     }
+
+    // we need any two fields - otherwise use defaults
     if (r.from && r.days && !r.to) {
       // calculate the To date
       const from = moment(r.from);
@@ -55,18 +58,18 @@ export class ValidFromToComponent implements OnInit {
       const from = moment(r.from);
       const to = moment(r.to);
       r.days = from.diff(to, 'days');
-    } else if (r.from && !r.days && !r.to) {
-      // set Days to default and calculate the To date
-      const from = moment(r.from);
-      r.days = this.defaultDays;
-      r.to = from.add(r.days, 'days').toDate();
+    } else if (!r.from && r.days && r.to) {
+      // calculate the From date
+      const to = moment(r.to);
+      r.from = to.subtract(r.days, 'days').toDate();
     } else {
       // set From date as today, set Days to default, and calculate the To date
-      console.log('Valid-To: using defaults');
+      console.log('Valid-From-To: using defaults!');
       r.from = moment().toDate();
       r.days = this.defaultDays;
       r.to = moment().add(1, 'days').toDate();
     }
+
     return r;
   }
 

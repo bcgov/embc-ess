@@ -26,4 +26,5 @@ export class NotificationBannerComponent implements OnInit {
     // expire the notification
     this.notificationQueueService.expireNotification(notification.identifier);
   }
+
 }

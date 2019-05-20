@@ -28,14 +28,17 @@ namespace embc_unit_tests
                 Fax = "112325",
                 Telephone = "54356"
             },
-            ValidFrom = DateTime.Parse("2019-01-01T11:00"),
-            ValidTo = DateTime.Parse("2019-01-05T11:00")
+            ValidDates = new Gov.Jag.Embc.Public.ViewModels.DateRange
+            {
+                From = DateTime.Parse("2019-01-01T11:00"),
+                To = DateTime.Parse("2019-01-05T11:00")
+            }
         };
 
-        public static Gov.Jag.Embc.Public.ViewModels.Referral Generate(ReferralType type, string registrationId = "100001")
+        public static Gov.Jag.Embc.Public.ViewModels.Referral Generate(ReferralType type, string registrationId)
         {
             var referral = createBaseReferral();
-            referral.RegistrationId = registrationId;
+            referral.EssNumber = registrationId;
             switch (type)
             {
                 case ReferralType.Food_Groceries:
@@ -100,9 +103,9 @@ namespace embc_unit_tests
             return referral;
         }
 
-        public static Gov.Jag.Embc.Public.ViewModels.Referral GenerateWithExcessiveProperties()
+        public static Gov.Jag.Embc.Public.ViewModels.Referral GenerateWithExcessiveProperties(string registrationId)
         {
-            var referral = Generate(ReferralType.Transportation_Other);
+            var referral = Generate(ReferralType.Transportation_Other, registrationId);
             referral.FromAddress = "from";
             referral.ToAddress = "to";
 

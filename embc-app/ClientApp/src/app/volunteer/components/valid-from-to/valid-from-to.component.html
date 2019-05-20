@@ -1,13 +1,13 @@
 <div class="row">
-  <div *ngIf="editMode" class="col pr-0">
+  <div *ngIf="editMode" class="col-md-7">
     <span class="h3">Valid From</span>
     <div class="row">
-      <div class="col form-group">
+      <div class="col-5 form-group">
         <label for="validFromDate_{{id}}">Date</label>
         <input type="text" class="form-control" id="validFromDate_{{id}}" [(ngModel)]="wrdForm.fromDate" [textMask]="{mask: dateMask, showMask: true}" placeholder="yyyy-mm-dd" (blur)="updateDisplay()" autocomplete="off">
         <span *ngIf="!validDate" class="invalid-feedback d-block">Please enter a valid date.</span>
       </div>
-      <div class="col-3 form-group pl-0">
+      <div class="col-4 form-group pl-0">
         <label for="validFromTime_{{id}}">Time</label>
         <input type="text" class="form-control" id="validFromTime_{{id}}" [(ngModel)]="wrdForm.fromTime" [textMask]="{mask: timeMask, showMask: true}" placeholder="hh:mm xx" (blur)="updateDisplay()" autocomplete="off">
         <span *ngIf="!validTime" class="invalid-feedback d-block">Please enter a valid time.</span>
@@ -21,14 +21,14 @@
     </div>
   </div>
 
-  <div *ngIf="!editMode" class="col pr-0">
+  <div *ngIf="!editMode" class="col-md-7">
     <span class="h3">Valid From</span>
     <div class="row">
-      <div class="col form-group">
+      <div class="col-5 form-group">
         <label for="validFromDate_{{id}}">Date</label>
         <input type="text" id="validFromDate_{{id}}" class="form-control" [ngModel]="wrdForm.fromDate" readonly tabindex="-1">
       </div>
-      <div class="col-3 form-group pl-0">
+      <div class="col-4 form-group pl-0">
         <label for="validFromTime_{{id}}">Time</label>
         <input type="text" id="validFromTime_{{id}}" class="form-control" [ngModel]="wrdForm.fromTime" readonly tabindex="-1">
       </div>
@@ -39,14 +39,14 @@
     </div>
   </div>
 
-  <div class="col-4 pr-0">
+  <div class="col">
     <span class="h3">Valid To</span>
     <div class="row">
-      <div class="col-6 form-group">
+      <div class="col-7 form-group">
         <label for="validToDate_{{id}}">Date</label>
         <input type="text" id="validToDate_{{id}}" class="form-control" [ngModel]="wrdForm.toDate" readonly tabindex="-1">
       </div>
-      <div class="col-6 form-group pl-0">
+      <div class="col-5 form-group pl-0">
         <label for="validToTime_{{id}}">Time</label>
         <input type="text" id="validToTime_{{id}}" class="form-control" [ngModel]="wrdForm.toTime" readonly tabindex="-1">
       </div>
