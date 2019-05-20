@@ -36,7 +36,7 @@ export class ReferralMakerComponent implements OnInit {
   valid = false;
 
   foodReferrals: Array<ReferralFormControl<Partial<FoodReferral>>> = [];
-  lodgingReferrals: Array<ReferralFormControl<LodgingReferral>> = [];
+  lodgingReferrals: Array<ReferralFormControl<Partial<LodgingReferral>>> = [];
   clothingReferrals: Array<ReferralFormControl<ClothingReferral>> = [];
   transportationReferrals: Array<ReferralFormControl<TransportationReferral>> = [];
   incidentalsReferrals: Array<ReferralFormControl<Partial<IncidentalsReferral>>> = [];
@@ -215,7 +215,17 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   addLodgingReferral() {
-    // TODO
+    const referral: Partial<LodgingReferral> = {
+      id: null, // is populated by BE after save
+      active: true,
+      type: 'LODGING',
+      purchaser: this.purchaser,
+      dates: { from: null, to: null, days: null },
+      evacuees: [],
+      supplier: { id: null, active: true, province: 'BC' },
+      confirmChecked: false
+    };
+    this.lodgingReferrals.push({ value: referral, valid: false });
   }
 
   addClothingReferral() {
