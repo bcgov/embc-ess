@@ -7,80 +7,91 @@
   <div *ngIf="!readOnly">
     <form novalidate [formGroup]="form">
       <div class="space-between align-items-center">
-        <app-valid-from-to [referralDate]="referral.dates" (referralDateChange)="updateReferralDate($event)" [id]="uuid"></app-valid-from-to>
-        <button type="button" class="btn btn-secondary" (click)="viewRates()">VIEW ESS RATES</button>
-      </div>
+        <app-valid-from-to [referralDate]="referral.dates" (referralDateChange)="updateReferralDate($event)"
+          [id]="uuid"></app-valid-from-to>
+          <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
+          <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
+        </div>
 
       <div class="feature-block card border-0 p-0 mt-4">
-        <div class="row">
-          <div class="col-5 pr-0">
-            <div class="pt-4 pl-4">
-              <app-evacuee-list [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()"></app-evacuee-list>
-            </div>
+        <div class="row mt-4 mx-4">
+          <div class="col-4 pl-0 pr-3">
+            <app-evacuee-list [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors"
+              [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()">
+            </app-evacuee-list>
           </div>
-          <div class="col-7">
-            <div class="pt-4 pr-4">
-              <div class="card">
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="subType_{{uuid}}">Food required:</label>
-                    <select class="form-control" id="subType_{{uuid}}" formControlName="subType">
-                        <option [ngValue]="null">Select--</option>
-                        <option value="RESTAURANT">Restaurant Meals</option>
-                        <option value="GROCERIES">Groceries</option>
-                    </select>
-                  </div>
+          <div class="col-8 pl-3 pr-0">
+            <div class="card border-0 h-100">
+              <div class="card-body mb-0">
+                <div>
+                  <label for="subType_{{uuid}}">Food required:</label>
+                  <select class="form-control d-block w-auto" id="subType_{{uuid}}" formControlName="subType">
+                    <option [ngValue]="null">Select--</option>
+                    <option value="RESTAURANT">Restaurant Meals</option>
+                    <option value="GROCERIES">Groceries</option>
+                  </select>
                 </div>
 
-                <div *ngIf="subType==='RESTAURANT'">
-                  <div class="col-3 form-group pl-0">
-                    <label for="numBreakfasts_{{uuid}}"># Breakfasts per person</label>
-                    <select class="form-control" id="numBreakfasts_{{uuid}}" formControlName="numBreakfasts">
-                      <option value="0">Select--</option>
-                      <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
-                    </select>
-                  </div>
-                  <div class="col-3 form-group pl-0">
-                    <label for="numLunches_{{uuid}}"># Lunches per person</label>
-                    <select class="form-control" id="numLunches_{{uuid}}" formControlName="numLunches">
-                      <option value="0">Select--</option>
-                      <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
-                    </select>
-                  </div>
-                  <div class="col-3 form-group pl-0">
-                    <label for="numDinners_{{uuid}}"># Dinners per person</label>
-                    <select class="form-control" id="numDinners_{{uuid}}" formControlName="numDinners">
-                      <option value="0">Select--</option>
-                      <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div *ngIf="subType==='GROCERIES'">
-                  <div class="col-3 form-group pl-0">
-                    <label for="numDaysMeals_{{uuid}}"># Days of meals</label>
-                    <select class="form-control" id="numDaysMeals_{{uuid}}" formControlName="numDaysMeals">
-                      <option value="0">Select--</option>
-                      <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="card-footer blue-header space-between" *ngIf="subType==='RESTAURANT'">
-                  <div>UP TO A MAXIMUM VALUE OF {{currency.format(totalAmount)}}</div>
-                </div>
-
-                <div class="card-footer blue-header space-between" *ngIf="subType==='GROCERIES'">
-                  <div>UP TO A MAXIMUM VALUE OF {{currency.format(totalAmount)}}</div>
-                  <div>
-                    <label class="col-form-label">Total Amount:</label>
-                    <div class="col d-flex input-with-icon">
-                      <span aria-hidden="true">$</span>
-                      <input type="number" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control" formControlName="totalAmount">
+                <div class="row align-items-end mt-3" [ngSwitch]="subType">
+                  <ng-container *ngSwitchCase="'RESTAURANT'">
+                    <div class="col-4 pr-2">
+                      <label for="numBreakfasts_{{uuid}}"># Breakfasts per person</label>
+                      <select class="form-control" id="numBreakfasts_{{uuid}}" formControlName="numBreakfasts">
+                        <option value="0">Select--</option>
+                        <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
+                      </select>
                     </div>
-                  </div>
+                    <div class="col-4 pl-2 pr-2">
+                      <label for="numLunches_{{uuid}}"># Lunches per person</label>
+                      <select class="form-control" id="numLunches_{{uuid}}" formControlName="numLunches">
+                        <option value="0">Select--</option>
+                        <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
+                      </select>
+                    </div>
+                    <div class="col-4 pl-2">
+                      <label for="numDinners_{{uuid}}"># Dinners per person</label>
+                      <select class="form-control" id="numDinners_{{uuid}}" formControlName="numDinners">
+                        <option value="0">Select--</option>
+                        <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
+                      </select>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngSwitchCase="'GROCERIES'">
+                    <div class="col">
+                      <label for="numDaysMeals_{{uuid}}"># Days of meals</label>
+                      <select class="form-control d-block w-auto" id="numDaysMeals_{{uuid}}"
+                        formControlName="numDaysMeals">
+                        <option value="0">Select--</option>
+                        <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
+                      </select>
+                    </div>
+                  </ng-container>
                 </div>
               </div>
+
+              <div class="card-footer blue-header space-between align-items-center" [ngSwitch]="subType">
+                <ng-container *ngSwitchCase="null">
+                  &nbsp;
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'RESTAURANT'">
+                  <div class="font-weight-bold">UP TO A MAXIMUM VALUE OF {{currency.format(maximumAmount)}}</div>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'GROCERIES'">
+                  <div class="font-weight-bold">UP TO A MAXIMUM VALUE OF {{currency.format(maximumAmount)}}</div>
+                  <div class="d-flex align-items-center">
+                    <label class="mb-0">Total Amount:</label>
+                    <div class="col input-with-icon">
+                      <span aria-hidden="true">$</span>
+                      <input type="number" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control"
+                        formControlName="totalAmount">
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+
               <!-- <span class="invalid-feedback justify-content-end" [class.d-flex]="amountInput.classList.contains('is-invalid')">
                 Please enter a total amount for incidentals
               </span> -->
@@ -88,14 +99,16 @@
           </div>
         </div>
 
-        <div class="card m-4">
+        <div class="card border-0 m-4">
           <div class="card-body">
-            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (supplierChange)="updateSupplier($event)"></app-supplier>
+            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen"
+              (supplierChange)="updateSupplier($event)"></app-supplier>
           </div>
         </div>
 
-        <div class="col p-4">
-          <textarea class="form-control" formControlName="comments" placeholder="Add comments" rows="4" maxlength="250"></textarea>
+        <div class="pl-4 pr-4 pb-3">
+          <textarea class="form-control" formControlName="comments" placeholder="Add comments" rows="4" maxlength="250"
+            autocomplete="off"></textarea>
         </div>
       </div>
     </form>
@@ -103,28 +116,32 @@
 
   <!-- *********************************SUMMARY BELOW****************************************** -->
   <div *ngIf="readOnly">
-    <ul class="summary mx-3">
+    <ul class="summary">
       <li class="summary-heading">
         <div class="container py-3">
-          <div class="row">
-            <div class="col-6">
-              <div class="h1 my-3">Food</div>
-              <div>
+          <div class="row align-items-center">
+            <div class="col-6 py-3">
+              <h2 class="h1 mt-0" *ngIf="referral.subType==='RESTAURANT'">Food - Restaurant</h2>
+              <h2 class="h1 mt-0" *ngIf="referral.subType==='GROCERIES'">Food - Groceries</h2>
+              <div class="d-flex">
                 <span class="name"><strong>Valid From:</strong></span>
-                <span>{{referral.dates?.from | date : 'MMM-dd-yyyy'}}</span>
+                <span class="value">{{referral.dates?.from | dateTimeFormatPipe}}</span>
               </div>
-              <div>
+              <div class="d-flex">
                 <span class="name"><strong>Valid To:</strong></span>
-                <span>{{referral.dates?.to | date : 'MMM-dd-yyyy'}}</span>
+                <span class="value">{{referral.dates?.to | dateTimeFormatPipe}}</span>
               </div>
             </div>
-            <!-- TODO: use <app-supplier> here -->
-            <!-- TODO: this needs to be centered vertically -->
+
             <div class="col-6" *ngIf="referral.supplier">
               <div><strong>{{referral.supplier?.name}}</strong></div>
               <div>{{referral.supplier?.address}}</div>
               <div>{{referral.supplier?.city + ', BC'}} &nbsp;&nbsp; {{referral.supplier?.postalCode}}</div>
-              <div>Tel: {{referral.supplier?.telephone}} | Fax: {{referral.supplier?.fax}}</div>
+              <div>
+                <span class="p-0" *ngIf="referral.supplier?.telephone">Tel: {{referral.supplier.telephone}}</span>
+                <span *ngIf="referral.supplier?.telephone && referral.supplier?.fax">|</span>
+                <span class="p-0" *ngIf="referral.supplier?.fax">Fax: {{referral.supplier.fax}}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -142,27 +159,38 @@
         <span class="value">{{referral.id}}</span>
       </li>
       <li>
-        <!-- TODO: use <app-evacuee-list> here -->
-        <!-- TODO: iterate over all family members and only 'check' the selected ones -->
         <span class="name">Evacuees Requiring Incidentals:</span>
         <span class="value">
-          <div class="mt-2" *ngFor="let e of referral.evacuees">
-            <label>{{e.lastName}}, {{e.firstName}}</label>
+          <div class="form-check" *ngFor="let e of referral.evacuees">
+            <input type="checkbox" class="form-check-input" checked disabled>
+            <label class="form-check-label">{{e.lastName}}, {{e.firstName}}</label>
           </div>
         </span>
       </li>
-      <li>
+      <li *ngIf="referral.subType==='RESTAURANT'">
+        <span class="name"># Breakfast(s):</span>
+        <span class="value">{{referral.numBreakfasts}}</span>
+      </li>
+      <li *ngIf="referral.subType==='RESTAURANT'">
+        <span class="name"># Lunch(es):</span>
+        <span class="value">{{referral.numLunches}}</span>
+      </li>
+      <li *ngIf="referral.subType==='RESTAURANT'">
+        <span class="name"># Dinner(s):</span>
+        <span class="value">{{referral.numDinners}}</span>
+      </li>
+      <li *ngIf="referral.subType==='GROCERIES'">
         <span class="name"># Days for Meals:</span>
-        <span class="value">{{referral.dates.days}}</span>
+        <span class="value">{{referral.numDaysMeals}}</span>
       </li>
       <li>
         <span class="name">Up to a total of:</span>
-        <span class="value">${{referral.totalAmount}}</span>
+        <span class="value">{{currency.format(referral.totalAmount)}}</span>
+        <!-- TODO: add warning if total exceeds rate -->
       </li>
       <li>
-        <span>{{referral.comments}}</span>
+        <span class="comments">{{referral.comments || "&nbsp;"}}</span>
       </li>
     </ul>
   </div>
-
 </div>

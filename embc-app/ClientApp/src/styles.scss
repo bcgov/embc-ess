@@ -80,61 +80,46 @@ a {
 }
 
 .btn.btn-primary {
-  background-color: #38598a;
-  border: #38598a 1px solid;
-  color: #ffffff;
-  min-width: 120px;
-  font-size: 16px;
+  color: var(--white);
+  background-color: $bg-dark;
+  border: $bg-dark 1px solid;
   border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  min-width: 120px;
+  padding: 0.5rem 2rem;
+
+  &:hover {
+    background-color: #38598a;
+  }
 }
 
 .btn.btn-secondary {
-  background-color: #fff;
-  border: #ccc 1px solid;
-  color: #003366;
-  min-width: 120px;
+  color: $bg-dark;
+  background-color: var(--white);
+  border: $bg-dark 1px solid;
+  border-radius: 5px;
   font-size: 16px;
-  border-radius: 3px;
-  display: inline-block;
-  padding: 6px 12px;
-  font-weight: 400;
-  line-height: 1.42857143;
-}
-
-.btn-primary:hover {
-  background-color: rgba(0, 51, 102, 1) !important;
-  color: #ffffff;
-  border-color: #204d74;
-  border-radius: 5px;
-}
-
-.btn-secondary:hover {
-  background-color: #f2f2f2;
-}
-
-.btn-secondary:focus {
-  border-color: #ccc;
-  box-shadow: 0 0 0 0.2rem #ccc;
-}
-
-.btn.btn-primary.sv_prev_btn {
-  background-color: #ccc;
-  border: #ccc 1px solid;
-  color: #000;
+  font-weight: 600;
+  line-height: 1.5;
   min-width: 120px;
-  font-size: 16px;
-  border-radius: 5px;
-}
+  padding: 0.5rem 2rem;
 
-.btn.btn-primary.sv_prev_btn:hover {
-  background-color: #2f567b !important;
-  color: #ffffff;
-  border-color: #204d74;
-  border-radius: 5px;
-}
-
-.ctx-home {
-  background: #f2f2f2;
+  &:hover {
+    color: var(--white);
+    background-color: $bg-dark;
+  }
+  &:focus {
+    border-color: var(--white);
+    // same as primary button:
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+  }
+  &:not(:disabled):active {
+    // same as primary button:
+    background-color: #0062cc;
+    border-color: #005cbf;
+  }
 }
 
 .panel-footer {

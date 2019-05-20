@@ -26,8 +26,9 @@ export class ReferralListItemComponent {
       case 'TRANSPORTATION':
         return 'ADD ANOTHER TRANSPORT REFERRAL';
       case 'INCIDENTALS':
-      default:
         return 'ADD ANOTHER INCIDENTALS REFERRAL';
+      default:
+        return 'ADD ANOTHER REFERRAL'; // should never happen
     }
   }
 }
