@@ -81,9 +81,9 @@
       <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4">
         <app-referral-list-item type="TRANSPORTATION" (remove)="remove(transportationReferrals, i)"
           (add)="addTransportationReferral()">
-          <!-- <app-transportation-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [readOnly]="false"
+          <app-transportation-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [readOnly]="false"
             (validationStatusChange)="updateValidationStatus(r, $event)" (referralChange)="updateReferral(r, $event)">
-          </app-transportation-referral> -->
+          </app-transportation-referral>
         </app-referral-list-item>
       </article>
 
