@@ -41,7 +41,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         public async Task<IActionResult> Get(string registrationId, string referralId)
         {
             var result = await dataInterface.GetReferralAsync(referralId);
-            if (result == null || result.RegistrationId != registrationId) return NotFound(new
+            if (result == null || result.EssNumber != registrationId) return NotFound(new
             {
                 registrationId = registrationId,
                 referralId = referralId
@@ -60,7 +60,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             var referralsList = new List<string>();
             foreach (var referral in request.Referrals)
             {
-                referral.RegistrationId = registrationId;
+                referral.EssNumber = registrationId;
                 referral.ConfirmChecked = request.ConfirmChecked;
                 referral.Active = true;
                 referral.Supplier.Active = true;
