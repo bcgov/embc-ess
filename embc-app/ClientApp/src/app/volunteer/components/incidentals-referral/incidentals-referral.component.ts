@@ -7,6 +7,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
+const MAXIMUM_PER_PERSON = 50.00;
+
 @Component({
   selector: 'app-incidentals-referral',
   templateUrl: './incidentals-referral.component.html',
@@ -21,6 +23,11 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent impl
   @ViewChild(SupplierComponent) supplierRef: SupplierComponent;
 
   private ratesModal: NgbModalRef = null;
+
+  get maximumAmount() {
+    const n = this.selected.length;
+    return (n * MAXIMUM_PER_PERSON);
+  }
 
   constructor(
     public fb: FormBuilder,
