@@ -240,7 +240,7 @@ export class RegistrationMakerComponent implements OnInit {
         active: fmbr.active || null,
         sameLastNameAsEvacuee: fmbr.sameLastNameAsEvacuee,
         firstName: [fmbr.firstName, Validators.required],
-        lastName: [fmbr.lastName, Validators.required],
+        lastName: [this.asStringAndUpperCase(fmbr.lastName), Validators.required],
         nickname: fmbr.nickname,
         initials: fmbr.initials,
         gender: fmbr.gender,
@@ -472,7 +472,7 @@ export class RegistrationMakerComponent implements OnInit {
           // id: r.headOfHousehold.id as string,
           // active: r.headOfHousehold.active as boolean,
           firstName: r.headOfHousehold.firstName as string,
-          lastName: r.headOfHousehold.lastName as string,
+          lastName: this.asStringAndUpperCase(r.headOfHousehold.lastName),
           nickname: r.headOfHousehold.nickname as string,
           initials: r.headOfHousehold.initials as string,
           gender: r.headOfHousehold.gender as string,
@@ -719,16 +719,23 @@ export class RegistrationMakerComponent implements OnInit {
     return r;
   }
 
-  asStringAndTrim(value: any): string {
+  private asStringAndTrim(value: any): string {
     const s = value as string;
     return s ? s.trim() : null;
   }
+
+  private asStringAndUpperCase(value: any): string {
+    const s = value as string;
+    return s ? s.toUpperCase() : null;
+  }
+
   cancel() {
     // clear the loaded record if available
     this.uniqueKeyService.clearKey();
     // navigate back home
     this.router.navigate([`/${this.path}/registrations`]);
   }
+
   // --------------------HELPERS-----------------------------------------
   isBcAddress(address: Address): boolean {
     return isBcAddress(address);
