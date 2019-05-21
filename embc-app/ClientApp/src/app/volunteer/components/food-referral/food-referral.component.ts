@@ -35,7 +35,7 @@ export class FoodReferralComponent extends AbstractReferralComponent implements 
 
   get subType() { return this.f.subType.value; }
 
-  get maximumAmount() {
+  get maximumAmount(): number {
     if (this.subType === 'RESTAURANT') {
       const b = this.f.numBreakfasts.value * BREAKFAST;
       const l = this.f.numLunches.value * LUNCH;
