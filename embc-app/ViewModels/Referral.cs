@@ -18,7 +18,9 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .ForMember(d => d.ValidTo, opts => opts.MapFrom(s => s.ValidDates.To))
                 .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Select(e => new Models.Db.ReferralEvacuee
                 {
-                    EvacueeId = int.Parse(e.Id),
+                    EvacueeId = int.Parse(e.Id.IndexOf("-", StringComparison.OrdinalIgnoreCase) > 0
+                        ? e.Id.Split("-", StringSplitOptions.RemoveEmptyEntries)[1]
+                        : e.Id),
                     RegistrationId = long.Parse(s.EssNumber)
                 })))
                 .ReverseMap()
@@ -177,6 +179,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
         public string SubType { get; set; }
 
+        [Required]
         public DateRange ValidDates { get; set; }
 
         public IEnumerable<ReferralEvacuee> Evacuees { get; set; }
