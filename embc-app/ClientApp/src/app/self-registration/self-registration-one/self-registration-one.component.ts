@@ -306,7 +306,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         restrictedAccess: this.registration.restrictedAccess,
         headOfHousehold: {
           firstName: hoh.firstName,
-          lastName: hoh.lastName,
+          lastName: this.asStringAndUpperCase(hoh.lastName),
           nickname: hoh.nickname,
           initials: hoh.initials,
           gender: hoh.gender,
@@ -361,7 +361,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         active: fmbr.active || null,
         sameLastNameAsEvacuee: fmbr.sameLastNameAsEvacuee,
         firstName: [fmbr.firstName, Validators.required],
-        lastName: [fmbr.lastName, Validators.required],
+        lastName: [this.asStringAndUpperCase(fmbr.lastName), Validators.required],
         initials: fmbr.initials,
         gender: fmbr.gender,
         dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
@@ -378,6 +378,11 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         relationshipToEvacuee: [null, Validators.required],
       });
     }
+  }
+
+  private asStringAndUpperCase(value: any): string {
+    const s = value as string;
+    return s ? s.toUpperCase() : null;
   }
 
   addFamilyMember(fmbr?: FamilyMember): void {
