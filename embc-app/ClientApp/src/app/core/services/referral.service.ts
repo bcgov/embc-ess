@@ -3,7 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { retry, catchError, map } from 'rxjs/operators';
 import { CoreModule } from '../core.module';
-import { Referral, ListResult, RawReferralCollection } from '../models';
+import { Referral, ListResult, RawReferralCollection, ReferralPost } from '../models';
 import { RestService } from './rest.service';
 
 @Injectable({
@@ -51,13 +51,17 @@ export class ReferralService extends RestService {
     // TODO: assemble data object for BE
     // TODO: add id [1..n] to referrals
     // TODO: only send array of selected evacuees (evacuee[] not evacuees[])
-    const data = {
-      referrals: referrals.map((r: Referral) => {
-        const fr: ReferralPost = r;
-        return r;
-      }),
+    const data: ReferralPost = {
       confirmChecked: true,
+      referrals: referrals.map((r: Referral) => {
+        const ref = {
+          ...r,
+
+        };
+        return ref;
+      }),
     };
+
     return this.http.post<HttpResponse<any>>(`api/registrations/${registrationId}/referrals`, data, { headers: this.headers })
       .pipe(
         retry(3),

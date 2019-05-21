@@ -22,7 +22,7 @@ export class TesterPageComponent implements OnInit {
     type: 'INCIDENTALS',
     subType: 'Groceries',
     purchaser: 'Percy Purchaser',
-    dates: null,
+    dates: { to: new Date(), from: new Date() },
     evacuees: [
       {
         id: '100035-1',
@@ -53,6 +53,7 @@ export class TesterPageComponent implements OnInit {
     confirmChecked: true,
   };
   id = '100035';
+  reply;
   constructor(
     private referralService: ReferralService
   ) { }
@@ -60,13 +61,14 @@ export class TesterPageComponent implements OnInit {
     this.referralService.getCleanReferrals(this.id, true)
       .subscribe(r => {
         this.referrals = r;
-        this.referralsModified = r.data.map(d => {
-          d.supplier.name = d.supplier.name + '!';
-          return d;
-        });
+        alert(r.data.length);
+        // this.referralsModified = r.data.map(d => {
+        //   d.supplier.name = d.supplier.name + '!';
+        //   return d;
+        // });
       });
   }
   submit() {
-    this.referralService.createReferrals(this.id, [this.sampleReferral]).subscribe(() => { });
+    this.referralService.createReferrals(this.id, [this.sampleReferral]).subscribe((x) => { this.reply = x });
   }
 }

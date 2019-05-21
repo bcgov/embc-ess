@@ -54,38 +54,35 @@ export interface TransportationReferral extends ReferralBase {
 
 export interface ReferralPost {
   confirmChecked: boolean;
-  referrals: [
-    {
-      referralId: string;
-      purchaser: string;
-      supplier: {
-        name: string;
-      };
-      validFrom: string;
-      validTo: string;
-      type: 'Food' | 'Clothing' | 'Incidentals' | 'Lodging' | 'Transportation';
-      subType: 'Groceries' | 'Hotel' | 'Group' | 'Billeting' | 'Taxi' | 'Other' | null;
-      confirmChecked: boolean;
-      totalAmount: number;
-      comments: string;
-      active: boolean;
-      evacuees: [
-        {
-          id: number;
-        }
-      ],
-      numDaysMeals?: number;
-      numBreakfasts?: number;
-      numLunches?: number;
-      numDinners?: number;
-      ExtremeWinterConditions?: boolean;
-      ApprovedItems?: string;
-      NumNights?: number;
-      FromAddress?: string;
-      toAddress?: string;
-      OtherTransportModeDetails?: string;
-    }
-  ];
+  referrals: ReferralPostItem[];
+}
+export interface ReferralPostItem {
+  id: string;
+  essNumber: string;
+  referralId: string;
+  active: boolean;
+  type: ReferralType;
+  subType?: string;
+  purchaser: string;
+  dates: ReferralDate;
+  evacuees: Array<Evacuee>;
+  totalAmount: number; // NB: set to 0 if not used
+  supplier: Supplier;
+  comments: string;
+  confirmChecked: boolean;
+
+  numBreakfasts?: number;
+  numLunches?: number;
+  numDinners?: number;
+  numDaysMeals?: number;
+  numNights?: number;
+  numRooms?: number;
+  approvedItems?: string;
+  extremeWinterConditions?: boolean;
+  fromAddress?: string;
+  toAddress?: string;
+  modeTransport?: string;
+
 }
 
 export type Referral = FoodReferral | IncidentalsReferral | ClothingReferral | LodgingReferral | TransportationReferral;
