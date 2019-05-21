@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, SimpleChanges, OnChanges } from '@angular/core';
 import { FormBuilder, Validators, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { clearFormArray, uuid } from 'src/app/shared/utils';
  * It shouldn't be instantiated directly.
  */
 @Component({ template: '' })
-export class AbstractReferralComponent<T extends ReferralBase> implements OnInit, OnDestroy {
+export class AbstractReferralComponent<T extends ReferralBase> implements OnInit, OnDestroy, OnChanges {
   @Input() readOnly = false;
   @Input() showErrorsWhen = false; // wait until the user click NEXT before showing any validation errors
 
@@ -74,14 +74,27 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
     }
   }
 
-  onValidate(status: any) {
-    const formIsValid = status === 'VALID';
-    this.formValidationChange.emit(formIsValid);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.referral && this.referral) {
+      this.displayReferral(this.referral);
+    }
   }
 
-  onSubmit() {
-    const p = this.toModel(this.form.value);
-    this.propagateChanges(p);
+  displayReferral(referral: T) {
+    if (referral && !this.readOnly) {
+      console.log('REFERRAL-FORM: flowing data into form')
+      this.form.reset();
+      this.fromModel(referral);
+    }
+  }
+
+  fromModel(model: T): void {
+    this.form.patchValue({
+      comments: model.comments,
+    });
+
+    // populate the evacuee list with existing selection
+    (model.evacuees || []).forEach(x => this.selectEvacuee(x));
   }
 
   toModel(formValue: any): T {
@@ -90,6 +103,20 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
     // This ensures values not on the form, such as the Id, are retained
     const p: T = { ...this.referral, ...formValue };
     return p;
+  }
+
+  onValidate(status: any) {
+    const formIsValid = status === 'VALID';
+    this.formValidationChange.emit(formIsValid);
+  }
+
+  onSubmit() {
+    if (!this.form.valid) {
+      console.log('REFERRAL-FORM: form is invalid'); // TODO: fix
+      return;
+    }
+    const p = this.toModel(this.form.value);
+    this.propagateChanges(p);
   }
 
   propagateChanges(newValue: T) {
