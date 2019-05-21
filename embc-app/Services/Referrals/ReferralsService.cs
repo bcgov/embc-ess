@@ -1,7 +1,10 @@
 using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.ViewModels;
 using HandlebarsDotNet;
 using System.Threading.Tasks;
+using Gov.Jag.Embc.Public.Utils;
+using System;
 
 namespace Gov.Jag.Embc.Public.Services.Referrals
 {
@@ -14,16 +17,7 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             this.dataInterface = dataInterface;
         }
 
-        //Restaurant Meals
-        //GROCERIES
-        //Hotel/Motel
-        //Group Lodging
-        //Billeting
-        //Clothing
-        //Taxi
-        //Incidentals
-
-        public async Task<string> GetReferralHtmlPages(PrintReferrals printReferrals)
+        public async Task<string> GetReferralHtmlPages(ReferralsToPrint printReferrals)
         {
             var html = string.Empty;
 
@@ -40,11 +34,17 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             return html;
         }
 
-        private string CreateReferralHtmlPages(Referral referral)
+        private string CreateReferralHtmlPages(PrintReferral referral)
         {
             var handleBars = Handlebars.Create(new HandlebarsConfiguration { FileSystem = new DiskFileSystem() });
 
-            var template = handleBars.CompileView("Services/Referrals/Views/layout.hbs");
+            var template = handleBars.Compile(TemplateLoader.LoadTemplate(ReferallMainViews.Master.ToString()));
+
+            var partialViewType = MapToReferralType(referral.Type);
+            var partialItemsSource = GetItemsPartialView(partialViewType);
+
+            Handlebars.RegisterTemplate("items", partialItemsSource);
+
             var result = template(referral);
 
             return result;
@@ -55,10 +55,72 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             var data = new { test = "" };
             var handleBars = Handlebars.Create(new HandlebarsConfiguration { FileSystem = new DiskFileSystem() });
 
-            var template = handleBars.CompileView("Services/Referrals/Views/summary.hbs");
+            var template = handleBars.CompileView("Services/Referrals/Views/Summary.hbs");
             var result = template(data);
 
             return result;
+        }
+
+        private string GetItemsPartialView(ReferralPartialView partialView)
+        {
+            var name = $"{partialView.ToString()}.{partialView.ToString()}ItemsPartial";
+            return TemplateLoader.LoadTemplate(name);
+        }
+
+        public enum ReferallMainViews
+        {
+            Master,
+            Summary
+        }
+
+        public enum ReferralPartialView
+        {
+            Billeting,
+            Clothing,
+            Groceries,
+            GroupLodging,
+            Hotel,
+            Incidentals,
+            Meals,
+            Taxi,
+            Transportation
+        }
+
+        private ReferralPartialView MapToReferralType(string referralType)
+        {
+            var referralTypeEnum = EnumHelper<ReferralType>.GetValueFromName(referralType);
+            switch (EnumHelper<ReferralType>.GetValueFromName(referralType))
+            {
+                case ReferralType.Clothing:
+                    return ReferralPartialView.Clothing;
+
+                case ReferralType.Food_Groceries:
+                    return ReferralPartialView.Groceries;
+
+                case ReferralType.Food_Restaurant:
+                    return ReferralPartialView.Meals;
+
+                case ReferralType.Incidentals:
+                    return ReferralPartialView.Incidentals;
+
+                case ReferralType.Lodging_Billeting:
+                    return ReferralPartialView.Billeting;
+
+                case ReferralType.Lodging_Group:
+                    return ReferralPartialView.GroupLodging;
+
+                case ReferralType.Lodging_Hotel:
+                    return ReferralPartialView.Hotel;
+
+                case ReferralType.Transportation_Other:
+                    return ReferralPartialView.Transportation;
+
+                case ReferralType.Transportation_Taxi:
+                    return ReferralPartialView.Taxi;
+
+                default:
+                    throw new ArgumentException($"{referralType} not a valid ReferralType");
+            }
         }
     }
 }

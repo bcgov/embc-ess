@@ -75,7 +75,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpPost("referralPdfs")]
-        public async Task<IActionResult> GetReferralPdfs([FromBody] PrintReferrals printReferrals)
+        public async Task<IActionResult> GetReferralPdfs([FromBody] ReferralsToPrint printReferrals)
         {
             var content = await referralsService.GetReferralHtmlPages(printReferrals);
 
