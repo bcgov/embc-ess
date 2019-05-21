@@ -45,7 +45,7 @@
   </div>
 
   <ng-template #searchResultsTable>
-    <!-- <table class="table">
+    <table class="table">
       <thead class="thead-light">
         <th scope="col"></th>
         <th scope="col">Last Name</th>
@@ -57,26 +57,26 @@
         <th scope="col">Action</th>
       </thead>
       <tbody>
-        <tr [class.table-danger]="rowItem.restrictedAccess" *ngFor="let rowItem of rows">
+        <tr [class.table-danger]="rowItem.restrictedAccess" *ngFor="let rowItem of resultsAndPagination.data">
           <th scope="row">
-            <app-font-awesome-icon class="mr-1 float-left" *ngIf="rowItem.headOfHousehold" icon="user">
+            <app-font-awesome-icon class="mr-1 float-left" *ngIf="rowItem.isHeadOfHousehold" icon="user">
             </app-font-awesome-icon>
             <app-font-awesome-icon class="float-right" *ngIf="rowItem.restrictedAccess" icon="lock">
             </app-font-awesome-icon>
           </th>
           <td>{{rowItem.lastName}}</td>
           <td>{{rowItem.firstName}}</td>
-          <td>{{rowItem.incidentTaskTaskNumber}}</td>
-          <td>{{rowItem.essFileNumber}}</td>
+          <td>{{rowItem.incidentTaskNumber}}</td>
+          <td>{{rowItem.registrationId}}</td>
           <td>{{rowItem.evacuatedFrom}}</td>
           <td>{{rowItem.evacuatedTo}}</td>
           <td>
-            <a href="javascript:void(0)" *ngIf="!rowItem.incidentTaskTaskNumber" (click)="finalize(rowItem)">Finalize</a>
-            <a href="javascript:void(0)" *ngIf="rowItem.incidentTaskTaskNumber" (click)="view(rowItem)">View</a>
+            <a href="javascript:void(0)" *ngIf="!rowItem.isFinalized" (click)="edit(rowItem.registrationId)">Finalize</a>
+            <a href="javascript:void(0)" *ngIf="rowItem.isFinalized" (click)="view(rowItem.registrationId)">View</a>
           </td>
         </tr>
       </tbody>
-    </table> -->
+    </table>
   </ng-template>
 
   <ng-template #notFound>
@@ -92,4 +92,4 @@
     </div>
   </div>
 </div>
-<pre>{{resultsAndPagination|json}}</pre>
+<!-- <pre>{{resultsAndPagination|json}}</pre> -->
