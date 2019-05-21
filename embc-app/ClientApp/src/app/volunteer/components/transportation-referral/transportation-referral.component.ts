@@ -44,6 +44,7 @@ export class TransportationReferralComponent extends AbstractReferralComponent<T
   }
 
   fromModel(referral: TransportationReferral) {
+    // populate fields shared by all forms; e.g. selected evacuees, comments, supplier info...
     super.fromModel(referral);
     this.form.patchValue({
       subType: referral.subType || null,
