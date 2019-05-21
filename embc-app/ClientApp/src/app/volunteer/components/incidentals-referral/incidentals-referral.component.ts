@@ -57,7 +57,7 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent<Inci
 
   // NB: this is called when date component is initialized and whenever its data changes
   updateReferralDate(rd: ReferralDate) {
-    this.referral.dates = rd;
+    this.referral.validDates = rd;
   }
 
   viewRates() {
