@@ -1,8 +1,3 @@
-<!--
-  TODO: this component needs to have:
-    - FE will *always* send the "totalAmount" to the BE (even if not overridable)
-    - Case in point, for restaurant meals, the FE will calculate the total amount and send it over
- -->
 <div *ngIf="referral">
   <div *ngIf="!readOnly">
     <form novalidate [formGroup]="form">
@@ -185,8 +180,15 @@
       </li>
       <li>
         <span class="name">Up to a total of:</span>
-        <span class="value">{{currency.format(referral.totalAmount)}}</span>
-        <!-- TODO: add warning if total exceeds rate -->
+        <span class="value d-flex">
+          <div>
+            {{currency.format(referral.totalAmount)}}
+          </div>
+          <div class="ml-4" *ngIf="referral.totalAmount > maximumAmount">
+            <app-attention-icon [alignCenter]="false" [pullLeft]="false"></app-attention-icon>
+            Total monetary value exceeds the recommended ESS rate.
+          </div>
+        </span>
       </li>
       <li>
         <span class="comments">{{referral.comments || "&nbsp;"}}</span>
