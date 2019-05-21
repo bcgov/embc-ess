@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegistrationListComponent } from './registration-list.component';
+import { EvacueePickerComponent } from './evacuee-picker.component';
 
-describe('RegistrationListComponent', () => {
-  let component: RegistrationListComponent;
-  let fixture: ComponentFixture<RegistrationListComponent>;
+describe('EvacueeListComponent', () => {
+  let component: EvacueePickerComponent;
+  let fixture: ComponentFixture<EvacueePickerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [RegistrationListComponent]
+      declarations: [EvacueePickerComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RegistrationListComponent);
+    fixture = TestBed.createComponent(EvacueePickerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

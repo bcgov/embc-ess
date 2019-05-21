@@ -20,12 +20,12 @@ And of course this component needs to be implemented as a 'maker' with both an e
         <app-valid-from-to [referralDate]="referral.dates" (referralDateChange)="referral.dates = $event" [id]="uuid"></app-valid-from-to>
         <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
         <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
-    </div>
+      </div>
 
       <div class="feature-block card border-0 p-0 mt-4">
         <div class="row mt-4 mx-4">
           <div class="col-4 pl-0 pr-3">
-            <app-evacuee-list [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()"></app-evacuee-list>
+            <app-evacuee-picker [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()"></app-evacuee-picker>
           </div>
           <div class="col-8 pl-3 pr-0">
             <div class="card border-0 h-100">
@@ -110,14 +110,14 @@ And of course this component needs to be implemented as a 'maker' with both an e
         <span class="value">{{referral.id}}</span>
       </li>
       <li>
-          <span class="name">Evacuees Requiring Incidentals:</span>
-          <span class="value">
-            <div class="form-check" *ngFor="let e of referral.evacuees">
-              <input type="checkbox" class="form-check-input" checked disabled>
-              <label class="form-check-label">{{e.lastName}}, {{e.firstName}}</label>
-            </div>
-          </span>
-        </li>
+        <span class="name">Evacuees Requiring Incidentals:</span>
+        <span class="value">
+          <div class="form-check" *ngFor="let e of referral.evacuees">
+            <input type="checkbox" class="form-check-input" checked disabled>
+            <label class="form-check-label">{{e.lastName}}, {{e.firstName}}</label>
+          </div>
+        </span>
+      </li>
       <li>
         <span class="name">List of approved items:</span>
         <span class="value">{{referral.approvedItems}}</span>
