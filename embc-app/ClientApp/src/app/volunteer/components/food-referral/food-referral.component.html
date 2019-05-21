@@ -9,9 +9,9 @@
       <div class="space-between align-items-center">
         <app-valid-from-to [referralDate]="referral.dates" (referralDateChange)="updateReferralDate($event)"
           [id]="uuid"></app-valid-from-to>
-          <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
-          <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
-        </div>
+        <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
+        <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
+      </div>
 
       <div class="feature-block card border-0 p-0 mt-4">
         <div class="row mt-4 mx-4">
@@ -59,7 +59,7 @@
 
                   <ng-container *ngSwitchCase="'GROCERIES'">
                     <div class="col">
-                      <label for="numDaysMeals_{{uuid}}"># Days of meals</label>
+                      <label for="numDaysMeals_{{uuid}}"># Days for meals</label>
                       <select class="form-control d-block w-auto" id="numDaysMeals_{{uuid}}"
                         formControlName="numDaysMeals">
                         <option value="0">Select--</option>
@@ -93,7 +93,7 @@
               </div>
 
               <!-- <span class="invalid-feedback justify-content-end" [class.d-flex]="amountInput.classList.contains('is-invalid')">
-                Please enter a total amount for incidentals
+                Please enter a total amount for # Meals, # Days or groceries
               </span> -->
             </div>
           </div>

@@ -37,10 +37,9 @@ export interface ClothingReferral extends ReferralBase {
   extremeWinterConditions: boolean;
 }
 
-// tslint:disable-next-line: no-empty-interface
 export interface LodgingReferral extends ReferralBase {
   subType?: LodgingSubType;
-  numNights: number;
+  numNights?: number;
   numRooms?: number;
 }
 
