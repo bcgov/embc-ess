@@ -47,22 +47,12 @@ export class ReferralService extends RestService {
       );
   }
   // POST api/registrations/<id>/referrals ???
-  createReferrals(registrationId: string, referrals: Referral[]): Observable<HttpResponse<any>> {
+  createReferrals(registrationId: string, referrals: ReferralPost): Observable<HttpResponse<any>> {
     // TODO: assemble data object for BE
     // TODO: add id [1..n] to referrals
     // TODO: only send array of selected evacuees (evacuee[] not evacuees[])
-    const data: ReferralPost = {
-      confirmChecked: true,
-      referrals: referrals.map((r: Referral) => {
-        const ref = {
-          ...r,
 
-        };
-        return ref;
-      }),
-    };
-
-    return this.http.post<HttpResponse<any>>(`api/registrations/${registrationId}/referrals`, data, { headers: this.headers })
+    return this.http.post<HttpResponse<any>>(`api/registrations/${registrationId}/referrals`, referrals, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError)

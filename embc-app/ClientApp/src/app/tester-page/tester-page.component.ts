@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ReferralService } from '../core/services/referral.service';
-import { ListResult, Referral, IncidentalsReferral } from '../core/models';
+import { ListResult, Referral, IncidentalsReferral, ReferralPost, ReferralPostItem } from '../core/models';
 
 
 @Component({
@@ -13,19 +13,24 @@ export class TesterPageComponent implements OnInit {
 
   referrals: ListResult<Referral>;
   referralsModified: Referral[];
-  sampleReferral: IncidentalsReferral = {
+  sampleReferral: ReferralPostItem = {
     id: null,
     approvedItems: 'a bunch of stuff',
     essNumber: '100043',
     referralId: null,
     active: true,
-    type: 'INCIDENTALS',
-    subType: 'Groceries',
+    type: 'FOOD',
+    subType: 'GROCERIES',
     purchaser: 'Percy Purchaser',
-    dates: { to: new Date(), from: new Date() },
+    validDates: {
+      to: new Date(),
+      from: new Date()
+    },
     evacuees: [
       {
-        id: '100035-1',
+        // id: '100043-1',
+        id: '1',
+
         active: null,
         personType: 'HOH',
         firstName: 'Woop',
@@ -36,7 +41,8 @@ export class TesterPageComponent implements OnInit {
         dob: '1988-02-29'
       },
       {
-        id: '100035-2',
+        // id: '100043-2',
+        id: '2',
         active: null,
         personType: 'FMBR',
         firstName: 'Bork',
@@ -48,7 +54,16 @@ export class TesterPageComponent implements OnInit {
       }
     ],
     totalAmount: 1, // NB: set to 0 if not used
-    supplier: null,
+    supplier: {
+      id: null,
+      name: 'Bork\'s Kitchen',
+      city: 'Victoria',
+      address: '1234 Anywhere Ave',
+      province: 'BC',
+      postalCode: 'v8v8v8v',
+      telephone: '123456',
+      fax: null,
+    },
     comments: 'Most comments are nice. Some are not nice.',
     confirmChecked: true,
   };
@@ -61,7 +76,6 @@ export class TesterPageComponent implements OnInit {
     this.referralService.getCleanReferrals(this.id, true)
       .subscribe(r => {
         this.referrals = r;
-        alert(r.data.length);
         // this.referralsModified = r.data.map(d => {
         //   d.supplier.name = d.supplier.name + '!';
         //   return d;
@@ -69,6 +83,14 @@ export class TesterPageComponent implements OnInit {
       });
   }
   submit() {
-    this.referralService.createReferrals(this.id, [this.sampleReferral]).subscribe((x) => { this.reply = x });
+    const x: ReferralPost = {
+      confirmChecked: true,
+      referrals: [this.sampleReferral],
+    };
+    this.reply = x;
+    this.referralService.createReferrals(this.id, x).subscribe((x) => {
+      console.log('Success');
+    }),
+      err => console.log(err);
   }
 }

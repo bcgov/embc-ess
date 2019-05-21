@@ -64,7 +64,7 @@ export interface ReferralPostItem {
   type: ReferralType;
   subType?: string;
   purchaser: string;
-  dates: ReferralDate;
+  validDates: ReferralDate;
   evacuees: Array<Evacuee>;
   totalAmount: number; // NB: set to 0 if not used
   supplier: Supplier;
@@ -82,7 +82,6 @@ export interface ReferralPostItem {
   fromAddress?: string;
   toAddress?: string;
   modeTransport?: string;
-
 }
 
 export type Referral = FoodReferral | IncidentalsReferral | ClothingReferral | LodgingReferral | TransportationReferral;
