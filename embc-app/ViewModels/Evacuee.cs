@@ -1,5 +1,6 @@
 using AutoMapper;
 using System;
+using System.Linq;
 
 namespace Gov.Jag.Embc.Public.ViewModels
 {
@@ -17,6 +18,10 @@ namespace Gov.Jag.Embc.Public.ViewModels
                     ? s.EvacueeRegistration.IncidentTask.Community.Name
                     : s.EvacueeRegistration.IncidentTask.Region.Name))
                 .ForMember(d => d.EvacuatedTo, opts => opts.MapFrom(s => s.EvacueeRegistration.HostCommunity.Name))
+                .ForMember(d => d.HasReferrals, opts => opts.MapFrom(s => s.EvacueeRegistration.RegistrationCompletionDate.HasValue
+                ? s.Referrals.Any()
+                : (bool?)null))
+                .ForMember(d => d.IsFinalized, opts => opts.MapFrom(s => s.EvacueeRegistration.RegistrationCompletionDate.HasValue))
                 ;
         }
     }
@@ -39,5 +44,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string EvacuatedFrom { get; set; }
         public string EvacuatedTo { get; set; }
         public DateTime? RegistrationCompletionDate { get; set; }
+        public bool IsFinalized { get; set; }
+        public bool? HasReferrals { get; set; }
     }
 }
