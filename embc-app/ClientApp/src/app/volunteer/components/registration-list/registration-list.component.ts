@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ListResult, Registration, PaginationSummary, isBcAddress, isOtherAddress } from '../../../core/models';
+import { ListResult, Registration, PaginationSummary, isBcAddress, isOtherAddress, Evacuee } from '../../../core/models';
 import { Observable } from 'rxjs';
 import { RegistrationService } from '../../../core/services/registration.service';
 import { Router } from '@angular/router';
@@ -7,11 +7,11 @@ import { AuthService } from '../../../core/services/auth.service';
 import { SearchQueryParameters } from '../../../core/models/search-interfaces';
 import { UniqueKeyService } from '../../../core/services/unique-key.service';
 import get from 'lodash/get';
+import { EvacueeService } from 'src/app/core/services/evacuee.service';
 
 interface RowItem {
   // The underlying data for any given row within the table view.
   rowData: Registration;
-
   // metadata for this row
   count: number;  // Length of the number of total rows.
   even: boolean;  // True if this cell is contained in a row with an even-numbered index.
@@ -41,6 +41,7 @@ interface RowItem {
   styleUrls: ['./registration-list.component.scss']
 })
 export class RegistrationListComponent implements OnInit {
+  evacuees: any;
   // server response
   resultsAndPagination: ListResult<Registration>;
   rows: RowItem[] = [];
@@ -60,6 +61,7 @@ export class RegistrationListComponent implements OnInit {
 
   constructor(
     private registrationService: RegistrationService,
+    private evacueeService: EvacueeService,
     private router: Router,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
@@ -72,6 +74,7 @@ export class RegistrationListComponent implements OnInit {
       this.resultsAndPagination = r;
       this.rows = this.processSearchResults(r.data);
     });
+    this.evacueeService.getEvacuees().subscribe(e => this.evacuees = e);
   }
 
   getRegistrations(query: SearchQueryParameters = this.defaultSearchQuery): Observable<ListResult<Registration>> {
