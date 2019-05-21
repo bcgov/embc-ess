@@ -62,6 +62,7 @@ export class TesterPageComponent implements OnInit {
       postalCode: 'v8v8v8v',
       telephone: '123456',
       fax: null,
+      active: true,
     },
     comments: 'Most comments are nice. Some are not nice.',
     confirmChecked: true,
