@@ -33,10 +33,10 @@
     <section>
       <select class="form-control" [(ngModel)]="sort" (change)="search()">
         <!-- <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option> -->
-        <option [value]="'-registrationCompletionDate'">Sort by: Latest (default)</option>
-        <option [value]="'headOfHousehold.lastName'">Last Name</option>
-        <option [value]="'hostCommunity.name'">Community Evacuated to</option>
-        <option [value]="'incidentTask.community.name'">Community Evacuated from</option>
+        <option [value]="'-registrationId'">Sort by: Latest (default)</option>
+        <option [value]="'lastName'">Last Name</option>
+        <option [value]="'evacuatedTo'">Community Evacuated to</option>
+        <option [value]="'evacuatedFrom'">Community Evacuated from</option>
       </select>
     </section>
   </div>
