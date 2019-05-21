@@ -76,11 +76,7 @@
 
         <div class="card border-0 m-4">
           <div class="card-body">
-            <<<<<<< HEAD <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (supplierChange)="updateSupplier($event)">
-              </app-supplier>
-              =======
-              <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (formReady)="formInitialized('supplier', $event)"></app-supplier>
-              >>>>>>> upstream/develop
+            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (formReady)="formInitialized('supplier', $event)"></app-supplier>
           </div>
         </div>
 
