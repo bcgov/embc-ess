@@ -67,11 +67,11 @@ export class ReferralTableComponent implements OnChanges, OnDestroy {
           const data: Array<Referral> = x.referrals.data.map((y: any) => {
             return {
               active: y.active,
-              id: y.referralId,
+              referralId: y.referralId,
               subType: y.subType,
               supplier: { name: y.supplier.name },
               type: y.type,
-              dates: {
+              validDates: {
                 from: y.validFrom,
                 to: y.validTo
               }
@@ -99,7 +99,7 @@ export class ReferralTableComponent implements OnChanges, OnDestroy {
         // modal was closed
         this.summaryModal = null;
 
-        const referralIds = this.referrals.map(r => r.id);
+        const referralIds = this.referrals.map(r => r.referralId);
         this.registrationService.printReferrals(this.registration.id, referralIds, includeSummary);
       },
       () => {

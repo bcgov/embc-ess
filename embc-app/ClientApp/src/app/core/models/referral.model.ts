@@ -8,19 +8,17 @@ export type LodgingSubType = ('HOTEL' | 'BILLETING' | 'GROUP');
 export type TransportationSubType = ('TAXI' | 'OTHER');
 
 export interface ReferralBase {
-  id: string;
   essNumber: string;
   referralId: string;
   active: boolean;
   type: ReferralType;
   subType?: string;
   purchaser: string;
-  dates: ReferralDate;
+  validDates: ReferralDate;
   evacuees: Array<Evacuee>;
   totalAmount: number; // NB: set to 0 if not used
   supplier: Supplier;
   comments: string;
-  confirmChecked: boolean;
 }
 
 export interface FoodReferral extends ReferralBase {
@@ -54,10 +52,12 @@ export interface TransportationReferral extends ReferralBase {
   modeTransport?: string;
 }
 
+// used to POST (create new) referrals
 export interface ReferralPost {
   confirmChecked: boolean;
-  referrals: ReferralPostItem[];
+  referrals: Array<Partial<ReferralPostItem>>;
 }
+
 export interface ReferralPostItem {
   id: string;
   essNumber: string;
@@ -71,7 +71,6 @@ export interface ReferralPostItem {
   totalAmount: number; // NB: set to 0 if not used
   supplier: Supplier;
   comments: string;
-  confirmChecked: boolean;
 
   numBreakfasts?: number;
   numLunches?: number;
@@ -85,19 +84,20 @@ export interface ReferralPostItem {
   toAddress?: string;
   modeTransport?: string;
 }
+
+// response from POST API call
 export interface ReferralSuccess {
   registrationId: string;
-  referrals: [
-    { referralId: string }
-  ];
+  referrals: Array<{ referralId: string }>;
 }
 
-
 export type Referral = FoodReferral | IncidentalsReferral | ClothingReferral | LodgingReferral | TransportationReferral;
+
 export interface RawReferralCollection {
   registrationId: string;
   referrals: ListResult<Referral>;
 }
+
 // --------------------HELPERS-----------------------------------------
 
 // TODO: the BE should only provide type of type ReferralType
@@ -122,4 +122,3 @@ export function isLodgingReferral(referral: Referral): boolean {
 export function isTransportationReferral(referral: Referral): boolean {
   return referral && referral.type.toUpperCase() === 'TRANSPORTATION';
 }
-

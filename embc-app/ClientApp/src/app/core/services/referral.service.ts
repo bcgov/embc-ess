@@ -24,6 +24,8 @@ export class ReferralService extends RestService {
         catchError(this.handleError)
       );
   }
+
+  // temporary function that will replace getReferrals() when Referral Table Component is updated
   // GET api/registrations/<id>/referrals
   getCleanReferrals(id: string, getActive: boolean = true): Observable<ListResult<Referral>> {
     // NB: hard-coded server limit is 500
@@ -37,7 +39,6 @@ export class ReferralService extends RestService {
           const referrals: ListResult<Referral> = rCollection.referrals;
           referrals.data.map((referral: Referral): Referral => {
             const cleanReferral = referral;
-            cleanReferral.id = referral.referralId;
             cleanReferral.essNumber = rCollection.registrationId;
             return cleanReferral;
           });
@@ -46,12 +47,9 @@ export class ReferralService extends RestService {
         catchError(this.handleError)
       );
   }
-  // POST api/registrations/<id>/referrals ???
-  createReferrals(registrationId: string, referrals: ReferralPost): Observable<HttpResponse<ReferralSuccess>> {
-    // TODO: assemble data object for BE
-    // TODO: add id [1..n] to referrals
-    // TODO: only send array of selected evacuees (evacuee[] not evacuees[])
 
+  // POST api/registrations/<id>/referrals
+  createReferrals(registrationId: string, referrals: ReferralPost): Observable<HttpResponse<ReferralSuccess>> {
     return this.http.post<HttpResponse<ReferralSuccess>>(`api/registrations/${registrationId}/referrals`, referrals, { headers: this.headers })
       .pipe(
         retry(3),
@@ -59,7 +57,7 @@ export class ReferralService extends RestService {
       );
   }
 
-  // DELETE api/registrations/<id>/referral/<id> ???
+  // DELETE api/registrations/<id>/referral/<id>
   deactivateReferral(registrationId: string, referralId: string): Observable<HttpResponse<any>> {
     return this.http.delete<HttpResponse<any>>(`api/registrations/${registrationId}/referrals/${referralId}`, { headers: this.headers })
       .pipe(
@@ -68,7 +66,7 @@ export class ReferralService extends RestService {
       );
   }
 
-  // GET api/registrations/<id>/referral/<id> ???
+  // GET api/registrations/<id>/referral/<id>
   getReferralById(registrationId: string, referralId: string): Observable<Referral> {
     return this.http.get<Referral>(`api/registrations/${registrationId}/referrals/${referralId}`, { headers: this.headers })
       .pipe(

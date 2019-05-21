@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { ReferralService } from '../core/services/referral.service';
 import { ListResult, Referral, IncidentalsReferral, ReferralPost, ReferralPostItem } from '../core/models';
 
-
 @Component({
   selector: 'app-tester-page',
   templateUrl: './tester-page.component.html',
@@ -65,13 +64,14 @@ export class TesterPageComponent implements OnInit {
       active: true,
     },
     comments: 'Most comments are nice. Some are not nice.',
-    confirmChecked: true,
   };
   id = '100035';
   reply;
+
   constructor(
     private referralService: ReferralService
   ) { }
+
   ngOnInit() {
     this.referralService.getCleanReferrals(this.id, true)
       .subscribe(r => {
@@ -82,15 +82,19 @@ export class TesterPageComponent implements OnInit {
         // });
       });
   }
+
   submit() {
     const x: ReferralPost = {
       confirmChecked: true,
       referrals: [this.sampleReferral],
     };
     this.reply = x;
-    this.referralService.createReferrals(this.id, x).subscribe((x) => {
-      console.log(x);
-    }),
-      err => console.log(err);
+    this.referralService.createReferrals(this.id, x).subscribe(
+      value => {
+        console.log(value);
+      }, err => {
+        console.log(err);
+      }
+    );
   }
 }
