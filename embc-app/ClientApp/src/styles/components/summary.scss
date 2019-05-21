@@ -71,7 +71,7 @@
     span.value {
       width: 65%;
       padding: 0;
-      border-left: unset;
+      border-left-style: none; // IE doesn't support 'unset'
     }
 
     @media (min-width: 768px) {
