@@ -4,9 +4,9 @@
       <div class="space-between align-items-center">
         <app-valid-from-to [referralDate]="referral.validDates" (referralDateChange)="updateReferralDate($event)"
           [id]="uuid"></app-valid-from-to>
-          <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
-          <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
-        </div>
+        <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
+        <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
+      </div>
 
       <div class="feature-block card border-0 p-0 mt-4">
         <div class="row mt-4 mx-4">
@@ -45,7 +45,7 @@
         <div class="card border-0 m-4">
           <div class="card-body">
             <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen"
-              (supplierChange)="updateSupplier($event)"></app-supplier>
+              (formReady)="formInitialized('supplier', $event)"></app-supplier>
           </div>
         </div>
 
