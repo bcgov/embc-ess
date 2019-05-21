@@ -24,7 +24,7 @@ export class EvacueeListComponent implements OnInit {
   queryString: string;
   // a place to save the last query parameters
   previousQuery: SearchQueryParameters = {};
-  sort = '-registrationCompletionDate'; // how do we sort the list query param
+  sort = '-registrationId'; // how do we sort the list query param
 
   // this is the correct path prefix for the user routing
   path: string;
