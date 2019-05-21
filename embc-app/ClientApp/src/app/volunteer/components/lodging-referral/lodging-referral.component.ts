@@ -29,54 +29,30 @@ export class LodgingReferralComponent extends AbstractReferralComponent<LodgingR
     private modals: NgbModal,
   ) {
     super(fb);
-    this.form.addControl('subType', this.fb.control(''));
-    this.form.addControl('numNights', this.fb.control(''));
-    this.form.addControl('numRooms', this.fb.control(''));
+    this.form.setControl('subType', this.fb.control(''));
+    this.form.setControl('numNights', this.fb.control(''));
+    this.form.setControl('numRooms', this.fb.control(''));
   }
 
   ngOnInit() {
-    this.handleFormChange();
-    this.displayReferral(this.referral as LodgingReferral);
+    // this is IMPORTANT! - failure to call the base class will stop validation from working!
+    super.ngOnInit();
   }
 
   ngOnDestroy() {
+    super.ngOnDestroy();
     // close modal if it's open
     if (this.ratesModal) { this.ratesModal.dismiss(); }
   }
 
-  // validate the whole form as we capture data
-  private handleFormChange(): void {
-    this.form.valueChanges.subscribe(() => this.saveChanges());
-  }
-
-  private displayReferral(referral: LodgingReferral) {
-    if (referral) {
-      this.form.reset();
-      this.form.patchValue({
-        subType: referral.subType || null,
-        numNights: referral.numNights || 0,
-        numRooms: referral.numRooms || 0,
-        comments: referral.comments,
-      });
-
-      // populate the evacuee list with existing selection
-      (referral.evacuees || []).forEach(x => this.selectEvacuee(x));
-    }
-  }
-
-  // if all required information is in the form we emit
-  private saveChanges() {
-    if (!this.form.valid) {
-      console.log('form is invalid'); // TODO: fix
-      // return;
-    }
-
-    // Copy over all of the original referral properties.
-    // Then copy over the values from the form.
-    // This ensures values not on the form, such as the Id, are retained.
-    const p = { ...this.referral, ...this.form.value };
-    // FIXME: Fix!!!!
-    // this.referralChange.emit(p);
+  fromModel(referral: LodgingReferral) {
+    // populate fields shared by all forms; e.g. selected evacuees, comments, supplier info...
+    super.fromModel(referral);
+    this.form.patchValue({
+      subType: referral.subType || null,
+      numNights: referral.numNights || 0,
+      numRooms: referral.numRooms || 0,
+    });
   }
 
   // NB: this is called when date component is initialized and whenever its data changes
@@ -88,10 +64,6 @@ export class LodgingReferralComponent extends AbstractReferralComponent<LodgingR
 
     // update any dropdowns that exceed max
     if (this.f.numNights.value > this.nights) { this.f.numNights.setValue(+this.nights); }
-  }
-
-  updateSupplier(value: Supplier) {
-    this.referral.supplier = value;
   }
 
   viewRates() {

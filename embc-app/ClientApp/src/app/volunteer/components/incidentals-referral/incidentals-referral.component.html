@@ -17,15 +17,16 @@ And of course this component needs to be implemented as a 'maker' with both an e
   <div *ngIf="!readOnly">
     <form novalidate [formGroup]="form">
       <div class="space-between align-items-center">
-        <app-valid-from-to [referralDate]="referral.validDates" (referralDateChange)="referral.validDates = $event" [id]="uuid"></app-valid-from-to>
+        <app-valid-from-to [referralDate]="referral.validDates" (referralDateChange)="updateReferralDate($event)" [id]="uuid"></app-valid-from-to>
         <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
         <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
-    </div>
+      </div>
 
       <div class="feature-block card border-0 p-0 mt-4">
         <div class="row mt-4 mx-4">
           <div class="col-4 pl-0 pr-3">
-            <app-evacuee-list [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()"></app-evacuee-list>
+            <app-evacuee-list [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors"
+              [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()"></app-evacuee-list>
           </div>
           <div class="col-8 pl-3 pr-0">
             <div class="card border-0 h-100">
@@ -56,7 +57,8 @@ And of course this component needs to be implemented as a 'maker' with both an e
         </div>
         <div class="card m-4">
           <div class="card-body">
-            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (formReady)="formInitialized('supplier', $event)"></app-supplier>
+            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen"
+              (formReady)="formInitialized('supplier', $event)"></app-supplier>
           </div>
         </div>
         <div class="pl-4 pr-4 pb-3">
@@ -110,14 +112,14 @@ And of course this component needs to be implemented as a 'maker' with both an e
         <span class="value">{{referral.referralId}}</span>
       </li>
       <li>
-          <span class="name">Evacuees Requiring Incidentals:</span>
-          <span class="value">
-            <div class="form-check" *ngFor="let e of referral.evacuees">
-              <input type="checkbox" class="form-check-input" checked disabled>
-              <label class="form-check-label">{{e.lastName}}, {{e.firstName}}</label>
-            </div>
-          </span>
-        </li>
+        <span class="name">Evacuees Requiring Incidentals:</span>
+        <span class="value">
+          <div class="form-check" *ngFor="let e of referral.evacuees">
+            <input type="checkbox" class="form-check-input" checked disabled>
+            <label class="form-check-label">{{e.lastName}}, {{e.firstName}}</label>
+          </div>
+        </span>
+      </li>
       <li>
         <span class="name">List of approved items:</span>
         <span class="value">{{referral.approvedItems}}</span>

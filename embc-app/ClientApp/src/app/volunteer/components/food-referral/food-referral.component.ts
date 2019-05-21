@@ -6,7 +6,6 @@ import range from 'lodash/range';
 import { FoodReferral, Supplier } from 'src/app/core/models';
 import { ReferralDate } from 'src/app/core/models/referral-date';
 import { FoodRatesComponent } from 'src/app/shared/modals/food-rates/food-rates.component';
-import { SupplierComponent } from '../supplier/supplier.component';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
 const BREAKFAST = 10.00;
@@ -19,7 +18,7 @@ const GROCERIES = 22.50;
   templateUrl: './food-referral.component.html',
   styleUrls: ['./food-referral.component.scss']
 })
-export class FoodReferralComponent extends AbstractReferralComponent<FoodReferral> implements OnInit, OnDestroy, OnChanges {
+export class FoodReferralComponent extends AbstractReferralComponent<FoodReferral> implements OnInit, OnDestroy {
   private ratesModal: NgbModalRef = null;
 
   days: Array<number> = null;
@@ -59,65 +58,33 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
   }
 
   ngOnInit() {
-    super.ngOnInit(); // this is IMPORTANT! - failure to call the base class will stop validation from working!
-    // this.handleFormChange();
-    // this.displayReferral(this.referral as FoodReferral);
+    // this is IMPORTANT! - failure to call the base class will stop validation from working!
+    super.ngOnInit();
   }
 
   ngOnDestroy() {
     super.ngOnDestroy();
-
     // close modal if it's open
     if (this.ratesModal) { this.ratesModal.dismiss(); }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.referral && this.referral) {
-      this.displayReferral(this.referral);
-    }
-    if (changes.readOnly) {
-      // console.log('readOnly =', changes.readOnly.currentValue);
-    }
+  fromModel(referral: FoodReferral) {
+    super.fromModel(referral);
+    this.form.patchValue({
+      subType: referral.subType || null,
+      numBreakfasts: referral.numBreakfasts || 0,
+      numLunches: referral.numLunches || 0,
+      numDinners: referral.numDinners || 0,
+      numDaysMeals: referral.numDaysMeals || 0,
+      totalAmount: referral.totalAmount || 0
+    });
   }
 
-  // validate the whole form as we capture data
-  // private handleFormChange(): void {
-  //   this.form.valueChanges.subscribe(() => this.saveChanges());
-  // }
-
-  private displayReferral(referral: FoodReferral) {
-    if (referral && !this.readOnly) {
-      this.form.reset();
-      this.form.patchValue({
-        subType: referral.subType || null,
-        numBreakfasts: referral.numBreakfasts || 0,
-        numLunches: referral.numLunches || 0,
-        numDinners: referral.numDinners || 0,
-        numDaysMeals: referral.numDaysMeals || 0,
-        comments: referral.comments,
-        totalAmount: referral.totalAmount || 0
-      });
-
-      // populate the evacuee list with existing selection
-      (referral.evacuees || []).forEach(x => this.selectEvacuee(x));
-    }
-  }
-
-  // if all required information is in the form we emit
-  private saveChanges() {
-    if (!this.form.valid) {
-      console.log('form is invalid'); // TODO: fix
-      // return;
-    }
-
-    // Copy over all of the original referral properties.
-    // Then copy over the values from the form.
-    // This ensures values not on the form, such as the Id, are retained.
-    const p = { ...this.referral, ...this.form.value };
+  toModel(formValue: any): FoodReferral {
+    const p = super.toModel(formValue);
     // if RESTAURANT then assign maximumAmount; otherwise leave whatever the user entered
     if (this.subType === 'RESTAURANT') { p.totalAmount = this.maximumAmount; }
-    // FIXME: Fix!!!!
-    // this.referralChange.emit(p);
+    return p;
   }
 
   // NB: this is called when date component is initialized and whenever its data changes
@@ -132,10 +99,6 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
     if (this.f.numLunches.value > this.days) { this.f.numLunches.setValue(+this.days); }
     if (this.f.numDinners.value > this.days) { this.f.numDinners.setValue(+this.days); }
     if (this.f.numDaysMeals.value > this.days) { this.f.numDaysMeals.setValue(+this.days); }
-  }
-
-  updateSupplier(value: Supplier) {
-    this.referral.supplier = value;
   }
 
   viewRates() {
