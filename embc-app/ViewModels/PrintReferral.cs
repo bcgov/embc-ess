@@ -1,4 +1,5 @@
 using AutoMapper;
+using System;
 
 namespace Gov.Jag.Embc.Public.ViewModels
 {
@@ -52,7 +53,8 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
             CreateMap<Models.Db.HotelLodgingReferral, PrintReferral>()
                .IncludeBase<Models.Db.LodgingReferral, PrintReferral>()
-                .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Lodging_Hotel));
+               .ForMember(d => d.NumRooms, m => m.MapFrom(s => s.NumberOfRooms))
+               .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Lodging_Hotel));
 
             CreateMap<Models.Db.GroupLodgingReferral, PrintReferral>()
                 .IncludeBase<Models.Db.LodgingReferral, PrintReferral>()
@@ -67,5 +69,10 @@ namespace Gov.Jag.Embc.Public.ViewModels
     public class PrintReferral : Referral
     {
         public string IncidentTaskNumber { get; set; }
+        public string FromDate => ValidDates.From.ToString("MMMM-dd-yyyy");
+        public string FromTime => ValidDates.From.ToString("h:mm tt");
+        public string ToDate => ValidDates.To.ToString("MMMM-dd-yyyy");
+        public string ToTime => ValidDates.To.ToString("h:mm tt");
+        public string PrintDate => DateTime.Today.ToString("MMMM-dd-yyyy");
     }
 }

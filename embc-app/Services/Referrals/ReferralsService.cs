@@ -38,12 +38,18 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
         {
             var handleBars = Handlebars.Create(new HandlebarsConfiguration { FileSystem = new DiskFileSystem() });
 
-            var template = handleBars.Compile(TemplateLoader.LoadTemplate(ReferallMainViews.Master.ToString()));
-
             var partialViewType = MapToReferralType(referral.Type);
-            var partialItemsSource = GetItemsPartialView(partialViewType);
 
-            Handlebars.RegisterTemplate("items", partialItemsSource);
+            var partialItemsSource = GetItemsPartialView(partialViewType);
+            handleBars.RegisterTemplate("itemsPartial", partialItemsSource);
+
+            var partialSupplierSource = GetSupplierPartialView(partialViewType);
+            handleBars.RegisterTemplate("supplierPartial", partialSupplierSource);
+
+            var partialChecklistSource = GetChecklistPartialView(partialViewType);
+            handleBars.RegisterTemplate("checklistPartial", partialChecklistSource);
+
+            var template = handleBars.Compile(TemplateLoader.LoadTemplate(ReferallMainViews.Master.ToString()));
 
             var result = template(referral);
 
@@ -64,6 +70,18 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
         private string GetItemsPartialView(ReferralPartialView partialView)
         {
             var name = $"{partialView.ToString()}.{partialView.ToString()}ItemsPartial";
+            return TemplateLoader.LoadTemplate(name);
+        }
+
+        private string GetChecklistPartialView(ReferralPartialView partialView)
+        {
+            var name = $"{partialView.ToString()}.{partialView.ToString()}ChecklistPartial";
+            return TemplateLoader.LoadTemplate(name);
+        }
+
+        private string GetSupplierPartialView(ReferralPartialView partialView)
+        {
+            var name = $"{partialView.ToString()}.{partialView.ToString()}SupplierPartial";
             return TemplateLoader.LoadTemplate(name);
         }
 

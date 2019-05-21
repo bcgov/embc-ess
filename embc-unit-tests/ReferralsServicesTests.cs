@@ -37,32 +37,36 @@ namespace embc_unit_tests
         //    Assert.Equal(referralIds.Count(), result.Count());
         //}
 
-        //[Fact]
-        //public async Task CanGetReferralHtmlPages()
-        //{
-        //    var ctx = EmbcDb;
+        [Fact]
+        public async Task CanGetReferralHtmlPages()
+        {
+            var ctx = EmbcDb;
+            var di = new DataInterface(ctx, mapper);
+            var service = new ReferralsService(di);
 
-        //    var di = new DataInterface(ctx, mapper);
+            var incidentTask = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.GenerateSelf());
 
-        //    var service = new ReferralsService(di);
-        //    var referrals = GetReferrals().Take(1);
+            var regVM = RegistrationGenerator.GenerateSelf();
+            regVM.IncidentTask = incidentTask;
 
-        //    var referralIds = new List<string>();
-        //    foreach (var referral in referrals)
-        //    {
-        //        var id = await di.CreateReferralAsync(referral);
-        //        referralIds.Add(id);
-        //    }
+            var registration = await di.CreateEvacueeRegistrationAsync(regVM);
 
-        //    var printReferrals = new ReferralsToPrint { ReferralIds = referralIds };
+            var referral = ReferralGenerator.Generate(ReferralType.Transportation_Other, registration.Id);
+            referral.EssNumber = registration.Id;
 
-        //    //var result = service.CreateReferralHtmlContent();
-        //    var content = await service.GetReferralHtmlPages(printReferrals);
+            var referralIds = new List<string>();
+            var id = await di.CreateReferralAsync(referral);
+            referralIds.Add(id);
 
-        //    //var pdfConverter = new PdfConverter();
-        //    //await pdfConverter.ConvertHtmlToPdfAsync(content);
-        //    Assert.False(string.IsNullOrEmpty(content));
-        //}
+            var printReferrals = new ReferralsToPrint { ReferralIds = referralIds };
+
+            //var result = service.CreateReferralHtmlContent();
+            var content = await service.GetReferralHtmlPages(printReferrals);
+
+            //var pdfConverter = new PdfConverter();
+            //await pdfConverter.ConvertHtmlToPdfAsync(content);
+            Assert.False(string.IsNullOrEmpty(content));
+        }
 
         [Fact]
         public void CanGetAllTemplates()
@@ -79,6 +83,15 @@ namespace embc_unit_tests
                 var name = $"{template}.{template}ItemsPartial";
                 var result = TemplateLoader.LoadTemplate(name);
                 Assert.NotNull(result);
+
+                name = $"{template}.{template}SupplierPartial";
+                result = TemplateLoader.LoadTemplate(name);
+                Assert.NotNull(result);
+
+                name = $"{template}.{template}ChecklistPartial";
+                result = TemplateLoader.LoadTemplate(name);
+                Assert.NotNull(result);
+                //ChecklistPartial
                 //Assert.False(string.IsNullOrEmpty(result));
             }
         }
@@ -97,8 +110,6 @@ namespace embc_unit_tests
             regVM.IncidentTask = incidentTask;
 
             var registration = await di.CreateEvacueeRegistrationAsync(regVM);
-
-            //var referral = ReferralGenerator.Generate(ReferralType.Food_Restaurant, registration.Id);
 
             referral.EssNumber = registration.Id;
 

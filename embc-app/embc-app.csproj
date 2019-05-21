@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -59,22 +59,64 @@
         <EmbeddedResource Include="Services\Referrals\Views\Billeting\BilletingItemsPartial.hbs">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Billeting\BilletingChecklistPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Billeting\BilletingSupplierPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Clothing\ClothingChecklistPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
         <EmbeddedResource Include="Services\Referrals\Views\Clothing\ClothingItemsPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Clothing\ClothingSupplierPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Groceries\GroceriesChecklistPartial.hbs">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
         <EmbeddedResource Include="Services\Referrals\Views\Groceries\GroceriesItemsPartial.hbs">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Groceries\GroceriesSupplierPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\GroupLodging\GroupLodgingChecklistPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
         <EmbeddedResource Include="Services\Referrals\Views\GroupLodging\GroupLodgingItemsPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\GroupLodging\GroupLodgingSupplierPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Hotel\HotelChecklistPartial.hbs">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
         <EmbeddedResource Include="Services\Referrals\Views\Hotel\HotelItemsPartial.hbs">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Hotel\HotelSupplierPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Incidentals\IncidentalsChecklistPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
         <EmbeddedResource Include="Services\Referrals\Views\Incidentals\IncidentalsItemsPartial.hbs">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Incidentals\IncidentalsSupplierPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
         <EmbeddedResource Include="Services\Referrals\Views\Master.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Meals\MealsChecklistPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Meals\MealsSupplierPartial.hbs">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
         <EmbeddedResource Include="Services\Referrals\Views\Meals\MealsItemsPartial.hbs">
@@ -83,7 +125,19 @@
         <EmbeddedResource Include="Services\Referrals\Views\Summary.hbs">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Taxi\TaxiChecklistPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Taxi\TaxiSupplierPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
         <EmbeddedResource Include="Services\Referrals\Views\Taxi\TaxiItemsPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Transportation\TransportationChecklistPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Transportation\TransportationSupplierPartial.hbs">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
         <EmbeddedResource Include="Services\Referrals\Views\Transportation\TransportationItemsPartial.hbs">
