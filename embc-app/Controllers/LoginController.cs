@@ -34,7 +34,7 @@ namespace Gov.Jag.Embc.Public.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> Login(string path)
+        public async Task<ActionResult> Login(string path = "dashboard")
         {
             if (!env.IsProduction() && "headers".Equals(path, StringComparison.OrdinalIgnoreCase))
             {
