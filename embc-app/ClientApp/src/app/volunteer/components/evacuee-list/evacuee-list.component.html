@@ -7,7 +7,7 @@
       <input type="checkbox" class="form-check-input" [checked]="isSelected(e)" (change)="selectEvacuee(e)" id="{{identifier}}-person-{{i}}">
       <label class="form-check-label" for="{{identifier}}-person-{{i}}">{{e.lastName}}, {{e.firstName}}</label>
     </div>
-    <span class="invalid-feedback" [class.d-block]="invalid">Please select evacuees requiring incidentals</span>
+    <span class="invalid-feedback" [class.d-block]="invalid">Please select evacuees requiring this support</span>
   </div>
   <!-- <div class="card-footer">
     <app-fa-link icon="plus-circle" class="float-left" (click)="open(content)">Someone missing? Add them now.</app-fa-link>

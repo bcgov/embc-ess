@@ -119,8 +119,8 @@ export class ReferralMakerComponent implements OnInit {
     this.router.navigate([`/${this.path}/registrations`]);
   }
 
-  // user clicked Create Referral button
-  createReferral() {
+  // user clicked Create Referrals button
+  createReferrals() {
     this.userClickedNext = true;
 
     // Validate here BEFORE going to review portion of this page....
