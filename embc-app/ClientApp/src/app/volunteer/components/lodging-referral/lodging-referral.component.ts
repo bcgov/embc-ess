@@ -81,10 +81,10 @@ export class LodgingReferralComponent extends AbstractReferralComponent<LodgingR
 
   // NB: this is called when date component is initialized and whenever its data changes
   updateReferralDate(rd: ReferralDate) {
-    this.referral.dates = rd;
+    this.referral.validDates = rd;
 
     // update array for number dropdowns
-    this.nights = range(1, this.referral.dates.days + 1); // [1..n]
+    this.nights = range(1, this.referral.validDates.days + 1); // [1..n]
 
     // update any dropdowns that exceed max
     if (this.f.numNights.value > this.nights) { this.f.numNights.setValue(+this.nights); }

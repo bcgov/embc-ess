@@ -3,12 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 import { RegistrationService } from 'src/app/core/services/registration.service';
+import { ReferralService } from 'src/app/core/services/referral.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import {
-  Registration, IncidentalsReferral, FoodReferral,
-  ClothingReferral, LodgingReferral, TransportationReferral, Evacuee
+  Registration, Evacuee, ReferralPostItem,
+  FoodReferral, LodgingReferral, ClothingReferral,
+  TransportationReferral, IncidentalsReferral
 } from 'src/app/core/models';
 
 interface ReferralFormControl<T = any> {
@@ -50,6 +52,7 @@ export class ReferralMakerComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private registrationService: RegistrationService,
+    private referralService: ReferralService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private notifications: NotificationQueueService,
@@ -97,7 +100,6 @@ export class ReferralMakerComponent implements OnInit {
 
   // Recalculates the validation status of this maker form
   private calculateStatus(): boolean {
-    // TODO: check the other arrays here...
     const allValid = (arr: Array<ReferralFormControl<any>>) => arr.every(e => e.valid);
 
     const food = allValid(this.foodReferrals);
@@ -143,15 +145,28 @@ export class ReferralMakerComponent implements OnInit {
   finalize() {
     this.submitting = true;
 
-    // TODO: save stuff, etc
-    this.notifications.addNotification('Referrals finalized successfully', 'success');
+    // assemble referrals
+    const referrals: Array<Partial<ReferralPostItem>> = [];
+    this.foodReferrals.forEach(r => referrals.push({ ...r.value }));
+    this.lodgingReferrals.forEach(r => referrals.push({ ...r.value }));
+    this.clothingReferrals.forEach(r => referrals.push({ ...r.value }));
+    this.transportationReferrals.forEach(r => referrals.push({ ...r.value }));
+    this.incidentalsReferrals.forEach(r => referrals.push({ ...r.value }));
 
-    this.submitting = false;
+    // get registration data
+    this.referralService.createReferrals(this.regId, { confirmChecked: true, referrals })
+      .subscribe(() => {
+        this.submitting = false;
+        this.notifications.addNotification('Referrals finalized successfully', 'success');
 
-    // redirect to summary page
-    // save the key for lookup
-    this.uniqueKeyService.setKey(this.registration.id);
-    this.router.navigate([`/${this.path}/registration/summary`]);
+        // redirect to summary page
+        // save the key for lookup
+        this.uniqueKeyService.setKey(this.registration.id);
+        this.router.navigate([`/${this.path}/registration/summary`]);
+      }, err => {
+        this.submitting = false;
+        console.log('Error =', err);
+      });
   }
 
   incidentalsReferralChange() {
@@ -196,70 +211,70 @@ export class ReferralMakerComponent implements OnInit {
 
   addIncidentalsReferral() {
     const referral: Partial<IncidentalsReferral> = {
-      id: null, // is populated by BE after save
+      essNumber: this.regId,
+      referralId: null, // is populated by BE after save
       active: true,
       type: 'INCIDENTALS',
       purchaser: this.purchaser,
-      dates: { from: null, to: null, days: null },
+      validDates: { from: null, to: null, days: null },
       evacuees: [],
-      supplier: { id: null, active: true, province: 'BC' },
-      confirmChecked: false
+      supplier: { id: null, active: true, province: 'BC' }
     };
     this.incidentalsReferrals.push({ value: referral, valid: false });
   }
 
   addFoodReferral() {
     const referral: Partial<FoodReferral> = {
-      id: null, // is populated by BE after save
+      essNumber: this.regId,
+      referralId: null, // is populated by BE after save
       active: true,
       type: 'FOOD',
       purchaser: this.purchaser,
-      dates: { from: null, to: null, days: null },
+      validDates: { from: null, to: null, days: null },
       evacuees: [],
-      supplier: { id: null, active: true, province: 'BC' },
-      confirmChecked: false
+      supplier: { id: null, active: true, province: 'BC' }
     };
     this.foodReferrals.push({ value: referral, valid: false });
   }
 
   addLodgingReferral() {
     const referral: Partial<LodgingReferral> = {
-      id: null, // is populated by BE after save
+      essNumber: this.regId,
+      referralId: null, // is populated by BE after save
       active: true,
       type: 'LODGING',
       purchaser: this.purchaser,
-      dates: { from: null, to: null, days: null },
+      validDates: { from: null, to: null, days: null },
       evacuees: [],
-      supplier: { id: null, active: true, province: 'BC' },
-      confirmChecked: false
+      supplier: { id: null, active: true, province: 'BC' }
     };
     this.lodgingReferrals.push({ value: referral, valid: false });
   }
 
   addClothingReferral() {
     const referral: Partial<ClothingReferral> = {
-      id: null, // is populated by BE after save
+      essNumber: this.regId,
+      referralId: null, // is populated by BE after save
       active: true,
       type: 'CLOTHING',
       purchaser: this.purchaser,
-      dates: { from: null, to: null, days: null },
+      validDates: { from: null, to: null, days: null },
       evacuees: [],
-      supplier: { id: null, active: true, province: 'BC' },
-      confirmChecked: false
+      supplier: { id: null, active: true, province: 'BC' }
     };
     this.clothingReferrals.push({ value: referral, valid: false });
   }
 
   addTransportationReferral() {
     const referral: Partial<TransportationReferral> = {
-      id: null, // is populated by BE after save
+      essNumber: this.regId,
+      referralId: null, // is populated by BE after save
       active: true,
       type: 'TRANSPORTATION',
       purchaser: this.purchaser,
-      dates: { from: null, to: null, days: null },
+      validDates: { from: null, to: null, days: null },
       evacuees: [],
-      supplier: { id: null, active: true, province: 'BC' },
-      confirmChecked: false
+      supplier: { id: null, active: true, province: 'BC' }
     };
     this.transportationReferrals.push({ value: referral, valid: false });
   }
