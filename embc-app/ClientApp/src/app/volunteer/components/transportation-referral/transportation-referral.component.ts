@@ -1,33 +1,106 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { TransportationReferral } from 'src/app/core/models';
+
+import { TransportationReferral, Supplier } from 'src/app/core/models';
+import { ReferralDate } from 'src/app/core/models/referral-date';
 import { TransportationRatesComponent } from 'src/app/shared/modals/transportation-rates/transportation-rates.component';
+import { SupplierComponent } from '../supplier/supplier.component';
+import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
 @Component({
   selector: 'app-transportation-referral',
   templateUrl: './transportation-referral.component.html',
   styleUrls: ['./transportation-referral.component.scss']
 })
-export class TransportationReferralComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() referral: TransportationReferral = null;
-  @Input() readOnly = false;
-  @Output() remove = new EventEmitter<any>();
-  @Output() add = new EventEmitter<any>();
+export class TransportationReferralComponent extends AbstractReferralComponent implements OnInit, AfterViewInit, OnDestroy {
+  @Input() referral: TransportationReferral;
+  @Output() referralChange = new EventEmitter<TransportationReferral>();
+
+  // TODO: replace this with formReady event on supplier form
+  @ViewChild(SupplierComponent) supplierRef: SupplierComponent;
 
   private ratesModal: NgbModalRef = null;
 
-  constructor(
-    private modals: NgbModal,
-  ) { }
+  // convenience getter for easy access to form fields
+  get f() { return this.form.controls; }
 
-  ngOnInit() { }
+  get subType() { return this.f.subType.value; }
+
+  constructor(
+    public fb: FormBuilder,
+    private modals: NgbModal,
+  ) {
+    super(fb);
+    this.form.addControl('subType', this.fb.control(''));
+    this.form.addControl('fromAddress', this.fb.control(''));
+    this.form.addControl('toAddress', this.fb.control(''));
+    this.form.addControl('modeTransport', this.fb.control(''));
+    this.form.addControl('totalAmount', this.fb.control(''));
+  }
+
+  ngOnInit() {
+    this.handleFormChange();
+    this.displayReferral(this.referral as TransportationReferral);
+  }
+
+  ngAfterViewInit() {
+    // connect child form to parent
+    if (this.supplierRef && !this.form.get('supplier')) {
+      this.form.addControl('supplier', this.supplierRef.form);
+      this.supplierRef.form.setParent(this.form);
+    }
+  }
 
   ngOnDestroy() {
     // close modal if it's open
     if (this.ratesModal) { this.ratesModal.dismiss(); }
   }
 
-  ngOnChanges(changes: SimpleChanges) { }
+  // validate the whole form as we capture data
+  private handleFormChange(): void {
+    this.form.valueChanges.subscribe(() => this.saveChanges());
+  }
+
+  private displayReferral(referral: TransportationReferral) {
+    if (referral) {
+      this.form.reset();
+      this.form.patchValue({
+        subType: referral.subType || null,
+        fromAddress: referral.fromAddress,
+        toAddress: referral.toAddress,
+        modeTransport: referral.modeTransport,
+        comments: referral.comments,
+        totalAmount: referral.totalAmount || 0
+      });
+
+      // populate the evacuee list with existing selection
+      (referral.evacuees || []).forEach(x => this.selectEvacuee(x));
+    }
+  }
+
+  // if all required information is in the form we emit
+  private saveChanges() {
+    if (!this.form.valid) {
+      console.log('form is invalid'); // TODO: fix
+      // return;
+    }
+
+    // Copy over all of the original referral properties.
+    // Then copy over the values from the form.
+    // This ensures values not on the form, such as the Id, are retained.
+    const p = { ...this.referral, ...this.form.value };
+    this.referralChange.emit(p);
+  }
+
+  // NB: this is called when date component is initialized and whenever its data changes
+  updateReferralDate(rd: ReferralDate) {
+    this.referral.dates = rd;
+  }
+
+  updateSupplier(value: Supplier) {
+    this.referral.supplier = value;
+  }
 
   viewRates() {
     this.ratesModal = this.modals.open(TransportationRatesComponent, { size: 'lg', centered: true });
