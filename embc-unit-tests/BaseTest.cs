@@ -6,11 +6,12 @@ using Gov.Jag.Embc.Public.Seeder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 using Xunit.Abstractions;
 
 namespace embc_unit_tests
 {
-    public class BaseTest
+    public class BaseTest : IDisposable
     {
         private ServiceProvider serviceProvider;
 
@@ -31,6 +32,13 @@ namespace embc_unit_tests
                     );
 
             serviceProvider = services.BuildServiceProvider();
+
+            Mapper.Initialize(cfg => cfg.AddMaps(typeof(Startup)));
+        }
+
+        public void Dispose()
+        {
+            Mapper.Reset();
         }
 
         protected void SeedData()

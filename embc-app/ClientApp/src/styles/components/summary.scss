@@ -7,7 +7,7 @@
   list-style-type: none;
   background: $summary-bg;
 
-  > li {
+  >li {
     @include clearfix();
     display: flex;
     flex-direction: row;
@@ -17,7 +17,7 @@
       background: $summary-alt-row-bg;
     }
 
-    + li {
+    +li {
       margin-top: 5px;
     }
   }
@@ -26,13 +26,13 @@
     padding: 5px;
 
     &.name {
-      font-weight: 400;
+      font-weight: 600;
       width: 40%;
     }
 
     &.value {
       border-left: 5px solid $summary-bg;
-      width: 59%;
+      width: 60%;
 
       ul {
         margin: 0;
@@ -52,4 +52,62 @@
       }
     }
   }
+}
+
+.summary-heading {
+  .container {
+    border-bottom: #38598a 5px solid;
+
+    h2 {
+      font-weight: 600;
+    }
+
+    span.name {
+      width: 35%;
+      padding: 0;
+      font-weight: 600;
+    }
+
+    span.value {
+      width: 65%;
+      padding: 0;
+      border-left-style: none; // IE doesn't support 'unset'
+    }
+
+    @media (min-width: 768px) {
+      span.name {
+        width: 25%;
+      }
+
+      span.value {
+        width: 75%;
+      }
+    }
+
+    @media (min-width: 992px) {
+      span.name {
+        width: 20%;
+      }
+
+      span.value {
+        width: 80%;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      span.name {
+        width: 15%;
+      }
+
+      span.value {
+        width: 85%;
+      }
+    }
+  }
+}
+
+.comments {
+  white-space: pre;
+  padding: 1rem;
+  height: 90px;
 }

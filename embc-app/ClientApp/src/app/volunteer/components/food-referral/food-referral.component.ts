@@ -1,30 +1,80 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FoodReferral } from 'src/app/core/models';
+import range from 'lodash/range';
+
+import { FoodReferral, Supplier } from 'src/app/core/models';
+import { ReferralDate } from 'src/app/core/models/referral-date';
 import { FoodRatesComponent } from 'src/app/shared/modals/food-rates/food-rates.component';
+import { SupplierComponent } from '../supplier/supplier.component';
+import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
+
+const BREAKFAST = 10.00;
+const LUNCH = 13.00;
+const DINNER = 22.00;
+const GROCERIES = 22.50;
 
 @Component({
   selector: 'app-food-referral',
   templateUrl: './food-referral.component.html',
   styleUrls: ['./food-referral.component.scss']
 })
-export class FoodReferralComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() referral: FoodReferral = null;
-  @Input() readOnly = false;
-  @Output() remove = new EventEmitter<any>();
-  @Output() add = new EventEmitter<any>();
+export class FoodReferralComponent extends AbstractReferralComponent implements OnInit, AfterViewInit, OnDestroy {
+  @Input() referral: FoodReferral;
+  @Output() referralChange = new EventEmitter<FoodReferral>();
+
+  // TODO: replace this with formReady event on supplier form
+  @ViewChild(SupplierComponent) supplierRef: SupplierComponent;
 
   private ratesModal: NgbModalRef = null;
-  uuid: string;
+
+  days: Array<number> = null;
+
+  // convenience getter for easy access to form fields
+  get f() { return this.form.controls; }
+
+  get subType() { return this.f.subType.value; }
+
+  get maximumAmount(): number {
+    if (this.subType === 'RESTAURANT') {
+      const b = this.f.numBreakfasts.value * BREAKFAST;
+      const l = this.f.numLunches.value * LUNCH;
+      const d = this.f.numDinners.value * DINNER;
+      const n = this.selected.length;
+      return (b + l + d) * n;
+    }
+    if (this.subType === 'GROCERIES') {
+      const d = this.f.numDaysMeals.value;
+      const n = this.selected.length;
+      return d * GROCERIES * n;
+    }
+    return 0;
+  }
 
   constructor(
+    public fb: FormBuilder,
     private modals: NgbModal,
-  ) { }
+  ) {
+    super(fb);
+    this.form.addControl('subType', this.fb.control(''));
+    this.form.addControl('numBreakfasts', this.fb.control(''));
+    this.form.addControl('numLunches', this.fb.control(''));
+    this.form.addControl('numDinners', this.fb.control(''));
+    this.form.addControl('numDaysMeals', this.fb.control(''));
+    this.form.addControl('totalAmount', this.fb.control(''));
+  }
 
   ngOnInit() {
-    // for the purpose of accesibility this number is likely unique
-    // if it breaks and isn't unique it won't break the form. (poor man's guid)
-    this.uuid = new Date().valueOf().toString();
+    this.handleFormChange();
+    this.displayReferral(this.referral as FoodReferral);
+  }
+
+  ngAfterViewInit() {
+    // connect child form to parent
+    if (this.supplierRef && !this.form.get('supplier')) {
+      this.form.addControl('supplier', this.supplierRef.form);
+      this.supplierRef.form.setParent(this.form);
+    }
   }
 
   ngOnDestroy() {
@@ -32,7 +82,62 @@ export class FoodReferralComponent implements OnInit, OnDestroy, OnChanges {
     if (this.ratesModal) { this.ratesModal.dismiss(); }
   }
 
-  ngOnChanges(changes: SimpleChanges) { }
+  // validate the whole form as we capture data
+  private handleFormChange(): void {
+    this.form.valueChanges.subscribe(() => this.saveChanges());
+  }
+
+  private displayReferral(referral: FoodReferral) {
+    if (referral) {
+      this.form.reset();
+      this.form.patchValue({
+        subType: referral.subType || null,
+        numBreakfasts: referral.numBreakfasts || 0,
+        numLunches: referral.numLunches || 0,
+        numDinners: referral.numDinners || 0,
+        numDaysMeals: referral.numDaysMeals || 0,
+        comments: referral.comments,
+        totalAmount: referral.totalAmount || 0
+      });
+
+      // populate the evacuee list with existing selection
+      (referral.evacuees || []).forEach(x => this.selectEvacuee(x));
+    }
+  }
+
+  // if all required information is in the form we emit
+  private saveChanges() {
+    if (!this.form.valid) {
+      console.log('form is invalid'); // TODO: fix
+      // return;
+    }
+
+    // Copy over all of the original referral properties.
+    // Then copy over the values from the form.
+    // This ensures values not on the form, such as the Id, are retained.
+    const p = { ...this.referral, ...this.form.value };
+    // if RESTAURANT then assign maximumAmount; otherwise leave whatever the user entered
+    if (this.subType === 'RESTAURANT') { p.totalAmount = this.maximumAmount; }
+    this.referralChange.emit(p);
+  }
+
+  // NB: this is called when date component is initialized and whenever its data changes
+  updateReferralDate(rd: ReferralDate) {
+    this.referral.dates = rd;
+
+    // update array for number dropdowns
+    this.days = range(1, this.referral.dates.days + 1); // [1..n]
+
+    // update any dropdowns that exceed max
+    if (this.f.numBreakfasts.value > this.days) { this.f.numBreakfasts.setValue(+this.days); }
+    if (this.f.numLunches.value > this.days) { this.f.numLunches.setValue(+this.days); }
+    if (this.f.numDinners.value > this.days) { this.f.numDinners.setValue(+this.days); }
+    if (this.f.numDaysMeals.value > this.days) { this.f.numDaysMeals.setValue(+this.days); }
+  }
+
+  updateSupplier(value: Supplier) {
+    this.referral.supplier = value;
+  }
 
   viewRates() {
     this.ratesModal = this.modals.open(FoodRatesComponent, { size: 'lg', centered: true });
@@ -41,4 +146,5 @@ export class FoodReferralComponent implements OnInit, OnDestroy, OnChanges {
       () => { this.ratesModal = null; }
     );
   }
+
 }

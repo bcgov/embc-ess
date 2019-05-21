@@ -5,10 +5,9 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import {
-  Registration, Supplier, IncidentalsReferral, FoodReferral,
+  Registration, IncidentalsReferral, FoodReferral,
   ClothingReferral, LodgingReferral, TransportationReferral, Evacuee
 } from 'src/app/core/models';
-import { LOAD_FAIL } from 'src/app/store/lookups/country.actions';
 
 interface ReferralFormControl<T = any> {
   value: T;
@@ -36,11 +35,11 @@ export class ReferralMakerComponent implements OnInit {
   // Is this maker form valid?
   valid = false;
 
-  foodReferrals: Array<ReferralFormControl<FoodReferral>> = [];
-  lodgingReferrals: Array<ReferralFormControl<LodgingReferral>> = [];
-  clothingReferrals: Array<ReferralFormControl<ClothingReferral>> = [];
-  transportationReferrals: Array<ReferralFormControl<TransportationReferral>> = [];
-  incidentalsReferrals: Array<ReferralFormControl<IncidentalsReferral>> = [];
+  foodReferrals: Array<ReferralFormControl<Partial<FoodReferral>>> = [];
+  lodgingReferrals: Array<ReferralFormControl<Partial<LodgingReferral>>> = [];
+  clothingReferrals: Array<ReferralFormControl<Partial<ClothingReferral>>> = [];
+  transportationReferrals: Array<ReferralFormControl<Partial<TransportationReferral>>> = [];
+  incidentalsReferrals: Array<ReferralFormControl<Partial<IncidentalsReferral>>> = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -95,16 +94,16 @@ export class ReferralMakerComponent implements OnInit {
   private calculateStatus(): boolean {
     const allValid = (arr: Array<ReferralFormControl<any>>) => arr.every(e => e.valid);
 
-    // TODO: check the other arrays here...
-    const food = true;
-    const lodging = true;
-    const clothing = true;
-    const transportation = true;
+    const food = allValid(this.foodReferrals);
+    const lodging = allValid(this.lodgingReferrals);
+    const clothing = allValid(this.clothingReferrals);
+    const transportation = allValid(this.transportationReferrals);
     const incidentals = allValid(this.incidentalsReferrals);
 
     return (food && lodging && clothing && transportation && incidentals);
   }
 
+  // user clicked Back button
   back() {
     // show the editing parts of the form
     this.editMode = true;
@@ -112,6 +111,7 @@ export class ReferralMakerComponent implements OnInit {
     window.scrollTo(0, 0); // scroll to top
   }
 
+  // user clicked Cancel & Close button
   cancel() {
     // clear the loaded record if available
     this.uniqueKeyService.clearKey();
@@ -119,7 +119,8 @@ export class ReferralMakerComponent implements OnInit {
     this.router.navigate([`/${this.path}/registrations`]);
   }
 
-  createReferral() {
+  // user clicked Create Referrals button
+  createReferrals() {
     this.userClickedNext = true;
 
     // Validate here BEFORE going to review portion of this page....
@@ -129,11 +130,12 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
+  // user clicked Finalize button
   finalize() {
     this.submitting = true;
 
     // TODO: save stuff, etc
-    this.notifications.addNotification('Referrals finalized successfully');
+    this.notifications.addNotification('Referrals finalized successfully', 'success');
 
     this.submitting = false;
 
@@ -159,51 +161,102 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
+  lodgingReferralChange() {
+    if (this.lodgingReferrals.length > 0) {
+      this.clearLodgingReferrals();
+    } else {
+      this.addLodgingReferral();
+    }
+  }
+
+  clothingReferralChange() {
+    if (this.clothingReferrals.length > 0) {
+      this.clearClothingReferrals();
+    } else {
+      this.addClothingReferral();
+    }
+  }
+
+  transportationReferralChange() {
+    if (this.transportationReferrals.length > 0) {
+      this.clearTransportationReferrals();
+    } else {
+      this.addTransportationReferral();
+    }
+  }
+
   addIncidentalsReferral() {
-    const referral: IncidentalsReferral = {
+    const referral: Partial<IncidentalsReferral> = {
       id: null, // is populated by BE after save
       referralId: null, // is populated by BE after save: The actual property returned
       essNumber: null,
       active: true,
       type: 'INCIDENTALS',
       purchaser: this.purchaser,
-      dates: {
-        from: new Date(2019, 3, 15, 17, 30, 0), // FOR TESTING ONLY
-        days: 2, // FOR TESTING ONLY
-      },
+      dates: { from: null, to: null, days: null },
       evacuees: [],
-      approvedItems: null,
-      totalAmount: null,
-      supplier: this.createSupplier(),
-      comments: 'some comments here',
+      supplier: { id: null, active: true, province: 'BC' },
       confirmChecked: false
     };
     this.incidentalsReferrals.push({ value: referral, valid: false });
   }
 
   addFoodReferral() {
-    const referral: FoodReferral = {
+    const referral: Partial<FoodReferral> = {
       id: null, // is populated by BE after save
       referralId: null, // is populated by BE after save: The actual property returned
       essNumber: null,
       active: true,
       type: 'FOOD',
-      subType: null,
       purchaser: this.purchaser,
-      dates: {
-        from: new Date(2019, 0, 1),
-      },
+      dates: { from: null, to: null, days: null },
       evacuees: [],
-      numBreakfasts: 0,
-      numLunches: 0,
-      numDinners: 0,
-      numDaysMeals: 0,
-      totalAmount: 0,
-      supplier: this.createSupplier(),
-      comments: 'some comments here',
+      supplier: { id: null, active: true, province: 'BC' },
       confirmChecked: false
     };
     this.foodReferrals.push({ value: referral, valid: false });
+  }
+
+  addLodgingReferral() {
+    const referral: Partial<LodgingReferral> = {
+      id: null, // is populated by BE after save
+      active: true,
+      type: 'LODGING',
+      purchaser: this.purchaser,
+      dates: { from: null, to: null, days: null },
+      evacuees: [],
+      supplier: { id: null, active: true, province: 'BC' },
+      confirmChecked: false
+    };
+    this.lodgingReferrals.push({ value: referral, valid: false });
+  }
+
+  addClothingReferral() {
+    const referral: Partial<ClothingReferral> = {
+      id: null, // is populated by BE after save
+      active: true,
+      type: 'CLOTHING',
+      purchaser: this.purchaser,
+      dates: { from: null, to: null, days: null },
+      evacuees: [],
+      supplier: { id: null, active: true, province: 'BC' },
+      confirmChecked: false
+    };
+    this.clothingReferrals.push({ value: referral, valid: false });
+  }
+
+  addTransportationReferral() {
+    const referral: Partial<TransportationReferral> = {
+      id: null, // is populated by BE after save
+      active: true,
+      type: 'TRANSPORTATION',
+      purchaser: this.purchaser,
+      dates: { from: null, to: null, days: null },
+      evacuees: [],
+      supplier: { id: null, active: true, province: 'BC' },
+      confirmChecked: false
+    };
+    this.transportationReferrals.push({ value: referral, valid: false });
   }
 
   clearIncidentalsReferrals(): void {
@@ -220,18 +273,25 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
-  private createSupplier(): Supplier {
-    return {
-      id: null, // for future use
-      active: true,
-      name: 'Supplier 1', // TODO: for testing only
-      address: '1050 Main Street', // TODO: for testing only
-      postalCode: 'V8R 1R4', // TODO: for testing only
-      city: 'Victoria', // TODO: for testing only
-      province: 'BC',
-      telephone: '250-123-4567', // TODO: for testing only
-      fax: '250-345-7789', // TODO: for testing only
-    };
+  clearLodgingReferrals(): void {
+    // TODO: replace confirm with a better popup
+    if (confirm('Do you really want to clear all Lodging referrals?')) {
+      while (this.lodgingReferrals.length > 0) { this.lodgingReferrals.pop(); }
+    }
+  }
+
+  clearClothingReferrals(): void {
+    // TODO: replace confirm with a better popup
+    if (confirm('Do you really want to clear all Clothing referrals?')) {
+      while (this.clothingReferrals.length > 0) { this.clothingReferrals.pop(); }
+    }
+  }
+
+  clearTransportationReferrals(): void {
+    // TODO: replace confirm with a better popup
+    if (confirm('Do you really want to clear all Transportation referrals?')) {
+      while (this.transportationReferrals.length > 0) { this.transportationReferrals.pop(); }
+    }
   }
 
   // populate evacuees

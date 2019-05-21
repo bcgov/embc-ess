@@ -3,6 +3,9 @@ import { ReferralDate } from './referral-date';
 import { ListResult } from './list-result';
 
 export type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'LODGING' | 'TRANSPORTATION');
+export type FoodSubType = ('RESTAURANT' | 'GROCERIES');
+export type LodgingSubType = ('HOTEL' | 'BILLETING' | 'GROUP');
+export type TransportationSubType = ('TAXI' | 'OTHER');
 
 export interface ReferralBase {
   id: string;
@@ -21,7 +24,7 @@ export interface ReferralBase {
 }
 
 export interface FoodReferral extends ReferralBase {
-  subType?: ('RESTAURANT' | 'GROCERIES');
+  subType?: FoodSubType;
   numBreakfasts?: number;
   numLunches?: number;
   numDinners?: number;
@@ -37,16 +40,15 @@ export interface ClothingReferral extends ReferralBase {
   extremeWinterConditions: boolean;
 }
 
-// tslint:disable-next-line: no-empty-interface
 export interface LodgingReferral extends ReferralBase {
-  subType?: ('HOTEL' | 'BILLETING' | 'GROUP');
-  numNights: number;
+  subType?: LodgingSubType;
+  numNights?: number;
   numRooms?: number;
 }
 
 // tslint:disable-next-line: no-empty-interface
 export interface TransportationReferral extends ReferralBase {
-  subType?: ('TAXI' | 'OTHER');
+  subType?: TransportationSubType;
   fromAddress?: string;
   toAddress?: string;
   modeTransport?: string;

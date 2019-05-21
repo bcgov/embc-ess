@@ -1,7 +1,6 @@
 ﻿using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Utils;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +16,7 @@ namespace embc_unit_tests
         }
 
         [Theory]
-        [ClassData(typeof(ReferralTestData))]
+        [MemberData(nameof(GetReferralss), "100001")]
         public async Task CanInsertReferralViewModel(Gov.Jag.Embc.Public.ViewModels.Referral referral)
         {
             var ctx = EmbcDb;
@@ -26,21 +25,21 @@ namespace embc_unit_tests
 
             var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
-            referral.RegistrationId = registration.Id;
+            referral.EssNumber = registration.Id;
 
             var referralId = await di.CreateReferralAsync(referral);
             var result = await di.GetReferralAsync(referralId);
 
             Assert.NotNull(result);
-            Assert.Equal(referral.RegistrationId, result.RegistrationId);
-            Assert.NotEmpty(result.ReferralId);
+            Assert.Equal(referral.EssNumber, result.EssNumber);
+            Assert.NotEmpty(result.Id);
             Assert.Equal(referral.Type.ToUpperInvariant(), result.Type);
             Assert.Equal(referral.SubType?.ToUpperInvariant(), result.SubType);
             Assert.Equal(referral.Purchaser, result.Purchaser);
             Assert.Equal(referral.TotalAmount, result.TotalAmount);
             Assert.Equal(referral.Supplier.Fax, result.Supplier.Fax);
-            Assert.Equal(referral.ValidFrom, result.ValidFrom);
-            Assert.Equal(referral.ValidTo, result.ValidTo);
+            Assert.Equal(referral.ValidDates.From, result.ValidDates.From);
+            Assert.Equal(referral.ValidDates.To, result.ValidDates.To);
             Assert.Equal(referral.ConfirmChecked, result.ConfirmChecked);
             Assert.All(result.Evacuees, e => referral.Evacuees.Any(re => re.Id == e.Id));
             Assert.Equal(referral.Evacuees.Count(), result.Evacuees.Count());
@@ -67,13 +66,14 @@ namespace embc_unit_tests
         [Fact]
         public async Task CanIgnoreExcessiveProperties()
         {
-            var referral = ReferralGenerator.GenerateWithExcessiveProperties();
-            Assert.NotNull(referral.FromAddress);
-            Assert.NotNull(referral.ToAddress);
-
             var ctx = EmbcDb;
 
             var di = new DataInterface(ctx, mapper);
+            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
+
+            var referral = ReferralGenerator.GenerateWithExcessiveProperties(registration.Id);
+            Assert.NotNull(referral.FromAddress);
+            Assert.NotNull(referral.ToAddress);
 
             var referralId = await di.CreateReferralAsync(referral);
             var result = await di.GetReferralAsync(referralId);
@@ -89,8 +89,9 @@ namespace embc_unit_tests
 
             var di = new DataInterface(ctx, mapper);
 
-            var registrationId = "100001";
+            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
+            var registrationId = registration.Id;
             var referrals = new[]{
                 ReferralGenerator.Generate(ReferralType.Incidentals, registrationId),
                 ReferralGenerator.Generate(ReferralType.Clothing, registrationId),
@@ -106,7 +107,7 @@ namespace embc_unit_tests
             var result = (await di.GetReferralsAsync(registrationId, new SearchQueryParameters())).Items;
             Assert.NotEmpty(result);
             Assert.Equal(referrals.Length, result.Count());
-            Assert.All(referrals, r => Assert.Equal(registrationId, r.RegistrationId));
+            Assert.All(referrals, r => Assert.Equal(registrationId, r.EssNumber));
         }
 
         [Fact]
@@ -116,7 +117,9 @@ namespace embc_unit_tests
 
             var di = new DataInterface(ctx, mapper);
 
-            var registrationId = "100001";
+            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
+
+            var registrationId = registration.Id;
 
             var referrals = new[]{
                 ReferralGenerator.Generate(ReferralType.Incidentals, registrationId),
@@ -133,15 +136,15 @@ namespace embc_unit_tests
             int days = 0;
             foreach (var referral in referrals)
             {
-                referral.ValidFrom = referral.ValidFrom.AddDays(days);
-                referral.ValidTo = referral.ValidTo.AddDays(days);
+                referral.ValidDates.From = referral.ValidDates.From.AddDays(days);
+                referral.ValidDates.To = referral.ValidDates.To.AddDays(days);
                 days++;
             }
             var referralTypeOrder = new List<string> { "FOOD", "LODGING", "CLOTHING", "TRANSPORTATION", "INCIDENTALS" };
             var expectedReferralsOrder = referrals
                 .OrderBy(r => referralTypeOrder.IndexOf(r.Type.ToUpperInvariant()))
-                .ThenByDescending(r => r.ValidFrom)
-                .Select(r => (r.Type.ToUpperInvariant(), r.ValidFrom))
+                .ThenByDescending(r => r.ValidDates.From)
+                .Select(r => (r.Type.ToUpperInvariant(), r.ValidDates.From))
                 .ToArray();
 
             foreach (var referral in referrals)
@@ -160,7 +163,9 @@ namespace embc_unit_tests
 
             var di = new DataInterface(ctx, mapper);
 
-            var referralId = await di.CreateReferralAsync(ReferralGenerator.Generate(ReferralType.Clothing));
+            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
+
+            var referralId = await di.CreateReferralAsync(ReferralGenerator.Generate(ReferralType.Clothing, registration.Id));
 
             var result = await di.DeactivateReferralAsync(referralId);
             Assert.True(result);
@@ -176,7 +181,9 @@ namespace embc_unit_tests
 
             var di = new DataInterface(ctx, mapper);
 
-            var registrationId = "100001";
+            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
+
+            var registrationId = registration.Id;
             var referral1 = ReferralGenerator.Generate(ReferralType.Clothing, registrationId);
             var referral2 = ReferralGenerator.Generate(ReferralType.Clothing, registrationId);
             var referralId1 = await di.CreateReferralAsync(referral1);
@@ -198,37 +205,35 @@ namespace embc_unit_tests
             var ctx = EmbcDb;
 
             var di = new DataInterface(ctx, mapper);
+            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
-            var referralId = await di.CreateReferralAsync(ReferralGenerator.Generate(ReferralType.Clothing));
+            var referralId = await di.CreateReferralAsync(ReferralGenerator.Generate(ReferralType.Clothing, registration.Id));
             var referral = await di.GetReferralAsync(referralId);
 
             var item = referral.ToListItem();
 
-            Assert.Equal(referral.ReferralId, item.ReferralId);
+            Assert.Equal(referral.Id, item.ReferralId);
             Assert.StartsWith("D", item.ReferralId);
             Assert.Equal(referral.SubType, item.SubType);
             Assert.Equal(referral.Type, item.Type);
-            Assert.Equal(referral.ValidFrom, item.ValidFrom);
-            Assert.Equal(referral.ValidTo, item.ValidTo);
+            Assert.Equal(referral.ValidDates.From, item.ValidFrom);
+            Assert.Equal(referral.ValidDates.To, item.ValidTo);
             Assert.Equal(referral.Supplier.Name, item.Supplier.Name);
         }
-    }
 
-    public class ReferralTestData : IEnumerable<object[]>
-    {
-        public IEnumerator<object[]> GetEnumerator()
+        public static IEnumerable<object[]> GetReferralss(string registrationId)
         {
-            yield return new object[] { ReferralGenerator.Generate(ReferralType.Clothing) };
-            yield return new object[] { ReferralGenerator.Generate(ReferralType.Food_Groceries) };
-            yield return new object[] { ReferralGenerator.Generate(ReferralType.Food_Restaurant) };
-            yield return new object[] { ReferralGenerator.Generate(ReferralType.Incidentals) };
-            yield return new object[] { ReferralGenerator.Generate(ReferralType.Lodging_Billeting) };
-            yield return new object[] { ReferralGenerator.Generate(ReferralType.Lodging_Group) };
-            yield return new object[] { ReferralGenerator.Generate(ReferralType.Lodging_Hotel) };
-            yield return new object[] { ReferralGenerator.Generate(ReferralType.Transportation_Other) };
-            yield return new object[] { ReferralGenerator.Generate(ReferralType.Transportation_Taxi) };
+            return new[]     {
+                new object[] { ReferralGenerator.Generate(ReferralType.Clothing, registrationId) },
+                new object[] { ReferralGenerator.Generate(ReferralType.Food_Groceries, registrationId) },
+                new object[] { ReferralGenerator.Generate(ReferralType.Food_Restaurant, registrationId) },
+                new object[] { ReferralGenerator.Generate(ReferralType.Incidentals, registrationId) },
+                new object[] { ReferralGenerator.Generate(ReferralType.Lodging_Billeting, registrationId) },
+                new object[] { ReferralGenerator.Generate(ReferralType.Lodging_Group, registrationId) },
+                new object[] { ReferralGenerator.Generate(ReferralType.Lodging_Hotel, registrationId) },
+                new object[] { ReferralGenerator.Generate(ReferralType.Transportation_Other, registrationId) },
+                new object[] { ReferralGenerator.Generate(ReferralType.Transportation_Taxi, registrationId) }
+            };
         }
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

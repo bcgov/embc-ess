@@ -18,36 +18,36 @@ And of course this component needs to be implemented as a 'maker' with both an e
     <form novalidate [formGroup]="form">
       <div class="space-between align-items-center">
         <app-valid-from-to [referralDate]="referral.dates" (referralDateChange)="referral.dates = $event" [id]="uuid"></app-valid-from-to>
-        <button type="button" class="btn btn-secondary" (click)="viewRates()">VIEW ESS RATES</button>
-      </div>
+        <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
+        <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
+    </div>
 
       <div class="feature-block card border-0 p-0 mt-4">
-        <div class="row">
-          <div class="col-5 pr-0">
-            <div class="pt-4 pl-4">
-              <app-evacuee-list [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()"></app-evacuee-list>
-            </div>
+        <div class="row mt-4 mx-4">
+          <div class="col-4 pl-0 pr-3">
+            <app-evacuee-list [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()"></app-evacuee-list>
           </div>
-          <div class="col-7">
-            <div class="pt-4 pr-4">
-              <div class="card">
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="approvedItems">List approved items:</label>
-                    <textarea class="form-control" id="approvedItems" rows="3" placeholder="Details" formControlName="approvedItems"></textarea>
-                    <small><strong>NOTE:</strong> If more than one Referral Form is issued for incidentals, the total of all Referral Forms must not exceed maximum allowable rates.</small>
-                  </div>
+          <div class="col-8 pl-3 pr-0">
+            <div class="card border-0 h-100">
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="approvedItems">List approved items:</label>
+                  <textarea class="form-control" id="approvedItems" rows="3" placeholder="Details" formControlName="approvedItems"></textarea>
+                  <small><strong>NOTE:</strong> If more than one Referral Form is issued for incidentals, the total of all Referral Forms must not exceed maximum allowable rates.</small>
                 </div>
-                <div class="card-footer blue-header d-flex justify-content-end">
-                  <div class="form-group row mb-0">
-                    <label class="col-form-label">Total Amount:</label>
-                    <div class="col d-flex input-with-icon">
-                      <span aria-hidden="true">$</span>
-                      <input type="text" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control" formControlName="totalAmount">
-                    </div>
+              </div>
+
+              <div class="card-footer blue-header space-between items-center">
+                <div class="d-inline-flex font-weight-bold">UP TO A MAXIMUM VALUE OF {{currency.format(maximumAmount)}}</div>
+                <div class="d-inline-flex items-center">
+                  <label class="mb-0">Total Amount:</label>
+                  <div class="input-with-icon px-3">
+                    <span aria-hidden="true">$</span>
+                    <input type="number" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control" formControlName="totalAmount">
                   </div>
                 </div>
               </div>
+
               <span class="invalid-feedback justify-content-end" [class.d-flex]="amountInput.classList.contains('is-invalid')">
                 Please enter a total amount for incidentals
               </span>
@@ -59,8 +59,8 @@ And of course this component needs to be implemented as a 'maker' with both an e
             <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (supplierChange)="updateSupplier($event)"></app-supplier>
           </div>
         </div>
-        <div class="col p-4">
-          <textarea class="form-control" formControlName="comments" placeholder="Add comments" rows="4"></textarea>
+        <div class="pl-4 pr-4 pb-3">
+          <textarea class="form-control" formControlName="comments" placeholder="Add comments" rows="4" maxlength="250" autocomplete="off"></textarea>
         </div>
       </div>
     </form>
@@ -68,28 +68,31 @@ And of course this component needs to be implemented as a 'maker' with both an e
 
   <!-- *********************************SUMMARY BELOW****************************************** -->
   <div *ngIf="readOnly">
-    <ul class="summary mx-3">
+    <ul class="summary">
       <li class="summary-heading">
         <div class="container py-3">
-          <div class="row">
-            <div class="col-6">
-              <div class="h1 my-3">Incidentals</div>
-              <div>
+          <div class="row align-items-center">
+            <div class="col-6 py-3">
+              <h2 class="h1 mt-0">Incidentals</h2>
+              <div class="d-flex">
                 <span class="name"><strong>Valid From:</strong></span>
-                <span>{{referral.dates?.from | date : 'MMM-dd-yyyy'}}</span>
+                <span class="value">{{referral.dates?.from | dateTimeFormatPipe}}</span>
               </div>
-              <div>
+              <div class="d-flex">
                 <span class="name"><strong>Valid To:</strong></span>
-                <span>{{referral.dates?.to | date : 'MMM-dd-yyyy'}}</span>
+                <span class="value">{{referral.dates?.to | dateTimeFormatPipe}}</span>
               </div>
             </div>
-            <!-- TODO: use <app-supplier> here -->
-            <!-- TODO: this needs to be centered vertically -->
+
             <div class="col-6" *ngIf="referral.supplier">
               <div><strong>{{referral.supplier?.name}}</strong></div>
               <div>{{referral.supplier?.address}}</div>
               <div>{{referral.supplier?.city + ', BC'}} &nbsp;&nbsp; {{referral.supplier?.postalCode}}</div>
-              <div>Tel: {{referral.supplier?.telephone}} | Fax: {{referral.supplier?.fax}}</div>
+              <div>
+                <span class="p-0" *ngIf="referral.supplier?.telephone">Tel: {{referral.supplier.telephone}}</span>
+                <span *ngIf="referral.supplier?.telephone && referral.supplier?.fax">|</span>
+                <span class="p-0" *ngIf="referral.supplier?.fax">Fax: {{referral.supplier.fax}}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -107,29 +110,33 @@ And of course this component needs to be implemented as a 'maker' with both an e
         <span class="value">{{referral.id}}</span>
       </li>
       <li>
-        <!-- TODO: use <app-evacuee-list> here -->
-        <!-- TODO: iterate over all family members and only 'check' the selected ones -->
-        <span class="name">Evacuees Requiring Incidentals:</span>
-        <span class="value">
-          <div class="mt-2" *ngFor="let e of referral.evacuees">
-            <label>{{e.lastName}}, {{e.firstName}}</label>
-          </div>
-        </span>
-      </li>
-      <!-- TODO: can use this in Food Referral -->
-      <!-- <div># Days for Meals: {{numDays(referral.validFrom, referral.validTo)}}</div> -->
+          <span class="name">Evacuees Requiring Incidentals:</span>
+          <span class="value">
+            <div class="form-check" *ngFor="let e of referral.evacuees">
+              <input type="checkbox" class="form-check-input" checked disabled>
+              <label class="form-check-label">{{e.lastName}}, {{e.firstName}}</label>
+            </div>
+          </span>
+        </li>
       <li>
         <span class="name">List of approved items:</span>
         <span class="value">{{referral.approvedItems}}</span>
       </li>
       <li>
         <span class="name">Up to a total of:</span>
-        <span class="value">${{referral.totalAmount}}</span>
+        <span class="value d-flex">
+          <div>
+            {{currency.format(referral.totalAmount)}}
+          </div>
+          <div class="ml-4" *ngIf="referral.totalAmount > maximumAmount">
+            <app-attention-icon [alignCenter]="false" [pullLeft]="false"></app-attention-icon>
+            Total monetary value exceeds the recommended ESS rate.
+          </div>
+        </span>
       </li>
       <li>
-        <span>{{referral.comments}}</span>
+        <span class="comments">{{referral.comments || "&nbsp;"}}</span>
       </li>
     </ul>
   </div>
 </div>
-<!-- <pre>{{referral.dates|json}}</pre> -->

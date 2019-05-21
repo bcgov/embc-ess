@@ -14,6 +14,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         private IQueryable<Models.Db.Referral> Referrals => db.Referrals
                 .AsNoTracking()
+                .Include(r => r.Registration)
                 .Include(r => r.Supplier)
                 .Include(r => r.Evacuees)
                     .ThenInclude(re => re.Evacuee);
@@ -50,6 +51,16 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     .ThenByDescending(r => r.ValidFrom)
                 .ToArray(),
                 searchQuery.Offset, searchQuery.Limit);
+        }
+
+        public async Task<IEnumerable<ViewModels.Referral>> GetReferralsAsync(IEnumerable<string> referralIds)
+        {
+            var results = await Referrals
+                .Where(r => referralIds.Contains(r.ReferralId))
+                .Select(r => mapper.Map<ViewModels.Referral>(r))
+                .ToArrayAsync();
+
+            return results;
         }
 
         public async Task<bool> DeactivateReferralAsync(string referralId)

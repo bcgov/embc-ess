@@ -1,5 +1,5 @@
 using Gov.Jag.Embc.Public.DataInterfaces;
-using Gov.Jag.Embc.Public.PdfUtility;
+using Gov.Jag.Embc.Public.Services.Referrals;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -16,11 +16,13 @@ namespace Gov.Jag.Embc.Public.Controllers
     {
         private readonly IDataInterface dataInterface;
         private readonly IPdfConverter pdfConverter;
+        private readonly IReferralsService referralsService;
 
-        public ReferralsController(IDataInterface dataInterface, IPdfConverter pdfConverter)
+        public ReferralsController(IDataInterface dataInterface, IReferralsService referralsService, IPdfConverter pdfConverter)
         {
             this.dataInterface = dataInterface;
             this.pdfConverter = pdfConverter;
+            this.referralsService = referralsService;
         }
 
         [HttpGet]
@@ -39,7 +41,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         public async Task<IActionResult> Get(string registrationId, string referralId)
         {
             var result = await dataInterface.GetReferralAsync(referralId);
-            if (result == null || result.RegistrationId != registrationId) return NotFound(new
+            if (result == null || result.EssNumber != registrationId) return NotFound(new
             {
                 registrationId = registrationId,
                 referralId = referralId
@@ -58,7 +60,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             var referralsList = new List<string>();
             foreach (var referral in request.Referrals)
             {
-                referral.RegistrationId = registrationId;
+                referral.EssNumber = registrationId;
                 referral.ConfirmChecked = request.ConfirmChecked;
                 referral.Active = true;
                 referral.Supplier.Active = true;
@@ -75,7 +77,12 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPost("referralPdfs")]
         public async Task<IActionResult> GetReferralPdfs([FromBody] PrintReferrals printReferrals)
         {
-            var content = $@"<!DOCTYPE html><html><body>This is a referral</body></html>";
+            var content = await referralsService.GetReferralHtmlPages(printReferrals);
+
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                return NotFound(printReferrals.ReferralIds);
+            }
 
             return await pdfConverter.ConvertHtmlToPdfAsync(content);
         }

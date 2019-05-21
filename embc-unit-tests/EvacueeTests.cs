@@ -42,6 +42,8 @@ namespace embc_unit_tests
                 Assert.Equal(registration.RegistrationCompletionDate, e.RegistrationCompletionDate);
                 Assert.Equal(registration.IncidentTask.Community.Name, e.EvacuatedFrom);
                 Assert.Equal(registration.HostCommunity.Name, e.EvacuatedTo);
+                Assert.True(e.IsFinalized);
+                Assert.False(e.HasReferrals);
             });
         }
     }

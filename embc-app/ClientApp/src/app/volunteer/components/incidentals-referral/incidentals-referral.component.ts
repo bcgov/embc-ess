@@ -2,11 +2,12 @@ import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, S
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IncidentalsReferral, Supplier } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
-import { numberOfDays, uuid } from 'src/app/shared/utils';
 import { SupplierComponent } from '../supplier/supplier.component';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
+
+const MAXIMUM_PER_PERSON = 50.00;
 
 @Component({
   selector: 'app-incidentals-referral',
@@ -23,9 +24,10 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent impl
 
   private ratesModal: NgbModalRef = null;
 
-  // For the purpose of accessibility this number is likely unique.
-  // If it breaks and isn't unique it won't break the form. (poor man's guid)
-  uuid = uuid();
+  get maximumAmount() {
+    const n = this.selected.length;
+    return (n * MAXIMUM_PER_PERSON);
+  }
 
   constructor(
     public fb: FormBuilder,
@@ -88,11 +90,13 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent impl
   // if all required information is in the form we emit
   saveChanges() {
     if (!this.form.valid) {
-      return;
+      console.log('form is invalid'); // TODO: fix
+      // return;
     }
-    // Copy over all of the original referral properties
-    // Then copy over the values from the form
-    // This ensures values not on the form, such as the Id, are retained
+
+    // Copy over all of the original referral properties.
+    // Then copy over the values from the form.
+    // This ensures values not on the form, such as the Id, are retained.
     const p = { ...this.referral, ...this.form.value };
     this.referralChange.emit(p);
   }
@@ -108,8 +112,5 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent impl
       () => { this.ratesModal = null; }
     );
   }
-
-  // --------------------HELPERS-----------------------------------------
-  numDays(validFrom: Date, validTo: Date) { return numberOfDays(validFrom, validTo); }
 
 }
