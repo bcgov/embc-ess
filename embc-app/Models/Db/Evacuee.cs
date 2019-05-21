@@ -1,5 +1,6 @@
 using Gov.Jag.Embc.Public.Utils;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
 
@@ -55,5 +56,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         {
             return int.Parse(incidentRegSeqId.Split('-')[1]);
         }
+
+        public IEnumerable<ReferralEvacuee> Referrals { get; set; }
     }
 }

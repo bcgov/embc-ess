@@ -36,9 +36,9 @@ export class ReferralMakerComponent implements OnInit {
   valid = false;
 
   foodReferrals: Array<ReferralFormControl<Partial<FoodReferral>>> = [];
-  lodgingReferrals: Array<ReferralFormControl<LodgingReferral>> = [];
-  clothingReferrals: Array<ReferralFormControl<ClothingReferral>> = [];
-  transportationReferrals: Array<ReferralFormControl<TransportationReferral>> = [];
+  lodgingReferrals: Array<ReferralFormControl<Partial<LodgingReferral>>> = [];
+  clothingReferrals: Array<ReferralFormControl<Partial<ClothingReferral>>> = [];
+  transportationReferrals: Array<ReferralFormControl<Partial<TransportationReferral>>> = [];
   incidentalsReferrals: Array<ReferralFormControl<Partial<IncidentalsReferral>>> = [];
 
   constructor(
@@ -94,11 +94,10 @@ export class ReferralMakerComponent implements OnInit {
   private calculateStatus(): boolean {
     const allValid = (arr: Array<ReferralFormControl<any>>) => arr.every(e => e.valid);
 
-    // TODO: check the other arrays here...
-    const food = true;
-    const lodging = true;
-    const clothing = true;
-    const transportation = true;
+    const food = allValid(this.foodReferrals);
+    const lodging = allValid(this.lodgingReferrals);
+    const clothing = allValid(this.clothingReferrals);
+    const transportation = allValid(this.transportationReferrals);
     const incidentals = allValid(this.incidentalsReferrals);
 
     return (food && lodging && clothing && transportation && incidentals);
@@ -215,15 +214,45 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   addLodgingReferral() {
-    // TODO
+    const referral: Partial<LodgingReferral> = {
+      id: null, // is populated by BE after save
+      active: true,
+      type: 'LODGING',
+      purchaser: this.purchaser,
+      dates: { from: null, to: null, days: null },
+      evacuees: [],
+      supplier: { id: null, active: true, province: 'BC' },
+      confirmChecked: false
+    };
+    this.lodgingReferrals.push({ value: referral, valid: false });
   }
 
   addClothingReferral() {
-    // TODO
+    const referral: Partial<ClothingReferral> = {
+      id: null, // is populated by BE after save
+      active: true,
+      type: 'CLOTHING',
+      purchaser: this.purchaser,
+      dates: { from: null, to: null, days: null },
+      evacuees: [],
+      supplier: { id: null, active: true, province: 'BC' },
+      confirmChecked: false
+    };
+    this.clothingReferrals.push({ value: referral, valid: false });
   }
 
   addTransportationReferral() {
-    // TODO
+    const referral: Partial<TransportationReferral> = {
+      id: null, // is populated by BE after save
+      active: true,
+      type: 'TRANSPORTATION',
+      purchaser: this.purchaser,
+      dates: { from: null, to: null, days: null },
+      evacuees: [],
+      supplier: { id: null, active: true, province: 'BC' },
+      confirmChecked: false
+    };
+    this.transportationReferrals.push({ value: referral, valid: false });
   }
 
   clearIncidentalsReferrals(): void {
