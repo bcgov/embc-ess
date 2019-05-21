@@ -1,6 +1,7 @@
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.ViewModels;
 using HandlebarsDotNet;
+using System;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Services.Referrals
@@ -59,6 +60,12 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             var result = template(data);
 
             return result;
+        }
+
+        public bool IsValidReferralType(string type, string subType)
+        {
+            subType = string.IsNullOrEmpty(subType) ? "" : "_" + subType;
+            return Enum.IsDefined(typeof(Models.Db.ReferralType), $"{type}{subType}");
         }
     }
 }
