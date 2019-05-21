@@ -53,39 +53,4 @@ export class SupplierComponent implements OnInit, OnChanges {
       });
     }
   }
-
-  // validate the whole form as we capture data
-  // handleFormChange(): void {
-  //   this.supplierForm.valueChanges.subscribe(() => this.validate());
-  // }
-
-  // displaySupplier(supplier: Supplier) {
-  //   if (supplier) {
-  //     this.supplierForm.reset();
-  //     this.supplierForm.patchValue({
-  //       name: supplier.name,
-  //       address: supplier.address,
-  //       city: supplier.city,
-  //       postalCode: supplier.postalCode,
-  //       telephone: supplier.telephone,
-  //       fax: supplier.fax,
-  //     });
-  //   }
-  // }
-
-  // emitSupplier(supplier: Supplier) {
-  //   this.supplierChange.emit(supplier);
-  // }
-
-  // if all required information is in the form we emit
-  private validate() {
-    if (this.form.valid) {
-      const supplier: Supplier = { ...this.form.value };
-      // if telephone or fax are blank then delete them from object
-      if (supplier.telephone === '___-___-____') { delete supplier.telephone; }
-      if (supplier.fax === '___-___-____') { delete supplier.fax; }
-      this.supplierChange.emit(supplier);
-    }
-  }
-
 }

@@ -55,41 +55,62 @@
     <section class="clearfix">
       <article *ngFor="let r of foodReferrals; let i = index" class="mt-4">
         <app-referral-list-item type="FOOD" (remove)="remove(foodReferrals, i)" (add)="addFoodReferral()">
-          <app-food-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees"
-            [readOnly]="false" (validationStatusChange)="updateValidationStatus(r, $event)"
-            (referralChange)="updateReferral(r, $event)">
+          <app-food-referral
+            [showErrorsWhen]="userClickedNext"
+            [referral]="r.value"
+            [evacuees]="evacuees"
+            [formChangeTrigger]="submitTrigger"
+            (formValidationChange)="updateValidationStatus(r, $event)"
+            (formChange)="updateReferral(r, $event)">
           </app-food-referral>
         </app-referral-list-item>
       </article>
 
       <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-4">
         <app-referral-list-item type="LODGING" (remove)="remove(lodgingReferrals, i)" (add)="addLodgingReferral()">
-          <app-lodging-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [readOnly]="false"
-            (validationStatusChange)="updateValidationStatus(r, $event)" (referralChange)="updateReferral(r, $event)">
+          <app-lodging-referral
+            [showErrorsWhen]="userClickedNext"
+            [referral]="r.value"
+            [evacuees]="evacuees"
+            [formChangeTrigger]="submitTrigger"
+            (formValidationChange)="updateValidationStatus(r, $event)"
+            (formChange)="updateReferral(r, $event)">
           </app-lodging-referral>
         </app-referral-list-item>
       </article>
 
       <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4">
         <app-referral-list-item type="CLOTHING" (remove)="remove(clothingReferrals, i)" (add)="addClothingReferral()">
-          <app-clothing-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [readOnly]="false"
-            (validationStatusChange)="updateValidationStatus(r, $event)" (referralChange)="updateReferral(r, $event)">
+          <app-clothing-referral
+            [showErrorsWhen]="userClickedNext"
+            [referral]="r.value"
+            [evacuees]="evacuees"
+            [formChangeTrigger]="submitTrigger"
+            (formValidationChange)="updateValidationStatus(r, $event)"
+            (formChange)="updateReferral(r, $event)">
           </app-clothing-referral>
         </app-referral-list-item>
       </article>
 
       <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4">
-        <app-referral-list-item type="TRANSPORTATION" (remove)="remove(transportationReferrals, i)"
-          (add)="addTransportationReferral()">
-          <app-transportation-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [readOnly]="false"
-            (validationStatusChange)="updateValidationStatus(r, $event)" (referralChange)="updateReferral(r, $event)">
+        <app-referral-list-item type="TRANSPORTATION" (remove)="remove(transportationReferrals, i)" (add)="addTransportationReferral()">
+          <app-transportation-referral
+            [showErrorsWhen]="userClickedNext"
+            [referral]="r.value"
+            [evacuees]="evacuees"
+            [formChangeTrigger]="submitTrigger"
+            (formValidationChange)="updateValidationStatus(r, $event)"
+            (formChange)="updateReferral(r, $event)">
           </app-transportation-referral>
         </app-referral-list-item>
       </article>
 
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
         <app-referral-list-item type="INCIDENTALS" (remove)="remove(incidentalsReferrals, i)" (add)="addIncidentalsReferral()">
-          <app-incidentals-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [readOnly]="false"
+          <app-incidentals-referral
+            [showErrorsWhen]="userClickedNext"
+            [referral]="r.value"
+            [evacuees]="evacuees"
             [formChangeTrigger]="submitTrigger"
             (formValidationChange)="updateValidationStatus(r, $event)"
             (formChange)="updateReferral(r, $event)">

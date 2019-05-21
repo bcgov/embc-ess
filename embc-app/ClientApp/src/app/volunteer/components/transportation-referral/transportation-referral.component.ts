@@ -1,11 +1,10 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { TransportationReferral, Supplier } from 'src/app/core/models';
 import { ReferralDate } from 'src/app/core/models/referral-date';
 import { TransportationRatesComponent } from 'src/app/shared/modals/transportation-rates/transportation-rates.component';
-import { SupplierComponent } from '../supplier/supplier.component';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
 @Component({
@@ -13,13 +12,7 @@ import { AbstractReferralComponent } from '../abstract-referral/abstract-referra
   templateUrl: './transportation-referral.component.html',
   styleUrls: ['./transportation-referral.component.scss']
 })
-export class TransportationReferralComponent extends AbstractReferralComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Input() referral: TransportationReferral;
-  @Output() referralChange = new EventEmitter<TransportationReferral>();
-
-  // TODO: replace this with formReady event on supplier form
-  @ViewChild(SupplierComponent) supplierRef: SupplierComponent;
-
+export class TransportationReferralComponent extends AbstractReferralComponent<TransportationReferral> implements OnInit, OnDestroy {
   private ratesModal: NgbModalRef = null;
 
   // convenience getter for easy access to form fields
@@ -42,14 +35,6 @@ export class TransportationReferralComponent extends AbstractReferralComponent i
   ngOnInit() {
     this.handleFormChange();
     this.displayReferral(this.referral as TransportationReferral);
-  }
-
-  ngAfterViewInit() {
-    // connect child form to parent
-    if (this.supplierRef && !this.form.get('supplier')) {
-      this.form.addControl('supplier', this.supplierRef.form);
-      this.supplierRef.form.setParent(this.form);
-    }
   }
 
   ngOnDestroy() {
@@ -90,7 +75,8 @@ export class TransportationReferralComponent extends AbstractReferralComponent i
     // Then copy over the values from the form.
     // This ensures values not on the form, such as the Id, are retained.
     const p = { ...this.referral, ...this.form.value };
-    this.referralChange.emit(p);
+    // FIXME:
+    // this.referralChange.emit(p);
   }
 
   // NB: this is called when date component is initialized and whenever its data changes

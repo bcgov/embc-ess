@@ -56,7 +56,9 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
     if (!this.readOnly) {
       // this allows the parent form (the list "maker") to trigger a form submission
       // we need this because we don't have submit buttons on individual referral forms
-      this.subscription = this.formChangeTrigger.subscribe(() => this.onSubmit());
+      if (this.formChangeTrigger) {
+        this.subscription = this.formChangeTrigger.subscribe(() => this.onSubmit());
+      }
 
       // inform the parent form about this sub-form validation status
       this.form.statusChanges.subscribe(status => this.onValidate(status));

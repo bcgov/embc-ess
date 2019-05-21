@@ -116,7 +116,8 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
     const p = { ...this.referral, ...this.form.value };
     // if RESTAURANT then assign maximumAmount; otherwise leave whatever the user entered
     if (this.subType === 'RESTAURANT') { p.totalAmount = this.maximumAmount; }
-    this.referralChange.emit(p);
+    // FIXME: Fix!!!!
+    // this.referralChange.emit(p);
   }
 
   // NB: this is called when date component is initialized and whenever its data changes

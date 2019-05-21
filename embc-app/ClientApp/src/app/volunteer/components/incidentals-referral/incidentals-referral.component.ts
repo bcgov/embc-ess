@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
 import { IncidentalsReferral, Supplier } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
-import { FormBuilder, Validators } from '@angular/forms';
-import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 
 const MAXIMUM_PER_PERSON = 50.00;
 
@@ -91,9 +92,9 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent<Inci
   //   this.propagateChanges(p);
   // }
 
-  updateSupplier(value: Supplier) {
-    this.referral.supplier = value;
-  }
+  // updateSupplier(value: Supplier) {
+  //   this.referral.supplier = value;
+  // }
 
   viewRates() {
     this.ratesModal = this.modals.open(IncidentalsRatesComponent, { size: 'lg', centered: true });
