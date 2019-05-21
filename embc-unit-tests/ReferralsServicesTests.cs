@@ -1,5 +1,7 @@
 ﻿using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
+using Gov.Jag.Embc.Public.Services.Referrals;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -74,6 +76,47 @@ namespace embc_unit_tests
             };
 
             return referrals;
+        }
+
+        [Theory]
+        [MemberData(nameof(GetReferralTypeTests))]
+        public void CanValidateReferralTypes(string type, string subType, bool expectedResult)
+        {
+            var svc = new ReferralsService(new DataInterface(EmbcDb, mapper));
+
+            Assert.Equal(expectedResult, svc.IsValidReferralType(type, subType));
+        }
+
+        public static IEnumerable<object[]> GetReferralTypeTests()
+        {
+            var names = Enum.GetNames(typeof(ReferralType));
+
+            var types = names.GroupBy(n => n.Split("_", StringSplitOptions.RemoveEmptyEntries)[0]);
+            var allSubTypes = names.Select(n => n.Split("_", StringSplitOptions.RemoveEmptyEntries)).Where(sp => sp.Length > 1).Select(n => n[1]).Distinct();
+
+            foreach (var type in types)
+            {
+                if (type.Count() == 1)
+                {
+                    yield return new object[] { type.Key, null, true };
+                    foreach (var subType in allSubTypes)
+                    {
+                        yield return new object[] { type.Key, subType, false };
+                    }
+                }
+                else
+                {
+                    var subTypes = type.Select(s => s.Split("_", StringSplitOptions.None)[1]);
+                    foreach (var subType in subTypes)
+                    {
+                        yield return new object[] { type.Key, subType, true };
+                    }
+                    foreach (var subType in allSubTypes.Except(subTypes))
+                    {
+                        yield return new object[] { type.Key, subType, false };
+                    }
+                }
+            }
         }
     }
 }
