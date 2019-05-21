@@ -25,8 +25,8 @@ And of course this component needs to be implemented as a 'maker' with both an e
       <div class="feature-block card border-0 p-0 mt-4">
         <div class="row mt-4 mx-4">
           <div class="col-4 pl-0 pr-3">
-            <app-evacuee-list [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors"
-              [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()"></app-evacuee-list>
+            <app-evacuee-picker [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()">
+            </app-evacuee-picker>
           </div>
           <div class="col-8 pl-3 pr-0">
             <div class="card border-0 h-100">
@@ -57,8 +57,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
         </div>
         <div class="card m-4">
           <div class="card-body">
-            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen"
-              (formReady)="formInitialized('supplier', $event)"></app-supplier>
+            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (formReady)="formInitialized('supplier', $event)"></app-supplier>
           </div>
         </div>
         <div class="pl-4 pr-4 pb-3">

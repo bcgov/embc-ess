@@ -2,8 +2,7 @@
   <div *ngIf="!readOnly">
     <form novalidate [formGroup]="form">
       <div class="space-between align-items-center">
-        <app-valid-from-to [referralDate]="referral.validDates" (referralDateChange)="updateReferralDate($event)"
-          [id]="uuid"></app-valid-from-to>
+        <app-valid-from-to [referralDate]="referral.validDates" (referralDateChange)="updateReferralDate($event)" [id]="uuid"></app-valid-from-to>
         <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
         <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
       </div>
@@ -11,9 +10,8 @@
       <div class="feature-block card border-0 p-0 mt-4">
         <div class="row mt-4 mx-4">
           <div class="col-4 pl-0 pr-3">
-            <app-evacuee-list [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors"
-              [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()">
-            </app-evacuee-list>
+            <app-evacuee-picker [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()">
+            </app-evacuee-picker>
           </div>
           <div class="col-8 pl-3 pr-0">
             <div class="card border-0 h-100">
@@ -54,8 +52,7 @@
                 <div class="row align-items-end mt-3" *ngIf="subType==='GROCERIES'">
                   <div class="col">
                     <label for="numDaysMeals_{{uuid}}"># Days for meals</label>
-                    <select class="form-control d-block w-auto" id="numDaysMeals_{{uuid}}"
-                      formControlName="numDaysMeals">
+                    <select class="form-control d-block w-auto" id="numDaysMeals_{{uuid}}" formControlName="numDaysMeals">
                       <option value="0">Select--</option>
                       <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
                     </select>
@@ -73,8 +70,7 @@
                   <label class="mb-0">Total Amount:</label>
                   <div class="input-with-icon px-3">
                     <span aria-hidden="true">$</span>
-                    <input type="number" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control"
-                      formControlName="totalAmount">
+                    <input type="number" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control" formControlName="totalAmount">
                   </div>
                 </div>
               </div>
@@ -88,14 +84,12 @@
 
         <div class="card border-0 m-4">
           <div class="card-body">
-            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen"
-              (formReady)="formInitialized('supplier', $event)"></app-supplier>
+            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (formReady)="formInitialized('supplier', $event)"></app-supplier>
           </div>
         </div>
 
         <div class="pl-4 pr-4 pb-3">
-          <textarea class="form-control" formControlName="comments" placeholder="Add comments" rows="4" maxlength="250"
-            autocomplete="off"></textarea>
+          <textarea class="form-control" formControlName="comments" placeholder="Add comments" rows="4" maxlength="250" autocomplete="off"></textarea>
         </div>
       </div>
     </form>

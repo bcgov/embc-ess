@@ -1,0 +1,66 @@
+<div class="card border-0 h-100">
+  <div class="card-body">
+    <p><strong>Please select which evacuees registered on your profile require this support:</strong></p>
+
+    <p><a href="javascript:void(0);" (click)="selectAllEvacuees()">Select All</a></p>
+    <div class="form-check mt-2" *ngFor="let e of evacuees; index as i">
+      <input type="checkbox" class="form-check-input" [checked]="isSelected(e)" (change)="selectEvacuee(e)" id="{{identifier}}-person-{{i}}">
+      <label class="form-check-label" for="{{identifier}}-person-{{i}}">{{e.lastName}}, {{e.firstName}}</label>
+    </div>
+    <span class="invalid-feedback" [class.d-block]="invalid">Please select evacuees requiring this support</span>
+  </div>
+  <!-- <div class="card-footer">
+    <app-fa-link icon="plus-circle" class="float-left" (click)="open(content)">Someone missing? Add them now.</app-fa-link>
+  </div> -->
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">EVACUEE FAMILY INFORMATION</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <p>Please only add immediate family members who live in the same household with you?</p>
+    <div class="row pt-2">
+      <div class="col-6">
+        <label class="required">Last Name</label>
+        <input id="modalLastName" type="text" class="form-control" placeholder="Last name">
+      </div>
+      <div class="col">
+        <!-- same as main applicant -->
+      </div>
+    </div>
+    <div class="row pt-2">
+      <div class="col-6">
+        <label class="required">First Name</label>
+        <input id="modalFirstName" type="text" class="form-control" placeholder="First name">
+      </div>
+      <div class="col-3">
+        <label>Initial</label>
+        <input id="modalInitial" type="text" class="form-control" placeholder="Initial">
+      </div>
+    </div>
+    <div class="row pt-2">
+      <div class="col-6">
+        <label>Relationship</label>
+        <input id="modalRelationship" type="text" class="form-control" placeholder="Relationship">
+      </div>
+      <div class="col">
+        <label class="required">Gender</label>
+        <input id="modal" type="text" class="form-control" placeholder="Gender">
+      </div>
+      <div class="col">
+        <label class="required">Date of Birth</label>
+        <input id="modal" type="text" class="form-control" placeholder="Date of Birth">
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cross click')">Cancel</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">SAVE &amp; ADD FAMILY MEMBER</button>
+  </div>
+</ng-template>

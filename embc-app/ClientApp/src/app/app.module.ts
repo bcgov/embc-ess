@@ -16,7 +16,6 @@ import { SharedModule } from './shared/shared.module';
 import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
 import { TaskNumberListComponent } from './provincial-admin/components/task-number-list/task-number-list.component';
 import { VolunteerListComponent } from './local-authority/components/volunteer-list/volunteer-list.component';
-import { RegistrationListComponent } from './volunteer/components/registration-list/registration-list.component';
 import { OrganizationListComponent } from './provincial-admin/components/organization-list/organization-list.component';
 import { TaskNumberMakerComponent } from './provincial-admin/components/task-number-maker/task-number-maker.component';
 import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
@@ -64,10 +63,11 @@ import { TransportationReferralComponent } from './volunteer/components/transpor
 import { ReferralTableComponent } from './volunteer/components/referral-table/referral-table.component';
 import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid-from-to.component';
 import { SupplierComponent } from './volunteer/components/supplier/supplier.component';
-import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
 import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
 import { ReferralListItemComponent } from './volunteer/components/referral-list-item/referral-list-item.component';
 import { AbstractReferralComponent } from './volunteer/components/abstract-referral/abstract-referral.component';
+import { EvacueePickerComponent } from './volunteer/components/evacuee-picker/evacuee-picker.component';
+import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +76,8 @@ import { AbstractReferralComponent } from './volunteer/components/abstract-refer
     LocalAuthorityRegistrationsPageComponent,
     LocalAuthorityVolunteersPageComponent,
     RegistrationSummaryComponent,
-    RegistrationListComponent,
+    EvacueePickerComponent,
+    EvacueeListComponent,
     RegistrationMakerComponent,
     RegistrationSummaryFullComponent,
     VolunteerMakerComponent,
@@ -105,7 +106,6 @@ import { AbstractReferralComponent } from './volunteer/components/abstract-refer
     SearchBarComponent,
     PaginationSummaryComponent,
     UsefulInformationPageComponent,
-
     LodgingRatesComponent,
     ClothingRatesComponent,
     ConfirmModalComponent,
@@ -113,7 +113,6 @@ import { AbstractReferralComponent } from './volunteer/components/abstract-refer
     IncidentalsRatesComponent,
     SessionExpiringModalComponent,
     TransportationRatesComponent,
-
     ReferralMakerComponent,
     ReferralViewComponent,
     LodgingReferralComponent,
@@ -124,7 +123,6 @@ import { AbstractReferralComponent } from './volunteer/components/abstract-refer
     ReferralTableComponent,
     ValidFromToComponent,
     SupplierComponent,
-    EvacueeListComponent,
     ReferralListItemComponent,
     AbstractReferralComponent,
   ],
