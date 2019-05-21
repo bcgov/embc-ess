@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormArray, FormControl, FormGroup } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
 
 import { Evacuee, ReferralBase } from 'src/app/core/models';
 import { clearFormArray, uuid } from 'src/app/shared/utils';
@@ -15,24 +16,32 @@ import { clearFormArray, uuid } from 'src/app/shared/utils';
  * It shouldn't be instantiated directly.
  */
 @Component({ template: '' })
-export class AbstractReferralComponent implements OnInit {
-  @Input() showErrorsWhen = true;
+export class AbstractReferralComponent<T extends ReferralBase> implements OnInit, OnDestroy {
+  @Input() readOnly = false;
+  @Input() showErrorsWhen = false; // wait until the user click NEXT before showing any validation errors
 
   // List of all evacuees that we want to show in this component
   @Input() evacuees: Evacuee[] = [];
-  @Input() readOnly = false;
-  // @Input() emitChangeEvent = false;
+
+  // the referral to show
+  @Input() referral: T = null;
+
+  private subscription: Subscription;
+  @Input() formChangeTrigger: Observable<void>;
 
   @Output() formReady = new EventEmitter<FormGroup>();
-  @Output() formChange = new EventEmitter<ReferralBase>();
-  @Output() validationStatusChange = new EventEmitter<boolean>();
-
-  // The model for the form data collected
-  form: FormGroup;
+  @Output() formChange = new EventEmitter<T>();
+  @Output() formValidationChange = new EventEmitter<boolean>();
 
   // For the purpose of accessibility this number is likely unique.
   // If it breaks and isn't unique it won't break the form. (poor man's guid)
   uuid = uuid();
+
+  // The model for the form data collected
+  form = this.fb.group({
+    evacuees: this.fb.array([], Validators.required),
+    comments: '',
+  });
 
   // helper to format dollar amounts
   currency = new Intl.NumberFormat('en-US', {
@@ -41,24 +50,57 @@ export class AbstractReferralComponent implements OnInit {
     minimumFractionDigits: 2
   });
 
-  constructor(public fb: FormBuilder) {
-    this.form = this.fb.group({
-      evacuees: this.fb.array([], Validators.required), // TODO: this may not need to part of form (ie, same as valid-from-to and supplier)
-      comments: '',
-    });
-  }
+  constructor(public fb: FormBuilder) { }
 
   ngOnInit() {
-    // status === 'VALID'
-    this.form.statusChanges.subscribe(status => this.validationStatusChange.emit(true));
-    this.formReady.emit(this.form);
+    if (!this.readOnly) {
+      // this allows the parent form (the list "maker") to trigger a form submission
+      // we need this because we don't have submit buttons on individual referral forms
+      if (this.formChangeTrigger) {
+        this.subscription = this.formChangeTrigger.subscribe(() => this.onSubmit());
+      }
+
+      // inform the parent form about this sub-form validation status
+      this.form.statusChanges.subscribe(status => this.onValidate(status));
+
+      // let the parent form know we are ready
+      this.formReady.emit(this.form);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  onValidate(status: any) {
+    const formIsValid = status === 'VALID';
+    this.formValidationChange.emit(formIsValid);
+  }
+
+  onSubmit() {
+    const p = this.toModel(this.form.value);
+    this.propagateChanges(p);
+  }
+
+  toModel(formValue: any): T {
+    // Copy over all of the original referral properties
+    // Then copy over the values from the form
+    // This ensures values not on the form, such as the Id, are retained
+    const p: T = { ...this.referral, ...formValue };
+    return p;
+  }
+
+  propagateChanges(newValue: T) {
+    this.formChange.emit(newValue);
   }
 
   /**
    * After a sub-form is initialized, we link it to our main form
    */
-  formInitialized(name: string, form: FormGroup) {
-    this.form.setControl(name, form);
+  formInitialized(name: string, childForm: FormGroup) {
+    this.form.setControl(name, childForm);
   }
 
   get selected() {

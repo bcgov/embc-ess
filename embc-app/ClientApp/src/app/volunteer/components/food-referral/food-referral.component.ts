@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild, AfterViewInit, SimpleChanges, OnChanges } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import range from 'lodash/range';
@@ -19,13 +19,7 @@ const GROCERIES = 22.50;
   templateUrl: './food-referral.component.html',
   styleUrls: ['./food-referral.component.scss']
 })
-export class FoodReferralComponent extends AbstractReferralComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Input() referral: FoodReferral;
-  @Output() referralChange = new EventEmitter<FoodReferral>();
-
-  // TODO: replace this with formReady event on supplier form
-  @ViewChild(SupplierComponent) supplierRef: SupplierComponent;
-
+export class FoodReferralComponent extends AbstractReferralComponent<FoodReferral> implements OnInit, OnDestroy, OnChanges {
   private ratesModal: NgbModalRef = null;
 
   days: Array<number> = null;
@@ -56,39 +50,43 @@ export class FoodReferralComponent extends AbstractReferralComponent implements 
     private modals: NgbModal,
   ) {
     super(fb);
-    this.form.addControl('subType', this.fb.control(''));
-    this.form.addControl('numBreakfasts', this.fb.control(''));
-    this.form.addControl('numLunches', this.fb.control(''));
-    this.form.addControl('numDinners', this.fb.control(''));
-    this.form.addControl('numDaysMeals', this.fb.control(''));
-    this.form.addControl('totalAmount', this.fb.control(''));
+    this.form.setControl('subType', this.fb.control(''));
+    this.form.setControl('numBreakfasts', this.fb.control(''));
+    this.form.setControl('numLunches', this.fb.control(''));
+    this.form.setControl('numDinners', this.fb.control(''));
+    this.form.setControl('numDaysMeals', this.fb.control(''));
+    this.form.setControl('totalAmount', this.fb.control(''));
   }
 
   ngOnInit() {
-    this.handleFormChange();
-    this.displayReferral(this.referral as FoodReferral);
-  }
-
-  ngAfterViewInit() {
-    // connect child form to parent
-    if (this.supplierRef && !this.form.get('supplier')) {
-      this.form.addControl('supplier', this.supplierRef.form);
-      this.supplierRef.form.setParent(this.form);
-    }
+    super.ngOnInit(); // this is IMPORTANT! - failure to call the base class will stop validation from working!
+    // this.handleFormChange();
+    // this.displayReferral(this.referral as FoodReferral);
   }
 
   ngOnDestroy() {
+    super.ngOnDestroy();
+
     // close modal if it's open
     if (this.ratesModal) { this.ratesModal.dismiss(); }
   }
 
-  // validate the whole form as we capture data
-  private handleFormChange(): void {
-    this.form.valueChanges.subscribe(() => this.saveChanges());
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.referral && this.referral) {
+      this.displayReferral(this.referral);
+    }
+    if (changes.readOnly) {
+      // console.log('readOnly =', changes.readOnly.currentValue);
+    }
   }
 
+  // validate the whole form as we capture data
+  // private handleFormChange(): void {
+  //   this.form.valueChanges.subscribe(() => this.saveChanges());
+  // }
+
   private displayReferral(referral: FoodReferral) {
-    if (referral) {
+    if (referral && !this.readOnly) {
       this.form.reset();
       this.form.patchValue({
         subType: referral.subType || null,
@@ -118,7 +116,8 @@ export class FoodReferralComponent extends AbstractReferralComponent implements 
     const p = { ...this.referral, ...this.form.value };
     // if RESTAURANT then assign maximumAmount; otherwise leave whatever the user entered
     if (this.subType === 'RESTAURANT') { p.totalAmount = this.maximumAmount; }
-    this.referralChange.emit(p);
+    // FIXME: Fix!!!!
+    // this.referralChange.emit(p);
   }
 
   // NB: this is called when date component is initialized and whenever its data changes

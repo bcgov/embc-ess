@@ -1,11 +1,10 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { ClothingReferral, Supplier } from 'src/app/core/models';
 import { ReferralDate } from 'src/app/core/models/referral-date';
 import { ClothingRatesComponent } from 'src/app/shared/modals/clothing-rates/clothing-rates.component';
-import { SupplierComponent } from '../supplier/supplier.component';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
 const MAXIMUM_PER = 150.00;
@@ -16,13 +15,7 @@ const MAXIMUM_EXTREME = 200.00;
   templateUrl: './clothing-referral.component.html',
   styleUrls: ['./clothing-referral.component.scss']
 })
-export class ClothingReferralComponent extends AbstractReferralComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Input() referral: ClothingReferral;
-  @Output() referralChange = new EventEmitter<ClothingReferral>();
-
-  // TODO: replace this with formReady event on supplier form
-  @ViewChild(SupplierComponent) supplierRef: SupplierComponent;
-
+export class ClothingReferralComponent extends AbstractReferralComponent<ClothingReferral> implements OnInit, OnDestroy {
   private ratesModal: NgbModalRef = null;
 
   // convenience getter for easy access to form fields
@@ -47,14 +40,6 @@ export class ClothingReferralComponent extends AbstractReferralComponent impleme
   ngOnInit() {
     this.handleFormChange();
     this.displayReferral(this.referral as ClothingReferral);
-  }
-
-  ngAfterViewInit() {
-    // connect child form to parent
-    if (this.supplierRef && !this.form.get('supplier')) {
-      this.form.addControl('supplier', this.supplierRef.form);
-      this.supplierRef.form.setParent(this.form);
-    }
   }
 
   ngOnDestroy() {
@@ -93,7 +78,8 @@ export class ClothingReferralComponent extends AbstractReferralComponent impleme
     // Then copy over the values from the form.
     // This ensures values not on the form, such as the Id, are retained.
     const p = { ...this.referral, ...this.form.value };
-    this.referralChange.emit(p);
+    // FIXME:
+    // this.referralChange.emit(p);
   }
 
   // NB: this is called when date component is initialized and whenever its data changes

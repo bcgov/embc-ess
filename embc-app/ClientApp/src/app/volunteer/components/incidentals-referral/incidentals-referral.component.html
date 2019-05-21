@@ -56,7 +56,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
         </div>
         <div class="card m-4">
           <div class="card-body">
-            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (supplierChange)="updateSupplier($event)"></app-supplier>
+            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (formReady)="formInitialized('supplier', $event)"></app-supplier>
           </div>
         </div>
         <div class="pl-4 pr-4 pb-3">
