@@ -28,9 +28,8 @@ export class TesterPageComponent implements OnInit {
     },
     evacuees: [
       {
-        // id: '100043-1',
-        id: '1',
-
+        id: '100043-1',
+        // id: '1', // will be this
         active: null,
         personType: 'HOH',
         firstName: 'Woop',
@@ -41,8 +40,8 @@ export class TesterPageComponent implements OnInit {
         dob: '1988-02-29'
       },
       {
-        // id: '100043-2',
-        id: '2',
+        id: '100043-2',
+        // id: '2',
         active: null,
         personType: 'FMBR',
         firstName: 'Bork',
@@ -89,7 +88,7 @@ export class TesterPageComponent implements OnInit {
     };
     this.reply = x;
     this.referralService.createReferrals(this.id, x).subscribe((x) => {
-      console.log('Success');
+      console.log(x);
     }),
       err => console.log(err);
   }

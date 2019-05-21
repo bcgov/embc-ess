@@ -3,7 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { retry, catchError, map } from 'rxjs/operators';
 import { CoreModule } from '../core.module';
-import { Referral, ListResult, RawReferralCollection, ReferralPost } from '../models';
+import { Referral, ListResult, RawReferralCollection, ReferralPost, ReferralSuccess } from '../models';
 import { RestService } from './rest.service';
 
 @Injectable({
@@ -47,12 +47,12 @@ export class ReferralService extends RestService {
       );
   }
   // POST api/registrations/<id>/referrals ???
-  createReferrals(registrationId: string, referrals: ReferralPost): Observable<HttpResponse<any>> {
+  createReferrals(registrationId: string, referrals: ReferralPost): Observable<HttpResponse<ReferralSuccess>> {
     // TODO: assemble data object for BE
     // TODO: add id [1..n] to referrals
     // TODO: only send array of selected evacuees (evacuee[] not evacuees[])
 
-    return this.http.post<HttpResponse<any>>(`api/registrations/${registrationId}/referrals`, referrals, { headers: this.headers })
+    return this.http.post<HttpResponse<ReferralSuccess>>(`api/registrations/${registrationId}/referrals`, referrals, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError)

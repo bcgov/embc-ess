@@ -83,6 +83,13 @@ export interface ReferralPostItem {
   toAddress?: string;
   modeTransport?: string;
 }
+export interface ReferralSuccess {
+  registrationId: string;
+  referrals: [
+    { referralId: string }
+  ];
+}
+
 
 export type Referral = FoodReferral | IncidentalsReferral | ClothingReferral | LodgingReferral | TransportationReferral;
 export interface RawReferralCollection {
