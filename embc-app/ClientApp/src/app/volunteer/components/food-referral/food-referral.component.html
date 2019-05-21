@@ -89,7 +89,7 @@
         <div class="card border-0 m-4">
           <div class="card-body">
             <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen"
-              (supplierChange)="updateSupplier($event)"></app-supplier>
+              (formReady)="formInitialized('supplier', $event)"></app-supplier>
           </div>
         </div>
 

@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
 import { IncidentalsReferral, Supplier } from 'src/app/core/models';
 import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
-import { SupplierComponent } from '../supplier/supplier.component';
-import { FormBuilder, Validators } from '@angular/forms';
-import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 
 const MAXIMUM_PER_PERSON = 50.00;
 
@@ -14,14 +14,7 @@ const MAXIMUM_PER_PERSON = 50.00;
   templateUrl: './incidentals-referral.component.html',
   styleUrls: ['./incidentals-referral.component.scss']
 })
-export class IncidentalsReferralComponent extends AbstractReferralComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
-  @Input() showErrorsWhen = true;
-  @Input() referral: IncidentalsReferral = null;
-  @Output() referralChange = new EventEmitter<IncidentalsReferral>();
-
-  // TODO: replace this with formReady event on supplier form
-  @ViewChild(SupplierComponent) supplierRef: SupplierComponent;
-
+export class IncidentalsReferralComponent extends AbstractReferralComponent<IncidentalsReferral> implements OnInit, OnDestroy, OnChanges {
   private ratesModal: NgbModalRef = null;
 
   get maximumAmount() {
@@ -33,32 +26,31 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent impl
     public fb: FormBuilder,
     public modals: NgbModal,
   ) {
+    // call base form to setup shared form fields; e.g. evacuee list, comments
     super(fb);
-    this.form.addControl('approvedItems', this.fb.control(''));
-    this.form.addControl('totalAmount', this.fb.control('', [CustomValidators.number, Validators.required, Validators.min(0)]));
+
+    // add more fields that are specific to this form
+    this.form.setControl('approvedItems', this.fb.control(''));
+    this.form.setControl('totalAmount', this.fb.control('', [CustomValidators.number, Validators.required, Validators.min(0)]));
   }
 
   ngOnInit() {
-    this.handleFormChange();
-    this.displayReferral(this.referral);
-  }
+    super.ngOnInit(); // this is IMPORTANT! - failure to call the base class will stop validation from working!
 
-  ngAfterViewInit() {
-    // connect child form to parent
-    if (this.supplierRef && !this.form.get('supplier')) {
-      this.form.addControl('supplier', this.supplierRef.form);
-      this.supplierRef.form.setParent(this.form);
-    }
+    // TODO: Review these below...
+    // this.handleFormChange();
   }
 
   ngOnDestroy() {
+    super.ngOnDestroy();
+
     // close modal if it's open
     if (this.ratesModal) { this.ratesModal.dismiss(); }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.referral) {
-      // console.log('referral =', changes.referral.currentValue);
+    if (changes.referral && this.referral) {
+      this.displayReferral(this.referral);
     }
     if (changes.readOnly) {
       // console.log('readOnly =', changes.readOnly.currentValue);
@@ -66,18 +58,19 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent impl
   }
 
   // validate the whole form as we capture data
-  handleFormChange(): void {
-    this.form.valueChanges.subscribe(() => this.saveChanges());
-  }
+  // handleFormChange(): void {
+  //   this.form.valueChanges.subscribe(() => this.saveChanges());
+  // }
 
   displayReferral(referral: IncidentalsReferral) {
-    if (referral) {
+    if (referral && !this.readOnly) {
       this.form.reset();
       this.form.patchValue({
         evacuees: referral.evacuees,
         approvedItems: referral.approvedItems,
         totalAmount: referral.totalAmount,
         comments: referral.comments,
+        // supplier: referral.supplier,
       });
 
       // populate the evacuee list with existing selection
@@ -88,22 +81,20 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent impl
   }
 
   // if all required information is in the form we emit
-  saveChanges() {
-    if (!this.form.valid) {
-      console.log('form is invalid'); // TODO: fix
-      // return;
-    }
+  // saveChanges() {
+  //   if (!this.form.valid) {
+  //     return;
+  //   }
+  //   // Copy over all of the original referral properties
+  //   // Then copy over the values from the form
+  //   // This ensures values not on the form, such as the Id, are retained
+  //   const p: IncidentalsReferral = { ...this.referral, ...this.form.value };
+  //   this.propagateChanges(p);
+  // }
 
-    // Copy over all of the original referral properties.
-    // Then copy over the values from the form.
-    // This ensures values not on the form, such as the Id, are retained.
-    const p = { ...this.referral, ...this.form.value };
-    this.referralChange.emit(p);
-  }
-
-  updateSupplier(value: Supplier) {
-    this.referral.supplier = value;
-  }
+  // updateSupplier(value: Supplier) {
+  //   this.referral.supplier = value;
+  // }
 
   viewRates() {
     this.ratesModal = this.modals.open(IncidentalsRatesComponent, { size: 'lg', centered: true });

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { RegistrationService } from 'src/app/core/services/registration.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+
+import { RegistrationService } from 'src/app/core/services/registration.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
@@ -28,6 +30,9 @@ export class ReferralMakerComponent implements OnInit {
   regId: string = null;
   purchaser: string = null;
   evacuees: Array<Evacuee> = [];
+
+  private triggerSubject = new Subject<void>();
+  submitTrigger = this.triggerSubject.asObservable();
 
   // avoid showing validation errors until the NEXT button is clicked
   userClickedNext = false;
@@ -92,6 +97,7 @@ export class ReferralMakerComponent implements OnInit {
 
   // Recalculates the validation status of this maker form
   private calculateStatus(): boolean {
+    // TODO: check the other arrays here...
     const allValid = (arr: Array<ReferralFormControl<any>>) => arr.every(e => e.valid);
 
     const food = allValid(this.foodReferrals);
@@ -123,8 +129,11 @@ export class ReferralMakerComponent implements OnInit {
   createReferrals() {
     this.userClickedNext = true;
 
+    // trigger form submission in all sub-components; i.e. the food referrals, the incidentals referrals, etc
+    this.triggerSubject.next();
+
     // Validate here BEFORE going to review portion of this page....
-    if (this.valid || true) {
+    if (this.valid) {
       this.editMode = false;
       window.scrollTo(0, 0); // scroll to top
     }

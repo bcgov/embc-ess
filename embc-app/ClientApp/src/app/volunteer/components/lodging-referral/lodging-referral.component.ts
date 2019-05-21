@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import range from 'lodash/range';
@@ -6,7 +6,6 @@ import range from 'lodash/range';
 import { LodgingReferral, Supplier } from 'src/app/core/models';
 import { ReferralDate } from 'src/app/core/models/referral-date';
 import { LodgingRatesComponent } from 'src/app/shared/modals/lodging-rates/lodging-rates.component';
-import { SupplierComponent } from '../supplier/supplier.component';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
 @Component({
@@ -14,13 +13,7 @@ import { AbstractReferralComponent } from '../abstract-referral/abstract-referra
   templateUrl: './lodging-referral.component.html',
   styleUrls: ['./lodging-referral.component.scss']
 })
-export class LodgingReferralComponent extends AbstractReferralComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Input() referral: LodgingReferral;
-  @Output() referralChange = new EventEmitter<LodgingReferral>();
-
-  // TODO: replace this with formReady event on supplier form
-  @ViewChild(SupplierComponent) supplierRef: SupplierComponent;
-
+export class LodgingReferralComponent extends AbstractReferralComponent<LodgingReferral> implements OnInit, OnDestroy {
   private ratesModal: NgbModalRef = null;
 
   nights: Array<number> = null;
@@ -44,14 +37,6 @@ export class LodgingReferralComponent extends AbstractReferralComponent implemen
   ngOnInit() {
     this.handleFormChange();
     this.displayReferral(this.referral as LodgingReferral);
-  }
-
-  ngAfterViewInit() {
-    // connect child form to parent
-    if (this.supplierRef && !this.form.get('supplier')) {
-      this.form.addControl('supplier', this.supplierRef.form);
-      this.supplierRef.form.setParent(this.form);
-    }
   }
 
   ngOnDestroy() {
@@ -90,7 +75,8 @@ export class LodgingReferralComponent extends AbstractReferralComponent implemen
     // Then copy over the values from the form.
     // This ensures values not on the form, such as the Id, are retained.
     const p = { ...this.referral, ...this.form.value };
-    this.referralChange.emit(p);
+    // FIXME: Fix!!!!
+    // this.referralChange.emit(p);
   }
 
   // NB: this is called when date component is initialized and whenever its data changes
