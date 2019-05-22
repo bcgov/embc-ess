@@ -33,6 +33,7 @@ export class ReferralMakerComponent implements OnInit {
   purchaser: string = null;
   evacuees: Array<Evacuee> = [];
   defaultDate: Date;
+  showDefaultDatePicker = false;
 
   private triggerSubject = new Subject<void>();
   submitTrigger = this.triggerSubject.asObservable();
@@ -323,7 +324,16 @@ export class ReferralMakerComponent implements OnInit {
     const family = hoh.familyMembers || [];
     return [hoh, ...family];
   }
-
+  toggleDefaultDatePicker() {
+    if (this.showDefaultDatePicker) {
+      // ui element is shown so user is hiding the date picker so we need to reset it back to the incident start time
+      this.defaultDate = new Date(this.registration.incidentTask.startDate);
+      this.showDefaultDatePicker = false;
+    } else {
+      // ui element is hidden show the ui element
+      this.showDefaultDatePicker = true;
+    }
+  }
   // --------------------HELPERS-----------------------------------------
   remove(arr: [], i: number) {
     if (arr) { arr.splice(i, 1); }
