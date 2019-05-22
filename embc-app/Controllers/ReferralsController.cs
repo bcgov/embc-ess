@@ -60,6 +60,11 @@ namespace Gov.Jag.Embc.Public.Controllers
             var referralsList = new List<string>();
             foreach (var referral in request.Referrals)
             {
+                if (!referralsService.IsValidReferralType(referral.Type, referral.SubType))
+                {
+                    ModelState.AddModelError(referral.Type, $"referral with type '{referral.Type}' and subtype '{referral.SubType}' is not valid");
+                }
+                if (!ModelState.IsValid) return BadRequest(ModelState);
                 referral.EssNumber = registrationId;
                 referral.ConfirmChecked = request.ConfirmChecked;
                 referral.Active = true;

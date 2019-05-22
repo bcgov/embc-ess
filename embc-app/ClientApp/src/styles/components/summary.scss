@@ -63,44 +63,44 @@
     }
 
     span.name {
-      width: 35%;
+      width: 40%;
       padding: 0;
       font-weight: 600;
     }
 
     span.value {
-      width: 65%;
+      width: 60%;
       padding: 0;
-      border-left: unset;
+      border-left-style: none; // IE doesn't support 'unset'
     }
 
     @media (min-width: 768px) {
+      span.name {
+        width: 35%;
+      }
+
+      span.value {
+        width: 65%;
+      }
+    }
+
+    @media (min-width: 992px) {
+      span.name {
+        width: 30%;
+      }
+
+      span.value {
+        width: 70%;
+      }
+    }
+
+    @media (min-width: 1200px) {
       span.name {
         width: 25%;
       }
 
       span.value {
         width: 75%;
-      }
-    }
-
-    @media (min-width: 992px) {
-      span.name {
-        width: 20%;
-      }
-
-      span.value {
-        width: 80%;
-      }
-    }
-
-    @media (min-width: 1200px) {
-      span.name {
-        width: 15%;
-      }
-
-      span.value {
-        width: 85%;
       }
     }
   }

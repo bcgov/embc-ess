@@ -164,5 +164,46 @@ namespace embc_unit_tests
                 new object[] { ReferralGenerator.Generate(ReferralType.Transportation_Taxi, registrationId) }
             };
         }
+
+        [Theory]
+        [MemberData(nameof(GetReferralTypeTests))]
+        public void CanValidateReferralTypes(string type, string subType, bool expectedResult)
+        {
+            var svc = new ReferralsService(new DataInterface(EmbcDb, mapper));
+
+            Assert.Equal(expectedResult, svc.IsValidReferralType(type, subType));
+        }
+
+        public static IEnumerable<object[]> GetReferralTypeTests()
+        {
+            var names = Enum.GetNames(typeof(ReferralType));
+
+            var types = names.GroupBy(n => n.Split("_", StringSplitOptions.RemoveEmptyEntries)[0].ToUpperInvariant());
+            var allSubTypes = names.Select(n => n.Split("_", StringSplitOptions.RemoveEmptyEntries)).Where(sp => sp.Length > 1).Select(n => n[1].ToUpperInvariant()).Distinct();
+
+            foreach (var type in types)
+            {
+                if (type.Count() == 1)
+                {
+                    yield return new object[] { type.Key, null, true };
+                    foreach (var subType in allSubTypes)
+                    {
+                        yield return new object[] { type.Key, subType, false };
+                    }
+                }
+                else
+                {
+                    var subTypes = type.Select(s => s.Split("_", StringSplitOptions.None)[1].ToUpperInvariant());
+                    foreach (var subType in subTypes)
+                    {
+                        yield return new object[] { type.Key, subType, true };
+                    }
+                    foreach (var subType in allSubTypes.Except(subTypes))
+                    {
+                        yield return new object[] { type.Key, subType, false };
+                    }
+                }
+            }
+        }
     }
 }

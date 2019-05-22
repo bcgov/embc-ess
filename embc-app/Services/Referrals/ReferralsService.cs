@@ -2,6 +2,8 @@ using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.ViewModels;
 using HandlebarsDotNet;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Gov.Jag.Embc.Public.Utils;
 using System;
