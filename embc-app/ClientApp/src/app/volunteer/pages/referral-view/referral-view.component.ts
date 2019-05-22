@@ -59,7 +59,6 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
           this.goHome();
         } else {
           this.referral = x.referral;
-          this.referral.validDates = { from: x.referral.validFrom, to: x.referral.validTo };
         }
       }, err => {
         this.loading = false;
