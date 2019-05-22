@@ -32,6 +32,7 @@ export class ReferralMakerComponent implements OnInit {
   regId: string = null;
   purchaser: string = null;
   evacuees: Array<Evacuee> = [];
+  defaultDate: Date;
 
   private triggerSubject = new Subject<void>();
   submitTrigger = this.triggerSubject.asObservable();
@@ -81,6 +82,7 @@ export class ReferralMakerComponent implements OnInit {
         } else {
           this.registration = r;
           this.evacuees = this.createEvacueeList(r);
+          this.defaultDate = new Date(r.incidentTask.startDate);
         }
       });
   }
