@@ -98,6 +98,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string ToDate => ValidDates.To.ToString("MMMM-dd-yyyy");
         public string ToTime => ValidDates.To.ToString("h:mm tt");
         public string PrintDate => DateTime.Today.ToString("MMMM-dd-yyyy");
+        public string TotalAmount => TotalAmount.ToString("C2");
         public IEnumerable<PrintEvacuee> PrintEvacuees { get; set; }
 
         public object[] PrintableEvacuees
