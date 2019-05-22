@@ -11,13 +11,13 @@ namespace Gov.Jag.Embc.Public.ViewModels
         {
             CreateMap<Models.Db.Referral, PrintReferral>()
                 .ForMember(d => d.IncidentTaskNumber, m => m.MapFrom(s => s.Registration.IncidentTask.TaskNumber))
-                .ForMember(d => d.HostCommunity, m => m.MapFrom(s => s.Registration.HostCommunity))
-                .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Select(e => new PrintEvacuee
+                .ForMember(d => d.HostCommunity, m => m.MapFrom(s => s.Registration.HostCommunity.Name))
+                .ForMember(d => d.PrintEvacuees, m => m.MapFrom(s => s.Evacuees.Select(e => new PrintEvacuee
                 {
                     Id = e.Evacuee.EvacueeSequenceNumber.ToString(),
                     FirstName = e.Evacuee.FirstName,
                     LastName = e.Evacuee.LastName,
-                    //EvacueeTypeCode = e.Evacuee.EvacueeType == Models.Db.Enumerations.EvacueeType.HeadOfHousehold ? "F" : e.Evacuee.Dob
+                    EvacueeTypeCode = MapPrintEvacueeTypeCode(e.Evacuee)
                 })))
                 .IncludeBase<Models.Db.Referral, Referral>();
 
@@ -74,6 +74,19 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .IncludeBase<Models.Db.LodgingReferral, PrintReferral>()
                 .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Lodging_Billeting));
         }
+
+        private string MapPrintEvacueeTypeCode(Models.Db.Evacuee evacuee)
+        {
+            if (evacuee.EvacueeType == Models.Db.Enumerations.EvacueeType.HeadOfHousehold)
+            {
+                return "F";
+            }
+            if (evacuee.Dob.HasValue && evacuee.Dob.Value > DateTime.Now.AddYears(-12))
+            {
+                return "C";
+            }
+            return "A";
+        }
     }
 
     public class PrintReferral : Referral
@@ -85,14 +98,14 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string ToDate => ValidDates.To.ToString("MMMM-dd-yyyy");
         public string ToTime => ValidDates.To.ToString("h:mm tt");
         public string PrintDate => DateTime.Today.ToString("MMMM-dd-yyyy");
+        public IEnumerable<PrintEvacuee> PrintEvacuees { get; set; }
 
         public object[] PrintableEvacuees
-
         {
             get
             {
                 var evacueesToPrint = new List<object>();
-                var evacuees = Evacuees.ToArray();
+                var evacuees = PrintEvacuees.ToArray();
 
                 for (int i = 0; i <= 7; i++)
                 {
@@ -113,7 +126,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
     public class PrintableEvacueesRow
     {
-        public PrintableEvacueesRow(ReferralEvacuee referralEvacuee1, ReferralEvacuee referralEvacuee2)
+        public PrintableEvacueesRow(PrintEvacuee referralEvacuee1, PrintEvacuee referralEvacuee2)
         {
             Column1 = GetEvacueeColumn(referralEvacuee1);
             Column2 = GetEvacueeColumn(referralEvacuee2);
@@ -124,14 +137,14 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string Column2 { get; private set; }
         public string Column2Class => GetEvacueeColumnClass(Column2);
 
-        private string GetEvacueeColumn(ReferralEvacuee referralEvacuee)
+        private string GetEvacueeColumn(PrintEvacuee referralEvacuee)
         {
             if (referralEvacuee == null)
             {
                 return string.Empty;
             }
 
-            return $"{referralEvacuee.FirstName}, {referralEvacuee.FirstName} (F)";
+            return $"{referralEvacuee.FirstName}, {referralEvacuee.FirstName} ({referralEvacuee.EvacueeTypeCode})";
         }
 
         private string GetEvacueeColumnClass(string columnText)
