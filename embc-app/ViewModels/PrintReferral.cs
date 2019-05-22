@@ -1,5 +1,7 @@
 using AutoMapper;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gov.Jag.Embc.Public.ViewModels
 {
@@ -9,6 +11,14 @@ namespace Gov.Jag.Embc.Public.ViewModels
         {
             CreateMap<Models.Db.Referral, PrintReferral>()
                 .ForMember(d => d.IncidentTaskNumber, m => m.MapFrom(s => s.Registration.IncidentTask.TaskNumber))
+                .ForMember(d => d.HostCommunity, m => m.MapFrom(s => s.Registration.HostCommunity))
+                .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Select(e => new PrintEvacuee
+                {
+                    Id = e.Evacuee.EvacueeSequenceNumber.ToString(),
+                    FirstName = e.Evacuee.FirstName,
+                    LastName = e.Evacuee.LastName,
+                    //EvacueeTypeCode = e.Evacuee.EvacueeType == Models.Db.Enumerations.EvacueeType.HeadOfHousehold ? "F" : e.Evacuee.Dob
+                })))
                 .IncludeBase<Models.Db.Referral, Referral>();
 
             CreateMap<Models.Db.ClothingReferral, PrintReferral>()
@@ -69,10 +79,64 @@ namespace Gov.Jag.Embc.Public.ViewModels
     public class PrintReferral : Referral
     {
         public string IncidentTaskNumber { get; set; }
+        public string HostCommunity { get; set; }
         public string FromDate => ValidDates.From.ToString("MMMM-dd-yyyy");
         public string FromTime => ValidDates.From.ToString("h:mm tt");
         public string ToDate => ValidDates.To.ToString("MMMM-dd-yyyy");
         public string ToTime => ValidDates.To.ToString("h:mm tt");
         public string PrintDate => DateTime.Today.ToString("MMMM-dd-yyyy");
+
+        public object[] PrintableEvacuees
+
+        {
+            get
+            {
+                var evacueesToPrint = new List<object>();
+                var evacuees = Evacuees.ToArray();
+
+                for (int i = 0; i <= 7; i++)
+                {
+                    evacueesToPrint.Add(new PrintableEvacueesRow(evacuees.ElementAtOrDefault(i), evacuees.ElementAtOrDefault(i + 7)));
+                }
+                return evacueesToPrint.ToArray();
+            }
+        }
+    }
+
+    public class PrintEvacuee
+    {
+        public string Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string EvacueeTypeCode { get; set; }
+    }
+
+    public class PrintableEvacueesRow
+    {
+        public PrintableEvacueesRow(ReferralEvacuee referralEvacuee1, ReferralEvacuee referralEvacuee2)
+        {
+            Column1 = GetEvacueeColumn(referralEvacuee1);
+            Column2 = GetEvacueeColumn(referralEvacuee2);
+        }
+
+        public string Column1 { get; private set; }
+        public string Column1Class => GetEvacueeColumnClass(Column1);
+        public string Column2 { get; private set; }
+        public string Column2Class => GetEvacueeColumnClass(Column2);
+
+        private string GetEvacueeColumn(ReferralEvacuee referralEvacuee)
+        {
+            if (referralEvacuee == null)
+            {
+                return string.Empty;
+            }
+
+            return $"{referralEvacuee.FirstName}, {referralEvacuee.FirstName} (F)";
+        }
+
+        private string GetEvacueeColumnClass(string columnText)
+        {
+            return string.IsNullOrEmpty(columnText) ? "nobody" : "evacuee";
+        }
     }
 }

@@ -598,62 +598,16 @@
 
                     <p><label>List of Evacuees:</label> <em>F = Family Representative (adult) | A = Adult | C = Child </em></p>
                     <div class="evacuee-list">
+                        {{#PrintableEvacuees}}
                         <div class="row">
                             <div class="col-6">
-                                <span class="evacuee">Smith, Anna (F)</span>
+                                <span class="{{Column1Class}}">{{Column1}}</span>
                             </div>
                             <div class="col-6">
-                                <span class="nobody"></span>
+                                <span class="{{Column2Class}}">{{Column2}}</span>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <span class="evacuee">Smith, Jack (A)</span>
-                            </div>
-                            <div class="col-6">
-                                <span class="nobody"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <span class="evacuee">Smith, Annabelle (C)</span>
-                            </div>
-                            <div class="col-6">
-                                <span class="nobody"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <span class="nobody"></span>
-                            </div>
-                            <div class="col-6">
-                                <span class="nobody"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <span class="nobody"></span>
-                            </div>
-                            <div class="col-6">
-                                <span class="nobody"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <span class="nobody"></span>
-                            </div>
-                            <div class="col-6">
-                                <span class="nobody"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <span class="nobody"></span>
-                            </div>
-                            <div class="col-6">
-                                <span class="nobody"></span>
-                            </div>
-                        </div>
+                        {{/PrintableEvacuees}}
                     </div>
                 </div>
             </div>
