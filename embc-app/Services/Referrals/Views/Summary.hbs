@@ -2,9 +2,14 @@
 <html>
 <head>
     <title></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
 
     <style>
+        @page  {
+            size:  Letter;
+            margin:  0in 0in 0in 0in;
+        }
+
         * {
             font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Helvetica, Arial, sans-serif;
             font-style: normal;
@@ -486,6 +491,10 @@
                 height: 0.5cm;
                 border-bottom: 2px solid #000;
             }
+
+        .page-break {
+            page-break-after: always;
+        }
     </style>
 </head>
 <body>
