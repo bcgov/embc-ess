@@ -13,6 +13,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var query = db.Evacuees
                 .Include(e => e.EvacueeRegistration)
                     .ThenInclude(r => r.IncidentTask)
+                        .ThenInclude(i => i.Community)
+                .Include(e => e.EvacueeRegistration)
+                    .ThenInclude(r => r.IncidentTask)
+                        .ThenInclude(i => i.Region)
+               .Include(e => e.EvacueeRegistration)
+                    .ThenInclude(r => r.HostCommunity)
                 .Include(e => e.Referrals)
                 .Where(e => e.EvacueeRegistration.Active == searchQuery.Active);
 
