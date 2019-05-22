@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -15,13 +16,11 @@ namespace Gov.Jag.Embc.Public.Controllers
     public class ReferralsController : Controller
     {
         private readonly IDataInterface dataInterface;
-        private readonly IPdfConverter pdfConverter;
         private readonly IReferralsService referralsService;
 
-        public ReferralsController(IDataInterface dataInterface, IReferralsService referralsService, IPdfConverter pdfConverter)
+        public ReferralsController(IDataInterface dataInterface, IReferralsService referralsService)
         {
             this.dataInterface = dataInterface;
-            this.pdfConverter = pdfConverter;
             this.referralsService = referralsService;
         }
 
@@ -82,14 +81,22 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPost("referralPdfs")]
         public async Task<IActionResult> GetReferralPdfs([FromBody] ReferralsToPrint printReferrals)
         {
-            var content = await referralsService.GetReferralHtmlPages(printReferrals);
+            var result = await referralsService.GetReferralPdfs(printReferrals);
 
-            if (string.IsNullOrWhiteSpace(content))
+            if ((result as NotFoundResult) != null)
             {
                 return NotFound(printReferrals.ReferralIds);
             }
 
-            return await pdfConverter.ConvertHtmlToPdfAsync(content);
+            return result;
+            //var content = await referralsService.GetReferralHtmlPages(printReferrals);
+
+            //if (string.IsNullOrWhiteSpace(content))
+            //{
+            //    return NotFound(printReferrals.ReferralIds);
+            //}
+
+            //return await pdfConverter.ConvertHtmlToPdfAsync(content);
         }
 
         [HttpDelete("{referralId}")]

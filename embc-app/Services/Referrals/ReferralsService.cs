@@ -8,16 +8,31 @@ using System.Threading.Tasks;
 using Gov.Jag.Embc.Public.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Gov.Jag.Embc.Public.Services.Referrals
 {
     public class ReferralsService : IReferralsService
     {
         private readonly IDataInterface dataInterface;
+        private readonly IPdfConverter pdfConverter;
 
-        public ReferralsService(IDataInterface dataInterface)
+        public ReferralsService(IDataInterface dataInterface, IPdfConverter pdfConverter)
         {
             this.dataInterface = dataInterface;
+            this.pdfConverter = pdfConverter;
+        }
+
+        public async Task<IActionResult> GetReferralPdfs(ReferralsToPrint printReferrals)
+        {
+            var content = await GetReferralHtmlPages(printReferrals);
+
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                return new StatusCodeResult(500);
+            }
+
+            return await pdfConverter.ConvertHtmlToPdfAsync(content);
         }
 
         public async Task<string> GetReferralHtmlPages(ReferralsToPrint printReferrals)
@@ -66,9 +81,14 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
         {
             var handleBars = Handlebars.Create();
 
+            var result = string.Empty;
             var itemsHtml = string.Empty;
+            var summaryBreakCount = 0;
+            var printedCount = 0;
             foreach (var referral in referrals)
             {
+                summaryBreakCount += 1;
+                printedCount += 1;
                 var partialViewType = MapToReferralType(referral.Type);
 
                 handleBars.RegisterTemplate("titlePartial", partialViewType.GetDisplayName());
@@ -85,14 +105,26 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
                 var itemResult = template(referral);
 
                 itemsHtml = $"{itemsHtml}{itemResult}";
+
+                if (summaryBreakCount == 3 || printedCount == referrals.Count())
+                {
+                    summaryBreakCount = 0;
+                    handleBars.RegisterTemplate("summaryItemsPartial", itemsHtml);
+
+                    var mainTemplate = handleBars.Compile(TemplateLoader.LoadTemplate(ReferalMainViews.Summary.ToString()));
+
+                    var data = new { purchaser = referrals.First().Purchaser };
+                    result = $"{result}{mainTemplate(data)}";
+                    itemsHtml = string.Empty;
+                }
             }
 
-            handleBars.RegisterTemplate("summaryItemsPartial", itemsHtml);
+            //handleBars.RegisterTemplate("summaryItemsPartial", itemsHtml);
 
-            var mainTemplate = handleBars.Compile(TemplateLoader.LoadTemplate(ReferalMainViews.Summary.ToString()));
+            //var mainTemplate = handleBars.Compile(TemplateLoader.LoadTemplate(ReferalMainViews.Summary.ToString()));
 
-            var data = new { purchaser = referrals.First().Purchaser };
-            var result = mainTemplate(data);
+            //var data = new { purchaser = referrals.First().Purchaser };
+            //var result = mainTemplate(data);
 
             return result;
         }
