@@ -60,10 +60,11 @@ export class LodgingReferralComponent extends AbstractReferralComponent<LodgingR
     this.referral.validDates = rd;
 
     // update array for number dropdowns
-    this.nights = range(1, this.referral.validDates.days + 1); // [1..n]
+    const max = this.referral.validDates.days;
+    this.nights = range(1, max + 1); // [1..max]
 
     // update any dropdowns that exceed max
-    if (this.f.numNights.value > this.nights) { this.f.numNights.setValue(+this.nights); }
+    if (this.f.numNights.value > max) { this.f.numNights.setValue(max); }
   }
 
   viewRates() {
