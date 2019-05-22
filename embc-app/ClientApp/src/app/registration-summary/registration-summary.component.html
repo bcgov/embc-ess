@@ -104,17 +104,17 @@
     </section>
 
     <!-- safety check: no task number means this registration isn't finalized -->
-    <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
+    <!-- <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
       <h2 class="blue-header font-weight-bold">ADD REFERRALS</h2>
 
-      <div class="feature-block card d-block border-0">
-        <!-- TODO: only display 'and family' if familyMembers > 0 ? -->
-        <h3>Add referrals for
+      <div class="feature-block card d-block border-0"> -->
+    <!-- TODO: only display 'and family' if familyMembers > 0 ? -->
+    <!-- <h3>Add referrals for
           {{registration.headOfHousehold?.lastName + ', ' + registration.headOfHousehold?.firstName}} and family</h3>
 
-        <app-form-field>
-          <!-- TODO: pre-select HOH? -->
-          <label for="purchaser">Who will be responsible for purchasing goods?</label>
+        <app-form-field> -->
+    <!-- TODO: pre-select HOH? -->
+    <!-- <label for="purchaser">Who will be responsible for purchasing goods?</label>
           <select class="form-control w-25" id="purchaser" [(ngModel)]="selectedPurchaser">
             <option [ngValue]="null">Please select--</option>
             <option *ngIf="registration.headOfHousehold" [value]="registration.headOfHousehold.lastName + ', ' + registration.headOfHousehold.firstName">
@@ -133,14 +133,14 @@
           ADD REFERRALS
         </button>
       </div>
-    </section>
+    </section> -->
 
     <!-- safety check: no task number means this registration isn't finalized -->
-    <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
+    <!-- <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
       <h2 class="blue-header font-weight-bold">LIST OF REFERRALS</h2>
 
       <app-referral-table [registration]="registration"></app-referral-table>
-    </section>
+    </section> -->
   </div>
 </app-layout-main>
 
