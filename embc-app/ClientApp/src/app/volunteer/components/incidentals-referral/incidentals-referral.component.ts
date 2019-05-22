@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { IncidentalsReferral } from 'src/app/core/models';
@@ -17,11 +17,6 @@ const MAXIMUM_PER_PERSON = 50.00;
 })
 export class IncidentalsReferralComponent extends AbstractReferralComponent<IncidentalsReferral> implements OnInit, OnDestroy {
   private ratesModal: NgbModalRef = null;
-
-  get maximumAmount() {
-    const n = this.selected.length;
-    return (n * MAXIMUM_PER_PERSON);
-  }
 
   constructor(
     public fb: FormBuilder,
@@ -58,6 +53,21 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent<Inci
   // NB: this is called when date component is initialized and whenever its data changes
   updateReferralDate(rd: ReferralDate) {
     this.referral.validDates = rd;
+  }
+
+  maximumAmount(x: FormGroup | IncidentalsReferral): number {
+    if (x) {
+      if (x instanceof FormGroup) {
+        // get data from form
+        const n = x.value.evacuees.length;
+        return (n * MAXIMUM_PER_PERSON);
+      } else {
+        // get data from referral
+        const n = x.evacuees.length;
+        return (n * MAXIMUM_PER_PERSON);
+      }
+    }
+    return 0;
   }
 
   viewRates() {

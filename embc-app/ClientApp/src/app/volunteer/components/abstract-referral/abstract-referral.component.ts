@@ -82,7 +82,6 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
 
   displayReferral(referral: T) {
     if (referral && !this.readOnly) {
-      console.log('REFERRAL-FORM: flowing data into form')
       this.form.reset();
       this.fromModel(referral);
     }
