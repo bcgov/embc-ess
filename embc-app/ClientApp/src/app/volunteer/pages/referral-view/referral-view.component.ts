@@ -59,7 +59,7 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
           this.goHome();
         } else {
           this.referral = x.referral;
-          this.referral.dates = { from: x.referral.validFrom, to: x.referral.validTo };
+          this.referral.validDates = { from: x.referral.validFrom, to: x.referral.validTo };
         }
       }, err => {
         this.loading = false;
@@ -96,7 +96,7 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
   deactivate(content: TemplateRef<any>) {
     this.deactivating = true;
 
-    this.confirmModal = this.modals.open(content);
+    this.confirmModal = this.modals.open(content, { centered: true });
 
     // handle result
     this.confirmModal.result.then(() => {
@@ -108,7 +108,7 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
         .subscribe(() => {
           // deactivate succeeded
           this.deactivating = false;
-          this.notifications.addNotification('Referral deactivated successfully');
+          this.notifications.addNotification('Referral deactivated successfully', 'success');
           // return to summary page
           this.back();
         }, err => {

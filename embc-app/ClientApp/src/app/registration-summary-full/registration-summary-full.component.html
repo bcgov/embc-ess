@@ -60,7 +60,7 @@
       </li>
       <li>
         <span class="name">Date of Birth:</span>
-        <span class="value">{{registration.headOfHousehold?.dob | date : 'MM/dd/yyyy'}}</span>
+        <span class="value">{{registration.headOfHousehold?.dob | date : 'MMM-dd-yyyy'}}</span>
       </li>
     </ul>
 
@@ -88,7 +88,7 @@
       </li>
       <li>
         <span class="name">Date of Birth:</span>
-        <span class="value">{{fm?.dob | date : 'MM/dd/yyyy'}}</span>
+        <span class="value">{{fm?.dob | date : 'MMM-dd-yyyy'}}</span>
       </li>
     </ul>
 
@@ -282,60 +282,60 @@
       </li>
     </ul>
 
-    <div *ngIf="registration.familyRecoveryPlan">
+    <div>
       <h2>Family Recovery Plan</h2>
       <ul class="summary">
         <li>
-          <span>&nbsp;{{registration.familyRecoveryPlan}}</span>
+          <span>{{registration.familyRecoveryPlan || '&nbsp;'}}</span>
         </li>
       </ul>
     </div>
 
-    <div *ngIf="hasReferrals">
+    <div>
       <h2>Referrals Made Within Reception Centre</h2>
       <ul class="summary">
-        <li *ngIf="!!registration.hasInquiryReferral">
+        <li>
           <span class="name">Inquiry Referral:</span>
           <span class="value">{{registration.hasInquiryReferral | yesNo}}</span>
         </li>
-        <li *ngIf="!!registration.hasHealthServicesReferral">
+        <li>
           <span class="name">Health Services Referral:</span>
           <span class="value">{{registration.hasHealthServicesReferral | yesNo}}</span>
         </li>
-        <li *ngIf="!!registration.hasFirstAidReferral">
+        <li>
           <span class="name">First Aid Referral:</span>
           <span class="value">{{registration.hasFirstAidReferral | yesNo}}</span>
         </li>
-        <li *ngIf="!!registration.hasPersonalServicesReferral">
+        <li>
           <span class="name">Personal Services Referral:</span>
           <span class="value">{{registration.hasPersonalServicesReferral | yesNo}}</span>
         </li>
-        <li *ngIf="!!registration.hasChildCareReferral">
+        <li>
           <span class="name">Child Care Referral:</span>
           <span class="value">{{registration.hasChildCareReferral | yesNo}}</span>
         </li>
-        <li *ngIf="!!registration.hasPetCareReferral">
+        <li>
           <span class="name">Pet Care Referral:</span>
           <span class="value">{{registration.hasPetCareReferral | yesNo}}</span>
         </li>
       </ul>
     </div>
 
-    <div *ngIf="registration.externalReferralsDetails">
+    <div>
       <h2>Other Agency Referrals</h2>
       <ul class="summary">
         <li>
-          <span>&nbsp;{{registration.externalReferralsDetails}}</span>
+          <span>{{registration.externalReferralsDetails || '&nbsp;'}}</span>
         </li>
       </ul>
     </div>
   </section>
 
-  <section *ngIf="registration.followUpDetails" class="mt-4">
+  <section class="mt-4">
     <h2 class="blue-header font-weight-bold">INTERNAL CASE NOTES</h2>
     <ul class="summary mx-3">
       <li>
-        <span>&nbsp;{{registration.followUpDetails}}</span>
+        <span class='internal-case-notes'>{{registration.internalCaseNotes || '&nbsp;'}}</span>
       </li>
     </ul>
   </section>

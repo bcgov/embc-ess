@@ -6,24 +6,25 @@ namespace Gov.Jag.Embc.Public.Seeder
     public interface ISeederRepository
     {
         IEnumerable<Community> GetCommunities();
-        void AddOrUpdateCommunities(List<Community> communities);
+
+        void AddOrUpdateCommunities(IEnumerable<Community> communities);
 
         IEnumerable<Country> GetCountries();
 
         IEnumerable<Region> GetRegions();
 
-        void AddOrUpdateRegions(List<Region> regions);
-        
-        void AddOrUpdateFamilyRelationshipTypes(List<FamilyRelationshipType> familyRelationshipTypes);
+        void AddOrUpdateRegions(IEnumerable<Region> regions);
 
-        void AddOrUpdateIncidentTasks(List<IncidentTask> incidentTasks);
+        void AddOrUpdateFamilyRelationshipTypes(IEnumerable<FamilyRelationshipType> familyRelationshipTypes);
+
+        void AddOrUpdateIncidentTasks(IEnumerable<IncidentTask> incidentTasks);
 
         IEnumerable<Organization> GetOrganizations();
 
-        void AddOrUpdateOrganizations(List<Organization> organizations);
+        void AddOrUpdateOrganizations(IEnumerable<Organization> organizations);
 
-        void AddOrUpdateVolunteers(List<Volunteer> volunteers);
+        void AddOrUpdateVolunteers(IEnumerable<Volunteer> volunteers);
 
-        void AddOrUpdateCountries(List<Country> countries);
+        void AddOrUpdateCountries(IEnumerable<Country> countries);
     }
 }

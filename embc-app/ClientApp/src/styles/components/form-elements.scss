@@ -44,6 +44,26 @@
   }
 }
 
+.input-with-icon {
+  position: relative;
+
+  input {
+    color: #6b6b6b;
+    min-height: auto;
+    width: 10rem;
+    padding-left: 2rem;
+  }
+
+  span {
+    position: absolute;
+    left: 15px;
+    top: 1px;
+    padding: 1px 5px;
+    font-size: 20px;
+    color: #6b6b6b;
+  }
+}
+
 // VALIDATION
 
 // required field indicators

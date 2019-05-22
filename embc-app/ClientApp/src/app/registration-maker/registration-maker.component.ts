@@ -69,6 +69,9 @@ export class RegistrationMakerComponent implements OnInit {
   // path for this user to route from
   path: string;
 
+  readonly dateMask = [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]; // yyyy-mm-dd
+  readonly phoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]; // 999-999-9999
+
   // generic validation helper
   private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
   private validationHelper: ValidationHelper;
@@ -237,11 +240,11 @@ export class RegistrationMakerComponent implements OnInit {
         active: fmbr.active || null,
         sameLastNameAsEvacuee: fmbr.sameLastNameAsEvacuee,
         firstName: [fmbr.firstName, Validators.required],
-        lastName: [fmbr.lastName, Validators.required],
+        lastName: [this.asStringAndUpperCase(fmbr.lastName), Validators.required],
         nickname: fmbr.nickname,
         initials: fmbr.initials,
         gender: fmbr.gender,
-        dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: check this!!
+        dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
         relationshipToEvacuee: [fmbr.relationshipToEvacuee, Validators.required],
       });
     } else {
@@ -252,7 +255,7 @@ export class RegistrationMakerComponent implements OnInit {
         lastName: ['', Validators.required],
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
         relationshipToEvacuee: [null, Validators.required],
       });
     }
@@ -268,7 +271,7 @@ export class RegistrationMakerComponent implements OnInit {
       externalReferralsDetails: '',
       facility: [null, Validators.required],
       familyRecoveryPlan: [null],
-      followUpDetails: [null],
+      internalCaseNotes: [null],
       insuranceCode: [null, Validators.required],  // one of ['yes', 'yes-unsure', 'no', 'unsure']
       medicationNeeds: [null, Validators.required],
       selfRegisteredDate: null,
@@ -290,8 +293,9 @@ export class RegistrationMakerComponent implements OnInit {
       requiresSupport: [null, Validators.required],
 
       // HOH fields that we decided to put at the parent form level to simplify things
-      phoneNumber: '', // only BC phones will be validates so keep validators out of here...
+      phoneNumber: '', // only BC phones will be validated so keep validators out of here...
       phoneNumberAlt: '',
+
       email: ['', Validators.email],
 
       primaryResidence: this.formBuilder.group({
@@ -320,7 +324,7 @@ export class RegistrationMakerComponent implements OnInit {
         nickname: '',
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
       }),
 
       familyMembers: this.formBuilder.array([]), // array of formGroups
@@ -439,7 +443,7 @@ export class RegistrationMakerComponent implements OnInit {
         externalReferralsDetails: r.externalReferralsDetails as string,
         facility: r.facility as string,
         familyRecoveryPlan: r.familyRecoveryPlan as string,
-        followUpDetails: r.followUpDetails as string,
+        internalCaseNotes: r.internalCaseNotes as string,
         insuranceCode: r.insuranceCode as string,
         medicationNeeds: r.medicationNeeds as boolean,
         selfRegisteredDate: r.selfRegisteredDate as string,
@@ -468,7 +472,7 @@ export class RegistrationMakerComponent implements OnInit {
           // id: r.headOfHousehold.id as string,
           // active: r.headOfHousehold.active as boolean,
           firstName: r.headOfHousehold.firstName as string,
-          lastName: r.headOfHousehold.lastName as string,
+          lastName: this.asStringAndUpperCase(r.headOfHousehold.lastName),
           nickname: r.headOfHousehold.nickname as string,
           initials: r.headOfHousehold.initials as string,
           gender: r.headOfHousehold.gender as string,
@@ -480,6 +484,7 @@ export class RegistrationMakerComponent implements OnInit {
         // these belong to the HOH but we placed them here to simplify the HTML markup...
         phoneNumber: r.headOfHousehold.phoneNumber as string,
         phoneNumberAlt: r.headOfHousehold.phoneNumberAlt as string,
+
         email: r.headOfHousehold.email as string,
 
         // primaryResidence: r.headOfHousehold.primaryResidence as Address,
@@ -558,7 +563,7 @@ export class RegistrationMakerComponent implements OnInit {
         .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
-          this.notificationQueueService.addNotification('Evacuee added successfully');
+          this.notificationQueueService.addNotification('Evacuee added successfully', 'success');
           // done adding the entry. Clear the reference key.
           this.uniqueKeyService.clearKey();
           // go back to the main dashboard
@@ -570,7 +575,7 @@ export class RegistrationMakerComponent implements OnInit {
         .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
-          this.notificationQueueService.addNotification('Evacuee updated successfully');
+          this.notificationQueueService.addNotification('Evacuee updated successfully', 'success');
           // done editing the entry. Clear the reference key.
           this.uniqueKeyService.clearKey();
           // go back to the main dashboard
@@ -624,7 +629,7 @@ export class RegistrationMakerComponent implements OnInit {
       externalReferralsDetails: this.asStringAndTrim(values.externalReferralsDetails),
       facility: values.facility as string,
       familyRecoveryPlan: this.asStringAndTrim(values.familyRecoveryPlan),
-      followUpDetails: this.asStringAndTrim(values.followUpDetails),
+      internalCaseNotes: this.asStringAndTrim(values.internalCaseNotes),
       insuranceCode: values.insuranceCode as string,
       medicationNeeds: values.medicationNeeds as boolean,
       registeringFamilyMembers: values.registeringFamilyMembers as string, // 'yes' or 'no'
@@ -714,16 +719,23 @@ export class RegistrationMakerComponent implements OnInit {
     return r;
   }
 
-  asStringAndTrim(value: any): string {
+  private asStringAndTrim(value: any): string {
     const s = value as string;
     return s ? s.trim() : null;
   }
+
+  private asStringAndUpperCase(value: any): string {
+    const s = value as string;
+    return s ? s.toUpperCase() : null;
+  }
+
   cancel() {
     // clear the loaded record if available
     this.uniqueKeyService.clearKey();
     // navigate back home
     this.router.navigate([`/${this.path}/registrations`]);
   }
+
   // --------------------HELPERS-----------------------------------------
   isBcAddress(address: Address): boolean {
     return isBcAddress(address);
@@ -753,7 +765,7 @@ export class RegistrationMakerComponent implements OnInit {
       externalReferralsDetails: null,
       facility: null,
       familyRecoveryPlan: null,
-      followUpDetails: null,
+      internalCaseNotes: null,
       insuranceCode: null,
       medicationNeeds: null,
       registrationCompletionDate: null,

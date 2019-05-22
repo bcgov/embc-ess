@@ -1,27 +1,28 @@
 import { Evacuee, Supplier } from './';
 import { ReferralDate } from './referral-date';
+import { ListResult } from './list-result';
 
-type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'LODGING' | 'TRANSPORTATION');
+export type ReferralType = ('FOOD' | 'INCIDENTALS' | 'CLOTHING' | 'LODGING' | 'TRANSPORTATION');
+export type FoodSubType = ('RESTAURANT' | 'GROCERIES');
+export type LodgingSubType = ('HOTEL' | 'BILLETING' | 'GROUP');
+export type TransportationSubType = ('TAXI' | 'OTHER');
 
-interface ReferralBase {
-  id: string;
+export interface ReferralBase {
+  essNumber: string;
+  referralId: string;
   active: boolean;
   type: ReferralType;
   subType?: string;
   purchaser: string;
-  dates: ReferralDate;
-  evacuees: Array<{
-    evacuee: Evacuee,
-    selected: boolean
-  }>;
+  validDates: ReferralDate;
+  evacuees: Array<Evacuee>;
   totalAmount: number; // NB: set to 0 if not used
   supplier: Supplier;
   comments: string;
-  confirmChecked: boolean;
 }
 
 export interface FoodReferral extends ReferralBase {
-  subType?: ('RESTAURANT' | 'GROCERIES');
+  subType?: FoodSubType;
   numBreakfasts?: number;
   numLunches?: number;
   numDinners?: number;
@@ -37,22 +38,65 @@ export interface ClothingReferral extends ReferralBase {
   extremeWinterConditions: boolean;
 }
 
-// tslint:disable-next-line: no-empty-interface
 export interface LodgingReferral extends ReferralBase {
-  subType?: ('HOTEL' | 'BILLETING' | 'GROUP');
-  numNights: number;
+  subType?: LodgingSubType;
+  numNights?: number;
   numRooms?: number;
 }
 
 // tslint:disable-next-line: no-empty-interface
 export interface TransportationReferral extends ReferralBase {
-  subType?: ('TAXI' | 'OTHER');
+  subType?: TransportationSubType;
   fromAddress?: string;
   toAddress?: string;
   modeTransport?: string;
 }
 
+// used to POST (create new) referrals
+export interface ReferralPost {
+  confirmChecked: boolean;
+  referrals: Array<Partial<ReferralPostItem>>;
+}
+
+export interface ReferralPostItem {
+  id: string;
+  essNumber: string;
+  referralId: string;
+  active: boolean;
+  type: ReferralType;
+  subType?: string;
+  purchaser: string;
+  validDates: ReferralDate;
+  evacuees: Array<Evacuee>;
+  totalAmount: number; // NB: set to 0 if not used
+  supplier: Supplier;
+  comments: string;
+
+  numBreakfasts?: number;
+  numLunches?: number;
+  numDinners?: number;
+  numDaysMeals?: number;
+  numNights?: number;
+  numRooms?: number;
+  approvedItems?: string;
+  extremeWinterConditions?: boolean;
+  fromAddress?: string;
+  toAddress?: string;
+  modeTransport?: string;
+}
+
+// response from POST API call
+export interface ReferralSuccess {
+  registrationId: string;
+  referrals: Array<{ referralId: string }>;
+}
+
 export type Referral = FoodReferral | IncidentalsReferral | ClothingReferral | LodgingReferral | TransportationReferral;
+
+export interface RawReferralCollection {
+  registrationId: string;
+  referrals: ListResult<Referral>;
+}
 
 // --------------------HELPERS-----------------------------------------
 

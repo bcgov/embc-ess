@@ -1,11 +1,8 @@
-using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Models.Db;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Security.Claims;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -40,7 +37,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
     public static class ModelBuilderExtensions
     {
-        public static void ShadowProperties(this ModelBuilder modelBuilder)
+        public static void AddShadowProperties(this ModelBuilder modelBuilder)
         {
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
@@ -55,10 +52,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         }
 
         private static readonly MethodInfo SetAuditingShadowPropertiesMethodInfo = typeof(ModelBuilderExtensions)
-            .GetMethods(BindingFlags.Public | BindingFlags.Static)
+            .GetMethods(BindingFlags.NonPublic | BindingFlags.Static)
             .Single(t => t.IsGenericMethod && t.Name == "SetAuditingShadowProperties");
 
-        public static void SetAuditingShadowProperties<T>(ModelBuilder modelBuilder) where T : class, IAuditableEntity
+        private static void SetAuditingShadowProperties<T>(ModelBuilder modelBuilder) where T : class, IAuditableEntity
         {
             modelBuilder.Entity<T>().Property<DateTime>("CreatedDateTime").IsRequired().HasDefaultValueSql("GetUtcDate()");
             modelBuilder.Entity<T>().Property<string>("CreatedByUserId")

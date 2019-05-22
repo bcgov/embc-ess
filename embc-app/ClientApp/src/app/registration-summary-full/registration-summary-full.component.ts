@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RegistrationService } from 'src/app/core/services/registration.service';
 import { Registration, Address, isBcAddress } from 'src/app/core/models';
 import { GENDER_OPTIONS, INSURANCE_OPTIONS } from '../constants';
@@ -19,6 +19,7 @@ export class RegistrationSummaryFullComponent implements OnInit {
   loading = true;
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private registrationService: RegistrationService,
     private authService: AuthService,
@@ -29,10 +30,13 @@ export class RegistrationSummaryFullComponent implements OnInit {
     // get the path for routing
     this.authService.path.subscribe(p => this.path = p);
 
+    // get URL param
+    const reason = this.route.snapshot.paramMap.get('reason');
+
     // get lookup key and load registration data
     const key = this.uniqueKeyService.getKey();
     if (key) {
-      this.registrationService.getRegistrationById(key)
+      this.registrationService.getRegistrationById(key, reason)
         .subscribe(r => {
           this.loading = false;
           if (!r.id || !r.essFileNumber) {
@@ -89,15 +93,6 @@ export class RegistrationSummaryFullComponent implements OnInit {
     // save the key for lookup. This only ever links to the editor
     this.uniqueKeyService.setKey(this.registration.id);
     this.router.navigate([`/${this.path}/registration`]);
-  }
-
-  get hasReferrals(): boolean {
-    return this.registration.hasInquiryReferral
-      || this.registration.hasHealthServicesReferral
-      || this.registration.hasFirstAidReferral
-      || this.registration.hasPersonalServicesReferral
-      || this.registration.hasChildCareReferral
-      || this.registration.hasPetCareReferral;
   }
 
 }

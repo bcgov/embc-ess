@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 import { CoreModule } from '../core.module';
-import { Registration, ListResult } from '../models';
 import { RestService } from './rest.service';
-import { HttpResponse } from '@angular/common/http';
+import { Registration, ListResult } from '../models';
 import { SearchQueryParameters } from '../models/search-interfaces';
 
 @Injectable({
@@ -52,11 +52,44 @@ export class RegistrationService extends RestService {
       );
   }
 
-  getRegistrationById(id: string): Observable<Registration> {
-    return this.http.get<Registration>(`api/registrations/${id}`, { headers: this.headers })
+  // NB: if registration is not finalized and no reason is provided, this will fail with response 400
+  getRegistrationById(id: string, reason: string = null): Observable<Registration> {
+    const params = { reason };
+    return this.http.get<Registration>(`api/registrations/${id}`, { headers: this.headers, params })
       .pipe(
         retry(3),
         catchError(this.handleError),
       );
   }
+
+  async printReferrals(registrationId: string, referralIds: string[], addSummary: boolean): Promise<void> {
+    const isMS = window.navigator.msSaveOrOpenBlob ? true : false; // check if IE, Edge, etc
+    const blob = await this.getReferralPdfs(registrationId, referralIds, addSummary);
+
+    // as of May 2019 ...
+    // - IE11 can't open a "blob" URL
+    // - Edge throws an error creating URL or referencing it
+    // ... so call the MS-specific feature for them
+    if (isMS) {
+      // save PDF file
+      const filename = `ESS${registrationId}.pdf`; // FUTURE: add date stamp to filename?
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else {
+      // open PDF in new tab
+      const tab = window.open();
+      const url = URL.createObjectURL(blob);
+      tab.location.href = url;
+    }
+  }
+
+  private getReferralPdfs(registrationId: string, referralIds: string[], addSummary: boolean): Promise<Blob> {
+    const data = { ReferralIds: referralIds, AddSummary: addSummary };
+    return this.http.post<Blob>(`api/registrations/${registrationId}/referrals/referralPdfs`, data, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
 }

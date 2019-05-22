@@ -22,9 +22,9 @@
               <div class="col-3">
                 Task #: {{registration.incidentTask?.taskNumber}}
               </div>
-              <div class="col">
+              <div class="col px-0">
                 Self Registration Date &amp; Time:
-                {{registration.selfRegisteredDate | date : 'MMM-dd-yyyy, hh:mm a'}}
+                {{registration.selfRegisteredDate | dateTimeFormatPipe}}
               </div>
               <div class="col-3">
                 File Status:
@@ -36,9 +36,9 @@
               <div class="col-3">
                 ESS File #: {{registration.essFileNumber}}
               </div>
-              <div class="col">
+              <div class="col px-0">
                 Registration Completed Date &amp; Time:
-                {{registration.registrationCompletionDate | date : 'MMM-dd-yyyy, hh:mm a'}}
+                {{registration.registrationCompletionDate | dateTimeFormatPipe}}
               </div>
               <div class="col-3">
                 <!-- Restricted File:
@@ -95,7 +95,7 @@
         </li>
         <li>
           <span class="name">Internal Case Notes:</span>
-          <span class="value">{{registration.followUpDetails | yesNo}}</span>
+          <span class="value">{{registration.hasInternalCaseNotes | yesNo}}</span>
         </li>
       </ul>
       <div class="mt-4 mx-3">
@@ -104,19 +104,19 @@
     </section>
 
     <!-- safety check: no task number means this registration isn't finalized -->
-    <!-- <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
+    <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
       <h2 class="blue-header font-weight-bold">ADD REFERRALS</h2>
 
-      <div class="feature-block card d-block border-0"> -->
-    <!-- TODO: only display 'and family' if familyMembers > 0 ? -->
-    <!-- <h3>Add referrals for
+      <div class="feature-block card d-block border-0">
+        <!-- TODO: only display 'and family' if familyMembers > 0 ? -->
+        <h3>Add referrals for
           {{registration.headOfHousehold?.lastName + ', ' + registration.headOfHousehold?.firstName}} and family</h3>
 
-        <app-form-field> -->
-    <!-- TODO: pre-select HOH? -->
-    <!-- <label for="purchaser">Who will be responsible for purchasing goods?</label>
+        <app-form-field>
+          <!-- TODO: pre-select HOH? -->
+          <label for="purchaser">Who will be responsible for purchasing goods?</label>
           <select class="form-control w-25" id="purchaser" [(ngModel)]="selectedPurchaser">
-            <option value="null">Please select--</option>
+            <option [ngValue]="null">Please select--</option>
             <option *ngIf="registration.headOfHousehold" [value]="registration.headOfHousehold.lastName + ', ' + registration.headOfHousehold.firstName">
               {{registration.headOfHousehold.lastName}}, {{registration.headOfHousehold.firstName}}
             </option>
@@ -129,18 +129,18 @@
           <input type="text" *ngIf="selectedPurchaser === 'other'" class="form-control w-25 ml-3" [(ngModel)]="otherPurchaser" placeholder="Please specify">
         </app-form-field>
 
-        <button type="button" class="btn btn-primary d-block" [disabled]="!purchaser" (click)="addReferrals()">
+        <button type="button" class="btn btn-primary d-block" [disabled]="!getPurchaser()" (click)="addReferrals()">
           ADD REFERRALS
         </button>
       </div>
-    </section> -->
+    </section>
 
     <!-- safety check: no task number means this registration isn't finalized -->
-    <!-- <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
+    <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
       <h2 class="blue-header font-weight-bold">LIST OF REFERRALS</h2>
 
       <app-referral-table [registration]="registration"></app-referral-table>
-    </section> -->
+    </section>
   </div>
 </app-layout-main>
 
@@ -161,16 +161,16 @@
     <p>You are requesting to view an evacuee file. Please confirm that you have permission by selecting a reason code below.</p>
 
     <select class="form-control w-50" [(ngModel)]="reason">
-      <option value="null">Please select---</option>
-      <option value="error">Evacuee made an error</option>
-      <option value="error">Evacuee wants to make an addition</option>
-      <option value="error">Task number is incorrect</option>
-      <option value="error">Incomplete registration</option>
-      <option value="error">Administrative task</option>
+      <option [ngValue]="null">Please select---</option>
+      <option value="evacueeError">Evacuee made an error</option>
+      <option value="evacueeAddition">Evacuee wants to make an addition</option>
+      <option value="invalidTaskNumber">Task number is incorrect</option>
+      <option value="incompleteRegistration">Incomplete registration</option>
+      <option value="adminTask">Administrative task</option>
     </select>
 
     <div class="mt-4">
-      <button type="button" class="btn btn-primary" [disabled]="reason === 'null'" (click)="confirmModal.close()">Submit</button>
+      <button type="button" class="btn btn-primary" [disabled]="reason == null" (click)="confirmModal.close()">Submit</button>
     </div>
   </div>
 </ng-template>

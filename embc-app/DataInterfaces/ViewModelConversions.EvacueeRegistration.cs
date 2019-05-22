@@ -34,7 +34,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 DisasterAffectDetails = source.DisasterAffectDetails,
                 ExternalReferralsDetails = source.ExternalReferralsDetails,
                 FamilyRecoveryPlan = source.FamilyRecoveryPlan,
-                FollowUpDetails = source.FollowUpDetails,
+                InternalCaseNotes = source.FollowUpDetails,
                 HasInquiryReferral = source.HasInquiryReferral,
                 HasHealthServicesReferral = source.HasHealthServicesReferral,
                 HasFirstAidReferral = source.HasFirstAidReferral,
@@ -44,7 +44,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 SelfRegisteredDate = source.SelfRegisteredDate,
                 RegistrationCompletionDate = source.RegistrationCompletionDate,
                 HeadOfHousehold = source.Evacuees.Single(e => e.EvacueeType == EvacueeType.HeadOfHousehold).ToViewModel(source) as ViewModels.HeadOfHousehold,
-                HostCommunity = source.HostCommunity?.ToViewModel(),
+                HostCommunity = mapper.Map<ViewModels.Community>(source.HostCommunity),
                 IncidentTask = source.IncidentTask?.ToViewModel(),
                 DeclarationAndConsent = source.DeclarationAndConsent
             };
@@ -73,7 +73,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 IncidentTask = fullViewModel.IncidentTask,
                 HostCommunity = fullViewModel.HostCommunity,
                 Active = fullViewModel.Active ?? false,
-                HasFollowUpDetails = !string.IsNullOrWhiteSpace(fullViewModel.FollowUpDetails),
+                HasInternalCaseNotes = !string.IsNullOrWhiteSpace(fullViewModel.InternalCaseNotes),
                 Facility = fullViewModel.Facility
             };
 
@@ -108,7 +108,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 DisasterAffectDetails = source.DisasterAffectDetails,
                 ExternalReferralsDetails = source.ExternalReferralsDetails,
                 FamilyRecoveryPlan = source.FamilyRecoveryPlan,
-                FollowUpDetails = source.FollowUpDetails,
+                FollowUpDetails = source.InternalCaseNotes,
                 HasInquiryReferral = source.HasInquiryReferral,
                 HasHealthServicesReferral = source.HasHealthServicesReferral,
                 HasFirstAidReferral = source.HasFirstAidReferral,
@@ -204,8 +204,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             if (!isHeadOfHousehold)
             {
                 var resultFm = result as ViewModels.FamilyMember;
-                resultFm.RelationshipToEvacuee = source.EvacueeTypeCode == EvacueeType.ImmediateFamily.GetDisplayName()
-                    ? EvacueeType.ImmediateFamily.ToViewModel() : EvacueeType.ExtendedFamily.ToViewModel();
+                resultFm.RelationshipToEvacuee = mapper.Map<ViewModels.FamilyRelationshipType>(source.EvacueeTypeCode == EvacueeType.ImmediateFamily.GetDisplayName()
+                    ? EvacueeType.ImmediateFamily
+                    : EvacueeType.ExtendedFamily);
                 resultFm.SameLastNameAsEvacuee = source.SameLastNameAsEvacuee;
             }
             return result;
@@ -257,9 +258,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 AddressLine3 = source.AddressLine3,
                 PostalCode = source.PostalCode,
                 Province = source.Province,
-                Country = source.Country?.ToViewModel(),
+                Country = mapper.Map<ViewModels.Country>(source.Country),
                 AddressSubtype = source.AddressSubtypeCode,
-                Community = source.Community?.ToViewModel(),
+                Community = mapper.Map<ViewModels.Community>(source.Community),
                 City = source.City
             };
             return result;
