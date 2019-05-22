@@ -37,8 +37,9 @@ namespace embc_unit_tests
         //    Assert.Equal(referralIds.Count(), result.Count());
         //}
 
-        [Fact]
-        public async Task CanGetReferralHtmlPages()
+        [Theory]
+        [MemberData(nameof(GetReferrals), "100001")]
+        public async Task CanGetReferralHtmlPages(Gov.Jag.Embc.Public.ViewModels.Referral referral)
         {
             var ctx = EmbcDb;
             var di = new DataInterface(ctx, mapper);
@@ -51,27 +52,23 @@ namespace embc_unit_tests
 
             var registration = await di.CreateEvacueeRegistrationAsync(regVM);
 
-            var referral = ReferralGenerator.Generate(ReferralType.Transportation_Other, registration.Id);
             referral.EssNumber = registration.Id;
 
             var referralIds = new List<string>();
             var id = await di.CreateReferralAsync(referral);
             referralIds.Add(id);
 
-            var printReferrals = new ReferralsToPrint { ReferralIds = referralIds };
+            var printReferrals = new ReferralsToPrint { ReferralIds = referralIds, AddSummary = true };
 
-            //var result = service.CreateReferralHtmlContent();
             var content = await service.GetReferralHtmlPages(printReferrals);
 
-            //var pdfConverter = new PdfConverter();
-            //await pdfConverter.ConvertHtmlToPdfAsync(content);
             Assert.False(string.IsNullOrEmpty(content));
         }
 
         [Fact]
         public void CanGetAllTemplates()
         {
-            foreach (var template in EnumHelper<ReferralsService.ReferallMainViews>.GetValues())
+            foreach (var template in EnumHelper<ReferralsService.ReferalMainViews>.GetValues())
             {
                 var result = TemplateLoader.LoadTemplate(template.ToString());
                 Assert.NotNull(result);
