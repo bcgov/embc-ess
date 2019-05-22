@@ -32,6 +32,8 @@ export class ReferralMakerComponent implements OnInit {
   regId: string = null;
   purchaser: string = null;
   evacuees: Array<Evacuee> = [];
+  defaultDate: Date;
+  showDefaultDatePicker = false;
   confirmChecked = false;
 
   private triggerSubject = new Subject<void>();
@@ -82,6 +84,7 @@ export class ReferralMakerComponent implements OnInit {
         } else {
           this.registration = r;
           this.evacuees = this.createEvacueeList(r);
+          this.defaultDate = new Date(r.incidentTask.startDate);
         }
       });
   }
@@ -218,7 +221,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'INCIDENTALS',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };
@@ -232,7 +235,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'FOOD',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };
@@ -246,7 +249,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'LODGING',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };
@@ -260,7 +263,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'CLOTHING',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };
@@ -274,7 +277,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'TRANSPORTATION',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };
@@ -323,7 +326,16 @@ export class ReferralMakerComponent implements OnInit {
     const family = hoh.familyMembers || [];
     return [hoh, ...family];
   }
-
+  toggleDefaultDatePicker() {
+    if (this.showDefaultDatePicker) {
+      // ui element is shown so user is hiding the date picker so we need to reset it back to the incident start time
+      this.defaultDate = new Date(this.registration.incidentTask.startDate);
+      this.showDefaultDatePicker = false;
+    } else {
+      // ui element is hidden show the ui element
+      this.showDefaultDatePicker = true;
+    }
+  }
   // --------------------HELPERS-----------------------------------------
   remove(arr: [], i: number) {
     if (arr) { arr.splice(i, 1); }
