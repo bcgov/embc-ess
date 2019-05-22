@@ -41,8 +41,8 @@
 
                 <div class="mt-3" *ngIf="subType==='OTHER'">
                   <div class="row col">
-                    <label for="modeTransport_{{uuid}}" class="font-weight-normal">Please specify mode of transport</label>
-                    <input type="text" class="form-control" id="modeTransport_{{uuid}}" formControlName="modeTransport" placeholder="Please specify...">
+                    <label for="otherTransportModeDetails_{{uuid}}" class="font-weight-normal">Please specify mode of transport</label>
+                    <input type="text" class="form-control" id="otherTransportModeDetails_{{uuid}}" formControlName="otherTransportModeDetails" placeholder="Please specify...">
                   </div>
                 </div>
               </div>
@@ -140,7 +140,7 @@
       </li>
       <li *ngIf="referral.subType==='OTHER'">
         <span class="name">Mode of transport:</span>
-        <span class="value">{{referral.modeTransport}}</span>
+        <span class="value">{{referral.otherTransportModeDetails}}</span>
       </li>
       <li *ngIf="referral.subType==='OTHER'">
         <span class="name">Up to a total of:</span>

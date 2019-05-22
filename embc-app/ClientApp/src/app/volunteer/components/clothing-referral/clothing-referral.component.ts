@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { ClothingReferral } from 'src/app/core/models';
@@ -20,13 +20,6 @@ export class ClothingReferralComponent extends AbstractReferralComponent<Clothin
 
   // convenience getter for easy access to form fields
   get f() { return this.form.controls; }
-
-  get maximumAmount(): number {
-    const n = this.selected.length;
-    return this.f.extremeWinterConditions.value
-      ? (n * MAXIMUM_EXTREME)
-      : (n * MAXIMUM_PER);
-  }
 
   constructor(
     public fb: FormBuilder,
@@ -61,6 +54,25 @@ export class ClothingReferralComponent extends AbstractReferralComponent<Clothin
   // NB: this is called when date component is initialized and whenever its data changes
   updateReferralDate(rd: ReferralDate) {
     this.referral.validDates = rd;
+  }
+
+  maximumAmount(x: FormGroup | ClothingReferral): number {
+    if (x) {
+      if (x instanceof FormGroup) {
+        // get data from form
+        const n = x.value.evacuees.length;
+        return x.value.extremeWinterConditions
+          ? (n * MAXIMUM_EXTREME)
+          : (n * MAXIMUM_PER);
+      } else {
+        // get data from referral
+        const n = x.evacuees.length;
+        return x.extremeWinterConditions
+          ? (n * MAXIMUM_EXTREME)
+          : (n * MAXIMUM_PER);
+      }
+    }
+    return 0;
   }
 
   viewRates() {

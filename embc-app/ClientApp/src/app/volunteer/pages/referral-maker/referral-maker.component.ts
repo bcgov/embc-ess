@@ -32,6 +32,9 @@ export class ReferralMakerComponent implements OnInit {
   regId: string = null;
   purchaser: string = null;
   evacuees: Array<Evacuee> = [];
+  defaultDate: Date;
+  showDefaultDatePicker = false;
+  confirmChecked = false;
 
   private triggerSubject = new Subject<void>();
   submitTrigger = this.triggerSubject.asObservable();
@@ -81,6 +84,7 @@ export class ReferralMakerComponent implements OnInit {
         } else {
           this.registration = r;
           this.evacuees = this.createEvacueeList(r);
+          this.defaultDate = new Date(r.incidentTask.startDate);
         }
       });
   }
@@ -144,29 +148,30 @@ export class ReferralMakerComponent implements OnInit {
   // user clicked Finalize button
   finalize() {
     this.submitting = true;
+    if (this.confirmChecked === true) {
+      // assemble referrals
+      const referrals: Array<Partial<ReferralPostItem>> = [];
+      this.foodReferrals.forEach(r => referrals.push({ ...r.value }));
+      this.lodgingReferrals.forEach(r => referrals.push({ ...r.value }));
+      this.clothingReferrals.forEach(r => referrals.push({ ...r.value }));
+      this.transportationReferrals.forEach(r => referrals.push({ ...r.value }));
+      this.incidentalsReferrals.forEach(r => referrals.push({ ...r.value }));
 
-    // assemble referrals
-    const referrals: Array<Partial<ReferralPostItem>> = [];
-    this.foodReferrals.forEach(r => referrals.push({ ...r.value }));
-    this.lodgingReferrals.forEach(r => referrals.push({ ...r.value }));
-    this.clothingReferrals.forEach(r => referrals.push({ ...r.value }));
-    this.transportationReferrals.forEach(r => referrals.push({ ...r.value }));
-    this.incidentalsReferrals.forEach(r => referrals.push({ ...r.value }));
+      // get registration data
+      this.referralService.createReferrals(this.regId, { confirmChecked: true, referrals })
+        .subscribe(() => {
+          this.submitting = false;
+          this.notifications.addNotification('Referrals finalized successfully', 'success');
 
-    // get registration data
-    this.referralService.createReferrals(this.regId, { confirmChecked: true, referrals })
-      .subscribe(() => {
-        this.submitting = false;
-        this.notifications.addNotification('Referrals finalized successfully', 'success');
-
-        // redirect to summary page
-        // save the key for lookup
-        this.uniqueKeyService.setKey(this.registration.id);
-        this.router.navigate([`/${this.path}/registration/summary`]);
-      }, err => {
-        this.submitting = false;
-        console.log('Error =', err);
-      });
+          // redirect to summary page
+          // save the key for lookup
+          this.uniqueKeyService.setKey(this.registration.id);
+          this.router.navigate([`/${this.path}/registration/summary`]);
+        }, err => {
+          this.submitting = false;
+          console.log('Error =', err);
+        });
+    }
   }
 
   incidentalsReferralChange() {
@@ -216,7 +221,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'INCIDENTALS',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };
@@ -230,7 +235,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'FOOD',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };
@@ -244,7 +249,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'LODGING',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };
@@ -258,7 +263,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'CLOTHING',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };
@@ -272,7 +277,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'TRANSPORTATION',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };
@@ -321,7 +326,16 @@ export class ReferralMakerComponent implements OnInit {
     const family = hoh.familyMembers || [];
     return [hoh, ...family];
   }
-
+  toggleDefaultDatePicker() {
+    if (this.showDefaultDatePicker) {
+      // ui element is shown so user is hiding the date picker so we need to reset it back to the incident start time
+      this.defaultDate = new Date(this.registration.incidentTask.startDate);
+      this.showDefaultDatePicker = false;
+    } else {
+      // ui element is hidden show the ui element
+      this.showDefaultDatePicker = true;
+    }
+  }
   // --------------------HELPERS-----------------------------------------
   remove(arr: [], i: number) {
     if (arr) { arr.splice(i, 1); }
