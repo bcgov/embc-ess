@@ -6,10 +6,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Gov.Jag.Embc.Public.Utils;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 
 namespace Gov.Jag.Embc.Public.Services.Referrals
 {
@@ -158,6 +156,12 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
 
             [DisplayName("TRANSPORTATION")]
             Transportation
+        }
+
+        public bool IsValidReferralType(string type, string subType)
+        {
+            subType = string.IsNullOrEmpty(subType) ? "" : "_" + subType;
+            return Enum.GetNames(typeof(Models.Db.ReferralType)).Any(t => t.Equals($"{type}{subType}", StringComparison.OrdinalIgnoreCase));
         }
 
         private ReferralPartialView MapToReferralType(string referralType)
