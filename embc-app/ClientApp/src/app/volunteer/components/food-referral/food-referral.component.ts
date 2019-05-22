@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild, AfterViewInit, SimpleChanges, OnChanges } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import range from 'lodash/range';
 
-import { FoodReferral, Supplier } from 'src/app/core/models';
+import { FoodReferral } from 'src/app/core/models';
 import { ReferralDate } from 'src/app/core/models/referral-date';
 import { FoodRatesComponent } from 'src/app/shared/modals/food-rates/food-rates.component';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
@@ -27,22 +27,6 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
   get f() { return this.form.controls; }
 
   get subType() { return this.f.subType.value; }
-
-  get maximumAmount(): number {
-    if (this.subType === 'RESTAURANT') {
-      const b = this.f.numBreakfasts.value * BREAKFAST;
-      const l = this.f.numLunches.value * LUNCH;
-      const d = this.f.numDinners.value * DINNER;
-      const n = this.selected.length;
-      return (b + l + d) * n;
-    }
-    if (this.subType === 'GROCERIES') {
-      const d = this.f.numDaysMeals.value;
-      const n = this.selected.length;
-      return d * GROCERIES * n;
-    }
-    return 0;
-  }
 
   constructor(
     public fb: FormBuilder,
@@ -83,7 +67,7 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
   toModel(formValue: any): FoodReferral {
     const p = super.toModel(formValue);
     // if RESTAURANT then assign maximumAmount; otherwise leave whatever the user entered
-    if (this.subType === 'RESTAURANT') { p.totalAmount = this.maximumAmount; }
+    if (this.subType === 'RESTAURANT') { p.totalAmount = this.maximumAmount(this.form); }
     return p;
   }
 
@@ -95,10 +79,45 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
     this.days = range(1, this.referral.validDates.days + 1); // [1..n]
 
     // update any dropdowns that exceed max
-    if (this.f.numBreakfasts.value > this.days) { this.f.numBreakfasts.setValue(+this.days); }
-    if (this.f.numLunches.value > this.days) { this.f.numLunches.setValue(+this.days); }
-    if (this.f.numDinners.value > this.days) { this.f.numDinners.setValue(+this.days); }
-    if (this.f.numDaysMeals.value > this.days) { this.f.numDaysMeals.setValue(+this.days); }
+    if (this.f.numBreakfasts.value > this.days) { this.f.numBreakfasts.setValue(+this.referral.validDates.days); }
+    if (this.f.numLunches.value > this.days) { this.f.numLunches.setValue(+this.referral.validDates.days); }
+    if (this.f.numDinners.value > this.days) { this.f.numDinners.setValue(+this.referral.validDates.days); }
+    if (this.f.numDaysMeals.value > this.days) { this.f.numDaysMeals.setValue(+this.referral.validDates.days); }
+  }
+
+  maximumAmount(x: FormGroup | FoodReferral): number {
+    if (x) {
+      if (x instanceof FormGroup) {
+        // get data from form
+        if (x.value.subType === 'RESTAURANT') {
+          const b = x.value.numBreakfasts * BREAKFAST;
+          const l = x.value.numLunches * LUNCH;
+          const d = x.value.numDinners * DINNER;
+          const n = x.value.evacuees.length;
+          return (b + l + d) * n;
+        }
+        if (x.value.subType === 'GROCERIES') {
+          const d = x.value.numDaysMeals;
+          const n = x.value.evacuees.length;
+          return d * GROCERIES * n;
+        }
+      } else {
+        // get data from referral
+        if (x.subType === 'RESTAURANT') {
+          const b = x.numBreakfasts * BREAKFAST;
+          const l = x.numLunches * LUNCH;
+          const d = x.numDinners * DINNER;
+          const n = x.evacuees.length;
+          return (b + l + d) * n;
+        }
+        if (x.subType === 'GROCERIES') {
+          const d = x.numDaysMeals;
+          const n = x.evacuees.length;
+          return d * GROCERIES * n;
+        }
+      }
+    }
+    return 0;
   }
 
   viewRates() {

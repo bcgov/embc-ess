@@ -39,7 +39,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
               </div>
 
               <div class="card-footer blue-header space-between items-center">
-                <div class="d-inline-flex font-weight-bold">UP TO A MAXIMUM VALUE OF {{currency.format(maximumAmount)}}</div>
+                <div class="d-inline-flex font-weight-bold">UP TO A MAXIMUM VALUE OF {{currency.format(maximumAmount(form))}}</div>
                 <div class="d-inline-flex items-center">
                   <label class="mb-0">Total Amount:</label>
                   <div class="input-with-icon px-3">
@@ -129,7 +129,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
           <div>
             {{currency.format(referral.totalAmount)}}
           </div>
-          <div class="ml-4" *ngIf="referral.totalAmount > maximumAmount">
+          <div class="ml-4" *ngIf="referral.totalAmount > maximumAmount(referral)">
             <app-attention-icon [alignCenter]="false" [pullLeft]="false"></app-attention-icon>
             Total monetary value exceeds the recommended ESS rate.
           </div>
