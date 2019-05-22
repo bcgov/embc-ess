@@ -62,6 +62,11 @@ export class ValidFromToComponent implements OnInit {
       // calculate the From date
       const to = moment(r.to);
       r.from = to.subtract(r.days, 'days').toDate();
+    } else if (r.from && !r.days && !r.to) {
+      // calculate distance between start provided and the end
+      const from = moment(r.from);
+      r.days = this.defaultDays;
+      r.to = from.add(r.days, 'days').toDate();
     } else {
       // set From date as today, set Days to default, and calculate the To date
       console.log('Valid-From-To: using defaults!');
