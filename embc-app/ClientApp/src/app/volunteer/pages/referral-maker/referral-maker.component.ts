@@ -218,7 +218,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'INCIDENTALS',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };
@@ -232,7 +232,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'FOOD',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };
@@ -246,7 +246,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'LODGING',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };
@@ -260,7 +260,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'CLOTHING',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };
@@ -274,7 +274,7 @@ export class ReferralMakerComponent implements OnInit {
       active: true,
       type: 'TRANSPORTATION',
       purchaser: this.purchaser,
-      validDates: { from: null, to: null, days: null },
+      validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
       supplier: { id: null, active: true, province: 'BC' }
     };

@@ -53,6 +53,7 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent<Inci
       approvedItems: referral.approvedItems,
       totalAmount: referral.totalAmount,
     });
+    console.log(referral.validDates);
   }
 
   // NB: this is called when date component is initialized and whenever its data changes
