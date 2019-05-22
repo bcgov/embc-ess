@@ -91,8 +91,8 @@ namespace embc_unit_tests
         {
             var names = Enum.GetNames(typeof(ReferralType));
 
-            var types = names.GroupBy(n => n.Split("_", StringSplitOptions.RemoveEmptyEntries)[0]);
-            var allSubTypes = names.Select(n => n.Split("_", StringSplitOptions.RemoveEmptyEntries)).Where(sp => sp.Length > 1).Select(n => n[1]).Distinct();
+            var types = names.GroupBy(n => n.Split("_", StringSplitOptions.RemoveEmptyEntries)[0].ToUpperInvariant());
+            var allSubTypes = names.Select(n => n.Split("_", StringSplitOptions.RemoveEmptyEntries)).Where(sp => sp.Length > 1).Select(n => n[1].ToUpperInvariant()).Distinct();
 
             foreach (var type in types)
             {
@@ -106,7 +106,7 @@ namespace embc_unit_tests
                 }
                 else
                 {
-                    var subTypes = type.Select(s => s.Split("_", StringSplitOptions.None)[1]);
+                    var subTypes = type.Select(s => s.Split("_", StringSplitOptions.None)[1].ToUpperInvariant());
                     foreach (var subType in subTypes)
                     {
                         yield return new object[] { type.Key, subType, true };
