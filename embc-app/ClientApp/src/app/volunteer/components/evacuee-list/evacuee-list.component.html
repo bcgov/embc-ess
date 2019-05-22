@@ -1,66 +1,95 @@
-<div class="card border-0 h-100">
-  <div class="card-body">
-    <p><strong>Please select which evacuees registered on your profile require this support:</strong></p>
+<div class="mb-4">
+  <h1>Emergency Support Services Dashboard</h1>
+  <h2>Welcome to your Dashboard!</h2>
+  <p>As an Emergency Support Services user you'll be able to register new evacuees, complete an existing evacuee
+    self-registration, or if needed, search and edit evacuee information.</p>
+  <h3 class="blue-header">LIST OF EVACUEES</h3>
 
-    <p><a href="javascript:void(0);" (click)="selectAllEvacuees()">Select All</a></p>
-    <div class="form-check mt-2" *ngFor="let e of evacuees; index as i">
-      <input type="checkbox" class="form-check-input" [checked]="isSelected(e)" (change)="selectEvacuee(e)" id="{{identifier}}-person-{{i}}">
-      <label class="form-check-label" for="{{identifier}}-person-{{i}}">{{e.lastName}}, {{e.firstName}}</label>
+  <div role="search" class="form-row">
+    <div class="col">
+      <input [(ngModel)]="queryString" type="text" aria-label="search" class="form-control mb-2" placeholder="Search by task number / last name / registration number / community ..." (keydown.enter)="search()">
     </div>
-    <span class="invalid-feedback" [class.d-block]="invalid">Please select evacuees requiring incidentals</span>
+    <div class="col-auto">
+      <button class="btn btn-primary" (click)="search()">SEARCH</button>
+    </div>
   </div>
-  <!-- <div class="card-footer">
-    <app-fa-link icon="plus-circle" class="float-left" (click)="open(content)">Someone missing? Add them now.</app-fa-link>
-  </div> -->
+  <!-- TODO: <a class="small" href="">advanced search</a> -->
+  <!-- TODO: show icons for HOH, RESTRICTED FILE -->
+  <div class="clearfix my-3">
+    <div class="float-right">
+      <app-font-awesome-icon class="mr-1" icon="user"></app-font-awesome-icon>
+      <span class="ml-2">Head of Household</span>
+    </div>
+  </div>
+
+  <div class="space-between align-items-center my-3">
+    <section>
+      <app-pagination-summary [value]="resultsAndPagination?.metadata">
+        <!-- <span class="font-weight-bold">ACTIVE</span> evacuees -->
+        <span class="font-weight-bold">ACTIVE</span> evacuees
+        <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
+      </app-pagination-summary>
+    </section>
+    <section>
+      <select class="form-control" [(ngModel)]="sort" (change)="search()">
+        <!-- <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option> -->
+        <option [value]="'-registrationId'">Sort by: Latest (default)</option>
+        <option [value]="'lastName'">Last Name</option>
+        <option [value]="'evacuatedTo'">Community Evacuated to</option>
+        <option [value]="'evacuatedFrom'">Community Evacuated from</option>
+      </select>
+    </section>
+  </div>
+  <div class="search-results">
+    <div *ngIf="resultsAndPagination?.data?.length>0; then searchResultsTable; else notFound"></div>
+  </div>
+
+  <ng-template #searchResultsTable>
+    <table class="table">
+      <thead class="thead-light">
+        <th scope="col"></th>
+        <th scope="col">Last Name</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Task #</th>
+        <th scope="col">ESS File #</th>
+        <th scope="col">Evacuated From</th>
+        <th scope="col">Evacuated To</th>
+        <th scope="col">Action</th>
+      </thead>
+      <tbody>
+        <tr [class.table-danger]="rowItem.restrictedAccess" *ngFor="let rowItem of resultsAndPagination.data">
+          <th scope="row">
+            <app-font-awesome-icon class="mr-1 float-left" *ngIf="rowItem.isHeadOfHousehold" icon="user">
+            </app-font-awesome-icon>
+            <app-font-awesome-icon class="float-right" *ngIf="rowItem.restrictedAccess" icon="lock">
+            </app-font-awesome-icon>
+          </th>
+          <td>{{rowItem.lastName}}</td>
+          <td>{{rowItem.firstName}}</td>
+          <td>{{rowItem.incidentTaskNumber}}</td>
+          <td>{{rowItem.registrationId}}</td>
+          <td>{{rowItem.evacuatedFrom}}</td>
+          <td>{{rowItem.evacuatedTo}}</td>
+          <td>
+            <a href="javascript:void(0)" *ngIf="!rowItem.isFinalized" (click)="edit(rowItem.registrationId)">Finalize</a>
+            <a href="javascript:void(0)" *ngIf="rowItem.isFinalized" (click)="view(rowItem.registrationId)">View</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-template>
+
+  <ng-template #notFound>
+    <p>{{notFoundMessage}}</p>
+  </ng-template>
+
+  <!-- <select class="form-control" [(ngModel)]="maxSize">
+    <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option>
+  </select> -->
+  <div class="col clearfix" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
+    <div class="float-right">
+      <app-paginator [metaData]="resultsAndPagination?.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+    </div>
+  </div>
 </div>
-
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">EVACUEE FAMILY INFORMATION</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <div class="modal-body">
-    <p>Please only add immediate family members who live in the same household with you?</p>
-    <div class="row pt-2">
-      <div class="col-6">
-        <label class="required">Last Name</label>
-        <input id="modalLastName" type="text" class="form-control" placeholder="Last name">
-      </div>
-      <div class="col">
-        <!-- same as main applicant -->
-      </div>
-    </div>
-    <div class="row pt-2">
-      <div class="col-6">
-        <label class="required">First Name</label>
-        <input id="modalFirstName" type="text" class="form-control" placeholder="First name">
-      </div>
-      <div class="col-3">
-        <label>Initial</label>
-        <input id="modalInitial" type="text" class="form-control" placeholder="Initial">
-      </div>
-    </div>
-    <div class="row pt-2">
-      <div class="col-6">
-        <label>Relationship</label>
-        <input id="modalRelationship" type="text" class="form-control" placeholder="Relationship">
-      </div>
-      <div class="col">
-        <label class="required">Gender</label>
-        <input id="modal" type="text" class="form-control" placeholder="Gender">
-      </div>
-      <div class="col">
-        <label class="required">Date of Birth</label>
-        <input id="modal" type="text" class="form-control" placeholder="Date of Birth">
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cross click')">Cancel</button>
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">SAVE &amp; ADD FAMILY MEMBER</button>
-  </div>
-</ng-template>
+<!-- <pre>{{resultsAndPagination|json}}</pre> -->

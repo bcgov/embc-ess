@@ -8,9 +8,9 @@ describe('EvacueeListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EvacueeListComponent ]
+      declarations: [EvacueeListComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

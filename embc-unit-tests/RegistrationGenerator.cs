@@ -34,7 +34,7 @@ namespace embc_unit_tests
             var registration = GenerateSelf();
             registration.IncidentTask = new IncidentTask { Id = incidentTaskId };
             registration.HostCommunity = new Community { Id = hostCommunityId };
-
+            registration.RegistrationCompletionDate = DateTime.Now;
             return registration;
         }
     }

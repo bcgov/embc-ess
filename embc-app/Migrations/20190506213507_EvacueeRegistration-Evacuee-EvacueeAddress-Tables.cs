@@ -347,7 +347,8 @@ namespace Gov.Jag.Embc.Public.Migrations
 	                                                a.PostalCode,
 	                                                a.CommunityId,
 	                                                a.City,
-	                                                a.Province
+	                                                a.Province,
+													a.CountryCode
                                                 FROM
 	                                                newAddresses a
                                                 ");

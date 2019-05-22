@@ -113,7 +113,7 @@ namespace Gov.Jag.Embc.Public.Authentication
 
                 if (volunteer == null) throw new ApplicationException($"Volunteer not found");
                 if (volunteer.Externaluseridentifier != null && volunteer.Externaluseridentifier != smAuthToken.smgov_userguid) throw new ApplicationException("Volunteer BCeID GUID does not match");
-                if (volunteer.Organization.BCeIDBusinessGuid != smAuthToken.smgov_businessguid) throw new ApplicationException("Volunteer doesn't belong to the correct organization");
+                if (volunteer.Organization.BCeIDBusinessGuid != null && volunteer.Organization.BCeIDBusinessGuid != smAuthToken.smgov_businessguid) throw new ApplicationException("Volunteer doesn't belong to the correct organization");
 
                 if (string.IsNullOrEmpty(volunteer.Externaluseridentifier))
                 {

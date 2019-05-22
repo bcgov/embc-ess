@@ -1,11 +1,165 @@
-<div>
-  <h2 class="blue-header">
-    <app-font-awesome-icon icon="home"></app-font-awesome-icon>&nbsp;&nbsp;LODGING
-  </h2>
+<div *ngIf="referral">
+  <div *ngIf="!readOnly">
+    <form novalidate [formGroup]="form">
+      <div class="space-between align-items-center">
+        <app-valid-from-to [referralDate]="referral.validDates" (referralDateChange)="updateReferralDate($event)" [id]="uuid"></app-valid-from-to>
+        <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
+        <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
+      </div>
 
-  <!-- FOR TESTING ONLY -->
-  <pre>{{ referral | json }}</pre>
+      <div class="feature-block card border-0 p-0 mt-4">
+        <div class="row mt-4 mx-4">
+          <div class="col-4 pl-0 pr-3">
+            <app-evacuee-picker [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()">
+            </app-evacuee-picker>
+          </div>
+          <div class="col-8 pl-3 pr-0">
+            <div class="card border-0 h-100">
+              <div class="card-body mb-0">
+                <div>
+                  <label for="subType_{{uuid}}">Type of lodging required:</label>
+                  <select class="form-control d-block w-auto" id="subType_{{uuid}}" formControlName="subType">
+                    <option [ngValue]="null">Select--</option>
+                    <option value="HOTEL">Hotel/Motel</option>
+                    <option value="BILLETING">Billeting</option>
+                    <option value="GROUP">Group Lodging</option>
+                  </select>
+                </div>
 
-  <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
-  <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
+                <div class="row align-items-end mt-3" [ngSwitch]="subType">
+                  <ng-container *ngSwitchCase="'HOTEL'">
+                    <div class="col-4 pr-2">
+                      <label for="numNights_{{uuid}}" class="font-weight-normal"># Nights</label>
+                      <select class="form-control" id="numNights_{{uuid}}" formControlName="numNights">
+                        <option value="0">Select--</option>
+                        <option *ngFor="let n of nights" [ngValue]="n">{{n}}</option>
+                      </select>
+                    </div>
+                    <div class="col-4 pl-2">
+                      <label for="numRooms_{{uuid}}" class="font-weight-normal"># Rooms</label>
+                      <select class="form-control" id="numRooms_{{uuid}}" formControlName="numRooms">
+                        <option value="0">Select--</option>
+                        <option *ngFor="let n of rooms" [ngValue]="n">{{n}}</option>
+                      </select>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngSwitchCase="'BILLETING'">
+                    <div class="col">
+                      <label for="numNights_{{uuid}}" class="font-weight-normal"># Nights</label>
+                      <select class="form-control d-block w-auto" id="numNights_{{uuid}}" formControlName="numNights">
+                        <option value="0">Select--</option>
+                        <option *ngFor="let n of nights" [ngValue]="n">{{n}}</option>
+                      </select>
+                      <small>NOTE: Please complete Billeting invoice for host family</small>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngSwitchCase="'GROUP'">
+                    <div class="col">
+                      <label for="numNights_{{uuid}}" class="font-weight-normal"># Nights</label>
+                      <select class="form-control d-block w-auto" id="numNights_{{uuid}}" formControlName="numNights">
+                        <option value="0">Select--</option>
+                        <option *ngFor="let n of nights" [ngValue]="n">{{n}}</option>
+                      </select>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
+              <!-- <span class="invalid-feedback justify-content-end" [class.d-flex]="amountInput.classList.contains('is-invalid')">
+                Please enter a number for # Nights or # Rooms
+              </span> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-0 m-4">
+          <div class="card-body">
+            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (formReady)="formInitialized('supplier', $event)"></app-supplier>
+          </div>
+        </div>
+
+        <div class="pl-4 pr-4 pb-3">
+          <textarea class="form-control" formControlName="comments" placeholder="Add comments" rows="4" maxlength="250" autocomplete="off"></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- *********************************SUMMARY BELOW****************************************** -->
+  <div *ngIf="readOnly">
+    <ul class="summary">
+      <li class="summary-heading">
+        <div class="container py-3">
+          <div class="row align-items-center">
+            <div class="col-6 py-3">
+              <h2 class="h1 mt-0" *ngIf="referral.subType==='HOTEL'">Lodging - Hotel/Motel</h2>
+              <h2 class="h1 mt-0" *ngIf="referral.subType==='BILLETING'">Lodging - Billeting</h2>
+              <h2 class="h1 mt-0" *ngIf="referral.subType==='GROUP'">Lodging - Group Lodging</h2>
+              <div class="d-flex">
+                <span class="name"><strong>Valid From:</strong></span>
+                <span class="value">{{referral.validDates?.from | dateTimeFormatPipe}}</span>
+              </div>
+              <div class="d-flex">
+                <span class="name"><strong>Valid To:</strong></span>
+                <span class="value">{{referral.validDates?.to | dateTimeFormatPipe}}</span>
+              </div>
+            </div>
+
+            <div class="col-6" *ngIf="referral.supplier">
+              <div><strong>{{referral.supplier?.name}}</strong></div>
+              <div>{{referral.supplier?.address}}</div>
+              <div>{{referral.supplier?.city + ', BC'}} &nbsp;&nbsp; {{referral.supplier?.postalCode}}</div>
+              <div>
+                <span class="p-0" *ngIf="referral.supplier?.telephone">Tel: {{referral.supplier.telephone}}</span>
+                <span *ngIf="referral.supplier?.telephone && referral.supplier?.fax">|</span>
+                <span class="p-0" *ngIf="referral.supplier?.fax">Fax: {{referral.supplier.fax}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="name">Person responsible for purchasing goods:</span>
+        <span class="value">{{referral.purchaser}}</span>
+      </li>
+      <li *ngIf="referral.referralId">
+        <span class="name">Referral Status:</span>
+        <span class="value">{{referral.active ? 'ACTIVE' : 'DEACTIVATED'}}</span>
+      </li>
+      <li *ngIf="referral.referralId">
+        <span class="name">Referral #:</span>
+        <span class="value">{{referral.referralId}}</span>
+      </li>
+      <li>
+        <span class="name">Evacuees Requiring Lodging:</span>
+        <span class="value">
+          <div class="form-check" *ngFor="let e of referral.evacuees">
+            <input type="checkbox" class="form-check-input" checked disabled>
+            <label class="form-check-label">{{e.lastName}}, {{e.firstName}}</label>
+          </div>
+        </span>
+      </li>
+      <li *ngIf="referral.subType==='HOTEL'">
+        <span class="name"># Night(s):</span>
+        <span class="value">{{referral.numNights}}</span>
+      </li>
+      <li *ngIf="referral.subType==='HOTEL'">
+        <span class="name"># Room(s):</span>
+        <span class="value">{{referral.numRooms}}</span>
+      </li>
+      <li *ngIf="referral.subType==='BILLETING'">
+        <span class="name"># Night(s):</span>
+        <span class="value">{{referral.numNights}}</span>
+      </li>
+      <li *ngIf="referral.subType==='GROUP'">
+        <span class="name"># Night(s):</span>
+        <span class="value">{{referral.numNights}}</span>
+      </li>
+      <li>
+        <span class="comments">{{referral.comments || "&nbsp;"}}</span>
+      </li>
+    </ul>
+  </div>
 </div>

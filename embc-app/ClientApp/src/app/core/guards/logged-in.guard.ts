@@ -34,7 +34,7 @@ export class LoggedInGuard implements CanActivate, CanActivateChild {
           }
 
           // navigate to login page
-          this.router.navigateByUrl('/external/login', { skipLocationChange: true });
+          this.router.navigateByUrl('/external/login/', { skipLocationChange: true });
 
           // this.router.navigateByUrl('/login');
           return false;

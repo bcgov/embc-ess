@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -32,7 +33,6 @@ namespace Gov.Jag.Embc.Public.Utils
             throw new ArgumentException($"{name} was not found");
         }
 
-
         public static T GetValueFromDisplayName(string name)
         {
             var type = typeof(T);
@@ -57,6 +57,14 @@ namespace Gov.Jag.Embc.Public.Utils
             }
 
             throw new ArgumentException($"{name} was not found");
+        }
+
+        public static IEnumerable<T> GetValues()
+        {
+            var type = typeof(T);
+            if (!type.IsEnum) throw new InvalidOperationException();
+
+            return (IEnumerable<T>)Enum.GetValues(typeof(T));
         }
     }
 }

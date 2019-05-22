@@ -80,7 +80,7 @@ a {
 }
 
 .btn.btn-primary {
-  color: var(--white);
+  color: $white;
   background-color: $bg-dark;
   border: $bg-dark 1px solid;
   border-radius: 5px;
@@ -97,7 +97,7 @@ a {
 
 .btn.btn-secondary {
   color: $bg-dark;
-  background-color: var(--white);
+  background-color: $white;
   border: $bg-dark 1px solid;
   border-radius: 5px;
   font-size: 16px;
@@ -107,14 +107,16 @@ a {
   padding: 0.5rem 2rem;
 
   &:hover {
-    color: var(--white);
+    color: $white;
     background-color: $bg-dark;
   }
+
   &:focus {
-    border-color: var(--white);
+    border-color: $white;
     // same as primary button:
     box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
   }
+
   &:not(:disabled):active {
     // same as primary button:
     background-color: #0062cc;
@@ -127,9 +129,11 @@ a {
   border-top: none;
 }
 
-select.form-control:not([size]):not([multiple]) {
-  height: auto;
-}
+
+// this breaks text/arrow layout in FF
+// select.form-control:not([size]):not([multiple]) {
+//   height: auto;
+// }
 
 .form-control {
   // border-radius: 5px;
@@ -176,9 +180,20 @@ hr {
   padding: 0;
 }
 
+// Flexbox helpers
 .space-between {
   display: flex;
   justify-content: space-between;
+}
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.items-center {
+  display: flex;
+  align-items: center;
 }
 
 .form-wrapper {
@@ -260,7 +275,7 @@ hr {
   text-indent: -1.2em;
 }
 
-ul.arrow > li:before {
+ul.arrow>li:before {
   content: "►";
   display: block;
   float: left;
@@ -287,6 +302,7 @@ ul.arrow > li:before {
 }
 
 @media print {
+
   header,
   footer,
   .no-print {

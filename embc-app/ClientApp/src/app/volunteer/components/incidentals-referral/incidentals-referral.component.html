@@ -17,15 +17,16 @@ And of course this component needs to be implemented as a 'maker' with both an e
   <div *ngIf="!readOnly">
     <form novalidate [formGroup]="form">
       <div class="space-between align-items-center">
-        <app-valid-from-to [referralDate]="referral.dates" (referralDateChange)="referral.dates = $event" [id]="uuid"></app-valid-from-to>
+        <app-valid-from-to [referralDate]="referral.validDates" (referralDateChange)="updateReferralDate($event)" [id]="uuid"></app-valid-from-to>
         <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
         <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
-    </div>
+      </div>
 
       <div class="feature-block card border-0 p-0 mt-4">
         <div class="row mt-4 mx-4">
           <div class="col-4 pl-0 pr-3">
-            <app-evacuee-list [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()"></app-evacuee-list>
+            <app-evacuee-picker [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()">
+            </app-evacuee-picker>
           </div>
           <div class="col-8 pl-3 pr-0">
             <div class="card border-0 h-100">
@@ -37,15 +38,17 @@ And of course this component needs to be implemented as a 'maker' with both an e
                 </div>
               </div>
 
-              <div class="card-footer blue-header d-flex justify-content-end">
-                <div class="d-flex align-items-center">
+              <div class="card-footer blue-header space-between items-center">
+                <div class="d-inline-flex font-weight-bold">UP TO A MAXIMUM VALUE OF {{currency.format(maximumAmount(form))}}</div>
+                <div class="d-inline-flex items-center">
                   <label class="mb-0">Total Amount:</label>
-                  <div class="col input-with-icon">
+                  <div class="input-with-icon px-3">
                     <span aria-hidden="true">$</span>
-                    <input type="text" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control" formControlName="totalAmount">
+                    <input type="number" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control" formControlName="totalAmount">
                   </div>
                 </div>
               </div>
+
               <span class="invalid-feedback justify-content-end" [class.d-flex]="amountInput.classList.contains('is-invalid')">
                 Please enter a total amount for incidentals
               </span>
@@ -54,7 +57,7 @@ And of course this component needs to be implemented as a 'maker' with both an e
         </div>
         <div class="card m-4">
           <div class="card-body">
-            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (supplierChange)="updateSupplier($event)"></app-supplier>
+            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (formReady)="formInitialized('supplier', $event)"></app-supplier>
           </div>
         </div>
         <div class="pl-4 pr-4 pb-3">
@@ -74,11 +77,11 @@ And of course this component needs to be implemented as a 'maker' with both an e
               <h2 class="h1 mt-0">Incidentals</h2>
               <div class="d-flex">
                 <span class="name"><strong>Valid From:</strong></span>
-                <span class="value">{{referral.dates?.from | dateTimeFormatPipe}}</span>
+                <span class="value">{{referral.validDates?.from | dateTimeFormatPipe}}</span>
               </div>
               <div class="d-flex">
                 <span class="name"><strong>Valid To:</strong></span>
-                <span class="value">{{referral.dates?.to | dateTimeFormatPipe}}</span>
+                <span class="value">{{referral.validDates?.to | dateTimeFormatPipe}}</span>
               </div>
             </div>
 
@@ -99,31 +102,38 @@ And of course this component needs to be implemented as a 'maker' with both an e
         <span class="name">Person responsible for purchasing goods:</span>
         <span class="value">{{referral.purchaser}}</span>
       </li>
-      <li *ngIf="referral.id">
+      <li *ngIf="referral.referralId">
         <span class="name">Referral Status:</span>
         <span class="value">{{referral.active ? 'ACTIVE' : 'DEACTIVATED'}}</span>
       </li>
-      <li *ngIf="referral.id">
+      <li *ngIf="referral.referralId">
         <span class="name">Referral #:</span>
-        <span class="value">{{referral.id}}</span>
+        <span class="value">{{referral.referralId}}</span>
       </li>
       <li>
-          <span class="name">Evacuees Requiring Incidentals:</span>
-          <span class="value">
-            <div class="form-check" *ngFor="let e of referral.evacuees">
-              <input type="checkbox" class="form-check-input" checked disabled>
-              <label class="form-check-label">{{e.lastName}}, {{e.firstName}}</label>
-            </div>
-          </span>
-        </li>
+        <span class="name">Evacuees Requiring Incidentals:</span>
+        <span class="value">
+          <div class="form-check" *ngFor="let e of referral.evacuees">
+            <input type="checkbox" class="form-check-input" checked disabled>
+            <label class="form-check-label">{{e.lastName}}, {{e.firstName}}</label>
+          </div>
+        </span>
+      </li>
       <li>
         <span class="name">List of approved items:</span>
         <span class="value">{{referral.approvedItems}}</span>
       </li>
       <li>
         <span class="name">Up to a total of:</span>
-        <span class="value">{{currency.format(referral.totalAmount)}}</span>
-        <!-- TODO: add warning if total exceeds rate -->
+        <span class="value d-flex">
+          <div>
+            {{currency.format(referral.totalAmount)}}
+          </div>
+          <div class="ml-4" *ngIf="referral.totalAmount > maximumAmount(referral)">
+            <app-attention-icon [alignCenter]="false" [pullLeft]="false"></app-attention-icon>
+            Total monetary value exceeds the recommended ESS rate.
+          </div>
+        </span>
       </li>
       <li>
         <span class="comments">{{referral.comments || "&nbsp;"}}</span>
