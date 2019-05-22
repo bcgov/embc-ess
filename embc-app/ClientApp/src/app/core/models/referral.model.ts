@@ -49,7 +49,7 @@ export interface TransportationReferral extends ReferralBase {
   subType?: TransportationSubType;
   fromAddress?: string;
   toAddress?: string;
-  modeTransport?: string;
+  otherTransportModeDetails?: string;
 }
 
 // used to POST (create new) referrals
@@ -82,7 +82,7 @@ export interface ReferralPostItem {
   extremeWinterConditions?: boolean;
   fromAddress?: string;
   toAddress?: string;
-  modeTransport?: string;
+  otherTransportModeDetails?: string;
 }
 
 // response from POST API call
