@@ -28,7 +28,7 @@ export class TransportationReferralComponent extends AbstractReferralComponent<T
     this.form.setControl('subType', this.fb.control(''));
     this.form.setControl('fromAddress', this.fb.control(''));
     this.form.setControl('toAddress', this.fb.control(''));
-    this.form.setControl('modeTransport', this.fb.control(''));
+    this.form.setControl('otherTransportModeDetails', this.fb.control(''));
     this.form.setControl('totalAmount', this.fb.control(''));
   }
 
@@ -50,7 +50,7 @@ export class TransportationReferralComponent extends AbstractReferralComponent<T
       subType: referral.subType || null,
       fromAddress: referral.fromAddress,
       toAddress: referral.toAddress,
-      modeTransport: referral.modeTransport,
+      otherTransportModeDetails: referral.otherTransportModeDetails,
       totalAmount: referral.totalAmount || 0
     });
   }

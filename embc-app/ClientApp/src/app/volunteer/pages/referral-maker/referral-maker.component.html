@@ -146,6 +146,12 @@
     </div>
 
     <!-- TODO: prompt for confirmation; disable Finalize until confirmed; set confirmChecked=true -->
+    <div class="mt-5 space-between">
+      <div class="form-group form-check">
+        <input class="form-check-input" id="workCheck" type="checkbox" [(ngModel)]="confirmChecked">
+        <label class="form-check-label" for="workCheck">I certify that a supervisor or ESSD has checked my work and approved the above referrals for distribution to the evacuee.</label>
+      </div>
+    </div>
 
     <div class="mt-5 space-between">
       <section>

@@ -34,6 +34,7 @@ export class ReferralMakerComponent implements OnInit {
   evacuees: Array<Evacuee> = [];
   defaultDate: Date;
   showDefaultDatePicker = false;
+  confirmChecked = false;
 
   private triggerSubject = new Subject<void>();
   submitTrigger = this.triggerSubject.asObservable();
@@ -147,29 +148,30 @@ export class ReferralMakerComponent implements OnInit {
   // user clicked Finalize button
   finalize() {
     this.submitting = true;
+    if (this.confirmChecked === true) {
+      // assemble referrals
+      const referrals: Array<Partial<ReferralPostItem>> = [];
+      this.foodReferrals.forEach(r => referrals.push({ ...r.value }));
+      this.lodgingReferrals.forEach(r => referrals.push({ ...r.value }));
+      this.clothingReferrals.forEach(r => referrals.push({ ...r.value }));
+      this.transportationReferrals.forEach(r => referrals.push({ ...r.value }));
+      this.incidentalsReferrals.forEach(r => referrals.push({ ...r.value }));
 
-    // assemble referrals
-    const referrals: Array<Partial<ReferralPostItem>> = [];
-    this.foodReferrals.forEach(r => referrals.push({ ...r.value }));
-    this.lodgingReferrals.forEach(r => referrals.push({ ...r.value }));
-    this.clothingReferrals.forEach(r => referrals.push({ ...r.value }));
-    this.transportationReferrals.forEach(r => referrals.push({ ...r.value }));
-    this.incidentalsReferrals.forEach(r => referrals.push({ ...r.value }));
+      // get registration data
+      this.referralService.createReferrals(this.regId, { confirmChecked: true, referrals })
+        .subscribe(() => {
+          this.submitting = false;
+          this.notifications.addNotification('Referrals finalized successfully', 'success');
 
-    // get registration data
-    this.referralService.createReferrals(this.regId, { confirmChecked: true, referrals })
-      .subscribe(() => {
-        this.submitting = false;
-        this.notifications.addNotification('Referrals finalized successfully', 'success');
-
-        // redirect to summary page
-        // save the key for lookup
-        this.uniqueKeyService.setKey(this.registration.id);
-        this.router.navigate([`/${this.path}/registration/summary`]);
-      }, err => {
-        this.submitting = false;
-        console.log('Error =', err);
-      });
+          // redirect to summary page
+          // save the key for lookup
+          this.uniqueKeyService.setKey(this.registration.id);
+          this.router.navigate([`/${this.path}/registration/summary`]);
+        }, err => {
+          this.submitting = false;
+          console.log('Error =', err);
+        });
+    }
   }
 
   incidentalsReferralChange() {

@@ -13,8 +13,8 @@ namespace embc_unit_tests
             Purchaser = "purchaser name",
             Evacuees = new[]
            {
-                    new Gov.Jag.Embc.Public.ViewModels.ReferralEvacuee { Id="1" },
-                    new Gov.Jag.Embc.Public.ViewModels.ReferralEvacuee { Id="2" }
+                    new Gov.Jag.Embc.Public.ViewModels.ReferralEvacuee { Id="1", FirstName = "First Name 1", LastName = "Last Name 1" },
+                    new Gov.Jag.Embc.Public.ViewModels.ReferralEvacuee { Id="2", FirstName = "First Name 2", LastName = "Last Name 2" }
             },
             ConfirmChecked = true,
             Supplier = new Gov.Jag.Embc.Public.ViewModels.Supplier
