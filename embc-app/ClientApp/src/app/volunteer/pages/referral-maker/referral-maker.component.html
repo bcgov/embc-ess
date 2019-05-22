@@ -13,7 +13,7 @@
       <div class="feature-block-header">
         <label class="m-0 p-0">Please confirm timing for commencement of supports:</label>
       </div>
-      <!-- <div class="feature-block card d-block border-0">
+      <div class="feature-block card d-block border-0">
         <div>Incident start date &amp; time: {{registration?.incidentTask?.startDate | dateTimeFormatPipe}}</div>
         <div class="row">
           <div class="col">
@@ -45,9 +45,7 @@
             </div>
           </div>
         </div>
-      </div> -->
-
-
+      </div>
 
       <!-- select required supports -->
       <div class="card d-block border-0 p-4">
@@ -135,6 +133,18 @@
 
       <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-4">
         <app-lodging-referral [referral]="r.value" [readOnly]="true"></app-lodging-referral>
+      </article>
+
+      <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4">
+        <app-clothing-referral [referral]="r.value" [readOnly]="true"></app-clothing-referral>
+      </article>
+
+      <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4">
+        <app-transportation-referral [referral]="r.value" [readOnly]="true"></app-transportation-referral>
+      </article>
+
+      <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
+        <app-incidentals-referral [referral]="r.value" [readOnly]="true"></app-incidentals-referral>
       </article>
     </section>
     <!-- TODO: prompt for confirmation; disable Finalize until confirmed; set confirmChecked=true -->
