@@ -18,7 +18,7 @@
         <div class="row">
           <div class="col">
             <span class="align-bottom">
-              <span class="h3">Support start date &amp; time: {{defaultDate | dateTimeFormatPipe}}</span>
+              <span class="h3">Support start date &amp; time: {{defaultDate | dateTimeFormatPipe}} <span *ngIf="!defaultDate">Please enter a valid date.</span></span>
             </span>
           </div>
           <div class="col-2">
