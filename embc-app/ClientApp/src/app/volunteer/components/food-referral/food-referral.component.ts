@@ -76,13 +76,14 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
     this.referral.validDates = rd;
 
     // update array for number dropdowns
-    this.days = range(1, this.referral.validDates.days + 1); // [1..n]
+    const max = this.referral.validDates.days;
+    this.days = range(1, max + 1); // [1..max]
 
     // update any dropdowns that exceed max
-    if (this.f.numBreakfasts.value > this.days) { this.f.numBreakfasts.setValue(+this.referral.validDates.days); }
-    if (this.f.numLunches.value > this.days) { this.f.numLunches.setValue(+this.referral.validDates.days); }
-    if (this.f.numDinners.value > this.days) { this.f.numDinners.setValue(+this.referral.validDates.days); }
-    if (this.f.numDaysMeals.value > this.days) { this.f.numDaysMeals.setValue(+this.referral.validDates.days); }
+    if (this.f.numBreakfasts.value > max) { this.f.numBreakfasts.setValue(max); }
+    if (this.f.numLunches.value > max) { this.f.numLunches.setValue(max); }
+    if (this.f.numDinners.value > max) { this.f.numDinners.setValue(max); }
+    if (this.f.numDaysMeals.value > max) { this.f.numDaysMeals.setValue(max); }
   }
 
   maximumAmount(x: FormGroup | FoodReferral): number {
