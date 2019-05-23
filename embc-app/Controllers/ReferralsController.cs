@@ -15,13 +15,11 @@ namespace Gov.Jag.Embc.Public.Controllers
     public class ReferralsController : Controller
     {
         private readonly IDataInterface dataInterface;
-        private readonly IPdfConverter pdfConverter;
         private readonly IReferralsService referralsService;
 
-        public ReferralsController(IDataInterface dataInterface, IReferralsService referralsService, IPdfConverter pdfConverter)
+        public ReferralsController(IDataInterface dataInterface, IReferralsService referralsService)
         {
             this.dataInterface = dataInterface;
-            this.pdfConverter = pdfConverter;
             this.referralsService = referralsService;
         }
 
@@ -80,16 +78,16 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpPost("referralPdfs")]
-        public async Task<IActionResult> GetReferralPdfs([FromBody] ReferralsToPrint printReferrals)
+        public async Task<IActionResult> GetReferralPdfsAsync([FromBody] ReferralsToPrint printReferrals)
         {
-            var content = await referralsService.GetReferralHtmlPages(printReferrals);
+            var result = await referralsService.GetReferralPdfsAsync(printReferrals);
 
-            if (string.IsNullOrWhiteSpace(content))
+            if (result == null)
             {
-                return NotFound(printReferrals.ReferralIds);
+                return NotFound(new { printReferrals.ReferralIds });
             }
 
-            return await pdfConverter.ConvertHtmlToPdfAsync(content);
+            return new FileContentResult(result, "application/pdf");
         }
 
         [HttpDelete("{referralId}")]

@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -11,7 +8,7 @@ namespace Gov.Jag.Embc.Public.Utils
 {
     public class PdfConverter : IPdfConverter
     {
-        public async Task<IActionResult> ConvertHtmlToPdfAsync(string content)
+        public async Task<byte[]> ConvertHtmlToPdfAsync(string content)
         {
             var pdfHost = Environment.GetEnvironmentVariable("PDF_SERVICE_NAME");
             var fileName = $"?filename=referral_{DateTime.Now.ToString("ddMMMMyyyy")}_{DateTime.Now.ToString("HHmmtt")}.pdf";
@@ -33,10 +30,10 @@ namespace Gov.Jag.Embc.Public.Utils
                 var bytetask = response.Content.ReadAsByteArrayAsync();
                 bytetask.Wait();
 
-                return new FileContentResult(bytetask.Result, "application/pdf");
+                return bytetask.Result;
             }
 
-            return new StatusCodeResult(500);
+            return null;
         }
     }
 }

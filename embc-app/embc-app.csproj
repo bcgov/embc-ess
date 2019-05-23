@@ -80,6 +80,9 @@
         <EmbeddedResource Include="Services\Referrals\Views\Clothing\ClothingNotesPartial.hbs">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Css.hbs" >
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
         <EmbeddedResource Include="Services\Referrals\Views\Groceries\GroceriesChecklistPartial.hbs">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
