@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 
 import { Evacuee, ReferralBase } from 'src/app/core/models';
 import { clearFormArray, uuid } from 'src/app/shared/utils';
-import { ValidateComments } from '../comments.validator';
+import { ValidateComments } from '../../validators/comments.validator';
 
 /**
  * This is the base class for `FoodReferralComponent`, `ClothingReferralComponent`, etc.
