@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 
 import { Evacuee, ReferralBase } from 'src/app/core/models';
 import { clearFormArray, uuid } from 'src/app/shared/utils';
+import { ValidateComments } from '../comments.validator';
 
 /**
  * This is the base class for `FoodReferralComponent`, `ClothingReferralComponent`, etc.
@@ -40,7 +41,7 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   // The model for the form data collected
   form = this.fb.group({
     evacuees: this.fb.array([], Validators.required),
-    comments: '',
+    comments: this.fb.control([''], ValidateComments),
   });
 
   // helper to format dollar amounts
