@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -79,24 +78,16 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpPost("referralPdfs")]
-        public async Task<IActionResult> GetReferralPdfs([FromBody] ReferralsToPrint printReferrals)
+        public async Task<IActionResult> GetReferralPdfsAsync([FromBody] ReferralsToPrint printReferrals)
         {
-            var result = await referralsService.GetReferralPdfs(printReferrals);
+            var result = await referralsService.GetReferralPdfsAsync(printReferrals);
 
-            if ((result as NotFoundResult) != null)
+            if (result == null)
             {
-                return NotFound(printReferrals.ReferralIds);
+                return NotFound(new { printReferrals.ReferralIds });
             }
 
-            return result;
-            //var content = await referralsService.GetReferralHtmlPages(printReferrals);
-
-            //if (string.IsNullOrWhiteSpace(content))
-            //{
-            //    return NotFound(printReferrals.ReferralIds);
-            //}
-
-            //return await pdfConverter.ConvertHtmlToPdfAsync(content);
+            return new FileContentResult(result, "application/pdf");
         }
 
         [HttpDelete("{referralId}")]

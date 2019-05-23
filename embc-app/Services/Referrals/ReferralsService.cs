@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Gov.Jag.Embc.Public.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Gov.Jag.Embc.Public.Services.Referrals
 {
@@ -23,23 +22,28 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             this.pdfConverter = pdfConverter;
         }
 
-        public async Task<IActionResult> GetReferralPdfs(ReferralsToPrint printReferrals)
+        public async Task<byte[]> GetReferralPdfsAsync(ReferralsToPrint printReferrals)
         {
-            var content = await GetReferralHtmlPages(printReferrals);
+            var content = await GetReferralHtmlPagesAsync(printReferrals);
 
-            if (string.IsNullOrWhiteSpace(content))
+            if (content == null)
             {
-                return new StatusCodeResult(500);
+                return null;
             }
 
             return await pdfConverter.ConvertHtmlToPdfAsync(content);
         }
 
-        public async Task<string> GetReferralHtmlPages(ReferralsToPrint printReferrals)
+        public async Task<string> GetReferralHtmlPagesAsync(ReferralsToPrint printReferrals)
         {
             var referralHtml = string.Empty;
 
             var referrals = await dataInterface.GetReferralsAsync(printReferrals.ReferralIds);
+
+            if (!referrals.Any())
+            {
+                return null;
+            }
 
             foreach (var referral in referrals)
             {
@@ -56,6 +60,8 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
         private string CreateReferralHtmlPages(PrintReferral referral)
         {
             var handleBars = Handlebars.Create();
+
+            handleBars.RegisterTemplate("stylePartial", GetCSSPartialView());
 
             var partialViewType = MapToReferralType(referral.Type);
 
@@ -109,6 +115,8 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
                 if (summaryBreakCount == 3 || printedCount == referrals.Count())
                 {
                     summaryBreakCount = 0;
+
+                    handleBars.RegisterTemplate("stylePartial", GetCSSPartialView());
                     handleBars.RegisterTemplate("summaryItemsPartial", itemsHtml);
 
                     var mainTemplate = handleBars.Compile(TemplateLoader.LoadTemplate(ReferalMainViews.Summary.ToString()));
@@ -127,6 +135,11 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             //var result = mainTemplate(data);
 
             return result;
+        }
+
+        private string GetCSSPartialView()
+        {
+            return TemplateLoader.LoadTemplate("Css");
         }
 
         private string GetItemsPartialView(ReferralPartialView partialView)

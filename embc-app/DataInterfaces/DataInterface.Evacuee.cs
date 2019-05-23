@@ -1,6 +1,7 @@
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,14 +31,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 EF.Functions.Like(e.EvacueeRegistration.IncidentTask.Community.Name, $"%{searchQuery.Query}%")
             );
 
-            if (searchQuery.HasSortBy())
-                query = query.Sort(searchQuery.SortBy);
-            else
-                query = query.Sort("-EvacueeRegistration.EssFileNumber");
+            if (!searchQuery.HasSortBy()) searchQuery.SortBy = "-essFileNumber";
 
-            var results = await query.ToArrayAsync();
+            var results = await query.Sort(MapSortToFields(searchQuery.SortBy)).ToArrayAsync();
 
             return new PaginatedList<EvacueeListItem>(results.Select(mapper.Map<EvacueeListItem>), searchQuery.Offset, searchQuery.Limit);
+        }
+
+        private string MapSortToFields(string sort)
+        {
+            return sort
+                    .Replace("evacuatedFrom", "EvacueeRegistration.IncidentTask.Community.Name", StringComparison.InvariantCultureIgnoreCase)
+                    .Replace("evacuatedTo", "EvacueeRegistration.HostCommunity.Name", StringComparison.InvariantCultureIgnoreCase)
+                    .Replace("essFileNumber", "EvacueeRegistration.EssFileNumber", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

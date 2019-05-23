@@ -38,13 +38,6 @@ namespace Gov.Jag.Embc.Public.Controllers
             this.urlHelper = urlHelper;
         }
 
-        [HttpGet(Name = nameof(GetAll))]
-        public async Task<IActionResult> GetAll([FromQuery] SearchQueryParameters searchQuery)
-        {
-            var items = await dataInterface.GetEvacueeRegistrationsAsync(searchQuery);
-            return Json(items);
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOne(string id)
         {
