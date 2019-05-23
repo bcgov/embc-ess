@@ -1,5 +1,4 @@
 using Gov.Jag.Embc.Public.ViewModels;
-using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Services.Referrals

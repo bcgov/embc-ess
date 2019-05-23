@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Gov.Jag.Embc.Public.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Gov.Jag.Embc.Public.Services.Referrals
 {
