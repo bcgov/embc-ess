@@ -69,7 +69,7 @@
                         "env": [
                             {
                                 "name": "DOTNET_STARTUP_PROJECT",
-                                "value": "embc-app/embc-app.csproj"
+                                "value": "embc-app/embc-app.sln"
                             },
                             {
                                 "name": "UAT_BUILD"
