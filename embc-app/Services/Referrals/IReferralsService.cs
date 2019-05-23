@@ -6,7 +6,7 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
 {
     public interface IReferralsService
     {
-        Task<IActionResult> GetReferralPdfs(ReferralsToPrint printReferrals);
+        Task<byte[]> GetReferralPdfs(ReferralsToPrint printReferrals);
 
         Task<string> GetReferralHtmlPages(ReferralsToPrint printReferrals);
 

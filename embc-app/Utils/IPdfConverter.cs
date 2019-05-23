@@ -5,6 +5,6 @@ namespace Gov.Jag.Embc.Public.Utils
 {
     public interface IPdfConverter
     {
-        Task<IActionResult> ConvertHtmlToPdfAsync(string content);
+        Task<byte[]> ConvertHtmlToPdfAsync(string content);
     }
 }

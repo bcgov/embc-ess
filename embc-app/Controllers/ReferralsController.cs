@@ -83,20 +83,12 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             var result = await referralsService.GetReferralPdfs(printReferrals);
 
-            if ((result as NotFoundResult) != null)
+            if (result == null)
             {
                 return NotFound(printReferrals.ReferralIds);
             }
 
-            return result;
-            //var content = await referralsService.GetReferralHtmlPages(printReferrals);
-
-            //if (string.IsNullOrWhiteSpace(content))
-            //{
-            //    return NotFound(printReferrals.ReferralIds);
-            //}
-
-            //return await pdfConverter.ConvertHtmlToPdfAsync(content);
+            return new FileContentResult(result, "application/pdf");
         }
 
         [HttpDelete("{referralId}")]

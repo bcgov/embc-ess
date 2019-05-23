@@ -23,13 +23,13 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             this.pdfConverter = pdfConverter;
         }
 
-        public async Task<IActionResult> GetReferralPdfs(ReferralsToPrint printReferrals)
+        public async Task<byte[]> GetReferralPdfs(ReferralsToPrint printReferrals)
         {
             var content = await GetReferralHtmlPages(printReferrals);
 
             if (string.IsNullOrWhiteSpace(content))
             {
-                return new StatusCodeResult(500);
+                return null;
             }
 
             return await pdfConverter.ConvertHtmlToPdfAsync(content);
