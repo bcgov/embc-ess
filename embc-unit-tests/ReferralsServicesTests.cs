@@ -44,7 +44,8 @@ namespace embc_unit_tests
         {
             var ctx = EmbcDb;
             var di = new DataInterface(ctx, mapper);
-            var service = new ReferralsService(di);
+            var pdfService = new PdfConverter();
+            var service = new ReferralsService(di, pdfService);
 
             var incidentTask = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.GenerateSelf());
 
@@ -61,7 +62,7 @@ namespace embc_unit_tests
 
             var printReferrals = new ReferralsToPrint { ReferralIds = referralIds, AddSummary = true };
 
-            var content = await service.GetReferralHtmlPages(printReferrals);
+            var content = await service.GetReferralHtmlPagesAsync(printReferrals);
 
             Assert.False(string.IsNullOrEmpty(content));
         }
@@ -100,7 +101,8 @@ namespace embc_unit_tests
         {
             var ctx = EmbcDb;
             var di = new DataInterface(ctx, mapper);
-            var service = new ReferralsService(di);
+            var pdfService = new PdfConverter();
+            var service = new ReferralsService(di, pdfService);
 
             var incidentTask = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.GenerateSelf());
 
@@ -170,7 +172,8 @@ namespace embc_unit_tests
         [MemberData(nameof(GetReferralTypeTests))]
         public void CanValidateReferralTypes(string type, string subType, bool expectedResult)
         {
-            var svc = new ReferralsService(new DataInterface(EmbcDb, mapper));
+            var pdfService = new PdfConverter();
+            var svc = new ReferralsService(new DataInterface(EmbcDb, mapper), pdfService);
 
             Assert.Equal(expectedResult, svc.IsValidReferralType(type, subType));
         }
