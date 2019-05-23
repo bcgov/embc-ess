@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Gov.Jag.Embc.Public.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Gov.Jag.Embc.Public.Services.Referrals
 {
@@ -23,11 +22,11 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             this.pdfConverter = pdfConverter;
         }
 
-        public async Task<byte[]> GetReferralPdfs(ReferralsToPrint printReferrals)
+        public async Task<byte[]> GetReferralPdfsAsync(ReferralsToPrint printReferrals)
         {
-            var content = await GetReferralHtmlPages(printReferrals);
+            var content = await GetReferralHtmlPagesAsync(printReferrals);
 
-            if (string.IsNullOrWhiteSpace(content))
+            if (content == null)
             {
                 return null;
             }
@@ -35,11 +34,16 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             return await pdfConverter.ConvertHtmlToPdfAsync(content);
         }
 
-        public async Task<string> GetReferralHtmlPages(ReferralsToPrint printReferrals)
+        public async Task<string> GetReferralHtmlPagesAsync(ReferralsToPrint printReferrals)
         {
             var referralHtml = string.Empty;
 
             var referrals = await dataInterface.GetReferralsAsync(printReferrals.ReferralIds);
+
+            if (!referrals.Any())
+            {
+                return null;
+            }
 
             foreach (var referral in referrals)
             {

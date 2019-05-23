@@ -31,7 +31,6 @@ namespace Gov.Jag.Embc.Public.Utils
                 bytetask.Wait();
 
                 return bytetask.Result;
-                //return new FileContentResult(bytetask.Result, "application/pdf");
             }
 
             return null;

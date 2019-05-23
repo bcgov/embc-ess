@@ -79,13 +79,13 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpPost("referralPdfs")]
-        public async Task<IActionResult> GetReferralPdfs([FromBody] ReferralsToPrint printReferrals)
+        public async Task<IActionResult> GetReferralPdfsAsync([FromBody] ReferralsToPrint printReferrals)
         {
-            var result = await referralsService.GetReferralPdfs(printReferrals);
+            var result = await referralsService.GetReferralPdfsAsync(printReferrals);
 
             if (result == null)
             {
-                return NotFound(printReferrals.ReferralIds);
+                return NotFound(new { printReferrals.ReferralIds });
             }
 
             return new FileContentResult(result, "application/pdf");

@@ -62,7 +62,7 @@ namespace embc_unit_tests
 
             var printReferrals = new ReferralsToPrint { ReferralIds = referralIds, AddSummary = true };
 
-            var content = await service.GetReferralHtmlPages(printReferrals);
+            var content = await service.GetReferralHtmlPagesAsync(printReferrals);
 
             Assert.False(string.IsNullOrEmpty(content));
         }
