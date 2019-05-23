@@ -57,6 +57,8 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
         {
             var handleBars = Handlebars.Create();
 
+            handleBars.RegisterTemplate("stylePartial", GetCSSPartialView());
+
             var partialViewType = MapToReferralType(referral.Type);
 
             var partialItemsSource = GetItemsPartialView(partialViewType);
@@ -109,6 +111,8 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
                 if (summaryBreakCount == 3 || printedCount == referrals.Count())
                 {
                     summaryBreakCount = 0;
+
+                    handleBars.RegisterTemplate("stylePartial", GetCSSPartialView());
                     handleBars.RegisterTemplate("summaryItemsPartial", itemsHtml);
 
                     var mainTemplate = handleBars.Compile(TemplateLoader.LoadTemplate(ReferalMainViews.Summary.ToString()));
@@ -127,6 +131,11 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             //var result = mainTemplate(data);
 
             return result;
+        }
+
+        private string GetCSSPartialView()
+        {
+            return TemplateLoader.LoadTemplate("Css");
         }
 
         private string GetItemsPartialView(ReferralPartialView partialView)
