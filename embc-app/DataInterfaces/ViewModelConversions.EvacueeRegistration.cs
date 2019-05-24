@@ -46,7 +46,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 HeadOfHousehold = source.Evacuees.Single(e => e.EvacueeType == EvacueeType.HeadOfHousehold).ToViewModel(source) as ViewModels.HeadOfHousehold,
                 HostCommunity = mapper.Map<ViewModels.Community>(source.HostCommunity),
                 IncidentTask = source.IncidentTask?.ToViewModel(),
-                DeclarationAndConsent = source.DeclarationAndConsent
+                DeclarationAndConsent = source.DeclarationAndConsent,
+                IsFinalized = source.IsFinalized
             };
 
             return result;

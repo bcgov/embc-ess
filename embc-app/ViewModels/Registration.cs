@@ -55,5 +55,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public Community HostCommunity { get; set; }
 
         public Volunteer CompletedBy { get; set; }
+
+        public bool IsFinalized { get; set; }
     }
 }

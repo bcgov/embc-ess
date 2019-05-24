@@ -18,7 +18,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task UpdateEvacueeRegistrationAsync(Registration registration);
 
-        Task<bool> DeactivateEvacueeRegistration(string id);
+        Task<bool> DeactivateEvacueeRegistrationAsync(string id);
 
         #endregion Registration
 
