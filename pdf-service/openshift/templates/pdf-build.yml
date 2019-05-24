@@ -1,0 +1,70 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: "${SERVICE_NAME}-build-template"
+  creationTimestamp: null
+  annotations:
+    tags: "builder,nodejs,yarn"
+    iconClass: icon-nodejs
+    description: >-
+      This template defines resources needed to build a PDF rendering
+      microservice.
+objects:
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: "${SERVICE_NAME}"
+      annotations:
+        description: Keeps track of changes in this image.
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: "${SERVICE_NAME}"
+      creationTimestamp: null
+      annotations:
+        description: Defines how to build Angular applications from source code.
+    spec:
+      runPolicy: Serial
+      triggers:
+        - type: ConfigChange
+      source:
+        type: Git
+        git:
+          ref: "${GIT_REF}"
+          uri: "${GIT_REPO_URL}"
+        contextDir: "${SOURCE_CONTEXT_DIR}"
+      strategy:
+        type: Docker
+      output:
+        to:
+          kind: ImageStreamTag
+          name: "${SERVICE_NAME}:latest"
+      postCommit: {}
+    status:
+      lastVersion: 0
+parameters:
+  - name: SERVICE_NAME
+    displayName: Api Service Name
+    description: >-
+      The name of the API Service to be built.
+    required: true
+    value: pdf-service
+  - name: GIT_REPO_URL
+    displayName: Git Repository URL
+    description: The URL of the repository with your application source code.
+    required: true
+    value: "https://github.com/bcgov/embc-ess"
+  - name: GIT_REF
+    displayName: Git Reference
+    description: >-
+      Set this to a branch name, tag or other ref of your repository if you are
+      not using the default branch.
+    required: true
+    value: develop
+  - name: SOURCE_CONTEXT_DIR
+    displayName: Context Directory
+    description: >-
+      Set this to the relative path to the Dockerfile that describes this
+      builder image, if it is not in the root of your repository.
+    required: true
+    value: pdf-service/openshift/templates/
