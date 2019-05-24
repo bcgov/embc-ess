@@ -218,24 +218,25 @@
     <li>
       <span class="name">Supports:</span>
       <span class="value">
+        <!-- NOTE: these need to display as NOT because the client reversed the logic for these -->
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresFood">
+          <input class="form-check-input" type="checkbox" disabled [checked]="!registration?.requiresFood">
           <label class="form-check-label">Food</label>
         </div>
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresClothing">
+          <input class="form-check-input" type="checkbox" disabled [checked]="!registration?.requiresClothing">
           <label class="form-check-label">Clothing</label>
         </div>
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresAccommodation">
+          <input class="form-check-input" type="checkbox" disabled [checked]="!registration?.requiresAccommodation">
           <label class="form-check-label">Lodging</label>
         </div>
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresIncidentals">
+          <input class="form-check-input" type="checkbox" disabled [checked]="!registration?.requiresIncidentals">
           <label class="form-check-label">Incidentals</label>
         </div>
         <div class="form-check mt-2">
-          <input class="form-check-input" type="checkbox" disabled [checked]="registration?.requiresTransportation">
+          <input class="form-check-input" type="checkbox" disabled [checked]="!registration?.requiresTransportation">
           <label class="form-check-label">Transportation</label>
         </div>
       </span>
