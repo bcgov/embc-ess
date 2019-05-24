@@ -76,6 +76,8 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
         {
             var handleBars = Handlebars.Create();
 
+            handleBars.RegisterTemplate("stylePartial", GetCSSPartialView());
+
             var partialViewType = MapToReferralType(referral.Type);
 
             var partialItemsSource = GetItemsPartialView(partialViewType);
