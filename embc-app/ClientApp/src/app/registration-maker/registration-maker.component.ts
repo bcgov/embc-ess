@@ -680,7 +680,6 @@ export class RegistrationMakerComponent implements OnInit {
       requiresFood: values.requiresFood as boolean,
       requiresIncidentals: values.requiresIncidentals as boolean,
       requiresTransportation: values.requiresTransportation as boolean,
-      requiresSupport: this.registration.requiresSupport, // this should be removed because it is no longer mapped to a form element
 
       // dates we care about
       selfRegisteredDate: values.selfRegisteredDate as string,
@@ -804,7 +803,6 @@ export class RegistrationMakerComponent implements OnInit {
       requiresFood: null,
       requiresIncidentals: null,
       requiresTransportation: null,
-      requiresSupport: true,
       headOfHousehold: null,
       incidentTask: null,
       hostCommunity: null,

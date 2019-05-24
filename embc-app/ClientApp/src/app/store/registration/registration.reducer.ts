@@ -28,7 +28,6 @@ const newRegistration: Registration = {
   hasThreeDayMedicationSupply: null,
   hasPets: null,
   insuranceCode: null,
-  requiresSupport: null,
   requiresFood: null,
   requiresClothing: null,
   requiresAccommodation: null,
