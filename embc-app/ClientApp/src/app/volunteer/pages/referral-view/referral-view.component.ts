@@ -62,7 +62,7 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
         }
       }, err => {
         this.loading = false;
-        alert(`err = ${err}`);
+        console.log('error getting referral =', err);
         this.goHome();
       });
   }
@@ -105,15 +105,13 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
 
       this.referralService.deactivateReferral(this.registrationId, this.referralId)
         .subscribe(() => {
-          // deactivate succeeded
           this.deactivating = false;
           this.notifications.addNotification('Referral deactivated successfully', 'success');
           // return to summary page
           this.back();
         }, err => {
-          // deactivate failed
           this.deactivating = false;
-          alert(`err = ${err}`);
+          console.log('error deactivating referral =', err);
           this.goHome();
         });
     }, () => {
