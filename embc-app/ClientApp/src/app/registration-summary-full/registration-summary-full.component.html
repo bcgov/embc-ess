@@ -253,25 +253,26 @@
     <ul class="summary">
       <li>
         <span class="name">Supports Provided by the Evacuee:</span>
+        <!-- NOTE: this should show opposite because the customer requesdted it-->
         <span class="value">
           <div class="form-check mt-2">
-            <input type="checkbox" class="form-check-input" disabled [checked]="registration.requiresFood">
+            <input type="checkbox" class="form-check-input" disabled [checked]="!registration.requiresFood">
             <label class="form-check-label">Food</label>
           </div>
           <div class="form-check mt-2">
-            <input type="checkbox" class="form-check-input" disabled [checked]="registration.requiresClothing">
+            <input type="checkbox" class="form-check-input" disabled [checked]="!registration.requiresClothing">
             <label class="form-check-label">Clothing</label>
           </div>
           <div class="form-check mt-2">
-            <input type="checkbox" class="form-check-input" disabled [checked]="registration.requiresAccommodation">
+            <input type="checkbox" class="form-check-input" disabled [checked]="!registration.requiresAccommodation">
             <label class="form-check-label">Lodging</label>
           </div>
           <div class="form-check mt-2">
-            <input type="checkbox" class="form-check-input" disabled [checked]="registration.requiresIncidentals">
+            <input type="checkbox" class="form-check-input" disabled [checked]="!registration.requiresIncidentals">
             <label class="form-check-label">Incidentals</label>
           </div>
           <div class="form-check mt-2">
-            <input type="checkbox" class="form-check-input" disabled [checked]="registration.requiresTransportation">
+            <input type="checkbox" class="form-check-input" disabled [checked]="!registration.requiresTransportation">
             <label class="form-check-label">Transportation</label>
           </div>
         </span>
