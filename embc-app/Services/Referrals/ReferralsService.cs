@@ -16,6 +16,8 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
         private readonly IDataInterface dataInterface;
         private readonly IPdfConverter pdfConverter;
 
+        private readonly string pageBreak = $@"{Environment.NewLine}<div class=""page-break""></div>{Environment.NewLine}";
+
         public ReferralsService(IDataInterface dataInterface, IPdfConverter pdfConverter)
         {
             this.dataInterface = dataInterface;
@@ -36,8 +38,6 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
 
         public async Task<string> GetReferralHtmlPagesAsync(ReferralsToPrint printReferrals)
         {
-            var referralHtml = string.Empty;
-
             var referrals = await dataInterface.GetReferralsAsync(printReferrals.ReferralIds);
 
             if (!referrals.Any())
@@ -45,23 +45,36 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
                 return null;
             }
 
+            var html = AssembleReferralHtml(referrals, printReferrals.AddSummary);
+
+            return html;
+        }
+
+        private string AssembleReferralHtml(IEnumerable<PrintReferral> referrals, bool includeSummary)
+        {
+            var referralHtml = string.Empty;
+
             foreach (var referral in referrals)
             {
                 var newHtml = CreateReferralHtmlPages(referral);
                 referralHtml = $"{referralHtml}{newHtml}";
             }
 
-            var summaryHtml = printReferrals.AddSummary ? CreateReferalHtmlSummary(referrals) : string.Empty;
+            var summaryHtml = includeSummary ? CreateReferalHtmlSummary(referrals) : string.Empty;
             var finalHtml = $"{summaryHtml}{referralHtml}";
 
-            return finalHtml;
+            var handleBars = Handlebars.Create();
+            handleBars.RegisterTemplate("stylePartial", GetCSSPartialView());
+            handleBars.RegisterTemplate("bodyPartial", finalHtml);
+            var template = handleBars.Compile(TemplateLoader.LoadTemplate("MasterLayout"));
+            var assembledHtml = template("");
+
+            return assembledHtml;
         }
 
         private string CreateReferralHtmlPages(PrintReferral referral)
         {
             var handleBars = Handlebars.Create();
-
-            handleBars.RegisterTemplate("stylePartial", GetCSSPartialView());
 
             var partialViewType = MapToReferralType(referral.Type);
 
@@ -80,7 +93,7 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
 
             var result = template(referral);
 
-            return result;
+            return $"{result}{pageBreak}";
         }
 
         private string CreateReferalHtmlSummary(IEnumerable<PrintReferral> referrals)
@@ -116,23 +129,15 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
                 {
                     summaryBreakCount = 0;
 
-                    handleBars.RegisterTemplate("stylePartial", GetCSSPartialView());
                     handleBars.RegisterTemplate("summaryItemsPartial", itemsHtml);
 
                     var mainTemplate = handleBars.Compile(TemplateLoader.LoadTemplate(ReferalMainViews.Summary.ToString()));
 
                     var data = new { purchaser = referrals.First().Purchaser };
-                    result = $"{result}{mainTemplate(data)}";
+                    result = $"{result}{mainTemplate(data)}{pageBreak}";
                     itemsHtml = string.Empty;
                 }
             }
-
-            //handleBars.RegisterTemplate("summaryItemsPartial", itemsHtml);
-
-            //var mainTemplate = handleBars.Compile(TemplateLoader.LoadTemplate(ReferalMainViews.Summary.ToString()));
-
-            //var data = new { purchaser = referrals.First().Purchaser };
-            //var result = mainTemplate(data);
 
             return result;
         }
