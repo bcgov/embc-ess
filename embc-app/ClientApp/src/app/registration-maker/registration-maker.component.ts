@@ -212,7 +212,10 @@ export class RegistrationMakerComponent implements OnInit {
         this.editMode = true;
         this.displayRegistration(r);
       }, err => {
+        this.notificationQueueService.addNotification('Failed to load evacuee', 'danger');
         console.log('error getting registration =', err);
+        // go back to the main dashboard
+        this.router.navigate([`/${this.path}/`]);
       });
     } else {
       // this is a fresh form
@@ -587,6 +590,7 @@ export class RegistrationMakerComponent implements OnInit {
             this.router.navigate([`/${this.path}/`]);
           }
         }, err => {
+          this.notificationQueueService.addNotification('Failed to add evacuee', 'danger');
           console.log('error creating registration =', err);
         });
     } else {
@@ -609,6 +613,7 @@ export class RegistrationMakerComponent implements OnInit {
             this.router.navigate([`/${this.path}/`]);
           }
         }, err => {
+          this.notificationQueueService.addNotification('Failed to update evacuee', 'danger');
           console.log('error updating registration =', err);
         });
     }
