@@ -480,7 +480,7 @@
           While you are evacuated do you require supports?<br>
           This could be in the form of food / lodging / clothing / incidentals or transportation.
         </p>
-        <div class="form-group mb-0">
+        <!-- <div class="form-group mb-0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('requiresSupport')" class="form-check-input" [value]="true" formControlName="requiresSupport" id="requiresSupportTrue">
             <label class="form-check-label" for="requiresSupportTrue">Yes</label>
@@ -490,9 +490,9 @@
             <label class="form-check-label" for="requiresSupportFalse">No</label>
           </div>
           <span [class.d-block]="invalid('requiresSupport')" class="invalid-feedback">{{e.requiresSupport}}</span>
-        </div>
+        </div> -->
 
-        <div class="mt-4 feature-block" *ngIf="form.value.requiresSupport">
+        <div class="mt-4 feature-block">
           <p>Check all that apply:</p>
           <div class="form-check mt-3">
             <input type="checkbox" class="form-check-input" formControlName="requiresFood" id="requiresFood">
@@ -953,3 +953,4 @@
     </section>
   </div>
 </div>
+<pre>{{registration|json}}</pre>
