@@ -2,9 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
@@ -72,5 +69,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public List<Evacuee> Evacuees { get; set; }
 
         public List<EvacueeRegistrationAddress> EvacueeRegistrationAddresses { get; set; }
+
+        [NotMapped]
+        public bool IsFinalized => RegistrationCompletionDate.HasValue;
     }
 }

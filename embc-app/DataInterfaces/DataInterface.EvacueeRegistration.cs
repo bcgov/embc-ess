@@ -88,7 +88,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return entity?.ToSummaryViewModel();
         }
 
-        public async Task<bool> DeactivateEvacueeRegistration(string id)
+        public async Task<bool> DeactivateEvacueeRegistrationAsync(string id)
         {
             if (!long.TryParse(id, out var essFileNumber)) return false;
 
