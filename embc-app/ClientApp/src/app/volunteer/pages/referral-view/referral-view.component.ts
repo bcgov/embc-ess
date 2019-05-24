@@ -62,6 +62,7 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
         }
       }, err => {
         this.loading = false;
+        this.notifications.addNotification('Failed to load referral', 'danger');
         console.log('error getting referral =', err);
         this.goHome();
       });
@@ -111,8 +112,8 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
           this.back();
         }, err => {
           this.deactivating = false;
+          this.notifications.addNotification('Failed to deactivate referral', 'danger');
           console.log('error deactivating referral =', err);
-          this.goHome();
         });
     }, () => {
       // modal was dismissed

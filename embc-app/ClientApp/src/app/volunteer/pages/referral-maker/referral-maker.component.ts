@@ -87,7 +87,10 @@ export class ReferralMakerComponent implements OnInit {
           this.defaultDate = new Date(r.incidentTask.startDate);
         }
       }, err => {
+        this.notifications.addNotification('Failed to load evacuee summary', 'danger');
         console.log('error getting registration summary =', err);
+        // go back to the main dashboard
+        this.router.navigate([`/${this.path}/`]);
       });
   }
 
@@ -171,6 +174,7 @@ export class ReferralMakerComponent implements OnInit {
           this.router.navigate([`/${this.path}/registration/summary`]);
         }, err => {
           this.submitting = false;
+          this.notifications.addNotification('Failed to finalize referrals', 'danger');
           console.log('error creating referral =', err);
         });
     }
