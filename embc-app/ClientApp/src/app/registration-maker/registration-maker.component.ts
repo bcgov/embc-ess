@@ -207,6 +207,8 @@ export class RegistrationMakerComponent implements OnInit {
         this.registration = r;
         this.editMode = true;
         this.displayRegistration(r);
+      }, err => {
+        console.log('error getting registration =', err);
       });
     } else {
       // this is a fresh form
@@ -551,35 +553,55 @@ export class RegistrationMakerComponent implements OnInit {
     }
   }
 
-  submit() {
+  submit(addReferrals: boolean = false) {
     this.submitted = true; // send data to the server
     this.submitting = true; // in transmission
 
     // create or update registration
     // TODO: should this be editmode instead?
     if (this.registration.id == null) {
+      // create a new registration
       this.registrationService
         .createRegistration(this.registration)
-        .subscribe(() => {
+        .subscribe(r => {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee added successfully', 'success');
-          // done adding the entry. Clear the reference key.
-          this.uniqueKeyService.clearKey();
-          // go back to the main dashboard
-          this.router.navigate([`/${this.path}/`]);
+          if (addReferrals) {
+            // save the registration ID for lookup in the new component
+            this.uniqueKeyService.setKey(r.id);
+            // go to summary page
+            this.router.navigate([`/${this.path}/registration/summary`]);
+          } else {
+            // done adding the entry - clear the reference key
+            this.uniqueKeyService.clearKey();
+            // go back to the main dashboard
+            this.router.navigate([`/${this.path}/`]);
+          }
+        }, err => {
+          console.log('error creating registration =', err);
         });
     } else {
+      // update existing registration
       this.registrationService
         .updateRegistration(this.registration)
         .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee updated successfully', 'success');
-          // done editing the entry. Clear the reference key.
-          this.uniqueKeyService.clearKey();
-          // go back to the main dashboard
-          this.router.navigate([`/${this.path}/`]);
+          if (addReferrals) {
+            // save the registration ID for lookup in the new component
+            this.uniqueKeyService.setKey(this.registration.id);
+            // go to summary page
+            this.router.navigate([`/${this.path}/registration/summary`]);
+          } else {
+            // done editing the entry - clear the reference key
+            this.uniqueKeyService.clearKey();
+            // go back to the main dashboard
+            this.router.navigate([`/${this.path}/`]);
+          }
+        }, err => {
+          console.log('error updating registration =', err);
         });
     }
   }
