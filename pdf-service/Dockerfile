@@ -45,5 +45,7 @@ RUN npm run build
 
 EXPOSE 3000
 
+USER 1001
+
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["npm", "start"]
