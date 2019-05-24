@@ -150,7 +150,7 @@ export class ReferralMakerComponent implements OnInit {
     this.submitting = true;
     if (this.confirmChecked === true) {
       // assemble referrals
-      const referrals: Array<Partial<ReferralPostItem>> = [];
+      let referrals: Array<Partial<ReferralPostItem>> = [];
       this.foodReferrals.forEach(r => referrals.push({ ...r.value }));
       this.lodgingReferrals.forEach(r => referrals.push({ ...r.value }));
       this.clothingReferrals.forEach(r => referrals.push({ ...r.value }));
