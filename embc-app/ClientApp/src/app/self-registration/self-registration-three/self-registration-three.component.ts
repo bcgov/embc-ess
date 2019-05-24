@@ -96,7 +96,6 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     // push changes to backend
     this.service.createRegistration(reg).subscribe(
       data => {
-        console.log(reg);
         this.submitting = false; // turn off submission state
         this.clearRegistration(); // prevent double submissions
         this.router.navigate(['../step-4/' + data.essFileNumber], { relativeTo: this.route });
