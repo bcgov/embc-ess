@@ -147,9 +147,6 @@ export class RegistrationMakerComponent implements OnInit {
       hasPets: {
         required: 'Please make a selection regarding pets.',
       },
-      requiresSupport: {
-        required: 'Please select whether supports are required.',
-      },
     };
     // TODO: Wow. it sure would be nice if we could just instatiate a class instead of using interfaces
     this.registration = this.blankRegistration();
@@ -204,6 +201,13 @@ export class RegistrationMakerComponent implements OnInit {
       // this is a form with data flowing in.
       this.registrationService.getRegistrationById(key).subscribe(r => {
         // set registration mode to edit and save the previous content in an object.
+        // Note: these flags are reversed.
+        // requiresAccomodation means "claims to have accomodation on self reg"
+        r.requiresAccommodation = !r.requiresAccommodation;
+        r.requiresClothing = !r.requiresClothing;
+        r.requiresFood = !r.requiresFood;
+        r.requiresIncidentals = !r.requiresIncidentals;
+        r.requiresTransportation = !r.requiresTransportation;
         this.registration = r;
         this.editMode = true;
         this.displayRegistration(r);
@@ -292,7 +296,6 @@ export class RegistrationMakerComponent implements OnInit {
       requiresFood: null,
       requiresIncidentals: null,
       requiresTransportation: null,
-      requiresSupport: [null, Validators.required],
 
       // HOH fields that we decided to put at the parent form level to simplify things
       phoneNumber: '', // only BC phones will be validated so keep validators out of here...
@@ -468,7 +471,6 @@ export class RegistrationMakerComponent implements OnInit {
         requiresFood: r.requiresFood as boolean,
         requiresIncidentals: r.requiresIncidentals as boolean,
         requiresTransportation: r.requiresTransportation as boolean,
-        requiresSupport: r.requiresSupport as boolean,
 
         headOfHousehold: {
           // id: r.headOfHousehold.id as string,
@@ -557,13 +559,20 @@ export class RegistrationMakerComponent implements OnInit {
     this.submitted = true; // send data to the server
     this.submitting = true; // in transmission
 
+    const r = this.registration;
+    // these are represented opposite in the db. So these are flipped on page load then flipped on submit
+    r.requiresAccommodation = !r.requiresAccommodation;
+    r.requiresClothing = !r.requiresClothing;
+    r.requiresFood = !r.requiresFood;
+    r.requiresIncidentals = !r.requiresIncidentals;
+    r.requiresTransportation = !r.requiresTransportation;
+
     // create or update registration
     // TODO: should this be editmode instead?
-    if (this.registration.id == null) {
-      // create a new registration
+    if (r.id == null) {
       this.registrationService
-        .createRegistration(this.registration)
-        .subscribe(r => {
+        .createRegistration(r)
+        .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee added successfully', 'success');
@@ -584,14 +593,14 @@ export class RegistrationMakerComponent implements OnInit {
     } else {
       // update existing registration
       this.registrationService
-        .updateRegistration(this.registration)
+        .updateRegistration(r)
         .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee updated successfully', 'success');
           if (addReferrals) {
             // save the registration ID for lookup in the new component
-            this.uniqueKeyService.setKey(this.registration.id);
+            this.uniqueKeyService.setKey(r.id);
             // go to summary page
             this.router.navigate([`/${this.path}/registration/summary`]);
           } else {
@@ -672,7 +681,6 @@ export class RegistrationMakerComponent implements OnInit {
       requiresFood: values.requiresFood as boolean,
       requiresIncidentals: values.requiresIncidentals as boolean,
       requiresTransportation: values.requiresTransportation as boolean,
-      requiresSupport: values.requiresSupport as boolean,
 
       // dates we care about
       selfRegisteredDate: values.selfRegisteredDate as string,
@@ -727,16 +735,6 @@ export class RegistrationMakerComponent implements OnInit {
     if (!r.medicationNeeds) {
       r.hasThreeDayMedicationSupply = false;
     }
-
-    // if they set Requires Support to false then set all Supports Requested to false
-    if (!r.requiresSupport) {
-      r.requiresFood = false;
-      r.requiresClothing = false;
-      r.requiresAccommodation = false;
-      r.requiresIncidentals = false;
-      r.requiresTransportation = false;
-    }
-
     // return the registration
     return r;
   }
@@ -806,7 +804,6 @@ export class RegistrationMakerComponent implements OnInit {
       requiresFood: null,
       requiresIncidentals: null,
       requiresTransportation: null,
-      requiresSupport: null,
       headOfHousehold: null,
       incidentTask: null,
       hostCommunity: null,
