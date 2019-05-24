@@ -39,7 +39,6 @@ export interface Registration {
   requiresFood: boolean;
   requiresIncidentals: boolean;
   requiresTransportation: boolean;
-  requiresSupport: boolean; // will be removed
 
   // related entities
   headOfHousehold: HeadOfHousehold;

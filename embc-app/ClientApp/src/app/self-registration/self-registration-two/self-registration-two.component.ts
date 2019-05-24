@@ -202,8 +202,6 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
       ...this.registration,
       ...this.form.value
     };
-    // we got rid of the radio button for this.
-    registration.requiresSupport = true;
     // if there was no primary address country set by the form before submission
     if (!registration.headOfHousehold.primaryResidence.country) {
       registration.headOfHousehold.primaryResidence.country = this.CANADA;
