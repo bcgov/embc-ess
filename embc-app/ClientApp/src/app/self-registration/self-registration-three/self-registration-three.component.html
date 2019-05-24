@@ -251,7 +251,7 @@
       <option *ngFor="let lang of supportedLanguages" value={{lang[0]}}>{{lang[1]}}</option>
     </select>
   </div>
-  <captcha language={{selectedLanguage}} (validToken)="handleAuthToken($event)"></captcha>
+  <captcha language={{selectedLanguage}} (validToken)="onValidToken($event)" (serverError)="onServerError($event)"></captcha>
 </section>
 
 <div class="mt-5 space-between">

@@ -128,8 +128,13 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     this.store.dispatch(new RegistrationActions.ClearCurrentRegistration());
   }
 
-  public handleAuthToken(token: any) {
+  public onValidToken(token: any) {
     console.log('Valid token received: ', token);
+    this.captchaVerified = true;
+  }
+
+  public onServerError(error: any) {
+    console.log('Server error: ', error);
     this.captchaVerified = true;
   }
 
