@@ -204,6 +204,13 @@ export class RegistrationMakerComponent implements OnInit {
       // this is a form with data flowing in.
       this.registrationService.getRegistrationById(key).subscribe(r => {
         // set registration mode to edit and save the previous content in an object.
+        // Note: these flags are reversed.
+        // requiresAccomodation means "claims to have accomodation on self reg"
+        r.requiresAccommodation = !r.requiresAccommodation;
+        r.requiresClothing = !r.requiresClothing;
+        r.requiresFood = !r.requiresFood;
+        r.requiresIncidentals = !r.requiresIncidentals;
+        r.requiresTransportation = !r.requiresTransportation;
         this.registration = r;
         this.editMode = true;
         this.displayRegistration(r);
