@@ -129,11 +129,14 @@ a {
   border-top: none;
 }
 
-
 // this breaks text/arrow layout in FF
 // select.form-control:not([size]):not([multiple]) {
 //   height: auto;
 // }
+
+select.is-invalid {
+  background-image: none !important; // remove red X
+}
 
 .form-control {
   // border-radius: 5px;
