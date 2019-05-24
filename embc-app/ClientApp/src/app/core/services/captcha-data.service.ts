@@ -8,7 +8,7 @@ import { RestService } from './rest.service';
 // Ref: https://github.com/bcgov/MyGovBC-CAPTCHA-Widget
 //
 
-const BaseUrl = 'https://captcha-develop-jhnamn-dev.pathfinder.gov.bc.ca';
+const BaseUrl = 'https://embcess-captcha.pathfinder.gov.bc.ca';
 
 // payload returned from the server
 @Injectable()
