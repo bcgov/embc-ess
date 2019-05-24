@@ -143,7 +143,6 @@ export class TaskNumberMakerComponent implements OnInit {
   next(): void {
     // only go next if all fields are non null
     this.validateForm();
-
     if (this.form.valid) {
       // navigate to the next page. AKA show the summary part of the form.
       this.maker = false;
