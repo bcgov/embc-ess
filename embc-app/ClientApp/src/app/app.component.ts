@@ -26,7 +26,6 @@ export class AppComponent implements OnInit {
 
     // check for authenticated user
     this.login();
-
     // load these once at init time as they do not change very often,
     // and certainly not within the app
     this.getLookups();
@@ -59,7 +58,7 @@ export class AppComponent implements OnInit {
   }
 
   private login() {
-    this.authService.login().subscribe();
+    this.authService.login(true).subscribe();
   }
 
   private getLookups() {
