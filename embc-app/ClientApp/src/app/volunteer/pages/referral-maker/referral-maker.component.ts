@@ -86,6 +86,8 @@ export class ReferralMakerComponent implements OnInit {
           this.evacuees = this.createEvacueeList(r);
           this.defaultDate = new Date(r.incidentTask.startDate);
         }
+      }, err => {
+        console.log('error getting registration summary =', err);
       });
   }
 
@@ -169,7 +171,7 @@ export class ReferralMakerComponent implements OnInit {
           this.router.navigate([`/${this.path}/registration/summary`]);
         }, err => {
           this.submitting = false;
-          console.log('Error =', err);
+          console.log('error creating referral =', err);
         });
     }
   }

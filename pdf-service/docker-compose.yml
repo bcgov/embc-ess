@@ -1,0 +1,15 @@
+version: "3.6"
+
+services:
+  embc-pdf:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: embc-pdf
+    container_name: embc-pdf
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    volumes:
+      - ./dist:/usr/src/app/dist
+    command: npm run debug

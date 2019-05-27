@@ -74,7 +74,7 @@
         </li>
         <li>
           <span class="name">Details of Incident:</span>
-          <span class="value">{{incidentTask.details}}</span>
+          <span [innerHTML]="incidentTask.details|newlines" class="value"></span>
         </li>
       </ul>
     </section>

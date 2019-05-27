@@ -61,7 +61,10 @@ And of course this component needs to be implemented as a 'maker' with both an e
           </div>
         </div>
         <div class="pl-4 pr-4 pb-3">
-          <textarea class="form-control" formControlName="comments" placeholder="Add comments" rows="4" maxlength="250" autocomplete="off"></textarea>
+          <textarea rows="4" appErrorBorder [when]="true" #comments class="form-control" formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
+          <span class="invalid-feedback justify-content-end">
+            The maximum line length is 250 characters and the maximum number of lines is 4.
+          </span>
         </div>
       </div>
     </form>

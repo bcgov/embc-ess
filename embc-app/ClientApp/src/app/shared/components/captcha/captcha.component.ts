@@ -44,6 +44,7 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
   @Input() eagerFetchAudio = false;
   @Input() userPromptMessage: string;
   @Output() validToken = new EventEmitter<string>();
+  @Output() serverError = new EventEmitter<any>();
 
   readonly translatedMessages = {
     playAudio: {
@@ -193,6 +194,8 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
           this.state = CAPTCHA_STATE.ERROR_VERIFY;
           this.errorVerifyAnswer = this.createErrorTextLine(error);
           console.log('Error response from verifying user answer: ', error);
+          // let UI know about error
+          this.serverError.emit(error);
         }
       );
     }
@@ -270,6 +273,8 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
           this.fetchingAudioInProgress = false;
           console.log('Error response from fetching audio CAPTCHA: ', error);
           this.cd.detectChanges();
+          // let UI know about error
+          this.serverError.emit(error);
         }
       );
     }
@@ -306,6 +311,8 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
         this.errorFetchingImg = this.createErrorTextLine(error);
         console.log('Error esponse from fetching CAPTCHA text: %o', error);
         this.cd.detectChanges();
+        // let UI know about error
+        this.serverError.emit(error);
       }
     );
   }
