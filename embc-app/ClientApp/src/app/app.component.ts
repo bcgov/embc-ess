@@ -5,6 +5,7 @@ import { detectIE10orLower } from './shared/utils';
 import { ControlledListService } from './core/services/controlled-list.service';
 import { AuthService } from './core/services/auth.service';
 import { UniqueKeyService } from './core/services/unique-key.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -19,14 +20,20 @@ export class AppComponent implements OnInit {
     private lookups: ControlledListService,
     public authService: AuthService,
     public uniqueKeyService: UniqueKeyService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.isIE = detectIE10orLower();
 
+    // there shall be no reloading of pages. You are always routed back to the home page if you weren't here to begin with. You are also forced to logout. No restoring sessions ever.
+    if (this.router.url !== '') {
+      this.router.navigateByUrl('');
+      this.authService.logout(true);
+    }
+
     // check for authenticated user
     this.login();
-
     // load these once at init time as they do not change very often,
     // and certainly not within the app
     this.getLookups();
@@ -59,7 +66,7 @@ export class AppComponent implements OnInit {
   }
 
   private login() {
-    this.authService.login().subscribe();
+    this.authService.login(true).subscribe();
   }
 
   private getLookups() {
