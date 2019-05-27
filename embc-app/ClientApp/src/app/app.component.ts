@@ -5,6 +5,7 @@ import { detectIE10orLower } from './shared/utils';
 import { ControlledListService } from './core/services/controlled-list.service';
 import { AuthService } from './core/services/auth.service';
 import { UniqueKeyService } from './core/services/unique-key.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -19,10 +20,17 @@ export class AppComponent implements OnInit {
     private lookups: ControlledListService,
     public authService: AuthService,
     public uniqueKeyService: UniqueKeyService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.isIE = detectIE10orLower();
+
+    // there shall be no reloading of pages.
+    if (this.router.url !== '') {
+      this.router.navigateByUrl('');
+      this.authService.logout(true);
+    }
 
     // check for authenticated user
     this.login();
