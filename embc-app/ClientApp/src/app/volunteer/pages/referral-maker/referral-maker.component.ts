@@ -24,6 +24,7 @@ interface ReferralFormControl<T = any> {
   styleUrls: ['./referral-maker.component.scss']
 })
 export class ReferralMakerComponent implements OnInit {
+  stepCounter = 1; // counts which step on the page the user is on
 
   editMode = true; // when you first land on this page
   submitting = false;
@@ -32,6 +33,7 @@ export class ReferralMakerComponent implements OnInit {
   regId: string = null;
   purchaser: string = null;
   evacuees: Array<Evacuee> = [];
+  workingDefaultDate: Date;
   defaultDate: Date;
   showDefaultDatePicker = false;
   confirmChecked = false;
