@@ -54,3 +54,6 @@ chrome-test-report.html
 # System Files
 .DS_Store
 Thumbs.db
+
+# The test pdf file
+/test/sample.pdf
