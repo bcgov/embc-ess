@@ -20,6 +20,11 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
       map(event => event),
       // handle errors
       catchError((error: HttpErrorResponse) => {
+        if (error.status === 401 && this.router.url !== '/') {
+          // the user is restoring a window or the app has timed out
+          this.auth.logout(true).subscribe();
+          this.router.navigateByUrl('/');
+        };
         // check if error is "not logged in"
         if (error.status === 401 && this.auth.isLoggedIn) {
           // perform logout
