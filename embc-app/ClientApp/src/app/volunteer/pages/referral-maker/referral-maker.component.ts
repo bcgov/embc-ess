@@ -53,12 +53,12 @@ export class ReferralMakerComponent implements OnInit {
   transportationReferrals: Array<ReferralFormControl<Partial<TransportationReferral>>> = [];
   incidentalsReferrals: Array<ReferralFormControl<Partial<IncidentalsReferral>>> = [];
 
-  get numReferrals(): number {
-    return this.foodReferrals.length
-      + this.lodgingReferrals.length
-      + this.clothingReferrals.length
-      + this.transportationReferrals.length
-      + this.incidentalsReferrals.length;
+  get haveReferrals(): boolean {
+    return this.foodReferrals.length > 0
+      || this.lodgingReferrals.length > 0
+      || this.clothingReferrals.length > 0
+      || this.transportationReferrals.length > 0
+      || this.incidentalsReferrals.length > 0;
   }
 
   constructor(
