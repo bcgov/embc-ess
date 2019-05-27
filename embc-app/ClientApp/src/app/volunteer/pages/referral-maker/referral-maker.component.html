@@ -123,7 +123,7 @@
         </article>
       </section>
 
-      <div *ngIf="userClickedNext && !valid && numReferrals > 0" class="text-danger mt-5 pl-5">
+      <div *ngIf="userClickedNext && !valid && haveReferrals" class="text-danger mt-5 pl-5">
         <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>
         &nbsp;Some required fields have not been completed.
       </div>
@@ -133,7 +133,7 @@
           <app-font-awesome-icon icon="times"></app-font-awesome-icon>
           <span class="ml-2">Cancel &amp; Close</span>
         </a>
-        <button type="button" class="btn btn-primary float-right" [disabled]="numReferrals===0" (click)="createReferrals()">CREATE REFERRALS</button>
+        <button type="button" class="btn btn-primary float-right" [disabled]="!haveReferrals" (click)="createReferrals()">CREATE REFERRALS</button>
       </div>
     </div>
 
