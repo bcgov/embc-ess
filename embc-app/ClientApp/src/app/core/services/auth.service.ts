@@ -36,18 +36,6 @@ export class AuthService extends RestService {
     return this.currentUser && this.currentUser.isNewUser === false;
   }
 
-  public connectionAlive() {
-    this.http.get<User>('api/users/current', { headers: this.headers })
-      .subscribe(
-        user => {
-          console.log(user);
-        },
-        error => {
-          console.log(error);
-        },
-      );
-  }
-
   public login(force: boolean = false): Observable<void> {
     const done = new Subject<void>();
 
