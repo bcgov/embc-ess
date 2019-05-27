@@ -1,9 +1,7 @@
-using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
@@ -38,9 +36,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public async Task UpdateEvacueeRegistrationAsync(Registration registration)
         {
             var evacueeRegistration = registration.ToModel();
-
-            evacueeRegistration.CompletedById = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID);
-
             var evacueesToKeep = evacueeRegistration.Evacuees.Select(e => e.EvacueeSequenceNumber).ToArray();
             var evacueesToRemove = db.Evacuees
                 .Where(e => e.RegistrationId == evacueeRegistration.EssFileNumber && !evacueesToKeep.Contains(e.EvacueeSequenceNumber));

@@ -1,6 +1,9 @@
+using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -10,10 +13,12 @@ namespace Gov.Jag.Embc.Public.Controllers
     public class RegistrationsController : Controller
     {
         private readonly IRegistrationService registrationService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public RegistrationsController(IRegistrationService registrationService)
+        public RegistrationsController(IRegistrationService registrationService, IHttpContextAccessor httpContextAccessor)
         {
             this.registrationService = registrationService;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet("{id}")]
@@ -75,6 +80,12 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            item.CompletedBy =
+                new ViewModels.Volunteer
+                {
+                    Externaluseridentifier = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID)
+                };
 
             await registrationService.UpdateAsync(item);
             return Ok();
