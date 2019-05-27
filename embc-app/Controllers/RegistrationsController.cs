@@ -1,5 +1,6 @@
 using Gov.Jag.Embc.Public.Authentication;
-using Gov.Jag.Embc.Public.Services;
+using Gov.Jag.Embc.Public.Services.Registrations;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,19 +13,19 @@ namespace Gov.Jag.Embc.Public.Controllers
     [Authorize]
     public class RegistrationsController : Controller
     {
-        private readonly IRegistrationService registrationService;
         private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IMediator mediator;
 
-        public RegistrationsController(IRegistrationService registrationService, IHttpContextAccessor httpContextAccessor)
+        public RegistrationsController(IHttpContextAccessor httpContextAccessor, IMediator mediator)
         {
-            this.registrationService = registrationService;
+            this.mediator = mediator;
             this.httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOne(string id, [FromQuery] string reason)
         {
-            var result = await registrationService.GetEvacueeRegistrationAsync(id);
+            var result = await mediator.Send(new RegistrationQueryRequest(id));
             if (result != null && result.IsFinalized && string.IsNullOrWhiteSpace(reason))
             {
                 return BadRequest($"must specify a reason for viewing a finalized event registration");
@@ -39,7 +40,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet("{id}/summary")]
         public async Task<IActionResult> GetOneSummary(string id)
         {
-            var result = await registrationService.GetEvacueeRegistrationSummaryAsync(id);
+            var result = await mediator.Send(new RegistrationQueryRequest(id));
             if (result == null)
             {
                 return NotFound();
@@ -61,8 +62,7 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await registrationService.CreateNewAsync(item);
-            return Json(result);
+            return Json(await mediator.Send(new CreateNewRegistrationCommand(item)));
         }
 
         [HttpPut("{id}")]
@@ -87,16 +87,18 @@ namespace Gov.Jag.Embc.Public.Controllers
                     Externaluseridentifier = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID)
                 };
 
-            await registrationService.UpdateAsync(item);
+            await mediator.Send(new FinalizeRegistrationCommand(item));
             return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            if (string.IsNullOrWhiteSpace(id)) return BadRequest();
+            if (string.IsNullOrWhiteSpace(id)) return BadRequest(id);
 
-            var result = await registrationService.DeactivateEvacueeRegistrationAsync(id);
+            var result = await mediator.Send(new DeactivateRegistrationCommand(id));
+
+            if (!result) return NotFound(id);
             return Ok();
         }
     }
