@@ -3,7 +3,7 @@ import { FormBuilder, Validators, FormArray, FormControl, FormGroup } from '@ang
 import { Observable, Subscription } from 'rxjs';
 
 import { Evacuee, ReferralBase } from 'src/app/core/models';
-import { clearFormArray, uuid } from 'src/app/shared/utils';
+import { clearFormArray, uuid, invalidField} from 'src/app/shared/utils';
 import { ValidateComments } from '../../validators/comments.validator';
 
 /**
@@ -38,11 +38,14 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   // If it breaks and isn't unique it won't break the form. (poor man's guid)
   uuid = uuid();
 
-  // The model for the form data collected
+  // the model for the form data collected
   form = this.fb.group({
     evacuees: this.fb.array([], Validators.required),
     comments: this.fb.control([''], ValidateComments),
   });
+
+  // to run validation after user clicks the Submit button
+  shouldValidateForm = false;
 
   // helper to format dollar amounts
   currency = new Intl.NumberFormat('en-US', {
@@ -50,6 +53,9 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
     currency: 'USD',
     minimumFractionDigits: 2
   });
+
+  // convenience getter for easy access to form fields
+  get f() { return this.form.controls; }
 
   constructor(public fb: FormBuilder) { }
 
@@ -62,7 +68,10 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
       }
 
       // inform the parent form about this sub-form validation status
-      this.form.statusChanges.subscribe(status => this.onValidate(status));
+      this.form.statusChanges.subscribe(status => {
+        const formIsValid = (status === 'VALID');
+        this.formValidationChange.emit(formIsValid);
+      });
 
       // let the parent form know we are ready
       this.formReady.emit(this.form);
@@ -76,15 +85,10 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.referral && this.referral) {
-      this.displayReferral(this.referral);
-    }
-  }
-
-  displayReferral(referral: T) {
-    if (referral && !this.readOnly) {
+    if (changes.referral && this.referral && !this.readOnly) {
+      // display referral
       this.form.reset();
-      this.fromModel(referral);
+      this.fromModel(this.referral);
     }
   }
 
@@ -105,22 +109,19 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
     return p;
   }
 
-  onValidate(status: any) {
-    const formIsValid = status === 'VALID';
-    this.formValidationChange.emit(formIsValid);
+  invalid(field: string, parent: FormGroup = this.form): boolean {
+    return invalidField(field, parent, this.shouldValidateForm);
   }
 
   onSubmit() {
+    this.shouldValidateForm = true;
     if (!this.form.valid) {
-      console.log('REFERRAL-FORM: form is invalid'); // TODO: fix
+      // console.log('REFERRAL-FORM: form is invalid');
       return;
     }
     const p = this.toModel(this.form.value);
-    this.propagateChanges(p);
-  }
-
-  propagateChanges(newValue: T) {
-    this.formChange.emit(newValue);
+    // propagate changes
+    this.formChange.emit(p);
   }
 
   /**
@@ -134,7 +135,7 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
     return this.form.get('evacuees') as FormArray;
   }
 
-  addEvacuee(evacuee: Evacuee) {
+  private addEvacuee(evacuee: Evacuee) {
     this.selected.push(new FormControl(evacuee));
   }
 
@@ -142,7 +143,7 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
     this.selected.removeAt(index);
   }
 
-  selectEvacuee(evacuee: Evacuee) {
+  private selectEvacuee(evacuee: Evacuee) {
     const index = this.indexOfEvacuee(this.selected.value, evacuee);
     if (index >= 0) {
       this.removeEvacuee(index);

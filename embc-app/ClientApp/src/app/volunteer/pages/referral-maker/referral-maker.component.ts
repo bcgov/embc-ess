@@ -53,6 +53,14 @@ export class ReferralMakerComponent implements OnInit {
   transportationReferrals: Array<ReferralFormControl<Partial<TransportationReferral>>> = [];
   incidentalsReferrals: Array<ReferralFormControl<Partial<IncidentalsReferral>>> = [];
 
+  get numReferrals(): number {
+    return this.foodReferrals.length
+      + this.lodgingReferrals.length
+      + this.clothingReferrals.length
+      + this.transportationReferrals.length
+      + this.incidentalsReferrals.length;
+  }
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -180,6 +188,14 @@ export class ReferralMakerComponent implements OnInit {
           console.log('error creating referral =', err);
         });
     }
+  }
+
+  isReferralValid(r: ReferralFormControl): boolean {
+    return this.userClickedNext && r.valid;
+  }
+
+  isReferralInvalid(r: ReferralFormControl): boolean {
+    return this.userClickedNext && !r.valid;
   }
 
   incidentalsReferralChange() {
@@ -334,6 +350,7 @@ export class ReferralMakerComponent implements OnInit {
     const family = hoh.familyMembers || [];
     return [hoh, ...family];
   }
+
   toggleDefaultDatePicker() {
     if (this.showDefaultDatePicker) {
       // ui element is shown so user is hiding the date picker so we need to reset it back to the incident start time
@@ -344,8 +361,10 @@ export class ReferralMakerComponent implements OnInit {
       this.showDefaultDatePicker = true;
     }
   }
+
   // --------------------HELPERS-----------------------------------------
   remove(arr: [], i: number) {
     if (arr) { arr.splice(i, 1); }
   }
+
 }

@@ -1,3 +1,15 @@
 .summary-heading {
   border-bottom: 4px solid #7596c8;
 }
+
+article {
+  border-right: white 1rem solid;
+
+  // &.referral-valid {
+  //   border-right-color: lime;
+  // }
+
+  &.referral-invalid {
+    border-right-color: red;
+  }
+}
