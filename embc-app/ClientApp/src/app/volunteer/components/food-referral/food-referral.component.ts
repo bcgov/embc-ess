@@ -64,7 +64,7 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
         this.f.numDinners.clearValidators();
         // set groceries validators
         this.f.numDaysMeals.setValidators([Validators.required]);
-        this.f.totalAmount.setValidators([CustomValidators.number, Validators.required, Validators.min(0.01)]);
+        this.f.totalAmount.setValidators([CustomValidators.number, Validators.required, Validators.min(0)]);
       }
       this.f.numBreakfasts.updateValueAndValidity({ emitEvent: false });
       this.f.numLunches.updateValueAndValidity({ emitEvent: false });
