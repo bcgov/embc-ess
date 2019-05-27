@@ -93,11 +93,11 @@ namespace Gov.Jag.Embc.Public.ViewModels
     {
         public string IncidentTaskNumber { get; set; }
         public string HostCommunity { get; set; }
-        public string FromDate => ValidDates.From.ToString("MMMM-dd-yyyy");
+        public string FromDate => ValidDates.From.ToString("MMM-dd-yyyy");
         public string FromTime => ValidDates.From.ToString("h:mm tt");
-        public string ToDate => ValidDates.To.ToString("MMMM-dd-yyyy");
+        public string ToDate => ValidDates.To.ToString("MMM-dd-yyyy");
         public string ToTime => ValidDates.To.ToString("h:mm tt");
-        public string PrintDate => DateTime.Today.ToString("MMMM-dd-yyyy");
+        public string PrintDate => DateTime.Today.ToString("MMM-dd-yyyy");
         public IEnumerable<PrintEvacuee> PrintEvacuees { get; set; }
         public string TotalAmountPrinted => TotalAmount.ToString("C2");
 
