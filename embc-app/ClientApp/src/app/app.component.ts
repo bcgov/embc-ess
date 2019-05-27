@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.isIE = detectIE10orLower();
 
-    // there shall be no reloading of pages.
+    // there shall be no reloading of pages. You are always routed back to the home page if you weren't here to begin with. You are also forced to logout. No restoring sessions ever.
     if (this.router.url !== '') {
       this.router.navigateByUrl('');
       this.authService.logout(true);
