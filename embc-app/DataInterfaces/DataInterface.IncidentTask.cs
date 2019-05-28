@@ -34,8 +34,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             if (Guid.TryParse(id, out var guid))
             {
-                var entity = await IncidentTasks.SingleOrDefaultAsync(task => task.Id == guid);
-                return entity?.ToViewModel();
+                var entity = await IncidentTasks
+                    .Select(incident => new { incident, evacueeCount = incident.EvacueeRegistrations.Select(er => er.Evacuees.Count()).Sum() })
+                    .SingleOrDefaultAsync(task => task.incident.Id == guid);
+
+                return entity?.incident.ToViewModel(entity.evacueeCount);
             }
             return null;
         }
