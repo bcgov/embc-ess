@@ -1,5 +1,7 @@
+using Gov.Jag.Embc.Public.Services.Registrations;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -98,6 +100,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             db.Update(item);
             await db.SaveChangesAsync();
             return true;
+        }
+
+        public async Task AppendEvacueeRegistrationAuditEntryAsync(RegistrationEvent notification, string userId)
+        {
+            await db.EvacueeRegistrationAudits.AddAsync(new Models.Db.EvacueeRegistrationAudit
+            {
+                User = userId,
+                Action = notification.GetType().Name,
+                EssFileNumber = long.Parse(notification.EssFileNumber),
+                Content = JsonConvert.SerializeObject(notification)
+            });
+            await db.SaveChangesAsync();
         }
     }
 }
