@@ -16,6 +16,7 @@ const MAXIMUM_PER_PERSON = 50.00;
   styleUrls: ['./incidentals-referral.component.scss']
 })
 export class IncidentalsReferralComponent extends AbstractReferralComponent<IncidentalsReferral> implements OnInit, OnDestroy {
+
   private ratesModal: NgbModalRef = null;
 
   constructor(

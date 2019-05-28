@@ -102,9 +102,9 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   }
 
   toModel(formValue: any): T {
-    // Copy over all of the original referral properties
-    // Then copy over the values from the form
-    // This ensures values not on the form, such as the Id, are retained
+    // Copy over all of the original referral properties.
+    // Then copy over the values from the form.
+    // This ensures values not on the form, such as the Id, are retained.
     const p: T = { ...this.referral, ...formValue };
     return p;
   }
@@ -161,4 +161,11 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   protected indexOfEvacuee(arr: Array<Evacuee>, value: Evacuee): number {
     return (arr || []).map(o => o.id).indexOf(value.id);
   }
+
+  // returns null if there is no value, otherwise returns number
+  // this passes through '0'
+  protected numberOrNull(value: number): number | null {
+    return (value !== undefined ? value : null );
+  }
+
 }
