@@ -100,6 +100,8 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string PrintDate => DateTime.Today.ToString("MMM-dd-yyyy");
         public IEnumerable<PrintEvacuee> PrintEvacuees { get; set; }
         public string TotalAmountPrinted => TotalAmount.ToString("C2");
+        public string CommentsPrinted => ConvertCarriageReturnToHtml(Comments);
+        public string ApprovedItemsPrinted => ConvertCarriageReturnToHtml(ApprovedItems);
 
         public object[] PrintableEvacuees
         {
@@ -114,6 +116,11 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 }
                 return evacueesToPrint.ToArray();
             }
+        }
+
+        private string ConvertCarriageReturnToHtml(string value)
+        {
+            return value?.Replace("\n", "<br />")?.Replace("\r", "<br />");
         }
     }
 
@@ -145,7 +152,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 return string.Empty;
             }
 
-            return $"{referralEvacuee.FirstName}, {referralEvacuee.FirstName} ({referralEvacuee.EvacueeTypeCode})";
+            return $"{referralEvacuee.FirstName}, {referralEvacuee.LastName} ({referralEvacuee.EvacueeTypeCode})";
         }
 
         private string GetEvacueeColumnClass(string columnText)

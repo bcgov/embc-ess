@@ -114,7 +114,8 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
 
                 handleBars.RegisterTemplate("titlePartial", partialViewType.GetDisplayName());
 
-                var partialItemsSource = GetItemsPartialView(partialViewType);
+                var useSummaryVersion = partialViewType == ReferralPartialView.Hotel || partialViewType == ReferralPartialView.Billeting;
+                var partialItemsSource = GetItemsPartialView(partialViewType, useSummaryVersion);
                 handleBars.RegisterTemplate("itemsPartial", partialItemsSource);
 
                 handleBars.RegisterTemplate("itemsDetailTitle", "Details");
@@ -149,9 +150,10 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             return TemplateLoader.LoadTemplate("Css");
         }
 
-        private string GetItemsPartialView(ReferralPartialView partialView)
+        private string GetItemsPartialView(ReferralPartialView partialView, bool useSummaryPartial = false)
         {
-            var name = $"{partialView.ToString()}.{partialView.ToString()}ItemsPartial";
+            var summary = useSummaryPartial ? "Summary" : string.Empty;
+            var name = $"{partialView.ToString()}.{partialView.ToString()}Items{summary}Partial";
             return TemplateLoader.LoadTemplate(name);
         }
 
