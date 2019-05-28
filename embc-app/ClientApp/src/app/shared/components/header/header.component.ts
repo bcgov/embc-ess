@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/core/models';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -12,13 +13,20 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
   }
 
-  homeButton(){
-    // TODO: the home button should be a routerlink but because of the way the routing works doing a standard routerlink makes angular confused. Need to fix but deadline.
-    this.router.navigate(['/']);
+  homeButton() {
+    this.authService.role.subscribe(r => {
+      // if the role is null we redirect them to a logged out home location otherwise they go to their dash.
+      if (!r || r === 'role_everyone') {
+        this.router.navigate(['/']);
+      } else {
+        this.router.navigate(['dashboard']);
+      }
+    });
   }
 }
