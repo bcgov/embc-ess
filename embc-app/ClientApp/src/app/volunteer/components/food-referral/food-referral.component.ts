@@ -45,7 +45,7 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
     // set other validators according to 'subType' value
     this.f.subType.valueChanges.subscribe(value => {
       if (value === 'RESTAURANT') {
-        // remove Groceries validator
+        // remove Groceries validators
         this.f.numDaysMeals.clearValidators();
         this.f.totalAmount.clearValidators();
         // set Restaurant validators

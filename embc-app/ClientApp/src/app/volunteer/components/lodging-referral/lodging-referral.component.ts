@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import range from 'lodash/range';
 
-import { LodgingReferral, Supplier } from 'src/app/core/models';
+import { LodgingReferral } from 'src/app/core/models';
 import { ReferralDate } from 'src/app/core/models/referral-date';
 import { LodgingRatesComponent } from 'src/app/shared/modals/lodging-rates/lodging-rates.component';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
@@ -30,6 +30,36 @@ export class LodgingReferralComponent extends AbstractReferralComponent<LodgingR
     this.form.setControl('subType', this.fb.control(''));
     this.form.setControl('numNights', this.fb.control(''));
     this.form.setControl('numRooms', this.fb.control(''));
+
+    // ensure a subType is selected
+    this.f.subType.setValidators([Validators.required]); // ie, not null
+
+    // set other validators according to 'subType' value
+    this.f.subType.valueChanges.subscribe(value => {
+      if (value === 'HOTEL') {
+        // remove other validators
+        this.f.numNights.clearValidators();
+        // set Hotel validators
+        this.f.numNights.setValidators([Validators.required]);
+        this.f.numRooms.setValidators([Validators.required]);
+      }
+      if (value === 'BILLETING') {
+        // remove other validators
+        this.f.numNights.clearValidators();
+        this.f.numRooms.clearValidators();
+        // set Billeting validators
+        this.f.numNights.setValidators([Validators.required]);
+      }
+      if (value === 'GROUP') {
+        // remove other validators
+        this.f.numNights.clearValidators();
+        this.f.numRooms.clearValidators();
+        // set Billeting validators
+        this.f.numNights.setValidators([Validators.required]);
+      }
+      this.f.numNights.updateValueAndValidity({ emitEvent: false });
+      this.f.numRooms.updateValueAndValidity({ emitEvent: false });
+    });
   }
 
   ngOnInit() {
@@ -48,8 +78,8 @@ export class LodgingReferralComponent extends AbstractReferralComponent<LodgingR
     super.fromModel(referral);
     this.form.patchValue({
       subType: referral.subType || null,
-      numNights: referral.numNights || 0,
-      numRooms: referral.numRooms || 0,
+      numNights: this.numberOrNull(referral.numNights),
+      numRooms: this.numberOrNull(referral.numRooms)
     });
   }
 
