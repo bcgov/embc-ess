@@ -47,7 +47,7 @@ namespace embc_unit_tests
             var pdfService = new PdfConverter();
             var service = new ReferralsService(di, pdfService);
 
-            var incidentTask = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.GenerateSelf());
+            var incidentTask = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
 
             var regVM = RegistrationGenerator.GenerateSelf();
             regVM.IncidentTask = incidentTask;
@@ -104,7 +104,7 @@ namespace embc_unit_tests
             var pdfService = new PdfConverter();
             var service = new ReferralsService(di, pdfService);
 
-            var incidentTask = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.GenerateSelf());
+            var incidentTask = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
 
             var regVM = RegistrationGenerator.GenerateSelf();
             regVM.IncidentTask = incidentTask;

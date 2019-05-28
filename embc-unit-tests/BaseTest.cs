@@ -3,9 +3,11 @@ using Gov.Jag.Embc.Public;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Seeder;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 using Xunit.Abstractions;
 
 namespace embc_unit_tests
@@ -23,7 +25,9 @@ namespace embc_unit_tests
 
         protected EmbcDbContext EmbcDb => serviceProvider.GetService<EmbcDbContext>();
 
-        public BaseTest(ITestOutputHelper output)
+        protected IMediator Mediator => serviceProvider.GetService<IMediator>();
+
+        public BaseTest(ITestOutputHelper output, params (Type svc, Type impl)[] additionalServices)
         {
             var services = new ServiceCollection()
                 .AddLogging(builder => builder.AddProvider(new XUnitLoggerProvider(output)))
@@ -33,9 +37,17 @@ namespace embc_unit_tests
                     .EnableSensitiveDataLogging()
                     //.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ESS_develop;Integrated Security=True;")
                     .UseInMemoryDatabase("ESS_Test")
-                    );
+                    )
+                 .AddMediatR(typeof(Startup));
+
+            foreach (var svc in additionalServices)
+            {
+                services.AddTransient(svc.svc, svc.impl);
+            }
 
             serviceProvider = services.BuildServiceProvider();
+
+            SeedData();
         }
 
         protected void SeedData()
