@@ -41,28 +41,24 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
 
     // ensure a subType is selected
     this.f.subType.setValidators([Validators.required]); // ie, not null
-  }
 
-  ngOnInit() {
-    // this is IMPORTANT! - failure to call the base class will stop validation from working!
-    super.ngOnInit();
-
+    // set other validators according to 'subType' value
     this.f.subType.valueChanges.subscribe(value => {
       if (value === 'RESTAURANT') {
-        // remove groceries validator
+        // remove Groceries validator
         this.f.numDaysMeals.clearValidators();
         this.f.totalAmount.clearValidators();
-        // set restaurant validators
+        // set Restaurant validators
         this.f.numBreakfasts.setValidators([Validators.required]);
         this.f.numLunches.setValidators([Validators.required]);
         this.f.numDinners.setValidators([Validators.required]);
       }
       if (value === 'GROCERIES') {
-        // remove restaurant validators
+        // remove Restaurant validators
         this.f.numBreakfasts.clearValidators();
         this.f.numLunches.clearValidators();
         this.f.numDinners.clearValidators();
-        // set groceries validators
+        // set Groceries validators
         this.f.numDaysMeals.setValidators([Validators.required]);
         this.f.totalAmount.setValidators([CustomValidators.number, Validators.required, Validators.min(0)]);
       }
@@ -72,6 +68,11 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
       this.f.numDaysMeals.updateValueAndValidity({ emitEvent: false });
       this.f.totalAmount.updateValueAndValidity({ emitEvent: false });
     });
+  }
+
+  ngOnInit() {
+    // this is IMPORTANT! - failure to call the base class will stop validation from working!
+    super.ngOnInit();
   }
 
   ngOnDestroy() {
@@ -84,11 +85,11 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
     super.fromModel(referral);
     this.form.patchValue({
       subType: referral.subType || null,
-      numBreakfasts: referral.numBreakfasts || null,
-      numLunches: referral.numLunches || null,
-      numDinners: referral.numDinners || null,
-      numDaysMeals: referral.numDaysMeals || null,
-      totalAmount: referral.totalAmount || null
+      numBreakfasts: this.numberOrNull(referral.numBreakfasts),
+      numLunches: this.numberOrNull(referral.numLunches),
+      numDinners: this.numberOrNull(referral.numDinners),
+      numDaysMeals: this.numberOrNull(referral.numDaysMeals),
+      totalAmount: this.numberOrNull(referral.totalAmount)
     });
   }
 

@@ -14,13 +14,11 @@ import { AbstractReferralComponent } from '../abstract-referral/abstract-referra
   styleUrls: ['./lodging-referral.component.scss']
 })
 export class LodgingReferralComponent extends AbstractReferralComponent<LodgingReferral> implements OnInit, OnDestroy {
+
   private ratesModal: NgbModalRef = null;
 
   nights: Array<number> = null;
   rooms: Array<number> = range(1, 11); // [1..10]
-
-  // convenience getter for easy access to form fields
-  get f() { return this.form.controls; }
 
   get subType() { return this.f.subType.value; }
 
@@ -74,4 +72,5 @@ export class LodgingReferralComponent extends AbstractReferralComponent<LodgingR
       () => { this.ratesModal = null; }
     );
   }
+
 }

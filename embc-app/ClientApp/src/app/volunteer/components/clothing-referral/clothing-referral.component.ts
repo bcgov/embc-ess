@@ -16,10 +16,8 @@ const MAXIMUM_EXTREME = 200.00;
   styleUrls: ['./clothing-referral.component.scss']
 })
 export class ClothingReferralComponent extends AbstractReferralComponent<ClothingReferral> implements OnInit, OnDestroy {
-  private ratesModal: NgbModalRef = null;
 
-  // convenience getter for easy access to form fields
-  get f() { return this.form.controls; }
+  private ratesModal: NgbModalRef = null;
 
   constructor(
     public fb: FormBuilder,
@@ -82,4 +80,5 @@ export class ClothingReferralComponent extends AbstractReferralComponent<Clothin
       () => { this.ratesModal = null; }
     );
   }
+
 }
