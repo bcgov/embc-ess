@@ -3,7 +3,7 @@ import { FormBuilder, Validators, FormArray, FormControl, FormGroup } from '@ang
 import { Observable, Subscription } from 'rxjs';
 
 import { Evacuee, ReferralBase } from 'src/app/core/models';
-import { clearFormArray, uuid, invalidField} from 'src/app/shared/utils';
+import { clearFormArray, uuid, invalidField } from 'src/app/shared/utils';
 import { ValidateComments } from '../../validators/comments.validator';
 
 /**
@@ -55,7 +55,7 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   });
 
   // convenience getter for easy access to form fields
-  get f() { return this.form.controls; }
+  get f(): any { return this.form.controls; }
 
   constructor(public fb: FormBuilder) { }
 
@@ -102,9 +102,9 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   }
 
   toModel(formValue: any): T {
-    // Copy over all of the original referral properties
-    // Then copy over the values from the form
-    // This ensures values not on the form, such as the Id, are retained
+    // Copy over all of the original referral properties.
+    // Then copy over the values from the form.
+    // This ensures values not on the form, such as the Id, are retained.
     const p: T = { ...this.referral, ...formValue };
     return p;
   }
@@ -161,4 +161,11 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   protected indexOfEvacuee(arr: Array<Evacuee>, value: Evacuee): number {
     return (arr || []).map(o => o.id).indexOf(value.id);
   }
+
+  // returns null if there is no value, otherwise returns number
+  // this passes through '0'
+  protected numberOrNull(value: number): number | null {
+    return (value !== undefined ? value : null);
+  }
+
 }
