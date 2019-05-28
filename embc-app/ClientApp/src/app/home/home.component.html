@@ -39,8 +39,24 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 col-sm-12">
-          <mat-card class="picture-card">
+        <div class="card-deck">
+
+          <div class="card">
+            <div class="card-body">
+              <span class="h3">Evacuee Self-Registration</span>
+            </div>
+            <img src="assets/fingerForceRectangle.png" class="card-img-top " alt="A stylized finger touching a black rectangle">
+            <div class="card-body">
+              <p>
+                The Evacuee Self-Registration form is for evacuees to register with Emergency Support Services if you
+                have been given an Evacuation Order and have been asked to leave your home.
+              </p>
+            </div>
+            <div class="card-body mx-auto">
+              <button class="btn btn-primary mx-auto" (click)="newRegistration()">EVACUEE SELF-REGISTRATION</button>
+            </div>
+          </div>
+          <!-- <mat-card class="picture-card">
             <mat-card-title>Evacuee Self-Registration</mat-card-title>
             <mat-card-actions align="center">
               <img height="170" src="assets/fingerForceRectangle.png" alt="A stylized finger touching a black rectangle">
@@ -54,45 +70,24 @@
             <mat-card-actions align="center">
               <button class="btn btn-primary" (click)="newRegistration()">EVACUEE SELF-REGISTRATION</button>
             </mat-card-actions>
-          </mat-card>
-        </div>
-        <div class="col-md-6 col-sm-12">
-          <mat-card class="picture-card">
-            <mat-card-title>Volunteer Login</mat-card-title>
-            <mat-card-actions align="center">
-              <img height="170" src="assets/sittingAtTheCheckmark.png" alt="A stylized finger touching a black rectangle">
-            </mat-card-actions>
-            <mat-card-content>
+          </mat-card> -->
+          <div class="card">
+            <div class="card-body">
+              <span class="h3">Volunteer Login</span>
+            </div>
+            <img src="assets/sittingAtTheCheckmark.png" class="card-img-top " alt="Two people sitting at a checkmark clock">
+            <div class="card-body">
               <p>
-                The Volunteer Login is for Emergency Support Services team members who are responding to an emergency.
+                The Evacuee Self-Registration form is for evacuees to register with Emergency Support Services if you
+                have been given an Evacuation Order and have been asked to leave your home.
               </p>
-            </mat-card-content>
-            <mat-card-actions align="center">
-              <a class="btn btn-primary" href="login/">VOLUNTEER LOGIN</a>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-
-        <!-- <div class="col-md-5 ">
-          <div class="side-box-wrapper" style="margin-left: -15px;">
-            <section class="side-box">
-              <section style="display: flex">
-                <button mat-fab class="fab-button mat-elevation-z0">
-                  <mat-icon class="icon" aria-label="description icon">description</mat-icon>
-                </button>
-                <h2>Important Notice for Evacuees</h2>
-              </section>
-              <p style="padding-top: 30px;">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-              <div style="float: right;">
-                <button class="btn btn-primary" routerLink=""
-                  tabindex="3">Learn More</button>
-              </div>
-            </section>
+            </div>
+            <div class="card-body mx-auto">
+              <button class="btn btn-primary" (click)="newRegistration()">VOLUNTEER LOGIN</button>
+            </div>
           </div>
-        </div> -->
+
+        </div>
       </div>
     </div>
   </div>
-</div>
