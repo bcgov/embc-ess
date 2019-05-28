@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { ClothingReferral } from 'src/app/core/models';
 import { ReferralDate } from 'src/app/core/models/referral-date';
 import { ClothingRatesComponent } from 'src/app/shared/modals/clothing-rates/clothing-rates.component';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 
 const MAXIMUM_PER = 150.00;
 const MAXIMUM_EXTREME = 200.00;
@@ -25,7 +26,7 @@ export class ClothingReferralComponent extends AbstractReferralComponent<Clothin
   ) {
     super(fb);
     this.form.setControl('extremeWinterConditions', this.fb.control(''));
-    this.form.setControl('totalAmount', this.fb.control(''));
+    this.form.setControl('totalAmount', this.fb.control('', [CustomValidators.number, Validators.required, Validators.min(0)]));
   }
 
   ngOnInit() {
@@ -43,9 +44,8 @@ export class ClothingReferralComponent extends AbstractReferralComponent<Clothin
     // populate fields shared by all forms; e.g. selected evacuees, comments, supplier info...
     super.fromModel(referral);
     this.form.patchValue({
-      subType: referral.subType || null,
       extremeWinterConditions: referral.extremeWinterConditions || false,
-      totalAmount: referral.totalAmount || 0
+      totalAmount: this.numberOrNull(referral.totalAmount)
     });
   }
 
