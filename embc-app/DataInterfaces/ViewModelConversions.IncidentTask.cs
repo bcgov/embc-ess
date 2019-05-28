@@ -15,7 +15,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 Active = source.Active,
                 Region = mapper.Map<ViewModels.Region>(source.Region),
                 Community = mapper.Map<ViewModels.Community>(source.Community),
-                TotalAssociatedEvacuees = source.EvacueeRegistrations?.Count(),
+                TotalAssociatedEvacuees = source.EvacueeRegistrations?.Select(er => er.Evacuees.Count()).Sum(),
                 StartDate = source.StartDate?.DateTime
             };
             return result;
