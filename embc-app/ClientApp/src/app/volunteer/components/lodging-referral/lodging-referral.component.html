@@ -17,7 +17,7 @@
             <div class="card border-0 h-100">
               <div class="card-body mb-0">
                 <div>
-                  <label for="subType_{{uuid}}">Type of lodging required:</label>
+                  <label for="subType_{{uuid}}" class="required">Type of lodging required:</label>
                   <select class="form-control d-block w-auto" [class.is-invalid]="invalid('subType')" id="subType_{{uuid}}" formControlName="subType">
                     <option [ngValue]="null">Select--</option>
                     <option value="HOTEL">Hotel/Motel</option>
@@ -30,7 +30,7 @@
                 <div class="row align-items-start mt-3" [ngSwitch]="subType">
                   <ng-container *ngSwitchCase="'HOTEL'">
                     <div class="col-4 pr-2">
-                      <label for="numNights_{{uuid}}" class="font-weight-normal"># Nights</label>
+                      <label for="numNights_{{uuid}}" class="font-weight-normal required"># Nights</label>
                       <select class="form-control" [class.is-invalid]="invalid('numNights')" id="numNights_{{uuid}}" formControlName="numNights">
                         <option [ngValue]="null">Select--</option>
                         <option *ngFor="let n of nights" [ngValue]="n">{{n}}</option>
@@ -38,7 +38,7 @@
                       <span class="invalid-feedback">Please select an option</span>
                     </div>
                     <div class="col-4 pl-2">
-                      <label for="numRooms_{{uuid}}" class="font-weight-normal"># Rooms</label>
+                      <label for="numRooms_{{uuid}}" class="font-weight-normal required"># Rooms</label>
                       <select class="form-control" [class.is-invalid]="invalid('numRooms')" id="numRooms_{{uuid}}" formControlName="numRooms">
                         <option [ngValue]="null">Select--</option>
                         <option *ngFor="let n of rooms" [ngValue]="n">{{n}}</option>
@@ -49,7 +49,7 @@
 
                   <ng-container *ngSwitchCase="'BILLETING'">
                     <div class="col">
-                      <label for="numNights_{{uuid}}" class="font-weight-normal"># Nights</label>
+                      <label for="numNights_{{uuid}}" class="font-weight-normal required"># Nights</label>
                       <select class="form-control d-block w-auto" [class.is-invalid]="invalid('numNights')" id="numNights_{{uuid}}" formControlName="numNights">
                         <option [ngValue]="null">Select--</option>
                         <option *ngFor="let n of nights" [ngValue]="n">{{n}}</option>
@@ -61,7 +61,7 @@
 
                   <ng-container *ngSwitchCase="'GROUP'">
                     <div class="col">
-                      <label for="numNights_{{uuid}}" class="font-weight-normal"># Nights</label>
+                      <label for="numNights_{{uuid}}" class="font-weight-normal required"># Nights</label>
                       <select class="form-control d-block w-auto" [class.is-invalid]="invalid('numNights')" id="numNights_{{uuid}}" formControlName="numNights">
                         <option [ngValue]="null">Select--</option>
                         <option *ngFor="let n of nights" [ngValue]="n">{{n}}</option>

@@ -19,7 +19,7 @@
             <div class="card border-0 h-100">
               <div class="card-body mb-0">
                 <div>
-                  <label for="subType_{{uuid}}">Transport required:</label>
+                  <label for="subType_{{uuid}}" class="required">Transport required:</label>
                   <select class="form-control d-block w-auto" [class.is-invalid]="invalid('subType')" id="subType_{{uuid}}" formControlName="subType">
                     <option [ngValue]="null">Select--</option>
                     <option value="TAXI">Taxi</option>
@@ -30,13 +30,13 @@
 
                 <div class="mt-3" *ngIf="subType==='TAXI'">
                   <div class="row col">
-                    <label for="fromAddress_{{uuid}}" class="font-weight-normal">From (address):</label>
+                    <label for="fromAddress_{{uuid}}" class="font-weight-normal required">From (address):</label>
                     <input type="text" class="form-control" [class.is-invalid]="invalid('fromAddress')" id="fromAddress_{{uuid}}" formControlName="fromAddress">
                     <span class="invalid-feedback">Please add a "From" address</span>
                   </div>
                   <div class="m-3"></div>
                   <div class="row col">
-                    <label for="toAddress_{{uuid}}" class="font-weight-normal">To (address):</label>
+                    <label for="toAddress_{{uuid}}" class="font-weight-normal required">To (address):</label>
                     <input type="text" class="form-control" [class.is-invalid]="invalid('toAddress')" id="toAddress_{{uuid}}" formControlName="toAddress">
                     <span class="invalid-feedback">Please add a "To" address</span>
                   </div>
@@ -44,7 +44,7 @@
 
                 <div class="mt-3" *ngIf="subType==='OTHER'">
                   <div class="row col">
-                    <label for="otherTransportModeDetails_{{uuid}}" class="font-weight-normal">Please specify mode of transport</label>
+                    <label for="otherTransportModeDetails_{{uuid}}" class="font-weight-normal required">Please specify mode of transport</label>
                     <input type="text" class="form-control" [class.is-invalid]="invalid('otherTransportModeDetails')" id="otherTransportModeDetails_{{uuid}}" formControlName="otherTransportModeDetails" placeholder="Please specify...">
                     <span class="invalid-feedback">Please specify mode of transport</span>
                   </div>
