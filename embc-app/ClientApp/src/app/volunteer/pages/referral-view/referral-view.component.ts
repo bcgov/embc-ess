@@ -107,12 +107,12 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
       this.referralService.deactivateReferral(this.registrationId, this.referralId)
         .subscribe(() => {
           this.deactivating = false;
-          this.notifications.addNotification('Referral deactivated successfully', 'success');
+          this.notifications.addNotification('Referral voided successfully', 'success');
           // return to summary page
           this.back();
         }, err => {
           this.deactivating = false;
-          this.notifications.addNotification('Failed to deactivate referral', 'danger');
+          this.notifications.addNotification('Failed to void referral', 'danger');
           console.log('error deactivating referral =', err);
         });
     }, () => {
