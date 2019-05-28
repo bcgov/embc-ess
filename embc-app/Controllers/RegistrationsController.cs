@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -25,22 +26,27 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOne(string id, [FromQuery] string reason)
         {
-            var result = await mediator.Send(new RegistrationQueryRequest(id));
-            if (result != null && result.IsFinalized && string.IsNullOrWhiteSpace(reason))
+            var result = await mediator.Send(new RegistrationQueryRequest(id, reason));
+            switch (result.Status)
             {
-                return BadRequest($"must specify a reason for viewing a finalized event registration");
+                case RegistrationQueryResponse.ResponseStatus.Success:
+                    return Json(result);
+
+                case RegistrationQueryResponse.ResponseStatus.NotFound:
+                    return NotFound(id);
+
+                case RegistrationQueryResponse.ResponseStatus.Error:
+                    return BadRequest(result.FailureReason);
+
+                default:
+                    throw new InvalidOperationException($"invalid status {result.Status} returned for registration {id}");
             }
-            if (result == null)
-            {
-                return NotFound();
-            }
-            return Json(result);
         }
 
         [HttpGet("{id}/summary")]
         public async Task<IActionResult> GetOneSummary(string id)
         {
-            var result = await mediator.Send(new RegistrationQueryRequest(id));
+            var result = await mediator.Send(new RegistrationSummaryQueryRequest(id));
             if (result == null)
             {
                 return NotFound();
@@ -68,11 +74,8 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] ViewModels.Registration item, string id)
         {
-            if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id)
-            {
-                return BadRequest();
-            }
-            if (item != null && (!item.DeclarationAndConsent.HasValue || !item.DeclarationAndConsent.Value))
+            if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id) return BadRequest(id);
+            if (!item.DeclarationAndConsent.HasValue || !item.DeclarationAndConsent.Value)
             {
                 ModelState.AddModelError("DeclarationAndConsent", "Declaration And Consent must be set to 'True'");
             }
@@ -81,11 +84,10 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest(ModelState);
             }
 
-            item.CompletedBy =
-                new ViewModels.Volunteer
-                {
-                    Externaluseridentifier = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID)
-                };
+            item.CompletedBy = new ViewModels.Volunteer
+            {
+                Externaluseridentifier = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID)
+            };
 
             await mediator.Send(new FinalizeRegistrationCommand(item));
             return Ok();
@@ -94,8 +96,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            if (string.IsNullOrWhiteSpace(id)) return BadRequest(id);
-
             var result = await mediator.Send(new DeactivateRegistrationCommand(id));
 
             if (!result) return NotFound(id);
