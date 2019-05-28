@@ -81,6 +81,14 @@ export class TransportationReferralComponent extends AbstractReferralComponent<T
     });
   }
 
+  toModel(formValue: any): TransportationReferral {
+    const p = super.toModel(formValue);
+    // if TAXI then don't send totalAmount to BE
+    if (this.subType === 'TAXI') { delete p.totalAmount; }
+    return p;
+  }
+
+
   // NB: this is called when date component is initialized and whenever its data changes
   updateReferralDate(rd: ReferralDate) {
     this.referral.validDates = rd;
