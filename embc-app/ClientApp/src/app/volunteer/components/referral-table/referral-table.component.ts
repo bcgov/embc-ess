@@ -7,6 +7,7 @@ import { ReferralService } from 'src/app/core/services/referral.service';
 import { RegistrationService } from 'src/app/core/services/registration.service';
 import { Registration, ListResult, PaginationSummary, Referral } from 'src/app/core/models';
 import { ReferralSearchResults } from 'src/app/core/models/search-interfaces';
+import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 
 @Component({
   selector: 'app-referral-table',
@@ -29,11 +30,13 @@ export class ReferralTableComponent implements OnChanges, OnDestroy {
 
   summaryModal: NgbModalRef = null;
   includeSummary: boolean;
+  isPrinting = false;
 
   constructor(
     private referralService: ReferralService,
     private registrationService: RegistrationService,
     private modals: NgbModal,
+    private notifications: NotificationQueueService,
   ) { }
 
   ngOnChanges() {
@@ -100,7 +103,17 @@ export class ReferralTableComponent implements OnChanges, OnDestroy {
         this.summaryModal = null;
 
         const referralIds = this.referrals.map(r => r.referralId);
-        this.registrationService.printReferrals(this.registration.id, referralIds, includeSummary);
+        this.isPrinting = true;
+        this.registrationService.printReferrals(this.registration.id, referralIds, includeSummary).then(
+          value => {
+            this.isPrinting = false;
+            this.notifications.addNotification('Referrals printed successfully', 'success');
+          }, reason => {
+            this.isPrinting = false;
+            this.notifications.addNotification('Failed to print referrals', 'danger');
+            console.log('error printing referrals =', reason);
+          }
+        );
       },
       () => {
         // modal was dismissed
