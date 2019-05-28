@@ -5,7 +5,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public static partial class ViewModelConversions
     {
-        public static ViewModels.IncidentTask ToViewModel(this Models.Db.IncidentTask source)
+        public static ViewModels.IncidentTask ToViewModel(this Models.Db.IncidentTask source, int evacueeCount = 0)
         {
             var result = new ViewModels.IncidentTask()
             {
@@ -15,7 +15,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 Active = source.Active,
                 Region = mapper.Map<ViewModels.Region>(source.Region),
                 Community = mapper.Map<ViewModels.Community>(source.Community),
-                TotalAssociatedEvacuees = source.EvacueeRegistrations?.Select(er => er.Evacuees.Count()).Sum(),
+                TotalAssociatedEvacuees = evacueeCount,
                 StartDate = source.StartDate?.DateTime
             };
             return result;

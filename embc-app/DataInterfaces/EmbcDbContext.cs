@@ -93,6 +93,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<Volunteer> Volunteers { get; set; }
         public DbSet<Referral> Referrals { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbQuery<IncidentTaskEvacueeSummary> IncidentTaskEvacueeSummaries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -164,6 +165,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .HasValue<HotelLodgingReferral>(ReferralType.Lodging_Hotel.ToString())
                 .HasValue<GroupLodgingReferral>(ReferralType.Lodging_Group.ToString())
                 .HasValue<BilletingLodgingReferral>(ReferralType.Lodging_Billeting.ToString());
+
+            modelBuilder.Query<IncidentTaskEvacueeSummary>().ToView("IncidentTaskEvacueeSummaryView");
+
+            modelBuilder.Query<IncidentTaskEvacueeSummary>()
+                .HasOne<IncidentTask>()
+                .WithOne();
 
             modelBuilder.AddShadowProperties();
         }
