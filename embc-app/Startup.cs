@@ -25,6 +25,7 @@ using NWebsec.AspNetCore.Mvc;
 using NWebsec.AspNetCore.Mvc.Csp;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -144,7 +145,7 @@ namespace Gov.Jag.Embc.Public
             services.AddTransient<IPdfConverter, PdfConverter>();
             services.AddTransient<IReferralsService, ReferralsService>();
 
-            services.AddMediatR(typeof(Startup));
+            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

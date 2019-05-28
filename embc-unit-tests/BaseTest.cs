@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Reflection;
 using Xunit.Abstractions;
 
 namespace embc_unit_tests
@@ -35,10 +36,10 @@ namespace embc_unit_tests
                 .AddEntityFrameworkInMemoryDatabase()
                 .AddDbContext<EmbcDbContext>(options => options
                     .EnableSensitiveDataLogging()
-                    //.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ESS_develop;Integrated Security=True;")
+                    //.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ESS_dev;Integrated Security=True;")
                     .UseInMemoryDatabase("ESS_Test")
                     )
-                 .AddMediatR(typeof(Startup));
+                 .AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
 
             foreach (var svc in additionalServices)
             {
@@ -52,9 +53,8 @@ namespace embc_unit_tests
 
         protected void SeedData()
         {
-            var ctx = EmbcDb;
-
-            var repo = new SeederRepository(ctx);
+            if (!EmbcDb.Database.IsInMemory()) return;
+            var repo = new SeederRepository(EmbcDb);
 
             var types = new[]
             {

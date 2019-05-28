@@ -10,20 +10,29 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         IRequestHandler<RegistrationSummaryQueryRequest, ViewModels.RegistrationSummary>
     {
         private readonly IDataInterface dataInterface;
+        private readonly IMediator mediator;
 
-        public RegistrationQueryService(IDataInterface dataInterface)
+        public RegistrationQueryService(IDataInterface dataInterface, IMediator mediator)
         {
             this.dataInterface = dataInterface;
+            this.mediator = mediator;
         }
 
         public async Task<RegistrationQueryResponse> Handle(RegistrationQueryRequest request, CancellationToken cancellationToken)
         {
             var result = await dataInterface.GetEvacueeRegistrationAsync(request.EssFileNumber);
+            RegistrationQueryResponse response;
             if (result != null && result.IsFinalized && string.IsNullOrWhiteSpace(request.Reason))
-                return RegistrationQueryResponse.Error($"Must specify a valid reason to view the complete registration {request.EssFileNumber}");
-            if (result == null)
-                return RegistrationQueryResponse.NotFound(request.EssFileNumber);
-            return RegistrationQueryResponse.Success(result);
+                response = RegistrationQueryResponse.Error($"Must specify a valid reason to view the complete registration {request.EssFileNumber}");
+            else if (result == null)
+                response = RegistrationQueryResponse.NotFound(request.EssFileNumber);
+            else
+            {
+                response = RegistrationQueryResponse.Success(result);
+                await mediator.Publish(new RegistrationViewed(request.EssFileNumber, request.Reason));
+            }
+
+            return response;
         }
 
         public async Task<ViewModels.RegistrationSummary> Handle(RegistrationSummaryQueryRequest request, CancellationToken cancellationToken)
@@ -94,5 +103,15 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         }
 
         public string EssFileNumber { get; }
+    }
+
+    public class RegistrationViewed : RegistrationEvent
+    {
+        public string ReasonForView { get; }
+
+        public RegistrationViewed(string essFileNumber, string reasonForView) : base(essFileNumber)
+        {
+            ReasonForView = reasonForView;
+        }
     }
 }

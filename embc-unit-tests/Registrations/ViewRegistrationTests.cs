@@ -80,11 +80,27 @@ namespace embc_unit_tests.Registrations
             var selfReg = RegistrationGenerator.GenerateSelf();
             var regId = (await di.CreateEvacueeRegistrationAsync(selfReg)).Id;
 
-            var response = await Mediator.Send(new RegistrationQueryRequest(regId + "_shouldntexists", null));
+            var response = await Mediator.Send(new RegistrationQueryRequest(regId + "123", null));
 
             Assert.NotNull(response.FailureReason);
             Assert.Equal(RegistrationQueryResponse.ResponseStatus.NotFound, response.Status);
             Assert.Null(response.Registration);
+        }
+
+        [Fact]
+        public async Task Get_CompleteRegistrationWithReason_AuditCreated()
+        {
+            var di = new DataInterface(EmbcDb, mapper);
+            var task = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
+            var hostCommunity = (await di.GetCommunitiesAsync()).First();
+            var completedReg = RegistrationGenerator.GenerateCompleted(task.Id, hostCommunity.Id);
+            var regId = (await di.CreateEvacueeRegistrationAsync(completedReg)).Id;
+
+            var response = await Mediator.Send(new RegistrationQueryRequest(regId, "want to read"));
+
+            var auditEntries = EmbcDb.EvacueeRegistrationAudits.Where(a => a.EssFileNumber == long.Parse(regId)).ToArray();
+            Assert.Single(auditEntries);
+            Assert.Equal(typeof(RegistrationViewed).Name, auditEntries[0].Action);
         }
     }
 }
