@@ -24,6 +24,7 @@ interface ReferralFormControl<T = any> {
   styleUrls: ['./referral-maker.component.scss']
 })
 export class ReferralMakerComponent implements OnInit {
+  stepCounter = 1; // counts which step on the page the user is on
 
   editMode = true; // when you first land on this page
   submitting = false;
@@ -32,6 +33,7 @@ export class ReferralMakerComponent implements OnInit {
   regId: string = null;
   purchaser: string = null;
   evacuees: Array<Evacuee> = [];
+  workingDefaultDate: Date;
   defaultDate: Date;
   showDefaultDatePicker = false;
   confirmChecked = false;
@@ -50,6 +52,14 @@ export class ReferralMakerComponent implements OnInit {
   clothingReferrals: Array<ReferralFormControl<Partial<ClothingReferral>>> = [];
   transportationReferrals: Array<ReferralFormControl<Partial<TransportationReferral>>> = [];
   incidentalsReferrals: Array<ReferralFormControl<Partial<IncidentalsReferral>>> = [];
+
+  get haveReferrals(): boolean {
+    return this.foodReferrals.length > 0
+      || this.lodgingReferrals.length > 0
+      || this.clothingReferrals.length > 0
+      || this.transportationReferrals.length > 0
+      || this.incidentalsReferrals.length > 0;
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -178,6 +188,14 @@ export class ReferralMakerComponent implements OnInit {
           console.log('error creating referral =', err);
         });
     }
+  }
+
+  isReferralValid(r: ReferralFormControl): boolean {
+    return this.userClickedNext && r.valid;
+  }
+
+  isReferralInvalid(r: ReferralFormControl): boolean {
+    return this.userClickedNext && !r.valid;
   }
 
   incidentalsReferralChange() {
@@ -332,6 +350,7 @@ export class ReferralMakerComponent implements OnInit {
     const family = hoh.familyMembers || [];
     return [hoh, ...family];
   }
+
   toggleDefaultDatePicker() {
     if (this.showDefaultDatePicker) {
       // ui element is shown so user is hiding the date picker so we need to reset it back to the incident start time
@@ -342,8 +361,10 @@ export class ReferralMakerComponent implements OnInit {
       this.showDefaultDatePicker = true;
     }
   }
+
   // --------------------HELPERS-----------------------------------------
   remove(arr: [], i: number) {
     if (arr) { arr.splice(i, 1); }
   }
+
 }

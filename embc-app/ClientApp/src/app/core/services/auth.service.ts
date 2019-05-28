@@ -43,7 +43,9 @@ export class AuthService extends RestService {
     this.getCurrentUser(force).subscribe(user => {
       this.setCurrentUser(user);
       done.next();
-    });
+    },
+      err => console.log(err)
+    );
 
     return done.asObservable();
   }
