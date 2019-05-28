@@ -99,7 +99,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string ToTime => ValidDates.To.ToString("h:mm tt");
         public string PrintDate => DateTime.Today.ToString("MMM-dd-yyyy");
         public IEnumerable<PrintEvacuee> PrintEvacuees { get; set; }
-        public string TotalAmountPrinted => TotalAmount.ToString("C2");
+        public string TotalAmountPrinted => TotalAmount.ToString("N2");
         public string CommentsPrinted => ConvertCarriageReturnToHtml(Comments);
         public string ApprovedItemsPrinted => ConvertCarriageReturnToHtml(ApprovedItems);
 
@@ -152,7 +152,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 return string.Empty;
             }
 
-            return $"{referralEvacuee.FirstName}, {referralEvacuee.LastName} ({referralEvacuee.EvacueeTypeCode})";
+            return $"{referralEvacuee.LastName}, {referralEvacuee.FirstName} ({referralEvacuee.EvacueeTypeCode})";
         }
 
         private string GetEvacueeColumnClass(string columnText)
