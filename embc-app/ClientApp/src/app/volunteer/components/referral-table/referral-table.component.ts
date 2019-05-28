@@ -105,7 +105,7 @@ export class ReferralTableComponent implements OnChanges, OnDestroy {
         const referralIds = this.referrals.map(r => r.referralId);
         this.isPrinting = true;
         this.registrationService.printReferrals(this.registration.id, referralIds, includeSummary).then(
-          value => {
+          () => {
             this.isPrinting = false;
             this.notifications.addNotification('Referrals printed successfully', 'success');
           }, reason => {
