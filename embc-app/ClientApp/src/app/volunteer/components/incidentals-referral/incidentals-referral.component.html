@@ -32,9 +32,10 @@ And of course this component needs to be implemented as a 'maker' with both an e
             <div class="card border-0 h-100">
               <div class="card-body">
                 <div class="form-group">
-                  <label for="approvedItems" class="required">List approved items:</label>
-                  <textarea class="form-control" id="approvedItems" rows="3" placeholder="Details" formControlName="approvedItems"></textarea>
+                  <label for="approvedItems" class="required">List approved items (use comma to separate items):</label>
+                  <textarea class="form-control" [class.is-invalid]="invalid('approvedItems')" id="approvedItems" rows="3" maxlength="250" placeholder="Details" formControlName="approvedItems" autocomplete="off"></textarea>
                   <small><strong>NOTE:</strong> If more than one Referral Form is issued for incidentals, the total of all Referral Forms must not exceed maximum allowable rates.</small>
+                  <span class="invalid-feedback">Please list approved items</span>
                 </div>
               </div>
 

@@ -3,7 +3,7 @@ import { FormBuilder, Validators, FormArray, FormControl, FormGroup } from '@ang
 import { Observable, Subscription } from 'rxjs';
 
 import { Evacuee, ReferralBase } from 'src/app/core/models';
-import { clearFormArray, uuid, invalidField} from 'src/app/shared/utils';
+import { clearFormArray, uuid, invalidField } from 'src/app/shared/utils';
 import { ValidateComments } from '../../validators/comments.validator';
 
 /**
@@ -55,7 +55,7 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   });
 
   // convenience getter for easy access to form fields
-  get f() { return this.form.controls; }
+  get f(): any { return this.form.controls; }
 
   constructor(public fb: FormBuilder) { }
 
@@ -165,7 +165,7 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   // returns null if there is no value, otherwise returns number
   // this passes through '0'
   protected numberOrNull(value: number): number | null {
-    return (value !== undefined ? value : null );
+    return (value !== undefined ? value : null);
   }
 
 }

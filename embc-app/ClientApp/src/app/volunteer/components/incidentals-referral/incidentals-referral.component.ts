@@ -27,7 +27,7 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent<Inci
     super(fb);
 
     // add more fields that are specific to this form
-    this.form.setControl('approvedItems', this.fb.control(''));
+    this.form.setControl('approvedItems', this.fb.control('', [Validators.required]));
     this.form.setControl('totalAmount', this.fb.control('', [CustomValidators.number, Validators.required, Validators.min(0)]));
   }
 
