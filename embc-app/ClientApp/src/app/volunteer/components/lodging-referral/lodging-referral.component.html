@@ -18,39 +18,43 @@
               <div class="card-body mb-0">
                 <div>
                   <label for="subType_{{uuid}}">Type of lodging required:</label>
-                  <select class="form-control d-block w-auto" id="subType_{{uuid}}" formControlName="subType">
+                  <select class="form-control d-block w-auto" [class.is-invalid]="invalid('subType')" id="subType_{{uuid}}" formControlName="subType">
                     <option [ngValue]="null">Select--</option>
                     <option value="HOTEL">Hotel/Motel</option>
                     <option value="BILLETING">Billeting</option>
                     <option value="GROUP">Group Lodging</option>
                   </select>
+                  <span class="invalid-feedback">Please select an option</span>
                 </div>
 
-                <div class="row align-items-end mt-3" [ngSwitch]="subType">
+                <div class="row align-items-start mt-3" [ngSwitch]="subType">
                   <ng-container *ngSwitchCase="'HOTEL'">
                     <div class="col-4 pr-2">
                       <label for="numNights_{{uuid}}" class="font-weight-normal"># Nights</label>
-                      <select class="form-control" id="numNights_{{uuid}}" formControlName="numNights">
-                        <option value="0">Select--</option>
+                      <select class="form-control" [class.is-invalid]="invalid('numNights')" id="numNights_{{uuid}}" formControlName="numNights">
+                        <option [ngValue]="null">Select--</option>
                         <option *ngFor="let n of nights" [ngValue]="n">{{n}}</option>
                       </select>
+                      <span class="invalid-feedback">Please select an option</span>
                     </div>
                     <div class="col-4 pl-2">
                       <label for="numRooms_{{uuid}}" class="font-weight-normal"># Rooms</label>
-                      <select class="form-control" id="numRooms_{{uuid}}" formControlName="numRooms">
-                        <option value="0">Select--</option>
+                      <select class="form-control" [class.is-invalid]="invalid('numRooms')" id="numRooms_{{uuid}}" formControlName="numRooms">
+                        <option [ngValue]="null">Select--</option>
                         <option *ngFor="let n of rooms" [ngValue]="n">{{n}}</option>
                       </select>
+                      <span class="invalid-feedback">Please select an option</span>
                     </div>
                   </ng-container>
 
                   <ng-container *ngSwitchCase="'BILLETING'">
                     <div class="col">
                       <label for="numNights_{{uuid}}" class="font-weight-normal"># Nights</label>
-                      <select class="form-control d-block w-auto" id="numNights_{{uuid}}" formControlName="numNights">
-                        <option value="0">Select--</option>
+                      <select class="form-control d-block w-auto" [class.is-invalid]="invalid('numNights')" id="numNights_{{uuid}}" formControlName="numNights">
+                        <option [ngValue]="null">Select--</option>
                         <option *ngFor="let n of nights" [ngValue]="n">{{n}}</option>
                       </select>
+                      <span class="invalid-feedback">Please select an option</span>
                       <small>NOTE: Please complete Billeting invoice for host family</small>
                     </div>
                   </ng-container>
@@ -58,18 +62,15 @@
                   <ng-container *ngSwitchCase="'GROUP'">
                     <div class="col">
                       <label for="numNights_{{uuid}}" class="font-weight-normal"># Nights</label>
-                      <select class="form-control d-block w-auto" id="numNights_{{uuid}}" formControlName="numNights">
-                        <option value="0">Select--</option>
+                      <select class="form-control d-block w-auto" [class.is-invalid]="invalid('numNights')" id="numNights_{{uuid}}" formControlName="numNights">
+                        <option [ngValue]="null">Select--</option>
                         <option *ngFor="let n of nights" [ngValue]="n">{{n}}</option>
                       </select>
+                      <span class="invalid-feedback">Please select an option</span>
                     </div>
                   </ng-container>
                 </div>
               </div>
-
-              <!-- <span class="invalid-feedback justify-content-end" [class.d-flex]="amountInput.classList.contains('is-invalid')">
-                Please enter a number for # Nights or # Rooms
-              </span> -->
             </div>
           </div>
         </div>

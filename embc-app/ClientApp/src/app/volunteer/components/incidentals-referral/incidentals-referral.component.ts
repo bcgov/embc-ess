@@ -16,6 +16,7 @@ const MAXIMUM_PER_PERSON = 50.00;
   styleUrls: ['./incidentals-referral.component.scss']
 })
 export class IncidentalsReferralComponent extends AbstractReferralComponent<IncidentalsReferral> implements OnInit, OnDestroy {
+
   private ratesModal: NgbModalRef = null;
 
   constructor(
@@ -26,7 +27,7 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent<Inci
     super(fb);
 
     // add more fields that are specific to this form
-    this.form.setControl('approvedItems', this.fb.control(''));
+    this.form.setControl('approvedItems', this.fb.control('', [Validators.required]));
     this.form.setControl('totalAmount', this.fb.control('', [CustomValidators.number, Validators.required, Validators.min(0)]));
   }
 
