@@ -13,8 +13,9 @@
   <app-referral-search-results #searchResultsView [searchResults]="searchResults$ | async"
     (referralsSelected)="referrals = $event"></app-referral-search-results>
 
-  <button class="btn btn-secondary float-right" [disabled]="!referrals.length" (click)="printReferrals()">
-    CREATE PDF &amp; PRINT
+  <button class="btn btn-secondary float-right" [disabled]="!referrals.length || isPrinting" (click)="printReferrals()">
+    <i class="spinner rotating" [hidden]="!isPrinting"></i>
+    <span>CREATE PDF &amp; PRINT</span>
   </button>
 </div>
 

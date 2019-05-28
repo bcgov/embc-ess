@@ -1,39 +1,28 @@
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Utils;
-using Gov.Jag.Embc.Public.ViewModels;
+using MediatR;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace Gov.Jag.Embc.Public.Services
+namespace Gov.Jag.Embc.Public.Services.Registrations
 {
-    public interface IRegistrationService
+    public class NewRegistrationService : IRequestHandler<CreateNewRegistrationCommand, ViewModels.Registration>
     {
-        Task<Registration> CreateNewAsync(Registration registration);
-
-        Task UpdateAsync(Registration registration);
-
-        Task<Registration> GetEvacueeRegistrationAsync(string id);
-
-        Task<RegistrationSummary> GetEvacueeRegistrationSummaryAsync(string id);
-
-        Task<bool> DeactivateEvacueeRegistrationAsync(string id);
-    }
-
-    public class RegistrationService : IRegistrationService
-    {
+        private readonly IDataInterface dataInterface;
         private readonly IEmailSender emailSender;
-        private readonly IDataInterface di;
 
-        public RegistrationService(IDataInterface di, IEmailSender emailSender)
+        public NewRegistrationService(IDataInterface dataInterface, IEmailSender emailSender)
         {
-            this.di = di;
+            this.dataInterface = dataInterface;
             this.emailSender = emailSender;
         }
 
-        public async Task<Registration> CreateNewAsync(Registration registration)
+        public async Task<ViewModels.Registration> Handle(CreateNewRegistrationCommand request, CancellationToken cancellationToken)
         {
+            var registration = request.Registration;
             registration.Id = null;
             registration.Active = true;
-            var result = await di.CreateEvacueeRegistrationAsync(registration);
+            var result = await dataInterface.CreateEvacueeRegistrationAsync(registration);
             if (!string.IsNullOrWhiteSpace(result.HeadOfHousehold.Email))
             {
                 var registrationEmail = CreateEmailMessageForRegistration(result);
@@ -42,7 +31,7 @@ namespace Gov.Jag.Embc.Public.Services
             return result;
         }
 
-        private EmailMessage CreateEmailMessageForRegistration(Registration registration)
+        private EmailMessage CreateEmailMessageForRegistration(ViewModels.Registration registration)
         {
             var essRegistrationLink = @"<a target='_blank' href='https://justice.gov.bc.ca/embcess/self-registration'>Evacuee Self-Registration</a>";
             var emergencyInfoBCLink = @"<a target='_blank' href='https://www.emergencyinfobc.gov.bc.ca/'>Emergency Info BC</a>";
@@ -74,25 +63,15 @@ A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
 
             return new EmailMessage(registration.HeadOfHousehold.Email, subject, body);
         }
+    }
 
-        public async Task UpdateAsync(Registration registration)
+    public class CreateNewRegistrationCommand : IRequest<ViewModels.Registration>
+    {
+        public CreateNewRegistrationCommand(ViewModels.Registration registration)
         {
-            await di.UpdateEvacueeRegistrationAsync(registration);
+            Registration = registration;
         }
 
-        public async Task<Registration> GetEvacueeRegistrationAsync(string id)
-        {
-            return await di.GetEvacueeRegistrationAsync(id);
-        }
-
-        public async Task<RegistrationSummary> GetEvacueeRegistrationSummaryAsync(string id)
-        {
-            return await di.GetEvacueeRegistrationSummaryAsync(id);
-        }
-
-        public async Task<bool> DeactivateEvacueeRegistrationAsync(string id)
-        {
-            return await di.DeactivateEvacueeRegistrationAsync(id);
-        }
+        public ViewModels.Registration Registration { get; }
     }
 }
