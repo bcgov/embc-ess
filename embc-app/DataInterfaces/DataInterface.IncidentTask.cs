@@ -12,22 +12,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         private IQueryable<Models.Db.IncidentTask> IncidentTasks => db.IncidentTasks
                 .Include(t => t.Region)
                 .Include(t => t.Community)
-                    .ThenInclude(d => d.Region)
-                .Include(t => t.EvacueeRegistrations);
-
-        private IQueryable<Models.Db.IncidentTaskEvacueeSummary> IncidentTaskEvacueeSummaries => db.IncidentTaskEvacueeSummaries
-            .Include(it => it.IncidentTask);
+                    .ThenInclude(d => d.Region);
 
         public async Task<IPagedResults<IncidentTask>> GetIncidentTasksAsync(SearchQueryParameters searchQuery)
         {
             var items = await IncidentTasks
-                .Where(t => !searchQuery.HasQuery() || t.Community.Id == Guid.Parse(searchQuery.Query))
-                .Where(t => searchQuery.Active == t.Active)
-                .Sort(searchQuery.SortBy ?? "id")
-                .Join(IncidentTaskEvacueeSummaries,
+                .GroupJoin(db.EvacueeRegistrations.Select(e => new { e.IncidentTaskId, evacueeCount = e.Evacuees.Count() }),
                     incident => incident.Id,
                     summary => summary.IncidentTaskId,
-                    (incident, summary) => new { incident = incident, evacueeCount = summary.TotalEvacuees })
+                    (incident, summary) => new { incident = incident, evacueeCount = summary.Sum(s => s.evacueeCount) }
+                )
+                .Where(t => !searchQuery.HasQuery() || t.incident.Community.Id == Guid.Parse(searchQuery.Query))
+                .Where(t => searchQuery.Active == t.incident.Active)
+                .Sort(searchQuery.SortBy ?? "incident.id")
                 .ToArrayAsync();
 
             return new PaginatedList<IncidentTask>(items.Select(t => t.incident.ToViewModel(t.evacueeCount)), searchQuery.Offset, searchQuery.Limit);
