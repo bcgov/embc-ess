@@ -25,8 +25,8 @@
         <app-transportation-referral [referral]="referral" [readOnly]="true"></app-transportation-referral>
       </div>
 
-      <section class=" mt-5 space-between">
-        <button type="button" class="btn btn-secondary" [disabled]="deactivating" (click)="deactivate(content)">DEACTIVATE REFERRAL</button>
+      <section class="mt-5">
+        <button *ngIf="referral.active" type="button" class="btn btn-secondary" [disabled]="deactivating" (click)="deactivate(content)">DEACTIVATE REFERRAL</button>
         <button class="btn btn-primary float-right" (click)="back()">BACK TO REFERRALS</button>
       </section>
     </div>
@@ -35,11 +35,12 @@
 
 <app-layout-side>
   <app-sidebox-add-registration></app-sidebox-add-registration>
-  <app-side-box title="Useful Information">
+  <!-- GET RID OF LOREM IPSUM -->
+  <!-- <app-side-box title="Useful Information">
     <section role="content">
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce facilisis porttitor scelerisque. Proin blandit suscipit ultrices. Proin dictum libero eget justo rhoncus sollicitudin.</p>
     </section>
-  </app-side-box>
+  </app-side-box> -->
 </app-layout-side>
 
 <!-- Alert to confirm referral deactivation -->
