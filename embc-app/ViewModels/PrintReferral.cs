@@ -120,7 +120,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
         private string ConvertCarriageReturnToHtml(string value)
         {
-            return value.Replace("\n", "<br />").Replace("\r", "<br />");
+            return value?.Replace("\n", "<br />")?.Replace("\r", "<br />");
         }
     }
 

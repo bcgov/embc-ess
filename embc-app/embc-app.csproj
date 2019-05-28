@@ -56,6 +56,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <EmbeddedResource Include="Services\Referrals\Views\Billeting\BilletingItemsSummaryPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
         <EmbeddedResource Include="Services\Referrals\Views\Billeting\BilletingItemsPartial.hbs">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
@@ -108,6 +111,9 @@
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
         <EmbeddedResource Include="Services\Referrals\Views\Hotel\HotelChecklistPartial.hbs">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Services\Referrals\Views\Hotel\HotelItemsSummaryPartial.hbs">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
         <EmbeddedResource Include="Services\Referrals\Views\Hotel\HotelItemsPartial.hbs">
