@@ -10,11 +10,13 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
     {
         private readonly IDataInterface dataInterface;
         private readonly IEmailSender emailSender;
+        private readonly IMediator mediator;
 
-        public NewRegistrationService(IDataInterface dataInterface, IEmailSender emailSender)
+        public NewRegistrationService(IDataInterface dataInterface, IEmailSender emailSender, IMediator mediator)
         {
             this.dataInterface = dataInterface;
             this.emailSender = emailSender;
+            this.mediator = mediator;
         }
 
         public async Task<ViewModels.Registration> Handle(CreateNewRegistrationCommand request, CancellationToken cancellationToken)
@@ -22,8 +24,13 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
             var registration = request.Registration;
             registration.Id = null;
             registration.Active = true;
-            var result = await dataInterface.CreateEvacueeRegistrationAsync(registration);
-            if (!string.IsNullOrWhiteSpace(result.HeadOfHousehold.Email))
+            var essFileNumber = await dataInterface.CreateEvacueeRegistrationAsync(registration);
+            var result = await dataInterface.GetEvacueeRegistrationAsync(essFileNumber.ToString());
+            await mediator.Publish(new RegistrationCreated(essFileNumber.ToString(), result));
+            if (result.IsFinalized) await mediator.Publish(new RegistrationFinalized(essFileNumber.ToString(), result));
+
+            //TODO: move to a notification handler
+            if (!string.IsNullOrWhiteSpace(request.Registration.HeadOfHousehold.Email))
             {
                 var registrationEmail = CreateEmailMessageForRegistration(result);
                 emailSender.Send(registrationEmail);
@@ -68,6 +75,26 @@ A list of open Reception Centres can be found at {emergencyInfoBCLink}.<br/>
     public class CreateNewRegistrationCommand : IRequest<ViewModels.Registration>
     {
         public CreateNewRegistrationCommand(ViewModels.Registration registration)
+        {
+            Registration = registration;
+        }
+
+        public ViewModels.Registration Registration { get; }
+    }
+
+    public class RegistrationCreated : RegistrationEvent
+    {
+        public RegistrationCreated(string essFileNumber, ViewModels.Registration registration) : base(essFileNumber)
+        {
+            Registration = registration;
+        }
+
+        public ViewModels.Registration Registration { get; }
+    }
+
+    public class RegistrationFinalized : RegistrationEvent
+    {
+        public RegistrationFinalized(string essFileNumber, ViewModels.Registration registration) : base(essFileNumber)
         {
             Registration = registration;
         }

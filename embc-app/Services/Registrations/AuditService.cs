@@ -9,7 +9,7 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
 {
     public abstract class RegistrationEvent : INotification
     {
-        public RegistrationEvent(string essFileNumber)
+        protected RegistrationEvent(string essFileNumber)
         {
             EssFileNumber = essFileNumber;
         }
@@ -17,44 +17,15 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         public string EssFileNumber { get; }
     }
 
-    //public class RegistrationCreated : RegistrationEvent
-    //{
-    //    public RegistrationCreated(string essFileNumber, ViewModels.Registration registration) : base(essFileNumber)
-    //    {
-    //        Registration = registration;
-    //    }
-
-    //    public ViewModels.Registration Registration { get; }
-    //}
-
-    //public class RegistrationFinalized : RegistrationEvent
-    //{
-    //    public RegistrationFinalized(string essFileNumber, ViewModels.Registration registration) : base(essFileNumber)
-    //    {
-    //        Registration = registration;
-    //    }
-
-    //    public ViewModels.Registration Registration { get; }
-    //}
-
-    //public class RegistrationUpdated : RegistrationEvent
-    //{
-    //    public ViewModels.Registration Registration { get; }
-
-    //    public RegistrationUpdated(string essFileNumber, ViewModels.Registration registration) : base(essFileNumber)
-    //    {
-    //        Registration = registration;
-    //    }
-    //}
-
-    //public class RegistrationDeactivated : RegistrationEvent
-    //{
-    //    public RegistrationDeactivated(string essFileNumber) : base(essFileNumber)
-    //    {
-    //    }
-    //}
-
-    public class RegistrationEventStoreHandler : INotificationHandler<RegistrationViewed>
+    //Asp.Net Core DI doesn't support covariant resolution, need to register
+    // individual handlers instead of using polymorphic notification handling
+    //https://github.com/jbogard/MediatR/wiki/Container-Feature-Support
+    public class RegistrationEventStoreHandler :
+        INotificationHandler<RegistrationViewed>,
+        INotificationHandler<RegistrationDeactivated>,
+        INotificationHandler<RegistrationUpdated>,
+        INotificationHandler<RegistrationFinalized>,
+        INotificationHandler<RegistrationCreated>
     {
         private readonly IDataInterface dataInterface;
 
@@ -70,6 +41,26 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         }
 
         public async Task Handle(RegistrationViewed notification, CancellationToken cancellationToken)
+        {
+            await Handle(notification);
+        }
+
+        public async Task Handle(RegistrationDeactivated notification, CancellationToken cancellationToken)
+        {
+            await Handle(notification);
+        }
+
+        public async Task Handle(RegistrationUpdated notification, CancellationToken cancellationToken)
+        {
+            await Handle(notification);
+        }
+
+        public async Task Handle(RegistrationFinalized notification, CancellationToken cancellationToken)
+        {
+            await Handle(notification);
+        }
+
+        public async Task Handle(RegistrationCreated notification, CancellationToken cancellationToken)
         {
             await Handle(notification);
         }

@@ -15,7 +15,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<RegistrationSummary> GetEvacueeRegistrationSummaryAsync(string id);
 
-        Task<Registration> CreateEvacueeRegistrationAsync(Registration registration);
+        Task<string> CreateEvacueeRegistrationAsync(Registration registration);
 
         Task UpdateEvacueeRegistrationAsync(Registration registration);
 

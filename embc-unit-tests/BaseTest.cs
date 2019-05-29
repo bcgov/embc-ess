@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using FakeItEasy;
 using Gov.Jag.Embc.Public;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Seeder;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -17,12 +19,12 @@ namespace embc_unit_tests
     {
         static BaseTest()
         {
-            Mapper.Initialize(cfg => cfg.AddMaps(typeof(Startup)));
+            AutoMapper.Mapper.Initialize(cfg => cfg.AddMaps(typeof(Startup)));
         }
 
         private ServiceProvider serviceProvider;
 
-        protected IMapper mapper => serviceProvider.GetService<IMapper>();
+        protected IMapper Mapper => serviceProvider.GetService<IMapper>();
 
         protected EmbcDbContext EmbcDb => serviceProvider.GetService<EmbcDbContext>();
 
@@ -30,6 +32,8 @@ namespace embc_unit_tests
 
         public BaseTest(ITestOutputHelper output, params (Type svc, Type impl)[] additionalServices)
         {
+            var configuration = A.Fake<IConfiguration>();
+
             var services = new ServiceCollection()
                 .AddLogging(builder => builder.AddProvider(new XUnitLoggerProvider(output)))
                 .AddAutoMapper(typeof(Startup))
@@ -39,7 +43,8 @@ namespace embc_unit_tests
                     //.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ESS_dev;Integrated Security=True;")
                     .UseInMemoryDatabase("ESS_Test")
                     )
-                 .AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+                .AddMediatR(typeof(Startup).GetTypeInfo().Assembly)
+                .AddSingleton<IConfiguration>(configuration);
 
             foreach (var svc in additionalServices)
             {

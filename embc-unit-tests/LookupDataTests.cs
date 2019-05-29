@@ -31,7 +31,7 @@ namespace embc_unit_tests
 
             repo.AddOrUpdateCountries(source);
 
-            var di = new DataInterface(ctx, mapper);
+            var di = new DataInterface(ctx, Mapper);
 
             var result = await di.GetCountriesAsync();
             Assert.Equal(source.Count(c => c.Active), result.Count());
@@ -60,7 +60,7 @@ namespace embc_unit_tests
             repo.AddOrUpdateRegions(new[] { region });
             repo.AddOrUpdateCommunities(source);
 
-            var di = new DataInterface(ctx, mapper);
+            var di = new DataInterface(ctx, Mapper);
 
             var result = await di.GetCommunitiesAsync();
             Assert.Equal(source.Count(c => c.Active), result.Count());
@@ -87,7 +87,7 @@ namespace embc_unit_tests
 
             repo.AddOrUpdateRegions(source);
 
-            var di = new DataInterface(ctx, mapper);
+            var di = new DataInterface(ctx, Mapper);
 
             var result = await di.GetRegionsAsync();
             Assert.Equal(source.Count(c => c.Active), result.Count());
@@ -114,7 +114,7 @@ namespace embc_unit_tests
 
             repo.AddOrUpdateFamilyRelationshipTypes(source);
 
-            var di = new DataInterface(ctx, mapper);
+            var di = new DataInterface(ctx, Mapper);
 
             var result = await di.GetFamilyRelationshipTypesAsync();
             Assert.Equal(source.Count(c => c.Active), result.Count());
