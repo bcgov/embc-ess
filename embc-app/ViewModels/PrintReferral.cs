@@ -1,4 +1,5 @@
 using AutoMapper;
+using Gov.Jag.Embc.Public.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -125,7 +126,13 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
         private string GetLocalTime(DateTime dateTime)
         {
-            var pst = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+            var timeZoneName = "Pacific Standard Time";
+            if (PlatformHelper.IsLinux)
+            {
+                timeZoneName = "Canada/Pacific";
+            }
+
+            var pst = TimeZoneInfo.FindSystemTimeZoneById(timeZoneName);
             var pstTime = TimeZoneInfo.ConvertTimeFromUtc(dateTime, pst);
 
             return pstTime.ToString("h:mm tt");
