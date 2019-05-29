@@ -172,7 +172,7 @@ export class ReferralMakerComponent implements OnInit {
       this.transportationReferrals.forEach(r => referrals.push({ ...r.value }));
       this.incidentalsReferrals.forEach(r => referrals.push({ ...r.value }));
 
-      // get registration data
+      // create referrals
       this.referralService.createReferrals(this.regId, { confirmChecked: true, referrals })
         .subscribe(() => {
           this.submitting = false;
