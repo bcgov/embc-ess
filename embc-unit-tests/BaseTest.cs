@@ -45,7 +45,8 @@ namespace embc_unit_tests
                     .UseInMemoryDatabase("ESS_Test")
                     )
                 .AddMediatR(typeof(Startup).GetTypeInfo().Assembly)
-                .AddSingleton<IConfiguration>(configuration);
+                .AddSingleton<IConfiguration>(configuration)
+                .AddHttpContextAccessor();
 
             foreach (var svc in additionalServices)
             {
