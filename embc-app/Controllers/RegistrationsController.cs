@@ -30,7 +30,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             switch (result.Status)
             {
                 case RegistrationQueryResponse.ResponseStatus.Success:
-                    return Json(result);
+                    return Json(result.Registration);
 
                 case RegistrationQueryResponse.ResponseStatus.NotFound:
                     return NotFound(id);
