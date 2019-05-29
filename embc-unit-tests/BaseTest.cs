@@ -24,11 +24,11 @@ namespace embc_unit_tests
 
         private ServiceProvider serviceProvider;
 
-        protected IMapper Mapper => serviceProvider.CreateScope().ServiceProvider.GetService<IMapper>();
+        protected IMapper Mapper => serviceProvider.GetService<IMapper>();
 
-        protected EmbcDbContext EmbcDb => serviceProvider.CreateScope().ServiceProvider.GetService<EmbcDbContext>();
+        protected EmbcDbContext EmbcDb => serviceProvider.GetService<EmbcDbContext>();
 
-        protected IMediator Mediator => serviceProvider.CreateScope().ServiceProvider.GetService<IMediator>();
+        protected IMediator Mediator => serviceProvider.GetService<IMediator>();
 
         public BaseTest(ITestOutputHelper output, params (Type svc, Type impl)[] additionalServices)
         {
@@ -40,13 +40,11 @@ namespace embc_unit_tests
                 .AddEntityFrameworkInMemoryDatabase()
                 .AddDbContext<EmbcDbContext>(options => options
                     .EnableSensitiveDataLogging()
-                    .EnableDetailedErrors()
                     //.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ESS_dev;Integrated Security=True;")
                     .UseInMemoryDatabase("ESS_Test")
                     )
                 .AddMediatR(typeof(Startup).GetTypeInfo().Assembly)
-                .AddSingleton<IConfiguration>(configuration)
-                .AddHttpContextAccessor();
+                .AddSingleton<IConfiguration>(configuration);
 
             foreach (var svc in additionalServices)
             {
@@ -81,10 +79,10 @@ namespace embc_unit_tests
 
             var countries = new[]
             {
-                new Country{Name="country1", CountryCode="USA", Active=true},
-                new Country{Name="country2", CountryCode="CAN", Active=true},
-                new Country{Name="country3", CountryCode="IND", Active=false},
-                new Country{Name="country4", CountryCode="MEX", Active=true},
+                new Country{Name="country1", CountryCode="CT1", Active=true},
+                new Country{Name="country2", CountryCode="CT2", Active=true},
+                new Country{Name="country3", CountryCode="CT3", Active=false},
+                new Country{Name="country4", CountryCode="CT4", Active=true},
             };
 
             var communities = new[]
