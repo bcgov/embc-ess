@@ -21,10 +21,10 @@ namespace embc_unit_tests
 
             var source = new[]
             {
-                new Country{Name="country1", CountryCode="CT1", Active=true},
-                new Country{Name="country2", CountryCode="CT2", Active=true},
-                new Country{Name="country3", CountryCode="CT3", Active=false},
-                new Country{Name="country4", CountryCode="CT4", Active=true},
+                new Country{Name="country1", CountryCode="USA", Active=true},
+                new Country{Name="country2", CountryCode="CAN", Active=true},
+                new Country{Name="country3", CountryCode="IND", Active=false},
+                new Country{Name="country4", CountryCode="MEX", Active=true},
             };
 
             var repo = new SeederRepository(ctx);
