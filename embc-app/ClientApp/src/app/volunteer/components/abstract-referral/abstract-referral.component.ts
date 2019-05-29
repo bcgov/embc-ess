@@ -88,6 +88,7 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
     if (changes.referral && this.referral && !this.readOnly) {
       // display referral
       this.form.reset();
+      clearFormArray(this.selected);
       this.fromModel(this.referral);
     }
   }
