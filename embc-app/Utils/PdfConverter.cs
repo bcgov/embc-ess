@@ -11,14 +11,14 @@ namespace Gov.Jag.Embc.Public.Utils
         public async Task<byte[]> ConvertHtmlToPdfAsync(string content)
         {
             var pdfHost = Environment.GetEnvironmentVariable("PDF_SERVICE_NAME");
-            var fileName = $"?filename=referral_{DateTime.Now.ToString("ddMMMMyyyy")}_{DateTime.Now.ToString("HHmmtt")}.pdf";
-            string targetUrl = $"{pdfHost}/pdf{fileName}";
+            var fileName = $"referral_{DateTime.Now.ToString("ddMMMMyyyy")}_{DateTime.Now.ToString("HHmmtt")}.pdf";
+            string targetUrl = $"{pdfHost}/pdf?filename={fileName}";
 
             var client = new HttpClient();
 
             var request = new HttpRequestMessage(HttpMethod.Post, targetUrl)
             {
-                Content = new StringContent(content, Encoding.UTF8, "application/json")
+                Content = new StringContent(content, Encoding.UTF8, "text/html")
             };
 
             request.Headers.Clear();
@@ -27,13 +27,9 @@ namespace Gov.Jag.Embc.Public.Utils
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var bytetask = response.Content.ReadAsByteArrayAsync();
-                bytetask.Wait();
-
-                return bytetask.Result;
+                return await response.Content.ReadAsByteArrayAsync();
             }
-
-            return null;
+            throw new Exception($"Failed to generate PDF: {response.StatusCode}, {response.ReasonPhrase}");
         }
     }
 }
