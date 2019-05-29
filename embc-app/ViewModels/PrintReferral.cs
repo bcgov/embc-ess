@@ -91,12 +91,13 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
     public class PrintReferral : Referral
     {
+        private readonly TimeZoneInfo pst = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
         public string IncidentTaskNumber { get; set; }
         public string HostCommunity { get; set; }
         public string FromDate => ValidDates.From.ToString("MMM-dd-yyyy");
-        public string FromTime => ValidDates.From.ToString("h:mm tt");
+        public string FromTime => TimeZoneInfo.ConvertTimeFromUtc(ValidDates.From, pst).ToString("h:mm tt");
         public string ToDate => ValidDates.To.ToString("MMM-dd-yyyy");
-        public string ToTime => ValidDates.To.ToString("h:mm tt");
+        public string ToTime => TimeZoneInfo.ConvertTimeFromUtc(ValidDates.To, pst).ToString("h:mm tt");
         public string PrintDate => DateTime.Today.ToString("MMM-dd-yyyy");
         public IEnumerable<PrintEvacuee> PrintEvacuees { get; set; }
         public string TotalAmountPrinted => TotalAmount.ToString("N2");
