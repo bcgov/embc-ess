@@ -58,7 +58,9 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
           console.log('ERROR - invalid referral object = ', x);
           this.goHome();
         } else {
-          this.referral = x.referral;
+          // HACK for BE returning id instead of referralId
+          const { id, ...other } = x.referral;
+          this.referral = { referralId: id, ...other };
         }
       }, err => {
         this.loading = false;
