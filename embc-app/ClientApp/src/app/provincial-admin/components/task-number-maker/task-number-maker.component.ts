@@ -122,9 +122,10 @@ export class TaskNumberMakerComponent implements OnInit {
     return invalidField(field, parent, this.shouldValidateForm);
   }
 
-  validateForm(): void {
+  private validateForm(): boolean {
     this.shouldValidateForm = true;
     this.validationErrors = this.validationHelper.processMessages(this.form);
+    return this.form.valid;
   }
 
   displayTaskNumber(task: IncidentTask): void {
@@ -142,8 +143,7 @@ export class TaskNumberMakerComponent implements OnInit {
 
   next(): void {
     // only go next if all fields are non null
-    this.validateForm();
-    if (this.form.valid) {
+    if (this.validateForm()) {
       // navigate to the next page. AKA show the summary part of the form.
       this.maker = false;
       this.errorSummary = null;

@@ -52,18 +52,17 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
       .subscribe(u => {
         // collect the current user
         this.volunteerService.getVolunteerById(u.contactid)
-          .subscribe(
-            v => {
-              // save the organization ID for future search queries
-              this.defaultSearchQuery.org_id = v.organization.id;
-              // get the results
-              this.getVolunteers(this.defaultSearchQuery)
-                .subscribe(r => {
-                  this.resultsAndPagination = r;
-                });
-            }, err => {
-              this.notFoundMessage = err;
-            }
+          .subscribe(volunteer => {
+            // save the organization ID for future search queries
+            this.defaultSearchQuery.org_id = volunteer.organization.id;
+            // get the results
+            this.getVolunteers(this.defaultSearchQuery)
+              .subscribe(listResult => {
+                this.resultsAndPagination = listResult;
+              });
+          }, err => {
+            this.notFoundMessage = err;
+          }
           );
       }, err => {
         this.notFoundMessage = err;
@@ -92,13 +91,13 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
     // submit and collect search with a query string
     const query = this.defaultSearchQuery;
     query.q = this.queryString;
-    this.getVolunteers(query).subscribe(r => {
-      if (r.data.length <= 0) {
+    this.getVolunteers(query).subscribe(listResult => {
+      if (listResult.data.length <= 0) {
         this.notFoundMessage = 'No results found.';
       } else {
         this.notFoundMessage = 'Searching ...';
       }
-      this.resultsAndPagination = r;
+      this.resultsAndPagination = listResult;
     });
   }
   onPaginationEvent(event: SearchQueryParameters) {
@@ -112,7 +111,7 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
     if (!id) {
       // no id means 'add user' -> clear unique key
       this.uniqueKeyService.clearKey();
-      this.router.navigate([`/${this.path}/volunteer`]);
+      this.router.navigate([`/${this.path}/volunteer`, { orgId: this.defaultSearchQuery.org_id }]);
       return;
     }
 
@@ -124,7 +123,7 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
 
         // save the volunteer ID for lookup in the new component
         this.uniqueKeyService.setKey(id);
-        this.router.navigate([`/${this.path}/volunteer`]);
+        this.router.navigate([`/${this.path}/volunteer`, { orgId: this.defaultSearchQuery.org_id }]);
       },
       () => {
         // modal was dismissed

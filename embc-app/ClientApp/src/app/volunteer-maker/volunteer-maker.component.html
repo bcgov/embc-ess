@@ -1,30 +1,31 @@
-<div *ngIf="maker">
-  <div class="mb-4">
-    <h1 *ngIf="!isProvincialAdmin && editMode === false">Add Emergency Support Services User(s)</h1>
-    <h1 *ngIf="!isProvincialAdmin && editMode === true">Edit Emergency Support Services User Details</h1>
-    <h1 *ngIf="isProvincialAdmin && editMode === false">Add User(s)</h1>
-    <h1 *ngIf="isProvincialAdmin && editMode === true">Edit Emergency Support Services User Details</h1>
+<div *ngIf="editing">
+  <form novalidate [formGroup]="form">
+    <h1 *ngIf="!iAmProvincialAdmin && mode === 'ADD'">Add Emergency Support Services User(s)</h1>
+    <h1 *ngIf="!iAmProvincialAdmin && mode === 'EDIT'">Edit Emergency Support Services User Details</h1>
+    <h1 *ngIf="iAmProvincialAdmin && mode === 'ADD'">Add User(s)</h1>
+    <h1 *ngIf="iAmProvincialAdmin && mode === 'EDIT'">Edit Emergency Support Services User Details</h1>
 
-    <p class="pb-3" *ngIf="isProvincialAdmin">
+    <p class="pb-3" *ngIf="iAmProvincialAdmin">
       Administrators can add users within an organization if they have their first name, last name, role, and BCeID.
     </p>
 
     <small>All fields are required</small>
     <h3 class="blue-header mt-0">User Details</h3>
 
-    <div class="row pt-5" *ngIf="isProvincialAdmin && editMode === false">
+    <div class="row pt-5" *ngIf="iAmProvincialAdmin && mode === 'ADD'">
       <div class="col-md-9">
         <label class="required" for="organization">Organization</label>
-        <div *ngIf="isChangeOrg">
-          <select class="form-control" [formControl]="organizationName" id="organization">
-            <option [ngValue]="volunteer.organization" *ngIf="volunteer?.organization">{{volunteer.organization.name}}</option>
-            <option [ngValue]="null" *ngIf="!volunteer?.organization">-- Select organization</option>
-            <option [ngValue]="organization" *ngFor="let organization of metaOrganizations.data">{{organization?.name}}</option>
+        <div *ngIf="doSelectOrg">
+          <select class="form-control" formControlName="organization" [class.is-invalid]="invalid('organization')" id="organization">
+            <option *ngIf="!currentOrganization" [ngValue]="null">-- Select organization</option>
+            <option *ngIf="currentOrganization" [ngValue]="currentOrganization">{{currentOrganization.name}}</option>
+            <option *ngFor="let o of metaOrganizations.data" [ngValue]="o">{{o.name}}</option>
           </select>
+          <span class="invalid-feedback">Please select an organization</span>
         </div>
 
-        <div *ngIf="!isChangeOrg">
-          <input class="form-control" type="text" id="organization" [value]="volunteer?.organization?.name" readonly>
+        <div *ngIf="!doSelectOrg">
+          <input class="form-control" type="text" id="organization" [value]="currentOrganization.name" readonly>
           <button class="btn btn-link float-right" (click)="changeOrganization()">
             <app-font-awesome-icon icon="times"></app-font-awesome-icon>
             <span class="ml-2">Change Organization</span>
@@ -37,7 +38,8 @@
       <div class="col-md-9">
         <label class="required" for="lastName">Last Name</label>
         <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your legal last name."></app-font-awesome-icon>
-        <input class="form-control" type="text" id="lastName" [formControl]="lastName" maxlength="50" required>
+        <input type="text" class="form-control" formControlName="lastName" [class.is-invalid]="invalid('lastName')" id="lastName" maxlength="50">
+        <span class="invalid-feedback">Please enter a last name</span>
       </div>
     </div>
 
@@ -45,59 +47,68 @@
       <div class="col-md-9">
         <label class="required" for="firstName">First Name</label>
         <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your legal first name."></app-font-awesome-icon>
-        <input class="form-control" type="text" id="firstName" [formControl]="firstName" maxlength="50" required>
+        <input type="text" class="form-control" [class.is-invalid]="invalid('firstName')" formControlName="firstName" id="firstName" maxlength="50">
+        <span class="invalid-feedback">Please enter a first name</span>
       </div>
     </div>
 
     <div class="row pt-5">
       <div class="col-md-9">
-        <label class="required" for="bceid">BCeID</label>
+        <label class="required" for="bceidAccountNumber">BCeID</label>
         <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your BCeID user ID."></app-font-awesome-icon>
-        <input class="form-control" type="text" id="bceid" [formControl]="bceid" required>
+        <input type="text" class="form-control" [class.is-invalid]="invalid('bceidAccountNumber')" formControlName="bceidAccountNumber" id="bceidAccountNumber">
+        <span class="invalid-feedback">Please enter a valid BCeID</span>
       </div>
     </div>
 
-    <div class="row pt-5" *ngIf="isProvincialAdmin">
+    <div class="row pt-5" *ngIf="iAmProvincialAdmin">
       <div class="col-md-9">
         <label class="required">Role</label>
         <fieldset class="form-group">
           <legend class="sr-only">Role</legend>
           <div class="form-check">
             <label class="form-check-label" for="isAdministratorFalse">
-              <input class="form-check-input" type="radio" name="isAdministrator" [formControl]="isAdministrator" id="isAdministratorFalse" [value]="false">
+              <input type="radio" class="form-check-input" name="isAdministrator" formControlName="isAdministrator" id="isAdministratorFalse" [value]="false">
               <span class="pl-3">Emergency Support Services User</span>
             </label>
           </div>
           <div class="form-check">
             <label class="form-check-label" for="isAdministratorTrue">
-              <input class="form-check-input" type="radio" name="isAdministrator" [formControl]="isAdministrator" id="isAdministratorTrue" [value]="true">
+              <input type="radio" class="form-check-input" name="isAdministrator" formControlName="isAdministrator" id="isAdministratorTrue" [value]="true">
               <span class="pl-3">Admin</span>
             </label>
           </div>
+          <span [class.d-block]="invalid('isAdministrator')" class="invalid-feedback">Please select whether they are an ESS user or an admin user</span>
         </fieldset>
       </div>
     </div>
 
-    <div class="row pt-5" *ngIf="isProvincialAdmin && isAdministrator.value">
+    <div class="row pt-5" *ngIf="iAmProvincialAdmin && f.isAdministrator.value === true">
       <div class="col-md-9">
         <label class="required">Primary Contact for Organization</label>
         <fieldset class="form-group">
           <legend class="sr-only">Primary Contact for Organization</legend>
           <div class="form-check">
             <label class="form-check-label" for="isPrimaryContactTrue">
-              <input class="form-check-input" type="radio" name="isPrimaryContact" [formControl]="isPrimaryContact" id="isPrimaryContactTrue" [value]="true">
+              <input type="radio" class="form-check-input" name="isPrimaryContact" formControlName="isPrimaryContact" id="isPrimaryContactTrue" [value]="true">
               <span class="pl-3">Yes</span>
             </label>
           </div>
           <div class="form-check">
             <label class="form-check-label" for="isPrimaryContactFalse">
-              <input class="form-check-input" type="radio" name="isPrimaryContact" [formControl]="isPrimaryContact" id="isPrimaryContactFalse" [value]="false">
+              <input type="radio" class="form-check-input" name="isPrimaryContact" formControlName="isPrimaryContact" id="isPrimaryContactFalse" [value]="false">
               <span class="pl-3">No</span>
             </label>
           </div>
+          <span [class.d-block]="invalid('isPrimaryContact')" class="invalid-feedback">Please select whether this user is a primary contact for the organization</span>
         </fieldset>
       </div>
     </div>
+  </form>
+
+  <div *ngIf="shouldValidateForm && !form.valid" class="text-danger mt-5 pl-5">
+    <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>
+    &nbsp;Some required fields have not been completed.
   </div>
 
   <div class="mt-5 space-between">
@@ -105,44 +116,43 @@
       <app-font-awesome-icon icon="times"></app-font-awesome-icon>
       <span class="ml-2">Cancel &amp; Close</span>
     </a>
-    <button class="btn btn-primary float-right" (click)="next()">NEXT</button>
+    <button type="button" class="btn btn-primary float-right" (click)="next()">NEXT</button>
   </div>
 </div>
 
-<div *ngIf="!maker">
-  <div class="mb-4">
-    <h1 class="mt-3">Review Details</h1>
-    <p>Please confirm that all details you entered are correct by reading through the summary below.</p>
-    <section class="p-3">
-      <h3>Emergency Support Services User Details</h3>
-      <ul class="summary">
-        <li *ngIf="isProvincialAdmin">
-          <span class="name">Organization:</span>
-          <span class="value">{{volunteer.organization.name}}</span>
-        </li>
-        <li>
-          <span class="name">Last Name:</span>
-          <span class="value">{{volunteer.lastName}}</span>
-        </li>
-        <li>
-          <span class="name">First Name:</span>
-          <span class="value">{{volunteer.firstName}}</span>
-        </li>
-        <li>
-          <span class="name">BCeID:</span>
-          <span class="value">{{volunteer.bceidAccountNumber}}</span>
-        </li>
-        <li *ngIf="isProvincialAdmin">
-          <span class="name">Role:</span>
-          <span class="value">{{volunteer.isAdministrator ? 'Admin' : 'ESS User'}}</span>
-        </li>
-        <li *ngIf="isProvincialAdmin && volunteer.isAdministrator">
-          <span class="name">Primary Contact for Organization:</span>
-          <span class="value">{{volunteer.isPrimaryContact ? 'Yes' : 'No'}}</span>
-        </li>
-      </ul>
-    </section>
-  </div>
+<div *ngIf="!editing">
+  <h1 class="mt-3">Review Details</h1>
+  <p>Please confirm that all details you entered are correct by reading through the summary below.</p>
+
+  <section class="p-3">
+    <h3>Emergency Support Services User Details</h3>
+    <ul class="summary">
+      <li *ngIf="iAmProvincialAdmin">
+        <span class="name">Organization:</span>
+        <span class="value">{{volunteer.organization.name}}</span>
+      </li>
+      <li>
+        <span class="name">Last Name:</span>
+        <span class="value">{{volunteer.lastName}}</span>
+      </li>
+      <li>
+        <span class="name">First Name:</span>
+        <span class="value">{{volunteer.firstName}}</span>
+      </li>
+      <li>
+        <span class="name">BCeID:</span>
+        <span class="value">{{volunteer.bceidAccountNumber}}</span>
+      </li>
+      <li *ngIf="iAmProvincialAdmin">
+        <span class="name">Role:</span>
+        <span class="value">{{volunteer.isAdministrator ? 'Admin' : 'ESS User'}}</span>
+      </li>
+      <li *ngIf="iAmProvincialAdmin && volunteer.isAdministrator">
+        <span class="name">Primary Contact for Organization:</span>
+        <span class="value">{{volunteer.isPrimaryContact ? 'Yes' : 'No'}}</span>
+      </li>
+    </ul>
+  </section>
 
   <div class="mt-5 space-between">
     <section>
@@ -152,8 +162,8 @@
       <button *ngIf="!submitting" class="btn btn-primary" (click)="submit()">SAVE</button>
       <button *ngIf="submitting" class="btn btn-primary" disabled>SUBMITTING</button>
 
-      <button *ngIf="editMode === false && !submitting" class="btn btn-primary ml-2" (click)="submit(true)">SAVE &amp; ADD ANOTHER</button>
-      <button *ngIf="editMode === false && submitting" class="btn btn-primary ml-2" disabled>SUBMITTING</button>
+      <button *ngIf="mode === 'ADD' && !submitting" class="btn btn-primary ml-2" (click)="submit(true)">SAVE &amp; ADD ANOTHER</button>
+      <button *ngIf="mode === 'ADD' && submitting" class="btn btn-primary ml-2" disabled>SUBMITTING</button>
     </section>
   </div>
 </div>
