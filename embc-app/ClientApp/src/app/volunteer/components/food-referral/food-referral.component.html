@@ -17,45 +17,50 @@
             <div class="card border-0 h-100">
               <div class="card-body mb-0">
                 <div>
-                  <label for="subType_{{uuid}}">Food required:</label>
-                  <select class="form-control d-block w-auto" id="subType_{{uuid}}" formControlName="subType">
+                  <label for="subType_{{uuid}}" class="required">Food required:</label>
+                  <select class="form-control d-block w-auto" [class.is-invalid]="invalid('subType')" id="subType_{{uuid}}" formControlName="subType">
                     <option [ngValue]="null">Select--</option>
                     <option value="RESTAURANT">Restaurant Meals</option>
                     <option value="GROCERIES">Groceries</option>
                   </select>
+                  <span class="invalid-feedback">Please select an option</span>
                 </div>
 
                 <div class="row align-items-end mt-3" *ngIf="subType==='RESTAURANT'">
                   <div class="col-4 pr-2">
-                    <label for="numBreakfasts_{{uuid}}"># Breakfasts per person</label>
-                    <select class="form-control" id="numBreakfasts_{{uuid}}" formControlName="numBreakfasts">
-                      <option value="0">Select--</option>
+                    <label for="numBreakfasts_{{uuid}}" class="required"># Breakfasts per person</label>
+                    <select class="form-control" [class.is-invalid]="invalid('numBreakfasts')" id="numBreakfasts_{{uuid}}" formControlName="numBreakfasts">
+                      <option [ngValue]="null">Select--</option>
                       <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
                     </select>
+                    <span class="invalid-feedback">Please select an option</span>
                   </div>
                   <div class="col-4 pl-2 pr-2">
-                    <label for="numLunches_{{uuid}}"># Lunches per person</label>
-                    <select class="form-control" id="numLunches_{{uuid}}" formControlName="numLunches">
-                      <option value="0">Select--</option>
+                    <label for="numLunches_{{uuid}}" class="required"># Lunches per person</label>
+                    <select class="form-control" [class.is-invalid]="invalid('numLunches')" id="numLunches_{{uuid}}" formControlName="numLunches">
+                      <option [ngValue]="null">Select--</option>
                       <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
                     </select>
+                    <span class="invalid-feedback">Please select an option</span>
                   </div>
                   <div class="col-4 pl-2">
-                    <label for="numDinners_{{uuid}}"># Dinners per person</label>
-                    <select class="form-control" id="numDinners_{{uuid}}" formControlName="numDinners">
-                      <option value="0">Select--</option>
+                    <label for="numDinners_{{uuid}}" class="required"># Dinners per person</label>
+                    <select class="form-control" [class.is-invalid]="invalid('numDinners')" id="numDinners_{{uuid}}" formControlName="numDinners">
+                      <option [ngValue]="null">Select--</option>
                       <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
                     </select>
+                    <span class="invalid-feedback">Please select an option</span>
                   </div>
                 </div>
 
                 <div class="row align-items-end mt-3" *ngIf="subType==='GROCERIES'">
                   <div class="col">
-                    <label for="numDaysMeals_{{uuid}}"># Days for meals</label>
-                    <select class="form-control d-block w-auto" id="numDaysMeals_{{uuid}}" formControlName="numDaysMeals">
-                      <option value="0">Select--</option>
+                    <label for="numDaysMeals_{{uuid}}" class="required"># Days for meals</label>
+                    <select class="form-control d-block w-auto" [class.is-invalid]="invalid('numDaysMeals')" id="numDaysMeals_{{uuid}}" formControlName="numDaysMeals">
+                      <option [ngValue]="null">Select--</option>
                       <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
                     </select>
+                    <span class="invalid-feedback">Please select an option</span>
                   </div>
                 </div>
               </div>
@@ -64,20 +69,21 @@
                 <div class="d-inline-flex font-weight-bold">UP TO A MAXIMUM VALUE OF {{currency.format(maximumAmount(form))}}</div>
               </div>
 
-              <div class="card-footer blue-header space-between items-center" *ngIf="subType==='GROCERIES'">
-                <div class="d-inline-flex font-weight-bold">UP TO A MAXIMUM VALUE OF {{currency.format(maximumAmount(form))}}</div>
-                <div class="d-inline-flex items-center">
-                  <label class="mb-0">Total Amount:</label>
-                  <div class="input-with-icon px-3">
-                    <span aria-hidden="true">$</span>
-                    <input type="number" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control" formControlName="totalAmount">
+              <div *ngIf="subType==='GROCERIES'">
+                <div class="card-footer blue-header space-between items-center">
+                  <div class="d-inline-flex font-weight-bold">UP TO A MAXIMUM VALUE OF {{currency.format(maximumAmount(form))}}</div>
+                  <div class="d-inline-flex items-center">
+                    <label class="mb-0">Total Amount:</label>
+                    <div class="input-with-icon px-3">
+                      <span aria-hidden="true">$</span>
+                      <input type="number" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control" formControlName="totalAmount">
+                    </div>
                   </div>
                 </div>
+                <span class="invalid-feedback justify-content-end" [class.d-flex]="amountInput.classList.contains('is-invalid')">
+                  Please insert total amount for groceries
+                </span>
               </div>
-
-              <!-- <span class="invalid-feedback justify-content-end" [class.d-flex]="amountInput.classList.contains('is-invalid')">
-                Please enter a total amount for # Meals, # Days or groceries
-              </span> -->
             </div>
           </div>
         </div>
@@ -91,7 +97,7 @@
         <div class="pl-4 pr-4 pb-3">
           <textarea rows="4" appErrorBorder [when]="true" #comments class="form-control" formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
           <span class="invalid-feedback justify-content-end">
-            The maximum line length is 250 characters and the maximum number of lines is 4.
+            The maximum line length is 250 characters and the maximum number of lines is 4
           </span>
         </div>
       </div>

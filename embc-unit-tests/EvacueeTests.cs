@@ -11,7 +11,6 @@ namespace embc_unit_tests
     {
         public EvacueeTests(ITestOutputHelper output) : base(output)
         {
-            SeedData();
         }
 
         [Fact]

@@ -89,6 +89,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<IncidentTask> IncidentTasks { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<EvacueeRegistrationAddress> EvacueeRegistrationAddresses { get; set; }
+        public DbSet<EvacueeRegistrationAudit> EvacueeRegistrationAudits { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Volunteer> Volunteers { get; set; }
         public DbSet<Referral> Referrals { get; set; }
@@ -164,6 +165,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .HasValue<HotelLodgingReferral>(ReferralType.Lodging_Hotel.ToString())
                 .HasValue<GroupLodgingReferral>(ReferralType.Lodging_Group.ToString())
                 .HasValue<BilletingLodgingReferral>(ReferralType.Lodging_Billeting.ToString());
+
+            modelBuilder.Entity<EvacueeRegistrationAudit>()
+                .HasOne(typeof(EvacueeRegistration))
+                .WithMany()
+                .HasForeignKey("EssFileNumber");
 
             modelBuilder.AddShadowProperties();
         }

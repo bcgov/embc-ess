@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-import { TransportationReferral, Supplier } from 'src/app/core/models';
+import { TransportationReferral } from 'src/app/core/models';
 import { ReferralDate } from 'src/app/core/models/referral-date';
 import { TransportationRatesComponent } from 'src/app/shared/modals/transportation-rates/transportation-rates.component';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 
 @Component({
   selector: 'app-transportation-referral',
@@ -13,10 +14,8 @@ import { AbstractReferralComponent } from '../abstract-referral/abstract-referra
   styleUrls: ['./transportation-referral.component.scss']
 })
 export class TransportationReferralComponent extends AbstractReferralComponent<TransportationReferral> implements OnInit, OnDestroy {
-  private ratesModal: NgbModalRef = null;
 
-  // convenience getter for easy access to form fields
-  get f() { return this.form.controls; }
+  private ratesModal: NgbModalRef = null;
 
   get subType() { return this.f.subType.value; }
 
@@ -30,6 +29,33 @@ export class TransportationReferralComponent extends AbstractReferralComponent<T
     this.form.setControl('toAddress', this.fb.control(''));
     this.form.setControl('otherTransportModeDetails', this.fb.control(''));
     this.form.setControl('totalAmount', this.fb.control(''));
+
+    // ensure a subType is selected
+    this.f.subType.setValidators([Validators.required]); // ie, not null
+
+    // set other validators according to 'subType' value
+    this.f.subType.valueChanges.subscribe(value => {
+      if (value === 'TAXI') {
+        // remove Other validators
+        this.f.otherTransportModeDetails.clearValidators();
+        this.f.totalAmount.clearValidators();
+        // set Taxi validators
+        this.f.fromAddress.setValidators([Validators.required]);
+        this.f.toAddress.setValidators([Validators.required]);
+      }
+      if (value === 'OTHER') {
+        // remove Taxi validators
+        this.f.fromAddress.clearValidators();
+        this.f.toAddress.clearValidators();
+        // set Other validators
+        this.f.otherTransportModeDetails.setValidators([Validators.required]);
+        this.f.totalAmount.setValidators([CustomValidators.number, Validators.required, Validators.min(0)]);
+      }
+      this.f.fromAddress.updateValueAndValidity({ emitEvent: false });
+      this.f.toAddress.updateValueAndValidity({ emitEvent: false });
+      this.f.otherTransportModeDetails.updateValueAndValidity({ emitEvent: false });
+      this.f.totalAmount.updateValueAndValidity({ emitEvent: false });
+    });
   }
 
   ngOnInit() {
@@ -51,9 +77,17 @@ export class TransportationReferralComponent extends AbstractReferralComponent<T
       fromAddress: referral.fromAddress,
       toAddress: referral.toAddress,
       otherTransportModeDetails: referral.otherTransportModeDetails,
-      totalAmount: referral.totalAmount || 0
+      totalAmount: this.numberOrNull(referral.totalAmount)
     });
   }
+
+  toModel(formValue: any): TransportationReferral {
+    const p = super.toModel(formValue);
+    // if TAXI then don't send totalAmount to BE
+    if (this.subType === 'TAXI') { delete p.totalAmount; }
+    return p;
+  }
+
 
   // NB: this is called when date component is initialized and whenever its data changes
   updateReferralDate(rd: ReferralDate) {
@@ -67,4 +101,5 @@ export class TransportationReferralComponent extends AbstractReferralComponent<T
       () => { this.ratesModal = null; }
     );
   }
+
 }

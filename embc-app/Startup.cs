@@ -2,9 +2,9 @@ using AutoMapper;
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Seeder;
-using Gov.Jag.Embc.Public.Services;
 using Gov.Jag.Embc.Public.Services.Referrals;
 using Gov.Jag.Embc.Public.Utils;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -25,6 +25,7 @@ using NWebsec.AspNetCore.Mvc;
 using NWebsec.AspNetCore.Mvc.Csp;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -143,7 +144,8 @@ namespace Gov.Jag.Embc.Public
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IPdfConverter, PdfConverter>();
             services.AddTransient<IReferralsService, ReferralsService>();
-            services.AddTransient<IRegistrationService, RegistrationService>();
+
+            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
