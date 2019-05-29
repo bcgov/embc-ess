@@ -94,10 +94,10 @@ namespace Gov.Jag.Embc.Public.ViewModels
     {
         public string IncidentTaskNumber { get; set; }
         public string HostCommunity { get; set; }
-        public string FromDate => ValidDates.From.ToString("MMM-dd-yyyy");
-        public string FromTime => GetLocalTime(ValidDates.From);
-        public string ToDate => ValidDates.To.ToString("MMM-dd-yyyy");
-        public string ToTime => GetLocalTime(ValidDates.To);
+        public string FromDate => TimeZoneConverter.GetLocalDate(ValidDates.From);
+        public string FromTime => TimeZoneConverter.GetLocalTime(ValidDates.From);
+        public string ToDate => TimeZoneConverter.GetLocalDate(ValidDates.To);
+        public string ToTime => TimeZoneConverter.GetLocalTime(ValidDates.To);
         public string PrintDate => DateTime.Today.ToString("MMM-dd-yyyy");
         public IEnumerable<PrintEvacuee> PrintEvacuees { get; set; }
         public string TotalAmountPrinted => TotalAmount.ToString("N2");
@@ -122,20 +122,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
         private string ConvertCarriageReturnToHtml(string value)
         {
             return value?.Replace("\n", "<br />")?.Replace("\r", "<br />");
-        }
-
-        private string GetLocalTime(DateTime dateTime)
-        {
-            var timeZoneName = "Pacific Standard Time";
-            if (PlatformHelper.IsLinux)
-            {
-                timeZoneName = "Canada/Pacific";
-            }
-
-            var pst = TimeZoneInfo.FindSystemTimeZoneById(timeZoneName);
-            var pstTime = TimeZoneInfo.ConvertTimeFromUtc(dateTime, pst);
-
-            return pstTime.ToString("h:mm tt");
         }
     }
 
