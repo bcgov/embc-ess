@@ -21,11 +21,11 @@ namespace embc_unit_tests
         {
             var ctx = EmbcDb;
 
-            var di = new DataInterface(ctx, mapper);
+            var di = new DataInterface(ctx, Mapper);
 
-            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
+            var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
-            referral.EssNumber = registration.Id;
+            referral.EssNumber = registrationId;
 
             var referralId = await di.CreateReferralAsync(referral);
             var result = await di.GetReferralAsync(referralId);
@@ -68,10 +68,10 @@ namespace embc_unit_tests
         {
             var ctx = EmbcDb;
 
-            var di = new DataInterface(ctx, mapper);
-            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
+            var di = new DataInterface(ctx, Mapper);
+            var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
-            var referral = ReferralGenerator.GenerateWithExcessiveProperties(registration.Id);
+            var referral = ReferralGenerator.GenerateWithExcessiveProperties(registrationId);
             Assert.NotNull(referral.FromAddress);
             Assert.NotNull(referral.ToAddress);
 
@@ -87,11 +87,10 @@ namespace embc_unit_tests
         {
             var ctx = EmbcDb;
 
-            var di = new DataInterface(ctx, mapper);
+            var di = new DataInterface(ctx, Mapper);
 
-            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
+            var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
-            var registrationId = registration.Id;
             var referrals = new[]{
                 ReferralGenerator.Generate(ReferralType.Incidentals, registrationId),
                 ReferralGenerator.Generate(ReferralType.Clothing, registrationId),
@@ -115,11 +114,9 @@ namespace embc_unit_tests
         {
             var ctx = EmbcDb;
 
-            var di = new DataInterface(ctx, mapper);
+            var di = new DataInterface(ctx, Mapper);
 
-            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
-
-            var registrationId = registration.Id;
+            var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
             var referrals = new[]{
                 ReferralGenerator.Generate(ReferralType.Incidentals, registrationId),
@@ -161,11 +158,11 @@ namespace embc_unit_tests
         {
             var ctx = EmbcDb;
 
-            var di = new DataInterface(ctx, mapper);
+            var di = new DataInterface(ctx, Mapper);
 
-            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
+            var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
-            var referralId = await di.CreateReferralAsync(ReferralGenerator.Generate(ReferralType.Clothing, registration.Id));
+            var referralId = await di.CreateReferralAsync(ReferralGenerator.Generate(ReferralType.Clothing, registrationId));
 
             var result = await di.DeactivateReferralAsync(referralId);
             Assert.True(result);
@@ -179,11 +176,10 @@ namespace embc_unit_tests
         {
             var ctx = EmbcDb;
 
-            var di = new DataInterface(ctx, mapper);
+            var di = new DataInterface(ctx, Mapper);
 
-            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
+            var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
-            var registrationId = registration.Id;
             var referral1 = ReferralGenerator.Generate(ReferralType.Clothing, registrationId);
             var referral2 = ReferralGenerator.Generate(ReferralType.Clothing, registrationId);
             var referralId1 = await di.CreateReferralAsync(referral1);
@@ -204,10 +200,10 @@ namespace embc_unit_tests
         {
             var ctx = EmbcDb;
 
-            var di = new DataInterface(ctx, mapper);
-            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
+            var di = new DataInterface(ctx, Mapper);
+            var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
-            var referralId = await di.CreateReferralAsync(ReferralGenerator.Generate(ReferralType.Clothing, registration.Id));
+            var referralId = await di.CreateReferralAsync(ReferralGenerator.Generate(ReferralType.Clothing, registrationId));
             var referral = await di.GetReferralAsync(referralId);
 
             var item = referral.ToListItem();

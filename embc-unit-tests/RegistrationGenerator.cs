@@ -26,6 +26,7 @@ namespace embc_unit_tests
                         Country = new Country { CountryCode = "USA" }
                     }
                 },
+                DietaryNeedsDetails = "some details"
             };
         }
 
