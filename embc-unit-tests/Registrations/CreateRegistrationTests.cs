@@ -17,25 +17,16 @@ namespace embc_unit_tests.Registrations
         }
 
         [Fact]
-        public async Task Create_NewSelfRegistration_Success()
+        public async Task Create_NewSelfRegistration_Created()
         {
             var result = await Mediator.Send(new CreateNewRegistrationCommand(RegistrationGenerator.GenerateSelf()));
 
             Assert.NotNull(result);
-        }
-
-        [Fact]
-        public async Task Create_NewSelfRegistration_AuditCreated()
-        {
-            var di = new DataInterface(EmbcDb, Mapper);
-
-            var registration = RegistrationGenerator.GenerateSelf();
-            var result = await Mediator.Send(new CreateNewRegistrationCommand(registration));
 
             var audit = EmbcDb.EvacueeRegistrationAudits.ToArray();
 
             Assert.Single(audit);
-            Assert.Contains(registration.DietaryNeedsDetails, audit[0].Content);
+            Assert.Contains(result.DietaryNeedsDetails, audit[0].Content);
         }
     }
 }
