@@ -13,7 +13,6 @@ export class TesterPageComponent implements OnInit {
   referrals: ListResult<Referral>;
   referralsModified: Referral[];
   sampleReferral: ReferralPostItem = {
-    id: null,
     approvedItems: 'a bunch of stuff',
     essNumber: '100043',
     referralId: null,
