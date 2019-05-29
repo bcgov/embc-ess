@@ -1,7 +1,6 @@
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,17 +28,15 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         INotificationHandler<RegistrationCreated>
     {
         private readonly IDataInterface dataInterface;
-        private readonly IHttpContextAccessor httpContext;
 
-        public RegistrationEventStoreHandler(IDataInterface dataInterface, IHttpContextAccessor httpContext)
+        public RegistrationEventStoreHandler(IDataInterface dataInterface)
         {
             this.dataInterface = dataInterface;
-            this.httpContext = httpContext;
         }
 
         private async Task Handle(RegistrationEvent notification)
         {
-            var user = httpContext.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System";
+            var user = ClaimsPrincipal.Current?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System";
             await dataInterface.AppendEvacueeRegistrationAuditEntryAsync(notification, user);
         }
 
