@@ -114,6 +114,10 @@ export class ReferralMakerComponent implements OnInit {
     if (referralForm) {
       referralForm.valid = valid;
     }
+    this.updateFormValidity();
+  }
+
+  private updateFormValidity() {
     this.valid = this.calculateStatus();
   }
 
@@ -250,6 +254,7 @@ export class ReferralMakerComponent implements OnInit {
       supplier: { id: null, active: true, province: 'BC' }
     };
     this.incidentalsReferrals.push({ value: referral, valid: false });
+    this.updateFormValidity();
   }
 
   addFoodReferral() {
@@ -264,6 +269,7 @@ export class ReferralMakerComponent implements OnInit {
       supplier: { id: null, active: true, province: 'BC' }
     };
     this.foodReferrals.push({ value: referral, valid: false });
+    this.updateFormValidity();
   }
 
   addLodgingReferral() {
@@ -278,6 +284,7 @@ export class ReferralMakerComponent implements OnInit {
       supplier: { id: null, active: true, province: 'BC' }
     };
     this.lodgingReferrals.push({ value: referral, valid: false });
+    this.updateFormValidity();
   }
 
   addClothingReferral() {
@@ -292,6 +299,7 @@ export class ReferralMakerComponent implements OnInit {
       supplier: { id: null, active: true, province: 'BC' }
     };
     this.clothingReferrals.push({ value: referral, valid: false });
+    this.updateFormValidity();
   }
 
   addTransportationReferral() {
@@ -306,12 +314,14 @@ export class ReferralMakerComponent implements OnInit {
       supplier: { id: null, active: true, province: 'BC' }
     };
     this.transportationReferrals.push({ value: referral, valid: false });
+    this.updateFormValidity();
   }
 
   clearIncidentalsReferrals(): void {
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Incidentals referrals?')) {
       while (this.incidentalsReferrals.length > 0) { this.incidentalsReferrals.pop(); }
+      this.updateFormValidity();
     }
   }
 
@@ -319,6 +329,7 @@ export class ReferralMakerComponent implements OnInit {
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Food referrals?')) {
       while (this.foodReferrals.length > 0) { this.foodReferrals.pop(); }
+      this.updateFormValidity();
     }
   }
 
@@ -326,6 +337,7 @@ export class ReferralMakerComponent implements OnInit {
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Lodging referrals?')) {
       while (this.lodgingReferrals.length > 0) { this.lodgingReferrals.pop(); }
+      this.updateFormValidity();
     }
   }
 
@@ -333,6 +345,7 @@ export class ReferralMakerComponent implements OnInit {
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Clothing referrals?')) {
       while (this.clothingReferrals.length > 0) { this.clothingReferrals.pop(); }
+      this.updateFormValidity();
     }
   }
 
@@ -340,6 +353,7 @@ export class ReferralMakerComponent implements OnInit {
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Transportation referrals?')) {
       while (this.transportationReferrals.length > 0) { this.transportationReferrals.pop(); }
+      this.updateFormValidity();
     }
   }
 
@@ -364,7 +378,10 @@ export class ReferralMakerComponent implements OnInit {
 
   // --------------------HELPERS-----------------------------------------
   remove(arr: [], i: number) {
-    if (arr) { arr.splice(i, 1); }
+    if (arr) {
+      arr.splice(i, 1);
+      this.updateFormValidity();
+    }
   }
 
 }
