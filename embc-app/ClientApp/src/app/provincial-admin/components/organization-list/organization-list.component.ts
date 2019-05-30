@@ -89,6 +89,7 @@ export class OrganizationListComponent implements OnInit {
   }
   modifyOrganizationVolunteers(id?: string) {
     // load the organization's volunteer list
-    this.router.navigate([`/${this.path}/organization/${id}/volunteers`]);
+    this.uniqueKeyService.setKey(id);
+    this.router.navigate([`/${this.path}/organization/volunteers`]);
   }
 }
