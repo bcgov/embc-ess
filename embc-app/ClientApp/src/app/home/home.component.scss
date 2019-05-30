@@ -1,80 +1,11 @@
 @import "~src/styles/_defaults.scss";
 
-$container-width: auto; // 775px
+.card-img-top {
+  width: 100%;
+  height: 15vw;
+  object-fit:scale-down;
 
-// ==> cards
-.picture-card {
-  max-width: $card-width;
-  background-color: $card-body-bg;
-  padding-bottom: 48px;
 }
-
-// ==> home
-
-.home-margins {
-  max-width: 1200px;
-  // padding-left: 30px;
-  // padding-right: 30px;
-}
-
-.btn-primary {
-  font-family: "myriad-pro", "sans serif";
-  font-weight: 700;
-  font-style: normal;
-  font-size: 14px;
-}
-
-p {
-  font-size: 16px;
-}
-
-.home-header {
-  max-width: $container-width;
-}
-
-.home-header-wrapper {
-  background-color: rgba(242, 242, 242, 1);
-}
-
-.home-body {
-  background-color: rgba(255, 255, 255, 1);
-  padding-top: 60px;
-  max-width: $container-width;
-  display: flex;
-}
-
-.jumbotron {
-  background-color: rgba(242, 242, 242, 1);
-  margin-top: 15px;
-  h2 {
-    font-weight: 400;
-    font-size: 36px;
-  }
-}
-
-// .side-box-wrapper {
-//   margin-left: 90px;
-// }
-
-.fab-button {
-  background-color: #7596c8;
-  margin-right: 20px;
-  cursor: default;
-}
-
-.icon {
-  font-size: 30px;
-  color: #fff;
-  margin-left: -5px;
-  margin-top: -5px;
-}
-
-@media (max-width: 575.98px) {
-  .home-margins {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-  .side-box {
-    padding: 25px;
-  }
+.card {
+  background-color: $bg-light-blue;
 }

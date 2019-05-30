@@ -59,7 +59,6 @@ export interface ReferralPost {
 }
 
 export interface ReferralPostItem {
-  id: string;
   essNumber: string;
   referralId: string;
   active: boolean;

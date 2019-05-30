@@ -476,23 +476,13 @@
       <!-- NEXT STEPS -->
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">NEXT STEPS</h2>
-        <p class="required">
-          While you are evacuated do you require supports?<br>
-          This could be in the form of food / lodging / clothing / incidentals or transportation.
+        <p>
+          While you are evacuated you may require emergency supports to ensure you and your family’s needs are met. An Emergency Support Services volunteer will meet with you in a Reception Centre in order to determine these needs.
         </p>
-        <div class="form-group mb-0">
-          <div class="form-check">
-            <input type="radio" [class.is-invalid]="invalid('requiresSupport')" class="form-check-input" [value]="true" formControlName="requiresSupport" id="requiresSupportTrue">
-            <label class="form-check-label" for="requiresSupportTrue">Yes</label>
-          </div>
-          <div class="form-check">
-            <input type="radio" [class.is-invalid]="invalid('requiresSupport')" class="form-check-input" [value]="false" formControlName="requiresSupport" id="requiresSupportFalse">
-            <label class="form-check-label" for="requiresSupportFalse">No</label>
-          </div>
-          <span [class.d-block]="invalid('requiresSupport')" class="invalid-feedback">{{e.requiresSupport}}</span>
-        </div>
-
-        <div class="mt-4 feature-block" *ngIf="form.value.requiresSupport">
+        <p class="required">
+          To expedite this process, please indicate <strong>which categories of support you are able to provide for yourselves.</strong>
+        </p>
+        <div class="mt-4 feature-block">
           <p>Check all that apply:</p>
           <div class="form-check mt-3">
             <input type="checkbox" class="form-check-input" formControlName="requiresFood" id="requiresFood">
@@ -854,11 +844,7 @@
   <h2>Next Steps</h2>
   <ul class="summary">
     <li>
-      <span class="name">Requires Supports:</span>
-      <span class="value">{{registration?.requiresSupport | yesNo}}</span>
-    </li>
-    <li>
-      <span class="name">Supports Requested:</span>
+      <span class="name">Categories of support you are able to provide for yourselves:</span>
       <span class="value">
         <div class="form-check mt-2">
           <input type="checkbox" class="form-check-input" disabled [checked]="registration?.requiresFood">

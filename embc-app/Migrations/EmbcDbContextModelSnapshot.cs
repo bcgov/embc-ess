@@ -311,6 +311,34 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.ToTable("EvacueeRegistrationAddresses");
                 });
 
+            modelBuilder.Entity("Gov.Jag.Embc.Public.Models.Db.EvacueeRegistrationAudit", b =>
+                {
+                    b.Property<int>("EventId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Content")
+                        .IsRequired();
+
+                    b.Property<DateTimeOffset>("Date");
+
+                    b.Property<long>("EssFileNumber");
+
+                    b.Property<string>("User")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.HasKey("EventId");
+
+                    b.HasIndex("EssFileNumber");
+
+                    b.ToTable("EvacueeRegistrationAudits");
+                });
+
             modelBuilder.Entity("Gov.Jag.Embc.Public.Models.Db.FamilyRelationshipType", b =>
                 {
                     b.Property<string>("Code");
@@ -794,6 +822,14 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.HasOne("Gov.Jag.Embc.Public.Models.Db.EvacueeRegistration", "EvacueeRegistration")
                         .WithMany("EvacueeRegistrationAddresses")
                         .HasForeignKey("RegistrationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Gov.Jag.Embc.Public.Models.Db.EvacueeRegistrationAudit", b =>
+                {
+                    b.HasOne("Gov.Jag.Embc.Public.Models.Db.EvacueeRegistration")
+                        .WithMany()
+                        .HasForeignKey("EssFileNumber")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

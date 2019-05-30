@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import range from 'lodash/range';
 
@@ -7,6 +7,7 @@ import { FoodReferral } from 'src/app/core/models';
 import { ReferralDate } from 'src/app/core/models/referral-date';
 import { FoodRatesComponent } from 'src/app/shared/modals/food-rates/food-rates.component';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 
 const BREAKFAST = 10.00;
 const LUNCH = 13.00;
@@ -19,12 +20,10 @@ const GROCERIES = 22.50;
   styleUrls: ['./food-referral.component.scss']
 })
 export class FoodReferralComponent extends AbstractReferralComponent<FoodReferral> implements OnInit, OnDestroy {
+
   private ratesModal: NgbModalRef = null;
 
   days: Array<number> = null;
-
-  // convenience getter for easy access to form fields
-  get f() { return this.form.controls; }
 
   get subType() { return this.f.subType.value; }
 
@@ -33,12 +32,42 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
     private modals: NgbModal,
   ) {
     super(fb);
-    this.form.setControl('subType', this.fb.control(''));
-    this.form.setControl('numBreakfasts', this.fb.control(''));
+    this.form.setControl('subType', this.fb.control(null));
+    this.form.setControl('numBreakfasts', this.fb.control(null));
     this.form.setControl('numLunches', this.fb.control(''));
     this.form.setControl('numDinners', this.fb.control(''));
     this.form.setControl('numDaysMeals', this.fb.control(''));
     this.form.setControl('totalAmount', this.fb.control(''));
+
+    // ensure a subType is selected
+    this.f.subType.setValidators([Validators.required]); // ie, not null
+
+    // set other validators according to 'subType' value
+    this.f.subType.valueChanges.subscribe(value => {
+      if (value === 'RESTAURANT') {
+        // remove Groceries validators
+        this.f.numDaysMeals.clearValidators();
+        this.f.totalAmount.clearValidators();
+        // set Restaurant validators
+        this.f.numBreakfasts.setValidators([Validators.required]);
+        this.f.numLunches.setValidators([Validators.required]);
+        this.f.numDinners.setValidators([Validators.required]);
+      }
+      if (value === 'GROCERIES') {
+        // remove Restaurant validators
+        this.f.numBreakfasts.clearValidators();
+        this.f.numLunches.clearValidators();
+        this.f.numDinners.clearValidators();
+        // set Groceries validators
+        this.f.numDaysMeals.setValidators([Validators.required]);
+        this.f.totalAmount.setValidators([CustomValidators.number, Validators.required, Validators.min(0)]);
+      }
+      this.f.numBreakfasts.updateValueAndValidity({ emitEvent: false });
+      this.f.numLunches.updateValueAndValidity({ emitEvent: false });
+      this.f.numDinners.updateValueAndValidity({ emitEvent: false });
+      this.f.numDaysMeals.updateValueAndValidity({ emitEvent: false });
+      this.f.totalAmount.updateValueAndValidity({ emitEvent: false });
+    });
   }
 
   ngOnInit() {
@@ -56,11 +85,11 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
     super.fromModel(referral);
     this.form.patchValue({
       subType: referral.subType || null,
-      numBreakfasts: referral.numBreakfasts || 0,
-      numLunches: referral.numLunches || 0,
-      numDinners: referral.numDinners || 0,
-      numDaysMeals: referral.numDaysMeals || 0,
-      totalAmount: referral.totalAmount || 0
+      numBreakfasts: this.numberOrNull(referral.numBreakfasts),
+      numLunches: this.numberOrNull(referral.numLunches),
+      numDinners: this.numberOrNull(referral.numDinners),
+      numDaysMeals: this.numberOrNull(referral.numDaysMeals),
+      totalAmount: this.numberOrNull(referral.totalAmount)
     });
   }
 
@@ -77,7 +106,7 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
 
     // update array for number dropdowns
     const max = this.referral.validDates.days;
-    this.days = range(1, max + 1); // [1..max]
+    this.days = range(0, max + 1); // [0..max]
 
     // update any dropdowns that exceed max
     if (this.f.numBreakfasts.value > max) { this.f.numBreakfasts.setValue(max); }

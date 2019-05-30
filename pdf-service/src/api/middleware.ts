@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 
 export default function applyMiddleware(app: express.Express) {
-
+  console.log('Applying CORS middleware.')
   // Enable CORS
   app.use(function handleCors(req: express.Request, res: express.Response, next: express.NextFunction) {
     res.setHeader('Access-Control-Allow-Origin', '*');

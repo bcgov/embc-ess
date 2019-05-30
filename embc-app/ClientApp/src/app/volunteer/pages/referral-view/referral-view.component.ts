@@ -58,10 +58,13 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
           console.log('ERROR - invalid referral object = ', x);
           this.goHome();
         } else {
-          this.referral = x.referral;
+          // HACK for BE returning id instead of referralId
+          const { id, ...other } = x.referral;
+          this.referral = { referralId: id, ...other };
         }
       }, err => {
         this.loading = false;
+        this.notifications.addNotification('Failed to load referral', 'danger');
         console.log('error getting referral =', err);
         this.goHome();
       });
@@ -106,13 +109,13 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
       this.referralService.deactivateReferral(this.registrationId, this.referralId)
         .subscribe(() => {
           this.deactivating = false;
-          this.notifications.addNotification('Referral deactivated successfully', 'success');
+          this.notifications.addNotification('Referral voided successfully', 'success');
           // return to summary page
           this.back();
         }, err => {
           this.deactivating = false;
+          this.notifications.addNotification('Failed to void referral', 'danger');
           console.log('error deactivating referral =', err);
-          this.goHome();
         });
     }, () => {
       // modal was dismissed

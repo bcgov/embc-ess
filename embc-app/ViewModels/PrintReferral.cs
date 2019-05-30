@@ -1,4 +1,5 @@
 using AutoMapper;
+using Gov.Jag.Embc.Public.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,13 +94,15 @@ namespace Gov.Jag.Embc.Public.ViewModels
     {
         public string IncidentTaskNumber { get; set; }
         public string HostCommunity { get; set; }
-        public string FromDate => ValidDates.From.ToString("MMM-dd-yyyy");
-        public string FromTime => ValidDates.From.ToString("h:mm tt");
-        public string ToDate => ValidDates.To.ToString("MMM-dd-yyyy");
-        public string ToTime => ValidDates.To.ToString("h:mm tt");
+        public string FromDate => TimeZoneConverter.GetLocalDate(ValidDates.From);
+        public string FromTime => TimeZoneConverter.GetLocalTime(ValidDates.From);
+        public string ToDate => TimeZoneConverter.GetLocalDate(ValidDates.To);
+        public string ToTime => TimeZoneConverter.GetLocalTime(ValidDates.To);
         public string PrintDate => DateTime.Today.ToString("MMM-dd-yyyy");
         public IEnumerable<PrintEvacuee> PrintEvacuees { get; set; }
-        public string TotalAmountPrinted => TotalAmount.ToString("C2");
+        public string TotalAmountPrinted => TotalAmount.ToString("N2");
+        public string CommentsPrinted => ConvertCarriageReturnToHtml(Comments);
+        public string ApprovedItemsPrinted => ConvertCarriageReturnToHtml(ApprovedItems);
 
         public object[] PrintableEvacuees
         {
@@ -114,6 +117,11 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 }
                 return evacueesToPrint.ToArray();
             }
+        }
+
+        private string ConvertCarriageReturnToHtml(string value)
+        {
+            return value?.Replace("\n", "<br />")?.Replace("\r", "<br />");
         }
     }
 
@@ -145,7 +153,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 return string.Empty;
             }
 
-            return $"{referralEvacuee.FirstName}, {referralEvacuee.FirstName} ({referralEvacuee.EvacueeTypeCode})";
+            return $"{referralEvacuee.LastName}, {referralEvacuee.FirstName} ({referralEvacuee.EvacueeTypeCode})";
         }
 
         private string GetEvacueeColumnClass(string columnText)

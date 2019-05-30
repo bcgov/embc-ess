@@ -8,10 +8,10 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 
 // Components
-@import "styles/components/cards.scss";
 @import "styles/components/feature-blocks.scss";
 @import "styles/components/form-elements.scss";
 @import "styles/components/restricted.scss";
+@import "styles/components/spinner.scss";
 @import "styles/components/summary.scss";
 
 // Angular Material - define custom theme
@@ -129,11 +129,14 @@ a {
   border-top: none;
 }
 
-
 // this breaks text/arrow layout in FF
 // select.form-control:not([size]):not([multiple]) {
 //   height: auto;
 // }
+
+select.is-invalid {
+  background-image: none !important; // remove red X
+}
 
 .form-control {
   // border-radius: 5px;
