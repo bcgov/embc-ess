@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../../core/services/auth.service';
 import { VolunteerService, VolunteerSearchQueryParameters } from '../../../core/services/volunteer.service';
@@ -48,11 +48,12 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private modals: NgbModal,
     private volunteerService: VolunteerService,
     private organizationService: OrganizationService,
     private authService: AuthService,
-    private uniqueKeyService: UniqueKeyService,
+    private uniqueKeyService: UniqueKeyService, // only used for saving volunteer ids
   ) { }
 
   // convenience getters
@@ -70,11 +71,16 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     // save the base url path
     this.authService.path.subscribe(p => this.path = p);
     this.previousQuery = this.copyProperties(this.defaultSearchQuery);
-    // collect all volunteers
-    this.getVolunteers();
-    if (this.uniqueKeyService.getKey()) {
-      this.organizationService.getOrganizationById(this.uniqueKeyService.getKey()).subscribe(o => {
+
+    this.currentOrganizationId = this.route.snapshot.params.id;
+
+
+    if (this.currentOrganizationId) {
+      this.organizationService.getOrganizationById(this.currentOrganizationId).subscribe(o => {
+        // save the organization
         this.currentOrganization = o;
+        // collect all volunteers
+        this.getVolunteers();
       });
     } else {
       // TODO: when the user gets kicked out of the organization for making an edit redirect them back to the place they can make a decision
@@ -102,7 +108,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     // the query is the value in the searchbox
     this.previousQuery.q = this.queryString;
     // the organization is the one in the global state
-    this.previousQuery.org_id = this.uniqueKeyService.getKey();
+    this.previousQuery.org_id = this.currentOrganizationId;
     // pagination is calculated
     this.previousQuery.offset = this.previousQuery.offset;
     // how many records we want
