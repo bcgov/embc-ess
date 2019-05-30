@@ -8,15 +8,20 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
     public class DeactivateRegistrationService : IRequestHandler<DeactivateRegistrationCommand, bool>
     {
         private readonly IDataInterface dataInterface;
+        private readonly IMediator mediator;
 
-        public DeactivateRegistrationService(IDataInterface dataInterface)
+        public DeactivateRegistrationService(IDataInterface dataInterface, IMediator mediator)
         {
             this.dataInterface = dataInterface;
+            this.mediator = mediator;
         }
 
         public async Task<bool> Handle(DeactivateRegistrationCommand request, CancellationToken cancellationToken)
         {
-            return await dataInterface.DeactivateEvacueeRegistrationAsync(request.EssFileNumber);
+            var result = await dataInterface.DeactivateEvacueeRegistrationAsync(request.EssFileNumber);
+            if (result) await mediator.Publish(new RegistrationDeactivated(request.EssFileNumber));
+
+            return result;
         }
     }
 
@@ -28,5 +33,12 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         }
 
         public string EssFileNumber { get; }
+    }
+
+    public class RegistrationDeactivated : RegistrationEvent
+    {
+        public RegistrationDeactivated(string essFileNumber) : base(essFileNumber)
+        {
+        }
     }
 }
