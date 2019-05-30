@@ -294,7 +294,7 @@ const routes: Routes = [
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
-        path: 'organization/volunteers',
+        path: 'organization/:id/volunteers',
         component: ProvincialAdminVolunteersOrganizationPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },

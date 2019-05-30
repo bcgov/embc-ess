@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../../core/services/auth.service';
 import { VolunteerService, VolunteerSearchQueryParameters } from '../../../core/services/volunteer.service';
@@ -48,6 +48,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private modals: NgbModal,
     private volunteerService: VolunteerService,
     private organizationService: OrganizationService,
@@ -70,10 +71,13 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     // save the base url path
     this.authService.path.subscribe(p => this.path = p);
     this.previousQuery = this.copyProperties(this.defaultSearchQuery);
+
+    this.currentOrganizationId = this.route.snapshot.params.id;
     // collect all volunteers
     this.getVolunteers();
-    if (this.uniqueKeyService.getKey()) {
-      this.organizationService.getOrganizationById(this.uniqueKeyService.getKey()).subscribe(o => {
+
+    if (this.currentOrganizationId) {
+      this.organizationService.getOrganizationById(this.currentOrganizationId).subscribe(o => {
         this.currentOrganization = o;
       });
     } else {
