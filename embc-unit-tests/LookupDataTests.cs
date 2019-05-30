@@ -22,7 +22,7 @@ namespace embc_unit_tests
             var source = new[]
             {
                 new Country{Name="country1", CountryCode="USA", Active=true},
-                new Country{Name="country2", CountryCode="CAD", Active=true},
+                new Country{Name="country2", CountryCode="CAN", Active=true},
                 new Country{Name="country3", CountryCode="IND", Active=false},
                 new Country{Name="country4", CountryCode="MEX", Active=true},
             };
