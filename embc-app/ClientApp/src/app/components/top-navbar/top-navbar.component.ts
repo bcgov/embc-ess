@@ -24,9 +24,9 @@ export class TopNavbarComponent implements OnInit {
 
   ngOnInit() {
     // watch the current user for changes.
-    this.authService.role.subscribe(r => {
+    this.authService.role.subscribe((role: string) => {
       // check that the user exists and has roles
-      this.role = r;
+      this.role = role;
     });
   }
 

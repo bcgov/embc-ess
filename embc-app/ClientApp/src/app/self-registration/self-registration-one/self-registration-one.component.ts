@@ -142,21 +142,21 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     this.currentRegistration$
       .pipe(
         takeWhile(() => this.componentActive),
-        tap(value => {
-          if (!value) {
+        tap((registration: Registration) => {
+          if (!registration) {
             // initialize the form if no registration supplied
             this.store.dispatch(new RegistrationActions.InitializeCurrentRegistration());
           }
         }),
-        filter(value => !!value)
+        filter((registration: Registration) => !!registration)
       )
-      .subscribe(value => {
+      .subscribe((registration: Registration) => {
         // we don't want null values here
-        this.displayRegistration(value);
+        this.displayRegistration(registration);
         // TODO: I don't know where this goes in the massive amount of code below.
         // if something is coming out of the state that is not null we should turn the restriction to true
-        this.disableForm = value.restrictedAccess;
-        this.form.patchValue({ restrictedAccess: value.restrictedAccess });
+        this.disableForm = registration.restrictedAccess;
+        this.form.patchValue({ restrictedAccess: registration.restrictedAccess });
       });
   }
 

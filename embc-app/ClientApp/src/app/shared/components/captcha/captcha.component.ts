@@ -180,8 +180,8 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
     if (this.answer.length === 6) {
       this.state = CAPTCHA_STATE.VERIFYING_ANSWER;
       this.incorrectAnswer = null;
-      this.dataService.verifyCaptcha(this.nonce, this.answer, this.validation).subscribe(
-        response => {
+      this.dataService.verifyCaptcha(this.nonce, this.answer, this.validation)
+        .subscribe(response => {
           const payload = response.body;
           if (this.isValidPayload(payload)) {
             this.handleVerify(payload);
@@ -190,14 +190,14 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
             this.errorVerifyAnswer = this.createErrorTextLine(response);
           }
         },
-        error => {
-          this.state = CAPTCHA_STATE.ERROR_VERIFY;
-          this.errorVerifyAnswer = this.createErrorTextLine(error);
-          console.log('Error response from verifying user answer: ', error);
-          // let UI know about error
-          this.serverError.emit(error);
-        }
-      );
+          error => {
+            this.state = CAPTCHA_STATE.ERROR_VERIFY;
+            this.errorVerifyAnswer = this.createErrorTextLine(error);
+            console.log('Error response from verifying user answer: ', error);
+            // let UI know about error
+            this.serverError.emit(error);
+          }
+        );
     }
   }
 
@@ -260,8 +260,8 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
   private fetchAudio(playImmediately: boolean = false) {
     if (!this.fetchingAudioInProgress) {
       this.fetchingAudioInProgress = true;
-      this.dataService.fetchAudio(this.validation, this.language).subscribe(
-        (response: HttpResponse<any>) => {
+      this.dataService.fetchAudio(this.validation, this.language)
+        .subscribe((response: HttpResponse<any>) => {
           this.fetchingAudioInProgress = false;
           this.audio = response.body.audio;
           this.cd.detectChanges();
@@ -269,14 +269,14 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
             this.audioElement.nativeElement.play();
           }
         },
-        error => {
-          this.fetchingAudioInProgress = false;
-          console.log('Error response from fetching audio CAPTCHA: ', error);
-          this.cd.detectChanges();
-          // let UI know about error
-          this.serverError.emit(error);
-        }
-      );
+          error => {
+            this.fetchingAudioInProgress = false;
+            console.log('Error response from fetching audio CAPTCHA: ', error);
+            this.cd.detectChanges();
+            // let UI know about error
+            this.serverError.emit(error);
+          }
+        );
     }
   }
 
@@ -291,8 +291,8 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
       this.incorrectAnswer = null;
     }
 
-    this.dataService.fetchData(this.nonce).subscribe(
-      response => {
+    this.dataService.fetchData(this.nonce)
+      .subscribe(response => {
         this.state = CAPTCHA_STATE.SUCCESS_FETCH_IMG;
         const payload = response.body;
         this.imageContainer.nativeElement.innerHTML = payload.captcha;
@@ -306,15 +306,15 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
           // console.log('Not to fetch audio eagerly');
         }
       },
-      error => {
-        this.state = CAPTCHA_STATE.ERROR_FETCH_IMG;
-        this.errorFetchingImg = this.createErrorTextLine(error);
-        console.log('Error esponse from fetching CAPTCHA text: %o', error);
-        this.cd.detectChanges();
-        // let UI know about error
-        this.serverError.emit(error);
-      }
-    );
+        error => {
+          this.state = CAPTCHA_STATE.ERROR_FETCH_IMG;
+          this.errorFetchingImg = this.createErrorTextLine(error);
+          console.log('Error esponse from fetching CAPTCHA text: %o', error);
+          this.cd.detectChanges();
+          // let UI know about error
+          this.serverError.emit(error);
+        }
+      );
   }
 
   private createErrorTextLine(error: any) {

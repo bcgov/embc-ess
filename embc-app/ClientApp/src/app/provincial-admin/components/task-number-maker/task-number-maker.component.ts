@@ -88,7 +88,7 @@ export class TaskNumberMakerComponent implements OnInit {
 
   ngOnInit() {
     // keep the current path up to date
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
 
     // initialize form for collection
     this.initializeForm();
@@ -97,10 +97,10 @@ export class TaskNumberMakerComponent implements OnInit {
     if (key) {
       // there may be a user to edit because the route has an ID for an incident task
       this.incidentTaskService.getIncidentTask(key)
-        .subscribe((i: IncidentTask) => {
+        .subscribe((incidentTask: IncidentTask) => {
           // save the incident task for filling in information later.
-          this.displayTaskNumber(i);
-          this.incidentTask = i;
+          this.displayTaskNumber(incidentTask);
+          this.incidentTask = incidentTask;
           this.editMode = true;
         });
     } else {
@@ -122,9 +122,10 @@ export class TaskNumberMakerComponent implements OnInit {
     return invalidField(field, parent, this.shouldValidateForm);
   }
 
-  validateForm(): void {
+  private validateForm(): boolean {
     this.shouldValidateForm = true;
     this.validationErrors = this.validationHelper.processMessages(this.form);
+    return this.form.valid;
   }
 
   displayTaskNumber(task: IncidentTask): void {
@@ -142,8 +143,7 @@ export class TaskNumberMakerComponent implements OnInit {
 
   next(): void {
     // only go next if all fields are non null
-    this.validateForm();
-    if (this.form.valid) {
+    if (this.validateForm()) {
       // navigate to the next page. AKA show the summary part of the form.
       this.maker = false;
       this.errorSummary = null;
@@ -176,17 +176,19 @@ export class TaskNumberMakerComponent implements OnInit {
             // done editing the entry. Clear the reference key.
             this.uniqueKeyService.clearKey();
             // go back to the task number list page
+            // TODO: preserveQueryParams is deprecated, use queryParamsHandling instead
             this.router.navigate([`/${this.path}/task-numbers`], { preserveQueryParams: true });
           });
       } else {
         // if the volunteer has no id we need to create a new one
         this.incidentTaskService.createIncidentTask(this.incidentTask)
-          .subscribe(i => {
+          .subscribe((incidentTask: IncidentTask) => {
             this.submitting = false;
             // add a message to the UI
             this.notificationQueueService.addNotification('Task number added successfully', 'success');
             // NB - there is no key in this scenario
             // go back to the task number list page
+            // TODO: preserveQueryParams is deprecated, use queryParamsHandling instead
             this.router.navigate([`/${this.path}/task-numbers`], { preserveQueryParams: true });
           });
       }

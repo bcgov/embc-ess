@@ -39,7 +39,7 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // get path for routing
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
 
     // get and verify URL params
     this.registrationId = this.route.snapshot.paramMap.get('regId');
@@ -52,14 +52,14 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
 
     // get referral data
     this.referralService.getReferralById(this.registrationId, this.referralId)
-      .subscribe((x: any) => {
+      .subscribe((referral: any) => {
         this.loading = false;
-        if (!x.registrationId || !x.referral) {
-          console.log('ERROR - invalid referral object = ', x);
+        if (!referral.registrationId || !referral.referral) {
+          console.log('ERROR - invalid referral object = ', referral);
           this.goHome();
         } else {
           // HACK for BE returning id instead of referralId
-          const { id, ...other } = x.referral;
+          const { id, ...other } = referral.referral;
           this.referral = { referralId: id, ...other };
         }
       }, err => {

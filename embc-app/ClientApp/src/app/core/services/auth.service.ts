@@ -40,7 +40,7 @@ export class AuthService extends RestService {
     const done = new Subject<void>();
 
     // log into back end service and set user information
-    this.getCurrentUser(force).subscribe(user => {
+    this.getCurrentUser(force).subscribe((user: User) => {
       this.setCurrentUser(user);
       done.next();
     },

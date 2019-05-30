@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Organization } from '../../../core/models';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { OrganizationService } from '../../../core/services/organization.service';
 import { FormControl } from '@angular/forms';
 import { NotificationQueueService } from '../../../core/services/notification-queue.service';
@@ -17,7 +17,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
   maker: boolean;
   editMode: boolean;
   submitting = false; // tracks if in the process of submitting for the UI
-  organization: Organization;
+  organization: Organization = null;
   // path for routing based on user role
   path: string;
 
@@ -29,7 +29,6 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
   community: FormControl;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private organizationService: OrganizationService,
     private notificationQueueService: NotificationQueueService,
@@ -39,7 +38,8 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // subscribe to the path so we can route based on user role
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
+
     // initialize form controls
     this.organizationName = new FormControl('');
     this.adminBceid = new FormControl('');
@@ -47,25 +47,25 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
     this.adminFirstName = new FormControl('');
     this.community = new FormControl('');
 
-    const key = this.uniqueKeyService.getKey();
-    if (key) {
+    const orgId = this.uniqueKeyService.getKey();
+    if (orgId) {
       // there may be an organization to edit because the route looks right
       // TODO: error checking if org not found
-      this.organizationService.getOrganizationById(key)
-        .subscribe(o => {
+      this.organizationService.getOrganizationById(orgId)
+        .subscribe((organization: Organization) => {
           this.editMode = true;
           this.maker = true;
-          this.organization = o;
+          this.organization = organization;
 
           // set form fields
-          this.organizationName.setValue(o.name);
-          this.adminBceid.setValue(o.adminBCeID);
-          this.adminLastName.setValue(o.adminLastName);
-          this.adminFirstName.setValue(o.adminFirstName);
-          this.community.setValue(o.community);
+          this.organizationName.setValue(organization.name);
+          this.adminBceid.setValue(organization.adminBCeID);
+          this.adminLastName.setValue(organization.adminLastName);
+          this.adminFirstName.setValue(organization.adminFirstName);
+          this.community.setValue(organization.community);
         });
     } else {
-      // this is a fresh form and will be a simple add organization
+      // no orgId -> add organization
       this.editMode = false;
       this.maker = true;
       this.organization = {
@@ -77,6 +77,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
         region: null,
         regionalDistrict: null
       };
+      // no form fields to set
     }
   }
 
@@ -139,7 +140,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
           if (addUsers) {
             // save the organization id and route to the volunteer adder page
             this.uniqueKeyService.setKey(this.organization.id);
-            this.router.navigate([`/${this.path}/organization/volunteers`]);
+            this.router.navigate([`/${this.path}/organization/${this.organization.id}/volunteers`]);
           } else {
             // go back to the organization page
             this.router.navigate([`/${this.path}/organizations`]);
@@ -150,7 +151,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
     } else {
       // if the organization has no id then we need to create a new one
       this.organizationService.createOrganization(this.organization)
-        .subscribe(o => {
+        .subscribe((organization: Organization) => {
           this.submitting = false;
           // add a message to the UI
           this.notificationQueueService.addNotification('Organization added successfully', 'success');
@@ -158,8 +159,8 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
           // else route back to the organizations list
           if (addUsers) {
             // save the organization id and route to the volunteer adder page
-            this.uniqueKeyService.setKey(o.id);
-            this.router.navigate([`/${this.path}/organization/volunteers`]);
+            this.uniqueKeyService.setKey(organization.id);
+            this.router.navigate([`/${this.path}/organization/${organization.id}/volunteers`]);
           } else {
             // go back to the organization page
             this.router.navigate([`/${this.path}/organizations`]);
