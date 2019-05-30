@@ -1,0 +1,78 @@
+<div *ngIf="maker">
+  <div class="mb-4">
+    <h1 *ngIf="!editMode">Add Emergency Support Services User(s)</h1>
+    <h1 *ngIf="editMode">Edit Emergency Support Services User Details</h1>
+
+    <small>All fields are required </small>
+    <h3 class="blue-header mt-0">User Details</h3>
+
+    <div class="row pt-5">
+      <div class="col-md-9">
+        <label class="required" for="lastName">Last Name</label>
+        <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your legal last name."></app-font-awesome-icon>
+        <input class="form-control" type="text" id="lastName" [formControl]="lastName" maxlength="50" required>
+      </div>
+    </div>
+
+    <div class="row pt-5">
+      <div class="col-md-9">
+        <label class="required" for="firstName">First Name</label>
+        <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your legal first name."></app-font-awesome-icon>
+        <input class="form-control" type="text" id="firstName" [formControl]="firstName" maxlength="50" required>
+      </div>
+    </div>
+
+    <div class="row pt-5">
+      <div class="col-md-9">
+        <label class="required" for="bceid">BCeID</label>
+        <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your BCeID user ID."></app-font-awesome-icon>
+        <input class="form-control" type="text" id="bceid" [formControl]="bceid" required>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5 space-between">
+    <a routerLink="" (click)="cancel()">
+      <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+      <span class="ml-2">Cancel &amp; Close</span>
+    </a>
+    <button class="btn btn-primary float-right" (click)="next()">NEXT</button>
+  </div>
+</div>
+
+<div *ngIf="!maker">
+  <div class="mb-4">
+    <h1 class="mt-3">Review Details</h1>
+    <p>Please confirm that all details you entered are correct by reading through the summary below.</p>
+    <section class="p-3">
+      <h3>Emergency Support Services User Details</h3>
+      <ul class="summary">
+        <li>
+          <span class="name">Last Name:</span>
+          <span class="value">{{volunteer.lastName}}</span>
+        </li>
+        <li>
+          <span class="name">First Name:</span>
+          <span class="value">{{volunteer.firstName}}</span>
+        </li>
+        <li>
+          <span class="name">BCeID:</span>
+          <span class="value">{{volunteer.bceidAccountNumber}}</span>
+        </li>
+      </ul>
+    </section>
+  </div>
+
+  <div class="mt-5 space-between">
+    <section>
+      <button (click)="back()" class="btn btn-secondary">EDIT DETAILS</button>
+    </section>
+    <section>
+      <button *ngIf="!submitting" class="btn btn-primary" (click)="submit()">SAVE</button>
+      <button *ngIf="submitting" class="btn btn-primary" disabled>SUBMITTING</button>
+
+      <button *ngIf="editMode === false && !submitting" class="btn btn-primary ml-2" (click)="submit(true)">SAVE &amp; ADD ANOTHER</button>
+      <button *ngIf="editMode === false && submitting" class="btn btn-primary ml-2" disabled>SUBMITTING</button>
+    </section>
+  </div>
+</div>

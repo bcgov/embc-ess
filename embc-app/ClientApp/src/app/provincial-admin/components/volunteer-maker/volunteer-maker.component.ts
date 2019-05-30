@@ -4,13 +4,13 @@ import { FormControl } from '@angular/forms';
 import { combineLatest, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { AppState } from '../store';
-import { AuthService } from '../core/services/auth.service';
-import { VolunteerService } from '../core/services/volunteer.service';
-import { OrganizationService } from '../core/services/organization.service';
-import { User, Volunteer, Organization, ListResult } from '../core/models';
-import { NotificationQueueService } from '../core/services/notification-queue.service';
-import { UniqueKeyService } from '../core/services/unique-key.service';
+import { AppState } from '../../../store';
+import { AuthService } from '../../../core/services/auth.service';
+import { VolunteerService } from '../../../core/services/volunteer.service';
+import { OrganizationService } from '../../../core/services/organization.service';
+import { User, Volunteer, Organization, ListResult } from '../../../core/models';
+import { NotificationQueueService } from '../../../core/services/notification-queue.service';
+import { UniqueKeyService } from '../../../core/services/unique-key.service';
 // import { UpdateVolunteer } from '../store/volunteer/volunteer.actions';
 
 @Component({
