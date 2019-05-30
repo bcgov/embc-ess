@@ -32,10 +32,9 @@
                   </div>
                 </div>
               </div>
-
-              <!-- <span class="invalid-feedback justify-content-end" [class.d-flex]="amountInput.classList.contains('is-invalid')">
-                Please enter a total amount for clothing
-              </span> -->
+              <span class="invalid-feedback justify-content-end" [class.d-flex]="amountInput.classList.contains('is-invalid')">
+                Please insert total amount for clothing
+              </span>
             </div>
           </div>
         </div>
@@ -49,7 +48,7 @@
         <div class="pl-4 pr-4 pb-3">
           <textarea rows="4" appErrorBorder [when]="true" #comments class="form-control" formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
           <span class="invalid-feedback justify-content-end">
-            The maximum line length is 250 characters and the maximum number of lines is 4.
+            The maximum line length is 250 characters and the maximum number of lines is 4
           </span>
         </div>
       </div>

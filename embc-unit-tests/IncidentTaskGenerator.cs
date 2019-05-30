@@ -5,7 +5,7 @@ namespace embc_unit_tests
 {
     public static class IncidentTaskGenerator
     {
-        public static IncidentTask GenerateSelf()
+        public static IncidentTask Generate()
         {
             return new IncidentTask
             {

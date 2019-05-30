@@ -63,21 +63,11 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
       insuranceCode: {
         required: 'Please make a selection regarding insurance coverage.',
       },
-      requiresSupport: {
-        required: 'Please select whether supports are required.',
-      },
     };
 
     // Define an instance of the validator for use with this form,
     // passing in this form's set of validation messages.
     this.validationHelper = new ValidationHelper(this.constraints);
-  }
-
-  // TODO: Form UI logic; i.e. show additional form fields when a checkbox is checked
-  get ui() {
-    return {
-      showAvailableServices: () => this.f.requiresSupport.value === true,
-    };
   }
 
   // convenience getter for easy access to form fields
@@ -132,7 +122,6 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
       medicationNeeds: [null, Validators.required],
       hasPets: [null, Validators.required],
       insuranceCode: [null, Validators.required],  // one of ['yes', 'yes-unsure', 'no', 'unsure']
-      requiresSupport: [null, Validators.required],
       requiresFood: null,
       requiresClothing: null,
       requiresAccommodation: null,
@@ -144,13 +133,6 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
   onFormChange() {
     // validate the whole form as we capture data
     this.form.valueChanges.subscribe(() => this.validateForm());
-
-    // clear any previous supports section selections based on the "require supports" radio button
-    this.f.requiresSupport.valueChanges.subscribe((checked: boolean) => {
-      if (!checked && this.f.requiresSupport.dirty) {
-        this.resetSupports();
-      }
-    });
   }
 
   validateForm(): void {
@@ -171,7 +153,6 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
         medicationNeeds: this.registration.medicationNeeds,
         hasPets: this.registration.hasPets,
         insuranceCode: this.registration.insuranceCode,
-        requiresSupport: this.registration.requiresSupport,
         requiresFood: this.registration.requiresFood,
         requiresClothing: this.registration.requiresClothing,
         requiresAccommodation: this.registration.requiresAccommodation,

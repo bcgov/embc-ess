@@ -77,14 +77,24 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
   submit() {
     this.submitting = true;
 
-    // process the registration record before submission to the backend
-    this.processData(this.registration);
+    const reg = this.registration;
+    // stamp the dates that we want to track for this record
+    reg.selfRegisteredDate = new Date().toJSON();
+    // by clicking submit this has to be true because submit is consent
+    reg.declarationAndConsent = true;
+    // NOTE The customer asked for all of these to be reversed.
+    // e.g. requiresAccomodation means hasAccomodation
+    // reversal is done before submitting
+    reg.requiresAccommodation = !reg.requiresAccommodation;
+    reg.requiresClothing = !reg.requiresClothing;
+    reg.requiresFood = !reg.requiresFood;
+    reg.requiresIncidentals = !reg.requiresIncidentals;
+    reg.requiresTransportation = !reg.requiresTransportation;
 
     // update client-side state
-    this.onSave(this.registration);
-
+    this.onSave(reg);
     // push changes to backend
-    this.service.createRegistration(this.registration).subscribe(
+    this.service.createRegistration(reg).subscribe(
       data => {
         this.submitting = false; // turn off submission state
         this.clearRegistration(); // prevent double submissions
@@ -98,13 +108,6 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
         this.router.navigate(['../error'], { relativeTo: this.route });
       }
     );
-  }
-
-  processData(value: Registration): void {
-    // stamp the dates that we want to track for this record
-    value.selfRegisteredDate = new Date().toJSON();
-    // by clicking submit this has to be true because submit is consent
-    value.declarationAndConsent = true;
   }
 
   back() {

@@ -65,30 +65,27 @@
           </span>
         </li>
         <li>
-          <span class="name">Requires Supports:</span>
-          <span class="value">{{registration.requiresSupport | yesNo}}</span>
-        </li>
-        <li>
-          <span class="name">Supports Requested:</span>
+          <span class="name">Supports Provided by the Evacuee:</span>
+          <!-- NOTE: this should show opposite because the customer requesdted it-->
           <span class="value">
             <div class="form-check mt-2">
-              <input class="form-check-input" [checked]="registration.requiresFood" type="checkbox" disabled>
+              <input class="form-check-input" [checked]="!registration.requiresFood" type="checkbox" disabled>
               <label class="form-check-label">Food</label>
             </div>
             <div class="form-check mt-2">
-              <input class="form-check-input" [checked]="registration.requiresClothing" type="checkbox" disabled>
+              <input class="form-check-input" [checked]="!registration.requiresClothing" type="checkbox" disabled>
               <label class="form-check-label">Clothing</label>
             </div>
             <div class="form-check mt-2">
-              <input class="form-check-input" [checked]="registration.requiresAccommodation" type="checkbox" disabled>
+              <input class="form-check-input" [checked]="!registration.requiresAccommodation" type="checkbox" disabled>
               <label class="form-check-label">Lodging</label>
             </div>
             <div class="form-check mt-2">
-              <input class="form-check-input" [checked]="registration.requiresIncidentals" type="checkbox" disabled>
+              <input class="form-check-input" [checked]="!registration.requiresIncidentals" type="checkbox" disabled>
               <label class="form-check-label">Incidentals</label>
             </div>
             <div class="form-check mt-2">
-              <input class="form-check-input" [checked]="registration.requiresTransportation" type="checkbox" disabled>
+              <input class="form-check-input" [checked]="!registration.requiresTransportation" type="checkbox" disabled>
               <label class="form-check-label">Transportation</label>
             </div>
           </span>

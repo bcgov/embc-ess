@@ -1,4 +1,5 @@
 .internal-case-notes {
-  white-space: pre;
+  white-space: pre-wrap;
+  word-break: break-word;
   padding: 1rem;
 }
