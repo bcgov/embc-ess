@@ -16,9 +16,9 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task Get_SelfRegistrationWithNoReason_Success()
         {
-            var di = new DataInterface(EmbcDb, mapper);
+            var di = new DataInterface(EmbcDb, Mapper);
             var selfReg = RegistrationGenerator.GenerateSelf();
-            var regId = (await di.CreateEvacueeRegistrationAsync(selfReg)).Id;
+            var regId = await di.CreateEvacueeRegistrationAsync(selfReg);
 
             var response = await Mediator.Send(new RegistrationQueryRequest(regId, null));
 
@@ -30,11 +30,11 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task Get_CompleteRegistrationWithReason_Success()
         {
-            var di = new DataInterface(EmbcDb, mapper);
+            var di = new DataInterface(EmbcDb, Mapper);
             var task = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
             var hostCommunity = (await di.GetCommunitiesAsync()).First();
             var completedReg = RegistrationGenerator.GenerateCompleted(task.Id, hostCommunity.Id);
-            var regId = (await di.CreateEvacueeRegistrationAsync(completedReg)).Id;
+            var regId = await di.CreateEvacueeRegistrationAsync(completedReg);
 
             var response = await Mediator.Send(new RegistrationQueryRequest(regId, "want to read"));
 
@@ -46,11 +46,11 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task Get_CompleteRegistrationWithNoReason_Error()
         {
-            var di = new DataInterface(EmbcDb, mapper);
+            var di = new DataInterface(EmbcDb, Mapper);
             var task = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
             var hostCommunity = (await di.GetCommunitiesAsync()).First();
             var completedReg = RegistrationGenerator.GenerateCompleted(task.Id, hostCommunity.Id);
-            var regId = (await di.CreateEvacueeRegistrationAsync(completedReg)).Id;
+            var regId = await di.CreateEvacueeRegistrationAsync(completedReg);
 
             var response = await Mediator.Send(new RegistrationQueryRequest(regId, null));
 
@@ -62,9 +62,9 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task Get_SelfRegistrationWithReason_Success()
         {
-            var di = new DataInterface(EmbcDb, mapper);
+            var di = new DataInterface(EmbcDb, Mapper);
             var selfReg = RegistrationGenerator.GenerateSelf();
-            var regId = (await di.CreateEvacueeRegistrationAsync(selfReg)).Id;
+            var regId = await di.CreateEvacueeRegistrationAsync(selfReg);
 
             var response = await Mediator.Send(new RegistrationQueryRequest(regId, null));
 
@@ -76,9 +76,9 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task Get_RegistrationDoesntExists_NotFound()
         {
-            var di = new DataInterface(EmbcDb, mapper);
+            var di = new DataInterface(EmbcDb, Mapper);
             var selfReg = RegistrationGenerator.GenerateSelf();
-            var regId = (await di.CreateEvacueeRegistrationAsync(selfReg)).Id;
+            var regId = await di.CreateEvacueeRegistrationAsync(selfReg);
 
             var response = await Mediator.Send(new RegistrationQueryRequest(regId + "123", null));
 
@@ -90,11 +90,11 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task Get_CompleteRegistrationWithReason_AuditCreated()
         {
-            var di = new DataInterface(EmbcDb, mapper);
+            var di = new DataInterface(EmbcDb, Mapper);
             var task = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
             var hostCommunity = (await di.GetCommunitiesAsync()).First();
             var completedReg = RegistrationGenerator.GenerateCompleted(task.Id, hostCommunity.Id);
-            var regId = (await di.CreateEvacueeRegistrationAsync(completedReg)).Id;
+            var regId = await di.CreateEvacueeRegistrationAsync(completedReg);
 
             var response = await Mediator.Send(new RegistrationQueryRequest(regId, "want to read"));
 

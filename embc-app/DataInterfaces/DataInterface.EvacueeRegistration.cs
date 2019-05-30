@@ -28,11 +28,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .ThenInclude(t => t.Community)
                     .ThenInclude(d => d.Region);
 
-        public async Task<Registration> CreateEvacueeRegistrationAsync(Registration registration)
+        public async Task<string> CreateEvacueeRegistrationAsync(Registration registration)
         {
             var created = await db.EvacueeRegistrations.AddAsync(registration.ToModel());
             await db.SaveChangesAsync();
-            return (await EvacueeRegistrations.SingleAsync(r => r.EssFileNumber == created.Entity.EssFileNumber)).ToViewModel();
+            //return (await EvacueeRegistrations.SingleAsync(r => r.EssFileNumber == created.Entity.EssFileNumber)).ToViewModel();
+            return created.Entity.EssFileNumber.ToString();
         }
 
         public async Task UpdateEvacueeRegistrationAsync(Registration registration)

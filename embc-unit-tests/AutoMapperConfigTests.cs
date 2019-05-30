@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Xunit;
+﻿using Xunit;
 using Xunit.Abstractions;
 
 namespace embc_unit_tests
@@ -13,7 +12,7 @@ namespace embc_unit_tests
         [Fact]
         public void AssertConfig()
         {
-            Mapper.AssertConfigurationIsValid();
+            AutoMapper.Mapper.AssertConfigurationIsValid();
         }
     }
 }
