@@ -17,7 +17,7 @@ namespace embc_unit_tests
         public async Task CanMapToListItem()
         {
             var ctx = EmbcDb;
-            var di = new DataInterface(ctx, mapper);
+            var di = new DataInterface(ctx, Mapper);
 
             var fromCommunity = (await di.GetCommunitiesAsync()).First();
             var toCommunity = (await di.GetCommunitiesAsync()).Last();
@@ -27,7 +27,8 @@ namespace embc_unit_tests
                 Active = true,
                 Community = new Gov.Jag.Embc.Public.ViewModels.Community { Id = fromCommunity.Id }
             });
-            var registration = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateCompleted(incidentTask.Id, toCommunity.Id));
+            var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateCompleted(incidentTask.Id, toCommunity.Id));
+            var registration = await di.GetEvacueeRegistrationAsync(registrationId);
 
             var result = await di.GetEvacueesAsync(new SearchQueryParameters());
 

@@ -43,7 +43,7 @@ namespace embc_unit_tests
         public async Task CanGetReferralHtmlPages(Gov.Jag.Embc.Public.ViewModels.Referral referral)
         {
             var ctx = EmbcDb;
-            var di = new DataInterface(ctx, mapper);
+            var di = new DataInterface(ctx, Mapper);
             var pdfService = new PdfConverter();
             var service = new ReferralsService(di, pdfService);
 
@@ -52,9 +52,9 @@ namespace embc_unit_tests
             var regVM = RegistrationGenerator.GenerateSelf();
             regVM.IncidentTask = incidentTask;
 
-            var registration = await di.CreateEvacueeRegistrationAsync(regVM);
+            var registrationId = await di.CreateEvacueeRegistrationAsync(regVM);
 
-            referral.EssNumber = registration.Id;
+            referral.EssNumber = registrationId;
 
             var referralIds = new List<string>();
             var id = await di.CreateReferralAsync(referral);
@@ -100,7 +100,7 @@ namespace embc_unit_tests
         public async Task CanMapToPrintReferrals(Gov.Jag.Embc.Public.ViewModels.Referral referral)
         {
             var ctx = EmbcDb;
-            var di = new DataInterface(ctx, mapper);
+            var di = new DataInterface(ctx, Mapper);
             var pdfService = new PdfConverter();
             var service = new ReferralsService(di, pdfService);
 
@@ -109,9 +109,9 @@ namespace embc_unit_tests
             var regVM = RegistrationGenerator.GenerateSelf();
             regVM.IncidentTask = incidentTask;
 
-            var registration = await di.CreateEvacueeRegistrationAsync(regVM);
+            var registrationId = await di.CreateEvacueeRegistrationAsync(regVM);
 
-            referral.EssNumber = registration.Id;
+            referral.EssNumber = registrationId;
 
             var referralId = await di.CreateReferralAsync(referral);
             var id = await di.CreateReferralAsync(referral);
@@ -173,7 +173,7 @@ namespace embc_unit_tests
         public void CanValidateReferralTypes(string type, string subType, bool expectedResult)
         {
             var pdfService = new PdfConverter();
-            var svc = new ReferralsService(new DataInterface(EmbcDb, mapper), pdfService);
+            var svc = new ReferralsService(new DataInterface(EmbcDb, Mapper), pdfService);
 
             Assert.Equal(expectedResult, svc.IsValidReferralType(type, subType));
         }

@@ -89,7 +89,7 @@ namespace Gov.Jag.Embc.Public.Controllers
                 Externaluseridentifier = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID)
             };
 
-            await mediator.Send(new FinalizeRegistrationCommand(item));
+            await mediator.Send(new UpdateRegistrationCommand(item));
             return Ok();
         }
 
