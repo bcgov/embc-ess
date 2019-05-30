@@ -14,8 +14,8 @@ export class SideboxAddTaskNumberComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.authService.path.subscribe(p => {
-      this.route = `/${p}/task-number`;
+    this.authService.path.subscribe((path: string) => {
+      this.route = `/${path}/task-number`;
     });
   }
 

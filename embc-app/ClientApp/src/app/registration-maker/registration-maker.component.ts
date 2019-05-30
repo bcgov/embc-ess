@@ -171,7 +171,7 @@ export class RegistrationMakerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
     // fetch the default country
     this.countries$.subscribe((countries: Country[]) => {
       // the only(first) element that is named Canada
@@ -190,7 +190,7 @@ export class RegistrationMakerComponent implements OnInit {
     this.onFormChange();
 
     // Know the current user
-    this.authService.getCurrentUser().subscribe(u => this.currentUser = u);
+    this.authService.getCurrentUser().subscribe((user: User) => this.currentUser = user);
 
     // // if there are route params we should grab them
     // const id = this.route.snapshot.params.id;
@@ -199,24 +199,25 @@ export class RegistrationMakerComponent implements OnInit {
     const key = this.uniqueKeyService.getKey();
     if (key) {
       // this is a form with data flowing in.
-      this.registrationService.getRegistrationById(key).subscribe(r => {
-        // set registration mode to edit and save the previous content in an object.
-        // Note: these flags are reversed.
-        // requiresAccomodation means "claims to have accomodation on self reg"
-        r.requiresAccommodation = !r.requiresAccommodation;
-        r.requiresClothing = !r.requiresClothing;
-        r.requiresFood = !r.requiresFood;
-        r.requiresIncidentals = !r.requiresIncidentals;
-        r.requiresTransportation = !r.requiresTransportation;
-        this.registration = r;
-        this.editMode = true;
-        this.displayRegistration(r);
-      }, err => {
-        this.notificationQueueService.addNotification('Failed to load evacuee', 'danger');
-        console.log('error getting registration =', err);
-        // go back to the main dashboard
-        this.router.navigate([`/${this.path}/`]);
-      });
+      this.registrationService.getRegistrationById(key)
+        .subscribe((registration: Registration) => {
+          // set registration mode to edit and save the previous content in an object.
+          // Note: these flags are reversed.
+          // requiresAccomodation means "claims to have accomodation on self reg"
+          registration.requiresAccommodation = !registration.requiresAccommodation;
+          registration.requiresClothing = !registration.requiresClothing;
+          registration.requiresFood = !registration.requiresFood;
+          registration.requiresIncidentals = !registration.requiresIncidentals;
+          registration.requiresTransportation = !registration.requiresTransportation;
+          this.registration = registration;
+          this.editMode = true;
+          this.displayRegistration(registration);
+        }, err => {
+          this.notificationQueueService.addNotification('Failed to load evacuee', 'danger');
+          console.log('error getting registration =', err);
+          // go back to the main dashboard
+          this.router.navigate([`/${this.path}/`]);
+        });
     } else {
       // this is a fresh form
       this.displayRegistration();
@@ -378,8 +379,8 @@ export class RegistrationMakerComponent implements OnInit {
     // validate phone numbers, for BC residents ONLY!
     // NOTE - international numbers are not validated due to variance in formats, etc.
     this.f.primaryResidenceInBC.valueChanges
-      .subscribe((value: boolean) => {
-        if (value) {
+      .subscribe((checked: boolean) => {
+        if (checked) {
           this.f.phoneNumber.setValidators([CustomValidators.phone]);
           this.f.phoneNumberAlt.setValidators([CustomValidators.phone]);
         } else {

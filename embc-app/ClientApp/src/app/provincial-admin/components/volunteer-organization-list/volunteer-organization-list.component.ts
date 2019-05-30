@@ -74,20 +74,21 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // save the base url path
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
     this.previousQuery = this.copyProperties(this.defaultSearchQuery);
 
     const orgId = this.route.snapshot.params.id;
     if (orgId) {
-      this.organizationService.getOrganizationById(orgId).subscribe(organization => {
-        // save the organization
-        this.currentOrganization = organization;
-        // collect all volunteers
-        this.getVolunteers();
-      }, err => {
-        console.log('error getting organization =', err);
-        this.router.navigate([`/${this.path}/organizations`]);
-      });
+      this.organizationService.getOrganizationById(orgId)
+        .subscribe((organization: Organization) => {
+          // save the organization
+          this.currentOrganization = organization;
+          // collect all volunteers
+          this.getVolunteers();
+        }, err => {
+          console.log('error getting organization =', err);
+          this.router.navigate([`/${this.path}/organizations`]);
+        });
     } else {
       // TODO: when the user gets kicked out of the organization for making an edit redirect them back to the place they can make a decision
       this.router.navigate([`/${this.path}/organizations`]);
@@ -140,7 +141,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     // go get the collection of meta and data
     // get the volunteers using the parameters supplied
     this.volunteerService.getVolunteers(this.previousQuery)
-      .subscribe(listResult => {
+      .subscribe((listResult: ListResult<Volunteer>) => {
         // save the result of the service into an object with both the result and service
         this.resultsAndPagination = listResult;
         // Set the not found result message. It should be hidden when results flow into the form.

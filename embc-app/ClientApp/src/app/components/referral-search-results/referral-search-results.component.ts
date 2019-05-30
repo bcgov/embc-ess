@@ -45,7 +45,7 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
   ) { }
 
   ngOnInit() {
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
   }
 
   onReferralChange(rowItem: RowItem) {

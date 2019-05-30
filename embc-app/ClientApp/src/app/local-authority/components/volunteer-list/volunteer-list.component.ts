@@ -5,7 +5,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { VolunteerService, VolunteerSearchQueryParameters } from '../../../core/services/volunteer.service';
-import { ListResult, Volunteer } from '../../../core/models';
+import { ListResult, Volunteer, User } from '../../../core/models';
 import { UniqueKeyService } from '../../../core/services/unique-key.service';
 import { SearchQueryParameters } from '../../../core/models/search-interfaces';
 
@@ -45,19 +45,19 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // save the base url path
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
 
     // initialize the global variables
     this.authService.getCurrentUser()
-      .subscribe(u => {
+      .subscribe((user: User) => {
         // collect the current user
-        this.volunteerService.getVolunteerById(u.contactid)
-          .subscribe(volunteer => {
+        this.volunteerService.getVolunteerById(user.contactid)
+          .subscribe((volunteer: Volunteer) => {
             // save the organization ID for future search queries
             this.defaultSearchQuery.org_id = volunteer.organization.id;
             // get the results
             this.getVolunteers(this.defaultSearchQuery)
-              .subscribe(listResult => {
+              .subscribe((listResult: ListResult<Volunteer>) => {
                 this.resultsAndPagination = listResult;
               });
           }, err => {
@@ -91,7 +91,7 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
     // submit and collect search with a query string
     const query = this.defaultSearchQuery;
     query.q = this.queryString;
-    this.getVolunteers(query).subscribe(listResult => {
+    this.getVolunteers(query).subscribe((listResult: ListResult<Volunteer>) => {
       if (listResult.data.length <= 0) {
         this.notFoundMessage = 'No results found.';
       } else {
@@ -102,8 +102,8 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
   }
   onPaginationEvent(event: SearchQueryParameters) {
     // save the pagination into the previous query and execute the query again
-    this.getVolunteers(event).subscribe(r => {
-      this.resultsAndPagination = r;
+    this.getVolunteers(event).subscribe((listResult: ListResult<Volunteer>) => {
+      this.resultsAndPagination = listResult;
     });
   }
 

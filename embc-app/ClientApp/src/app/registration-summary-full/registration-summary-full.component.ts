@@ -28,7 +28,7 @@ export class RegistrationSummaryFullComponent implements OnInit {
 
   ngOnInit() {
     // get the path for routing
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
 
     // get URL param
     const reason = this.route.snapshot.paramMap.get('reason');
@@ -37,16 +37,16 @@ export class RegistrationSummaryFullComponent implements OnInit {
     const key = this.uniqueKeyService.getKey();
     if (key) {
       this.registrationService.getRegistrationById(key, reason)
-        .subscribe(r => {
+        .subscribe((registration: Registration) => {
           this.loading = false;
-          if (!r.id || !r.essFileNumber) {
-            console.log('ERROR - invalid registration object = ', r);
+          if (!registration.id || !registration.essFileNumber) {
+            console.log('ERROR - invalid registration object = ', registration);
             // done with the key. It was useless. Clear the reference key.
             this.uniqueKeyService.clearKey();
             this.goHome();
           } else {
             // store the registration object
-            this.registration = r;
+            this.registration = registration;
           }
         }, err => {
           this.loading = false;

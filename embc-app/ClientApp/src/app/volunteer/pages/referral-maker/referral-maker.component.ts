@@ -73,7 +73,7 @@ export class ReferralMakerComponent implements OnInit {
 
   ngOnInit() {
     // get path for routing
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
 
     // get URL params
     this.regId = this.route.snapshot.paramMap.get('id');
@@ -87,14 +87,14 @@ export class ReferralMakerComponent implements OnInit {
 
     // get registration data
     this.registrationService.getRegistrationSummaryById(this.regId)
-      .subscribe(r => {
-        if (!r.id || !r.essFileNumber) {
-          console.log('ERROR - invalid registration object = ', r);
+      .subscribe((registration: Registration) => {
+        if (!registration.id || !registration.essFileNumber) {
+          console.log('ERROR - invalid registration object = ', registration);
           this.cancel();
         } else {
-          this.registration = r;
-          this.evacuees = this.createEvacueeList(r);
-          this.defaultDate = new Date(r.incidentTask.startDate);
+          this.registration = registration;
+          this.evacuees = this.createEvacueeList(registration);
+          this.defaultDate = new Date(registration.incidentTask.startDate);
         }
       }, err => {
         this.notifications.addNotification('Failed to load evacuee summary', 'danger');

@@ -90,7 +90,7 @@ export class VolunteerMakerComponent implements OnInit {
       if (this.iAmLocalAuthority) {
         const volunteerId = currentUser.contactid;
         this.getVolunteerOrganization(volunteerId)
-          .subscribe(organization => {
+          .subscribe((organization: Organization) => {
             // set form value
             this.f.organization.setValue(organization);
 
@@ -110,7 +110,7 @@ export class VolunteerMakerComponent implements OnInit {
         const orgId = this.route.snapshot.params.orgId; // may be null
         if (orgId) {
           this.organizationService.getOrganizationById(orgId)
-            .subscribe(organization => {
+            .subscribe((organization: Organization) => {
               // set form value
               this.f.organization.setValue(organization);
 
@@ -150,7 +150,7 @@ export class VolunteerMakerComponent implements OnInit {
     if (volunteerId) {
       // get volunteer to edit
       this.volunteerService.getVolunteerById(volunteerId)
-        .subscribe(volunteer => {
+        .subscribe((volunteer: Volunteer) => {
           this.mode = 'EDIT';
 
           this.volunteer = volunteer;
@@ -214,8 +214,8 @@ export class VolunteerMakerComponent implements OnInit {
   changeOrganization() {
     // get all organizations (sorted by name)
     this.organizationService.getOrganizations(null, null, null, '+name')
-      .subscribe(value => {
-        this.metaOrganizations = value;
+      .subscribe((listResult: ListResult<Organization>) => {
+        this.metaOrganizations = listResult;
         this.doSelectOrg = true;
       }, err => {
         console.log('error getting organizations =', err);

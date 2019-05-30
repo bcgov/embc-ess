@@ -62,7 +62,8 @@ export class OrganizationListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
+
     this.form = this.fb.group({ searchbox: null });
 
     // collect all organizations
@@ -71,10 +72,11 @@ export class OrganizationListComponent implements OnInit {
 
   // get organizations with supplied params defaults defined in
   getOrganizations({ limit, offset, q: query, sort }: SearchQueryParameters = {}) {
-    this.organizationService.getOrganizations(limit, offset, query, sort).subscribe((v: ListResult<Organization>) => {
-      this.resultsAndPagination = v;
-      this.notFoundMessage = 'No results found.';
-    });
+    this.organizationService.getOrganizations(limit, offset, query, sort)
+      .subscribe((listResult: ListResult<Organization>) => {
+        this.resultsAndPagination = listResult;
+        this.notFoundMessage = 'No results found.';
+      });
   }
 
   filter(community: Community) {

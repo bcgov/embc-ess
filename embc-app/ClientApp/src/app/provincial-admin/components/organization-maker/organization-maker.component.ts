@@ -38,7 +38,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // subscribe to the path so we can route based on user role
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
 
     // initialize form controls
     this.organizationName = new FormControl('');
@@ -52,7 +52,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
       // there may be an organization to edit because the route looks right
       // TODO: error checking if org not found
       this.organizationService.getOrganizationById(orgId)
-        .subscribe(organization => {
+        .subscribe((organization: Organization) => {
           this.editMode = true;
           this.maker = true;
           this.organization = organization;
@@ -151,7 +151,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
     } else {
       // if the organization has no id then we need to create a new one
       this.organizationService.createOrganization(this.organization)
-        .subscribe(organization => {
+        .subscribe((organization: Organization) => {
           this.submitting = false;
           // add a message to the UI
           this.notificationQueueService.addNotification('Organization added successfully', 'success');
