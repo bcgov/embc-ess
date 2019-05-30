@@ -2,14 +2,15 @@
   <form novalidate [formGroup]="form" (ngSubmit)="next()">
     <div class="mb-4">
       <h1>{{ pageTitle }}</h1>
+
       <p>
         The Emergency Coordination Centre is responsible for adding task numbers to the system.
         If you need a new task number, contact the ECC at 1-800-663-3456.
       </p>
+
       <small>All fields are required</small>
-      <h3 class="blue-header">
-        Task Details
-      </h3>
+      <h3 class="blue-header mt-0">Task Details</h3>
+
       <div class="col mb-4">
         <label class="required" for="taskNumber">Task Number</label>
         <input type="text" class="form-control" [class.is-invalid]="invalid('taskNumber')" formControlName="taskNumber" id="taskNumber">
@@ -73,7 +74,7 @@
         </li>
         <li>
           <span class="name">Details of Incident:</span>
-          <span class="value">{{incidentTask.details}}</span>
+          <span [innerHTML]="incidentTask.details|newlines" class="value"></span>
         </li>
       </ul>
     </section>

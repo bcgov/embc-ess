@@ -24,3 +24,5 @@ url | Description | PUT/POST/GET/DELETE | status
 `api/user/current` | Details about the current user. |  |
 `api/gender` | The collection of gender options. | GET | In discussion
 `api/provinces` | A list of provinces. | GET | In discussion
+
+This list is out of date.

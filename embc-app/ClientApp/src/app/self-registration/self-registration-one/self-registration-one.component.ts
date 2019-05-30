@@ -38,6 +38,9 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   // error summary to display; i.e. 'Some required fields have not been completed.'
   errorSummary = '';
 
+  readonly dateMask = [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]; // yyyy-mm-dd
+  readonly phoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]; // 999-999-9999
+
   // generic validation helper
   private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
   private validationHelper: ValidationHelper;
@@ -175,11 +178,11 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         nickname: '',
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
       }),
       registeringFamilyMembers: [null, Validators.required],
       familyMembers: this.fb.array([]),
-      phoneNumber: '', // only BC phones will be validates so keep validators out of here...
+      phoneNumber: '', // only BC phones will be validated so keep validators out of here...
       phoneNumberAlt: '',
       email: ['', Validators.email],
       primaryResidenceInBC: [null, Validators.required],
@@ -303,7 +306,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         restrictedAccess: this.registration.restrictedAccess,
         headOfHousehold: {
           firstName: hoh.firstName,
-          lastName: hoh.lastName,
+          lastName: this.asStringAndUpperCase(hoh.lastName),
           nickname: hoh.nickname,
           initials: hoh.initials,
           gender: hoh.gender,
@@ -358,10 +361,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         active: fmbr.active || null,
         sameLastNameAsEvacuee: fmbr.sameLastNameAsEvacuee,
         firstName: [fmbr.firstName, Validators.required],
-        lastName: [fmbr.lastName, Validators.required],
+        lastName: [this.asStringAndUpperCase(fmbr.lastName), Validators.required],
         initials: fmbr.initials,
         gender: fmbr.gender,
-        dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
         relationshipToEvacuee: [fmbr.relationshipToEvacuee, Validators.required],
       });
     } else {
@@ -371,10 +374,15 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         lastName: ['', Validators.required],
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
         relationshipToEvacuee: [null, Validators.required],
       });
     }
+  }
+
+  private asStringAndUpperCase(value: any): string {
+    const s = value as string;
+    return s ? s.toUpperCase() : null;
   }
 
   addFamilyMember(fmbr?: FamilyMember): void {
@@ -445,6 +453,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // set the value of the restricted form element
     this.form.patchValue({ restrictedAccess: state });
   }
+
   nullMailingAddress() {
     this.f.mailingAddressInBC.setValidators(null);
   }

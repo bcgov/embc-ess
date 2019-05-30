@@ -21,7 +21,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string ExternalReferralsDetails { get; set; }
         public string Facility { get; set; }
         public string FamilyRecoveryPlan { get; set; }
-        public string FollowUpDetails { get; set; }
+        public string InternalCaseNotes { get; set; }
         public string InsuranceCode { get; set; }  // one of ['yes', 'yes-unsure', 'no', 'unsure']
         public bool? MedicationNeeds { get; set; }
         public DateTime? SelfRegisteredDate { get; set; }
@@ -55,5 +55,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public Community HostCommunity { get; set; }
 
         public Volunteer CompletedBy { get; set; }
+
+        public bool IsFinalized { get; set; }
     }
 }

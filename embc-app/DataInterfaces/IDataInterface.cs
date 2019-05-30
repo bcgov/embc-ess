@@ -1,3 +1,4 @@
+using Gov.Jag.Embc.Public.Services.Registrations;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Gov.Jag.Embc.Public.ViewModels.Search;
@@ -10,8 +11,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         #region Registration
 
-        Task<IPagedResults<Registration>> GetEvacueeRegistrationsAsync(SearchQueryParameters searchQuery);
-
         Task<Registration> GetEvacueeRegistrationAsync(string id);
 
         Task<RegistrationSummary> GetEvacueeRegistrationSummaryAsync(string id);
@@ -20,7 +19,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task UpdateEvacueeRegistrationAsync(Registration registration);
 
-        Task<bool> DeactivateEvacueeRegistration(string id);
+        Task<bool> DeactivateEvacueeRegistrationAsync(string id);
+
+        Task AppendEvacueeRegistrationAuditEntryAsync(RegistrationEvent notification, string userId);
 
         #endregion Registration
 
@@ -93,5 +94,25 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<bool> VolunteerExistsAsync(string id);
 
         #endregion Volunteer
+
+        #region Referral
+
+        Task<string> CreateReferralAsync(Referral referral);
+
+        Task<Referral> GetReferralAsync(string referralId);
+
+        Task<IPagedResults<ReferralListItem>> GetReferralsAsync(string registrationId, SearchQueryParameters searchQuery);
+
+        Task<IEnumerable<PrintReferral>> GetReferralsAsync(IEnumerable<string> referralIds);
+
+        Task<bool> DeactivateReferralAsync(string referralId);
+
+        #endregion Referral
+
+        #region Evacuee
+
+        Task<IPagedResults<EvacueeListItem>> GetEvacueesAsync(SearchQueryParameters query);
+
+        #endregion Evacuee
     }
 }

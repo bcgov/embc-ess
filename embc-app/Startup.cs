@@ -2,7 +2,9 @@ using AutoMapper;
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Seeder;
+using Gov.Jag.Embc.Public.Services.Referrals;
 using Gov.Jag.Embc.Public.Utils;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -23,6 +25,7 @@ using NWebsec.AspNetCore.Mvc;
 using NWebsec.AspNetCore.Mvc.Csp;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -127,7 +130,7 @@ namespace Gov.Jag.Embc.Public
 
             services.AddTransient<IDataInterface, DataInterface>();
 
-            //Automapper
+            //AutoMapper
             services.AddAutoMapper(typeof(Startup));
 
             // Enable the IURLHelper to be able to build links within Controllers
@@ -139,22 +142,30 @@ namespace Gov.Jag.Embc.Public
                 return factory.GetUrlHelper(actionContext);
             });
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IPdfConverter, PdfConverter>();
+            services.AddTransient<IReferralsService, ReferralsService>();
+
+            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app)
         {
-            var log = loggerFactory.CreateLogger("Startup");
+            var env = app.ApplicationServices.GetService<IHostingEnvironment>();
+            var loggerFactory = app.ApplicationServices.GetService<ILoggerFactory>();
+            var log = loggerFactory.CreateLogger<Startup>();
+
+            //Initialize the static AutoMapper
+            Mapper.Initialize(cfg => cfg.AddMaps(typeof(Startup)));
 
             // DATABASE SETUP
-
             log.LogInformation("Fetching the application's database context ...");
 
             var adminCtx = new EmbcDbContext(new DbContextOptionsBuilder<EmbcDbContext>()
                 .UseLoggerFactory(loggerFactory)
                 .UseSqlServer(DatabaseTools.GetSaConnectionString(Configuration)).Options);
 
-            if (!string.IsNullOrEmpty(Configuration["DB_FULL_REFRESH"]) && Configuration["DB_FULL_REFRESH"].ToLowerInvariant() == "true")
+            if (Configuration.DbFullRefresh())
             {
                 log.LogWarning("DROPPING the database! ...");
                 adminCtx.Database.EnsureDeleted();

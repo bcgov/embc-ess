@@ -8,5 +8,5 @@ export interface IncidentTask {
   totalAssociatedEvacuees?: number;
   region: Region | null;
   community: Community | null;
-  startDate: string | null; // datetime
+  startDate: string | null; // ISO String for datetime
 }

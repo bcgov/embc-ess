@@ -1,6 +1,5 @@
 using Gov.Jag.Embc.Public.Utils;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
 

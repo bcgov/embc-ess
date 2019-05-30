@@ -1,10 +1,131 @@
-<div>
-  <h2 class="blue-header">
-    <app-font-awesome-icon icon="tshirt"></app-font-awesome-icon>&nbsp;&nbsp;CLOTHING
-  </h2>
+<div *ngIf="referral">
+  <div *ngIf="!readOnly">
+    <form novalidate [formGroup]="form">
+      <div class="space-between align-items-center">
+        <app-valid-from-to [referralDate]="referral.validDates" (referralDateChange)="updateReferralDate($event)" [id]="uuid"></app-valid-from-to>
+        <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
+        <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
+      </div>
 
-  <!-- FOR TESTING ONLY -->
-  <pre>{{ referral | json }}</pre>
+      <div class="feature-block card border-0 p-0 mt-4">
+        <div class="row mt-4 mx-4">
+          <div class="col-4 pl-0 pr-3">
+            <app-evacuee-picker [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()">
+            </app-evacuee-picker>
+          </div>
+          <div class="col-8 pl-3 pr-0">
+            <div class="card border-0 h-100">
+              <div class="card-body mb-0">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="extremeWinterConditions_{{uuid}}" formControlName="extremeWinterConditions">
+                  <label class="form-check-label font-weight-bold" for="extremeWinterConditions_{{uuid}}">Extreme winter conditions</label>
+                </div>
+              </div>
 
-  <button type="button" class="btn btn-secondary" (click)="viewRates()">VIEW ESS RATES</button>
+              <div class="card-footer blue-header space-between items-center">
+                <div class="d-inline-flex font-weight-bold">UP TO A MAXIMUM VALUE OF {{currency.format(maximumAmount(form))}}</div>
+                <div class="d-inline-flex items-center">
+                  <label class="mb-0">Total Amount:</label>
+                  <div class="input-with-icon px-3">
+                    <span aria-hidden="true">$</span>
+                    <input type="number" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control" formControlName="totalAmount">
+                  </div>
+                </div>
+              </div>
+              <span class="invalid-feedback justify-content-end" [class.d-flex]="amountInput.classList.contains('is-invalid')">
+                Please insert total amount for clothing
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-0 m-4">
+          <div class="card-body">
+            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (formReady)="formInitialized('supplier', $event)"></app-supplier>
+          </div>
+        </div>
+
+        <div class="pl-4 pr-4 pb-3">
+          <textarea rows="4" appErrorBorder [when]="true" #comments class="form-control" formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
+          <span class="invalid-feedback justify-content-end">
+            The maximum line length is 250 characters and the maximum number of lines is 4
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- *********************************SUMMARY BELOW****************************************** -->
+  <div *ngIf="readOnly">
+    <ul class="summary">
+      <li class="summary-heading">
+        <div class="container py-3">
+          <div class="row align-items-center">
+            <div class="col-6 py-3">
+              <h2 class="h1 mt-0">Clothing</h2>
+              <div class="d-flex">
+                <span class="name"><strong>Valid From:</strong></span>
+                <span class="value">{{referral.validDates?.from | dateTimeFormatPipe}}</span>
+              </div>
+              <div class="d-flex">
+                <span class="name"><strong>Valid To:</strong></span>
+                <span class="value">{{referral.validDates?.to | dateTimeFormatPipe}}</span>
+              </div>
+            </div>
+
+            <div class="col-6" *ngIf="referral.supplier">
+              <div><strong>{{referral.supplier?.name}}</strong></div>
+              <div>{{referral.supplier?.address}}</div>
+              <div>{{referral.supplier?.city + ', BC'}} &nbsp;&nbsp; {{referral.supplier?.postalCode}}</div>
+              <div>
+                <span class="p-0" *ngIf="referral.supplier?.telephone">Tel: {{referral.supplier.telephone}}</span>
+                <span *ngIf="referral.supplier?.telephone && referral.supplier?.fax">|</span>
+                <span class="p-0" *ngIf="referral.supplier?.fax">Fax: {{referral.supplier.fax}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="name">Person responsible for purchasing goods:</span>
+        <span class="value">{{referral.purchaser}}</span>
+      </li>
+      <li *ngIf="referral.referralId">
+        <span class="name">Referral Status:</span>
+        <span class="value">{{referral.active ? 'ACTIVE' : 'DEACTIVATED'}}</span>
+      </li>
+      <li *ngIf="referral.referralId">
+        <span class="name">Referral #:</span>
+        <span class="value">{{referral.referralId}}</span>
+      </li>
+      <li>
+        <span class="name">Evacuees Requiring Clothing:</span>
+        <span class="value">
+          <div class="form-check" *ngFor="let e of referral.evacuees">
+            <input type="checkbox" class="form-check-input" checked disabled>
+            <label class="form-check-label">{{e.lastName}}, {{e.firstName}}</label>
+          </div>
+        </span>
+      </li>
+      <li>
+        <span class="name">Winter Conditions:</span>
+        <span class="value">{{referral.extremeWinterConditions | yesNo}}</span>
+      </li>
+      <li>
+        <span class="name">Up to a total of:</span>
+        <span class="value d-flex">
+          <div>
+            {{currency.format(referral.totalAmount)}}
+          </div>
+          <div class="ml-4" *ngIf="referral.totalAmount > maximumAmount(referral)">
+            <app-attention-icon [alignCenter]="false" [pullLeft]="false"></app-attention-icon>
+            Total monetary value exceeds the recommended ESS rate.
+          </div>
+        </span>
+      </li>
+      <li>
+        <span class="comments">{{referral.comments || "&nbsp;"}}</span>
+      </li>
+    </ul>
+  </div>
 </div>

@@ -1,0 +1,30 @@
+{
+  "name": "pdf-microservice",
+  "version": "1.0.0",
+  "description": "A simple Node microservice that converts html to pdf by using Puppeteer",
+  "scripts": {
+    "clean": "rimraf dist/*",
+    "tsc": "tsc",
+    "build": "npm-run-all clean tsc",
+    "start": "node dist/server.js",
+    "watch": "tsc -w",
+    "debug": "nodemon --legacy-watch --watch ./dist --inspect=0.0.0.0 --nolazy ./dist/server.js",
+    "docker-debug": "docker-compose up"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "1.18.2",
+    "express": "4.16.3",
+    "puppeteer": "1.16.0"
+  },
+  "devDependencies": {
+    "@types/express": "~4.16.1",
+    "@types/node": "~12.0.2",
+    "@types/puppeteer": "~1.12.4",
+    "nodemon": "1.19.0",
+    "npm-run-all": "~4.1.5",
+    "rimraf": "~2.6.3",
+    "typescript": "~3.4.5"
+  }
+}

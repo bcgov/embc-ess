@@ -1,45 +1,47 @@
 <!-- TODO: turn this into a 'maker' component -->
-<div class="card-body">
-  <div class="row">
-    <div class="col-md-6">
-      <label class="required" for="supplierName_{{id}}">Supplier Name</label>
-      <input type="text" id="supplierName_{{id}}" class="form-control" [(ngModel)]="supplier.name" (change)="validateSupplierName()" autocomplete="on">
-      <span *ngIf="!validSupplierName" class="invalid-feedback" style="display: block;">Please enter a supplier name.</span>
+<form novalidate [formGroup]="supplierForm">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <label class="required" for="supplierName-{{uuid}}">Supplier Name</label>
+        <input type="text" appErrorBorder [when]="showErrorsWhen" id="supplierName-{{uuid}}" class="form-control" autocomplete="on" formControlName="name">
+        <span class="invalid-feedback">Please enter supplier name</span>
+      </div>
+      <div class="col-md-6">
+        <label class="required" for="supplierAddress-{{uuid}}">Supplier Address</label>
+        <input type="text" appErrorBorder [when]="showErrorsWhen" id="supplierAddress-{{uuid}}" class="form-control" autocomplete="on" formControlName="address">
+        <span class="invalid-feedback">Please enter supplier address</span>
+      </div>
     </div>
-    <div class="col-md-6">
-      <label class="required" for="supplierAddress">Supplier Address</label>
-      <input type="text" id="supplierAddress" class="form-control" [(ngModel)]="supplier.address" (change)="validateSupplierAddress()" autocomplete="on">
-      <span *ngIf="!validSupplierAddress" class="invalid-feedback" style="display: block;">Please enter an address.</span>
-    </div>
-  </div>
-  <div class="row mt-3">
-    <div class="col-md-6 container">
-      <div class="row">
-        <div class="col-8">
-          <label class="required" for="city_{{id}}">City</label>
-          <input type="text" id="city_{{id}}" class="form-control" [(ngModel)]="supplier.city" (change)="validateSupplierCity()" autocomplete="on">
-          <span *ngIf="!validSupplierCity" class="invalid-feedback" style="display: block;">Please enter a city.</span>
+    <div class="row mt-3">
+      <div class="col-md-6 container">
+        <div class="row">
+          <div class="col-8">
+            <label class="required" for="city-{{uuid}}">City</label>
+            <input type="text" appErrorBorder [when]="showErrorsWhen" id="city-{{uuid}}" class="form-control" autocomplete="on" formControlName="city">
+            <span class="invalid-feedback">Please enter supplier city</span>
+          </div>
+          <div class="col-4">
+            <label for="postalCode-{{uuid}}">Postal Code</label>
+            <input type="text" id="postalCode-{{uuid}}" class="form-control" formControlName="postalCode" autocomplete="on">
+            <!-- <span class="invalid-feedback" style="display: block;">Please enter a valid postal code</span> -->
+          </div>
         </div>
-        <div class="col-4">
-          <label for="postalCode_{{id}}">Postal Code</label>
-          <input type="text" id="postalCode_{{id}}" class="form-control" [(ngModel)]="supplier.postalCode" (change)="validate()" autocomplete="on">
-          <!-- <span class="invalid-feedback" style="display: block;">Please enter a valid postal code.</span> -->
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-6">
+            <label for="telephone-{{uuid}}">Telephone</label>
+            <input type="text" id="telephone-{{uuid}}" class="form-control" [textMask]="{mask: phoneMask, showMask: false}" formControlName="telephone" autocomplete="on">
+            <!-- <span class="invalid-feedback" style="display: block;">Please enter a valid telephone number</span> -->
+          </div>
+          <div class="col-6">
+            <label for="fax-{{uuid}}">Fax</label>
+            <input type="text" id="fax-{{uuid}}" class="form-control" [textMask]="{mask: phoneMask, showMask: false}" formControlName="fax" autocomplete="on">
+            <!-- <span class="invalid-feedback" style="display: block;">Please enter a valid fax number</span> -->
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-md-6">
-      <div class="row">
-        <div class="col-6">
-          <label for="telephone_{{id}}">Telephone</label>
-          <input type="text" id="telephone_{{id}}" class="form-control" [(ngModel)]="supplier.telephone" (change)="validate()" autocomplete="on">
-          <!-- <span class="invalid-feedback" style="display: block;">Please enter a valid telephone number.</span> -->
-        </div>
-        <div class="col-6">
-          <label for="fax_{{id}}">Fax</label>
-          <input type="text" id="fax_{{id}}" class="form-control" [(ngModel)]="supplier.fax" (change)="validate()" autocomplete="on">
-          <!-- <span class="invalid-feedback" style="display: block;">Please enter a valid fax number.</span> -->
-        </div>
-      </div>
-    </div>
   </div>
-</div>
+</form>

@@ -1,8 +1,9 @@
+using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.Services.Referrals;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,68 +14,32 @@ namespace Gov.Jag.Embc.Public.Controllers
     [Authorize]
     public class ReferralsController : Controller
     {
-        private static int nextId = 1000005;
+        private readonly IDataInterface dataInterface;
+        private readonly IReferralsService referralsService;
 
-        private static readonly List<ReferralListItem> referrals = new List<ReferralListItem>()
-            {
-                new ReferralListItem
-                {
-                    ReferralId = "D1000001",
-                    Supplier = new Supplier { Name = "Supplier1" },
-                    ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
-                    ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
-                    Type = "Food",
-                    SubType = "Groceries",
-                    Active = true,
-                },
-                new ReferralListItem
-                {
-                    ReferralId = "D1000002",
-                    Supplier = new Supplier { Name = "Supplier1" },
-                    ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
-                    ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
-                    Type = "Food",
-                    SubType = "Groceries",
-                    Active = true,
-                },
-                new ReferralListItem
-                {
-                    ReferralId = "D1000003",
-                    Supplier = new Supplier { Name = "Supplier2" },
-                    ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
-                    ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
-                    Type = "Clothing",
-                    SubType = (string)null,
-                    Active = true,
-                },
-                new ReferralListItem
-                {
-                    ReferralId = "D1000004",
-                    Supplier = new Supplier { Name = "Supplier2" },
-                    ValidFrom = DateTime.Parse("2019-04-02T11:00:00-07:00"),
-                    ValidTo = DateTime.Parse("2019-04-06T11:00:00-07:00"),
-                    Type = "Incidentals",
-                    SubType = (string)null,
-                    Active = true,
-                },
-            };
+        public ReferralsController(IDataInterface dataInterface, IReferralsService referralsService)
+        {
+            this.dataInterface = dataInterface;
+            this.referralsService = referralsService;
+        }
 
         [HttpGet]
         public async Task<IActionResult> Get(string registrationId, SearchQueryParameters searchQuery)
+
         {
-            var results = referrals.AsQueryable().Where(r => r.Active).Sort(searchQuery.SortBy ?? "ValidFrom");
+            var results = await dataInterface.GetReferralsAsync(registrationId, searchQuery);
             return await Task.FromResult(Json(new
             {
                 RegistrationId = registrationId,
-                Referrals = new PaginatedList<ReferralListItem>(results, searchQuery.Offset, searchQuery.Limit)
+                Referrals = results
             }));
         }
 
         [HttpGet("{referralId}")]
         public async Task<IActionResult> Get(string registrationId, string referralId)
         {
-            var result = referrals.AsQueryable().SingleOrDefault(r => r.ReferralId == referralId);
-            if (result == null) return NotFound(new
+            var result = await dataInterface.GetReferralAsync(referralId);
+            if (result == null || result.EssNumber != registrationId) return NotFound(new
             {
                 registrationId = registrationId,
                 referralId = referralId
@@ -88,24 +53,21 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(string registrationId, [FromBody] IEnumerable<Referral> newReferrals)
+        public async Task<IActionResult> Post(string registrationId, [FromBody] PostRequest request)
         {
             var referralsList = new List<string>();
-            foreach (var referral in newReferrals)
+            foreach (var referral in request.Referrals)
             {
-                var referralId = ($"D{nextId:D7}");
-                referralsList.Add(referralId);
-                referrals.Add(new ReferralListItem
+                if (!referralsService.IsValidReferralType(referral.Type, referral.SubType))
                 {
-                    ReferralId = referralId,
-                    Active = true,
-                    Type = referral.Type,
-                    SubType = referral.SubType,
-                    Supplier = referral.Supplier,
-                    ValidFrom = referral.ValidFrom,
-                    ValidTo = referral.ValidTo
-                });
-                nextId++;
+                    ModelState.AddModelError(referral.Type, $"referral with type '{referral.Type}' and subtype '{referral.SubType}' is not valid");
+                }
+                if (!ModelState.IsValid) return BadRequest(ModelState);
+                referral.EssNumber = registrationId;
+                referral.ConfirmChecked = request.ConfirmChecked;
+                referral.Active = true;
+                referral.Supplier.Active = true;
+                referralsList.Add(await dataInterface.CreateReferralAsync(referral));
             }
 
             return await Task.FromResult(Json(new
@@ -115,17 +77,36 @@ namespace Gov.Jag.Embc.Public.Controllers
             }));
         }
 
+        [HttpPost("referralPdfs")]
+        public async Task<IActionResult> GetReferralPdfsAsync([FromBody] ReferralsToPrint printReferrals)
+        {
+            var result = await referralsService.GetReferralPdfsAsync(printReferrals);
+
+            if (result == null)
+            {
+                return NotFound(new { printReferrals.ReferralIds });
+            }
+
+            return new FileContentResult(result, "application/pdf");
+        }
+
         [HttpDelete("{referralId}")]
         public async Task<IActionResult> Delete(string registrationId, string referralId)
         {
-            var referral = referrals.SingleOrDefault(r => r.ReferralId == referralId);
-            if (referral == null) return NotFound(new
+            var result = await dataInterface.DeactivateReferralAsync(referralId);
+            if (!result) return NotFound(new
             {
                 registrationId = registrationId,
                 referralId = referralId
             });
-            referral.Active = false;
-            return await Task.FromResult(Ok());
+
+            return Ok();
         }
+    }
+
+    public class PostRequest
+    {
+        public bool ConfirmChecked { get; set; }
+        public IEnumerable<Referral> Referrals { get; set; }
     }
 }

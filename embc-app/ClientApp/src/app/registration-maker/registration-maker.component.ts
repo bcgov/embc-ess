@@ -69,6 +69,9 @@ export class RegistrationMakerComponent implements OnInit {
   // path for this user to route from
   path: string;
 
+  readonly dateMask = [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]; // yyyy-mm-dd
+  readonly phoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]; // 999-999-9999
+
   // generic validation helper
   private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
   private validationHelper: ValidationHelper;
@@ -144,9 +147,6 @@ export class RegistrationMakerComponent implements OnInit {
       hasPets: {
         required: 'Please make a selection regarding pets.',
       },
-      requiresSupport: {
-        required: 'Please select whether supports are required.',
-      },
     };
     // TODO: Wow. it sure would be nice if we could just instatiate a class instead of using interfaces
     this.registration = this.blankRegistration();
@@ -201,9 +201,21 @@ export class RegistrationMakerComponent implements OnInit {
       // this is a form with data flowing in.
       this.registrationService.getRegistrationById(key).subscribe(r => {
         // set registration mode to edit and save the previous content in an object.
+        // Note: these flags are reversed.
+        // requiresAccomodation means "claims to have accomodation on self reg"
+        r.requiresAccommodation = !r.requiresAccommodation;
+        r.requiresClothing = !r.requiresClothing;
+        r.requiresFood = !r.requiresFood;
+        r.requiresIncidentals = !r.requiresIncidentals;
+        r.requiresTransportation = !r.requiresTransportation;
         this.registration = r;
         this.editMode = true;
         this.displayRegistration(r);
+      }, err => {
+        this.notificationQueueService.addNotification('Failed to load evacuee', 'danger');
+        console.log('error getting registration =', err);
+        // go back to the main dashboard
+        this.router.navigate([`/${this.path}/`]);
       });
     } else {
       // this is a fresh form
@@ -237,11 +249,11 @@ export class RegistrationMakerComponent implements OnInit {
         active: fmbr.active || null,
         sameLastNameAsEvacuee: fmbr.sameLastNameAsEvacuee,
         firstName: [fmbr.firstName, Validators.required],
-        lastName: [fmbr.lastName, Validators.required],
+        lastName: [this.asStringAndUpperCase(fmbr.lastName), Validators.required],
         nickname: fmbr.nickname,
         initials: fmbr.initials,
         gender: fmbr.gender,
-        dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: check this!!
+        dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
         relationshipToEvacuee: [fmbr.relationshipToEvacuee, Validators.required],
       });
     } else {
@@ -252,7 +264,7 @@ export class RegistrationMakerComponent implements OnInit {
         lastName: ['', Validators.required],
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
         relationshipToEvacuee: [null, Validators.required],
       });
     }
@@ -268,7 +280,7 @@ export class RegistrationMakerComponent implements OnInit {
       externalReferralsDetails: '',
       facility: [null, Validators.required],
       familyRecoveryPlan: [null],
-      followUpDetails: [null],
+      internalCaseNotes: [null],
       insuranceCode: [null, Validators.required],  // one of ['yes', 'yes-unsure', 'no', 'unsure']
       medicationNeeds: [null, Validators.required],
       selfRegisteredDate: null,
@@ -287,11 +299,11 @@ export class RegistrationMakerComponent implements OnInit {
       requiresFood: null,
       requiresIncidentals: null,
       requiresTransportation: null,
-      requiresSupport: [null, Validators.required],
 
       // HOH fields that we decided to put at the parent form level to simplify things
-      phoneNumber: '', // only BC phones will be validates so keep validators out of here...
+      phoneNumber: '', // only BC phones will be validated so keep validators out of here...
       phoneNumberAlt: '',
+
       email: ['', Validators.email],
 
       primaryResidence: this.formBuilder.group({
@@ -320,7 +332,7 @@ export class RegistrationMakerComponent implements OnInit {
         nickname: '',
         initials: '',
         gender: null,
-        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]], // TODO: Split into [DD] [MM] [YYYY]
+        dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
       }),
 
       familyMembers: this.formBuilder.array([]), // array of formGroups
@@ -439,7 +451,7 @@ export class RegistrationMakerComponent implements OnInit {
         externalReferralsDetails: r.externalReferralsDetails as string,
         facility: r.facility as string,
         familyRecoveryPlan: r.familyRecoveryPlan as string,
-        followUpDetails: r.followUpDetails as string,
+        internalCaseNotes: r.internalCaseNotes as string,
         insuranceCode: r.insuranceCode as string,
         medicationNeeds: r.medicationNeeds as boolean,
         selfRegisteredDate: r.selfRegisteredDate as string,
@@ -462,13 +474,12 @@ export class RegistrationMakerComponent implements OnInit {
         requiresFood: r.requiresFood as boolean,
         requiresIncidentals: r.requiresIncidentals as boolean,
         requiresTransportation: r.requiresTransportation as boolean,
-        requiresSupport: r.requiresSupport as boolean,
 
         headOfHousehold: {
           // id: r.headOfHousehold.id as string,
           // active: r.headOfHousehold.active as boolean,
           firstName: r.headOfHousehold.firstName as string,
-          lastName: r.headOfHousehold.lastName as string,
+          lastName: this.asStringAndUpperCase(r.headOfHousehold.lastName),
           nickname: r.headOfHousehold.nickname as string,
           initials: r.headOfHousehold.initials as string,
           gender: r.headOfHousehold.gender as string,
@@ -480,6 +491,7 @@ export class RegistrationMakerComponent implements OnInit {
         // these belong to the HOH but we placed them here to simplify the HTML markup...
         phoneNumber: r.headOfHousehold.phoneNumber as string,
         phoneNumberAlt: r.headOfHousehold.phoneNumberAlt as string,
+
         email: r.headOfHousehold.email as string,
 
         // primaryResidence: r.headOfHousehold.primaryResidence as Address,
@@ -546,35 +558,64 @@ export class RegistrationMakerComponent implements OnInit {
     }
   }
 
-  submit() {
+  submit(addReferrals: boolean = false) {
     this.submitted = true; // send data to the server
     this.submitting = true; // in transmission
 
+    const r = this.registration;
+    // these are represented opposite in the db. So these are flipped on page load then flipped on submit
+    r.requiresAccommodation = !r.requiresAccommodation;
+    r.requiresClothing = !r.requiresClothing;
+    r.requiresFood = !r.requiresFood;
+    r.requiresIncidentals = !r.requiresIncidentals;
+    r.requiresTransportation = !r.requiresTransportation;
+
     // create or update registration
     // TODO: should this be editmode instead?
-    if (this.registration.id == null) {
+    if (r.id == null) {
       this.registrationService
-        .createRegistration(this.registration)
+        .createRegistration(r)
         .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
-          this.notificationQueueService.addNotification('Evacuee added successfully');
-          // done adding the entry. Clear the reference key.
-          this.uniqueKeyService.clearKey();
-          // go back to the main dashboard
-          this.router.navigate([`/${this.path}/`]);
+          this.notificationQueueService.addNotification('Evacuee added successfully', 'success');
+          if (addReferrals) {
+            // save the registration ID for lookup in the new component
+            this.uniqueKeyService.setKey(r.id);
+            // go to summary page
+            this.router.navigate([`/${this.path}/registration/summary`]);
+          } else {
+            // done adding the entry - clear the reference key
+            this.uniqueKeyService.clearKey();
+            // go back to the main dashboard
+            this.router.navigate([`/${this.path}/`]);
+          }
+        }, err => {
+          this.notificationQueueService.addNotification('Failed to add evacuee', 'danger');
+          console.log('error creating registration =', err);
         });
     } else {
+      // update existing registration
       this.registrationService
-        .updateRegistration(this.registration)
+        .updateRegistration(r)
         .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
-          this.notificationQueueService.addNotification('Evacuee updated successfully');
-          // done editing the entry. Clear the reference key.
-          this.uniqueKeyService.clearKey();
-          // go back to the main dashboard
-          this.router.navigate([`/${this.path}/`]);
+          this.notificationQueueService.addNotification('Evacuee updated successfully', 'success');
+          if (addReferrals) {
+            // save the registration ID for lookup in the new component
+            this.uniqueKeyService.setKey(r.id);
+            // go to summary page
+            this.router.navigate([`/${this.path}/registration/summary`]);
+          } else {
+            // done editing the entry - clear the reference key
+            this.uniqueKeyService.clearKey();
+            // go back to the main dashboard
+            this.router.navigate([`/${this.path}/`]);
+          }
+        }, err => {
+          this.notificationQueueService.addNotification('Failed to update evacuee', 'danger');
+          console.log('error updating registration =', err);
         });
     }
   }
@@ -624,7 +665,7 @@ export class RegistrationMakerComponent implements OnInit {
       externalReferralsDetails: this.asStringAndTrim(values.externalReferralsDetails),
       facility: values.facility as string,
       familyRecoveryPlan: this.asStringAndTrim(values.familyRecoveryPlan),
-      followUpDetails: this.asStringAndTrim(values.followUpDetails),
+      internalCaseNotes: this.asStringAndTrim(values.internalCaseNotes),
       insuranceCode: values.insuranceCode as string,
       medicationNeeds: values.medicationNeeds as boolean,
       registeringFamilyMembers: values.registeringFamilyMembers as string, // 'yes' or 'no'
@@ -645,7 +686,6 @@ export class RegistrationMakerComponent implements OnInit {
       requiresFood: values.requiresFood as boolean,
       requiresIncidentals: values.requiresIncidentals as boolean,
       requiresTransportation: values.requiresTransportation as boolean,
-      requiresSupport: values.requiresSupport as boolean,
 
       // dates we care about
       selfRegisteredDate: values.selfRegisteredDate as string,
@@ -700,30 +740,27 @@ export class RegistrationMakerComponent implements OnInit {
     if (!r.medicationNeeds) {
       r.hasThreeDayMedicationSupply = false;
     }
-
-    // if they set Requires Support to false then set all Supports Requested to false
-    if (!r.requiresSupport) {
-      r.requiresFood = false;
-      r.requiresClothing = false;
-      r.requiresAccommodation = false;
-      r.requiresIncidentals = false;
-      r.requiresTransportation = false;
-    }
-
     // return the registration
     return r;
   }
 
-  asStringAndTrim(value: any): string {
+  private asStringAndTrim(value: any): string {
     const s = value as string;
     return s ? s.trim() : null;
   }
+
+  private asStringAndUpperCase(value: any): string {
+    const s = value as string;
+    return s ? s.toUpperCase() : null;
+  }
+
   cancel() {
     // clear the loaded record if available
     this.uniqueKeyService.clearKey();
     // navigate back home
     this.router.navigate([`/${this.path}/registrations`]);
   }
+
   // --------------------HELPERS-----------------------------------------
   isBcAddress(address: Address): boolean {
     return isBcAddress(address);
@@ -753,7 +790,7 @@ export class RegistrationMakerComponent implements OnInit {
       externalReferralsDetails: null,
       facility: null,
       familyRecoveryPlan: null,
-      followUpDetails: null,
+      internalCaseNotes: null,
       insuranceCode: null,
       medicationNeeds: null,
       registrationCompletionDate: null,
@@ -772,7 +809,6 @@ export class RegistrationMakerComponent implements OnInit {
       requiresFood: null,
       requiresIncidentals: null,
       requiresTransportation: null,
-      requiresSupport: null,
       headOfHousehold: null,
       incidentTask: null,
       hostCommunity: null,

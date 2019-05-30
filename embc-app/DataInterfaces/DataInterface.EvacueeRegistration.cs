@@ -1,10 +1,10 @@
-using Gov.Jag.Embc.Public.Utils;
+using Gov.Jag.Embc.Public.Services.Registrations;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
 
 namespace Gov.Jag.Embc.Public.DataInterfaces
 {
@@ -71,25 +71,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             await db.SaveChangesAsync();
         }
 
-        public async Task<IPagedResults<Registration>> GetEvacueeRegistrationsAsync(SearchQueryParameters searchQuery)
-        {
-            var q = searchQuery.Query;
-
-            var items = await EvacueeRegistrations
-                .Where(r => !searchQuery.HasQuery() ||
-                    r.Evacuees.Any(e => e.LastName.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
-                    r.EssFileNumber.ToString().Contains(q, StringComparison.InvariantCultureIgnoreCase) ||
-                    (r.IncidentTask != null && r.IncidentTask.TaskNumber.Contains(q, StringComparison.InvariantCultureIgnoreCase)) ||
-                    r.EvacueeRegistrationAddresses.Any(a =>
-                        a.AddressSubType == AddressSubType.BCAddress && a.AddressType == AddressType.Primary &&
-                        a.Community.Name.Contains(q, StringComparison.InvariantCultureIgnoreCase)))
-                    .Where(t => searchQuery.IncludeDeactivated || t.Active)
-                .Sort(searchQuery.SortBy ?? "EssFileNumber")
-                .ToArrayAsync();
-
-            return new PaginatedList<Registration>(items.Select(r => r.ToViewModel()), searchQuery.Offset, searchQuery.Limit);
-        }
-
         public async Task<Registration> GetEvacueeRegistrationAsync(string id)
         {
             var entity = await GetEvacueeRegistrationInternalAsync(id);
@@ -109,7 +90,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return entity?.ToSummaryViewModel();
         }
 
-        public async Task<bool> DeactivateEvacueeRegistration(string id)
+        public async Task<bool> DeactivateEvacueeRegistrationAsync(string id)
         {
             if (!long.TryParse(id, out var essFileNumber)) return false;
 
@@ -119,6 +100,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             db.Update(item);
             await db.SaveChangesAsync();
             return true;
+        }
+
+        public async Task AppendEvacueeRegistrationAuditEntryAsync(RegistrationEvent notification, string userId)
+        {
+            await db.EvacueeRegistrationAudits.AddAsync(new Models.Db.EvacueeRegistrationAudit
+            {
+                User = userId,
+                Action = notification.GetType().Name,
+                EssFileNumber = long.Parse(notification.EssFileNumber),
+                Content = JsonConvert.SerializeObject(notification)
+            });
+            await db.SaveChangesAsync();
         }
     }
 }

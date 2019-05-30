@@ -58,12 +58,14 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
           console.log('ERROR - invalid referral object = ', x);
           this.goHome();
         } else {
-          this.referral = x.referral;
-          this.referral.dates = { from: x.referral.validFrom, to: x.referral.validTo };
+          // HACK for BE returning id instead of referralId
+          const { id, ...other } = x.referral;
+          this.referral = { referralId: id, ...other };
         }
       }, err => {
         this.loading = false;
-        alert(`err = ${err}`);
+        this.notifications.addNotification('Failed to load referral', 'danger');
+        console.log('error getting referral =', err);
         this.goHome();
       });
   }
@@ -96,7 +98,7 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
   deactivate(content: TemplateRef<any>) {
     this.deactivating = true;
 
-    this.confirmModal = this.modals.open(content);
+    this.confirmModal = this.modals.open(content, { centered: true });
 
     // handle result
     this.confirmModal.result.then(() => {
@@ -106,16 +108,14 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
 
       this.referralService.deactivateReferral(this.registrationId, this.referralId)
         .subscribe(() => {
-          // deactivate succeeded
           this.deactivating = false;
-          this.notifications.addNotification('Referral deactivated successfully');
+          this.notifications.addNotification('Referral voided successfully', 'success');
           // return to summary page
           this.back();
         }, err => {
-          // deactivate failed
           this.deactivating = false;
-          alert(`err = ${err}`);
-          this.goHome();
+          this.notifications.addNotification('Failed to void referral', 'danger');
+          console.log('error deactivating referral =', err);
         });
     }, () => {
       // modal was dismissed

@@ -3,90 +3,175 @@
   <div *ngIf="editMode">
     <h1>Identify Supports</h1>
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia suscipit ligula sit amet pulvinar.
-      Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean efficitur et arcu a
-      fringilla.
+    <p>
+      The Identify Supports Page is where the Emergency Support Services Team will determine immediate needs of the
+      evacuee and create Referrals based on those needs.
     </p>
 
-    <section class="clearfix">
-      <!-- confirm task start time -->
+    <!-- confirm task start time -->
+    <div *ngIf="registration?.incidentTask?.startDate">
+      <div class="feature-block-header">
+        <label class="m-0 p-0">Please confirm timing for commencement of supports:</label>
+      </div>
       <div class="feature-block card d-block border-0">
-        <div *ngIf="registration?.incidentTask['startDate']">
-          <label>Please confirm timing for commencement of supports:</label>
-          <!-- <div>{{registration.incidentTask['startDate'] | date:'yyyy/MM/dd \'at\' HH:mm:ss a'}}</div> -->
-          <div>Incident start date &amp; time: {{registration.incidentTask['startDate'] | dateTimeFormatPipe}}</div>
+        <div class="row">
+          <div class="col">
+            <div>Incident start date &amp; time: {{registration?.incidentTask?.startDate | dateTimeFormatPipe}}</div>
+            <span class="align-bottom">
+              <span class="h3">Support start date &amp; time: {{defaultDate | dateTimeFormatPipe}}
+                <span *ngIf="!defaultDate">Please enter a valid date.</span>
+              </span>
+            </span>
+          </div>
+          <div *ngIf="stepCounter===1 && !showDefaultDatePicker" class="col-2">
+            <span class="align-bottom">
+              <a href="javascript:void(0)">
+                <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+                <span class="ml-2" (click)="toggleDefaultDatePicker()">Override start time</span>
+              </a>
+            </span>
+          </div>
+          <div *ngIf="stepCounter===1" class="col-2">
+            <button *ngIf="defaultDate" type="button" class="btn btn-primary float-right" (click)="stepCounter=2">NEXT</button>
+            <button *ngIf="!defaultDate" type="button" class="btn btn-primary float-right" disabled>NEXT</button>
+
+          </div>
+        </div>
+        <div *ngIf="showDefaultDatePicker && stepCounter===1">
+          <div class="row">
+            <div class="col">
+              <strong>Valid From</strong>
+            </div>
+            <div class="col">
+              <strong>Valid To</strong>
+            </div>
+            <div class="col-2">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <app-date-time-picker [(value)]="workingDefaultDate"></app-date-time-picker>
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn btn-secondary float-right" (click)="defaultDate=workingDefaultDate">UPDATE</button>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- select required supports -->
-      <div class="card d-block border-0 p-4">
+      <div *ngIf="stepCounter>=2" class="card d-block border-0 p-4">
         <label>Select required supports:</label>
         <div class="form-check mt-2">
           <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood" (change)="foodReferralChange()">
           <label class="form-check-label" for="supportFood">Food</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="clothingReferrals.length > 0" id="supportClothing">
+          <input type="checkbox" class="form-check-input" [checked]="lodgingReferrals.length > 0" id="supportLodging" (change)="lodgingReferralChange()">
+          <label class="form-check-label" for="supportLodging">Lodging</label>
+        </div>
+        <div class="form-check mt-2">
+          <input type="checkbox" class="form-check-input" [checked]="clothingReferrals.length > 0" id="supportClothing" (change)="clothingReferralChange()">
           <label class="form-check-label" for="supportClothing">Clothing</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="lodgingReferrals.length > 0" id="supportLodging">
-          <label class="form-check-label" for="supportLodging">Lodging</label>
+          <input type="checkbox" class="form-check-input" [checked]="transportationReferrals.length > 0" id="supportTransportation" (change)="transportationReferralChange()">
+          <label class="form-check-label" for="supportTransportation">Transportation</label>
         </div>
         <div class="form-check mt-2">
           <input type="checkbox" class="form-check-input" [checked]="incidentalsReferrals.length > 0" id="supportIncidentals" (change)="incidentalsReferralChange()">
           <label class="form-check-label" for="supportIncidentals">Incidentals</label>
         </div>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="transportationReferrals.length > 0" id="supportTransportation">
-          <label class="form-check-label" for="supportTransportation">Transportation</label>
-        </div>
       </div>
 
       <!-- loop through all referrals by type -->
-      <article *ngFor="let r of foodReferrals; let i = index" class="mt-4">
-        <!-- <app-food-referral ([r])="r"></app-food-referral> -->
-      </article>
+      <section class="clearfix">
+        <article *ngFor="let r of foodReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
+          <app-referral-list-item type="FOOD" (remove)="remove(foodReferrals, i)" (add)="addFoodReferral()">
+            <app-food-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+            </app-food-referral>
+          </app-referral-list-item>
+        </article>
 
-      <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4">
-        <!-- <app-clothing-referral ([r])="r"></app-clothing-referral> -->
+        <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
+          <app-referral-list-item type="LODGING" (remove)="remove(lodgingReferrals, i)" (add)="addLodgingReferral()">
+            <app-lodging-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+            </app-lodging-referral>
+          </app-referral-list-item>
+        </article>
+
+        <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
+          <app-referral-list-item type="CLOTHING" (remove)="remove(clothingReferrals, i)" (add)="addClothingReferral()">
+            <app-clothing-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+            </app-clothing-referral>
+          </app-referral-list-item>
+        </article>
+
+        <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
+          <app-referral-list-item type="TRANSPORTATION" (remove)="remove(transportationReferrals, i)" (add)="addTransportationReferral()">
+            <app-transportation-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+            </app-transportation-referral>
+          </app-referral-list-item>
+        </article>
+
+        <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
+          <app-referral-list-item type="INCIDENTALS" (remove)="remove(incidentalsReferrals, i)" (add)="addIncidentalsReferral()">
+            <app-incidentals-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+            </app-incidentals-referral>
+          </app-referral-list-item>
+        </article>
+      </section>
+
+      <div *ngIf="userClickedNext && !valid && haveReferrals" class="text-danger mt-5 pl-5">
+        <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>
+        &nbsp;Some required fields have not been completed.
+      </div>
+
+      <div class="mt-5 space-between">
+        <a routerLink="" (click)="cancel()">
+          <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+          <span class="ml-2">Cancel &amp; Close</span>
+        </a>
+        <button type="button" class="btn btn-primary float-right" [disabled]="!haveReferrals" (click)="createReferrals()">CREATE REFERRALS</button>
+      </div>
+    </div>
+
+  </div>
+  <!-- *********************************SUMMARY BELOW****************************************** -->
+  <div *ngIf="!editMode">
+    <h1>Review Referrals</h1>
+    <p>
+      Please confirm that all details you entered are correct by reading through the summary below with the evacuee.
+    </p>
+    <section class="clearfix">
+      <article *ngFor="let r of foodReferrals; let i = index" class="mt-4">
+        <app-food-referral [referral]="r.value" [readOnly]="true"></app-food-referral>
       </article>
 
       <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-4">
-        <!-- <app-lodging-referral ([r])="r"></app-lodging-referral> -->
+        <app-lodging-referral [referral]="r.value" [readOnly]="true"></app-lodging-referral>
       </article>
 
-      <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
-        <app-incidentals-referral [(referral)]="r" [editMode]="true" (remove)="removeIncidentalsReferral(i)" (add)="addIncidentalsReferral()"></app-incidentals-referral>
+      <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4">
+        <app-clothing-referral [referral]="r.value" [readOnly]="true"></app-clothing-referral>
       </article>
 
       <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4">
-        <!-- <app-transportation-referral ([r])="r"></app-transportation-referral> -->
+        <app-transportation-referral [referral]="r.value" [readOnly]="true"></app-transportation-referral>
       </article>
-    </section>
 
-    <div class="mt-5 space-between">
-      <a routerLink="" (click)="cancel()">
-        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
-        <span class="ml-2">Cancel &amp; Close</span>
-      </a>
-      <button type="button" class="btn btn-primary float-right" (click)="createReferral()">CREATE REFERRAL</button>
-    </div>
-  </div>
-
-  <div *ngIf="!editMode">
-    <h1>Create Referrals</h1>
-
-    <p>Please confirm that all details you entered are correct by reading through the summary below with the evacuee.
-    </p>
-
-    <section class="clearfix">
       <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4">
-        <app-incidentals-referral [(referral)]="r" [editMode]="false"></app-incidentals-referral>
+        <app-incidentals-referral [referral]="r.value" [readOnly]="true"></app-incidentals-referral>
       </article>
     </section>
-
     <!-- TODO: prompt for confirmation; disable Finalize until confirmed; set confirmChecked=true -->
+    <div class="mt-5 space-between">
+      <div class="form-group form-check">
+        <input class="form-check-input" id="workCheck" type="checkbox" [(ngModel)]="confirmChecked">
+        <label class="form-check-label" for="workCheck">I certify that a supervisor or ESSD has checked my work and approved the above referrals for distribution to the evacuee.</label>
+      </div>
+    </div>
 
     <div class="mt-5 space-between">
       <section>
@@ -97,11 +182,18 @@
           <app-font-awesome-icon icon="times"></app-font-awesome-icon>
           <span class="ml-2">Cancel &amp; Close</span>
         </a>
-        <button type="button" *ngIf="!submitting" class="btn btn-primary ml-5" (click)="finalize()">FINALIZE
-          REFERRALS</button>
-        <button type="button" *ngIf="submitting" class="btn btn-primary ml-5" disabled>FINALIZING...</button>
+        <button type="button" *ngIf="!submitting && confirmChecked" class="btn btn-primary ml-5" (click)="finalize()">
+          FINALIZE REFERRALS
+        </button>
+        <button type="button" *ngIf="!submitting && !confirmChecked" class="btn btn-primary ml-5" disabled>
+          FINALIZE REFERRALS
+        </button>
+        <button type="button" *ngIf="submitting" class="btn btn-primary ml-5" disabled>
+          FINALIZING...
+        </button>
       </section>
     </div>
   </div>
-
 </div>
+
+<!-- <pre>{{foodReferrals|json}}</pre> -->

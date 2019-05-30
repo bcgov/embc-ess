@@ -19,20 +19,20 @@ export class NotificationQueueService {
   // this is the data structure that holds a collection of notification objects
   public notificationQueue: BehaviorSubject<Notification[]> = new BehaviorSubject<Notification[]>([]);
 
-  addNotification(message: string, timeoutMs?: number, type?: string) {
-    // the default notification is warning
-    if (!type) { type = 'warning'; }
-    if (!timeoutMs) { timeoutMs = this.defaultTimeout; }
-
-    // get old value of behaviour subject to update it.
+  // the default notification is warning
+  addNotification(message: string, type: string = 'warning', timeoutMs: number = this.defaultTimeout) {
+    // Get old value of behaviour subject to update it.
     const currentNotifications: Notification[] = this.notificationQueue.getValue();
 
     // Create a new notification object to display and give it a uniqueish ID.
     const notification: Notification = { message, identifier: new Date().toString(), type };
+
     // add the notification into the notification array
     currentNotifications.push(notification);
+
     // replace the behavior subject with the updated one
     this.notificationQueue.next(currentNotifications);
+
     // set a timeout callback to expire the notification in a set amout of time.
     setTimeout(() => {
       // expire the notification by its timestamp

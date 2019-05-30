@@ -15,7 +15,8 @@ export interface Registration {
   externalReferralsDetails: string;
   facility: string;
   familyRecoveryPlan: string;
-  followUpDetails: string;
+  hasInternalCaseNotes?: boolean; // from BE
+  internalCaseNotes: string | null;
   insuranceCode: string;  // one of ['yes', 'yes-unsure', 'no', 'unsure']
   medicationNeeds: boolean;
   registrationCompletionDate: string | null; // datetime
@@ -38,7 +39,6 @@ export interface Registration {
   requiresFood: boolean;
   requiresIncidentals: boolean;
   requiresTransportation: boolean;
-  requiresSupport: boolean;
 
   // related entities
   headOfHousehold: HeadOfHousehold;

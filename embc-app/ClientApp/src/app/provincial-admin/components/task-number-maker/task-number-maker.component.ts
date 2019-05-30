@@ -68,7 +68,7 @@ export class TaskNumberMakerComponent implements OnInit {
         required: 'Please select a community/region from the dropdown list where the incident took place',
       },
       startDate: {
-        required: 'Please enter a date and time for the incident',
+        required: 'Please enter a valid date and time for the incident',
         maxDate: 'Date for the incident must be today or in the past',
       },
       details: {
@@ -143,7 +143,6 @@ export class TaskNumberMakerComponent implements OnInit {
   next(): void {
     // only go next if all fields are non null
     this.validateForm();
-
     if (this.form.valid) {
       // navigate to the next page. AKA show the summary part of the form.
       this.maker = false;
@@ -173,7 +172,7 @@ export class TaskNumberMakerComponent implements OnInit {
           .subscribe(() => {
             this.submitting = false;
             // add a message to the UI
-            this.notificationQueueService.addNotification('Task number updated successfully');
+            this.notificationQueueService.addNotification('Task number updated successfully', 'success');
             // done editing the entry. Clear the reference key.
             this.uniqueKeyService.clearKey();
             // go back to the task number list page
@@ -185,7 +184,7 @@ export class TaskNumberMakerComponent implements OnInit {
           .subscribe(i => {
             this.submitting = false;
             // add a message to the UI
-            this.notificationQueueService.addNotification('Task number added successfully');
+            this.notificationQueueService.addNotification('Task number added successfully', 'success');
             // NB - there is no key in this scenario
             // go back to the task number list page
             this.router.navigate([`/${this.path}/task-numbers`], { preserveQueryParams: true });

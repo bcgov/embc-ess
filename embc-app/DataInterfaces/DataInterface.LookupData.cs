@@ -10,17 +10,25 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         public async Task<IEnumerable<Country>> GetCountriesAsync()
         {
-            return (await db.Countries.ToArrayAsync()).Select(c => c.ToViewModel());
+            return (await db.Countries
+                .Where(c => c.Active)
+                .OrderBy(c => c.CountryCode)
+                .ToArrayAsync())
+                .Select(mapper.Map<Country>);
         }
 
         public async Task<IEnumerable<Region>> GetRegionsAsync()
         {
-            return (await db.Regions.ToArrayAsync()).Select(r => r.ToViewModel());
+            return (await db.Regions.ToArrayAsync())
+                .Where(r => r.Active)
+                .OrderBy(r => r.Name)
+                .Select(mapper.Map<Region>);
         }
 
         public async Task<IEnumerable<Community>> GetCommunitiesAsync()
         {
             return (await db.Communities
+                .Where(c => c.Active)
                 .Include(d => d.Region)
                 .OrderBy(c => c.Name)
                 .ToArrayAsync())
@@ -29,7 +37,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<IEnumerable<FamilyRelationshipType>> GetFamilyRelationshipTypesAsync()
         {
-            return (await db.FamilyRelationshipTypes.ToArrayAsync()).Select(t => t.ToViewModel());
+            return (await db.FamilyRelationshipTypes
+                .Where(t => t.Active)
+                .ToArrayAsync())
+                .Select(mapper.Map<FamilyRelationshipType>);
         }
     }
 }

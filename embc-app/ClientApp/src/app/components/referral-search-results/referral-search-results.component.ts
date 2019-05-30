@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Referral } from 'src/app/core/models';
 import { ReferralSearchResults } from 'src/app/core/models/search-interfaces';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -9,6 +8,7 @@ import toLower from 'lodash/toLower';
 interface RowItem {
   registrationId: string;
   data: Referral;
+  checked: boolean;
 }
 
 /**
@@ -31,7 +31,7 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
    */
   @Output() referralsSelected = new EventEmitter<Referral[]>();
 
-  rows: RowItem[] = [];
+  rows: Array<RowItem> = [];
   notFoundMessage = 'Searching ...';
   path: string; // the routing path
   referrals: Array<Referral> = [];
@@ -41,7 +41,6 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
   }
 
   constructor(
-    private router: Router,
     private authService: AuthService
   ) { }
 
@@ -49,20 +48,18 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
     this.authService.path.subscribe(p => this.path = p);
   }
 
-  onReferralChange(rowItem: RowItem, event: MouseEvent) {
-    // tslint:disable-next-line: no-string-literal
-    if (event.target['checked']) {
+  onReferralChange(rowItem: RowItem) {
+    const index = this.referrals.indexOf(rowItem.data);
+
+    // if row is not checked then check it (and vice-versa)
+    if (!rowItem.checked && index === -1) {
+      rowItem.checked = true;
       // add item to array
-      const index = this.referrals.indexOf(rowItem.data);
-      if (index === -1) {
-        this.referrals.push(rowItem.data);
-      }
-    } else {
+      this.referrals.push(rowItem.data);
+    } else if (rowItem.checked && index !== -1) {
+      rowItem.checked = false;
       // remove item from array
-      const index = this.referrals.indexOf(rowItem.data);
-      if (index !== -1) {
-        this.referrals.splice(index, 1);
-      }
+      this.referrals.splice(index, 1);
     }
 
     this.referralsSelected.emit(this.referrals);
@@ -78,7 +75,7 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
 
     // convert search results into row items
     return search.results.map(result => {
-      return ({ registrationId: search.registrationId, data: result } as RowItem);
+      return { registrationId: search.registrationId, data: result, checked: false } as RowItem;
     });
   }
 

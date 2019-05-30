@@ -1,3 +1,13 @@
 app-valid-from-to {
   width: 75%;
 }
+
+textarea {
+  resize: none;
+  overflow: hidden;
+}
+
+span.approvedItems {
+  white-space: pre-wrap;
+  word-break: break-word;
+}

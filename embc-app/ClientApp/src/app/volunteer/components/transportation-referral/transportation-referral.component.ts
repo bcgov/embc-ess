@@ -1,39 +1,105 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
 import { TransportationReferral } from 'src/app/core/models';
+import { ReferralDate } from 'src/app/core/models/referral-date';
 import { TransportationRatesComponent } from 'src/app/shared/modals/transportation-rates/transportation-rates.component';
+import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 
 @Component({
   selector: 'app-transportation-referral',
   templateUrl: './transportation-referral.component.html',
   styleUrls: ['./transportation-referral.component.scss']
 })
-export class TransportationReferralComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() referral: TransportationReferral = null;
-  @Input() editMode = false;
-  @Output() remove = new EventEmitter<any>();
-  @Output() add = new EventEmitter<any>();
+export class TransportationReferralComponent extends AbstractReferralComponent<TransportationReferral> implements OnInit, OnDestroy {
 
   private ratesModal: NgbModalRef = null;
 
-  constructor(
-    private modals: NgbModal,
-  ) { }
+  get subType() { return this.f.subType.value; }
 
-  ngOnInit() { }
+  constructor(
+    public fb: FormBuilder,
+    private modals: NgbModal,
+  ) {
+    super(fb);
+    this.form.setControl('subType', this.fb.control(''));
+    this.form.setControl('fromAddress', this.fb.control(''));
+    this.form.setControl('toAddress', this.fb.control(''));
+    this.form.setControl('otherTransportModeDetails', this.fb.control(''));
+    this.form.setControl('totalAmount', this.fb.control(''));
+
+    // ensure a subType is selected
+    this.f.subType.setValidators([Validators.required]); // ie, not null
+
+    // set other validators according to 'subType' value
+    this.f.subType.valueChanges.subscribe(value => {
+      if (value === 'TAXI') {
+        // remove Other validators
+        this.f.otherTransportModeDetails.clearValidators();
+        this.f.totalAmount.clearValidators();
+        // set Taxi validators
+        this.f.fromAddress.setValidators([Validators.required]);
+        this.f.toAddress.setValidators([Validators.required]);
+      }
+      if (value === 'OTHER') {
+        // remove Taxi validators
+        this.f.fromAddress.clearValidators();
+        this.f.toAddress.clearValidators();
+        // set Other validators
+        this.f.otherTransportModeDetails.setValidators([Validators.required]);
+        this.f.totalAmount.setValidators([CustomValidators.number, Validators.required, Validators.min(0)]);
+      }
+      this.f.fromAddress.updateValueAndValidity({ emitEvent: false });
+      this.f.toAddress.updateValueAndValidity({ emitEvent: false });
+      this.f.otherTransportModeDetails.updateValueAndValidity({ emitEvent: false });
+      this.f.totalAmount.updateValueAndValidity({ emitEvent: false });
+    });
+  }
+
+  ngOnInit() {
+    // this is IMPORTANT! - failure to call the base class will stop validation from working!
+    super.ngOnInit();
+  }
 
   ngOnDestroy() {
+    super.ngOnDestroy();
     // close modal if it's open
     if (this.ratesModal) { this.ratesModal.dismiss(); }
   }
 
-  ngOnChanges(changes: SimpleChanges) { }
+  fromModel(referral: TransportationReferral) {
+    // populate fields shared by all forms; e.g. selected evacuees, comments, supplier info...
+    super.fromModel(referral);
+    this.form.patchValue({
+      subType: referral.subType || null,
+      fromAddress: referral.fromAddress,
+      toAddress: referral.toAddress,
+      otherTransportModeDetails: referral.otherTransportModeDetails,
+      totalAmount: this.numberOrNull(referral.totalAmount)
+    });
+  }
+
+  toModel(formValue: any): TransportationReferral {
+    const p = super.toModel(formValue);
+    // if TAXI then don't send totalAmount to BE
+    if (this.subType === 'TAXI') { delete p.totalAmount; }
+    return p;
+  }
+
+
+  // NB: this is called when date component is initialized and whenever its data changes
+  updateReferralDate(rd: ReferralDate) {
+    this.referral.validDates = rd;
+  }
 
   viewRates() {
-    this.ratesModal = this.modals.open(TransportationRatesComponent, { size: 'lg' });
+    this.ratesModal = this.modals.open(TransportationRatesComponent, { size: 'lg', centered: true });
     this.ratesModal.result.then(
       () => { this.ratesModal = null; },
       () => { this.ratesModal = null; }
     );
   }
+
 }
