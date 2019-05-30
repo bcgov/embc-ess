@@ -1,7 +1,6 @@
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,7 +9,7 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
 {
     public abstract class RegistrationEvent : INotification
     {
-        protected RegistrationEvent(string essFileNumber)
+        public RegistrationEvent(string essFileNumber)
         {
             EssFileNumber = essFileNumber;
         }
@@ -18,52 +17,59 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         public string EssFileNumber { get; }
     }
 
-    //Asp.Net Core DI doesn't support covariant resolution, need to register
-    // individual handlers instead of using polymorphic notification handling
-    //https://github.com/jbogard/MediatR/wiki/Container-Feature-Support
-    public class RegistrationEventStoreHandler :
-        INotificationHandler<RegistrationViewed>,
-        INotificationHandler<RegistrationDeactivated>,
-        INotificationHandler<RegistrationUpdated>,
-        INotificationHandler<RegistrationFinalized>,
-        INotificationHandler<RegistrationCreated>
+    //public class RegistrationCreated : RegistrationEvent
+    //{
+    //    public RegistrationCreated(string essFileNumber, ViewModels.Registration registration) : base(essFileNumber)
+    //    {
+    //        Registration = registration;
+    //    }
+
+    //    public ViewModels.Registration Registration { get; }
+    //}
+
+    //public class RegistrationFinalized : RegistrationEvent
+    //{
+    //    public RegistrationFinalized(string essFileNumber, ViewModels.Registration registration) : base(essFileNumber)
+    //    {
+    //        Registration = registration;
+    //    }
+
+    //    public ViewModels.Registration Registration { get; }
+    //}
+
+    //public class RegistrationUpdated : RegistrationEvent
+    //{
+    //    public ViewModels.Registration Registration { get; }
+
+    //    public RegistrationUpdated(string essFileNumber, ViewModels.Registration registration) : base(essFileNumber)
+    //    {
+    //        Registration = registration;
+    //    }
+    //}
+
+    //public class RegistrationDeactivated : RegistrationEvent
+    //{
+    //    public RegistrationDeactivated(string essFileNumber) : base(essFileNumber)
+    //    {
+    //    }
+    //}
+
+    public class RegistrationEventStoreHandler : INotificationHandler<RegistrationViewed>
     {
         private readonly IDataInterface dataInterface;
-        private readonly IHttpContextAccessor httpContext;
 
-        public RegistrationEventStoreHandler(IDataInterface dataInterface, IHttpContextAccessor httpContext)
+        public RegistrationEventStoreHandler(IDataInterface dataInterface)
         {
             this.dataInterface = dataInterface;
-            this.httpContext = httpContext;
         }
 
         private async Task Handle(RegistrationEvent notification)
         {
-            var user = httpContext.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System";
+            var user = ClaimsPrincipal.Current?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System";
             await dataInterface.AppendEvacueeRegistrationAuditEntryAsync(notification, user);
         }
 
         public async Task Handle(RegistrationViewed notification, CancellationToken cancellationToken)
-        {
-            await Handle(notification);
-        }
-
-        public async Task Handle(RegistrationDeactivated notification, CancellationToken cancellationToken)
-        {
-            await Handle(notification);
-        }
-
-        public async Task Handle(RegistrationUpdated notification, CancellationToken cancellationToken)
-        {
-            await Handle(notification);
-        }
-
-        public async Task Handle(RegistrationFinalized notification, CancellationToken cancellationToken)
-        {
-            await Handle(notification);
-        }
-
-        public async Task Handle(RegistrationCreated notification, CancellationToken cancellationToken)
         {
             await Handle(notification);
         }

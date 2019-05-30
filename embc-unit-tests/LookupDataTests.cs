@@ -21,17 +21,17 @@ namespace embc_unit_tests
 
             var source = new[]
             {
-                new Country{Name="country1", CountryCode="USA", Active=true},
-                new Country{Name="country2", CountryCode="CAN", Active=true},
-                new Country{Name="country3", CountryCode="IND", Active=false},
-                new Country{Name="country4", CountryCode="MEX", Active=true},
+                new Country{Name="country1", CountryCode="CT1", Active=true},
+                new Country{Name="country2", CountryCode="CT2", Active=true},
+                new Country{Name="country3", CountryCode="CT3", Active=false},
+                new Country{Name="country4", CountryCode="CT4", Active=true},
             };
 
             var repo = new SeederRepository(ctx);
 
             repo.AddOrUpdateCountries(source);
 
-            var di = new DataInterface(ctx, Mapper);
+            var di = new DataInterface(ctx, mapper);
 
             var result = await di.GetCountriesAsync();
             Assert.Equal(source.Count(c => c.Active), result.Count());
@@ -60,7 +60,7 @@ namespace embc_unit_tests
             repo.AddOrUpdateRegions(new[] { region });
             repo.AddOrUpdateCommunities(source);
 
-            var di = new DataInterface(ctx, Mapper);
+            var di = new DataInterface(ctx, mapper);
 
             var result = await di.GetCommunitiesAsync();
             Assert.Equal(source.Count(c => c.Active), result.Count());
@@ -87,7 +87,7 @@ namespace embc_unit_tests
 
             repo.AddOrUpdateRegions(source);
 
-            var di = new DataInterface(ctx, Mapper);
+            var di = new DataInterface(ctx, mapper);
 
             var result = await di.GetRegionsAsync();
             Assert.Equal(source.Count(c => c.Active), result.Count());
@@ -114,7 +114,7 @@ namespace embc_unit_tests
 
             repo.AddOrUpdateFamilyRelationshipTypes(source);
 
-            var di = new DataInterface(ctx, Mapper);
+            var di = new DataInterface(ctx, mapper);
 
             var result = await di.GetFamilyRelationshipTypesAsync();
             Assert.Equal(source.Count(c => c.Active), result.Count());

@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
-using FakeItEasy;
 using Gov.Jag.Embc.Public;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Seeder;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -19,34 +17,29 @@ namespace embc_unit_tests
     {
         static BaseTest()
         {
-            AutoMapper.Mapper.Initialize(cfg => cfg.AddMaps(typeof(Startup)));
+            Mapper.Initialize(cfg => cfg.AddMaps(typeof(Startup)));
         }
 
         private ServiceProvider serviceProvider;
 
-        protected IMapper Mapper => serviceProvider.CreateScope().ServiceProvider.GetService<IMapper>();
+        protected IMapper mapper => serviceProvider.GetService<IMapper>();
 
-        protected EmbcDbContext EmbcDb => serviceProvider.CreateScope().ServiceProvider.GetService<EmbcDbContext>();
+        protected EmbcDbContext EmbcDb => serviceProvider.GetService<EmbcDbContext>();
 
-        protected IMediator Mediator => serviceProvider.CreateScope().ServiceProvider.GetService<IMediator>();
+        protected IMediator Mediator => serviceProvider.GetService<IMediator>();
 
         public BaseTest(ITestOutputHelper output, params (Type svc, Type impl)[] additionalServices)
         {
-            var configuration = A.Fake<IConfiguration>();
-
             var services = new ServiceCollection()
                 .AddLogging(builder => builder.AddProvider(new XUnitLoggerProvider(output)))
                 .AddAutoMapper(typeof(Startup))
                 .AddEntityFrameworkInMemoryDatabase()
                 .AddDbContext<EmbcDbContext>(options => options
                     .EnableSensitiveDataLogging()
-                    .EnableDetailedErrors()
                     //.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=ESS_dev;Integrated Security=True;")
                     .UseInMemoryDatabase("ESS_Test")
                     )
-                .AddMediatR(typeof(Startup).GetTypeInfo().Assembly)
-                .AddSingleton<IConfiguration>(configuration)
-                .AddHttpContextAccessor();
+                 .AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
 
             foreach (var svc in additionalServices)
             {
@@ -81,10 +74,10 @@ namespace embc_unit_tests
 
             var countries = new[]
             {
-                new Country{Name="country1", CountryCode="USA", Active=true},
-                new Country{Name="country2", CountryCode="CAN", Active=true},
-                new Country{Name="country3", CountryCode="IND", Active=false},
-                new Country{Name="country4", CountryCode="MEX", Active=true},
+                new Country{Name="country1", CountryCode="CT1", Active=true},
+                new Country{Name="country2", CountryCode="CT2", Active=true},
+                new Country{Name="country3", CountryCode="CT3", Active=false},
+                new Country{Name="country4", CountryCode="CT4", Active=true},
             };
 
             var communities = new[]

@@ -43,11 +43,11 @@ namespace Gov.Jag.Embc.Public.Utils
 
         public EmailSender(ILoggerFactory loggerFactory, IConfiguration configuration)
         {
-            smtpServer = configuration.GetValue<string>("SMTP_HOST");
-            smtpPort = configuration.GetValue<int?>("SMTP_PORT") ?? 25;
-            defaultSender = configuration.GetValue<string>("SMTP_DEFAULT_SENDER");
-            credentials = string.IsNullOrEmpty(configuration["SMTP_USER"]) ? null : new NetworkCredential(configuration.GetValue<string>("SMTP_USER"), configuration.GetValue<string>("SMTP_PASSWORD"));
-            enableSSL = configuration.GetValue<bool?>("SMTP_ENABLE_SSL") ?? false;
+            smtpServer = configuration["SMTP_HOST"];
+            smtpPort = int.Parse(configuration["SMTP_PORT"] ?? "25");
+            defaultSender = configuration["SMTP_DEFAULT_SENDER"];
+            credentials = string.IsNullOrEmpty(configuration["SMTP_USER"]) ? null : new NetworkCredential(configuration["SMTP_USER"], configuration["SMTP_PASSWORD"]);
+            enableSSL = bool.Parse(configuration["SMTP_ENABLE_SSL"] ?? "false");
             logger = loggerFactory.CreateLogger(typeof(EmailSender));
         }
 
