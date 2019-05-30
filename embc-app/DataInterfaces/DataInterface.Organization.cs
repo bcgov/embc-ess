@@ -28,8 +28,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 regionName = searchQuery.Query;
             }
             var items = await Organizations
-                .Where(o => (!communityId.HasValue || o.Community.Id == communityId) ||
-                    (string.IsNullOrEmpty(regionName) || o.RegionName.Equals(regionName, StringComparison.OrdinalIgnoreCase))
+                .Where(o => (!communityId.HasValue || o.Community.Id == communityId) &&
+                    (string.IsNullOrEmpty(regionName) || o.RegionName == regionName)
                 )
                 .Where(t => searchQuery.Active == t.Active)
                 .Sort(searchQuery.SortBy ?? "id")
