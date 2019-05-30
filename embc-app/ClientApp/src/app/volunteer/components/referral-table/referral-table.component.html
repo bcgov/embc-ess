@@ -2,9 +2,9 @@
   <div class="space-between align-items-center my-3">
     <section>
       <app-pagination-summary [value]="pagination">
-        <span class="font-weight-bold">{{showActive ? 'ACTIVE' : 'DEACTIVATED'}}</span> referrals
+        <span class="font-weight-bold">{{showActive ? 'ACTIVE' : 'VOID'}}</span> referrals
         <small class="ml-1">
-          <a href="javascript:void(0)" (click)="toggleShow()"> (show {{showActive ? 'deactivated' : 'active'}})</a>
+          <a href="javascript:void(0)" (click)="toggleShow()"> (show {{showActive ? 'voided' : 'active'}})</a>
         </small>
       </app-pagination-summary>
     </section>
@@ -21,33 +21,33 @@
 
 <!-- Alert to prompt for summary page -->
 <ng-template #summaryAlert let-modal>
-    <div class="modal-header">
-      <h1 class="modal-title h2">Alert</h1>
-      <button type="button" class="close" aria-label="Close" (click)="summaryModal.dismiss()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
+  <div class="modal-header">
+    <h1 class="modal-title h2">Alert</h1>
+    <button type="button" class="close" aria-label="Close" (click)="summaryModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 
-    <div class="modal-body">
-      <form>
-        <p>
-          Do you want to include the evacuee summary page?
-        </p>
-        <div class="form-row mx-0">
-          <div class="form-check form-check-inline">
-            <input type="radio" class="form-check-input" name="includeSummary" [(ngModel)]="includeSummary" [value]="true" id="includeSummaryYes">
-            <label class="form-check-label" for="includeSummaryYes">Yes</label>
-          </div>
-
-          <div class="form-check form-check-inline">
-            <input type="radio" class="form-check-input" name="includeSummary" [(ngModel)]="includeSummary" [value]="false" id="includeSummaryNo">
-            <label class="form-check-label" for="includeSummaryNo">No</label>
-          </div>
+  <div class="modal-body">
+    <form>
+      <p>
+        Do you want to include the evacuee summary page?
+      </p>
+      <div class="form-row mx-0">
+        <div class="form-check form-check-inline">
+          <input type="radio" class="form-check-input" name="includeSummary" [(ngModel)]="includeSummary" [value]="true" id="includeSummaryYes">
+          <label class="form-check-label" for="includeSummaryYes">Yes</label>
         </div>
 
-        <div class="mt-5">
-          <button type="button" class="btn btn-primary" [disabled]="includeSummary === undefined" (click)="summaryModal.close(includeSummary)">CREATE PDF</button>
+        <div class="form-check form-check-inline">
+          <input type="radio" class="form-check-input" name="includeSummary" [(ngModel)]="includeSummary" [value]="false" id="includeSummaryNo">
+          <label class="form-check-label" for="includeSummaryNo">No</label>
         </div>
-      </form>
-    </div>
-  </ng-template>
+      </div>
+
+      <div class="mt-5">
+        <button type="button" class="btn btn-primary" [disabled]="includeSummary === undefined" (click)="summaryModal.close(includeSummary)">CREATE PDF</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
