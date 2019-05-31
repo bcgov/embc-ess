@@ -137,6 +137,10 @@ node('master') {
 	  def stableTag = environments.test.previousTag
 	  node {
 		try {
+
+		//Initiate Specific Build for Training
+		def buildAndVerify(${APP_NAME}) 
+
 		  // hold on to a copy of the last stable TEST environment (in case the upcoming deployment fails...)
 		  tagLatestStable("training", "training-previous", IMAGESTREAM_NAME)
 		  IMAGE_HASH = getLatestHash(IMAGESTREAM_NAME)
