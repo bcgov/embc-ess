@@ -5,7 +5,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SessionExpiringModalComponent } from 'src/app/shared/modals/session-expiring/session-expiring.component';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store';
-import { Config } from 'src/app/core/models';
+import { User, Config } from 'src/app/core/models';
 import debounce from 'lodash/debounce';
 
 // defaults (in case of empty config)
@@ -35,7 +35,7 @@ export class WatchdogService {
     private store: Store<AppState>, // ngrx app state
   ) {
     // watch for login changes
-    this.auth.user.subscribe(user => {
+    this.auth.user.subscribe((user: User) => {
       if (user) {
         // don't watch user actions if logged in
         this.unwatchUserActions();
@@ -47,7 +47,7 @@ export class WatchdogService {
     });
 
     // get config
-    this.store.select(s => s.lookups.config.config).subscribe(config => {
+    this.store.select(s => s.lookups.config.config).subscribe((config: Config) => {
       this.config = config;
     });
 

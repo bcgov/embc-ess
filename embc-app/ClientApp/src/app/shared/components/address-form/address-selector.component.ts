@@ -41,7 +41,7 @@ export class AddressSelectorComponent implements OnInit, OnChanges, OnDestroy {
       const shouldReset = (value !== previous && !toggle.isFirstChange());
 
       // look up the home country for BC addresses, then toggle the form between BC and non-BC addresses
-      this.canada$.subscribe(homeCountry => this.toggleAddressForm(value, homeCountry, shouldReset));
+      this.canada$.subscribe((homeCountry: Country) => this.toggleAddressForm(value, homeCountry, shouldReset));
     }
   }
 

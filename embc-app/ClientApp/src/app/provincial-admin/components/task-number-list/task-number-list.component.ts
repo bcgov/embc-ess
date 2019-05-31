@@ -40,7 +40,7 @@ export class TaskNumberListComponent implements OnInit {
 
   ngOnInit() {
     // collect the path for routing based on role
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
     this.initSearchForm();
 
     // collect all volunteers
@@ -52,10 +52,11 @@ export class TaskNumberListComponent implements OnInit {
   }
 
   getIncidentTasks(params: SearchQueryParameters = {}) {
-    this.incidentTaskService.getIncidentTasks(params).subscribe((v: ListResult<IncidentTask>) => {
-      this.resultsAndPagination = v;
-      this.notFoundMessage = 'No results found.';
-    });
+    this.incidentTaskService.getIncidentTasks(params)
+      .subscribe((listResult: ListResult<IncidentTask>) => {
+        this.resultsAndPagination = listResult;
+        this.notFoundMessage = 'No results found.';
+      });
   }
 
   filter(community: Community) {

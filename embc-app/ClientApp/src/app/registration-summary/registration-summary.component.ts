@@ -31,22 +31,22 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // get path for routing
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
 
     // get lookup key and load registration data
     const key = this.uniqueKeyService.getKey();
     if (key) {
       this.registrationService.getRegistrationSummaryById(key)
-        .subscribe(value => {
+        .subscribe((registration: Registration) => {
           this.loading = false;
-          if (!value.id || !value.essFileNumber) {
-            console.log('ERROR - invalid registration object = ', value);
+          if (!registration.id || !registration.essFileNumber) {
+            console.log('ERROR - invalid registration object = ', registration);
             // done with the key. It was useless. Clear the reference key.
             this.uniqueKeyService.clearKey();
             this.goHome();
           } else {
             // store the registration object
-            this.registration = value;
+            this.registration = registration;
           }
         }, err => {
           this.loading = false;

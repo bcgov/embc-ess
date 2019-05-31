@@ -15,8 +15,8 @@ export class SideboxAddRegistrationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.authService.path.subscribe(p => {
-      this.route = `/${p}/registration`;
+    this.authService.path.subscribe((path: string) => {
+      this.route = `/${path}/registration`;
     });
   }
 
