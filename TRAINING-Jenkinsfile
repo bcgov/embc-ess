@@ -90,7 +90,7 @@ def deployAndVerify(srcHash, environment, imageStream) {
   // verify deployment to an environment; e.g. [your-project-name]-dev
   openshiftVerifyDeployment(
     deploymentConfig: "${APP_NAME}",
-    namespace: "${PROJECT_NAMESPACE}-${environment}",
+    namespace: "${PROJECT_NAMESPACE}-test",
     waitTime: '900000'
   )
 }
@@ -132,13 +132,13 @@ def notifyError(title, description) {
 
 node('master') {
 
-    stage("Deploy to ${environments.test.name}") {
+    stage("Deploy to test") {
 	  def environment = environments.test.tag
 	  def stableTag = environments.test.previousTag
 	  node {
 		try {
 		  // hold on to a copy of the last stable TEST environment (in case the upcoming deployment fails...)
-		  tagLatestStable(environment, stableTag, IMAGESTREAM_NAME)
+		  tagLatestStable("training", "training-previous", IMAGESTREAM_NAME)
 		  IMAGE_HASH = getLatestHash(IMAGESTREAM_NAME)
 		  deployAndVerify(IMAGE_HASH, environment, IMAGESTREAM_NAME)
 		  // all is good!
