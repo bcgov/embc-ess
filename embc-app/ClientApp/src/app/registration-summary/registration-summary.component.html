@@ -1,4 +1,4 @@
-<app-layout-main>
+<div class="col col-lg-9">
   <h1>Evacuee Summary &amp; Referrals</h1>
 
   <div *ngIf="loading">Loading...</div>
@@ -139,11 +139,10 @@
       <app-referral-table [registration]="registration"></app-referral-table>
     </section>
   </div>
-</app-layout-main>
-
-<app-layout-side>
+</div>
+<div class="col col-lg-3">
   <app-sidebox-add-registration></app-sidebox-add-registration>
-</app-layout-side>
+</div>
 
 <!-- Alert to confirm evacuee file viewing -->
 <ng-template #viewAlert let-modal>
