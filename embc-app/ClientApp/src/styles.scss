@@ -16,7 +16,7 @@
 
 // Angular Material - define custom theme
 @import "~@angular/material/theming";
-@import "~mygovbc-bootstrap-theme/dist/mygovbc-bootstrap-theme.min.css";
+@import "styles/mygovbc-bootstrap-theme.scss";
 @include mat-core();
 $primary: mat-palette($mat-grey, 400);
 $accent: mat-palette($mat-indigo, 500, A200, A400);
