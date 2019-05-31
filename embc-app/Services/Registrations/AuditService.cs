@@ -1,4 +1,3 @@
-using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -39,7 +38,7 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
 
         private async Task Handle(RegistrationEvent notification)
         {
-            var user = httpContext.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System";
+            var user = httpContext.HttpContext?.User?.FindFirstValue(ClaimTypes.Sid) ?? "System";
             await dataInterface.AppendEvacueeRegistrationAuditEntryAsync(notification, user);
         }
 

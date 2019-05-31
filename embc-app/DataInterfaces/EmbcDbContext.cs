@@ -1,4 +1,3 @@
-using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Models.Db;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -191,7 +190,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         private void SetShadowProperties(ClaimsPrincipal principal)
         {
             var timestamp = DateTime.UtcNow;
-            var userId = principal?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System";
+            var userId = principal?.FindFirstValue(ClaimTypes.Sid) ?? "System";
             foreach (var entry in ChangeTracker.Entries().Where(x => (x.State == EntityState.Added || x.State == EntityState.Modified)))
             {
                 if (entry.Entity is IAuditableEntity)
