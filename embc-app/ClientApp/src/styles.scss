@@ -6,6 +6,7 @@
 
 // Bootstrap 4
 @import "~bootstrap/dist/css/bootstrap.css";
+@import "~@bcgov/bootstrap-theme/dist/scss/bootstrap-theme.scss";
 
 // Components
 @import "styles/components/feature-blocks.scss";
@@ -16,7 +17,7 @@
 
 // Angular Material - define custom theme
 @import "~@angular/material/theming";
-@import "styles/mygovbc-bootstrap-theme.scss";
+
 @include mat-core();
 $primary: mat-palette($mat-grey, 400);
 $accent: mat-palette($mat-indigo, 500, A200, A400);
