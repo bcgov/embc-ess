@@ -14,11 +14,14 @@ import * as RegistrationActions from 'src/app/store/registration/registration.ac
 export class HomeComponent implements OnInit {
   window = window;
   busy: Subscription;
+  browserIE = false;
 
   constructor(
     private store: Store<AppState>,
     private router: Router,
-  ) { }
+  ) {
+    this.browserIE = /msie\s|trident\//i.test(window.navigator.userAgent);
+  }
 
   ngOnInit() { }
 
