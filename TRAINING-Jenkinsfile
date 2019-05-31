@@ -10,7 +10,7 @@ class AppEnvironment {
 // EDIT LINE BELOW (Edit your environment TAG names)
 environments = [
   dev:new AppEnvironment(name:"Development",tag:"dev",previousTag:"dev-previous"),
-  test:new AppEnvironment(name:"Test",tag:"training",previousTag:"training-previous"),
+  test:new AppEnvironment(name:"Test",tag:"test",previousTag:"training-previous"),
   prod:new AppEnvironment(name:"Prod",tag:"prod",previousTag:"prod-previous")
 ]
 
