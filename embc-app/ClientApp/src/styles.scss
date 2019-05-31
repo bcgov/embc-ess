@@ -6,7 +6,7 @@
 
 // Bootstrap 4
 @import "~bootstrap/dist/css/bootstrap.css";
-@import "~@bcgov/bootstrap-theme/dist/scss/bootstrap-theme.scss";
+@import "assets/bootstrap-theme/dist/scss/bootstrap-theme.scss";
 
 // Components
 @import "styles/components/feature-blocks.scss";
@@ -34,323 +34,323 @@ $custom-typography: mat-typography-config(
 // Components (that come after mygovbc theme)
 @import "styles/components/tables.scss";
 
-html {
-  background: #fff;
-}
-
-body {
-  color: $font-color;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: MyriadWebPro, Calibri, Arial, "sans serif";
-  font-weight: 400;
-}
-
-h1, h2, h3,
-.h1, .h2, .h3 {
-  color: $font-color;
-}
-
-h1, .h1 {
-  font-size: 36px;
-}
-
-h2, .h2 {
-  font-size: 24px;
-}
-
-h3, .h3 {
-  font-weight: 600;
-  font-size: 18px;
-
-  .blue {
-    color: #38598a;
-  }
-}
-
-h4, .h4 {
-  font-size: 16px;
-}
-
-p {
-  font-size: 14px;
-}
-
-a {
-  color: #1a5a96;
-}
-
-.btn.btn-primary {
-  color: $white;
-  background-color: $bg-dark;
-  border: $bg-dark 1px solid;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.5;
-  min-width: 120px;
-  padding: 0.5rem 2rem;
-
-  &:hover {
-    background-color: #38598a;
-  }
-}
-
-.btn.btn-secondary {
-  color: $bg-dark;
-  background-color: $white;
-  border: $bg-dark 1px solid;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.5;
-  min-width: 120px;
-  padding: 0.5rem 2rem;
-
-  &:hover {
-    color: $white;
-    background-color: $bg-dark;
-  }
-
-  &:focus {
-    border-color: $white;
-    // same as primary button:
-    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
-  }
-
-  &:not(:disabled):active {
-    // same as primary button:
-    background-color: #0062cc;
-    border-color: #005cbf;
-  }
-}
-
-.panel-footer {
-  background-color: #fff;
-  border-top: none;
-}
-
-// this breaks text/arrow layout in FF
-// select.form-control:not([size]):not([multiple]) {
-//   height: auto;
+// html {
+//   background: #fff;
 // }
 
-select.is-invalid {
-  background-image: none !important; // remove red X
-}
+// body {
+//   color: $font-color;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+//   font-family: MyriadWebPro, Calibri, Arial, "sans serif";
+//   font-weight: 400;
+// }
 
-.form-control {
-  // border-radius: 5px;
-  display: inline-block;
-}
+// h1, h2, h3,
+// .h1, .h2, .h3 {
+//   color: $font-color;
+// }
 
-.extra-padding-left {
-  padding-left: 15px;
-  padding-right: 15px;
-}
+// h1, .h1 {
+//   font-size: 36px;
+// }
 
-@media (max-width: 575.98px) {
-  .extra-padding-left {
-    margin-left: 0;
-  }
-}
+// h2, .h2 {
+//   font-size: 24px;
+// }
 
-.round-icon-wrapper {
-  height: 48px;
-  width: 48px;
-  min-width: 48px;
-  min-height: 48px;
-  border-radius: 48px;
-  background-color: #7596c8;
-  text-align: center;
-  display: inline-block;
-  padding-top: 12px;
-}
+// h3, .h3 {
+//   font-weight: 600;
+//   font-size: 18px;
 
-.blue-header {
-  background-color: #38598a;
-  color: #fff;
-  padding: 8px 8px 8px 15px;
-  font-size: 16px;
-  font-weight: semi-bold;
-}
+//   .blue {
+//     color: #38598a;
+//   }
+// }
 
-hr {
-  display: block;
-  height: 1px;
-  border: 0;
-  border-top: 1px solid #ccc;
-  margin: 1em 0;
-  padding: 0;
-}
+// h4, .h4 {
+//   font-size: 16px;
+// }
 
-// Flexbox helpers
-.space-between {
-  display: flex;
-  justify-content: space-between;
-}
+// p {
+//   font-size: 14px;
+// }
 
-.flex-end {
-  display: flex;
-  justify-content: flex-end;
-}
+// a {
+//   color: #1a5a96;
+// }
 
-.items-center {
-  display: flex;
-  align-items: center;
-}
+// .btn.btn-primary {
+//   color: $white;
+//   background-color: $bg-dark;
+//   border: $bg-dark 1px solid;
+//   border-radius: 5px;
+//   font-size: 16px;
+//   font-weight: 600;
+//   line-height: 1.5;
+//   min-width: 120px;
+//   padding: 0.5rem 2rem;
 
-.form-wrapper {
-  padding-left: 50px;
-  padding-right: 30px;
-}
+//   &:hover {
+//     background-color: #38598a;
+//   }
+// }
 
-@media (max-width: 575.98px) {
-  .form-wrapper {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-}
+// .btn.btn-secondary {
+//   color: $bg-dark;
+//   background-color: $white;
+//   border: $bg-dark 1px solid;
+//   border-radius: 5px;
+//   font-size: 16px;
+//   font-weight: 600;
+//   line-height: 1.5;
+//   min-width: 120px;
+//   padding: 0.5rem 2rem;
 
-.red-snackbar {
-  background: #f44336;
-}
+//   &:hover {
+//     color: $white;
+//     background-color: $bg-dark;
+//   }
 
-.green-snackbar {
-  background: #00ff21;
-}
+//   &:focus {
+//     border-color: $white;
+//     // same as primary button:
+//     box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+//   }
 
-.step {
-  border-bottom: 2px solid #fcba19;
-  display: inline-block;
-}
+//   &:not(:disabled):active {
+//     // same as primary button:
+//     background-color: #0062cc;
+//     border-color: #005cbf;
+//   }
+// }
 
-.padded-section {
-  padding-left: 15px;
-}
+// .panel-footer {
+//   background-color: #fff;
+//   border-top: none;
+// }
 
-.notes {
-  background-color: #f2f2f2;
-  border: solid 1px transparent;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
-}
+// // this breaks text/arrow layout in FF
+// // select.form-control:not([size]):not([multiple]) {
+// //   height: auto;
+// // }
 
-.submitted-header {
-  background-color: rgba(56, 89, 138, 1);
-  border: 1px solid transparent;
-  border-bottom: none;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 10px;
-  color: #fff !important;
-}
+// select.is-invalid {
+//   background-image: none !important; // remove red X
+// }
 
-.submitted-header h2 {
-  color: #fff !important;
-}
+// .form-control {
+//   // border-radius: 5px;
+//   display: inline-block;
+// }
 
-.submitted-content {
-  background-color: #eee;
-  padding: 20px;
-  margin-bottom: 20px;
-}
+// .extra-padding-left {
+//   padding-left: 15px;
+//   padding-right: 15px;
+// }
 
-.submit-container {
-  background-color: #38598a;
-  border-bottom: solid 4px #ffcc00;
-  color: #fff;
-  margin-bottom: 20px;
-  padding: 30px;
-  padding-top: 20px;
+// @media (max-width: 575.98px) {
+//   .extra-padding-left {
+//     margin-left: 0;
+//   }
+// }
 
-  h2 {
-    color: #fff;
-  }
-}
+// .round-icon-wrapper {
+//   height: 48px;
+//   width: 48px;
+//   min-width: 48px;
+//   min-height: 48px;
+//   border-radius: 48px;
+//   background-color: #7596c8;
+//   text-align: center;
+//   display: inline-block;
+//   padding-top: 12px;
+// }
 
-.arrow {
-  list-style: none;
-  margin-left: 0;
-  padding-left: 1.2em;
-  text-indent: -1.2em;
-}
+// .blue-header {
+//   background-color: #38598a;
+//   color: #fff;
+//   padding: 8px 8px 8px 15px;
+//   font-size: 16px;
+//   font-weight: semi-bold;
+// }
 
-ul.arrow>li:before {
-  content: "►";
-  display: block;
-  float: left;
-  width: 1.2em;
-  color: #fcba19;
-}
+// hr {
+//   display: block;
+//   height: 1px;
+//   border: 0;
+//   border-top: 1px solid #ccc;
+//   margin: 1em 0;
+//   padding: 0;
+// }
 
-.default-ul {
-  list-style: initial;
-  text-indent: initial;
-}
+// // Flexbox helpers
+// .space-between {
+//   display: flex;
+//   justify-content: space-between;
+// }
 
-.scroll-box {
-  overflow: auto;
-  width: 800px;
-  height: 500px;
-  border: 1px solid;
-  padding: 15px;
-  margin-bottom: 30px;
-}
+// .flex-end {
+//   display: flex;
+//   justify-content: flex-end;
+// }
 
-.print-only {
-  display: none;
-}
+// .items-center {
+//   display: flex;
+//   align-items: center;
+// }
 
-@media print {
+// .form-wrapper {
+//   padding-left: 50px;
+//   padding-right: 30px;
+// }
 
-  header,
-  footer,
-  .no-print {
-    display: none;
-  }
+// @media (max-width: 575.98px) {
+//   .form-wrapper {
+//     padding-left: 10px;
+//     padding-right: 10px;
+//   }
+// }
 
-  .print-only {
-    display: initial;
-  }
+// .red-snackbar {
+//   background: #f44336;
+// }
 
-  .header {
-    width: initial;
-  }
+// .green-snackbar {
+//   background: #00ff21;
+// }
 
-  .scroll-box {
-    border: none;
-    height: initial;
-    width: 110%;
-    padding-right: 60px;
-  }
+// .step {
+//   border-bottom: 2px solid #fcba19;
+//   display: inline-block;
+// }
 
-  .footer {
-    display: none;
-  }
-}
+// .padded-section {
+//   padding-left: 15px;
+// }
 
-// overrides for mygovbc-bootstrap-theme
-.modal.fade .modal-dialog {
-  transform: none; // original value pushes modal above top of page
-}
+// .notes {
+//   background-color: #f2f2f2;
+//   border: solid 1px transparent;
+//   border-radius: 5px;
+//   padding: 10px;
+//   margin-bottom: 10px;
+// }
 
-.modal-backdrop.fade {
-  opacity: 0.5;
-}
+// .submitted-header {
+//   background-color: rgba(56, 89, 138, 1);
+//   border: 1px solid transparent;
+//   border-bottom: none;
+//   border-top-left-radius: 5px;
+//   border-top-right-radius: 5px;
+//   padding-left: 20px;
+//   padding-right: 20px;
+//   padding-bottom: 10px;
+//   color: #fff !important;
+// }
 
-.modal.show {
-  opacity: 1;
-}
+// .submitted-header h2 {
+//   color: #fff !important;
+// }
 
-.modal-small .modal-dialog {
-  max-width: 350px;
-}
+// .submitted-content {
+//   background-color: #eee;
+//   padding: 20px;
+//   margin-bottom: 20px;
+// }
 
-input[type=checkbox],
-input[type=radio] {
-  top: 3px;
-}
+// .submit-container {
+//   background-color: #38598a;
+//   border-bottom: solid 4px #ffcc00;
+//   color: #fff;
+//   margin-bottom: 20px;
+//   padding: 30px;
+//   padding-top: 20px;
+
+//   h2 {
+//     color: #fff;
+//   }
+// }
+
+// .arrow {
+//   list-style: none;
+//   margin-left: 0;
+//   padding-left: 1.2em;
+//   text-indent: -1.2em;
+// }
+
+// ul.arrow>li:before {
+//   content: "►";
+//   display: block;
+//   float: left;
+//   width: 1.2em;
+//   color: #fcba19;
+// }
+
+// .default-ul {
+//   list-style: initial;
+//   text-indent: initial;
+// }
+
+// .scroll-box {
+//   overflow: auto;
+//   width: 800px;
+//   height: 500px;
+//   border: 1px solid;
+//   padding: 15px;
+//   margin-bottom: 30px;
+// }
+
+// .print-only {
+//   display: none;
+// }
+
+// @media print {
+
+//   header,
+//   footer,
+//   .no-print {
+//     display: none;
+//   }
+
+//   .print-only {
+//     display: initial;
+//   }
+
+//   .header {
+//     width: initial;
+//   }
+
+//   .scroll-box {
+//     border: none;
+//     height: initial;
+//     width: 110%;
+//     padding-right: 60px;
+//   }
+
+//   .footer {
+//     display: none;
+//   }
+// }
+
+// // overrides for mygovbc-bootstrap-theme
+// .modal.fade .modal-dialog {
+//   transform: none; // original value pushes modal above top of page
+// }
+
+// .modal-backdrop.fade {
+//   opacity: 0.5;
+// }
+
+// .modal.show {
+//   opacity: 1;
+// }
+
+// .modal-small .modal-dialog {
+//   max-width: 350px;
+// }
+
+// input[type=checkbox],
+// input[type=radio] {
+//   top: 3px;
+// }
