@@ -1,16 +1,16 @@
+<!-- <app-tester-page></app-tester-page> -->
 <app-warning-banner [show]="isIE"></app-warning-banner>
 <app-environment-banner></app-environment-banner>
 <app-header [currentUser]="authService.currentUser"></app-header>
-<!-- TODO: only show the navbar when the user is logged in as a volunteer or administrator. -->
 <app-top-navbar></app-top-navbar>
 <app-notification-banner></app-notification-banner>
 
-<div class="app-outer" *ngIf="isIE == false">
+<main *ngIf="isIE == false">
   <div class="container">
     <router-outlet></router-outlet>
   </div>
 
   <div class="verticalOffset"></div>
-</div>
+</main>
 
 <app-footer [versionInfo]="versionInfo"></app-footer>
