@@ -1,39 +1,41 @@
-<div class="col col-lg-9">
-  <div>
-    <h1>View Referral</h1>
+<div class="row">
+  <div class="col col-lg-9">
+    <div>
+      <h1>View Referral</h1>
 
-    <div *ngIf="loading">Loading...</div>
+      <div *ngIf="loading">Loading...</div>
 
-    <div *ngIf="!loading">
-      <div *ngIf="isLodgingReferral(referral)">
-        <app-lodging-referral [referral]="referral" [readOnly]="true"></app-lodging-referral>
+      <div *ngIf="!loading">
+        <div *ngIf="isLodgingReferral(referral)">
+          <app-lodging-referral [referral]="referral" [readOnly]="true"></app-lodging-referral>
+        </div>
+
+        <div *ngIf="isClothingReferral(referral)">
+          <app-clothing-referral [referral]="referral" [readOnly]="true"></app-clothing-referral>
+        </div>
+
+        <div *ngIf="isFoodReferral(referral)">
+          <app-food-referral [referral]="referral" [readOnly]="true"></app-food-referral>
+        </div>
+
+        <div *ngIf="isIncidentalsReferral(referral)">
+          <app-incidentals-referral [referral]="referral" [readOnly]="true"></app-incidentals-referral>
+        </div>
+
+        <div *ngIf="isTransportationReferral(referral)">
+          <app-transportation-referral [referral]="referral" [readOnly]="true"></app-transportation-referral>
+        </div>
+
+        <section class="mt-5">
+          <button *ngIf="referral.active" type="button" class="btn btn-secondary" [disabled]="deactivating" (click)="deactivate(content)">VOID REFERRAL</button>
+          <button class="btn btn-primary float-right" (click)="back()">BACK TO REFERRALS</button>
+        </section>
       </div>
-
-      <div *ngIf="isClothingReferral(referral)">
-        <app-clothing-referral [referral]="referral" [readOnly]="true"></app-clothing-referral>
-      </div>
-
-      <div *ngIf="isFoodReferral(referral)">
-        <app-food-referral [referral]="referral" [readOnly]="true"></app-food-referral>
-      </div>
-
-      <div *ngIf="isIncidentalsReferral(referral)">
-        <app-incidentals-referral [referral]="referral" [readOnly]="true"></app-incidentals-referral>
-      </div>
-
-      <div *ngIf="isTransportationReferral(referral)">
-        <app-transportation-referral [referral]="referral" [readOnly]="true"></app-transportation-referral>
-      </div>
-
-      <section class="mt-5">
-        <button *ngIf="referral.active" type="button" class="btn btn-secondary" [disabled]="deactivating" (click)="deactivate(content)">VOID REFERRAL</button>
-        <button class="btn btn-primary float-right" (click)="back()">BACK TO REFERRALS</button>
-      </section>
     </div>
   </div>
-</div>
-<div class="col col-lg-3">
-  <app-sidebox-add-registration></app-sidebox-add-registration>
+  <div class="col col-lg-3">
+    <app-sidebox-add-registration></app-sidebox-add-registration>
+  </div>
 </div>
 
 <!-- Alert to confirm referral deactivation -->
