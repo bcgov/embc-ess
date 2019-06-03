@@ -42,6 +42,14 @@
   font-size: 16px;
   font-weight: semi-bold;
 }
+hr {
+  display: block;
+  // height: 1px;
+  // border: 0;
+  border-top: 4px solid theme-color(bcgold);
+  // margin: 1em 0;
+  // padding: 0;
+}
 
 // html {
 //   background: #fff;
@@ -176,14 +184,7 @@
 //   padding-top: 12px;
 // }
 
-// hr {
-//   display: block;
-//   height: 1px;
-//   border: 0;
-//   border-top: 1px solid #ccc;
-//   margin: 1em 0;
-//   padding: 0;
-// }
+
 
 // // Flexbox helpers
 // .space-between {

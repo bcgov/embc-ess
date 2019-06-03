@@ -1,172 +1,175 @@
-<div class="col col-lg-9">
-  <h1>Evacuee Summary &amp; Referrals</h1>
+<div class="row">
 
-  <div *ngIf="loading">Loading...</div>
+  <div class="col col-lg-9">
+    <h1>Evacuee Summary &amp; Referrals</h1>
 
-  <div *ngIf="registration">
-    <section class="clearfix">
-      <h2 class="blue-header text-uppercase font-weight-bold">EVACUEE INFORMATION</h2>
-      <ul class="summary mx-3">
-        <li class="summary-heading">
-          <div class="container py-3">
-            <div class="row">
-              <div class="col">
-                <div class="h1 my-3">
-                  {{registration.headOfHousehold?.lastName}},
-                  {{registration.headOfHousehold?.firstName}}
-                  {{registration.headOfHousehold?.initials}}
+    <div *ngIf="loading">Loading...</div>
+
+    <div *ngIf="registration">
+      <section class="clearfix">
+        <h2 class="blue-header text-uppercase font-weight-bold">EVACUEE INFORMATION</h2>
+        <ul class="summary mx-3">
+          <li class="summary-heading">
+            <div class="container py-3">
+              <div class="row">
+                <div class="col">
+                  <div class="h1 my-3">
+                    {{registration.headOfHousehold?.lastName}},
+                    {{registration.headOfHousehold?.firstName}}
+                    {{registration.headOfHousehold?.initials}}
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-3">
+                  Task #: {{registration.incidentTask?.taskNumber}}
+                </div>
+                <div class="col px-0">
+                  Self Registration Date &amp; Time:
+                  {{registration.selfRegisteredDate | dateTimeFormatPipe}}
+                </div>
+                <div class="col-3">
+                  File Status:
+                  <span *ngIf="registration.active">Active</span>
+                  <span *ngIf="!registration.active">Inactive</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-3">
+                  ESS File #: {{registration.essFileNumber}}
+                </div>
+                <div class="col px-0">
+                  Registration Completed Date &amp; Time:
+                  {{registration.registrationCompletionDate | dateTimeFormatPipe}}
+                </div>
+                <div class="col-3">
+                  <!-- Restricted File:
+                <span *ngIf="registration.restrictedAccess">Yes</span>
+                <span *ngIf="!registration.restrictedAccess">No</span> -->
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-3">
-                Task #: {{registration.incidentTask?.taskNumber}}
+          </li>
+          <li>
+            <span class="name">Facility Name/Registration Location:</span>
+            <span class="value">{{registration.facility}}</span>
+          </li>
+          <li>
+            <span class="name">Host Community:</span>
+            <span class="value">{{registration.hostCommunity?.name}}</span>
+          </li>
+          <li>
+            <span class="name">Family Members:</span>
+            <span class="value">
+              <div *ngFor="let familyMember of registration.headOfHousehold?.familyMembers">
+                {{familyMember.lastName}}, {{familyMember.firstName}}
               </div>
-              <div class="col px-0">
-                Self Registration Date &amp; Time:
-                {{registration.selfRegisteredDate | dateTimeFormatPipe}}
+            </span>
+          </li>
+          <li>
+            <span class="name">Supports Provided by the Evacuee:</span>
+            <!-- NOTE: this should show opposite because the customer requesdted it-->
+            <span class="value">
+              <div class="form-check mt-2">
+                <input class="form-check-input" [checked]="!registration.requiresFood" type="checkbox" disabled>
+                <label class="form-check-label">Food</label>
               </div>
-              <div class="col-3">
-                File Status:
-                <span *ngIf="registration.active">Active</span>
-                <span *ngIf="!registration.active">Inactive</span>
+              <div class="form-check mt-2">
+                <input class="form-check-input" [checked]="!registration.requiresClothing" type="checkbox" disabled>
+                <label class="form-check-label">Clothing</label>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-3">
-                ESS File #: {{registration.essFileNumber}}
+              <div class="form-check mt-2">
+                <input class="form-check-input" [checked]="!registration.requiresAccommodation" type="checkbox" disabled>
+                <label class="form-check-label">Lodging</label>
               </div>
-              <div class="col px-0">
-                Registration Completed Date &amp; Time:
-                {{registration.registrationCompletionDate | dateTimeFormatPipe}}
+              <div class="form-check mt-2">
+                <input class="form-check-input" [checked]="!registration.requiresIncidentals" type="checkbox" disabled>
+                <label class="form-check-label">Incidentals</label>
               </div>
-              <div class="col-3">
-                <!-- Restricted File:
-                <span *ngIf="registration.restrictedAccess">Yes</span>
-                <span *ngIf="!registration.restrictedAccess">No</span> -->
+              <div class="form-check mt-2">
+                <input class="form-check-input" [checked]="!registration.requiresTransportation" type="checkbox" disabled>
+                <label class="form-check-label">Transportation</label>
               </div>
-            </div>
-          </div>
-        </li>
-        <li>
-          <span class="name">Facility Name/Registration Location:</span>
-          <span class="value">{{registration.facility}}</span>
-        </li>
-        <li>
-          <span class="name">Host Community:</span>
-          <span class="value">{{registration.hostCommunity?.name}}</span>
-        </li>
-        <li>
-          <span class="name">Family Members:</span>
-          <span class="value">
-            <div *ngFor="let familyMember of registration.headOfHousehold?.familyMembers">
-              {{familyMember.lastName}}, {{familyMember.firstName}}
-            </div>
-          </span>
-        </li>
-        <li>
-          <span class="name">Supports Provided by the Evacuee:</span>
-          <!-- NOTE: this should show opposite because the customer requesdted it-->
-          <span class="value">
-            <div class="form-check mt-2">
-              <input class="form-check-input" [checked]="!registration.requiresFood" type="checkbox" disabled>
-              <label class="form-check-label">Food</label>
-            </div>
-            <div class="form-check mt-2">
-              <input class="form-check-input" [checked]="!registration.requiresClothing" type="checkbox" disabled>
-              <label class="form-check-label">Clothing</label>
-            </div>
-            <div class="form-check mt-2">
-              <input class="form-check-input" [checked]="!registration.requiresAccommodation" type="checkbox" disabled>
-              <label class="form-check-label">Lodging</label>
-            </div>
-            <div class="form-check mt-2">
-              <input class="form-check-input" [checked]="!registration.requiresIncidentals" type="checkbox" disabled>
-              <label class="form-check-label">Incidentals</label>
-            </div>
-            <div class="form-check mt-2">
-              <input class="form-check-input" [checked]="!registration.requiresTransportation" type="checkbox" disabled>
-              <label class="form-check-label">Transportation</label>
-            </div>
-          </span>
-        </li>
-        <li>
-          <span class="name">Internal Case Notes:</span>
-          <span class="value">{{registration.hasInternalCaseNotes | yesNo}}</span>
-        </li>
-      </ul>
-      <div class="mt-4 mx-3">
-        <button type="button" class="btn btn-primary float-right" (click)="showFullProfile(viewAlert)">VIEW FULL PROFILE</button>
-      </div>
-    </section>
+            </span>
+          </li>
+          <li>
+            <span class="name">Internal Case Notes:</span>
+            <span class="value">{{registration.hasInternalCaseNotes | yesNo}}</span>
+          </li>
+        </ul>
+        <div class="mt-4 mx-3">
+          <button type="button" class="btn btn-primary float-right" (click)="showFullProfile(viewAlert)">VIEW FULL PROFILE</button>
+        </div>
+      </section>
 
-    <!-- safety check: no task number means this registration isn't finalized -->
-    <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
-      <h2 class="blue-header text-uppercase font-weight-bold">Add Referrals</h2>
+      <!-- safety check: no task number means this registration isn't finalized -->
+      <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
+        <h2 class="blue-header text-uppercase font-weight-bold">Add Referrals</h2>
 
-      <div class="feature-block card d-block border-0">
-        <!-- TODO: only display 'and family' if familyMembers > 0 ? -->
-        <h3>Add referrals for
-          {{registration.headOfHousehold?.lastName + ', ' + registration.headOfHousehold?.firstName}} and family</h3>
+        <div class="feature-block card d-block border-0">
+          <!-- TODO: only display 'and family' if familyMembers > 0 ? -->
+          <h3>Add referrals for
+            {{registration.headOfHousehold?.lastName + ', ' + registration.headOfHousehold?.firstName}} and family</h3>
 
-        <app-form-field>
-          <!-- TODO: pre-select HOH? -->
-          <label for="purchaser">Who will be responsible for purchasing goods?</label>
-          <select class="form-control w-25" id="purchaser" [(ngModel)]="selectedPurchaser">
-            <option [ngValue]="null">Please select--</option>
-            <option *ngIf="registration.headOfHousehold" [value]="registration.headOfHousehold.lastName + ', ' + registration.headOfHousehold.firstName">
-              {{registration.headOfHousehold.lastName}}, {{registration.headOfHousehold.firstName}}
-            </option>
-            <option *ngFor="let familyMember of registration.headOfHousehold?.familyMembers" [value]="familyMember.lastName + ', ' + familyMember.firstName">
-              {{familyMember.lastName}}, {{familyMember.firstName}}
-            </option>
-            <option value="other">Someone else...</option>
-          </select>
+          <app-form-field>
+            <!-- TODO: pre-select HOH? -->
+            <label for="purchaser">Who will be responsible for purchasing goods?</label>
+            <select class="form-control w-25" id="purchaser" [(ngModel)]="selectedPurchaser">
+              <option [ngValue]="null">Please select--</option>
+              <option *ngIf="registration.headOfHousehold" [value]="registration.headOfHousehold.lastName + ', ' + registration.headOfHousehold.firstName">
+                {{registration.headOfHousehold.lastName}}, {{registration.headOfHousehold.firstName}}
+              </option>
+              <option *ngFor="let familyMember of registration.headOfHousehold?.familyMembers" [value]="familyMember.lastName + ', ' + familyMember.firstName">
+                {{familyMember.lastName}}, {{familyMember.firstName}}
+              </option>
+              <option value="other">Someone else...</option>
+            </select>
 
-          <input type="text" *ngIf="selectedPurchaser === 'other'" class="form-control w-25 ml-3" [(ngModel)]="otherPurchaser" placeholder="Please specify">
-        </app-form-field>
+            <input type="text" *ngIf="selectedPurchaser === 'other'" class="form-control w-25 ml-3" [(ngModel)]="otherPurchaser" placeholder="Please specify">
+          </app-form-field>
 
-        <button type="button" class="btn btn-primary d-block" [disabled]="!getPurchaser()" (click)="addReferrals()">
-          ADD REFERRALS
-        </button>
-      </div>
-    </section>
+          <button type="button" class="btn btn-primary d-block" [disabled]="!getPurchaser()" (click)="addReferrals()">
+            ADD REFERRALS
+          </button>
+        </div>
+      </section>
 
-    <!-- safety check: no task number means this registration isn't finalized -->
-    <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
-      <h2 class="blue-header text-uppercase font-weight-bold">LIST OF REFERRALS</h2>
+      <!-- safety check: no task number means this registration isn't finalized -->
+      <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
+        <h2 class="blue-header text-uppercase font-weight-bold">LIST OF REFERRALS</h2>
 
-      <app-referral-table [registration]="registration"></app-referral-table>
-    </section>
-  </div>
-</div>
-<div class="col col-lg-3">
-  <app-sidebox-add-registration></app-sidebox-add-registration>
-</div>
-
-<!-- Alert to confirm evacuee file viewing -->
-<ng-template #viewAlert let-modal>
-  <div class="modal-header">
-    <h1 class="modal-title h2">Alert</h1>
-    <button type="button" class="close" aria-label="Close" (click)="confirmModal.dismiss()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <div class="modal-body">
-    <p>You are requesting to view an evacuee file. Please confirm that you have permission by selecting a reason code below.</p>
-
-    <select class="form-control w-50" [(ngModel)]="reason">
-      <option [ngValue]="null">Please select---</option>
-      <option value="evacueeError">Evacuee made an error</option>
-      <option value="evacueeAddition">Evacuee wants to make an addition</option>
-      <option value="invalidTaskNumber">Task number is incorrect</option>
-      <option value="incompleteRegistration">Incomplete registration</option>
-      <option value="adminTask">Administrative task</option>
-    </select>
-
-    <div class="mt-4">
-      <button type="button" class="btn btn-primary" [disabled]="reason == null" (click)="confirmModal.close()">Submit</button>
+        <app-referral-table [registration]="registration"></app-referral-table>
+      </section>
     </div>
   </div>
-</ng-template>
+  <div class="col col-lg-3">
+    <app-sidebox-add-registration></app-sidebox-add-registration>
+  </div>
+
+  <!-- Alert to confirm evacuee file viewing -->
+  <ng-template #viewAlert let-modal>
+    <div class="modal-header">
+      <h1 class="modal-title h2">Alert</h1>
+      <button type="button" class="close" aria-label="Close" (click)="confirmModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <p>You are requesting to view an evacuee file. Please confirm that you have permission by selecting a reason code below.</p>
+
+      <select class="form-control w-50" [(ngModel)]="reason">
+        <option [ngValue]="null">Please select---</option>
+        <option value="evacueeError">Evacuee made an error</option>
+        <option value="evacueeAddition">Evacuee wants to make an addition</option>
+        <option value="invalidTaskNumber">Task number is incorrect</option>
+        <option value="incompleteRegistration">Incomplete registration</option>
+        <option value="adminTask">Administrative task</option>
+      </select>
+
+      <div class="mt-4">
+        <button type="button" class="btn btn-primary" [disabled]="reason == null" (click)="confirmModal.close()">Submit</button>
+      </div>
+    </div>
+  </ng-template>
+</div>
