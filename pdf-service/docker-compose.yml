@@ -19,4 +19,4 @@ services:
       - IP
       - MAX_PAYLOAD_SIZE
       - ENABLE_CORS
-      - ENABLE_DEBUGGER
+      - ENABLE_DIAGNOSTICS

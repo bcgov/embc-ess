@@ -1,4 +1,4 @@
-import { ENABLE_DEBUGGER } from '../config';
+import { ENABLE_DIAGNOSTICS } from '../config';
 
 const divider = '\n-----------------------------------';
 
@@ -21,7 +21,7 @@ export const startedMessage = (port: string | number, ip: string, appName: strin
 }
 
 export const sysdebug = (message: string) => {
-  if (ENABLE_DEBUGGER) { console.log(message); }
+  if (ENABLE_DIAGNOSTICS) { console.log(message); }
 };
 
 export class Stopwatch {
@@ -36,10 +36,10 @@ export class Stopwatch {
     return `Execution time: ${this.time}ms`;
   }
   start(): Stopwatch {
-    if (ENABLE_DEBUGGER) { this.startAt = Date.now(); }
+    if (ENABLE_DIAGNOSTICS) { this.startAt = Date.now(); }
     return this;
   }
   stop(): void {
-    if (ENABLE_DEBUGGER) { this.end = Date.now() - this.startAt; }
+    if (ENABLE_DIAGNOSTICS) { this.end = Date.now() - this.startAt; }
   }
 }

@@ -18,5 +18,5 @@ export const MAX_PAYLOAD_SIZE: string = process.env.MAX_PAYLOAD_SIZE || '10mb';
 
 // Security and accessibility
 export const ENABLE_CORS: boolean = parseJSONParam(process.env.ENABLE_CORS, false);
-export const ENABLE_DEBUGGER: boolean = parseJSONParam(process.env.ENABLE_DEBUGGER, false);
+export const ENABLE_DIAGNOSTICS: boolean = parseJSONParam(process.env.ENABLE_DIAGNOSTICS, false);
 
