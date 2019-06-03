@@ -9,11 +9,11 @@
 
 <div class="row">
   <section class="col vertical-spacer">
-    <input type="text" class="form-control" [value]="dateString" [textMask]="{mask: dateMask, showMask: true}" placeholder="yyyy-mm-dd" (blur)="updateDate($event.target.value)" id="startDate" autocomplete="off">
+    <input type="text" class="form-control" [value]="dateString" [textMask]="{mask: dateMask, keepCharPositions: true}" placeholder="yyyy-mm-dd" (blur)="updateDate($event.target.value)" id="startDate" autocomplete="off">
     <small>(Format: yyyy-mm-dd)</small>
   </section>
   <section class="col">
-    <input type="text" class="form-control" [value]="timeString" [textMask]="{mask: timeMask, showMask: true}" placeholder="hh:mm xx" (blur)="updateTime($event.target.value)" id="startTime" autocomplete="off">
+    <input type="text" class="form-control" [value]="timeString" [textMask]="{mask: timeMask, keepCharPositions: true}" placeholder="hh:mm xx" (blur)="updateTime($event.target.value)" id="startTime" autocomplete="off">
     <small>(Format: hh:mm xx)</small>
   </section>
 </div>
