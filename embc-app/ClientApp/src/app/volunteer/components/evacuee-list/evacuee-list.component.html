@@ -10,7 +10,7 @@
       <input [(ngModel)]="queryString" type="text" aria-label="search" class="form-control mb-2" placeholder="Search by task number / last name / registration number / community ..." (keydown.enter)="search()">
     </div>
     <div class="col-auto">
-      <button class="btn btn-primary" (click)="search()">SEARCH</button>
+      <button class="btn btn-primary text-uppercase" (click)="search()">Search</button>
     </div>
   </div>
   <!-- TODO: <a class="small" href="">advanced search</a> -->
@@ -26,7 +26,7 @@
     <section>
       <app-pagination-summary [value]="resultsAndPagination?.metadata">
         <!-- <span class="font-weight-bold">ACTIVE</span> evacuees -->
-        <span class="font-weight-bold">ACTIVE</span> evacuees
+        <span class="font-weight-bold text-uppercase">active</span> evacuees
         <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
       </app-pagination-summary>
     </section>

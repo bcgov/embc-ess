@@ -18,17 +18,17 @@ export class ReferralListItemComponent {
   get addReferralString(): string {
     switch (this.type) {
       case 'FOOD':
-        return 'ADD ANOTHER FOOD REFERRAL';
+        return 'Add Another Food Referral';
       case 'LODGING':
-        return 'ADD ANOTHER LODGING REFERRAL';
+        return 'Add Another Lodging Referral';
       case 'CLOTHING':
-        return 'ADD ANOTHER CLOTHING REFERRAL';
+        return 'Add Another Clothing Referral';
       case 'TRANSPORTATION':
-        return 'ADD ANOTHER TRANSPORT REFERRAL';
+        return 'Add Another Transport Referral';
       case 'INCIDENTALS':
-        return 'ADD ANOTHER INCIDENTALS REFERRAL';
+        return 'Add Another Incidentals Referral';
       default:
-        return 'ADD ANOTHER REFERRAL'; // should never happen
+        return 'Add Another Referral'; // should never happen
     }
   }
 }
