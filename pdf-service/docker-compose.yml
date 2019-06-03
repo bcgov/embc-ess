@@ -11,7 +11,8 @@ services:
       - "3000:3000"
       - "9229:9229"
     volumes:
-      - ./dist:/usr/src/app/dist
+      - ./src:/usr/src/app/src/
+      - ./test:/usr/src/app/test/
     command: npm run debug
     environment:
       - NODE_ENV=development
