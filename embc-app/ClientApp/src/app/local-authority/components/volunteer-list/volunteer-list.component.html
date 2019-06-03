@@ -3,13 +3,13 @@
   <h1>Emergency Support Services Team Management Dashboard</h1>
   <p>Use this section to add new Emergency Support Services users, as well as edit existing user information and permissions.</p>
 
-  <h3 class="blue-header">USERS LIST</h3>
+  <h3 class="blue-header">Users List</h3>
   <div class="form-row">
     <div class="col-md">
       <input type="text" aria-label="search" class="form-control mb-2" placeholder="Search by last name &hellip;" [(ngModel)]="queryString" (keydown.enter)="search()">
     </div>
     <div class="col-md-auto">
-      <button class="btn btn-primary" (click)="search()">SEARCH</button>
+      <button class="btn btn-primary text-uppercase" (click)="search()">Search</button>
     </div>
   </div>
   <div class="search-results mt-4">
@@ -19,21 +19,21 @@
     <div class="space-between align-items-center my-3">
       <section>
         <app-pagination-summary [value]="resultsAndPagination.metadata">
-          <span class="font-weight-bold">ACTIVE</span> users
+          <span class="font-weight-bold text-uppercase">Active</span> users
           <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
         </app-pagination-summary>
       </section>
       <section>
-        <button class="btn btn-primary" (click)="modifyVolunteer()">ADD USERS</button>
+        <button class="btn btn-primary text-uppercase" (click)="modifyVolunteer()">Add Users</button>
       </section>
     </div>
-    <table class="table">
-      <thead class="thead-light">
-        <th scope="col">LAST NAME</th>
-        <th scope="col">FIRST NAME</th>
-        <th scope="col">BCEID</th>
+    <table class="table table-striped table-hover table-sm">
+      <thead>
+        <th scope="col text-uppercase">Last Name</th>
+        <th scope="col text-uppercase">First Name</th>
+        <th scope="col text-uppercase">BCeID</th>
         <!-- <th scope="col">RESTRICTED FILES</th> -->
-        <th scope="col">ACTION</th>
+        <th scope="col text-uppercase">Action</th>
       </thead>
       <tbody>
         <tr *ngFor="let volunteer of resultsAndPagination.data">
@@ -53,7 +53,7 @@
       </div>
     </div>
     <div>
-      <button class="btn btn-primary" (click)="modifyVolunteer()">ADD USERS</button>
+      <button class="btn btn-primary text-uppercase" (click)="modifyVolunteer()">Add Users</button>
     </div>
   </ng-template>
 
@@ -84,7 +84,7 @@
         <app-font-awesome-icon icon="times"></app-font-awesome-icon>
         <span class="ml-2">Cancel &amp; Close</span>
       </a>
-      <button class="btn btn-primary float-right" (click)="confirmModal.close()">YES</button>
+      <button class="btn btn-primary float-right text-uppercase" (click)="confirmModal.close()">Yes</button>
     </div>
   </div>
 </ng-template>

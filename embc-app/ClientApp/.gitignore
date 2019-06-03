@@ -54,3 +54,5 @@ chrome-test-report.html
 # System Files
 .DS_Store
 Thumbs.db
+
+/src/assets/bootstrap-theme/.git/*

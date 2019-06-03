@@ -1,16 +1,16 @@
 <div class="mb-4">
   <h1>Emergency Support Services Dashboard</h1>
-  <h2>Welcome to your Dashboard!</h2>
+  <h2 class="h5">Welcome to your Dashboard!</h2>
   <p>As an Emergency Support Services user you'll be able to register new evacuees, complete an existing evacuee
     self-registration, or if needed, search and edit evacuee information.</p>
-  <h3 class="blue-header">LIST OF EVACUEES</h3>
+  <h3 class="blue-header">List of Evacuees</h3>
 
   <div role="search" class="form-row">
     <div class="col">
       <input [(ngModel)]="queryString" type="text" aria-label="search" class="form-control mb-2" placeholder="Search by task number / last name / registration number / community ..." (keydown.enter)="search()">
     </div>
     <div class="col-auto">
-      <button class="btn btn-primary" (click)="search()">SEARCH</button>
+      <button class="btn btn-primary text-uppercase" (click)="search()">Search</button>
     </div>
   </div>
   <!-- TODO: <a class="small" href="">advanced search</a> -->
@@ -26,7 +26,7 @@
     <section>
       <app-pagination-summary [value]="resultsAndPagination?.metadata">
         <!-- <span class="font-weight-bold">ACTIVE</span> evacuees -->
-        <span class="font-weight-bold">ACTIVE</span> evacuees
+        <span class="font-weight-bold text-uppercase">active</span> evacuees
         <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
       </app-pagination-summary>
     </section>
@@ -45,8 +45,8 @@
   </div>
 
   <ng-template #searchResultsTable>
-    <table class="table">
-      <thead class="thead-light">
+    <table class="table table-striped table-hover table-sm">
+      <thead>
         <th scope="col"></th>
         <th scope="col">Last Name</th>
         <th scope="col">First Name</th>
