@@ -25,6 +25,14 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string User { get; set; }
 
         [Required]
+        [MaxLength(100)]
+        public string UserName { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string UserType { get; set; }
+
+        [Required]
         public DateTimeOffset Date { get; set; } = DateTimeOffset.Now;
     }
 }
