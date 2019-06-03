@@ -8,7 +8,7 @@ export const printPDF = async (html: string) => {
   const browser = await puppeteer.launch({ headless: true, args });
   const page = await browser.newPage();
   await page.setContent(html, { waitUntil: 'networkidle0' });
-  const buffer = await page.pdf({ format: 'Letter' });
+  const buffer = await page.pdf({ format: 'Letter', printBackground: true });
   sysdebug('[legacy] Puppeteer generated pdf');
   await browser.close();
   sysdebug('[legacy] Close puppeteer');
