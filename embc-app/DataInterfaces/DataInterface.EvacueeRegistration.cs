@@ -103,11 +103,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return true;
         }
 
-        public async Task AppendEvacueeRegistrationAuditEntryAsync(RegistrationEvent notification, string userId)
+        public async Task AppendEvacueeRegistrationAuditEntryAsync(RegistrationEvent notification, string userId, string userName, string userType)
         {
             await db.EvacueeRegistrationAudits.AddAsync(new Models.Db.EvacueeRegistrationAudit
             {
                 User = userId,
+                UserName = userName,
+                UserType = userType,
                 Action = notification.GetType().Name,
                 EssFileNumber = long.Parse(notification.EssFileNumber),
                 Content = JsonConvert.SerializeObject(notification)
