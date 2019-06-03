@@ -14,7 +14,7 @@
 
   <!-- COLLECTION NOTICE AND AUTHORIZATION -->
   <div class="mt-4">
-    <h2 class="blue-header text-uppercase font-weight-bold">Collection Notice and Authorization</h2>
+    <h2 class="blue-header font-weight-bold">Collection Notice and Authorization</h2>
     <section class="padded-section">
       <!-- <input type="checkbox" class="form-check-input" [formControl]="declarationAndConsent"> -->
       <p>
@@ -33,7 +33,7 @@
   <form novalidate [formGroup]="form">
     <!-- TASK NUMBER & PLACE OF REGISTRATION -->
     <div class="mt-4">
-      <h2 class="blue-header text-uppercase font-weight-bold">Task Number &amp; Place of Registration</h2>
+      <h2 class="blue-header font-weight-bold">Task Number &amp; Place of Registration</h2>
       <div class="form-row">
         <app-attention-icon></app-attention-icon>
         <app-form-field required="true" class="col">
@@ -81,7 +81,7 @@
 
     <!-- RESTRICTION // TODO: restricted files not handled in V1 -->
     <!-- <div class="mt-4">
-      <h2 class="blue-header text-uppercase font-weight-bold">RESTRICTION</h2>
+      <h2 class="blue-header font-weight-bold">RESTRICTION</h2>
       <p class="required">Concerned family and friends may inquire about you and your family because of the emergency. We would like to provide these people with some information about you. Please check "Yes" if you <u>do not</u> want EMBC to disclose your location and the contact information for you and your family members?</p>
       <div class="form-check">
         <input type="checkbox" class="form-check-input" formControlName="restrictedAccess" id="restrictedAccess">
@@ -125,7 +125,7 @@
     <div *ngIf="activeForm">
       <!-- EVACUEE DETAILS -->
       <div formGroupName="headOfHousehold" class="mt-4">
-        <h2 class="blue-header text-uppercase font-weight-bold">Evacuee Details</h2>
+        <h2 class="blue-header font-weight-bold">Evacuee Details</h2>
         <app-form-field required="true">
           <label for="lastName">Last Name</label>
           <input type="text" [class.is-invalid]="invalid('headOfHousehold.lastName')" class="form-control text-uppercase" appUpperCase="blur" formControlName="lastName" id="lastName" autocomplete="off">
@@ -167,7 +167,7 @@
 
       <!-- EVACUEE FAMILY INFORMATION -->
       <div class="mt-4">
-        <h2 class="blue-header text-uppercase font-weight-bold">Evacuee Family Information</h2>
+        <h2 class="blue-header font-weight-bold">Evacuee Family Information</h2>
         <p class="required">
           Are you registering family members who live in the same household with you whom you know are safe?
         </p>
@@ -259,7 +259,7 @@
 
       <!-- PRIMARY RESIDENCE & CONTACT DETAILS -->
       <div class="mt-4">
-        <h2 class="blue-header text-uppercase font-weight-bold">Primary Residence &amp; Contact Details</h2>
+        <h2 class="blue-header font-weight-bold">Primary Residence &amp; Contact Details</h2>
         <p class="required">
           Is your primary residence within BC?
         </p>
@@ -307,7 +307,7 @@
 
       <!-- MAILING ADDRESS -->
       <div class="mt-4">
-        <h2 class="blue-header text-uppercase font-weight-bold">Mailing Address</h2>
+        <h2 class="blue-header font-weight-bold">Mailing Address</h2>
         <p class="required">
           Is your mailing address the same as your primary residence?
         </p>
@@ -345,7 +345,7 @@
 
       <!-- BRIEF STATEMENT OF HOW THE PERSON/FAMILY WERE AFFECTED BY THE DISASTER -->
       <div class="mt-4">
-        <h2 class="blue-header text-uppercase font-weight-bold">Brief Statement of How The Person/Family Were Affected By The Disaster</h2>
+        <h2 class="blue-header font-weight-bold">Brief Statement of How The Person/Family Were Affected By The Disaster</h2>
         <div class="form-row">
           <app-attention-icon></app-attention-icon>
           <p class="col">
@@ -361,7 +361,7 @@
 
       <!-- INSURANCE -->
       <div class="mt-4">
-        <h2 class="blue-header text-uppercase font-weight-bold">Insurance</h2>
+        <h2 class="blue-header font-weight-bold">Insurance</h2>
         <p class="required">
           Do you have insurance to cover your immediate needs?
         </p>
@@ -391,7 +391,7 @@
 
       <!-- ADDITIONAL INFORMATION -->
       <div class="mt-4">
-        <h2 class="blue-header text-uppercase font-weight-bold">Additional Information</h2>
+        <h2 class="blue-header font-weight-bold">Additional Information</h2>
 
         <!-- DIETARY REQUIREMENTS -->
         <div class="form-row mt-0">
@@ -475,7 +475,7 @@
 
       <!-- NEXT STEPS -->
       <div class="mt-4">
-        <h2 class="blue-header text-uppercase font-weight-bold">Next Steps</h2>
+        <h2 class="blue-header font-weight-bold">Next Steps</h2>
         <p>
           While you are evacuated you may require emergency supports to ensure you and your family’s needs are met. An Emergency Support Services volunteer will meet with you in a Reception Centre in order to determine these needs.
         </p>
@@ -509,7 +509,7 @@
 
       <!-- FAMILY RECOVERY PLANS (IMMEDIATE & LONG TERM) -->
       <div class="mb-4">
-        <h2 class="blue-header text-uppercase font-weight-bold">Family Recovery Plans (Immediate &amp; Long Term)</h2>
+        <h2 class="blue-header font-weight-bold">Family Recovery Plans (Immediate &amp; Long Term)</h2>
         <div class="form-row">
           <app-attention-icon [alignCenter]="false"></app-attention-icon>
           <p class="col">
@@ -522,7 +522,7 @@
 
       <!-- REFERRALS MADE WITHIN RECEPTION CENTRE -->
       <div class="mb-4">
-        <h2 class="blue-header text-uppercase font-weight-bold">Referrals Made Within Reception Centre</h2>
+        <h2 class="blue-header font-weight-bold">Referrals Made Within Reception Centre</h2>
         <div class="form-row">
           <app-attention-icon></app-attention-icon>
           <p class="col">
@@ -557,7 +557,7 @@
 
       <!-- OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE< -->
       <div class="mb-4">
-        <h2 class="blue-header text-uppercase font-weight-bold">Other Agency Referrals Made Outside of the Reception Centre</h2>
+        <h2 class="blue-header font-weight-bold">Other Agency Referrals Made Outside of the Reception Centre</h2>
         <div class="form-row mx-0">
           <app-attention-icon [alignCenter]="false"></app-attention-icon>
           <textarea class="form-control" placeholder="Please specify" rows="4" formControlName="externalReferralsDetails"></textarea>
@@ -566,7 +566,7 @@
 
       <!-- INTERNAL CASE NOTES -->
       <div class="mb-4">
-        <h2 class="blue-header text-uppercase font-weight-bold">Internal Case Notes</h2>
+        <h2 class="blue-header font-weight-bold">Internal Case Notes</h2>
         <div class="form-row mx-0">
           <app-attention-icon [alignCenter]="false"></app-attention-icon>
           <p class="col">
@@ -912,7 +912,7 @@
     </li>
   </ul>
 
-  <h2 class="blue-header text-uppercase font-weight-bold">Internal Case Notes</h2>
+  <h2 class="blue-header font-weight-bold">Internal Case Notes</h2>
   <ul class="summary">
     <li>
       <span class='internal-case-notes'>{{registration?.internalCaseNotes || '&nbsp;'}}</span>
