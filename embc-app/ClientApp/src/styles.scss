@@ -138,6 +138,10 @@ select.is-invalid {
   background-image: none !important; // remove red X
 }
 
+textarea.is-invalid {
+  background-image: none !important; // remove red X
+}
+
 .form-control {
   // border-radius: 5px;
   display: inline-block;
