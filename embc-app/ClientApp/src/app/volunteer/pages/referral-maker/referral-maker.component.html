@@ -42,19 +42,15 @@
             <div class="col">
               <strong>Valid From</strong>
             </div>
-            <div class="col">
-              <strong>Valid To</strong>
-            </div>
-            <div class="col-2">
-
-            </div>
           </div>
           <div class="row">
             <div class="col">
               <app-date-time-picker [(value)]="workingDefaultDate"></app-date-time-picker>
             </div>
             <div class="col-2">
-              <button type="button" class="btn btn-secondary float-right" (click)="defaultDate=workingDefaultDate">UPDATE</button>
+              <button type="button" class="btn btn-primary float-right text-uppercase" (click)="defaultDate=workingDefaultDate; !defaultDate? showDefaultDatePicker=true:showDefaultDatePicker=false;">Update</button>
+              <button type="button" class="btn btn-secondary float-right text-uppercase mt-2" (click)="defaultDate=defaultDate; showDefaultDatePicker=false">Cancel</button>
+
             </div>
           </div>
         </div>
