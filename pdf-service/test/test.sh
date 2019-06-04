@@ -15,6 +15,6 @@ starttransfer:  %{time_starttransfer}s\n\
 }
 
 pushd "$( dirname "${BASH_SOURCE[0]}" )"
-curl_time -s -X POST -d @sample.html -OJ -H "Expect:" -H "Content-Type: text/html" "${API_URL}/pdf?filename=referral_sample.pdf&v=2"
+curl_time -s -X POST -d @sample.html -OJ -H "Expect:" -H "Content-Type: text/html" "${API_URL}/pdf?filename=sample.pdf&v=2"
 popd
 
