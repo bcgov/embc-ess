@@ -18,7 +18,7 @@
               <div class="card-body mb-0">
                 <div>
                   <label for="subType_{{uuid}}" class="required">Food required:</label>
-                  <select class="form-control d-block w-auto" [class.is-invalid]="invalid('subType')" id="subType_{{uuid}}" formControlName="subType">
+                  <select class="form-control d-block w-auto" appErrorBorder [when]="showErrorsWhen" id="subType_{{uuid}}" formControlName="subType">
                     <option [ngValue]="null">Select--</option>
                     <option value="RESTAURANT">Restaurant Meals</option>
                     <option value="GROCERIES">Groceries</option>
@@ -29,7 +29,7 @@
                 <div class="row align-items-end mt-3" *ngIf="subType==='RESTAURANT'">
                   <div class="col-4 pr-2">
                     <label for="numBreakfasts_{{uuid}}" class="required"># Breakfasts per person</label>
-                    <select class="form-control" [class.is-invalid]="invalid('numBreakfasts')" id="numBreakfasts_{{uuid}}" formControlName="numBreakfasts">
+                    <select class="form-control" appErrorBorder [when]="showErrorsWhen" id="numBreakfasts_{{uuid}}" formControlName="numBreakfasts">
                       <option [ngValue]="null">Select--</option>
                       <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
                     </select>
@@ -37,7 +37,7 @@
                   </div>
                   <div class="col-4 pl-2 pr-2">
                     <label for="numLunches_{{uuid}}" class="required"># Lunches per person</label>
-                    <select class="form-control" [class.is-invalid]="invalid('numLunches')" id="numLunches_{{uuid}}" formControlName="numLunches">
+                    <select class="form-control" appErrorBorder [when]="showErrorsWhen" id="numLunches_{{uuid}}" formControlName="numLunches">
                       <option [ngValue]="null">Select--</option>
                       <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
                     </select>
@@ -45,7 +45,7 @@
                   </div>
                   <div class="col-4 pl-2">
                     <label for="numDinners_{{uuid}}" class="required"># Dinners per person</label>
-                    <select class="form-control" [class.is-invalid]="invalid('numDinners')" id="numDinners_{{uuid}}" formControlName="numDinners">
+                    <select class="form-control" appErrorBorder [when]="showErrorsWhen" id="numDinners_{{uuid}}" formControlName="numDinners">
                       <option [ngValue]="null">Select--</option>
                       <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
                     </select>
@@ -56,7 +56,7 @@
                 <div class="row align-items-end mt-3" *ngIf="subType==='GROCERIES'">
                   <div class="col">
                     <label for="numDaysMeals_{{uuid}}" class="required"># Days for meals</label>
-                    <select class="form-control d-block w-auto" [class.is-invalid]="invalid('numDaysMeals')" id="numDaysMeals_{{uuid}}" formControlName="numDaysMeals">
+                    <select class="form-control d-block w-auto" appErrorBorder [when]="showErrorsWhen" id="numDaysMeals_{{uuid}}" formControlName="numDaysMeals">
                       <option [ngValue]="null">Select--</option>
                       <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
                     </select>
@@ -95,10 +95,9 @@
         </div>
 
         <div class="pl-4 pr-4 pb-3">
-          <textarea rows="4" appErrorBorder [when]="true" #comments class="form-control" formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
-          <span class="invalid-feedback justify-content-end">
-            The maximum line length is 250 characters and the maximum number of lines is 4
-          </span>
+          <textarea class="form-control" appErrorBorder [when]="true" #comments formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
+          <span class="invalid-feedback" *ngIf="f.comments.errors?.tooLong">Please limit comments to 250 characters</span>
+          <span class="invalid-feedback" *ngIf="f.comments.errors?.tooTall">Please limit comments to 5 lines</span>
         </div>
       </div>
     </form>
@@ -186,7 +185,7 @@
         </span>
       </li>
       <li>
-        <span class="comments">{{referral.comments || "&nbsp;"}}</span>
+        <span class="fixed-size">{{referral.comments || "&nbsp;"}}</span>
       </li>
     </ul>
   </div>

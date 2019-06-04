@@ -1,5 +1,6 @@
 #!/bin/bash
 API_URL="${1:-http://localhost:3000}"
+# API_URL="${1:-http://pdfprint-develop-jhnamn.pathfinder.gov.bc.ca}"
 
 curl_time() {
     curl -w "\

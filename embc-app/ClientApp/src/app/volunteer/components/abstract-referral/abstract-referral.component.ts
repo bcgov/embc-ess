@@ -1,10 +1,9 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, SimpleChanges, OnChanges } from '@angular/core';
-import { FormBuilder, Validators, FormArray, FormControl, FormGroup } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, SimpleChanges, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { FormBuilder, Validators, FormArray, FormControl, FormGroup, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 
 import { Evacuee, ReferralBase } from 'src/app/core/models';
-import { clearFormArray, uuid, invalidField } from 'src/app/shared/utils';
-import { ValidateComments } from '../../validators/comments.validator';
+import { clearFormArray, uuid } from 'src/app/shared/utils';
 
 /**
  * This is the base class for `FoodReferralComponent`, `ClothingReferralComponent`, etc.
@@ -18,6 +17,9 @@ import { ValidateComments } from '../../validators/comments.validator';
  */
 @Component({ template: '' })
 export class AbstractReferralComponent<T extends ReferralBase> implements OnInit, OnDestroy, OnChanges {
+
+  @ViewChild('comments') comments: ElementRef;
+
   @Input() readOnly = false;
   @Input() showErrorsWhen = false; // wait until the user click NEXT before showing any validation errors
 
@@ -41,7 +43,7 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   // the model for the form data collected
   form = this.fb.group({
     evacuees: this.fb.array([], Validators.required),
-    comments: this.fb.control([''], ValidateComments),
+    comments: this.fb.control(null, this.commentsValidator()),
   });
 
   // to run validation after user clicks the Submit button
@@ -110,8 +112,18 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
     return p;
   }
 
-  invalid(field: string, parent: FormGroup = this.form): boolean {
-    return invalidField(field, parent, this.shouldValidateForm);
+  private commentsValidator(): ValidatorFn {
+    return (c: AbstractControl): ValidationErrors | null => {
+      const ne = this.comments && this.comments.nativeElement;
+
+      // is text length OK?
+      if (ne && ne.textLength > 250) { return { tooLong: true }; }
+
+      // is text height OK?
+      if (ne && ne.scrollHeight > ne.offsetHeight) { return { tooTall: true }; }
+
+      return null;
+    };
   }
 
   onSubmit() {

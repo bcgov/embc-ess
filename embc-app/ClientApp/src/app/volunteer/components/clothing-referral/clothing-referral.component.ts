@@ -25,8 +25,8 @@ export class ClothingReferralComponent extends AbstractReferralComponent<Clothin
     private modals: NgbModal,
   ) {
     super(fb);
-    this.form.setControl('extremeWinterConditions', this.fb.control(''));
-    this.form.setControl('totalAmount', this.fb.control('', [CustomValidators.number, Validators.required, Validators.min(0)]));
+    this.form.setControl('extremeWinterConditions', this.fb.control(null));
+    this.form.setControl('totalAmount', this.fb.control(null, [CustomValidators.number, Validators.required, Validators.min(0)]));
   }
 
   ngOnInit() {

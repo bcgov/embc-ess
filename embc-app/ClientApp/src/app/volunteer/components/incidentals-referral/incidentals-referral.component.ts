@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { IncidentalsReferral } from 'src/app/core/models';
@@ -17,6 +17,8 @@ const MAXIMUM_PER_PERSON = 50.00;
 })
 export class IncidentalsReferralComponent extends AbstractReferralComponent<IncidentalsReferral> implements OnInit, OnDestroy {
 
+  @ViewChild('approvedItems') approvedItems: ElementRef;
+
   private ratesModal: NgbModalRef = null;
 
   constructor(
@@ -27,8 +29,8 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent<Inci
     super(fb);
 
     // add more fields that are specific to this form
-    this.form.setControl('approvedItems', this.fb.control('', [Validators.required]));
-    this.form.setControl('totalAmount', this.fb.control('', [CustomValidators.number, Validators.required, Validators.min(0)]));
+    this.form.setControl('approvedItems', this.fb.control(null, [Validators.required, this.approvedItemsValidator()]));
+    this.form.setControl('totalAmount', this.fb.control(null, [CustomValidators.number, Validators.required, Validators.min(0)]));
   }
 
   ngOnInit() {
@@ -40,6 +42,20 @@ export class IncidentalsReferralComponent extends AbstractReferralComponent<Inci
     super.ngOnDestroy();
     // close modal if it's open
     if (this.ratesModal) { this.ratesModal.dismiss(); }
+  }
+
+  private approvedItemsValidator(): ValidatorFn {
+    return (c: AbstractControl): ValidationErrors | null => {
+      const ne = this.approvedItems && this.approvedItems.nativeElement;
+
+      // is text length OK?
+      if (ne && ne.textLength > 250) { return { tooLong: true }; }
+
+      // is text height OK?
+      if (ne && ne.scrollHeight > ne.offsetHeight) { return { tooTall: true }; }
+
+      return null;
+    };
   }
 
   fromModel(referral: IncidentalsReferral) {
