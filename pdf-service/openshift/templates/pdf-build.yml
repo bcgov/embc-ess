@@ -67,4 +67,4 @@ parameters:
       Set this to the relative path to the Dockerfile that describes this
       builder image, if it is not in the root of your repository.
     required: true
-    value: pdf-service/openshift/templates/
+    value: pdf-service
