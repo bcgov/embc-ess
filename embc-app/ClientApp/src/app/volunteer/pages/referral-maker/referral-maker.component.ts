@@ -375,7 +375,11 @@ export class ReferralMakerComponent implements OnInit {
       this.showDefaultDatePicker = true;
     }
   }
-
+  updateDefaultDate() {
+    // this hides and shows the picker
+    this.defaultDate = this.workingDefaultDate;
+    !this.defaultDate ? this.showDefaultDatePicker = true : this.showDefaultDatePicker = false;
+  }
   // --------------------HELPERS-----------------------------------------
   remove(arr: [], i: number) {
     if (arr) {
