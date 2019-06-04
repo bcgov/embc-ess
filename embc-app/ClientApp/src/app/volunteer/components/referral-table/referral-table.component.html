@@ -13,6 +13,7 @@
   <app-referral-search-results #searchResultsView [searchResults]="searchResults$ | async"
     (referralsSelected)="referrals = $event"></app-referral-search-results>
 
+  <p class="text-danger text-right">Referrals are ONLY to be printed once.</p>
   <button class="btn btn-secondary float-right" [disabled]="!referrals.length || isPrinting" (click)="printReferrals()">
     <i class="spinner rotating" [hidden]="!isPrinting"></i>
     <span>CREATE PDF &amp; PRINT</span>
