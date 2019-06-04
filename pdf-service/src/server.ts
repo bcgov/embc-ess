@@ -1,12 +1,36 @@
-import app from './api/app';
+import { PORT, IP } from './config';
+import { expressApp } from './api/app';
+import { startedMessage, sysdebug } from './lib/utils';
+import { createRenderer } from './lib/pdf';
 
-const port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000;
-const ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
+const main = async () => {
+  try {
+    const renderer = await createRenderer();
+    const app = await expressApp(renderer);
 
-// Start the server.
-const server = app.listen(Number(port), ip, function () {
-  console.log(`Server started on port: ${port}`);
-  console.log(`IP set to: ${ip}`)
-});
+    // Start the server.
+    const server = app.listen(Number(PORT), IP, function () {
+      startedMessage(PORT, IP, 'PDF microservice');
+    });
 
-export default server;
+    // Terminate process
+    const close = async () => {
+      sysdebug(`Close received, gracefully closing`);
+      await renderer.close();
+
+      sysdebug(`Successful shutdown, exiting`);
+      process.exit(0);
+    };
+
+    process.on('SIGTERM', close);
+    process.on('SIGINT', close);
+
+    return server;
+  }
+  catch (error) {
+    sysdebug(`Failed to initialize renderer. ${error}`);
+    process.exit(1);
+  }
+};
+
+main();

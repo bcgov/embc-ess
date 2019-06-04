@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../../core/services/auth.service';
 import { VolunteerService, VolunteerSearchQueryParameters } from '../../../core/services/volunteer.service';
@@ -53,12 +53,11 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
     private modals: NgbModal,
     private volunteerService: VolunteerService,
     private organizationService: OrganizationService,
     private authService: AuthService,
-    private uniqueKeyService: UniqueKeyService, // only used for saving volunteer ids
+    private uniqueKeyService: UniqueKeyService,
   ) { }
 
   // convenience getters

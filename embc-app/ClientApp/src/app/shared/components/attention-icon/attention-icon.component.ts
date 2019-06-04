@@ -19,7 +19,9 @@ import { IconSizes } from '../font-awesome-icon/font-awesome-icon.component';
   `,
   styles: [`
     .attention-icon.pull-icon-left {
-      margin-left: -3rem;
+      position: relative;
+      left: -3rem;
+      width: 0px;
     }
   `]
 })

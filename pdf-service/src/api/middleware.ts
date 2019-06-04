@@ -1,18 +1,20 @@
-import express from 'express';
+import { Request, Response, NextFunction, Express } from 'express';
 import bodyParser from 'body-parser';
-import path from 'path';
+import { MAX_PAYLOAD_SIZE, ENABLE_CORS } from '../config';
+import { sysdebug } from '../lib/utils';
 
-export default function applyMiddleware(app: express.Express) {
-  console.log('Applying CORS middleware.')
-  // Enable CORS
-  app.use(function handleCors(req: express.Request, res: express.Response, next: express.NextFunction) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Authorization,responseType');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    next();
-  });
+export const applyMiddleware = (app: Express) => {
+  if (ENABLE_CORS) {
+    sysdebug('Applying CORS middleware.')
+    app.use(function handleCors(req: Request, res: Response, next: NextFunction) {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+      res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Authorization,responseType');
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      next();
+    });
+  }
 
   // Limit to 10mb if HTML has e.g. inline images
-  app.use(bodyParser.text({ limit: '10mb', type: 'text/html' }));
+  app.use(bodyParser.text({ limit: MAX_PAYLOAD_SIZE, type: 'text/html' }));
 }
