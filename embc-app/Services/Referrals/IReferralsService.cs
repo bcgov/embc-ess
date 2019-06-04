@@ -7,6 +7,8 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
     {
         Task<byte[]> GetReferralPdfsAsync(ReferralsToPrint printReferrals);
 
+        Task<string> GetReferralHtmlPagesAsync(ReferralsToPrint printReferrals);
+
         bool IsValidReferralType(string type, string subType);
     }
 }
