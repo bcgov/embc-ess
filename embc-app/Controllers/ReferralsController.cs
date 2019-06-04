@@ -90,6 +90,24 @@ namespace Gov.Jag.Embc.Public.Controllers
             return new FileContentResult(result, "application/pdf");
         }
 
+        [HttpPost("referralHtml")]
+        public async Task<IActionResult> GetReferralHtmlAsync([FromBody] ReferralsToPrint printReferrals)
+        {
+            var result = await referralsService.GetReferralHtmlPagesAsync(printReferrals);
+
+            if (result == null)
+            {
+                return NotFound(new { printReferrals.ReferralIds });
+            }
+
+            return new ContentResult
+            {
+                ContentType = "text/html",
+                StatusCode = 200,
+                Content = result
+            };
+        }
+
         [HttpDelete("{referralId}")]
         public async Task<IActionResult> Delete(string registrationId, string referralId)
         {
