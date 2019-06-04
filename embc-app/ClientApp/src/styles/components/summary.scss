@@ -27,11 +27,11 @@
 
     &.name {
       font-weight: 600;
+      border-right: 5px solid $summary-bg;
       width: 40%;
     }
 
     &.value {
-      border-left: 5px solid $summary-bg;
       width: 60%;
 
       ul {
@@ -66,12 +66,12 @@
       width: 40%;
       padding: 0;
       font-weight: 600;
+      border-right-style: none; // IE doesn't support 'unset'
     }
 
     span.value {
       width: 60%;
       padding: 0;
-      border-left-style: none; // IE doesn't support 'unset'
     }
 
     @media (min-width: 768px) {
@@ -106,9 +106,14 @@
   }
 }
 
-.comments {
+span.fixed-size {
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 2rem;
   white-space: pre-wrap;
   word-break: break-word;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
+  min-width: calc(50ch + 2rem); // 50 cols + padding -- for incidentals responsiveness
+  max-width: calc(50ch + 2rem); // 50 cols + padding -- for comments responsiveness
   height: auto;
 }

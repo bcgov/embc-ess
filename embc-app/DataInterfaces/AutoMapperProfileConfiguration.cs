@@ -11,7 +11,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             CreateMap<Models.Db.Community, ViewModels.Community>()
                 .ForMember(x => x.Id, x => x.MapFrom(opt => opt.Id.ToString()));
 
-            CreateMap<Models.Db.Region, ViewModels.Region>();
+            CreateMap<Models.Db.Region, ViewModels.Region>()
+                .ForMember(x => x.Id, x => x.MapFrom(opt => opt.Name));
 
             CreateMap<Models.Db.Country, ViewModels.Country>()
                 .ForMember(x => x.Id, x => x.MapFrom(opt => opt.CountryCode));

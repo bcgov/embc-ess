@@ -56,4 +56,4 @@ chrome-test-report.html
 Thumbs.db
 
 # The test pdf file
-/test/sample.pdf
+/test/*.pdf

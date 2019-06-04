@@ -13,7 +13,7 @@
     <small>(Format: yyyy-mm-dd)</small>
   </section>
   <section class="col">
-    <input type="text" class="form-control" [value]="timeString" [textMask]="{mask: timeMask, keepCharPositions: true}" placeholder="hh:mm xx" (blur)="updateTime($event.target.value)" id="startTime" autocomplete="off">
-    <small>(Format: hh:mm xx)</small>
+    <input type="text" class="form-control" [value]="timeString" [textMask]="{mask: timeMask, keepCharPositions: true}" placeholder="hh:mm AM/PM" (blur)="updateTime($event.target.value)" id="startTime" autocomplete="off">
+    <small>(Format: hh:mm AM/PM)</small>
   </section>
 </div>

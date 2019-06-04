@@ -7,9 +7,9 @@
     "tsc": "tsc",
     "build": "npm-run-all clean tsc",
     "start": "node dist/server.js",
-    "watch": "tsc -w",
-    "debug": "nodemon --legacy-watch --watch ./dist --inspect=0.0.0.0 --nolazy ./dist/server.js",
-    "docker-debug": "docker-compose up"
+    "watch-ts": "tsc -w",
+    "watch-server": "nodemon --legacy-watch --watch ./dist --inspect=0.0.0.0 --nolazy ./dist/server.js",
+    "debug": "npm-run-all --parallel watch-ts watch-server"
   },
   "author": "",
   "license": "MIT",

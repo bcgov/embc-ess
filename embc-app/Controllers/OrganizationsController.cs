@@ -3,6 +3,7 @@ using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -11,10 +12,13 @@ namespace Gov.Jag.Embc.Public.Controllers
     [Authorize]
     public class OrganizationsController : Controller
     {
+        private readonly ILogger logger;
         private readonly IDataInterface dataInterface;
 
-        public OrganizationsController(IDataInterface dataInterface)
+        public OrganizationsController(
+            ILoggerFactory loggerFactory, IDataInterface dataInterface)
         {
+            logger = loggerFactory.CreateLogger(typeof(OrganizationsController));
             this.dataInterface = dataInterface;
         }
 
@@ -41,10 +45,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Organization item)
         {
-            if (string.IsNullOrEmpty(item.Community?.Id) && string.IsNullOrEmpty(item.Region?.Name))
-            {
-                ModelState.AddModelError(nameof(item), $"Both community and region are empty, organization must belong to either a community or a region");
-            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
