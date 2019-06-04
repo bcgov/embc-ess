@@ -52,7 +52,10 @@
 
     <select class="form-control w-50" [(ngModel)]="reason">
       <option [ngValue]="null">Please select---</option>
-      <option value="error">Error on referral</option>
+      <option value="lostReferral">Lost referral</option>
+      <option value="printError">Error on Printed Referral</option>
+      <option value="newSupplier">New Supplier Required</option>
+      <option value="overwhelmedSupplier">Supplier Could Not Meet Need</option>
     </select>
 
     <div class="mt-4">
