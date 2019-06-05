@@ -6,12 +6,17 @@ app-valid-from-to {
 textarea {
   resize: none;
   overflow: hidden;
-  font-family: monospace;
+  font-family: 'LiberationMono', monospace;
   font-size: 14px;
   line-height: 2rem;
-  word-break: break-word;
+  word-break: break-all;
   padding: 0.5rem 1rem !important; // don't allow 'is-invalid' styling to override
   border-width: 1px;
   width: calc(50ch + 2rem + 2px); // 50 cols + padding + border
   height: calc(7em + 1rem + 2px); // 5 rows + padding + border
+
+  // hack for IE11 only
+  @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+    width: 442px !important;
+  }
 }
