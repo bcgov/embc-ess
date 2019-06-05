@@ -77,7 +77,7 @@ export class CommunitiesSelectComponent {
 
   onBlur(search: string) {
     // look for exact match
-    const found = this.communities.find(community => (community.name.toLowerCase() === search.toLowerCase()));
+    const found = this.communities.find(community => (community.name.toLowerCase() === search.toLowerCase().replace(/[‘’]/g, '\'')));
 
     // if exact match was found, use it
     // otherwise clear control to avoid user confusion
