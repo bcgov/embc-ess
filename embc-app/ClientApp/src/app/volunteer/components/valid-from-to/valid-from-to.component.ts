@@ -39,6 +39,9 @@ export class ValidFromToComponent implements OnInit {
     // populate form with initial referral date
     const rd = this.handleMissingInputs(this.referralDate);
     this.wrdForm = this.convertReferralDateToReferralDateForm(rd);
+
+    // emit initial referral date - needed by parent components
+    this.emitReferralDate();
   }
 
   // this function calculates missing information
