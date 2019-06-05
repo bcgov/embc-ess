@@ -9,13 +9,10 @@ services:
       - "4200:4200"
       - "49153:49153"
     volumes:
-      - ./:/usr/src/app/
-      - notused:/usr/src/app/node_modules/
+      - ./src:/usr/src/app/src
     environment:
       - NODE_ENV=development
       - API_URL
       - SM_TOKEN
       - DEV_USER
       - DEV_BCSC_USER
-volumes:
-  notused:
