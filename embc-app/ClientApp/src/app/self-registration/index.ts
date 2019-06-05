@@ -5,3 +5,4 @@ export * from './self-registration-two/self-registration-two.component';
 export * from './self-registration-three/self-registration-three.component';
 export * from './self-registration-four/self-registration-four.component';
 export * from './self-registration-error/self-registration-error.component';
+export * from './self-registration-stepper/self-registration-stepper.component';
