@@ -45,7 +45,9 @@ export class CommunitiesSelectComponent {
         if (term.length < 3) {
           return [];
         } else {
-          const tlc = term.toLowerCase();
+          // any apostrophe looking character get replaced.
+          // The database should have nothing except for ' so ’ and ‘ should match ' .
+          const tlc = term.toLowerCase().replace(/[‘’]/g, '\'');
           return this.communities.filter(community => (community.name.toLowerCase().indexOf(tlc) > -1));
         }
       })
@@ -75,7 +77,7 @@ export class CommunitiesSelectComponent {
 
   onBlur(search: string) {
     // look for exact match
-    const found = this.communities.find(community => (community.name.toLowerCase() === search.toLowerCase()));
+    const found = this.communities.find(community => (community.name.toLowerCase() === search.toLowerCase().replace(/[‘’]/g, '\'')));
 
     // if exact match was found, use it
     // otherwise clear control to avoid user confusion
