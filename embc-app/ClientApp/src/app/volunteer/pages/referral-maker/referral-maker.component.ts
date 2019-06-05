@@ -13,6 +13,8 @@ import {
   TransportationReferral, IncidentalsReferral
 } from 'src/app/core/models';
 
+import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
+
 interface ReferralFormControl<T = any> {
   value: T;
   valid: boolean;
@@ -69,6 +71,7 @@ export class ReferralMakerComponent implements OnInit {
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private notifications: NotificationQueueService,
+    private scrollToService: ScrollToService,
   ) { }
 
   ngOnInit() {
@@ -102,6 +105,13 @@ export class ReferralMakerComponent implements OnInit {
         // go back to the main dashboard
         this.router.navigate([`/${this.path}/`]);
       });
+  }
+  public triggerScrollTo(name: string) {
+    const config: ScrollToConfigOptions = {
+      target: name
+    };
+    console.log('Scrolling to ' + name);
+    this.scrollToService.scrollTo(config);
   }
 
   updateReferral(referralForm: ReferralFormControl, value: any): void {
@@ -315,6 +325,7 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.transportationReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    this.triggerScrollTo('transportation_' + (this.transportationReferrals.length - 1));
   }
 
   clearIncidentalsReferrals(): void {
