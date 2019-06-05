@@ -34,7 +34,8 @@ export class RegistrationMakerComponent implements OnInit {
   CANADA: Country; // the object representation of the default country
 
   pageTitle = 'Add an Evacuee';
-  activeForm = true; // this lets the user fill things out
+  activeForm: boolean; // not set initially
+
   // The model for the form data collected
   form: FormGroup;
   componentActive = true;
