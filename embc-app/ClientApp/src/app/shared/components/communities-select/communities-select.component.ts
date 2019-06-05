@@ -45,7 +45,9 @@ export class CommunitiesSelectComponent {
         if (term.length < 3) {
           return [];
         } else {
-          const tlc = term.toLowerCase();
+          // any apostrophe looking character get replaced.
+          // The database should have nothing except for ' so ’ and ‘ should match ' .
+          const tlc = term.toLowerCase().replace(/[‘’]/g, '\'');
           return this.communities.filter(community => (community.name.toLowerCase().indexOf(tlc) > -1));
         }
       })
