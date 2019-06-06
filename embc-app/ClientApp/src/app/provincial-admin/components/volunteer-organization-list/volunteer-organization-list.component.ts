@@ -59,7 +59,6 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     private organizationService: OrganizationService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
-    private route: ActivatedRoute,
   ) { }
 
   // convenience getters
