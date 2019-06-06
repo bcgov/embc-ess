@@ -22,7 +22,7 @@ export class ValidFromToComponent implements OnInit {
   @Output() referralDateChange = new EventEmitter<ReferralDate>();
 
   readonly dateMask = [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]; // yyyy-mm-dd
-  readonly timeMask = [/\d/, /\d/, ':', /\d/, /\d/, ' ', /[a|A|p|P]/, /[m|M]/]; // hh:mm xx
+  readonly timeMask = [/\d/, /\d/, ':', /\d/, /\d/]; // HH:mm (24h)
 
   days = range(1, 15); // [1..14]
   defaultDays = 1; // the default duration
@@ -39,6 +39,9 @@ export class ValidFromToComponent implements OnInit {
     // populate form with initial referral date
     const rd = this.handleMissingInputs(this.referralDate);
     this.wrdForm = this.convertReferralDateToReferralDateForm(rd);
+
+    // emit initial referral date - needed by parent components
+    this.emitReferralDate();
   }
 
   // this function calculates missing information
@@ -84,22 +87,22 @@ export class ValidFromToComponent implements OnInit {
   private convertReferralDateToReferralDateForm(referralDate: ReferralDate): ReferralDateForm {
     return {
       fromDate: moment(referralDate.from).format('YYYY-MM-DD'),
-      fromTime: moment(referralDate.from).format('hh:mm a'),
+      fromTime: moment(referralDate.from).format('HH:mm'),
       days: referralDate.days,
       toDate: moment(referralDate.to).format('YYYY-MM-DD'),
-      toTime: moment(referralDate.to).format('hh:mm a')
+      toTime: moment(referralDate.to).format('HH:mm')
     } as ReferralDateForm;
   }
 
   update(retainToTime: boolean = false) {
     this.validFromDate = this.wrdForm.fromDate && moment(this.wrdForm.fromDate, 'YYYY-MM-DD', true).isValid();
-    this.validFromTime = this.wrdForm.fromTime && moment(this.wrdForm.fromTime, 'hh:mm a', true).isValid();
-    this.validToTime = this.wrdForm.toTime && moment(this.wrdForm.toTime, 'hh:mm a', true).isValid();
+    this.validFromTime = this.wrdForm.fromTime && moment(this.wrdForm.fromTime, 'HH:mm', true).isValid();
+    this.validToTime = this.wrdForm.toTime && moment(this.wrdForm.toTime, 'HH:mm', true).isValid();
 
     // if the dates are valid then re-calculate
     if (this.validFromDate && this.validFromTime && (this.validToTime || !retainToTime)) {
       const fromDateTime = this.wrdForm.fromDate + ' ' + this.wrdForm.fromTime;
-      const from = moment(fromDateTime, 'YYYY-MM-DD hh:mm a', true);
+      const from = moment(fromDateTime, 'YYYY-MM-DD HH:mm', true);
 
       // calculate the To date
       const to = from.add(this.wrdForm.days, 'days');
@@ -109,7 +112,7 @@ export class ValidFromToComponent implements OnInit {
 
       // conditionally set To time
       if (!retainToTime) {
-        this.wrdForm.toTime = to.format('hh:mm a');
+        this.wrdForm.toTime = to.format('HH:mm');
         this.validToTime = true; // in case it was invalid
       }
     }
@@ -132,8 +135,8 @@ export class ValidFromToComponent implements OnInit {
     const toDateTime = referralDateForm.toDate + ' ' + referralDateForm.toTime;
 
     return {
-      from: moment(fromDateTime, 'YYYY-MM-DD hh:mm a', true).toDate(),
-      to: moment(toDateTime, 'YYYY-MM-DD hh:mm a', true).toDate(),
+      from: moment(fromDateTime, 'YYYY-MM-DD HH:mm', true).toDate(),
+      to: moment(toDateTime, 'YYYY-MM-DD HH:mm', true).toDate(),
       days: referralDateForm.days
     } as ReferralDate;
   }

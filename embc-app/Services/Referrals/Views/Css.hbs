@@ -1,5 +1,5 @@
 <style>
-    @page  {
+    @page {
         size: Letter;
         margin: 0in 0in 0in 0in;
     }
@@ -261,7 +261,7 @@
     }
 
     .stamp-goes-here p {
-        color: #ccc;
+        color: rgb(204, 204, 204, 0.5);
         text-transform: uppercase;
         text-align: center;
         font-size: 17px;
@@ -413,30 +413,30 @@
         padding-right: 3px;
         font-size: 12px;
         white-space: pre-wrap;
-        word-break: break-word;
+        word-break: break-all;
     }
 
     .comments-height {
         max-height: calc(12px * 5); /* 5 rows */
-        width: calc(5.6px * 50); /* 50 cols */
+        width: calc(6.1px * 50); /* 50 cols */
         overflow-y: hidden;
-        font-family: monospace;
+        font-family: 'LiberationMono', monospace;
         font-size: 10px;
         line-height: normal;
         white-space: pre-wrap;
-        word-break: break-word;
+        word-break: break-all;
         margin-bottom: 0 !important;
     }
 
     .incidentals-height {
         max-height: calc(12px * 5); /* 5 rows */
-        width: calc(5.6px * 50); /* 50 cols */
+        width: calc(6.1px * 50); /* 50 cols */
         overflow-y: hidden;
-        font-family: monospace;
+        font-family: 'LiberationMono', monospace;
         font-size: 10px;
         line-height: normal;
         white-space: pre-wrap;
-        word-break: break-word;
+        word-break: break-all;
         margin-bottom: 0 !important;
     }
 
@@ -506,8 +506,15 @@
     }
 
     .signatures .signature-line {
-        height: 0.5cm;
+        height: 1.3cm;
         border-bottom: 2px solid #000;
+    }
+
+    .signatures .signature-date {
+        height: 1.3cm;
+        display: flex;
+        align-items: flex-end;
+        font-size: 14px;
     }
 
     .page-break {
