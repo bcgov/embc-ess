@@ -20,7 +20,7 @@
     "runPolicy": "Parallel",
     "source": {
       "git": {
-        "ref": "develop",
+        "ref": "sandbox",
         "uri": "https://github.com/bcgov/embc-ess.git"
       },
       "type": "Git"
