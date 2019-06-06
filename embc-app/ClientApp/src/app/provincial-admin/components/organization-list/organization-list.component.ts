@@ -4,12 +4,12 @@ import { Router } from '@angular/router';
 // import { map } from 'rxjs/operators';
 // import { Store } from '@ngrx/store';
 // import { AppState } from '../store';
-import { ListResult, Organization, Community, PaginationSummary } from '../../../core/models';
-import { OrganizationService } from '../../../core/services/organization.service';
+import { ListResult, Organization, Community, PaginationSummary } from 'src/app/core/models';
+import { OrganizationService } from 'src/app/core/services/organization.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { SearchQueryParameters } from '../../../core/models/search-interfaces';
-import { AuthService } from '../../../core/services/auth.service';
-import { UniqueKeyService } from '../../../core/services/unique-key.service';
+import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
 // TODO: Un-comment code below when we are ready to aggregate all communities + regions in a single drop-down
 // interface SearchFilter {
@@ -38,8 +38,7 @@ export class OrganizationListComponent implements OnInit {
   // simple server response
   resultsAndPagination: ListResult<Organization>;
   notFoundMessage = 'Searching ...'; // TODO: should use spinner instead
-  // the base path for routing
-  path: string;
+  path: string = null; // the base path for routing
 
   form: FormGroup;
 
@@ -63,7 +62,6 @@ export class OrganizationListComponent implements OnInit {
 
   ngOnInit() {
     this.authService.path.subscribe((path: string) => this.path = path);
-
     this.form = this.fb.group({ searchbox: null });
 
     // collect all organizations
@@ -76,6 +74,8 @@ export class OrganizationListComponent implements OnInit {
       .subscribe((listResult: ListResult<Organization>) => {
         this.resultsAndPagination = listResult;
         this.notFoundMessage = 'No results found.';
+      }, err => {
+        console.log('error getting organizations =', err);
       });
   }
 
@@ -84,12 +84,14 @@ export class OrganizationListComponent implements OnInit {
   }
 
   modifyOrganization(orgId?: string) {
-    // load the organization maker
-    this.uniqueKeyService.setKey(orgId);
+    // save organization ID for lookup in the new component
+    this.uniqueKeyService.setKey(orgId); // may be null
+
+    // go to organization maker
     this.router.navigate([`/${this.path}/organization`]);
   }
 
-  modifyOrganizationVolunteers(orgId?: string) {
+  modifyOrganizationVolunteers(orgId: string) {
     // load the organization's volunteer list
     this.router.navigate([`/${this.path}/organization/${orgId}/volunteers`]);
   }

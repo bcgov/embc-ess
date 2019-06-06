@@ -104,6 +104,8 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
           return;
         }
         this.displayRegistration(registration);
+      }, err => {
+        console.log('error getting current registration =', err);
       });
   }
 
@@ -212,4 +214,5 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
     }
     this.store.dispatch(new UpdateRegistration({ registration }));
   }
+
 }

@@ -10,7 +10,6 @@ export class SideboxAddOrganizationComponent implements OnInit {
 
   route: string;
 
-  // TODO: THIS MUST BE IMPORTED AND MODIFIED BEFORE USE
   constructor(
     private authService: AuthService,
   ) { }

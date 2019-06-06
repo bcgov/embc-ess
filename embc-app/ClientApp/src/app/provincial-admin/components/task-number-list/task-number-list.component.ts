@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ListResult, IncidentTask, PaginationSummary, Community } from '../../../core/models';
-import { IncidentTaskService } from '../../../core/services/incident-task.service';
-import { SearchQueryParameters } from '../../../core/models/search-interfaces';
-import { AuthService } from '../../../core/services/auth.service';
-import { UniqueKeyService } from '../../../core/services/unique-key.service';
+import { ListResult, IncidentTask, PaginationSummary, Community } from 'src/app/core/models';
+import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
+import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
 @Component({
   selector: 'app-task-number-list',
@@ -16,14 +16,13 @@ export class TaskNumberListComponent implements OnInit {
   // simple server response
   resultsAndPagination: ListResult<IncidentTask>;
   notFoundMessage = 'Searching ...';
-  path: string;
+  path: string = null; // the base path for routing
 
   form: FormGroup;
 
   constructor(
     private incidentTaskService: IncidentTaskService,
     private router: Router,
-    private route: ActivatedRoute,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private fb: FormBuilder,
@@ -41,9 +40,10 @@ export class TaskNumberListComponent implements OnInit {
   ngOnInit() {
     // collect the path for routing based on role
     this.authService.path.subscribe((path: string) => this.path = path);
+
     this.initSearchForm();
 
-    // collect all volunteers
+    // collect all incident tasks
     this.getIncidentTasks();
   }
 
@@ -56,6 +56,8 @@ export class TaskNumberListComponent implements OnInit {
       .subscribe((listResult: ListResult<IncidentTask>) => {
         this.resultsAndPagination = listResult;
         this.notFoundMessage = 'No results found.';
+      }, err => {
+        console.log('error getting tasks =', err);
       });
   }
 
@@ -63,12 +65,12 @@ export class TaskNumberListComponent implements OnInit {
     // submit and collect search
     this.getIncidentTasks({ q: community ? community.id : '' });
   }
-  modifyTaskNumber(id?: string) {
-    if (id) {
-      // save the unique ID for lookup in the new component
-      this.uniqueKeyService.setKey(id);
-    }
-    // save the volunteer
+
+  modifyTaskNumber(taskId?: string) {
+    // save task ID for lookup in the new component
+    this.uniqueKeyService.setKey(taskId); // may be null
+
+    // go to task number maker
     this.router.navigate([`/${this.path}/task-number`]);
   }
 }

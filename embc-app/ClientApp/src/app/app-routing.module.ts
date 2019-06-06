@@ -194,7 +194,7 @@ const routes: Routes = [
         data: { expectedRole: VOLUNTEER },
       },
       {
-        path: 'referrals/:id/:purchaser',
+        path: 'referrals/:regId/:purchaser',
         component: ReferralMakerComponent,
         data: { expectedRole: VOLUNTEER },
       },
@@ -249,7 +249,7 @@ const routes: Routes = [
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
-        path: 'referrals/:id/:purchaser',
+        path: 'referrals/:regId/:purchaser',
         component: ReferralMakerComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
@@ -294,7 +294,7 @@ const routes: Routes = [
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
-        path: 'organization/:id/volunteers',
+        path: 'organization/:orgId/volunteers',
         component: ProvincialAdminVolunteersOrganizationPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
@@ -319,7 +319,7 @@ const routes: Routes = [
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
-        path: 'referrals/:id/:purchaser',
+        path: 'referrals/:regId/:purchaser',
         component: ReferralMakerComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },

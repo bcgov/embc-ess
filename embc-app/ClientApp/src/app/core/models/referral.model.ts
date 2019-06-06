@@ -33,7 +33,6 @@ export interface IncidentalsReferral extends ReferralBase {
   approvedItems: string;
 }
 
-// tslint:disable-next-line: no-empty-interface
 export interface ClothingReferral extends ReferralBase {
   extremeWinterConditions: boolean;
 }
@@ -44,7 +43,6 @@ export interface LodgingReferral extends ReferralBase {
   numRooms?: number;
 }
 
-// tslint:disable-next-line: no-empty-interface
 export interface TransportationReferral extends ReferralBase {
   subType?: TransportationSubType;
   fromAddress?: string;

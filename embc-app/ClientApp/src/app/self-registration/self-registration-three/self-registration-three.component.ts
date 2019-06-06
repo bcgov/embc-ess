@@ -48,6 +48,8 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
           return;
         }
         this.displayRegistration(registration);
+      }, err => {
+        console.log('error getting current registration =', err);
       });
   }
 
@@ -93,21 +95,20 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
 
     // update client-side state
     this.onSave(reg);
+
     // push changes to backend
     this.service.createRegistration(reg)
       .subscribe((registration: Registration) => {
         this.submitting = false; // turn off submission state
         this.clearRegistration(); // prevent double submissions
         this.router.navigate(['../step-4/' + registration.essFileNumber], { relativeTo: this.route });
-      },
-        err => {
-          console.log(err);
-          // do not submit anymore
-          this.submitting = false; // turn off submission state
-          this.clearRegistration(); // prevent double submissions
-          this.router.navigate(['../error'], { relativeTo: this.route });
-        }
-      );
+      }, err => {
+        console.log('error creating registration = ', err);
+        // do not submit anymore
+        this.submitting = false; // turn off submission state
+        this.clearRegistration(); // prevent double submissions
+        this.router.navigate(['../error'], { relativeTo: this.route });
+      });
   }
 
   back() {

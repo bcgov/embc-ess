@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-import { AuthService } from '../../../core/services/auth.service';
-import { VolunteerService, VolunteerSearchQueryParameters } from '../../../core/services/volunteer.service';
-import { ListResult, Volunteer, User } from '../../../core/models';
-import { UniqueKeyService } from '../../../core/services/unique-key.service';
-import { SearchQueryParameters } from '../../../core/models/search-interfaces';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { VolunteerService, VolunteerSearchQueryParameters } from 'src/app/core/services/volunteer.service';
+import { ListResult, Volunteer, User } from 'src/app/core/models';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
 
 @Component({
   selector: 'app-volunteer-list',
@@ -30,8 +30,7 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
   previousQuery: SearchQueryParameters = {};
   sort = ''; // how do we sort the list
 
-  // this is the correct path prefix for the user routing
-  path: string;
+  path: string = null; // the base path for routing
 
   confirmModal: NgbModalRef = null;
 
@@ -59,13 +58,17 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
             this.getVolunteers(this.defaultSearchQuery)
               .subscribe((listResult: ListResult<Volunteer>) => {
                 this.resultsAndPagination = listResult;
+              }, err => {
+                this.notFoundMessage = err;
+                console.log('error getting volunteers =', err);
               });
           }, err => {
             this.notFoundMessage = err;
-          }
-          );
+            console.log('error getting volunteer =', err);
+          });
       }, err => {
         this.notFoundMessage = err;
+        console.log('error getting current user =', err);
       });
   }
 
@@ -77,13 +80,16 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
   getVolunteers(query: SearchQueryParameters = this.defaultSearchQuery): Observable<ListResult<Volunteer>> {
     // store the sorting
     query.sort = this.sort;
+
     // save the generic query for repeat searches
     this.previousQuery = query;
 
     // cast the search parameters into the new interface
     const q: VolunteerSearchQueryParameters = query;
+
     // save the organization id into the query from the default
     q.org_id = this.defaultSearchQuery.org_id;
+
     return this.volunteerService.getVolunteers(q);
   }
 
@@ -98,17 +104,22 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
         this.notFoundMessage = 'Searching ...';
       }
       this.resultsAndPagination = listResult;
+    }, err => {
+      console.log('error getting volunteers ', err);
     });
   }
+
   onPaginationEvent(event: SearchQueryParameters) {
     // save the pagination into the previous query and execute the query again
     this.getVolunteers(event).subscribe((listResult: ListResult<Volunteer>) => {
       this.resultsAndPagination = listResult;
+    }, err => {
+      console.log('error getting volunteers ', err);
     });
   }
 
-  modifyVolunteer(id?: string) {
-    if (!id) {
+  modifyVolunteer(volunteerId?: string) {
+    if (!volunteerId) {
       // no id means 'add user' -> clear unique key
       this.uniqueKeyService.clearKey();
       this.router.navigate([`/${this.path}/volunteer`, { orgId: this.defaultSearchQuery.org_id }]);
@@ -121,8 +132,8 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
         // modal was closed
         this.confirmModal = null;
 
-        // save the volunteer ID for lookup in the new component
-        this.uniqueKeyService.setKey(id);
+        // save volunteer ID for lookup in the new component
+        this.uniqueKeyService.setKey(volunteerId);
         this.router.navigate([`/${this.path}/volunteer`, { orgId: this.defaultSearchQuery.org_id }]);
       },
       () => {
