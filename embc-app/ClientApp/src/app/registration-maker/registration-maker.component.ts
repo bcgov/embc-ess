@@ -34,7 +34,8 @@ export class RegistrationMakerComponent implements OnInit {
   CANADA: Country; // the object representation of the default country
 
   pageTitle = 'Add an Evacuee';
-  activeForm = true; // this lets the user fill things out
+  activeForm: boolean; // not set initially
+
   // The model for the form data collected
   form: FormGroup;
   componentActive = true;
@@ -575,13 +576,13 @@ export class RegistrationMakerComponent implements OnInit {
     if (r.id == null) {
       this.registrationService
         .createRegistration(r)
-        .subscribe(() => {
+        .subscribe((registration: Registration) => {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee added successfully', 'success');
           if (addReferrals) {
             // save the registration ID for lookup in the new component
-            this.uniqueKeyService.setKey(r.id);
+            this.uniqueKeyService.setKey(registration.id);
             // go to summary page
             this.router.navigate([`/${this.path}/registration/summary`]);
           } else {
