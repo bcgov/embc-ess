@@ -24,7 +24,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .Where(e => e.EvacueeRegistration.Active == searchQuery.Active);
 
             if (searchQuery.HasQuery()) query = query.Where(e =>
-                EF.Functions.Like(e.LastName, $"{searchQuery.Query}%") ||
+                EF.Functions.Like(e.LastName, $"%{searchQuery.Query}%") ||
                 e.EvacueeRegistration.IncidentTask.TaskNumber == searchQuery.Query ||
                 e.EvacueeRegistration.EssFileNumber.ToString() == searchQuery.Query ||
                 EF.Functions.Like(e.EvacueeRegistration.HostCommunity.Name, $"%{searchQuery.Query}%") ||
