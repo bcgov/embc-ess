@@ -22,7 +22,7 @@
         "isPrimaryContact": false,
         "canAccessRestrictedFiles": false,
         "organization": {
-            "BCeIDBusinessGuid": "25F6FD8BC6C6401DB319311853FC518E"
+            "BCeIDBusinessGuid": "15F6FD8BC6C6401DB319311853FC518E"
         },
         "externaluseridentifier": null,
         "personType": "VOLN",
@@ -52,7 +52,7 @@
         "isPrimaryContact": true,
         "canAccessRestrictedFiles": false,
         "organization": {
-            "BCeIDBusinessGuid": "25F6FD8BC6C6401DB319311853FC518E"
+            "BCeIDBusinessGuid": "15F6FD8BC6C6401DB319311853FC518E"
         },
         "externaluseridentifier": null,
         "personType": "VOLN",
