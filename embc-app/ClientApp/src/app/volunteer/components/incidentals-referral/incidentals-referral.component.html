@@ -1,60 +1,58 @@
 <div *ngIf="referral">
   <div *ngIf="!readOnly">
-    <a [name]="uuid">
-      <form novalidate [formGroup]="form">
-        <div class="space-between align-items-center">
-          <app-valid-from-to [referralDate]="referral.validDates" (referralDateChange)="updateReferralDate($event)" [id]="uuid"></app-valid-from-to>
-          <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
-          <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
-        </div>
+    <form novalidate [formGroup]="form">
+      <div class="space-between align-items-center">
+        <app-valid-from-to [referralDate]="referral.validDates" (referralDateChange)="updateReferralDate($event)" [id]="uuid"></app-valid-from-to>
+        <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
+        <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
+      </div>
 
-        <div class="feature-block card border-0 p-0 mt-4">
-          <div class="row mt-4 mx-4">
-            <div class="col-4 pl-0 pr-3">
-              <app-evacuee-picker [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()">
-              </app-evacuee-picker>
-            </div>
-            <div class="col-8 pl-3 pr-0">
-              <div class="card border-0 h-100">
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="approvedItems" class="required">List approved items (use comma to separate items):</label>
-                    <textarea class="form-control" [class.is-invalid]="invalid('approvedItems')" id="approvedItems" rows="3" maxlength="250" placeholder="Details" formControlName="approvedItems" autocomplete="off"></textarea>
-                    <span class="invalid-feedback">Please list approved items</span>
-                    <small><strong>NOTE:</strong> If more than one Referral Form is issued for incidentals, the total of all Referral Forms must not exceed maximum allowable rates.</small>
-                  </div>
+      <div class="feature-block card border-0 p-0 mt-4">
+        <div class="row mt-4 mx-4">
+          <div class="col-4 pl-0 pr-3">
+            <app-evacuee-picker [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()">
+            </app-evacuee-picker>
+          </div>
+          <div class="col-8 pl-3 pr-0">
+            <div class="card border-0 h-100">
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="approvedItems" class="required">List approved items (use comma to separate items):</label>
+                  <textarea class="form-control" [class.is-invalid]="invalid('approvedItems')" id="approvedItems" rows="3" maxlength="250" placeholder="Details" formControlName="approvedItems" autocomplete="off"></textarea>
+                  <span class="invalid-feedback">Please list approved items</span>
+                  <small><strong>NOTE:</strong> If more than one Referral Form is issued for incidentals, the total of all Referral Forms must not exceed maximum allowable rates.</small>
                 </div>
-
-                <div class="card-footer blue-header space-between items-center">
-                  <div class="d-inline-flex font-weight-bold">UP TO A MAXIMUM VALUE OF {{currency.format(maximumAmount(form))}}</div>
-                  <div class="d-inline-flex items-center">
-                    <label class="mb-0">Total Amount:</label>
-                    <div class="input-with-icon px-3">
-                      <span aria-hidden="true">$</span>
-                      <input type="number" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control" formControlName="totalAmount">
-                    </div>
-                  </div>
-                </div>
-                <span class="invalid-feedback justify-content-end" [class.d-flex]="amountInput.classList.contains('is-invalid')">
-                  Please insert total amount for incidentals
-                </span>
               </div>
+
+              <div class="card-footer blue-header space-between items-center">
+                <div class="d-inline-flex font-weight-bold">UP TO A MAXIMUM VALUE OF {{currency.format(maximumAmount(form))}}</div>
+                <div class="d-inline-flex items-center">
+                  <label class="mb-0">Total Amount:</label>
+                  <div class="input-with-icon px-3">
+                    <span aria-hidden="true">$</span>
+                    <input type="number" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control" formControlName="totalAmount">
+                  </div>
+                </div>
+              </div>
+              <span class="invalid-feedback justify-content-end" [class.d-flex]="amountInput.classList.contains('is-invalid')">
+                Please insert total amount for incidentals
+              </span>
             </div>
-          </div>
-          <div class="card m-4">
-            <div class="card-body">
-              <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (formReady)="formInitialized('supplier', $event)"></app-supplier>
-            </div>
-          </div>
-          <div class="pl-4 pr-4 pb-3">
-            <textarea rows="4" appErrorBorder [when]="true" #comments class="form-control" formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
-            <span class="invalid-feedback justify-content-end">
-              The maximum line length is 250 characters and the maximum number of lines is 4
-            </span>
           </div>
         </div>
-      </form>
-    </a>
+        <div class="card m-4">
+          <div class="card-body">
+            <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (formReady)="formInitialized('supplier', $event)"></app-supplier>
+          </div>
+        </div>
+        <div class="pl-4 pr-4 pb-3">
+          <textarea rows="4" appErrorBorder [when]="true" #comments class="form-control" formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
+          <span class="invalid-feedback justify-content-end">
+            The maximum line length is 250 characters and the maximum number of lines is 4
+          </span>
+        </div>
+      </div>
+    </form>
   </div>
 
   <!-- *********************************SUMMARY BELOW****************************************** -->
