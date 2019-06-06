@@ -25,14 +25,14 @@ RUN chmod +x /usr/local/bin/dumb-init
 # #     browser.launch({executablePath: 'google-chrome-unstable'})
 # # ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
-# # Add user so we don't need --no-sandbox.
-# RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
-#   && mkdir -p /home/pptruser/Downloads /usr/src/app \
-#   && chown -R pptruser:pptruser /home/pptruser \
-#   && chown -R pptruser:pptruser /usr/src/app
+# Add user so we don't need --no-sandbox.
+RUN groupadd -r appuser && useradd -r -g appuser -G audio,video appuser \
+  && mkdir -p /home/appuser/Downloads /usr/src/app \
+  && chown -R appuser:appuser /home/appuser \
+  && chown -R appuser:appuser /usr/src/app
 
-# # Run everything after as non-privileged user.
-# USER pptruser
+# Run everything after as non-privileged user.
+USER appuser
 
 WORKDIR /usr/src/app
 
@@ -44,8 +44,6 @@ COPY . .
 RUN npm run build
 
 EXPOSE 3000
-
-USER 1001
 
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["npm", "start"]

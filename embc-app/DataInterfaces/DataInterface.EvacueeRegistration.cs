@@ -3,6 +3,7 @@ using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -115,6 +116,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 Content = JsonConvert.SerializeObject(notification)
             });
             await db.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Models.Db.EvacueeRegistrationAudit>> GetEvacueeRegistrationAuditTrailAsync(long essFileNumber)
+        {
+            return await db.EvacueeRegistrationAudits
+                .Where(e => e.EssFileNumber == essFileNumber)
+                .OrderByDescending(e => e.Date)
+                .ToArrayAsync();
         }
     }
 }

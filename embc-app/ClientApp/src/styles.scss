@@ -34,6 +34,15 @@
 // Components (that come after mygovbc theme)
 @import "styles/components/tables.scss";
 
+// monospace font used for fixed-size text blocks (eg, referral comments)
+// NB: same font as PDF renderer service
+@font-face {
+  font-family: 'LiberationMono';
+  src: url('assets/LiberationMono-Regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('assets/LiberationMono-Regular.woff') format('woff'), /* Pretty Modern Browsers */
+       url('assets/LiberationMono-Regular.ttf')  format('truetype'); /* Safari, Android, iOS */
+}
+
 
 .blue-header {
   background-color: theme-color(primary);
@@ -144,10 +153,14 @@ hr {
 //   }
 // }
 
-// .panel-footer {
-//   background-color: #fff;
-//   border-top: none;
-// }
+textarea.is-invalid {
+  background-image: none !important; // remove red X
+}
+
+.form-control {
+  // border-radius: 5px;
+  display: inline-block;
+}
 
 // // this breaks text/arrow layout in FF
 // // select.form-control:not([size]):not([multiple]) {

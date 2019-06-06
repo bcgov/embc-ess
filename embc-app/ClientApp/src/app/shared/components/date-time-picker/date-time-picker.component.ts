@@ -22,7 +22,7 @@ export class DateTimePickerComponent implements ControlValueAccessor {
   @Output() valueChange = new EventEmitter<Date>();
 
   readonly dateMask = [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]; // yyyy-mm-dd
-  readonly timeMask = [/\d/, /\d/, ':', /\d/, /\d/, ' ', /[a|A|p|P]/, /[m|M]/]; // hh:mm xx
+  readonly timeMask = [/\d/, /\d/, ':', /\d/, /\d/]; // HH:mm (24h)
 
   dateString: string = null;
   timeString: string = null;
@@ -42,7 +42,7 @@ export class DateTimePickerComponent implements ControlValueAccessor {
     if (value) {
       const m = moment(value);
       this.dateString = m.format('YYYY-MM-DD');
-      this.timeString = m.format('hh:mm a');
+      this.timeString = m.format('HH:mm');
     }
   }
 
@@ -75,7 +75,7 @@ export class DateTimePickerComponent implements ControlValueAccessor {
     }
 
     const dateTime = this.dateString + ' ' + this.timeString;
-    const m = moment(dateTime, 'YYYY-MM-DD hh:mm a', true);
+    const m = moment(dateTime, 'YYYY-MM-DD HH:mm', true);
 
     // emit change events
     if (m.isValid()) {

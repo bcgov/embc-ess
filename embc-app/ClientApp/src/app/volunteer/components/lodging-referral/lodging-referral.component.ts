@@ -27,15 +27,15 @@ export class LodgingReferralComponent extends AbstractReferralComponent<LodgingR
     private modals: NgbModal,
   ) {
     super(fb);
-    this.form.setControl('subType', this.fb.control(''));
-    this.form.setControl('numNights', this.fb.control(''));
-    this.form.setControl('numRooms', this.fb.control(''));
+    this.form.setControl('subType', this.fb.control(null));
+    this.form.setControl('numNights', this.fb.control(null));
+    this.form.setControl('numRooms', this.fb.control(null));
 
     // ensure a subType is selected
     this.f.subType.setValidators([Validators.required]); // ie, not null
 
     // set other validators according to 'subType' value
-    this.f.subType.valueChanges.subscribe(value => {
+    this.f.subType.valueChanges.subscribe((value: string) => {
       if (value === 'HOTEL') {
         // remove other validators
         this.f.numNights.clearValidators();

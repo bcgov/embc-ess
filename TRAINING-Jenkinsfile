@@ -10,7 +10,7 @@ class AppEnvironment {
 // EDIT LINE BELOW (Edit your environment TAG names)
 environments = [
   dev:new AppEnvironment(name:"Development",tag:"dev",previousTag:"dev-previous"),
-  test:new AppEnvironment(name:"Test",tag:"training",previousTag:"training-previous"),
+  test:new AppEnvironment(name:"Test",tag:"test",previousTag:"training-previous"),
   prod:new AppEnvironment(name:"Prod",tag:"prod",previousTag:"prod-previous")
 ]
 
@@ -56,12 +56,12 @@ def buildAndVerify(buildConfigName) {
   openshiftBuild(
     bldCfg: buildConfigName,
     showBuildLogs: 'true',
-    waitTime: '900000'
+    waitTime: '1200000'
   )
   openshiftVerifyBuild(
     bldCfg: buildConfigName,
     showBuildLogs: 'true',
-    waitTime: '900000'
+    waitTime: '1200000'
   )
 }
 
@@ -72,7 +72,7 @@ def tagImage(srcHash, destination, imageStream) {
     destTag: destination,
     srcStream: imageStream,
     srcTag: srcHash,
-    waitTime: '900000'
+    waitTime: '1200000'
   )
 }
 
@@ -90,8 +90,8 @@ def deployAndVerify(srcHash, environment, imageStream) {
   // verify deployment to an environment; e.g. [your-project-name]-dev
   openshiftVerifyDeployment(
     deploymentConfig: "${APP_NAME}",
-    namespace: "${PROJECT_NAMESPACE}-${environment}",
-    waitTime: '900000'
+    namespace: "${PROJECT_NAMESPACE}-test",
+    waitTime: '1200000'
   )
 }
 
@@ -153,7 +153,7 @@ node('master') {
 		try {
 
 		  // hold on to a copy of the last stable TEST environment (in case the upcoming deployment fails...)
-		  tagLatestStable(environment, stableTag, IMAGESTREAM_NAME)
+		  tagLatestStable("training", "training-previous", IMAGESTREAM_NAME)
 		  IMAGE_HASH = getLatestHash(IMAGESTREAM_NAME)
 		  deployAndVerify(IMAGE_HASH, environment, IMAGESTREAM_NAME)
 		  // all is good!
