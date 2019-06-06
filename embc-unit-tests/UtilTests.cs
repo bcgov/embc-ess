@@ -23,5 +23,13 @@ namespace embc_unit_tests
             var expected = new DateTime(2019, 5, 29, 16, 0, 0).ToString("MMM-dd-yyyy");
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void CanGetLocalTime12h24h()
+        {
+            var dt = new DateTime(2019, 6, 1, 17, 30, 0);
+            Assert.Equal(TimeZoneConverter.GetLocalTime(dt), "5:30 PM");
+            Assert.Equal(TimeZoneConverter.GetLocalTime24h(dt), "17:30");
+        }
     }
 }

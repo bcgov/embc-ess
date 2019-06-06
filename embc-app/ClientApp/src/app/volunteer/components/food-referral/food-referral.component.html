@@ -56,7 +56,7 @@
                 <div class="row align-items-end mt-3" *ngIf="subType==='GROCERIES'">
                   <div class="col">
                     <label for="numDaysMeals_{{uuid}}" class="required"># of days</label>
-                    <select class="form-control d-block w-auto" [class.is-invalid]="invalid('numDaysMeals')" id="numDaysMeals_{{uuid}}" formControlName="numDaysMeals">
+                    <select class="form-control d-block w-auto" appErrorBorder [when]="showErrorsWhen" id="numDaysMeals_{{uuid}}" formControlName="numDaysMeals">
                       <option [ngValue]="null">Select--</option>
                       <option *ngFor="let n of days" [ngValue]="n">{{n}}</option>
                     </select>

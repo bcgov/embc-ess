@@ -31,13 +31,13 @@
                 <div class="mt-3" *ngIf="subType==='TAXI'">
                   <div class="row col">
                     <label for="fromAddress_{{uuid}}" class="font-weight-normal required">From (address):</label>
-                    <input type="text" class="form-control" [class.is-invalid]="invalid('fromAddress')" id="fromAddress_{{uuid}}" formControlName="fromAddress">
+                    <input type="text" class="form-control" appErrorBorder [when]="showErrorsWhen" id="fromAddress_{{uuid}}" maxlength="50" formControlName="fromAddress">
                     <span class="invalid-feedback">Please add a "From" address</span>
                   </div>
                   <div class="m-3"></div>
                   <div class="row col">
                     <label for="toAddress_{{uuid}}" class="font-weight-normal required">To (address):</label>
-                    <input type="text" class="form-control" [class.is-invalid]="invalid('toAddress')" id="toAddress_{{uuid}}" formControlName="toAddress">
+                    <input type="text" class="form-control" appErrorBorder [when]="showErrorsWhen" id="toAddress_{{uuid}}" maxlength="50" formControlName="toAddress">
                     <span class="invalid-feedback">Please add a "To" address</span>
                   </div>
                 </div>
@@ -45,7 +45,7 @@
                 <div class="mt-3" *ngIf="subType==='OTHER'">
                   <div class="row col">
                     <label for="otherTransportModeDetails_{{uuid}}" class="font-weight-normal required">Please specify mode of transport</label>
-                    <input type="text" class="form-control" [class.is-invalid]="invalid('otherTransportModeDetails')" id="otherTransportModeDetails_{{uuid}}" formControlName="otherTransportModeDetails" placeholder="Please specify...">
+                    <input type="text" class="form-control" appErrorBorder [when]="showErrorsWhen" id="otherTransportModeDetails_{{uuid}}" maxlength="50" formControlName="otherTransportModeDetails" placeholder="Please specify...">
                     <span class="invalid-feedback">Please specify mode of transport</span>
                   </div>
                 </div>

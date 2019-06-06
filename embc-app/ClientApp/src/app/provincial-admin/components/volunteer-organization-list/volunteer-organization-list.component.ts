@@ -52,6 +52,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
   confirmModal: NgbModalRef = null;
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private modals: NgbModal,
     private volunteerService: VolunteerService,
@@ -76,7 +77,6 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     // save the base url path
     this.authService.path.subscribe((path: string) => this.path = path);
     this.previousQuery = this.copyProperties(this.defaultSearchQuery);
-
     const orgId = this.route.snapshot.params.id;
     if (orgId) {
       this.organizationService.getOrganizationById(orgId)

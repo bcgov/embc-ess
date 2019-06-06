@@ -1,0 +1,48 @@
+{
+    "apiVersion": "build.openshift.io/v1",
+    "kind": "BuildConfig",
+    "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+            "app": "sql-server"
+        },
+        "name": "sql-server",
+        "selfLink": "/apis/build.openshift.io/v1/namespaces/jhnamn-tools/buildconfigs/sql-server"
+    },
+    "spec": {
+        "failedBuildsHistoryLimit": 5,
+        "nodeSelector": null,
+        "output": {
+            "to": {
+                "kind": "ImageStreamTag",
+                "name": "sql-server:latest"
+            }
+        },
+        "postCommit": {},
+        "resources": {},
+        "runPolicy": "Serial",
+        "source": {
+            "contextDir": "/sql-server",
+            "git": {
+                "ref": "master",
+                "uri": "https://github.com/GeorgeWalker/embc-ess.git"
+            },
+            "type": "Git"
+        },
+        "strategy": {
+            "dockerStrategy": {
+                "dockerfilePath": "Dockerfile"
+            },
+            "type": "Docker"
+        },
+        "successfulBuildsHistoryLimit": 5,
+        "triggers": [
+            {
+                "type": "ConfigChange"
+            }
+        ]
+    },
+    "status": {
+        "lastVersion": 8
+    }
+}
