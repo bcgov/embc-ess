@@ -8,7 +8,6 @@
       "name": "Docker: Attach to Node",
       "type": "node",
       "request": "attach",
-      "preLaunchTask": "tsc-watch",
       "port": 9229,
       "address": "localhost",
       "cwd": "${workspaceFolder}",

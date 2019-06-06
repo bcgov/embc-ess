@@ -97,13 +97,13 @@
         <strong>May we disclose your location and the contact information for you and your family members?</strong>
       </p>
       <div class="form-check">
-        <input type="radio" class="form-check-input" name="restriction" [checked]="activeForm" (click)="disableInput(false)" id="restrictionFalse">
+        <input type="radio" class="form-check-input" name="restriction" [checked]="activeForm===true" (click)="disableInput(false)" id="restrictionFalse">
         <label class="form-check-label" for="restrictionFalse">
           <strong>Yes</strong>
         </label>
       </div>
       <div class="form-check">
-        <input type="radio" class="form-check-input" name="restriction" [checked]="!activeForm" (click)="disableInput(true)" id="restrictionTrue">
+        <input type="radio" class="form-check-input" name="restriction" [checked]="activeForm===false" (click)="disableInput(true)" id="restrictionTrue">
         <label class="form-check-label" for="restrictionTrue">
           <strong>No</strong> - (Emergency Support Services Team: Requires an authorized team member to complete the form manually.)
         </label>
@@ -111,7 +111,7 @@
     </div>
 
     <!-- EMERGENCY SUPPORT SERVICES TEAM HANDLING NOTE -->
-    <div *ngIf="!activeForm" class="mt-4">
+    <div *ngIf="activeForm===false" class="mt-4">
       <h1>Emergency Support Services Team Handling Note</h1>
       <p>
         Privacy is important. Please locate a volunteer that is trained to collect and handle sensitive information.
@@ -122,7 +122,7 @@
       <a routerLink="/dashboard">Return to the Emergency Support Services Dashboard</a>
     </div>
 
-    <div *ngIf="activeForm">
+    <div *ngIf="activeForm===true">
       <!-- EVACUEE DETAILS -->
       <div formGroupName="headOfHousehold" class="mt-4">
         <h2 class="blue-header font-weight-bold">Evacuee Details</h2>
@@ -511,7 +511,7 @@
       <div class="mb-4">
         <h2 class="blue-header font-weight-bold">Family Recovery Plans (Immediate &amp; Long Term)</h2>
         <div class="form-row">
-          <app-attention-icon [alignCenter]="false"></app-attention-icon>
+          <app-attention-icon></app-attention-icon>
           <p class="col">
             Emergency Support Services provides short term assistance to give you and your family a chance to recover.<br>
             Have you thought about what you will do after that time?
@@ -559,7 +559,7 @@
       <div class="mb-4">
         <h2 class="blue-header font-weight-bold">Other Agency Referrals Made Outside of the Reception Centre</h2>
         <div class="form-row mx-0">
-          <app-attention-icon [alignCenter]="false"></app-attention-icon>
+          <app-attention-icon></app-attention-icon>
           <textarea class="form-control" placeholder="Please specify" rows="4" formControlName="externalReferralsDetails"></textarea>
         </div>
       </div>
@@ -568,7 +568,7 @@
       <div class="mb-4">
         <h2 class="blue-header font-weight-bold">Internal Case Notes</h2>
         <div class="form-row mx-0">
-          <app-attention-icon [alignCenter]="false"></app-attention-icon>
+          <app-attention-icon></app-attention-icon>
           <p class="col">
             Please do not include any personal/medical information pertaining to the evacuee and their family.<br>
             Initial and date each comment that you add. Do not delete any previous case notes.

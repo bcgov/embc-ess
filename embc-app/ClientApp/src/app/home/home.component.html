@@ -13,12 +13,15 @@
     </div>
   </div>
 </div>
+
 <div class="card-deck">
   <div class="card">
     <div class="card-body">
       <span class="h3">Evacuee Self-Registration</span>
     </div>
-    <img src="assets/fingerForceRectangle.png" class="card-img-top " alt="A stylized finger touching a black rectangle">
+    <img *ngIf="!browserIE" src="assets/fingerForceRectangle.png" class="card-img-top " alt="A stylized finger touching a black rectangle">
+    <img *ngIf="browserIE" src="assets/fingerForceRectangle.png" height="50%" width="50%" alt="A stylized finger touching a black rectangle">
+
     <div class="card-body">
       <p>
         The Evacuee Self-Registration form is for evacuees to register with Emergency Support Services if you have been given an Evacuation Order and have been asked to leave your home.
@@ -32,7 +35,9 @@
     <div class="card-body">
       <span class="h3">Volunteer Login</span>
     </div>
-    <img src="assets/sittingAtTheCheckmark.png" class="card-img-top " alt="Two people sitting at a checkmark clock">
+    <img *ngIf="!browserIE" src="assets/sittingAtTheCheckmark.png" class="card-img-top " alt="Two people sitting at a checkmark clock">
+    <img *ngIf="browserIE" src="assets/sittingAtTheCheckmark.png" height="50%" width="50%" alt="Two people sitting at a checkmark clock">
+
     <div class="card-body">
       <p>
         The Evacuee Self-Registration form is for evacuees to register with Emergency Support Services if you have been given an Evacuation Order and have been asked to leave your home.

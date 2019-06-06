@@ -20,7 +20,7 @@
               <div class="card-body mb-0">
                 <div>
                   <label for="subType_{{uuid}}" class="required">Transport required:</label>
-                  <select class="form-control d-block w-auto" [class.is-invalid]="invalid('subType')" id="subType_{{uuid}}" formControlName="subType">
+                  <select class="form-control d-block w-auto" appErrorBorder [when]="showErrorsWhen" id="subType_{{uuid}}" formControlName="subType">
                     <option [ngValue]="null">Select--</option>
                     <option value="TAXI">Taxi</option>
                     <option value="OTHER">Other</option>
@@ -31,13 +31,13 @@
                 <div class="mt-3" *ngIf="subType==='TAXI'">
                   <div class="row col">
                     <label for="fromAddress_{{uuid}}" class="font-weight-normal required">From (address):</label>
-                    <input type="text" class="form-control" [class.is-invalid]="invalid('fromAddress')" id="fromAddress_{{uuid}}" formControlName="fromAddress">
+                    <input type="text" class="form-control" appErrorBorder [when]="showErrorsWhen" id="fromAddress_{{uuid}}" maxlength="50" formControlName="fromAddress">
                     <span class="invalid-feedback">Please add a "From" address</span>
                   </div>
                   <div class="m-3"></div>
                   <div class="row col">
                     <label for="toAddress_{{uuid}}" class="font-weight-normal required">To (address):</label>
-                    <input type="text" class="form-control" [class.is-invalid]="invalid('toAddress')" id="toAddress_{{uuid}}" formControlName="toAddress">
+                    <input type="text" class="form-control" appErrorBorder [when]="showErrorsWhen" id="toAddress_{{uuid}}" maxlength="50" formControlName="toAddress">
                     <span class="invalid-feedback">Please add a "To" address</span>
                   </div>
                 </div>
@@ -45,7 +45,7 @@
                 <div class="mt-3" *ngIf="subType==='OTHER'">
                   <div class="row col">
                     <label for="otherTransportModeDetails_{{uuid}}" class="font-weight-normal required">Please specify mode of transport</label>
-                    <input type="text" class="form-control" [class.is-invalid]="invalid('otherTransportModeDetails')" id="otherTransportModeDetails_{{uuid}}" formControlName="otherTransportModeDetails" placeholder="Please specify...">
+                    <input type="text" class="form-control" appErrorBorder [when]="showErrorsWhen" id="otherTransportModeDetails_{{uuid}}" maxlength="50" formControlName="otherTransportModeDetails" placeholder="Please specify...">
                     <span class="invalid-feedback">Please specify mode of transport</span>
                   </div>
                 </div>
@@ -76,10 +76,9 @@
         </div>
 
         <div class="pl-4 pr-4 pb-3">
-          <textarea rows="4" appErrorBorder [when]="true" #comments class="form-control" formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
-          <span class="invalid-feedback justify-content-end">
-            The maximum line length is 250 characters and the maximum number of lines is 4
-          </span>
+          <textarea class="form-control" appErrorBorder [when]="true" #comments formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
+          <span class="invalid-feedback" *ngIf="f.comments.errors?.tooLong">Please limit comments to 250 characters</span>
+          <span class="invalid-feedback" *ngIf="f.comments.errors?.tooTall">Please limit comments to 5 lines</span>
         </div>
       </div>
     </form>
@@ -155,7 +154,7 @@
         <span class="value">{{currency.format(referral.totalAmount)}}</span>
       </li>
       <li>
-        <span class="comments">{{referral.comments || "&nbsp;"}}</span>
+        <span class="fixed-size">{{referral.comments || "&nbsp;"}}</span>
       </li>
     </ul>
   </div>

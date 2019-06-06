@@ -157,9 +157,9 @@
 
     <div class="modal-body">
       <p>You are requesting to view an evacuee file. Please confirm that you have permission by selecting a reason code below.</p>
-
       <select class="form-control w-50" [(ngModel)]="reason">
         <option [ngValue]="null">Please select---</option>
+        <option value="checkCaseNotes">Access Internal Case Notes</option>
         <option value="evacueeError">Evacuee made an error</option>
         <option value="evacueeAddition">Evacuee wants to make an addition</option>
         <option value="invalidTaskNumber">Task number is incorrect</option>
