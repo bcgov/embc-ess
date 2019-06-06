@@ -18,7 +18,7 @@
               <div class="card-body mb-0">
                 <div>
                   <label for="subType_{{uuid}}" class="required">Type of lodging required:</label>
-                  <select class="form-control d-block w-auto" appErrorBorder [when]="showErrorsWhen" id="subType_{{uuid}}" formControlName="subType">
+                  <select class="form-control d-block w-auto" [class.is-invalid]="invalid('subType')" id="subType_{{uuid}}" formControlName="subType">
                     <option [ngValue]="null">Select--</option>
                     <option value="HOTEL">Hotel/Motel</option>
                     <option value="BILLETING">Billeting</option>
@@ -31,7 +31,7 @@
                   <ng-container *ngSwitchCase="'HOTEL'">
                     <div class="col-4 pr-2">
                       <label for="numNights_{{uuid}}" class="font-weight-normal required"># Nights</label>
-                      <select class="form-control" appErrorBorder [when]="showErrorsWhen" id="numNights_{{uuid}}" formControlName="numNights">
+                      <select class="form-control" [class.is-invalid]="invalid('numNights')" id="numNights_{{uuid}}" formControlName="numNights">
                         <option [ngValue]="null">Select--</option>
                         <option *ngFor="let n of nights" [ngValue]="n">{{n}}</option>
                       </select>
@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-4 pl-2">
                       <label for="numRooms_{{uuid}}" class="font-weight-normal required"># Rooms</label>
-                      <select class="form-control" appErrorBorder [when]="showErrorsWhen" id="numRooms_{{uuid}}" formControlName="numRooms">
+                      <select class="form-control" [class.is-invalid]="invalid('numRooms')" id="numRooms_{{uuid}}" formControlName="numRooms">
                         <option [ngValue]="null">Select--</option>
                         <option *ngFor="let n of rooms" [ngValue]="n">{{n}}</option>
                       </select>
@@ -50,7 +50,7 @@
                   <ng-container *ngSwitchCase="'BILLETING'">
                     <div class="col">
                       <label for="numNights_{{uuid}}" class="font-weight-normal required"># Nights</label>
-                      <select class="form-control d-block w-auto" appErrorBorder [when]="showErrorsWhen" id="numNights_{{uuid}}" formControlName="numNights">
+                      <select class="form-control d-block w-auto" [class.is-invalid]="invalid('numNights')" id="numNights_{{uuid}}" formControlName="numNights">
                         <option [ngValue]="null">Select--</option>
                         <option *ngFor="let n of nights" [ngValue]="n">{{n}}</option>
                       </select>
@@ -62,7 +62,7 @@
                   <ng-container *ngSwitchCase="'GROUP'">
                     <div class="col">
                       <label for="numNights_{{uuid}}" class="font-weight-normal required"># Nights</label>
-                      <select class="form-control d-block w-auto" appErrorBorder [when]="showErrorsWhen" id="numNights_{{uuid}}" formControlName="numNights">
+                      <select class="form-control d-block w-auto" [class.is-invalid]="invalid('numNights')" id="numNights_{{uuid}}" formControlName="numNights">
                         <option [ngValue]="null">Select--</option>
                         <option *ngFor="let n of nights" [ngValue]="n">{{n}}</option>
                       </select>
@@ -82,9 +82,10 @@
         </div>
 
         <div class="pl-4 pr-4 pb-3">
-          <textarea class="form-control" appErrorBorder [when]="true" #comments formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
-          <span class="invalid-feedback" *ngIf="f.comments.errors?.tooLong">Please limit comments to 250 characters</span>
-          <span class="invalid-feedback" *ngIf="f.comments.errors?.tooTall">Please limit comments to 5 lines</span>
+          <textarea rows="4" appErrorBorder [when]="true" #comments class="form-control" formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
+          <span class="invalid-feedback justify-content-end">
+            The maximum line length is 250 characters and the maximum number of lines is 4
+          </span>
         </div>
       </div>
     </form>

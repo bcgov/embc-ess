@@ -18,12 +18,10 @@
               <div class="card-body">
                 <div class="form-group">
                   <label for="approvedItems" class="required">List approved items (use comma to separate items):</label>
-                  <textarea class="form-control" appErrorBorder [when]="showErrorsWhen" id="approvedItems" #approvedItems formControlName="approvedItems" placeholder="Details" autocomplete="off"></textarea>
-                  <span class="invalid-feedback" *ngIf="f.approvedItems.errors?.required">Please list approved items</span>
-                  <span class="invalid-feedback" *ngIf="f.approvedItems.errors?.tooLong">Please limit approved items to 250 characters</span>
-                  <span class="invalid-feedback" *ngIf="f.approvedItems.errors?.tooTall">Please limit approved items to 5 lines</span>
+                  <textarea class="form-control" [class.is-invalid]="invalid('approvedItems')" id="approvedItems" rows="3" maxlength="250" placeholder="Details" formControlName="approvedItems" autocomplete="off"></textarea>
+                  <span class="invalid-feedback">Please list approved items</span>
+                  <small><strong>NOTE:</strong> If more than one Referral Form is issued for incidentals, the total of all Referral Forms must not exceed maximum allowable rates.</small>
                 </div>
-                <p class="small"><strong>NOTE:</strong> If more than one Referral Form is issued for incidentals, the total of all Referral Forms must not exceed maximum allowable rates.</p>
               </div>
 
               <div class="card-footer blue-header space-between items-center">
@@ -32,7 +30,7 @@
                   <label class="mb-0">Total Amount:</label>
                   <div class="input-with-icon px-3">
                     <span aria-hidden="true">$</span>
-                    <input type="number" class="form-control" appErrorBorder [when]="showErrorsWhen" #amountInput formControlName="totalAmount">
+                    <input type="number" appErrorBorder [when]="showErrorsWhen" #amountInput class="form-control" formControlName="totalAmount">
                   </div>
                 </div>
               </div>
@@ -48,9 +46,10 @@
           </div>
         </div>
         <div class="pl-4 pr-4 pb-3">
-          <textarea class="form-control" appErrorBorder [when]="true" #comments formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
-          <span class="invalid-feedback" *ngIf="f.comments.errors?.tooLong">Please limit comments to 250 characters</span>
-          <span class="invalid-feedback" *ngIf="f.comments.errors?.tooTall">Please limit comments to 5 lines</span>
+          <textarea rows="4" appErrorBorder [when]="true" #comments class="form-control" formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
+          <span class="invalid-feedback justify-content-end">
+            The maximum line length is 250 characters and the maximum number of lines is 4
+          </span>
         </div>
       </div>
     </form>
