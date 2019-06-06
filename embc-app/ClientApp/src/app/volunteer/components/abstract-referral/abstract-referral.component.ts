@@ -36,6 +36,7 @@ export class AbstractReferralComponent<T extends ReferralBase> implements OnInit
   @Output() formChange = new EventEmitter<T>();
   @Output() formValidationChange = new EventEmitter<boolean>();
 
+
   // For the purpose of accessibility this number is likely unique.
   // If it breaks and isn't unique it won't break the form. (poor man's guid)
   uuid = uuid();

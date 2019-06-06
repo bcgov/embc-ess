@@ -41,13 +41,13 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     // Update form values based on the state
     this.currentRegistration$
       .pipe(takeWhile(() => this.componentActive))
-      .subscribe(value => {
-        if (!value) {
+      .subscribe((registration: Registration) => {
+        if (!registration) {
           // you shouldn't be here without registration data (redirect to step-1)
           this.router.navigate(['../step-1'], { relativeTo: this.route });
           return;
         }
-        this.displayRegistration(value);
+        this.displayRegistration(registration);
       });
   }
 
@@ -94,20 +94,20 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     // update client-side state
     this.onSave(reg);
     // push changes to backend
-    this.service.createRegistration(reg).subscribe(
-      data => {
+    this.service.createRegistration(reg)
+      .subscribe((registration: Registration) => {
         this.submitting = false; // turn off submission state
         this.clearRegistration(); // prevent double submissions
-        this.router.navigate(['../step-4/' + data.essFileNumber], { relativeTo: this.route });
+        this.router.navigate(['../step-4/' + registration.essFileNumber], { relativeTo: this.route });
       },
-      err => {
-        console.log(err);
-        // do not submit anymore
-        this.submitting = false; // turn off submission state
-        this.clearRegistration(); // prevent double submissions
-        this.router.navigate(['../error'], { relativeTo: this.route });
-      }
-    );
+        err => {
+          console.log(err);
+          // do not submit anymore
+          this.submitting = false; // turn off submission state
+          this.clearRegistration(); // prevent double submissions
+          this.router.navigate(['../error'], { relativeTo: this.route });
+        }
+      );
   }
 
   back() {

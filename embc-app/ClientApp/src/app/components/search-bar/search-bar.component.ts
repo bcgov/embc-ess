@@ -13,7 +13,7 @@ import { Component, ViewChild, ElementRef, Input, Output, EventEmitter } from '@
           (keydown.enter)="doSearch()">
       </div>
       <div class="col-auto">
-        <button class="btn btn-primary" (click)="doSearch()">SEARCH</button>
+        <button class="btn btn-primary text-uppercase" (click)="doSearch()">Search</button>
       </div>
     </div>
   `,

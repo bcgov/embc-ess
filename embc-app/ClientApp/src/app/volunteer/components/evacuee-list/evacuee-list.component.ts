@@ -38,9 +38,9 @@ export class EvacueeListComponent implements OnInit {
 
   ngOnInit() {
     // save the base url path
-    this.authService.path.subscribe(p => this.path = p);
-    this.getEvacuees().subscribe(r => {
-      this.resultsAndPagination = r;
+    this.authService.path.subscribe((path: string) => this.path = path);
+    this.getEvacuees().subscribe((listResult: ListResult<Evacuee>) => {
+      this.resultsAndPagination = listResult;
     });
   }
 
@@ -57,20 +57,20 @@ export class EvacueeListComponent implements OnInit {
     // submit and collect search with a query string
     const query = this.defaultSearchQuery;
     query.q = this.queryString;
-    this.getEvacuees(query).subscribe(r => {
-      if (r.data.length <= 0) {
+    this.getEvacuees(query).subscribe((listResult: ListResult<Evacuee>) => {
+      if (listResult.data.length <= 0) {
         this.notFoundMessage = 'No results found.';
       } else {
         this.notFoundMessage = 'Searching ...';
       }
-      this.resultsAndPagination = r;
+      this.resultsAndPagination = listResult;
     });
   }
 
   onPaginationEvent(event: SearchQueryParameters) {
     // save the pagination into the previous query and execute the query again
-    this.getEvacuees(event).subscribe(r => {
-      this.resultsAndPagination = r;
+    this.getEvacuees(event).subscribe((listResult: ListResult<Evacuee>) => {
+      this.resultsAndPagination = listResult;
     });
   }
 

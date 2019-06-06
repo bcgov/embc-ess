@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../../core/services/auth.service';
 import { VolunteerService, VolunteerSearchQueryParameters } from '../../../core/services/volunteer.service';
-import { ListResult, Volunteer, PaginationSummary, User, Organization } from '../../../core/models';
+import { ListResult, Volunteer, PaginationSummary, Organization } from '../../../core/models';
 import { UniqueKeyService } from '../../../core/services/unique-key.service';
 import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
 import { OrganizationService } from 'src/app/core/services/organization.service';
@@ -21,21 +21,26 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
   resultsAndPagination: ListResult<Volunteer>;
   notFoundMessage = 'Searching ...';
 
-  // the parent organization of all volunteers shown in this list
+  // the organization of all volunteers shown in this list
   currentOrganization: Organization;
-  currentOrganizationId: string;
+
   defaultSearchQuery: VolunteerSearchQueryParameters = {
     offset: 0,
     limit: 20,
   };
+
   // a place to save the last query parameters
   previousQuery: VolunteerSearchQueryParameters;
+
   // the contents of the searchbox
   queryString: string;
+
   // show types of users
   userType = 'SHOW_ALL';
+
   // doesn't need to be an object besides it provides a visual seper
   sort = ''; // how do we sort the list
+
   // this is the correct path prefix for the user
   path: string;
 
@@ -53,6 +58,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     private organizationService: OrganizationService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
+    private route: ActivatedRoute,
   ) { }
 
   // convenience getters
@@ -68,14 +74,21 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // save the base url path
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
     this.previousQuery = this.copyProperties(this.defaultSearchQuery);
-    // collect all volunteers
-    this.getVolunteers();
-    if (this.uniqueKeyService.getKey()) {
-      this.organizationService.getOrganizationById(this.uniqueKeyService.getKey()).subscribe(o => {
-        this.currentOrganization = o;
-      });
+
+    const orgId = this.route.snapshot.params.id;
+    if (orgId) {
+      this.organizationService.getOrganizationById(orgId)
+        .subscribe((organization: Organization) => {
+          // save the organization
+          this.currentOrganization = organization;
+          // collect all volunteers
+          this.getVolunteers();
+        }, err => {
+          console.log('error getting organization =', err);
+          this.router.navigate([`/${this.path}/organizations`]);
+        });
     } else {
       // TODO: when the user gets kicked out of the organization for making an edit redirect them back to the place they can make a decision
       this.router.navigate([`/${this.path}/organizations`]);
@@ -87,7 +100,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     if (this.confirmModal) { this.confirmModal.dismiss(); }
   }
 
-  copyProperties(obj: {}): {} {
+  private copyProperties(obj: {}): {} {
     const fresh = {};
     for (const k in obj) {
       if (k) { fresh[k] = obj[k]; }
@@ -96,15 +109,16 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
   }
 
   // get volunteers with supplied params defaults defined in
-  getVolunteers() {
-    // the check if the numeric value of the toggle matches the global constant for view
-
+  private getVolunteers() {
     // the query is the value in the searchbox
     this.previousQuery.q = this.queryString;
+
     // the organization is the one in the global state
-    this.previousQuery.org_id = this.uniqueKeyService.getKey();
+    this.previousQuery.org_id = this.route.snapshot.params.id;
+
     // pagination is calculated
     this.previousQuery.offset = this.previousQuery.offset;
+
     // how many records we want
     this.previousQuery.limit = this.previousQuery.limit;
 
@@ -123,14 +137,17 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
       default:
         break;
     }
+
     // go get the collection of meta and data
     // get the volunteers using the parameters supplied
     this.volunteerService.getVolunteers(this.previousQuery)
-      .subscribe((v: ListResult<Volunteer>) => {
+      .subscribe((listResult: ListResult<Volunteer>) => {
         // save the result of the service into an object with both the result and service
-        this.resultsAndPagination = v;
+        this.resultsAndPagination = listResult;
         // Set the not found result message. It should be hidden when results flow into the form.
         this.notFoundMessage = 'No results found.';
+      }, err => {
+        console.log('error getting volunteers =', err);
       });
   }
 
@@ -150,7 +167,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     if (!id) {
       // no id means 'add user' -> clear unique key
       this.uniqueKeyService.clearKey();
-      this.router.navigate([`/${this.path}/volunteer`]);
+      this.router.navigate([`/${this.path}/volunteer`, { orgId: this.previousQuery.org_id }]);
       return;
     }
 
@@ -164,7 +181,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
 
         // save the volunteer ID for lookup in the new component
         this.uniqueKeyService.setKey(id);
-        this.router.navigate([`/${this.path}/volunteer`]);
+        this.router.navigate([`/${this.path}/volunteer`, { orgId: this.previousQuery.org_id }]);
       },
       () => {
         // modal was dismissed

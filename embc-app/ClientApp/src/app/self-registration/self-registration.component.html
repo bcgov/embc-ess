@@ -1,14 +1,13 @@
-<div style="position: relative;">
-  <div class="row">
+<div class="row">
 
-    <!-- Step forms go here... -->
-    <div class="col-md-8 col-sm-12">
-      <router-outlet></router-outlet>
-    </div>
+  <!-- Step forms go here... -->
+  <div class="col-md-8 col-sm-12">
+    <router-outlet></router-outlet>
+  </div>
 
-    <div class="col-md-4 col-sm-12">
-      <!-- TODO: Refactor into a common component Stepper -->
-      <!-- <section class="step" style="display: block; background-color: #F1F4FA">
+  <div class="col-md-4 col-sm-12">
+    <!-- TODO: Refactor into a common component Stepper -->
+    <!-- <section class="step" style="display: block; background-color: #F1F4FA">
         <h3 class="blue-header">EVACUEE PROFILE</h3>
         <section style="padding-top: 15px; padding-bottom: 20px;">
           <mat-vertical-stepper [linear]="true" #stepper>
@@ -25,38 +24,21 @@
         </section>
       </section> -->
 
-      <app-side-box title="Important Notice for Evacuees">
-        <section role="content">
-          <p>
-            If you are unsure how to register additional family members, please contact the Emergency Support Services team through your local government.
-          </p>
-        </section>
-        <!-- <section role="footer">
-          <button class="btn btn-primary" routerLink="/">Learn More</button>
-        </section> -->
-      </app-side-box>
-
-      <app-side-box title="Useful Information" icon="list">
-        <section role="content">
-
-          <p>
-            If you have insurance, please keep all of your receipts and contact your insurance provider as soon as possible.
-            If you are having difficulty contacting your insurance provider, contact the Insurance Bureau of Canada at <a href="tel:18442275422">1-844-227-5422</a>.
-          </p>
-          <!-- <p>What you need to know about:</p>
-          <ul class="arrow">
-            <li><a
-                href="https://www2.gov.bc.ca/gov/content/employment-business/business/pill-press/pill-press-waiver-holder#ap"
-                target="blank">Link 1</a></li>
-            <li><a
-                href="https://www2.gov.bc.ca/gov/content/employment-business/business/pill-press/pill-press-controlled-equipment#enp"
-                target="blank">Link 2</a></li>
-            <li><a
-                href="https://www2.gov.bc.ca/gov/content/employment-business/business/pill-press/pill-press-authorized-owner#btl"
-                target="blank">Link 3</a></li>
-          </ul> -->
-        </section>
-      </app-side-box>
-    </div>
+    <app-side-box title="Useful Information" icon="list">
+      <p>
+        Each additional immediate family member needs to be added to your Evacuee Registration if they reside in the same household as you.
+      </p>
+      <p>
+        Roommates or tenants of the same address need to be registered separately.
+      </p>
+    </app-side-box>
+    <app-side-box title="Useful Information" icon="list">
+      <p>
+        If you have insurance, please keep all of your receipts and contact your insurance provider as soon as possible.
+      </p>
+      <p>
+        If you are having difficulty contacting your insurance provider, contact the Insurance Bureau of Canada at <a href="tel:18442275422">1-844-227-5422</a>.
+      </p>
+    </app-side-box>
   </div>
 </div>

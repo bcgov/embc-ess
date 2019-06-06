@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { combineLatest, concat } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+// import { combineLatest, concat } from 'rxjs';
+// import { map } from 'rxjs/operators';
 // import { Store } from '@ngrx/store';
 // import { AppState } from '../store';
 import { ListResult, Organization, Community, PaginationSummary } from '../../../core/models';
@@ -37,7 +37,7 @@ export class OrganizationListComponent implements OnInit {
 
   // simple server response
   resultsAndPagination: ListResult<Organization>;
-  notFoundMessage = 'Searching ...';
+  notFoundMessage = 'Searching ...'; // TODO: should use spinner instead
   // the base path for routing
   path: string;
 
@@ -46,7 +46,6 @@ export class OrganizationListComponent implements OnInit {
   constructor(
     private organizationService: OrganizationService,
     private router: Router,
-    private route: ActivatedRoute,
     // private store: Store<AppState>,
     private fb: FormBuilder,
     private authService: AuthService,
@@ -63,7 +62,8 @@ export class OrganizationListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.path.subscribe(p => this.path = p);
+    this.authService.path.subscribe((path: string) => this.path = path);
+
     this.form = this.fb.group({ searchbox: null });
 
     // collect all organizations
@@ -72,24 +72,26 @@ export class OrganizationListComponent implements OnInit {
 
   // get organizations with supplied params defaults defined in
   getOrganizations({ limit, offset, q: query, sort }: SearchQueryParameters = {}) {
-    this.organizationService.getOrganizations(limit, offset, query, sort).subscribe((v: ListResult<Organization>) => {
-      this.resultsAndPagination = v;
-      this.notFoundMessage = 'No results found.';
-    });
+    this.organizationService.getOrganizations(limit, offset, query, sort)
+      .subscribe((listResult: ListResult<Organization>) => {
+        this.resultsAndPagination = listResult;
+        this.notFoundMessage = 'No results found.';
+      });
   }
 
   filter(community: Community) {
     this.getOrganizations({ q: community ? community.id : null });
   }
-  modifyOrganization(id?: string) {
-    // load the organization maker
-    this.uniqueKeyService.setKey(id);
-    this.router.navigate([`/${this.path}/organization`]);
 
+  modifyOrganization(orgId?: string) {
+    // load the organization maker
+    this.uniqueKeyService.setKey(orgId);
+    this.router.navigate([`/${this.path}/organization`]);
   }
-  modifyOrganizationVolunteers(id?: string) {
+
+  modifyOrganizationVolunteers(orgId?: string) {
     // load the organization's volunteer list
-    this.uniqueKeyService.setKey(id);
-    this.router.navigate([`/${this.path}/organization/volunteers`]);
+    this.router.navigate([`/${this.path}/organization/${orgId}/volunteers`]);
   }
+
 }
