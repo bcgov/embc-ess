@@ -1,5 +1,4 @@
 <div class="row" *ngIf="registration">
-
   <div *ngIf="editMode">
     <h1>Identify Supports</h1>
 
@@ -60,23 +59,23 @@
       <div *ngIf="stepCounter>=2" class="card d-block border-0 p-4">
         <label>Select required supports:</label>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood" (change)="foodReferralChange()">
+          <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood" (change)="foodReferralChange(false)">
           <label class="form-check-label" for="supportFood">Food</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="lodgingReferrals.length > 0" id="supportLodging" (change)="lodgingReferralChange()">
+          <input type="checkbox" class="form-check-input" [checked]="lodgingReferrals.length > 0" id="supportLodging" (change)="lodgingReferralChange(false)">
           <label class="form-check-label" for="supportLodging">Lodging</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="clothingReferrals.length > 0" id="supportClothing" (change)="clothingReferralChange()">
+          <input type="checkbox" class="form-check-input" [checked]="clothingReferrals.length > 0" id="supportClothing" (change)="clothingReferralChange(false)">
           <label class="form-check-label" for="supportClothing">Clothing</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="transportationReferrals.length > 0" id="supportTransportation" (change)="transportationReferralChange()">
+          <input type="checkbox" class="form-check-input" [checked]="transportationReferrals.length > 0" id="supportTransportation" (change)="transportationReferralChange(false)">
           <label class="form-check-label" for="supportTransportation">Transportation</label>
         </div>
         <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="incidentalsReferrals.length > 0" id="supportIncidentals" (change)="incidentalsReferralChange()">
+          <input type="checkbox" class="form-check-input" [checked]="incidentalsReferrals.length > 0" id="supportIncidentals" (change)="incidentalsReferralChange(false)">
           <label class="form-check-label" for="supportIncidentals">Incidentals</label>
         </div>
       </div>
@@ -84,16 +83,17 @@
       <!-- loop through all referrals by type -->
       <section class="clearfix">
         <article *ngFor="let r of foodReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <div [id]="'food_'+i">
+          <div [id]="'food_'+i.toString()">
             <app-referral-list-item type="FOOD" (remove)="remove(foodReferrals, i)" (add)="addFoodReferral()">
               <app-food-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
               </app-food-referral>
             </app-referral-list-item>
+
           </div>
         </article>
 
         <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <div [id]="'lodging_'+i">
+          <div [id]="'lodging_'+i.toString()">
             <app-referral-list-item type="LODGING" (remove)="remove(lodgingReferrals, i)" (add)="addLodgingReferral()">
               <app-lodging-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
               </app-lodging-referral>
@@ -102,7 +102,7 @@
         </article>
 
         <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <div [id]="'clothing_'+i">
+          <div [id]="'clothing_'+i.toString()">
             <app-referral-list-item type="CLOTHING" (remove)="remove(clothingReferrals, i)" (add)="addClothingReferral()">
               <app-clothing-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
               </app-clothing-referral>
@@ -111,7 +111,7 @@
         </article>
 
         <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <div [id]="'transportation_'+i">
+          <div [id]="'transportation_'+i.toString()">
             <app-referral-list-item type="TRANSPORTATION" (remove)="remove(transportationReferrals, i)" (add)="addTransportationReferral()">
               <app-transportation-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
               </app-transportation-referral>
@@ -120,7 +120,7 @@
         </article>
 
         <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <div [id]="'incidentals_'+i">
+          <div [id]="'incidentals_'+i.toString()">
             <app-referral-list-item type="INCIDENTALS" (remove)="remove(incidentalsReferrals, i)" (add)="addIncidentalsReferral()">
               <app-incidentals-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
               </app-incidentals-referral>

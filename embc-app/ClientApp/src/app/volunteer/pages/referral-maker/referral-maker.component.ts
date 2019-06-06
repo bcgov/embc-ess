@@ -14,6 +14,7 @@ import {
 } from 'src/app/core/models';
 
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
+import { delay } from 'q';
 
 interface ReferralFormControl<T = any> {
   value: T;
@@ -106,12 +107,14 @@ export class ReferralMakerComponent implements OnInit {
         this.router.navigate([`/${this.path}/`]);
       });
   }
-  public triggerScrollTo(name: string) {
+  public triggerScrollTo(anchor: string) {
     const config: ScrollToConfigOptions = {
-      target: name
+      target: anchor
     };
-    console.log('Scrolling to ' + name);
-    this.scrollToService.scrollTo(config);
+    // wait for a split second
+    setTimeout(() => {
+      this.scrollToService.scrollTo(config);
+    }, 1);
   }
 
   updateReferral(referralForm: ReferralFormControl, value: any): void {
@@ -252,7 +255,7 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
-  addIncidentalsReferral() {
+  addIncidentalsReferral(anchoring = true) {
     const referral: Partial<IncidentalsReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
@@ -265,9 +268,10 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.incidentalsReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    if (anchoring) { this.triggerScrollTo('incidentals_' + (this.incidentalsReferrals.length - 1).toString()); }
   }
 
-  addFoodReferral() {
+  addFoodReferral(anchoring = true) {
     const referral: Partial<FoodReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
@@ -280,9 +284,11 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.foodReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    if (anchoring) { this.triggerScrollTo('food_' + (this.foodReferrals.length - 1).toString()); }
+
   }
 
-  addLodgingReferral() {
+  addLodgingReferral(anchoring = true) {
     const referral: Partial<LodgingReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
@@ -295,9 +301,11 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.lodgingReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    if (anchoring) { this.triggerScrollTo('lodging_' + (this.lodgingReferrals.length - 1).toString()); }
+
   }
 
-  addClothingReferral() {
+  addClothingReferral(anchoring = true) {
     const referral: Partial<ClothingReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
@@ -310,9 +318,11 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.clothingReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    if (anchoring) { this.triggerScrollTo('clothing_' + (this.clothingReferrals.length - 1).toString()); }
+
   }
 
-  addTransportationReferral() {
+  addTransportationReferral(anchoring = true) {
     const referral: Partial<TransportationReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
@@ -325,7 +335,7 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.transportationReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
-    this.triggerScrollTo('transportation_' + (this.transportationReferrals.length - 1));
+    if (anchoring) { this.triggerScrollTo('_' + (this.transportationReferrals.length - 1).toString()); }
   }
 
   clearIncidentalsReferrals(): void {
