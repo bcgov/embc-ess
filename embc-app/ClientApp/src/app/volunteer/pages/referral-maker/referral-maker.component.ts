@@ -255,7 +255,9 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
-  addIncidentalsReferral(anchoring = true) {
+  addIncidentalsReferral(anchoring = false) {
+    console.log(anchoring);
+
     const referral: Partial<IncidentalsReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
@@ -271,7 +273,9 @@ export class ReferralMakerComponent implements OnInit {
     if (anchoring) { this.triggerScrollTo('incidentals_' + (this.incidentalsReferrals.length - 1).toString()); }
   }
 
-  addFoodReferral(anchoring = true) {
+  addFoodReferral(anchoring = false) {
+    console.log(anchoring);
+
     const referral: Partial<FoodReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
@@ -288,7 +292,9 @@ export class ReferralMakerComponent implements OnInit {
 
   }
 
-  addLodgingReferral(anchoring = true) {
+  addLodgingReferral(anchoring = false) {
+    console.log(anchoring);
+
     const referral: Partial<LodgingReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
@@ -302,10 +308,11 @@ export class ReferralMakerComponent implements OnInit {
     this.lodgingReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
     if (anchoring) { this.triggerScrollTo('lodging_' + (this.lodgingReferrals.length - 1).toString()); }
-
   }
 
-  addClothingReferral(anchoring = true) {
+  addClothingReferral(anchoring = false) {
+    console.log(anchoring);
+
     const referral: Partial<ClothingReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
@@ -322,7 +329,9 @@ export class ReferralMakerComponent implements OnInit {
 
   }
 
-  addTransportationReferral(anchoring = true) {
+  addTransportationReferral(anchoring = false) {
+    console.log(anchoring);
+
     const referral: Partial<TransportationReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
