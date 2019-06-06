@@ -1,9 +1,9 @@
-<div *ngIf="editing">
+<div *ngIf="editing && (iAmLocalAuthority || iAmProvincialAdmin) && (editMode === 'ADD' || editMode === 'EDIT')">
   <form novalidate [formGroup]="form">
-    <h1 *ngIf="!iAmProvincialAdmin && mode === 'ADD'">Add Emergency Support Services User(s)</h1>
-    <h1 *ngIf="!iAmProvincialAdmin && mode === 'EDIT'">Edit Emergency Support Services User Details</h1>
-    <h1 *ngIf="iAmProvincialAdmin && mode === 'ADD'">Add User(s)</h1>
-    <h1 *ngIf="iAmProvincialAdmin && mode === 'EDIT'">Edit Emergency Support Services User Details</h1>
+    <h1 *ngIf="iAmLocalAuthority && editMode === 'ADD'">Add Emergency Support Services User(s)</h1>
+    <h1 *ngIf="iAmLocalAuthority && editMode === 'EDIT'">Edit Emergency Support Services User Details</h1>
+    <h1 *ngIf="iAmProvincialAdmin && editMode === 'ADD'">Add User(s)</h1>
+    <h1 *ngIf="iAmProvincialAdmin && editMode === 'EDIT'">Edit Emergency Support Services User Details</h1>
 
     <p class="pb-3" *ngIf="iAmProvincialAdmin">
       Administrators can add users within an organization if they have their first name, last name, role, and BCeID.
@@ -12,19 +12,19 @@
     <small>All fields are required</small>
     <h3 class="blue-header mt-0">User Details</h3>
 
-    <div class="row pt-5" *ngIf="iAmProvincialAdmin && mode === 'ADD'">
+    <div class="row pt-5" *ngIf="iAmProvincialAdmin && editMode === 'ADD'">
       <div class="col-md-9">
         <label class="required" for="organization">Organization</label>
-        <div *ngIf="doSelectOrg">
-          <select class="form-control" formControlName="organization" [class.is-invalid]="invalid('organization')" id="organization">
+        <div *ngIf="doSelectOrg === true">
+            <select class="form-control" formControlName="organization" [class.is-invalid]="invalid('organization')" id="organization">
             <option *ngIf="!currentOrganization" [ngValue]="null">-- Select organization</option>
             <option *ngIf="currentOrganization" [ngValue]="currentOrganization">{{currentOrganization.name}}</option>
-            <option *ngFor="let o of metaOrganizations.data" [ngValue]="o">{{o.name}}</option>
+            <option *ngFor="let org of metaOrganizations.data" [ngValue]="org">{{org.name}}</option>
           </select>
           <span class="invalid-feedback">Please select an organization</span>
         </div>
 
-        <div *ngIf="!doSelectOrg">
+        <div *ngIf="doSelectOrg === false">
           <input class="form-control" type="text" id="organization" [value]="currentOrganization.name" readonly>
           <button class="btn btn-link float-right" (click)="changeOrganization()">
             <app-font-awesome-icon icon="times"></app-font-awesome-icon>
@@ -162,8 +162,8 @@
       <button *ngIf="!submitting" class="btn btn-primary text-uppercase" (click)="submit()">Save</button>
       <button *ngIf="submitting" class="btn btn-primary text-uppercase" disabled>Submitting</button>
 
-      <button *ngIf="mode === 'ADD' && !submitting" class="btn btn-primary text-uppercase ml-2" (click)="submit(true)">Save &amp; Add Another</button>
-      <button *ngIf="mode === 'ADD' && submitting" class="btn btn-primary text-uppercase ml-2" disabled>Submitting</button>
+      <button *ngIf="editMode === 'ADD' && !submitting" class="btn btn-primary text-uppercase ml-2" (click)="submit(true)">Save &amp; Add Another</button>
+      <button *ngIf="editMode === 'ADD' && submitting" class="btn btn-primary text-uppercase ml-2" disabled>Submitting</button>
     </section>
   </div>
 </div>

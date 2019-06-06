@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ListResult, Registration, PaginationSummary, Evacuee } from '../../../core/models';
+import { ListResult, Evacuee } from '../../../core/models';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
-import { SearchQueryParameters } from '../../../core/models/search-interfaces';
-import { UniqueKeyService } from '../../../core/services/unique-key.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
 
 @Component({
@@ -25,9 +25,7 @@ export class EvacueeListComponent implements OnInit {
   // a place to save the last query parameters
   previousQuery: SearchQueryParameters = {};
   sort = '-registrationId'; // how do we sort the list query param
-
-  // this is the correct path prefix for the user routing
-  path: string;
+  path: string = null; // the base path for routing
 
   constructor(
     private evacueeService: EvacueeService,
@@ -74,13 +72,19 @@ export class EvacueeListComponent implements OnInit {
     });
   }
 
-  edit(id: string) {
-    this.uniqueKeyService.setKey(id);
+  edit(registrationId: string) {
+    // save registration ID for lookup in the new component
+    this.uniqueKeyService.setKey(registrationId);
+
+    // go to registration maker
     this.router.navigate([`/${this.path}/registration`]);
   }
 
-  view(id: string) {
-    this.uniqueKeyService.setKey(id);
+  view(registrationId: string) {
+    // save registration ID for lookup in the new component
+    this.uniqueKeyService.setKey(registrationId);
+
+    // go to registration summary page
     this.router.navigate([`/${this.path}/registration/summary`]);
   }
 }

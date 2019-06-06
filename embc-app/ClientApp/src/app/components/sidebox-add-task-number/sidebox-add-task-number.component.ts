@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class SideboxAddTaskNumberComponent implements OnInit {
 
   route: string;
+
   constructor(
     private authService: AuthService,
   ) { }
