@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { combineLatest, Observable, of } from 'rxjs';
@@ -16,7 +16,7 @@ import { invalidField } from 'src/app/shared/utils';
   templateUrl: './volunteer-maker.component.html',
   styleUrls: ['./volunteer-maker.component.scss']
 })
-export class VolunteerMakerComponent implements OnInit, AfterViewInit {
+export class VolunteerMakerComponent implements OnInit {
 
   editing = true; // whether we are adding/editing or reviewing
   submitting = false; // whether we are submitting data to BE
@@ -25,7 +25,7 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
   iAmProvincialAdmin = false;
   editMode: ('ADD' | 'EDIT') = null; // not set by default
   path: string = null; // the base path for routing
-  orgId: string = null; // id of org in context (original org)
+  currentOrganization: Organization = null; // organization in context (original org)
 
   volunteer: Volunteer = null;
 
@@ -36,10 +36,6 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
 
   // convenience getter for easy access to form fields
   get f(): any { return this.form.controls; }
-
-  get currentOrganization(): Organization {
-    return this.f.organization.value;
-  }
 
   // to run validation after user clicks the Submit button
   shouldValidateForm = false;
@@ -57,7 +53,7 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      organization: ['', Validators.required],
+      organization: [null, Validators.required],
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
       bceidAccountNumber: ['', Validators.required],
@@ -91,8 +87,7 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
         const volunteerId = currentUser.contactid;
         this.getVolunteerOrganization(volunteerId)
           .subscribe((organization: Organization) => {
-            this.orgId = organization.id;
-            this.f.organization.setValue(organization); // set form value
+            this.currentOrganization = organization;
             this.doSelectOrg = false;
 
             // continue
@@ -110,11 +105,11 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
 
       // if provincial admin then check for orgId query param
       if (this.iAmProvincialAdmin) {
-        this.orgId = this.route.snapshot.paramMap.get('orgId'); // should never be null
-        if (this.orgId) {
-          this.organizationService.getOrganizationById(this.orgId)
+        const orgId = this.route.snapshot.paramMap.get('orgId'); // may be null
+        if (orgId) {
+          this.organizationService.getOrganizationById(orgId)
             .subscribe((organization: Organization) => {
-              this.f.organization.setValue(organization); // set form value
+              this.currentOrganization = organization;
               this.doSelectOrg = false;
 
               // continue
@@ -171,6 +166,9 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
             isAdministrator: volunteer.isAdministrator,
             isPrimaryContact: volunteer.isPrimaryContact
           });
+
+          // finally everything is loaded
+          this.setInitialFocus();
         }, err => {
           console.log('error getting volunteer =', err);
           this.notificationQueueService.addNotification('Failed to get volunteer', 'danger');
@@ -199,18 +197,23 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
         isPrimaryContact: null
       };
 
-      // no form fields to set
+      // set org value
+      // other form fields remain empty
+      this.f.organization.setValue(this.currentOrganization);
+
+      // finally everything is loaded
+      this.setInitialFocus();
     }
   }
 
-  ngAfterViewInit() {
+  private setInitialFocus() {
     // focus the first input
     const elements = document.getElementsByClassName('form-control') as HTMLCollectionOf<HTMLElement>;
     if (elements.length > 0) {
       elements[0].focus();
     } else {
       // wait for elements to display and try again
-      setTimeout(() => this.ngAfterViewInit(), 100);
+      setTimeout(() => this.setInitialFocus(), 100);
     }
   }
 
@@ -236,6 +239,10 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
       .subscribe((listResult: ListResult<Organization>) => {
         this.metaOrganizations = listResult;
         this.doSelectOrg = true;
+
+        // page controls have been updated
+        // NB: page variables aren't ready yet so set focus in NEXT timeslice
+        setTimeout(() => this.setInitialFocus(), 0);
       }, err => {
         console.log('error getting organizations =', err);
         this.notificationQueueService.addNotification('Failed to get organizations', 'danger');
@@ -261,6 +268,9 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
     // show the editing parts of the form
     this.editing = true;
     window.scrollTo(0, 0); // scroll to top
+
+    // page controls have been updated
+    this.setInitialFocus();
   }
 
   submit(addAnother?: boolean) {
@@ -331,9 +341,13 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
     if (this.iAmLocalAuthority) {
       // go back to current user's list of volunteers
       this.router.navigate([`/${this.path}/volunteers`]);
-    } else {
+    } else if (this.currentOrganization) {
       // go back to list of current organization's volunteers
-      this.router.navigate([`/${this.path}/organization/${this.orgId}/volunteers`]);
+      this.router.navigate([`/${this.path}/organization/${this.currentOrganization.id}/volunteers`]);
+    } else {
+      // we got here without an org in context
+      // go to list of organizations
+      this.router.navigate([`/${this.path}/organizations`]);
     }
   }
 
