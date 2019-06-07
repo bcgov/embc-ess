@@ -1,470 +1,475 @@
 {
-    "kind": "Template",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "${NAME}-deployment-template",
-        "creationTimestamp": null
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "${NAME}-deployment-template",
+    "creationTimestamp": null
+  },
+  "objects": [
+    {
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "stringData": {
+        "db-admin-password": "${DB_ADMIN_PASSWORD}",
+        "db-databasename": "${DB_NAME}",
+        "db-password": "${DB_PASSWORD}",
+        "db-username": "${DB_NAME}"
+      },
+      "metadata": {
+        "annotations": {
+          "template.openshift.io/expose-db-admin-password": "{.data['db-admin-password']}",
+          "template.openshift.io/expose-db-databasename": "{.data['db-databasename']}",
+          "template.openshift.io/expose-db-password": "{.data['db-password']}",
+          "template.openshift.io/expose-db-username": "{.data['db-username']}"
+        },
+        "name": "${Name}"
+      }
     },
-    "objects": [
-        {
-            "apiVersion": "v1",
-            "kind": "Secret",
-            "stringData": {
-                "db-admin-password": "${DB_ADMIN_PASSWORD}",
-                "db-databasename": "ess-training",
-                "db-password": "${DB_PASSWORD}",
-                "db-username": "ess-training"
-            },
-            "metadata": {
-                "annotations": {
-                    "template.openshift.io/expose-db-admin-password": "{.data['db-admin-password']}",
-                    "template.openshift.io/expose-db-databasename": "{.data['db-databasename']}",
-                    "template.openshift.io/expose-db-password": "{.data['db-password']}",
-                    "template.openshift.io/expose-db-username": "{.data['db-username']}"
-                },
-                "name": "embcess-training",
-                "namespace": "jhnamn-test",
-                "selfLink": "/api/v1/namespaces/jhnamn-test/secrets/embc-training"
-            }
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "labels": {
+          "template": "${NAME}-deployment"
         },
-        {
-            "kind": "DeploymentConfig",
-            "apiVersion": "v1",
-            "metadata": {
-                "name": "${NAME}",
-                "labels": {
-                    "template": "${NAME}-deployment"
-                },
-                "annotations": {
-                    "description": "Defines how to deploy ${NAME}"
-                }
-            },
-            "spec": {
-                "strategy": {
-                    "type": "Rolling"
-                },
-                "triggers": [
-                    {
-                        "type": "ConfigChange"
-                    },
-                    {
-                        "type": "ImageChange",
-                        "imageChangeParams": {
-                            "automatic": true,
-                            "containerNames": [
-                                "${NAME}"
-                            ],
-                            "from": {
-                                "kind": "ImageStreamTag",
-                                "namespace": "${IMAGE_NAMESPACE}",
-                                "name": "${SOURCE_IMAGE_NAME}:${TAG_NAME}"
-                            }
-                        }
-                    }
-                ],
-                "replicas": 1,
-                "selector": {
-                    "name": "${NAME}"
-                },
-                "template": {
-                    "metadata": {
-                        "name": "${NAME}",
-                        "labels": {
-                            "name": "${NAME}"
-                        }
-                    },
-                    "spec": {
-                        "containers": [
-                            {
-                                "name": "${NAME}",
-                                "image": "",
-                                "ports": [
-                                    {
-                                        "containerPort": 8080,
-                                        "protocol": "TCP"
-                                    }
-                                ],
-                                "env": [
-                                    {
-                                        "name": "ASPNETCORE_ENVIRONMENT",
-                                        "value": "${ASPNETCORE_ENVIRONMENT}"
-                                    },
-                                    {
-                                        "name": "BASE_URI",
-                                        "value": "${BASE_URI}"
-                                    },
-                                    {
-                                        "name": "BASE_PATH",
-                                        "value": "${BASE_PATH}"
-                                    },
-                                    {
-                                        "name": "SITEMINDER_LOGOUT_URL",
-                                        "value": "${SITEMINDER_LOGOUT_URL}"
-                                    },
-                                    {
-                                        "name": "SMTP_HOST",
-                                        "value": "${SMTP_HOST}"
-                                    },
-                                    {
-                                        "name": "SMTP_DEFAULT_SENDER",
-                                        "value": "${SMTP_DEFAULT_SENDER}"
-                                    },
-                                    {
-                                        "name": "DATABASE_SERVICE_NAME",
-                                        "value": "${DATABASE_SERVICE_NAME}"
-                                    },
-                                    {
-                                        "name": "DB_ADMIN_PASSWORD",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "db-admin-password",
-                                                "name": "${SECRET_RESOURCE_NAME}"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "DB_USER",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "db-username",
-                                                "name": "${SECRET_RESOURCE_NAME}"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "DB_PASSWORD",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "db-password",
-                                                "name": "${SECRET_RESOURCE_NAME}"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "name": "DB_DATABASE",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "db-databasename",
-                                                "name": "${SECRET_RESOURCE_NAME}"
-                                            }
-                                        }
-                                    }
-                                ],
-                                "resources": {
-                                    "limits": {
-                                        "cpu": "${CPU_LIMIT}",
-                                        "memory": "${MEMORY_LIMIT}"
-                                    },
-                                    "requests": {
-                                        "cpu": "${CPU_REQUEST}",
-                                        "memory": "${MEMORY_REQUEST}"
-                                    }
-                                },
-                                "readinessProbe": {
-                                    "httpGet": {
-                                        "path": "/hc",
-                                        "port": 8080,
-                                        "scheme": "HTTP"
-                                    },
-                                    "initialDelaySeconds": 10,
-                                    "timeoutSeconds": 1,
-                                    "periodSeconds": 10,
-                                    "successThreshold": 1,
-                                    "failureThreshold": 3
-                                },
-                                "liveinessProbe": {
-                                    "httpGet": {
-                                        "path": "/hc",
-                                        "port": 8080,
-                                        "scheme": "HTTP"
-                                    },
-                                    "initialDelaySeconds": 10,
-                                    "timeoutSeconds": 1,
-                                    "periodSeconds": 10,
-                                    "successThreshold": 1,
-                                    "failureThreshold": 3
-                                }
-                            }
-                        ]
-                    }
-                }
-            }
+        "annotations": {
+          "description": "Defines how to deploy ${NAME}"
+        }
+      },
+      "spec": {
+        "strategy": {
+          "type": "Rolling"
         },
-        {
-            "kind": "Service",
-            "apiVersion": "v1",
-            "metadata": {
+        "triggers": [
+          {
+            "type": "ConfigChange"
+          },
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "${NAME}"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "namespace": "${IMAGE_NAMESPACE}",
+                "name": "${SOURCE_IMAGE_NAME}:${TAG_NAME}"
+              }
+            }
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "name": "${NAME}"
+        },
+        "template": {
+          "metadata": {
+            "name": "${NAME}",
+            "labels": {
+              "name": "${NAME}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
                 "name": "${NAME}",
-                "labels": {
-                    "template": "${NAME}-deployment"
-                },
-                "annotations": {
-                    "description": "Exposes and load balances the application pods."
-                }
-            },
-            "spec": {
+                "image": "",
                 "ports": [
-                    {
-                        "name": "8080-tcp",
-                        "protocol": "TCP",
-                        "port": 8080,
-                        "targetPort": 8080
-                    }
+                  {
+                    "containerPort": 8080,
+                    "protocol": "TCP"
+                  }
                 ],
-                "selector": {
-                    "name": "${NAME}"
+                "env": [
+                  {
+                    "name": "ASPNETCORE_ENVIRONMENT",
+                    "value": "${ASPNETCORE_ENVIRONMENT}"
+                  },
+                  {
+                    "name": "BASE_URI",
+                    "value": "${BASE_URI}"
+                  },
+                  {
+                    "name": "BASE_PATH",
+                    "value": "${BASE_PATH}"
+                  },
+                  {
+                    "name": "SITEMINDER_LOGOUT_URL",
+                    "value": "${SITEMINDER_LOGOUT_URL}"
+                  },
+                  {
+                    "name": "SMTP_HOST",
+                    "value": "${SMTP_HOST}"
+                  },
+                  {
+                    "name": "SMTP_DEFAULT_SENDER",
+                    "value": "${SMTP_DEFAULT_SENDER}"
+                  },
+                  {
+                    "name": "DATABASE_SERVICE_NAME",
+                    "value": "${DATABASE_SERVICE_NAME}"
+                  },
+                  {
+                    "name": "DB_ADMIN_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "db-admin-password",
+                        "name": "${SECRET_RESOURCE_NAME}"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DB_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "db-username",
+                        "name": "${SECRET_RESOURCE_NAME}"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DB_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "db-password",
+                        "name": "${SECRET_RESOURCE_NAME}"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DB_DATABASE",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "db-databasename",
+                        "name": "${SECRET_RESOURCE_NAME}"
+                      }
+                    }
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "${CPU_LIMIT}",
+                    "memory": "${MEMORY_LIMIT}"
+                  },
+                  "requests": {
+                    "cpu": "${CPU_REQUEST}",
+                    "memory": "${MEMORY_REQUEST}"
+                  }
                 },
-                "type": "ClusterIP",
-                "sessionAffinity": "None"
-            }
-        },
-        {
-            "apiVersion": "v1",
-            "kind": "Route",
-            "metadata": {
-                "labels": {
-                    "app": "${NAME}"
+                "readinessProbe": {
+                  "httpGet": {
+                    "path": "/hc",
+                    "port": 8080,
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 10,
+                  "timeoutSeconds": 1,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "failureThreshold": 3
                 },
-                "name": "${NAME}"
-            },
-            "spec": {
-                "host": "${APPLICATION_DOMAIN}",
-                "port": {
-                    "targetPort": "8080-tcp"
-                },
-                "tls": {
-                    "insecureEdgeTerminationPolicy": "Redirect",
-                    "termination": "edge"
-                },
-                "to": {
-                    "kind": "Service",
-                    "name": "${NAME}",
-                    "weight": 100
+                "liveinessProbe": {
+                  "httpGet": {
+                    "path": "/hc",
+                    "port": 8080,
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 10,
+                  "timeoutSeconds": 1,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "failureThreshold": 3
                 }
-            }
-        },
-        {
-            "apiVersion": "v1",
-            "kind": "Route",
-            "metadata": {
-                "name": "${NAME}-siteminder-route",
-                "labels": {
-                    "app": "${NAME}-siteminder-route"
-                }
-            },
-            "spec": {
-                "host": "${NAME}-${NAME}.pathfinder.bcgov",
-                "port": {
-                    "targetPort": "8080-tcp"
-                },
-                "to": {
-                    "kind": "Service",
-                    "name": "${NAME}",
-                    "weight": 100
-                }
-            }
-        },
-        {
-            "kind": "HorizontalPodAutoscaler",
-            "apiVersion": "autoscaling/v1",
-            "metadata": {
-                "name": "${NAME}",
-                "labels": {
-                    "app": "${NAME}"
-                }
-            },
-            "spec": {
-                "scaleTargetRef": {
-                    "kind": "DeploymentConfig",
-                    "name": "${NAME}"
-                },
-                "minReplicas": 2,
-                "maxReplicas": 6
-            }
+              }
+            ]
+          }
         }
-    ],
-    "parameters": [
-        {
-            "name": "NAME",
-            "displayName": "Name",
-            "description": "The name assigned to all of the resources defined in this template.",
-            "required": true,
-            "value": "embcess-training"
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "labels": {
+          "template": "${NAME}-deployment"
         },
-        {
-            "name": "SOURCE_IMAGE_NAME",
-            "displayName": "Source Image Name",
-            "description": "The name of the image to use for this resource.",
-            "required": true,
-            "value": "embcess"
-        },
-        {
-            "name": "IMAGE_NAMESPACE",
-            "displayName": "Image Namespace",
-            "description": "The namespace of the OpenShift project containing the imagestream for the application.",
-            "required": true,
-            "value": "jhnamn-tools"
-        },
-        {
-            "name": "TAG_NAME",
-            "displayName": "Environment TAG name",
-            "description": "The TAG name for this environment, e.g., dev, test, prod",
-            "required": true,
-            "value": "test"
-        },
-        {
-            "name": "CPU_LIMIT",
-            "displayName": "CPU Limit",
-            "description": "Maximum amount of CPU the container can use.",
-            "value": "1"
-        },
-        {
-            "name": "MEMORY_LIMIT",
-            "displayName": "Memory Limit",
-            "description": "Maximum amount of memory the container can use.",
-            "value": "4Gi"
-        },
-        {
-            "name": "CPU_REQUEST",
-            "displayName": "CPU Request",
-            "description": "Starting amount of CPU the container can use.",
-            "value": "100m"
-        },
-        {
-            "name": "MEMORY_REQUEST",
-            "displayName": "Memory Request",
-            "description": "Starting amount of memory the container can use.",
-            "value": "2Gi"
-        },
-        {
-            "description": "The endpoint used for SiteMinder routed access to the application.",
-            "displayName": "SiteMinder Application Domain",
-            "name": "SITEMINDER_APPLICATION_DOMAIN",
-            "value": "embcess-training.pathfinder.bcgov"
-        },
-        {
-            "description": "The exposed hostname that will route to the service, e.g., myappname.pathfinder.gov.bc.ca, if left blank a value will be defaulted.",
-            "displayName": "Application Domain",
-            "name": "APPLICATION_DOMAIN",
-            "value": "embcess-training.pathfinder.gov.bc.ca"
-        },
-        {
-            "description": "Webname for Sharepoint, e.g., pill pressdev, if left blank a value will be defaulted.",
-            "displayName": "Sharepoint Webname",
-            "name": "SHAREPOINT_WEBNAME",
-            "required": false,
-            "value": "embcess"
-        },
-        {
-            "description": "Sharepoint Tenant ID and Dynamics Tenant ID, e.g., bcgovtrial.onmicrosoft.com, if left blank a value will be defaulted.",
-            "displayName": "AAD Tennant ID",
-            "name": "SHAREPOINT_AAD_TENANTID",
-            "required": false,
-            "value": ""
-        },
-        {
-            "description": "Sharepoint Client ID",
-            "displayName": "Sharepoint Client ID",
-            "name": "SHAREPOINT_CLIENT_ID",
-            "required": false
-        },
-        {
-            "description": "Sharepoint Certificate Password",
-            "displayName": "Sharepoint Certificate Password",
-            "name": "SHAREPOINT_CERTIFICATE_PASSWORD",
-            "required": false
-        },
-        {
-            "description": "Filename for BCGovTrial.pfx, e.g., /sharepointcert/BCGovTrial.pfx, if left blank a value will be defaulted.",
-            "displayName": "Sharepoint Certificate Filename",
-            "name": "SHAREPOINT_CERTIFICATE_FILENAME",
-            "required": false,
-            "value": ""
-        },
-        {
-            "description": "Boolean that shows login, e.g., true, if left blank a value will be defaulted.",
-            "displayName": "Show login",
-            "name": "SHOW_LOGIN",
-            "required": true,
-            "value": "true"
-        },
-        {
-            "name": "DATABASE_SERVICE_NAME",
-            "displayName": "Database service name",
-            "description": "Database service name",
-            "value": "mssql"
-        },
-        {
-            "name": "SECRET_RESOURCE_NAME",
-            "displayName": "Secret resource name",
-            "description": "Secret resource name",
-            "required": true,
-            "value": "embcess-training"
-        },
-        {
-            "name": "ASPNETCORE_ENVIRONMENT",
-            "displayName": "AspNetCore Environment",
-            "description": "The ASP Net Core deployment environment setting.",
-            "required": true,
-            "value": "Test"
-        },
-        {
-            "name": "BASE_URI",
-            "displayName": "Base Uri",
-            "description": "",
-            "required": true,
-            "value": "essprep"
-        },
-        {
-            "name": "BASE_PATH",
-            "displayName": "",
-            "description": "",
-            "required": true,
-            "value": "/embcess"
-        },
-        {
-            "name": "SITEMINDER_LOGOUT_URL",
-            "displayName": "Siteminder logout URL",
-            "description": "Siteminder logout URL, e.g., https://logon.gov.bc.ca/clp-cgi/logoff.cgi, if left blank a value will be defaulted. Note this url is for prod and should be changed for dev and test.",
-            "required": true,
-            "value": "https://logon.gov.bc.ca/clp-cgi/logoff.cgi"
-        },
-        {
-            "name": "SMTP_HOST",
-            "displayName": "",
-            "description": "",
-            "required": true,
-            "value": ""
-        },
-        {
-            "name": "SMTP_DEFAULT_SENDER",
-            "displayName": "",
-            "description": "",
-            "required": true,
-            "value": ""
-        },
-        {
-            "name": "DATABASE_SERVICE_NAME",
-            "displayName": "",
-            "description": "",
-            "required": true,
-            "value": ""
-        },
-        {
-            "description": "Password for the MSSQL connection user.",
-            "displayName": "MSSQL Connection Password",
-            "from": "[a-zA-Z0-9]{16}",
-            "generate": "expression",
-            "name": "DB_PASSWORD",
-            "required": true
-        },
-        {
-            "description": "Password for the Admin MSSQL connection user.",
-            "displayName": "MSSQL Admin Connection Password",
-            "from": "[a-zA-Z0-9]{16}",
-            "generate": "expression",
-            "name": "DB_ADMIN_PASSWORD",
-            "required": true
+        "annotations": {
+          "description": "Exposes and load balances the application pods."
         }
-    ]
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "8080-tcp",
+            "protocol": "TCP",
+            "port": 8080,
+            "targetPort": 8080
+          }
+        ],
+        "selector": {
+          "name": "${NAME}"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Route",
+      "metadata": {
+        "labels": {
+          "app": "${NAME}"
+        },
+        "name": "${NAME}"
+      },
+      "spec": {
+        "host": "${APPLICATION_DOMAIN}",
+        "port": {
+          "targetPort": "8080-tcp"
+        },
+        "tls": {
+          "insecureEdgeTerminationPolicy": "Redirect",
+          "termination": "edge"
+        },
+        "to": {
+          "kind": "Service",
+          "name": "${NAME}",
+          "weight": 100
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Route",
+      "metadata": {
+        "name": "${NAME}-siteminder-route",
+        "labels": {
+          "app": "${NAME}-siteminder-route"
+        }
+      },
+      "spec": {
+        "host": "${NAME}-${NAME}.pathfinder.bcgov",
+        "port": {
+          "targetPort": "8080-tcp"
+        },
+        "to": {
+          "kind": "Service",
+          "name": "${NAME}",
+          "weight": 100
+        }
+      }
+    },
+    {
+      "kind": "HorizontalPodAutoscaler",
+      "apiVersion": "autoscaling/v1",
+      "metadata": {
+        "name": "${NAME}",
+        "labels": {
+          "app": "${NAME}"
+        }
+      },
+      "spec": {
+        "scaleTargetRef": {
+          "kind": "DeploymentConfig",
+          "name": "${NAME}"
+        },
+        "minReplicas": 2,
+        "maxReplicas": 6
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "The name assigned to all of the resources defined in this template.",
+      "required": true,
+      "value": "embcess-sandbox"
+    },
+    {
+      "name": "SOURCE_IMAGE_NAME",
+      "displayName": "Source Image Name",
+      "description": "The name of the image to use for this resource.",
+      "required": true,
+      "value": "embcess-sandbox"
+    },
+    {
+      "name": "IMAGE_NAMESPACE",
+      "displayName": "Image Namespace",
+      "description": "The namespace of the OpenShift project containing the imagestream for the application.",
+      "required": true,
+      "value": "jhnamn-tools"
+    },
+    {
+      "name": "TAG_NAME",
+      "displayName": "Environment TAG name",
+      "description": "The TAG name for this environment, e.g., dev, test, prod",
+      "required": true,
+      "value": "dev"
+    },
+    {
+      "name": "CPU_LIMIT",
+      "displayName": "CPU Limit",
+      "description": "Maximum amount of CPU the container can use.",
+      "value": "1"
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "displayName": "Memory Limit",
+      "description": "Maximum amount of memory the container can use.",
+      "value": "4Gi"
+    },
+    {
+      "name": "CPU_REQUEST",
+      "displayName": "CPU Request",
+      "description": "Starting amount of CPU the container can use.",
+      "value": "100m"
+    },
+    {
+      "name": "MEMORY_REQUEST",
+      "displayName": "Memory Request",
+      "description": "Starting amount of memory the container can use.",
+      "value": "2Gi"
+    },
+    {
+      "description": "The endpoint used for SiteMinder routed access to the application.",
+      "displayName": "SiteMinder Application Domain",
+      "name": "SITEMINDER_APPLICATION_DOMAIN",
+      "value": "embcess-sandbox.pathfinder.bcgov"
+    },
+    {
+      "description": "The exposed hostname that will route to the service, e.g., myappname.pathfinder.gov.bc.ca, if left blank a value will be defaulted.",
+      "displayName": "Application Domain",
+      "name": "APPLICATION_DOMAIN",
+      "value": "embcess-sandbox.pathfinder.gov.bc.ca"
+    },
+    {
+      "description": "Webname for Sharepoint, e.g., pill pressdev, if left blank a value will be defaulted.",
+      "displayName": "Sharepoint Webname",
+      "name": "SHAREPOINT_WEBNAME",
+      "required": false,
+      "value": "embcess"
+    },
+    {
+      "description": "Sharepoint Tenant ID and Dynamics Tenant ID, e.g., bcgovtrial.onmicrosoft.com, if left blank a value will be defaulted.",
+      "displayName": "AAD Tennant ID",
+      "name": "SHAREPOINT_AAD_TENANTID",
+      "required": false,
+      "value": ""
+    },
+    {
+      "description": "Sharepoint Client ID",
+      "displayName": "Sharepoint Client ID",
+      "name": "SHAREPOINT_CLIENT_ID",
+      "required": false
+    },
+    {
+      "description": "Sharepoint Certificate Password",
+      "displayName": "Sharepoint Certificate Password",
+      "name": "SHAREPOINT_CERTIFICATE_PASSWORD",
+      "required": false
+    },
+    {
+      "description": "Filename for BCGovTrial.pfx, e.g., /sharepointcert/BCGovTrial.pfx, if left blank a value will be defaulted.",
+      "displayName": "Sharepoint Certificate Filename",
+      "name": "SHAREPOINT_CERTIFICATE_FILENAME",
+      "required": false,
+      "value": ""
+    },
+    {
+      "description": "Boolean that shows login, e.g., true, if left blank a value will be defaulted.",
+      "displayName": "Show login",
+      "name": "SHOW_LOGIN",
+      "required": true,
+      "value": "true"
+    },
+    {
+      "name": "DATABASE_SERVICE_NAME",
+      "displayName": "Database service name",
+      "description": "Database service name",
+      "value": "mssql"
+    },
+    {
+      "name": "SECRET_RESOURCE_NAME",
+      "displayName": "Secret resource name",
+      "description": "Secret resource name",
+      "required": true,
+      "value": "embcess"
+    },
+    {
+      "name": "ASPNETCORE_ENVIRONMENT",
+      "displayName": "AspNetCore Environment",
+      "description": "The ASP Net Core deployment environment setting.",
+      "required": true,
+      "value": "Test"
+    },
+    {
+      "name": "BASE_URI",
+      "displayName": "Base Uri",
+      "description": "",
+      "required": true,
+      "value": "essprep"
+    },
+    {
+      "name": "BASE_PATH",
+      "displayName": "",
+      "description": "",
+      "required": true,
+      "value": "/embcess"
+    },
+    {
+      "name": "SITEMINDER_LOGOUT_URL",
+      "displayName": "Siteminder logout URL",
+      "description": "Siteminder logout URL, e.g., https://logon.gov.bc.ca/clp-cgi/logoff.cgi, if left blank a value will be defaulted. Note this url is for prod and should be changed for dev and test.",
+      "required": true,
+      "value": "https://logon.gov.bc.ca/clp-cgi/logoff.cgi"
+    },
+    {
+      "name": "SMTP_HOST",
+      "displayName": "",
+      "description": "",
+      "required": true,
+      "value": ""
+    },
+    {
+      "name": "SMTP_DEFAULT_SENDER",
+      "displayName": "",
+      "description": "",
+      "required": true,
+      "value": ""
+    },
+    {
+      "name": "DATABASE_SERVICE_NAME",
+      "displayName": "",
+      "description": "",
+      "required": true,
+      "value": ""
+    },
+    {
+      "name": "DB_NAME",
+      "displayName": "",
+      "description": "",
+      "required": true,
+      "value": "ess"
+    },
+    {
+      "description": "Password for the MSSQL connection user.",
+      "displayName": "MSSQL Connection Password",
+      "from": "[a-zA-Z0-9]{16}",
+      "generate": "expression",
+      "name": "DB_PASSWORD",
+      "required": true
+    },
+    {
+      "description": "Password for the Admin MSSQL connection user.",
+      "displayName": "MSSQL Admin Connection Password",
+      "from": "[a-zA-Z0-9]{16}",
+      "generate": "expression",
+      "name": "DB_ADMIN_PASSWORD",
+      "required": true
+    }
+  ]
 }

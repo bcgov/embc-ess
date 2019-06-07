@@ -9,7 +9,7 @@ class AppEnvironment {
 
 // EDIT LINE BELOW (Edit your environment TAG names)
 environments = [
-  dev:new AppEnvironment(name:"Development",tag:"sandbox",previousTag:"sandbox-previous"),
+  dev:new AppEnvironment(name:"Development",tag:"dev",previousTag:"dev-previous"),
 ]
 
 // You shouldn't have to edit these if you're following the conventions
