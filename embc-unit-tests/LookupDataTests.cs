@@ -93,7 +93,7 @@ namespace embc_unit_tests
             Assert.Equal(source.Count(c => c.Active), result.Count());
             foreach (var item in result)
             {
-                Assert.Contains(item.Id, source.Select(e => e.Name));
+                Assert.Contains(item.Name, source.Select(e => e.Name));
             }
         }
 
