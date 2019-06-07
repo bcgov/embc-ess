@@ -132,14 +132,25 @@ def notifyError(title, description) {
 
 node('master') {
 
-    stage("Deploy to test") {
+    stage('Startup') {
+        // stop pending builds.
+        sh "oc cancel-build bc/${RUNTIME_CHAINED_BUILD}"
+    }
+
+    stage('Build') {        
+		echo "Building Application image..."
+		buildAndVerify(ARTIFACT_BUILD)
+		
+		IMAGE_HASH = getLatestHash(IMAGESTREAM_NAME)
+		echo ">> IMAGE_HASH: ${IMAGE_HASH}"
+	  	  
+    }
+
+      stage("Deploy to ${environments.test.name}") {
 	  def environment = environments.test.tag
 	  def stableTag = environments.test.previousTag
 	  node {
 		try {
-
-		//Initiate Specific Build for Training
-		def buildAndVerify("${APP_NAME}") 
 
 		  // hold on to a copy of the last stable TEST environment (in case the upcoming deployment fails...)
 		  tagLatestStable("training", "training-previous", IMAGESTREAM_NAME)

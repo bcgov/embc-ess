@@ -21,7 +21,7 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
     //Asp.Net Core DI doesn't support covariant resolution, need to register
     // individual handlers instead of using polymorphic notification handling
     //https://github.com/jbogard/MediatR/wiki/Container-Feature-Support
-    public class RegistrationEventStoreHandler :
+    public class AuditService :
         INotificationHandler<RegistrationViewed>,
         INotificationHandler<RegistrationDeactivated>,
         INotificationHandler<RegistrationUpdated>,
@@ -31,7 +31,7 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         private readonly IDataInterface dataInterface;
         private readonly IHttpContextAccessor httpContext;
 
-        public RegistrationEventStoreHandler(IDataInterface dataInterface, IHttpContextAccessor httpContext)
+        public AuditService(IDataInterface dataInterface, IHttpContextAccessor httpContext)
         {
             this.dataInterface = dataInterface;
             this.httpContext = httpContext;
