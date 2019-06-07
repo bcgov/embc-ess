@@ -93,12 +93,14 @@ namespace Gov.Jag.Embc.Public.Seeder
 
             seederRepository.AddOrUpdateFamilyRelationshipTypes(relationshipTypes.GroupBy(r => r.Code).Select(g => g.First()).ToList());
         }
+
         private void SeedCountries()
         {
             var countries = seedDataLoader.GetSeedData<List<Country>>("Countries");
 
             seederRepository.AddOrUpdateCountries(countries.GroupBy(c => c.Name).Select(g => g.First()).ToList());
         }
+
         private void SeedOrganziations()
         {
             string[] targetEnvironments = { "Development", "Staging", "Test" };
@@ -123,6 +125,7 @@ namespace Gov.Jag.Embc.Public.Seeder
 
             seederRepository.AddOrUpdateOrganizations(organizations.GroupBy(o => o.BCeIDBusinessGuid).Select(g => g.First()).ToList());
         }
+
         private void SeedVolunteers()
         {
             string[] targetEnvironments = { "Development", "Staging", "Test" };
@@ -137,7 +140,7 @@ namespace Gov.Jag.Embc.Public.Seeder
             volunteers.ForEach(v =>
             {
                 v.OrganizationId = organizations
-                    .SingleOrDefault(o => o.BCeIDBusinessGuid.Equals(v.Organization.BCeIDBusinessGuid, StringComparison.OrdinalIgnoreCase))?.Id;
+                    .SingleOrDefault(o => o.BCeIDBusinessGuid == v.Organization.BCeIDBusinessGuid)?.Id;
                 v.Organization = null;
             });
 
