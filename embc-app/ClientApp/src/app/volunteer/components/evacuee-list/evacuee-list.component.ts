@@ -27,6 +27,8 @@ export class EvacueeListComponent implements OnInit {
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
 
+  advancedSearchMode = false;
+
   constructor(
     private evacueeService: EvacueeService,
     private router: Router,
@@ -40,6 +42,18 @@ export class EvacueeListComponent implements OnInit {
     this.getEvacuees().subscribe((listResult: ListResult<Evacuee>) => {
       this.resultsAndPagination = listResult;
     });
+  }
+
+  switchToAdvancedSearch() {
+    this.advancedSearchMode = true;
+
+    // TODO: clean-up & manage new search state
+  }
+
+  switchToBasicSearch() {
+    this.advancedSearchMode = false;
+
+    // TODO: clean-up & manage new search state
   }
 
   getEvacuees(query: SearchQueryParameters = this.defaultSearchQuery): Observable<ListResult<Evacuee>> {
@@ -63,6 +77,11 @@ export class EvacueeListComponent implements OnInit {
       }
       this.resultsAndPagination = listResult;
     });
+  }
+
+  advancedSearch(args: any = {}) {
+    // TODO: submit search params to server endpoint
+    alert('Advanced search query issued to server...');
   }
 
   onPaginationEvent(event: SearchQueryParameters) {
