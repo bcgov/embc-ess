@@ -9,6 +9,10 @@ import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
 import { OrganizationService } from 'src/app/core/services/organization.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 
+//
+// this is the component used by Provincial Admin users
+//
+
 @Component({
   selector: 'app-volunteer-organization-list',
   templateUrl: './volunteer-organization-list.component.html',
@@ -42,6 +46,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
   sort = ''; // how do we sort the list
 
   path: string = null; // the base path for routing
+  orgId: string = null;
 
   // local constants used in the FORM
   readonly SHOW_ALL = '1';
@@ -51,8 +56,8 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
   confirmModal: NgbModalRef = null;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
+    private route: ActivatedRoute,
     private modals: NgbModal,
     private volunteerService: VolunteerService,
     private organizationService: OrganizationService,
@@ -76,16 +81,16 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     // save the base url path
     this.authService.path.subscribe((path: string) => this.path = path);
 
+    // get route parameter
+    this.orgId = this.route.snapshot.paramMap.get('orgId'); // should never be null
+
     this.previousQuery = this.copyProperties(this.defaultSearchQuery);
 
-    // collect all volunteers
-    this.getVolunteers();
+    if (this.orgId) {
+      // collect all volunteers
+      this.getVolunteers();
 
-    // get route parameter
-    const orgId = this.route.snapshot.paramMap.get('orgId'); // should never be null
-
-    if (orgId) {
-      this.organizationService.getOrganizationById(orgId)
+      this.organizationService.getOrganizationById(this.orgId)
         .subscribe((organization: Organization) => {
           // save the organization
           this.currentOrganization = organization;
@@ -124,7 +129,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     this.previousQuery.q = this.queryString;
 
     // the organization is the one in the global state
-    this.previousQuery.org_id = this.route.snapshot.paramMap.get('orgId');
+    this.previousQuery.org_id = this.orgId;
 
     // pagination is calculated
     this.previousQuery.offset = this.previousQuery.offset;
@@ -181,7 +186,9 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     if (!volunteerId) {
       // no id means 'add user' -> clear unique key
       this.uniqueKeyService.clearKey();
-      this.router.navigate([`/${this.path}/volunteer`, { orgId: this.previousQuery.org_id }]);
+
+      // go to volunteer maker
+      this.router.navigate([`/${this.path}/volunteer`, { orgId: this.orgId }]);
       return;
     }
 
@@ -196,8 +203,8 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
         // save volunteer ID for lookup in the new component
         this.uniqueKeyService.setKey(volunteerId);
 
-        // go to vounteer maker
-        this.router.navigate([`/${this.path}/volunteer`, { orgId: this.previousQuery.org_id }]);
+        // go to volunteer maker
+        this.router.navigate([`/${this.path}/volunteer`, { orgId: this.orgId }]);
       },
       () => {
         // modal was dismissed

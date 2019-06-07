@@ -101,9 +101,10 @@ const routes: Routes = [
     component: SelfRegistrationComponent,
     children: [
       {
+        // set the default component to route to for this user
         path: '',
         redirectTo: 'step-1',
-        pathMatch: 'full',
+        pathMatch: 'full'
       },
       {
         path: 'step-1',
@@ -170,8 +171,8 @@ const routes: Routes = [
       {
         // set the default component to route to for this user
         path: '',
-        component: VolunteerRegistrationsPageComponent,
-        data: { expectedRole: VOLUNTEER },
+        redirectTo: 'registrations',
+        pathMatch: 'full'
       },
       {
         path: 'registrations',
@@ -220,8 +221,8 @@ const routes: Routes = [
       {
         // set the default component to route to for this user
         path: '',
-        component: LocalAuthorityRegistrationsPageComponent,
-        data: { expectedRole: LOCAL_AUTHORITY },
+        redirectTo: 'registrations',
+        pathMatch: 'full'
       },
       {
         path: 'registrations',
@@ -280,8 +281,8 @@ const routes: Routes = [
       {
         // set the default component to route to for this user
         path: '',
-        component: ProvincialAdminRegistrationsPageComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
+        redirectTo: 'registrations',
+        pathMatch: 'full'
       },
       {
         path: 'registrations',

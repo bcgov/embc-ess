@@ -17,7 +17,7 @@
         <label class="required" for="organization">Organization</label>
         <div *ngIf="doSelectOrg === true">
             <select class="form-control" formControlName="organization" [class.is-invalid]="invalid('organization')" id="organization">
-            <option *ngIf="!currentOrganization" [ngValue]="null">-- Select organization</option>
+            <!-- NB: no 'null' case is needed - this control is only shown with an org in context -->
             <option *ngIf="currentOrganization" [ngValue]="currentOrganization">{{currentOrganization.name}}</option>
             <option *ngFor="let org of metaOrganizations.data" [ngValue]="org">{{org.name}}</option>
           </select>
@@ -112,7 +112,7 @@
   </div>
 
   <div class="mt-5 space-between">
-    <a routerLink="" (click)="cancel()">
+    <a href="javascript:void(0)" (click)="cancel()">
       <app-font-awesome-icon icon="times"></app-font-awesome-icon>
       <span class="ml-2">Cancel &amp; Close</span>
     </a>

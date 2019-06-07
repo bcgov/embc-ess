@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Organization } from 'src/app/core/models';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { OrganizationService } from 'src/app/core/services/organization.service';
 import { FormControl } from '@angular/forms';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
@@ -30,6 +30,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private organizationService: OrganizationService,
     private notificationQueueService: NotificationQueueService,
     private authService: AuthService,
@@ -47,7 +48,8 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
     this.adminFirstName = new FormControl('');
     this.community = new FormControl('');
 
-    const orgId = this.uniqueKeyService.getKey(); // TODO: should change to URL parameter
+    const orgId = this.route.snapshot.paramMap.get('orgId'); // may be null
+
     if (orgId) {
       // there may be an organization to edit because the route looks right
       this.organizationService.getOrganizationById(orgId)
