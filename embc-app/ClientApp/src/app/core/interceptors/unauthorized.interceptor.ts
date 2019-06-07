@@ -10,7 +10,7 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
 
   constructor(
     private router: Router,
-    private auth: AuthService
+    private authService: AuthService
   ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -21,9 +21,9 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
       // handle errors
       catchError((error: HttpErrorResponse) => {
         // check if error is "not logged in"
-        if (error.status === 401 && (this.auth.isLoggedIn || this.router.url !== '/')) {
+        if (error.status === 401 && (this.authService.isLoggedIn || this.router.url !== '/')) {
           // perform logout
-          this.auth.logout(true).subscribe();
+          this.authService.logout(true).subscribe();
 
           // redirect to session expired page
           this.router.navigateByUrl('/session-expired');

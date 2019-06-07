@@ -10,10 +10,12 @@ import { EVERYONE, VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from 'src/app/
 })
 export class AuthService extends RestService {
 
+  // handy information that can be observed by components to help guide the flow through the app
   public user: BehaviorSubject<User> = new BehaviorSubject<User>(null);
   public path: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public role: BehaviorSubject<string> = new BehaviorSubject<string>(EVERYONE);
 
+  // observables that can be used for authorization
   public isEveryone$ = this.role.pipe(map(x => x === EVERYONE));
   public isVolunteer$ = this.role.pipe(map(x => x === VOLUNTEER));
   public isLocalAuthority$ = this.role.pipe(map(x => x === LOCAL_AUTHORITY));
@@ -57,14 +59,16 @@ export class AuthService extends RestService {
     sessionStorage.clear();
 
     // clear all cookies
-    this.cookies.clear();
+    this.cookieService.clear();
 
     // clear current user
     this.setCurrentUser(null);
 
     if (force && wasLoggedIn) {
       // try to destroy session on server
-      return this.http.get<void>('logout', { headers: this.headers });
+      // return this.http.get<void>('logout', { headers: this.headers });
+      // redirect to the URL.
+      document.location.href = '/logout';
     }
 
     return of();
