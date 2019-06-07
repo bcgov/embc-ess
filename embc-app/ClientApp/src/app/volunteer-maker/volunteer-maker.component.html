@@ -1,122 +1,132 @@
-<div *ngIf="editing && (iAmLocalAuthority || iAmProvincialAdmin) && (editMode === 'ADD' || editMode === 'EDIT')">
-  <form novalidate [formGroup]="form">
-    <h1 *ngIf="iAmLocalAuthority && editMode === 'ADD'">Add Emergency Support Services User(s)</h1>
-    <h1 *ngIf="iAmLocalAuthority && editMode === 'EDIT'">Edit Emergency Support Services User Details</h1>
-    <h1 *ngIf="iAmProvincialAdmin && editMode === 'ADD'">Add User(s)</h1>
-    <h1 *ngIf="iAmProvincialAdmin && editMode === 'EDIT'">Edit Emergency Support Services User Details</h1>
+<div *ngIf="editing">
+  <!-- to prevent page/control flicker, wait for everything to be ready... -->
+  <div *ngIf="(iAmLocalAuthority || iAmProvincialAdmin) && (editMode === 'ADD' || editMode === 'EDIT') && (doSelectOrg === true || doSelectOrg === false)">
+    <form novalidate [formGroup]="form">
+      <h1 *ngIf="iAmLocalAuthority && editMode === 'ADD'">Add Emergency Support Services User(s)</h1>
+      <h1 *ngIf="iAmLocalAuthority && editMode === 'EDIT'">Edit Emergency Support Services User Details</h1>
+      <h1 *ngIf="iAmProvincialAdmin && editMode === 'ADD'">Add User(s)</h1>
+      <h1 *ngIf="iAmProvincialAdmin && editMode === 'EDIT'">Edit Emergency Support Services User Details</h1>
 
-    <p class="pb-3" *ngIf="iAmProvincialAdmin">
-      Administrators can add users within an organization if they have their first name, last name, role, and BCeID.
-    </p>
+      <p class="pb-3" *ngIf="iAmProvincialAdmin">
+        Administrators can add users within an organization if they have their first name, last name, role, and BCeID.
+      </p>
 
-    <small>All fields are required</small>
-    <h3 class="blue-header mt-0">User Details</h3>
+      <small>All fields are required</small>
+      <h3 class="blue-header mt-0">User Details</h3>
 
-    <div class="row pt-5" *ngIf="iAmProvincialAdmin && editMode === 'ADD'">
-      <div class="col-md-9">
-        <label class="required" for="organization">Organization</label>
-        <div *ngIf="doSelectOrg === true">
-            <select class="form-control" formControlName="organization" [class.is-invalid]="invalid('organization')" id="organization">
-            <!-- NB: no 'null' case is needed - this control is only shown with an org in context -->
-            <option *ngIf="currentOrganization" [ngValue]="currentOrganization">{{currentOrganization.name}}</option>
-            <option *ngFor="let org of metaOrganizations.data" [ngValue]="org">{{org.name}}</option>
-          </select>
-          <span class="invalid-feedback">Please select an organization</span>
+      <div class="row pt-4" *ngIf="iAmProvincialAdmin && editMode === 'ADD'">
+        <div class="col-md-9">
+          <label class="required" for="organization">Organization</label>
+          <div *ngIf="doSelectOrg === true">
+              <select class="form-control" formControlName="organization" [class.is-invalid]="invalid('organization')" id="organization">
+              <option *ngIf="!currentOrganization" [ngValue]="null">-- Select organization</option>
+              <option *ngIf="currentOrganization" [ngValue]="currentOrganization">{{currentOrganization.name}}</option>
+              <option *ngFor="let org of metaOrganizations.data" [ngValue]="org">{{org.name}}</option>
+            </select>
+            <span class="invalid-feedback">Please select an organization</span>
+          </div>
+
+          <div *ngIf="doSelectOrg === false">
+            <input class="form-control" type="text" id="organization" [value]="currentOrganization.name" readonly>
+            <button class="btn btn-link float-right" (click)="changeOrganization()">
+              <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+              <span class="ml-2">Change Organization</span>
+            </button>
+          </div>
         </div>
+      </div>
 
-        <div *ngIf="doSelectOrg === false">
+      <div class="row pt-4" *ngIf="editMode === 'EDIT'">
+        <div class="col-md-9">
+          <label for="organization">Organization</label>
           <input class="form-control" type="text" id="organization" [value]="currentOrganization.name" readonly>
-          <button class="btn btn-link float-right" (click)="changeOrganization()">
-            <app-font-awesome-icon icon="times"></app-font-awesome-icon>
-            <span class="ml-2">Change Organization</span>
-          </button>
         </div>
       </div>
-    </div>
 
-    <div class="row pt-5">
-      <div class="col-md-9">
-        <label class="required" for="lastName">Last Name</label>
-        <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your legal last name."></app-font-awesome-icon>
-        <input type="text" class="form-control" formControlName="lastName" [class.is-invalid]="invalid('lastName')" id="lastName" maxlength="50">
-        <span class="invalid-feedback">Please enter a last name</span>
+      <div class="row pt-4">
+        <div class="col-md-9">
+          <label class="required" for="lastName">Last Name</label>
+          <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your legal last name."></app-font-awesome-icon>
+          <input type="text" class="form-control" formControlName="lastName" [class.is-invalid]="invalid('lastName')" id="lastName" maxlength="50">
+          <span class="invalid-feedback">Please enter a last name</span>
+        </div>
       </div>
-    </div>
 
-    <div class="row pt-5">
-      <div class="col-md-9">
-        <label class="required" for="firstName">First Name</label>
-        <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your legal first name."></app-font-awesome-icon>
-        <input type="text" class="form-control" [class.is-invalid]="invalid('firstName')" formControlName="firstName" id="firstName" maxlength="50">
-        <span class="invalid-feedback">Please enter a first name</span>
+      <div class="row pt-4">
+        <div class="col-md-9">
+          <label class="required" for="firstName">First Name</label>
+          <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your legal first name."></app-font-awesome-icon>
+          <input type="text" class="form-control" [class.is-invalid]="invalid('firstName')" formControlName="firstName" id="firstName" maxlength="50">
+          <span class="invalid-feedback">Please enter a first name</span>
+        </div>
       </div>
-    </div>
 
-    <div class="row pt-5">
-      <div class="col-md-9">
-        <label class="required" for="bceidAccountNumber">BCeID</label>
-        <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your BCeID user ID."></app-font-awesome-icon>
-        <input type="text" class="form-control" [class.is-invalid]="invalid('bceidAccountNumber')" formControlName="bceidAccountNumber" id="bceidAccountNumber">
-        <span class="invalid-feedback">Please enter a valid BCeID</span>
+      <div class="row pt-4">
+        <div class="col-md-9">
+          <label class="required" for="bceidAccountNumber">BCeID</label>
+          <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your BCeID user ID."></app-font-awesome-icon>
+          <input type="text" class="form-control" [class.is-invalid]="invalid('bceidAccountNumber')" formControlName="bceidAccountNumber" id="bceidAccountNumber">
+          <span class="invalid-feedback">Please enter a valid BCeID</span>
+        </div>
       </div>
-    </div>
 
-    <div class="row pt-5" *ngIf="iAmProvincialAdmin">
-      <div class="col-md-9">
-        <label class="required">Role</label>
-        <fieldset class="form-group">
-          <legend class="sr-only">Role</legend>
-          <div class="form-check">
-            <label class="form-check-label" for="isAdministratorFalse">
-              <input type="radio" class="form-check-input" name="isAdministrator" formControlName="isAdministrator" id="isAdministratorFalse" [value]="false">
-              <span class="pl-3">Emergency Support Services User</span>
-            </label>
-          </div>
-          <div class="form-check">
-            <label class="form-check-label" for="isAdministratorTrue">
-              <input type="radio" class="form-check-input" name="isAdministrator" formControlName="isAdministrator" id="isAdministratorTrue" [value]="true">
-              <span class="pl-3">Admin</span>
-            </label>
-          </div>
-          <span [class.d-block]="invalid('isAdministrator')" class="invalid-feedback">Please select whether they are an ESS user or an admin user</span>
-        </fieldset>
+      <div class="row pt-4" *ngIf="iAmProvincialAdmin">
+        <div class="col-md-9">
+          <label class="required">Role</label>
+          <fieldset class="form-group">
+            <legend class="sr-only">Role</legend>
+            <div class="form-check">
+              <label class="form-check-label" for="isAdministratorFalse">
+                <input type="radio" class="form-check-input" name="isAdministrator" formControlName="isAdministrator" id="isAdministratorFalse" [value]="false">
+                <span class="pl-3">Emergency Support Services User</span>
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label" for="isAdministratorTrue">
+                <input type="radio" class="form-check-input" name="isAdministrator" formControlName="isAdministrator" id="isAdministratorTrue" [value]="true">
+                <span class="pl-3">Admin</span>
+              </label>
+            </div>
+            <span [class.d-block]="invalid('isAdministrator')" class="invalid-feedback">Please select whether they are an ESS user or an admin user</span>
+          </fieldset>
+        </div>
       </div>
-    </div>
 
-    <div class="row pt-5" *ngIf="iAmProvincialAdmin && f.isAdministrator.value === true">
-      <div class="col-md-9">
-        <label class="required">Primary Contact for Organization</label>
-        <fieldset class="form-group">
-          <legend class="sr-only">Primary Contact for Organization</legend>
-          <div class="form-check">
-            <label class="form-check-label" for="isPrimaryContactTrue">
-              <input type="radio" class="form-check-input" name="isPrimaryContact" formControlName="isPrimaryContact" id="isPrimaryContactTrue" [value]="true">
-              <span class="pl-3">Yes</span>
-            </label>
-          </div>
-          <div class="form-check">
-            <label class="form-check-label" for="isPrimaryContactFalse">
-              <input type="radio" class="form-check-input" name="isPrimaryContact" formControlName="isPrimaryContact" id="isPrimaryContactFalse" [value]="false">
-              <span class="pl-3">No</span>
-            </label>
-          </div>
-          <span [class.d-block]="invalid('isPrimaryContact')" class="invalid-feedback">Please select whether this user is a primary contact for the organization</span>
-        </fieldset>
+      <div class="row mt-5" *ngIf="iAmProvincialAdmin && f.isAdministrator.value === true">
+        <div class="col-md-9">
+          <label class="required">Primary Contact for Organization</label>
+          <fieldset class="form-group">
+            <legend class="sr-only">Primary Contact for Organization</legend>
+            <div class="form-check">
+              <label class="form-check-label" for="isPrimaryContactTrue">
+                <input type="radio" class="form-check-input" name="isPrimaryContact" formControlName="isPrimaryContact" id="isPrimaryContactTrue" [value]="true">
+                <span class="pl-3">Yes</span>
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label" for="isPrimaryContactFalse">
+                <input type="radio" class="form-check-input" name="isPrimaryContact" formControlName="isPrimaryContact" id="isPrimaryContactFalse" [value]="false">
+                <span class="pl-3">No</span>
+              </label>
+            </div>
+            <span [class.d-block]="invalid('isPrimaryContact')" class="invalid-feedback">Please select whether this user is a primary contact for the organization</span>
+          </fieldset>
+        </div>
       </div>
+    </form>
+
+    <div *ngIf="shouldValidateForm && !form.valid" class="text-danger mt-5 pl-5">
+      <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>
+      &nbsp;Some required fields have not been completed.
     </div>
-  </form>
 
-  <div *ngIf="shouldValidateForm && !form.valid" class="text-danger mt-5 pl-5">
-    <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>
-    &nbsp;Some required fields have not been completed.
-  </div>
-
-  <div class="mt-5 space-between">
-    <a href="javascript:void(0)" (click)="cancel()">
-      <app-font-awesome-icon icon="times"></app-font-awesome-icon>
-      <span class="ml-2">Cancel &amp; Close</span>
-    </a>
-    <button type="button" class="btn btn-primary float-right" (click)="next()">NEXT</button>
+    <div class="mt-5 space-between">
+      <a href="javascript:void(0)" (click)="cancel()">
+        <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+        <span class="ml-2">Cancel &amp; Close</span>
+      </a>
+      <button type="button" class="btn btn-primary float-right" (click)="next()">NEXT</button>
+    </div>
   </div>
 </div>
 
