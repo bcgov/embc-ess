@@ -204,7 +204,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     const regId = this.uniqueKeyService.getKey();
     if (regId) {
       // this is a form with data flowing in
-      this.registrationService.getRegistrationById(regId)
+      this.registrationService.getRegistrationById(regId, 'editing')
         .subscribe((registration: Registration) => {
           // explicit fallback in case value from db is null/undefined
           registration.restrictedAccess = registration.restrictedAccess ? true : false;

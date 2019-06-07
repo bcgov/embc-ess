@@ -25,6 +25,7 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
   iAmProvincialAdmin = false;
   editMode: ('ADD' | 'EDIT') = null; // not set by default
   path: string = null; // the base path for routing
+  orgId: string = null; // id of org in context (original org)
 
   volunteer: Volunteer = null;
 
@@ -90,6 +91,7 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
         const volunteerId = currentUser.contactid;
         this.getVolunteerOrganization(volunteerId)
           .subscribe((organization: Organization) => {
+            this.orgId = organization.id;
             this.f.organization.setValue(organization); // set form value
             this.doSelectOrg = false;
 
@@ -108,9 +110,9 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
 
       // if provincial admin then check for orgId query param
       if (this.iAmProvincialAdmin) {
-        const orgId = this.route.snapshot.paramMap.get('orgId'); // should never be null
-        if (orgId) {
-          this.organizationService.getOrganizationById(orgId)
+        this.orgId = this.route.snapshot.paramMap.get('orgId'); // should never be null
+        if (this.orgId) {
+          this.organizationService.getOrganizationById(this.orgId)
             .subscribe((organization: Organization) => {
               this.f.organization.setValue(organization); // set form value
               this.doSelectOrg = false;
@@ -330,9 +332,8 @@ export class VolunteerMakerComponent implements OnInit, AfterViewInit {
       // go back to current user's list of volunteers
       this.router.navigate([`/${this.path}/volunteers`]);
     } else {
-      const orgId = this.route.snapshot.paramMap.get('orgId'); // should never be null
       // go back to list of current organization's volunteers
-      this.router.navigate([`/${this.path}/organization/${orgId}/volunteers`]);
+      this.router.navigate([`/${this.path}/organization/${this.orgId}/volunteers`]);
     }
   }
 

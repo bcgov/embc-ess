@@ -84,15 +84,16 @@ export class OrganizationListComponent implements OnInit {
   }
 
   modifyOrganization(orgId?: string) {
-    // save organization ID for lookup in the new component
-    this.uniqueKeyService.setKey(orgId); // may be null
-
     // go to organization maker
-    this.router.navigate([`/${this.path}/organization`]);
+    if (orgId) {
+      this.router.navigate([`/${this.path}/organization`, { orgId }]); // TODO: should use /:id instead?
+    } else {
+      this.router.navigate([`/${this.path}/organization`]);
+    }
   }
 
   modifyOrganizationVolunteers(orgId: string) {
-    // load the organization's volunteer list
+    // go to organization's list of volunteers
     this.router.navigate([`/${this.path}/organization/${orgId}/volunteers`]);
   }
 

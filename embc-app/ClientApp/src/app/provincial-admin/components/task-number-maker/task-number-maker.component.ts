@@ -195,8 +195,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
             this.uniqueKeyService.clearKey();
 
             // go back to the task number list page
-            // TODO: preserveQueryParams is deprecated, use queryParamsHandling instead
-            this.router.navigate([`/${this.path}/task-numbers`], { preserveQueryParams: true });
+            this.router.navigate([`/${this.path}/task-numbers`]);
           }, err => {
             this.notificationQueueService.addNotification('Failed to update task', 'danger');
             console.log('error updating task =', err);
@@ -212,8 +211,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
 
             // NB - there is no key in this scenario
             // go back to the task number list page
-            // TODO: preserveQueryParams is deprecated, use queryParamsHandling instead
-            this.router.navigate([`/${this.path}/task-numbers`], { preserveQueryParams: true });
+            this.router.navigate([`/${this.path}/task-numbers`]);
           }, err => {
             this.notificationQueueService.addNotification('Failed to add task', 'danger');
             console.log('error creating task =', err);

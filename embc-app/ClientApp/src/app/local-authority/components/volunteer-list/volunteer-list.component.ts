@@ -9,6 +9,10 @@ import { ListResult, Volunteer, User } from 'src/app/core/models';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
 
+//
+// this is the component used by Local Authority users
+//
+
 @Component({
   selector: 'app-volunteer-list',
   templateUrl: './volunteer-list.component.html',
@@ -45,6 +49,8 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // save the base url path
     this.authService.path.subscribe((path: string) => this.path = path);
+
+    // NB: ignore any query param -- always use the current Local Authority's org
 
     // initialize the global variables
     this.authService.getCurrentUser()
