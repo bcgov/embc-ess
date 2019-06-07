@@ -1,3 +1,4 @@
+// config is collected through the controlled-list service
 export interface Config {
   basePath: string | null;
   baseUri: string | null;
