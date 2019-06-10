@@ -86,9 +86,11 @@
   <!-- <select class="form-control" [(ngModel)]="maxSize">
     <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option>
   </select> -->
-  <div class="col clearfix" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
-    <div class="float-right">
-      <app-paginator [metaData]="resultsAndPagination?.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+  <div class="row">
+    <div class="col" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
+      <div class="float-right">
+        <app-paginator [metaData]="resultsAndPagination?.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+      </div>
     </div>
   </div>
 </div>
