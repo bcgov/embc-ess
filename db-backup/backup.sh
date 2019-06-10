@@ -2,8 +2,6 @@
 # mssql automated backup script
 # See README.md for documentation on this script
 
-while true; do
-
 FINAL_BACKUP_DIR=$BACKUP_DIR"`date +\%Y-\%m-\%d`/"
 DBFILE=$FINAL_BACKUP_DIR"$MSSQL_DATABASE`date +\%Y-\%m-\%d-%H-%M`.bak"
 echo "Making backup directory in $FINAL_BACKUP_DIR"
@@ -34,7 +32,3 @@ else
 	echo "[!!ERROR!!] Failed to backup database $MSSQL_DATABASE"
 fi;
 
-# 24 hrs
-sleep 1d
-
-done
