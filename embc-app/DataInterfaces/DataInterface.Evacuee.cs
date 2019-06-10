@@ -10,7 +10,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public partial class DataInterface
     {
-        public async Task<IPagedResults<EvacueeListItem>> GetEvacueesAsync(EvacueesSearchQueryParameters searchQuery)
+        public async Task<IPagedResults<EvacueeListItem>> GetEvacueesAsync(EvacueeSearchQueryParameters searchQuery)
         {
             var query = db.Evacuees
                 .Include(e => e.EvacueeRegistration)
@@ -42,8 +42,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 if (!string.IsNullOrWhiteSpace(searchQuery.EssFileNumber)) query = query.Where(e => e.EvacueeRegistration.EssFileNumber.ToString() == searchQuery.EssFileNumber);
                 if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom)) query = query.Where(e => e.EvacueeRegistration.IncidentTask.Community.Id.ToString() == searchQuery.EvacuatedFrom);
                 if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedTo)) query = query.Where(e => e.EvacueeRegistration.HostCommunity.Id.ToString() == searchQuery.EvacuatedFrom);
-                if (searchQuery.HasReferrals.HasValue && searchQuery.HasReferrals.Value) query = query.Where(e => e.Referrals.Any());
-                if (searchQuery.HasReferrals.HasValue && !searchQuery.HasReferrals.Value) query = query.Where(e => !e.Referrals.Any());
+                if (searchQuery.HasReferrals.HasValue && searchQuery.HasReferrals.Value) query = query.Where(e => e.Referrals.Any(r => r.Referral.Active));
+                if (searchQuery.HasReferrals.HasValue && !searchQuery.HasReferrals.Value) query = query.Where(e => !e.Referrals.Any(r => r.Referral.Active));
                 if (searchQuery.RegistrationCompleted.HasValue) query = query.Where(e => e.EvacueeRegistration.IsFinalized == searchQuery.RegistrationCompleted.Value);
             }
 

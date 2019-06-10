@@ -30,7 +30,7 @@ namespace embc_unit_tests
             var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateCompleted(incidentTask.Id, toCommunity.Id));
             var registration = await di.GetEvacueeRegistrationAsync(registrationId);
 
-            var result = await di.GetEvacueesAsync(new EvacueesSearchQueryParameters());
+            var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters());
 
             Assert.Equal(registration.HeadOfHousehold.FamilyMembers.Count(), result.Items.Count(e => !e.IsHeadOfHousehold));
             Assert.Equal(1, result.Items.Count(e => e.IsHeadOfHousehold));
