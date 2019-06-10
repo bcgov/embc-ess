@@ -62,6 +62,25 @@ hr {
   // padding: 0;
 }
 
+textarea.is-invalid {
+  background-image: none !important; // remove red X
+}
+
+.form-control {
+  // border-radius: 5px;
+  display: inline-block;
+}
+
+.card {
+  // card overrides
+  background-color: theme-color(light);
+  border-radius: 0px;
+  border: 0;
+  border-bottom: 4px theme-color(bcgold) solid;
+}
+
+//----------OLD STUFF BELOW THIS LINE
+
 // html {
 //   background: #fff;
 // }
