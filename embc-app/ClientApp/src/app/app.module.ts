@@ -68,6 +68,7 @@ import { ReferralListItemComponent } from './volunteer/components/referral-list-
 import { AbstractReferralComponent } from './volunteer/components/abstract-referral/abstract-referral.component';
 import { EvacueePickerComponent } from './volunteer/components/evacuee-picker/evacuee-picker.component';
 import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 @NgModule({
   declarations: [
@@ -134,6 +135,7 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
 
     // 3rd party
     StoreModule.forRoot(rootReducer, { metaReducers }),
+    ScrollToModule.forRoot(),
 
     // core & shared
     CoreModule,
