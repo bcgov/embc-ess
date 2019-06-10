@@ -12,7 +12,7 @@ namespace embc_unit_tests
         [Fact]
         public void AssertConfig()
         {
-            AutoMapper.Mapper.AssertConfigurationIsValid();
+            Mapper.ConfigurationProvider.AssertConfigurationIsValid();
         }
     }
 }

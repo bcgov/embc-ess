@@ -17,11 +17,6 @@ namespace embc_unit_tests
 {
     public class TestBase
     {
-        static TestBase()
-        {
-            AutoMapper.Mapper.Initialize(cfg => cfg.AddMaps(typeof(Startup)));
-        }
-
         private ServiceProvider serviceProvider;
 
         protected IMapper Mapper => serviceProvider.CreateScope().ServiceProvider.GetService<IMapper>();
@@ -55,6 +50,7 @@ namespace embc_unit_tests
 
             serviceProvider = services.BuildServiceProvider();
 
+            ViewModelConversions.mapper = serviceProvider.GetService<IMapper>();
             SeedData();
         }
 
