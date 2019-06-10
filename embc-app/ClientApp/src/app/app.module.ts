@@ -69,6 +69,7 @@ import { AbstractReferralComponent } from './volunteer/components/abstract-refer
 import { EvacueePickerComponent } from './volunteer/components/evacuee-picker/evacuee-picker.component';
 import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+import { TopTabBarComponent } from './components/top-tab-bar/top-tab-bar.component';
 
 @NgModule({
   declarations: [
@@ -126,6 +127,7 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
     SupplierComponent,
     ReferralListItemComponent,
     AbstractReferralComponent,
+    TopTabBarComponent,
   ],
   imports: [
     // angular
