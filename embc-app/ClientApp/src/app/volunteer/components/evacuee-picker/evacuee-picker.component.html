@@ -4,7 +4,7 @@
 
     <p><a href="javascript:void(0);" (click)="selectAllEvacuees()">Select All</a></p>
     <div class="family-list">
-      <div class="form-check mt-2" *ngFor="let e of evacuees; index as i">
+      <div class="form-group form-check mt-2" *ngFor="let e of evacuees; index as i">
         <input type="checkbox" class="form-check-input" [checked]="isSelected(e)" (change)="selectEvacuee(e)" id="{{identifier}}-person-{{i}}">
         <label class="form-check-label" for="{{identifier}}-person-{{i}}">{{e.lastName}}, {{e.firstName}}</label>
       </div>

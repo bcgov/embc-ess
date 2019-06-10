@@ -79,6 +79,12 @@ textarea.is-invalid {
   border-bottom: 4px theme-color(bcgold) solid;
 }
 
+.form-check-input{
+  // the silly checkboxes are high and the text is low
+  position: relative;
+  top: 0em;
+}
+
 //----------OLD STUFF BELOW THIS LINE
 
 // html {
