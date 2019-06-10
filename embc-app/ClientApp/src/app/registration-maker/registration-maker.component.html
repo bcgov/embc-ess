@@ -79,16 +79,6 @@
       </div>
     </div>
 
-    <!-- RESTRICTION // TODO: restricted files not handled in V1 -->
-    <!-- <div class="mt-4">
-      <h2 class="blue-header font-weight-bold">RESTRICTION</h2>
-      <p class="required">Concerned family and friends may inquire about you and your family because of the emergency. We would like to provide these people with some information about you. Please check "Yes" if you <u>do not</u> want EMBC to disclose your location and the contact information for you and your family members?</p>
-      <div class="form-check">
-        <input type="checkbox" class="form-check-input" formControlName="restrictedAccess" id="restrictedAccess">
-        <label class="form-check-label" for="restrictedAccess">Yes, I <u>do not</u> want EMBC to disclose my personal information to concerned family and friends.</label>
-      </div>
-    </div> -->
-
     <!-- RESTRICTION -->
     <div class="feature-block mt-4">
       <h2 class="required mt-0">Restriction</h2>
@@ -97,13 +87,13 @@
         <strong>May we disclose your location and the contact information for you and your family members?</strong>
       </p>
       <div class="form-check">
-        <input type="radio" class="form-check-input" name="restriction" [checked]="activeForm===true" (click)="disableInput(false)" id="restrictionFalse">
+        <input type="radio" class="form-check-input" [value]="false" formControlName="restrictedAccess" (click)="setRestricted(false)" id="restrictionFalse">
         <label class="form-check-label" for="restrictionFalse">
           <strong>Yes</strong>
         </label>
       </div>
       <div class="form-check">
-        <input type="radio" class="form-check-input" name="restriction" [checked]="activeForm===false" (click)="disableInput(true)" id="restrictionTrue">
+        <input type="radio" class="form-check-input" [value]="true" formControlName="restrictedAccess" (click)="setRestricted(true)" id="restrictionTrue">
         <label class="form-check-label" for="restrictionTrue">
           <strong>No</strong> - (Emergency Support Services Team: Requires an authorized team member to complete the form manually.)
         </label>
