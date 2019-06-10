@@ -113,7 +113,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         #region Evacuee
 
-        Task<IPagedResults<EvacueeListItem>> GetEvacueesAsync(SearchQueryParameters query);
+        Task<IPagedResults<EvacueeListItem>> GetEvacueesAsync(EvacueesSearchQueryParameters query);
 
         #endregion Evacuee
     }

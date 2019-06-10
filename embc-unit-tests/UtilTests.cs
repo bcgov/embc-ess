@@ -5,7 +5,7 @@ using Xunit.Abstractions;
 
 namespace embc_unit_tests
 {
-    public class UtilTests : BaseTest
+    public class UtilTests : TestBase
     {
         public UtilTests(ITestOutputHelper output) : base(output)
         {

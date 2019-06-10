@@ -15,9 +15,9 @@ using Xunit.Abstractions;
 
 namespace embc_unit_tests
 {
-    public class BaseTest
+    public class TestBase
     {
-        static BaseTest()
+        static TestBase()
         {
             AutoMapper.Mapper.Initialize(cfg => cfg.AddMaps(typeof(Startup)));
         }
@@ -30,7 +30,7 @@ namespace embc_unit_tests
 
         protected IMediator Mediator => serviceProvider.CreateScope().ServiceProvider.GetService<IMediator>();
 
-        public BaseTest(ITestOutputHelper output, params (Type svc, Type impl)[] additionalServices)
+        public TestBase(ITestOutputHelper output, params (Type svc, Type impl)[] additionalServices)
         {
             var configuration = A.Fake<IConfiguration>();
 

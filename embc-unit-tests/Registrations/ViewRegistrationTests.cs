@@ -8,7 +8,7 @@ using Xunit.Abstractions;
 
 namespace embc_unit_tests.Registrations
 {
-    public class ViewRegistrationTests : BaseTest
+    public class ViewRegistrationTests : TestBase
     {
         public ViewRegistrationTests(ITestOutputHelper output) : base(output, (typeof(IDataInterface), typeof(DataInterface)))
         {

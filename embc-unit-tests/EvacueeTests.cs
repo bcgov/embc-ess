@@ -1,5 +1,5 @@
 ﻿using Gov.Jag.Embc.Public.DataInterfaces;
-using Gov.Jag.Embc.Public.Utils;
+using Gov.Jag.Embc.Public.ViewModels.Search;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -7,14 +7,14 @@ using Xunit.Abstractions;
 
 namespace embc_unit_tests
 {
-    public class EvacueeTests : BaseTest
+    public class EvacueeTests : TestBase
     {
         public EvacueeTests(ITestOutputHelper output) : base(output)
         {
         }
 
         [Fact]
-        public async Task CanMapToListItem()
+        public async Task GetAll_BasicSearch_ListReturned()
         {
             var ctx = EmbcDb;
             var di = new DataInterface(ctx, Mapper);
@@ -30,7 +30,7 @@ namespace embc_unit_tests
             var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateCompleted(incidentTask.Id, toCommunity.Id));
             var registration = await di.GetEvacueeRegistrationAsync(registrationId);
 
-            var result = await di.GetEvacueesAsync(new SearchQueryParameters());
+            var result = await di.GetEvacueesAsync(new EvacueesSearchQueryParameters());
 
             Assert.Equal(registration.HeadOfHousehold.FamilyMembers.Count(), result.Items.Count(e => !e.IsHeadOfHousehold));
             Assert.Equal(1, result.Items.Count(e => e.IsHeadOfHousehold));
