@@ -13,41 +13,43 @@
 
     <small>All fields are required</small>
     <h3 class="blue-header mt-0">Organization Details</h3>
+    <form>
 
-    <div class="row">
-      <div class="col-md-9 pt-4 mb-4">
-        <label class="required" for="organizationName">Name of Organization</label>
-        <input class="form-control" type="text" [formControl]="organizationName" id="organizationName" maxlength="150" required>
+      <div class="row">
+        <div class="col pt-4 mb-4">
+          <label class="required" for="organizationName">Name of Organization</label>
+          <input class="form-control" type="text" [formControl]="organizationName" id="organizationName" maxlength="150" required>
+        </div>
       </div>
-    </div>
 
-    <div class="row" *ngIf="editMode === false">
-      <div class="col-md-9 pt-4 mb-4">
-        <label class="required" for="adminBceid">Admin BCeID User ID</label>
-        <input class="form-control" type="text" [formControl]="adminBceid" id="adminBceid" required>
+      <div class="row" *ngIf="editMode === false">
+        <div class="col pt-4 mb-4">
+          <label class="required" for="adminBceid">Admin BCeID User ID</label>
+          <input class="form-control" type="text" [formControl]="adminBceid" id="adminBceid" required>
+        </div>
       </div>
-    </div>
 
-    <div class="row" *ngIf="editMode === false">
-      <div class="col-md-9 pt-4 mb-4">
-        <label class="required" for="adminLastName">Admin Last Name</label>
-        <input class="form-control" type="text" [formControl]="adminLastName" id="adminLastName" required>
+      <div class="row" *ngIf="editMode === false">
+        <div class="col pt-4 mb-4">
+          <label class="required" for="adminLastName">Admin Last Name</label>
+          <input class="form-control" type="text" [formControl]="adminLastName" id="adminLastName" required>
+        </div>
       </div>
-    </div>
 
-    <div class="row" *ngIf="editMode === false">
-      <div class="col-md-9 pt-4 mb-4">
-        <label class="required" for="adminFirstName">Admin First Name</label>
-        <input class="form-control" type="text" [formControl]="adminFirstName" id="adminFirstName" required>
+      <div class="row" *ngIf="editMode === false">
+        <div class="col pt-4 mb-4">
+          <label class="required" for="adminFirstName">Admin First Name</label>
+          <input class="form-control" type="text" [formControl]="adminFirstName" id="adminFirstName" required>
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-9 pt-4 mb-4">
-        <label class="required" for="community">Associated EMBC Regional District / Community</label>
-        <app-communities-select [myFormControl]="community" myId="community" [myRequired]="true" myPlaceHolder="Start Typing..."></app-communities-select>
+      <div class="row">
+        <div class="col pt-4 mb-4">
+          <label class="required" for="community">Associated EMBC Regional District / Community</label>
+          <app-communities-select [myFormControl]="community" myId="community" [myRequired]="true" myPlaceHolder="Start Typing..."></app-communities-select>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
 
   <div class="mt-5 space-between">
