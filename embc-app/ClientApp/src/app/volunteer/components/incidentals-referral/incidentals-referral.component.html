@@ -18,7 +18,7 @@
               <div class="card-body">
                 <div class="form-group">
                   <label for="approvedItems" class="required">List approved items (use comma to separate items):</label>
-                  <textarea class="form-control" appErrorBorder [when]="showErrorsWhen" id="approvedItems" #approvedItems formControlName="approvedItems" placeholder="Details" autocomplete="off"></textarea>
+                  <textarea class="form-control" appErrorBorder [when]="true" id="approvedItems" #approvedItems formControlName="approvedItems" placeholder="Details" autocomplete="off"></textarea>
                   <span class="invalid-feedback" *ngIf="f.approvedItems.errors?.required">Please list approved items</span>
                   <span class="invalid-feedback" *ngIf="f.approvedItems.errors?.tooLong">Please limit approved items to 250 characters</span>
                   <span class="invalid-feedback" *ngIf="f.approvedItems.errors?.tooTall">Please limit approved items to 5 lines</span>
