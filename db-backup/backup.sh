@@ -14,8 +14,8 @@ fi;
 DB_ADMIN_PASSWORD=$DB_ADMIN_PASSWORD
 export DB_ADMIN_PASSWORD
 
-echo "Backing up $MSSQL_DATABASE on $DATABASE_SERVICE_NAME"
-sqlcmd -S $DATABASE_SERVICE_NAME -U sa -P $DB_ADMIN_PASSWORD -d master -Q "BACKUP DATABASE $MSSQL_DATABASE TO DISK='$DBFILE'"
+echo "Backing up $MSSQL_DATABASE on $DATABASE_SERVICE_URI"
+sqlcmd -S $DATABASE_SERVICE_URI -U sa -P $DB_ADMIN_PASSWORD -d master -Q "BACKUP DATABASE $MSSQL_DATABASE TO DISK='$DBFILE'"
 
 if test -f "$DBFILE" ; then
 	echo "Database backup written to $DBFILE"
@@ -25,10 +25,16 @@ if test -f "$DBFILE" ; then
 
 	echo "Database backup written compressed to $DBFILE.gz"
 
+	if test -f "$DBFILE"; then
+		rm -d $DBFILE
+	fi;
+
 	# first cull backups older. 
-	echo "culling backups older than ${BACKUP_EXPIRY_DAYS}"
-	find $BACKUP_DIR* -type d -ctime +${BACKUP_EXPIRY_DAYS} | xargs rm -rf
+	echo "Culling backups older than $DAILY_BACKUPS"
+	find $BACKUP_DIR* -type d -ctime +$DAILY_BACKUPS | xargs rm -rf
+	exit 0;
 else
 	echo "[!!ERROR!!] Failed to backup database $MSSQL_DATABASE"
+	exit 1;
 fi;
 
