@@ -34,7 +34,7 @@ export class RegistrationMakerComponent implements OnInit {
   CANADA: Country; // the object representation of the default country
 
   pageTitle = 'Add an Evacuee';
-  activeForm: boolean; // not set initially
+  activeForm: boolean; // not set by default
 
   // The model for the form data collected
   form: FormGroup;
@@ -149,8 +149,10 @@ export class RegistrationMakerComponent implements OnInit {
         required: 'Please make a selection regarding pets.',
       },
     };
+
     // TODO: Wow. it sure would be nice if we could just instatiate a class instead of using interfaces
     this.registration = this.blankRegistration();
+
     // Define an instance of the validator for use with this form,
     // passing in this form's set of validation messages.
     this.validationHelper = new ValidationHelper(this.constraints);
@@ -166,9 +168,11 @@ export class RegistrationMakerComponent implements OnInit {
   // this is a way to grab the familymembers in a typed way
   get familyMembers() { return this.f.familyMembers as FormArray; }
 
-  disableInput(disabled: boolean) {
-    // hide the form TODO: V1 shouldn't handle sensitive information. This is a workaround toggle.
-    this.activeForm = !disabled;
+  setRestricted(state: boolean) {
+    // if not restricted then show the form
+    this.activeForm = !state;
+    // set the value of the restricted form element
+    this.form.patchValue({ restrictedAccess: state });
   }
 
   ngOnInit() {
@@ -202,6 +206,9 @@ export class RegistrationMakerComponent implements OnInit {
       // this is a form with data flowing in.
       this.registrationService.getRegistrationById(key)
         .subscribe((registration: Registration) => {
+          // explicit fallback in case value from db is null/undefined
+          registration.restrictedAccess = registration.restrictedAccess ? true : false;
+
           // set registration mode to edit and save the previous content in an object.
           // Note: these flags are reversed.
           // requiresAccomodation means "claims to have accomodation on self reg"
@@ -210,6 +217,10 @@ export class RegistrationMakerComponent implements OnInit {
           registration.requiresFood = !registration.requiresFood;
           registration.requiresIncidentals = !registration.requiresIncidentals;
           registration.requiresTransportation = !registration.requiresTransportation;
+
+          // hide/show form accordingly
+          this.activeForm = !registration.restrictedAccess;
+
           this.registration = registration;
           this.editMode = true;
           this.displayRegistration(registration);
@@ -629,7 +640,6 @@ export class RegistrationMakerComponent implements OnInit {
   }
 
   collectRegistrationFromForm(): Registration {
-    //
     const values = this.form.value;
     // ensure proper sub-types are assigned to people entities
     const personType: 'FMBR' = 'FMBR';
