@@ -22,23 +22,23 @@
     </div>
   </div>
 
-  <div class="space-between align-items-center my-3">
-    <section>
+  <div class="row mb-2">
+    <div class="col">
       <app-pagination-summary [value]="resultsAndPagination?.metadata">
         <!-- <span class="font-weight-bold">ACTIVE</span> evacuees -->
         <span class="font-weight-bold text-uppercase">active</span> evacuees
         <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
       </app-pagination-summary>
-    </section>
-    <section>
-      <select class="form-control" [(ngModel)]="sort" (change)="search()">
+    </div>
+    <div class="col-4">
+      <select class="form-control float-right" [(ngModel)]="sort" (change)="search()">
         <!-- <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option> -->
         <option [value]="'-registrationId'">Sort by: Latest (default)</option>
         <option [value]="'lastName'">Last Name</option>
         <option [value]="'evacuatedTo'">Community Evacuated to</option>
         <option [value]="'evacuatedFrom'">Community Evacuated from</option>
       </select>
-    </section>
+    </div>
   </div>
   <div class="search-results">
     <div *ngIf="resultsAndPagination?.data?.length>0; then searchResultsTable; else notFound"></div>
@@ -86,9 +86,11 @@
   <!-- <select class="form-control" [(ngModel)]="maxSize">
     <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option>
   </select> -->
-  <div class="col clearfix" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
-    <div class="float-right">
-      <app-paginator [metaData]="resultsAndPagination?.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+  <div class="row">
+    <div class="col" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
+      <div class="float-right">
+        <app-paginator [metaData]="resultsAndPagination?.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+      </div>
     </div>
   </div>
 </div>

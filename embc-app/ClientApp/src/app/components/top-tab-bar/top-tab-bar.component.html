@@ -1,7 +1,7 @@
 <!-- No navbar (default state) -->
 <!-- Volunteer navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-secondary-nav" *ngIf="role===volunteer">
-  <ul class="navbar-nav mr-auto">
+<nav class="mt-1" *ngIf="role===volunteer">
+  <ul class="nav nav-tabs">
     <li class="nav-item">
       <a [class.active]="router.url==='/volunteer'" class="nav-link" [routerLink]="['/volunteer']" title="Go Home">Home</a>
     </li>
@@ -15,8 +15,8 @@
 </nav>
 
 <!-- Local authority navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-secondary-nav" *ngIf="role===localAuthority">
-  <ul class="navbar-nav mr-auto">
+<nav class="mt-1" *ngIf="role===localAuthority">
+  <ul class="nav nav-tabs">
     <li class="nav-item">
       <a [class.active]="router.url==='/local-authority'" class="nav-link" [routerLink]="['/local-authority']" title="Go Home">Home</a>
     </li>
@@ -35,8 +35,8 @@
 </nav>
 
 <!-- Administrator navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-secondary-nav" *ngIf="role===provincialAdmin">
-  <ul class="navbar-nav mr-auto">
+<nav class="mt-1" *ngIf="role===provincialAdmin">
+  <ul class="nav nav-tabs">
     <li class="nav-item">
       <a [class.active]="router.url==='/provincial-admin'" class="nav-link" [routerLink]="['/provincial-admin']" title="Go Home">Home</a>
     </li>
