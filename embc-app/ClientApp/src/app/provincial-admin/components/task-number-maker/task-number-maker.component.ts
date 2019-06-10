@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -19,13 +19,12 @@ import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
   templateUrl: './task-number-maker.component.html',
   styleUrls: ['./task-number-maker.component.scss']
 })
-export class TaskNumberMakerComponent implements OnInit {
+export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
 
   maker = true; // determines if the widget is in edit or confirmation mode
   editMode = false;
   submitting = false;
-  // path is for routing based on the user's role
-  path: string;
+  path: string = null; // the base path for routing
 
   // whatever is in the application state
   currentIncidentTask$ = this.store.select(i => i.incidentTasks.currentIncidentTask);
@@ -93,19 +92,36 @@ export class TaskNumberMakerComponent implements OnInit {
     // initialize form for collection
     this.initializeForm();
 
-    const key = this.uniqueKeyService.getKey();
-    if (key) {
-      // there may be a user to edit because the route has an ID for an incident task
-      this.incidentTaskService.getIncidentTask(key)
+    const taskId = this.uniqueKeyService.getKey();
+    if (taskId) {
+      // there may be a task to edit because the route has an ID for an incident task
+      this.incidentTaskService.getIncidentTask(taskId)
         .subscribe((incidentTask: IncidentTask) => {
           // save the incident task for filling in information later.
           this.displayTaskNumber(incidentTask);
           this.incidentTask = incidentTask;
           this.editMode = true;
+        }, err => {
+          this.notificationQueueService.addNotification('Failed to load task', 'danger');
+          console.log('error getting task =', err);
+
+          // go back to list of tasks
+          this.router.navigate([`/${this.path}/task-numbers`]);
         });
     } else {
       // this is a fresh form and will be a simple add user
       this.editMode = false;
+    }
+  }
+
+  ngAfterViewInit() {
+    // focus the first input
+    const elements = document.getElementsByClassName('form-control') as HTMLCollectionOf<HTMLElement>;
+    if (elements.length > 0) {
+      elements[0].focus();
+    } else {
+      // wait for elements to display and try again
+      setTimeout(() => this.ngAfterViewInit(), 100);
     }
   }
 
@@ -167,29 +183,38 @@ export class TaskNumberMakerComponent implements OnInit {
     } else {
       // check if this is an update
       if (this.incidentTask.id) {
-        // if the volunteer has an ID we need to update
+        // if the task has an ID then we need to update
         this.incidentTaskService.updateIncidentTask(this.incidentTask)
           .subscribe(() => {
             this.submitting = false;
+
             // add a message to the UI
-            this.notificationQueueService.addNotification('Task number updated successfully', 'success');
+            this.notificationQueueService.addNotification('Task updated successfully', 'success');
+
             // done editing the entry. Clear the reference key.
             this.uniqueKeyService.clearKey();
+
             // go back to the task number list page
-            // TODO: preserveQueryParams is deprecated, use queryParamsHandling instead
-            this.router.navigate([`/${this.path}/task-numbers`], { preserveQueryParams: true });
+            this.router.navigate([`/${this.path}/task-numbers`]);
+          }, err => {
+            this.notificationQueueService.addNotification('Failed to update task', 'danger');
+            console.log('error updating task =', err);
           });
       } else {
-        // if the volunteer has no id we need to create a new one
+        // if the task has no id then we need to create a new one
         this.incidentTaskService.createIncidentTask(this.incidentTask)
-          .subscribe((incidentTask: IncidentTask) => {
+          .subscribe(() => {
             this.submitting = false;
+
             // add a message to the UI
-            this.notificationQueueService.addNotification('Task number added successfully', 'success');
+            this.notificationQueueService.addNotification('Task added successfully', 'success');
+
             // NB - there is no key in this scenario
             // go back to the task number list page
-            // TODO: preserveQueryParams is deprecated, use queryParamsHandling instead
-            this.router.navigate([`/${this.path}/task-numbers`], { preserveQueryParams: true });
+            this.router.navigate([`/${this.path}/task-numbers`]);
+          }, err => {
+            this.notificationQueueService.addNotification('Failed to add task', 'danger');
+            console.log('error creating task =', err);
           });
       }
     }

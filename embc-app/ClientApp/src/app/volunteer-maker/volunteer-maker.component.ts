@@ -20,12 +20,12 @@ export class VolunteerMakerComponent implements OnInit {
 
   editing = true; // whether we are adding/editing or reviewing
   submitting = false; // whether we are submitting data to BE
-  doSelectOrg = false; // whether we can select org
-
-  iAmLocalAuthority: boolean = null;
-  iAmProvincialAdmin: boolean = null;
-  mode: ('ADD' | 'EDIT') = null;
-  path: string = null; // path for routing current user
+  doSelectOrg: boolean = null; // whether we can select org (not set by default)
+  iAmLocalAuthority = false;
+  iAmProvincialAdmin = false;
+  editMode: ('ADD' | 'EDIT') = null; // not set by default
+  path: string = null; // the base path for routing
+  currentOrganization: Organization = null; // organization in context (original org)
 
   volunteer: Volunteer = null;
 
@@ -36,10 +36,6 @@ export class VolunteerMakerComponent implements OnInit {
 
   // convenience getter for easy access to form fields
   get f(): any { return this.form.controls; }
-
-  get currentOrganization(): Organization {
-    return this.f.organization.value;
-  }
 
   // to run validation after user clicks the Submit button
   shouldValidateForm = false;
@@ -57,7 +53,7 @@ export class VolunteerMakerComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      organization: ['', Validators.required],
+      organization: [null, Validators.required],
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
       bceidAccountNumber: ['', Validators.required],
@@ -91,35 +87,38 @@ export class VolunteerMakerComponent implements OnInit {
         const volunteerId = currentUser.contactid;
         this.getVolunteerOrganization(volunteerId)
           .subscribe((organization: Organization) => {
-            // set form value
-            this.f.organization.setValue(organization);
+            this.currentOrganization = organization;
+            this.doSelectOrg = false;
 
             // continue
             this.ngOnInit2();
           }, err => {
-            console.log('error getting organization =', err);
-            this.notificationQueueService.addNotification('Failed to get organizations', 'danger');
-            // navigate back to the volunteers list
+            console.log('error getting volunteer organization =', err);
+            this.notificationQueueService.addNotification('Failed to load organization', 'danger');
+
+            // go back to the volunteers list
             this.cancel();
           });
+
         return; // done for local authority
       }
 
       // if provincial admin then check for orgId query param
       if (this.iAmProvincialAdmin) {
-        const orgId = this.route.snapshot.params.orgId; // may be null
+        const orgId = this.route.snapshot.paramMap.get('orgId'); // may be null
         if (orgId) {
           this.organizationService.getOrganizationById(orgId)
             .subscribe((organization: Organization) => {
-              // set form value
-              this.f.organization.setValue(organization);
+              this.currentOrganization = organization;
+              this.doSelectOrg = false;
 
               // continue
               this.ngOnInit2();
             }, err => {
               console.log('error getting organization =', err);
-              this.notificationQueueService.addNotification('Failed to get organizations', 'danger');
-              // navigate back to the volunteers list
+              this.notificationQueueService.addNotification('Failed to load organization', 'danger');
+
+              // go back to the volunteers list
               this.cancel();
             });
         } else {
@@ -129,18 +128,22 @@ export class VolunteerMakerComponent implements OnInit {
           // continue
           this.ngOnInit2();
         }
+
         return; // done for provincial admin
       }
 
       // should never get here
-      console.log('error - current user was not Local Authority or Provincial Admin');
-      // navigate back to home
+      console.log('ERROR - current user is not Local Authority or Provincial Admin');
+
+      // go back to home page
       this.router.navigate([`/${this.path}`]);
+
     }, err => {
+      this.notificationQueueService.addNotification('Failed to load page data', 'danger');
       console.log('error getting data =', err);
-      this.notificationQueueService.addNotification('Failed to get data', 'danger');
-      // navigate back to the volunteers list
-      this.cancel();
+
+      // go back to home page
+      this.router.navigate([`/${this.path}`]);
     });
   }
 
@@ -151,28 +154,31 @@ export class VolunteerMakerComponent implements OnInit {
       // get volunteer to edit
       this.volunteerService.getVolunteerById(volunteerId)
         .subscribe((volunteer: Volunteer) => {
-          this.mode = 'EDIT';
-
+          this.editMode = 'EDIT';
           this.volunteer = volunteer;
 
           // set form fields
           this.form.patchValue({
-            organization: volunteer.organization, // NB - should have been set when
+            organization: volunteer.organization, // assume that a volunteer has an organization
             lastName: volunteer.lastName,
             firstName: volunteer.firstName,
             bceidAccountNumber: volunteer.bceidAccountNumber,
             isAdministrator: volunteer.isAdministrator,
             isPrimaryContact: volunteer.isPrimaryContact
           });
+
+          // finally everything is loaded
+          this.setInitialFocus();
         }, err => {
           console.log('error getting volunteer =', err);
           this.notificationQueueService.addNotification('Failed to get volunteer', 'danger');
-          // navigate back to the volunteers list
+
+          // go back to the volunteers list
           this.cancel();
         });
     } else {
       // no volunteerId -> add user
-      this.mode = 'ADD';
+      this.editMode = 'ADD';
 
       // this is a fresh form and will be a simple add organization
       this.volunteer = {
@@ -191,7 +197,23 @@ export class VolunteerMakerComponent implements OnInit {
         isPrimaryContact: null
       };
 
-      // no form fields to set
+      // set org value
+      // other form fields remain empty
+      this.f.organization.setValue(this.currentOrganization);
+
+      // finally everything is loaded
+      this.setInitialFocus();
+    }
+  }
+
+  private setInitialFocus() {
+    // focus the first input
+    const elements = document.getElementsByClassName('form-control') as HTMLCollectionOf<HTMLElement>;
+    if (elements.length > 0) {
+      elements[0].focus();
+    } else {
+      // wait for elements to display and try again
+      setTimeout(() => this.setInitialFocus(), 100);
     }
   }
 
@@ -217,10 +239,15 @@ export class VolunteerMakerComponent implements OnInit {
       .subscribe((listResult: ListResult<Organization>) => {
         this.metaOrganizations = listResult;
         this.doSelectOrg = true;
+
+        // page controls have been updated
+        // NB: page variables aren't ready yet so set focus in NEXT timeslice
+        setTimeout(() => this.setInitialFocus(), 0);
       }, err => {
         console.log('error getting organizations =', err);
         this.notificationQueueService.addNotification('Failed to get organizations', 'danger');
-        // navigate back to the volunteers list
+
+        // go back to the volunteers list
         this.cancel();
       });
   }
@@ -241,10 +268,14 @@ export class VolunteerMakerComponent implements OnInit {
     // show the editing parts of the form
     this.editing = true;
     window.scrollTo(0, 0); // scroll to top
+
+    // page controls have been updated
+    this.setInitialFocus();
   }
 
   submit(addAnother?: boolean) {
     this.submitting = true;
+
     // check if this is an update
     if (this.volunteer.id) {
       // if the volunteer has an ID we need to update
@@ -253,12 +284,11 @@ export class VolunteerMakerComponent implements OnInit {
           this.submitting = false;
           // add a notification about the update
           this.notificationQueueService.addNotification('User updated successfully', 'success');
-          // if addAnother route then reset this form
-          // else route back to the volunteers list
+
           if (addAnother) {
             this.resetForm();
           } else {
-            // navigate back to the volunteers list
+            // go back to the volunteers list
             this.cancel();
           }
         }, err => {
@@ -273,6 +303,7 @@ export class VolunteerMakerComponent implements OnInit {
           this.submitting = false;
           // add a notification about the creation
           this.notificationQueueService.addNotification('User added successfully', 'success');
+
           // if addAnother route then reset this form
           // else route back to the volunteers list
           if (addAnother) {
@@ -307,10 +338,17 @@ export class VolunteerMakerComponent implements OnInit {
   }
 
   cancel() {
-    // navigate back to the volunteers list
-    // TODO: preserveQueryParams is deprecated, use queryParamsHandling instead
-    // TODO: need to add orgId URL param?
-    this.router.navigate([`/${this.path}/volunteers`], { preserveQueryParams: true });
+    if (this.iAmLocalAuthority) {
+      // go back to current user's list of volunteers
+      this.router.navigate([`/${this.path}/volunteers`]);
+    } else if (this.currentOrganization) {
+      // go back to list of current organization's volunteers
+      this.router.navigate([`/${this.path}/organization/${this.currentOrganization.id}/volunteers`]);
+    } else {
+      // we got here without an org in context
+      // go to list of organizations
+      this.router.navigate([`/${this.path}/organizations`]);
+    }
   }
 
 }

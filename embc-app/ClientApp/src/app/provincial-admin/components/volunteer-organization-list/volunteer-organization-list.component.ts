@@ -1,12 +1,17 @@
 import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AuthService } from '../../../core/services/auth.service';
-import { VolunteerService, VolunteerSearchQueryParameters } from '../../../core/services/volunteer.service';
-import { ListResult, Volunteer, PaginationSummary, Organization } from '../../../core/models';
-import { UniqueKeyService } from '../../../core/services/unique-key.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { VolunteerService, VolunteerSearchQueryParameters } from 'src/app/core/services/volunteer.service';
+import { ListResult, Volunteer, PaginationSummary, Organization } from 'src/app/core/models';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
 import { OrganizationService } from 'src/app/core/services/organization.service';
+import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
+
+//
+// this is the component used by Provincial Admin users
+//
 
 @Component({
   selector: 'app-volunteer-organization-list',
@@ -38,11 +43,10 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
   // show types of users
   userType = 'SHOW_ALL';
 
-  // doesn't need to be an object besides it provides a visual seper
   sort = ''; // how do we sort the list
 
-  // this is the correct path prefix for the user
-  path: string;
+  path: string = null; // the base path for routing
+  orgId: string = null;
 
   // local constants used in the FORM
   readonly SHOW_ALL = '1';
@@ -52,13 +56,14 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
   confirmModal: NgbModalRef = null;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
+    private route: ActivatedRoute,
     private modals: NgbModal,
     private volunteerService: VolunteerService,
     private organizationService: OrganizationService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
+    private notificationQueueService: NotificationQueueService,
   ) { }
 
   // convenience getters
@@ -75,17 +80,28 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // save the base url path
     this.authService.path.subscribe((path: string) => this.path = path);
+
+    // get route parameter
+    this.orgId = this.route.snapshot.paramMap.get('orgId'); // should never be null
+
     this.previousQuery = this.copyProperties(this.defaultSearchQuery);
-    const orgId = this.route.snapshot.params.id;
-    if (orgId) {
-      this.organizationService.getOrganizationById(orgId)
+
+    if (this.orgId) {
+      // collect all volunteers
+      this.getVolunteers();
+
+      this.organizationService.getOrganizationById(this.orgId)
         .subscribe((organization: Organization) => {
           // save the organization
           this.currentOrganization = organization;
+
           // collect all volunteers
           this.getVolunteers();
         }, err => {
+          this.notificationQueueService.addNotification('Failed to load organization', 'danger');
           console.log('error getting organization =', err);
+
+          // go back to list of organizations
           this.router.navigate([`/${this.path}/organizations`]);
         });
     } else {
@@ -113,7 +129,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     this.previousQuery.q = this.queryString;
 
     // the organization is the one in the global state
-    this.previousQuery.org_id = this.route.snapshot.params.id;
+    this.previousQuery.org_id = this.orgId;
 
     // pagination is calculated
     this.previousQuery.offset = this.previousQuery.offset;
@@ -126,11 +142,9 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
       case 'SHOW_ADMINS_ONLY':
         this.previousQuery.admin_only = true;
         break;
-      // tslint:disable-next-line: no-switch-case-fall-through
       case 'SHOW_ESS_USERS_ONLY':
         this.previousQuery.ess_only = true;
         break;
-      // tslint:disable-next-line: no-switch-case-fall-through
       case 'SHOW_ALL':
         break;
       default:
@@ -143,10 +157,16 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
       .subscribe((listResult: ListResult<Volunteer>) => {
         // save the result of the service into an object with both the result and service
         this.resultsAndPagination = listResult;
-        // Set the not found result message. It should be hidden when results flow into the form.
+
+        // set the not found result message
+        // it should be hidden when results flow into the form
         this.notFoundMessage = 'No results found.';
       }, err => {
+        this.notificationQueueService.addNotification('Failed to load volunteers', 'danger');
         console.log('error getting volunteers =', err);
+
+        // go back to list of organizations
+        this.router.navigate([`/${this.path}/organizations`]);
       });
   }
 
@@ -162,11 +182,13 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     this.getVolunteers();
   }
 
-  modifyOrganizationVolunteer(id?: string) {
-    if (!id) {
+  modifyOrganizationVolunteer(volunteerId?: string) {
+    if (!volunteerId) {
       // no id means 'add user' -> clear unique key
       this.uniqueKeyService.clearKey();
-      this.router.navigate([`/${this.path}/volunteer`, { orgId: this.previousQuery.org_id }]);
+
+      // go to volunteer maker
+      this.router.navigate([`/${this.path}/volunteer`, { orgId: this.orgId }]);
       return;
     }
 
@@ -178,9 +200,11 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
         // modal was closed
         this.confirmModal = null;
 
-        // save the volunteer ID for lookup in the new component
-        this.uniqueKeyService.setKey(id);
-        this.router.navigate([`/${this.path}/volunteer`, { orgId: this.previousQuery.org_id }]);
+        // save volunteer ID for lookup in the new component
+        this.uniqueKeyService.setKey(volunteerId);
+
+        // go to volunteer maker
+        this.router.navigate([`/${this.path}/volunteer`, { orgId: this.orgId }]);
       },
       () => {
         // modal was dismissed

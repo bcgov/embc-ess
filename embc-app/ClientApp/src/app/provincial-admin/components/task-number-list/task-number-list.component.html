@@ -46,16 +46,21 @@
           <td>{{incidentTask?.community?.name}}</td>
           <td>{{incidentTask?.totalAssociatedEvacuees > 0 ? incidentTask?.totalAssociatedEvacuees : 'n/a'}}</td>
           <td>
-            <a routerLink="" (click)="modifyTaskNumber(incidentTask.id)">Edit Task Details</a>
+            <a href="javascript:void(0)" (click)="modifyTaskNumber(incidentTask.id)">Edit Task Details</a>
           </td>
         </tr>
       </tbody>
     </table>
-    <div class="row">
+    <<<<<<< HEAD
+      <div class="row">
       <div class="col-4">
         <button class="btn btn-primary float-right text-uppercase" routerLink="" (click)="modifyTaskNumber()">Add Task Number</button>
       </div>
-    </div>
+      =======
+      <div>
+        <button class="btn btn-primary float-right text-uppercase" (click)="modifyTaskNumber()">Add Task Number</button>
+        >>>>>>> sandbox
+      </div>
   </ng-template>
 
   <ng-template #notFound>

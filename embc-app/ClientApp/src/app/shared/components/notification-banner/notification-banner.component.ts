@@ -17,8 +17,8 @@ export class NotificationBannerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.notificationQueueService.notificationQueue.subscribe(n => {
-      this.currentNotifications = n;
+    this.notificationQueueService.notificationQueue.subscribe((notifications: Notification[]) => {
+      this.currentNotifications = notifications;
     });
   }
 

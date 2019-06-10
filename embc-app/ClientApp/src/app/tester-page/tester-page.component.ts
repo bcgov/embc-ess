@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
 import { ReferralService } from '../core/services/referral.service';
-import { ListResult, Referral, IncidentalsReferral, ReferralPost, ReferralPostItem } from '../core/models';
+import { ListResult, Referral, ReferralPost, ReferralPostItem } from '../core/models';
 
 @Component({
   selector: 'app-tester-page',
@@ -73,12 +72,14 @@ export class TesterPageComponent implements OnInit {
 
   ngOnInit() {
     this.referralService.getCleanReferrals(this.id, true)
-      .subscribe(r => {
-        this.referrals = r;
-        // this.referralsModified = r.data.map(d => {
-        //   d.supplier.name = d.supplier.name + '!';
-        //   return d;
+      .subscribe((listResult: ListResult<Referral>) => {
+        this.referrals = listResult;
+        // this.referralsModified = listResult.data.map(data => {
+        //   data.supplier.name = data.supplier.name + '!';
+        //   return data;
         // });
+      }, err => {
+        console.log('error getting clean referrals =', err);
       });
   }
 
@@ -88,12 +89,12 @@ export class TesterPageComponent implements OnInit {
       referrals: [this.sampleReferral],
     };
     this.reply = x;
-    this.referralService.createReferrals(this.id, x).subscribe(
-      value => {
+    this.referralService.createReferrals(this.id, x)
+      .subscribe(value => {
         console.log(value);
       }, err => {
-        console.log(err);
-      }
-    );
+        console.log('error creating referrals =', err);
+      });
   }
+
 }
