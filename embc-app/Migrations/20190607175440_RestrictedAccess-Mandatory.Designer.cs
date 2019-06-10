@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gov.Jag.Embc.Public.Migrations
 {
     [DbContext(typeof(EmbcDbContext))]
-    [Migration("20190603203000_EvacueeRegistrationAudit-UserNameAndType")]
-    partial class EvacueeRegistrationAuditUserNameAndType
+    [Migration("20190607175440_RestrictedAccess-Mandatory")]
+    partial class RestrictedAccessMandatory
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -235,7 +235,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<bool?>("RequiresTransportation");
 
-                    b.Property<bool?>("RestrictedAccess");
+                    b.Property<bool>("RestrictedAccess");
 
                     b.Property<DateTime?>("SelfRegisteredDate");
 

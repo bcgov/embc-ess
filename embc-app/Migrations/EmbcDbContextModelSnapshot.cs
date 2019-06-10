@@ -233,7 +233,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<bool?>("RequiresTransportation");
 
-                    b.Property<bool?>("RestrictedAccess");
+                    b.Property<bool>("RestrictedAccess");
 
                     b.Property<DateTime?>("SelfRegisteredDate");
 

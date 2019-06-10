@@ -8,7 +8,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public bool? Active { get; set; }
 
         // important
-        public bool? RestrictedAccess { get; set; }
+        public bool RestrictedAccess { get; set; }
 
         public bool? DeclarationAndConsent { get; set; }
         public long? EssFileNumber { get; set; }
