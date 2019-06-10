@@ -5,6 +5,7 @@ import { Registration, Address, isBcAddress } from 'src/app/core/models';
 import { GENDER_OPTIONS, INSURANCE_OPTIONS } from '../constants';
 import { UniqueKeyService } from '../core/services/unique-key.service';
 import { AuthService } from '../core/services/auth.service';
+import { NotificationQueueService } from '../core/services/notification-queue.service';
 
 @Component({
   selector: 'app-registration-summary-full',
@@ -13,9 +14,8 @@ import { AuthService } from '../core/services/auth.service';
 })
 export class RegistrationSummaryFullComponent implements OnInit {
 
-  // local copy of the application state
-  registration: Registration = null;
-  path: string = null; // for relative routing
+  registration: Registration = null; // local copy of the application state
+  path: string = null; // the base path for routing
   loading = true;
 
   constructor(
@@ -24,6 +24,7 @@ export class RegistrationSummaryFullComponent implements OnInit {
     private registrationService: RegistrationService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
+    private notificationQueueService: NotificationQueueService,
   ) { }
 
   ngOnInit() {
@@ -39,10 +40,12 @@ export class RegistrationSummaryFullComponent implements OnInit {
       this.registrationService.getRegistrationById(key, reason)
         .subscribe((registration: Registration) => {
           this.loading = false;
+
           if (!registration.id || !registration.essFileNumber) {
             console.log('ERROR - invalid registration object = ', registration);
-            // done with the key. It was useless. Clear the reference key.
+            // Done with the key. It was useless. Clear it.
             this.uniqueKeyService.clearKey();
+
             this.goHome();
           } else {
             // store the registration object
@@ -50,7 +53,9 @@ export class RegistrationSummaryFullComponent implements OnInit {
           }
         }, err => {
           this.loading = false;
-          alert(`err = ${err}`);
+
+          this.notificationQueueService.addNotification('Failed to load evacuee', 'danger');
+          console.log('error getting registration =', err);
           this.goHome();
         });
     } else {
@@ -61,7 +66,7 @@ export class RegistrationSummaryFullComponent implements OnInit {
   }
 
   private goHome() {
-    // send them back to their home page
+    // go to home page
     this.router.navigate([`/${this.path}`]);
   }
 
@@ -90,8 +95,10 @@ export class RegistrationSummaryFullComponent implements OnInit {
   }
 
   routeTo() {
-    // save the key for lookup. This only ever links to the editor
+    // save registration ID for lookup in the new component
     this.uniqueKeyService.setKey(this.registration.id);
+
+    // go to registration maker
     this.router.navigate([`/${this.path}/registration`]);
   }
 

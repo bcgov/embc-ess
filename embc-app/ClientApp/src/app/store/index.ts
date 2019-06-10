@@ -16,10 +16,6 @@ export interface NormalizedObjects<T = any> {
 }
 
 export interface AppState {
-  // TODO: REVIEW these!!
-  // ui: any;
-  // user: User;
-  // models: any;
   registrations: fromRegistration.State;
   lookups: fromLookups.State;
   incidentTasks: fromIncidentTasks.State;

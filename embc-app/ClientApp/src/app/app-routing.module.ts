@@ -101,9 +101,10 @@ const routes: Routes = [
     component: SelfRegistrationComponent,
     children: [
       {
+        // set the default component to route to for this user
         path: '',
         redirectTo: 'step-1',
-        pathMatch: 'full',
+        pathMatch: 'full'
       },
       {
         path: 'step-1',
@@ -170,8 +171,8 @@ const routes: Routes = [
       {
         // set the default component to route to for this user
         path: '',
-        component: VolunteerRegistrationsPageComponent,
-        data: { expectedRole: VOLUNTEER },
+        redirectTo: 'registrations',
+        pathMatch: 'full'
       },
       {
         path: 'registrations',
@@ -194,7 +195,7 @@ const routes: Routes = [
         data: { expectedRole: VOLUNTEER },
       },
       {
-        path: 'referrals/:id/:purchaser',
+        path: 'referrals/:regId/:purchaser',
         component: ReferralMakerComponent,
         data: { expectedRole: VOLUNTEER },
       },
@@ -220,8 +221,8 @@ const routes: Routes = [
       {
         // set the default component to route to for this user
         path: '',
-        component: LocalAuthorityRegistrationsPageComponent,
-        data: { expectedRole: LOCAL_AUTHORITY },
+        redirectTo: 'registrations',
+        pathMatch: 'full'
       },
       {
         path: 'registrations',
@@ -249,7 +250,7 @@ const routes: Routes = [
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
-        path: 'referrals/:id/:purchaser',
+        path: 'referrals/:regId/:purchaser',
         component: ReferralMakerComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
@@ -280,8 +281,8 @@ const routes: Routes = [
       {
         // set the default component to route to for this user
         path: '',
-        component: ProvincialAdminRegistrationsPageComponent,
-        data: { expectedRole: PROVINCIAL_ADMIN },
+        redirectTo: 'registrations',
+        pathMatch: 'full'
       },
       {
         path: 'registrations',
@@ -294,7 +295,7 @@ const routes: Routes = [
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
-        path: 'organization/:id/volunteers',
+        path: 'organization/:orgId/volunteers',
         component: ProvincialAdminVolunteersOrganizationPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
@@ -319,7 +320,7 @@ const routes: Routes = [
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
-        path: 'referrals/:id/:purchaser',
+        path: 'referrals/:regId/:purchaser',
         component: ReferralMakerComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },

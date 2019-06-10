@@ -31,7 +31,7 @@ export class ReferralMakerComponent implements OnInit {
   editMode = true; // when you first land on this page
   submitting = false;
   registration: Registration = null;
-  path: string = null; // for relative routing
+  path: string = null; // the base path for routing
   regId: string = null;
   purchaser: string = null;
   evacuees: Array<Evacuee> = [];
@@ -79,7 +79,7 @@ export class ReferralMakerComponent implements OnInit {
     this.authService.path.subscribe((path: string) => this.path = path);
 
     // get URL params
-    this.regId = this.route.snapshot.paramMap.get('id');
+    this.regId = this.route.snapshot.paramMap.get('regId');
     this.purchaser = this.route.snapshot.paramMap.get('purchaser');
 
     if (!this.regId || !this.purchaser) {
@@ -102,8 +102,9 @@ export class ReferralMakerComponent implements OnInit {
       }, err => {
         this.notifications.addNotification('Failed to load evacuee summary', 'danger');
         console.log('error getting registration summary =', err);
-        // go back to the main dashboard
-        this.router.navigate([`/${this.path}/`]);
+
+        // go back to home page
+        this.router.navigate([`/${this.path}`]);
       });
   }
 
@@ -157,10 +158,8 @@ export class ReferralMakerComponent implements OnInit {
 
   // user clicked Cancel & Close button
   cancel() {
-    // clear the loaded record if available
-    this.uniqueKeyService.clearKey();
-    // navigate back to evacuee list
-    this.router.navigate([`/${this.path}/registrations`]);
+    // go back to registration summary
+    this.router.navigate([`/${this.path}/registration/summary`]);
   }
 
   // user clicked Create Referrals button
@@ -193,16 +192,17 @@ export class ReferralMakerComponent implements OnInit {
       this.referralService.createReferrals(this.regId, { confirmChecked: true, referrals })
         .subscribe(() => {
           this.submitting = false;
-          this.notifications.addNotification('Referrals finalized successfully', 'success');
+          this.notifications.addNotification('Referral(s) finalized successfully', 'success');
 
-          // redirect to summary page
-          // save the key for lookup
+          // save registration ID for lookup in the new component
           this.uniqueKeyService.setKey(this.registration.id);
+
+          // go to registration summary page
           this.router.navigate([`/${this.path}/registration/summary`]);
         }, err => {
           this.submitting = false;
-          this.notifications.addNotification('Failed to finalize referrals', 'danger');
-          console.log('error creating referral =', err);
+          this.notifications.addNotification('Failed to finalize referral(s)', 'danger');
+          console.log('error creating referrals =', err);
         });
     }
   }

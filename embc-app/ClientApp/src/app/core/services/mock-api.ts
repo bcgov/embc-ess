@@ -1,5 +1,5 @@
 // tslint:disable
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
 const routes = {
   // default (not-found) route
