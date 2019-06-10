@@ -9,12 +9,12 @@
   <h3 class="blue-header">Organizations &amp; Users List</h3>
 
   <form novalidate role="search" class="form-row" [formGroup]="form">
-    <div class="col-md-9">
+    <div class="col">
       <label class="sr-only" for="searchbox">Associated EMBC Regional District / Community</label>
       <app-communities-select [myParent]="form" myFormControlName="searchbox" myId="searchbox"
         myPlaceHolder='Start Typing an Associated EMBC Region / Regional District / Community ...'></app-communities-select>
     </div>
-    <div class="col-md-3">
+    <div class="col-auto">
       <button class="btn btn-primary float-right text-uppercase" (click)="filter(form.value.searchbox)">Filter</button>
     </div>
   </form>
