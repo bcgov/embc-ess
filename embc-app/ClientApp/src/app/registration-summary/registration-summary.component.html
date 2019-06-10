@@ -13,11 +13,11 @@
             <div class="container py-3">
               <div class="row">
                 <div class="col">
-                  <div class="h1 my-3">
+                  <h3 class="h1 my-1">
                     {{registration.headOfHousehold?.lastName}},
                     {{registration.headOfHousehold?.firstName}}
                     {{registration.headOfHousehold?.initials}}
-                  </div>
+                  </h3>
                 </div>
               </div>
               <div class="row">
@@ -108,8 +108,7 @@
 
         <div class="feature-block card d-block border-0">
           <!-- TODO: only display 'and family' if familyMembers > 0 ? -->
-          <h3>Add referrals for
-            {{registration.headOfHousehold?.lastName + ', ' + registration.headOfHousehold?.firstName}} and family</h3>
+          <h3>Add referrals for {{registration.headOfHousehold?.lastName + ', ' + registration.headOfHousehold?.firstName}} and family</h3>
 
           <app-form-field>
             <!-- TODO: pre-select HOH? -->

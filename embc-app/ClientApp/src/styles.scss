@@ -53,6 +53,7 @@
   font-weight: semi-bold;
   text-transform: uppercase;
 }
+
 hr {
   display: block;
   // height: 1px;
@@ -81,26 +82,19 @@ textarea.is-invalid {
 
 //----------OLD STUFF BELOW THIS LINE
 
-// html {
-//   background: #fff;
-// }
+html {
+  background: #fff;
+  // font-size: 10px;
+}
 
-// body {
-//   color: $font-color;
+body {
+  color: $font-color;
 //   -webkit-font-smoothing: antialiased;
 //   -moz-osx-font-smoothing: grayscale;
-//   font-family: MyriadWebPro, Calibri, Arial, "sans serif";
-//   font-weight: 400;
-// }
+  font-size: 14px;
+  line-height: 2;
+}
 
-// h1, h2, h3,
-// .h1, .h2, .h3 {
-//   color: $font-color;
-// }
-
-// h1, .h1 {
-//   font-size: 36px;
-// }
 
 // h2, .h2 {
 //   font-size: 24px;
@@ -220,7 +214,7 @@ textarea.is-invalid {
 
 
 
-// // Flexbox helpers
+// Flexbox helpers
 .space-between {
   display: flex;
   justify-content: space-between;
@@ -367,23 +361,6 @@ textarea.is-invalid {
 //   .footer {
 //     display: none;
 //   }
-// }
-
-// // overrides for mygovbc-bootstrap-theme
-// .modal.fade .modal-dialog {
-//   transform: none; // original value pushes modal above top of page
-// }
-
-// .modal-backdrop.fade {
-//   opacity: 0.5;
-// }
-
-// .modal.show {
-//   opacity: 1;
-// }
-
-// .modal-small .modal-dialog {
-//   max-width: 350px;
 // }
 
 // input[type=checkbox],
