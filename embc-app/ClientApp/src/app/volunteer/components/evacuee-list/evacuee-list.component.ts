@@ -3,7 +3,7 @@ import { ListResult, Evacuee } from '../../../core/models';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
+import { EvacueeSearchQueryParameters } from 'src/app/core/models/search-interfaces';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
 
@@ -17,17 +17,18 @@ export class EvacueeListComponent implements OnInit {
   // server response
   resultsAndPagination: ListResult<Evacuee>;
   notFoundMessage = 'Searching ...';
-  defaultSearchQuery: SearchQueryParameters = {
+  defaultSearchQuery: EvacueeSearchQueryParameters = {
     offset: 0,
     limit: 20
   };
   queryString: string;
   // a place to save the last query parameters
-  previousQuery: SearchQueryParameters = {};
+  previousQuery: EvacueeSearchQueryParameters = {};
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
 
   advancedSearchMode = false;
+  advancedSearchParams: EvacueeSearchQueryParameters = {};
 
   constructor(
     private evacueeService: EvacueeService,
@@ -56,9 +57,7 @@ export class EvacueeListComponent implements OnInit {
     // TODO: clean-up & manage new search state
   }
 
-  getEvacuees(query: SearchQueryParameters = this.defaultSearchQuery): Observable<ListResult<Evacuee>> {
-    // store the sorting
-    query.sort = this.sort;
+  getEvacuees(query: EvacueeSearchQueryParameters = this.defaultSearchQuery): Observable<ListResult<Evacuee>> {
     // save the generic query for repeat searches
     this.previousQuery = query;
     // save the organization id into the query from the default
@@ -67,8 +66,8 @@ export class EvacueeListComponent implements OnInit {
 
   search() {
     // submit and collect search with a query string
-    const query = this.defaultSearchQuery;
-    query.q = this.queryString;
+    const query = this.getSearchParams();
+
     this.getEvacuees(query).subscribe((listResult: ListResult<Evacuee>) => {
       if (listResult.data.length <= 0) {
         this.notFoundMessage = 'No results found.';
@@ -79,14 +78,39 @@ export class EvacueeListComponent implements OnInit {
     });
   }
 
-  advancedSearch(args: any = {}) {
-    // TODO: submit search params to server endpoint
-    alert('Advanced search query issued to server...');
+  getSearchParams(): EvacueeSearchQueryParameters {
+    const query = { ...this.defaultSearchQuery };
+
+    if (this.advancedSearchMode) {
+      delete query.q;
+      query.last_name = this.advancedSearchParams.last_name || null;
+      query.first_name = this.advancedSearchParams.last_name || null;
+      query.task_no = this.advancedSearchParams.task_no || null;
+      query.ess_file_no = this.advancedSearchParams.ess_file_no || null;
+      query.evacuated_from = this.advancedSearchParams.evacuated_from || null;
+      query.evacuated_to = this.advancedSearchParams.evacuated_to || null;
+
+      if (this.advancedSearchParams.registration_completed === null) {
+        delete query.registration_completed;
+      }
+      if (this.advancedSearchParams.referrals_provided === null) {
+        delete query.referrals_provided;
+      }
+    } else {
+      // basic search
+      query.q = this.queryString;
+    }
+
+    // store the sorting
+    query.sort = this.sort;
+    return query;
   }
 
-  onPaginationEvent(event: SearchQueryParameters) {
+  onPaginationEvent(event: EvacueeSearchQueryParameters) {
     // save the pagination into the previous query and execute the query again
-    this.getEvacuees(event).subscribe((listResult: ListResult<Evacuee>) => {
+    this.previousQuery.limit = event.limit;
+    this.previousQuery.offset = event.offset;
+    this.getEvacuees(this.previousQuery).subscribe((listResult: ListResult<Evacuee>) => {
       this.resultsAndPagination = listResult;
     });
   }
