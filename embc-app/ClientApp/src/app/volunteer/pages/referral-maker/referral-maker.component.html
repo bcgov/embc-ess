@@ -84,38 +84,48 @@
       <!-- loop through all referrals by type -->
       <section class="clearfix">
         <article *ngFor="let r of foodReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <app-referral-list-item type="FOOD" (remove)="remove(foodReferrals, i)" (add)="addFoodReferral()">
-            <app-food-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
-            </app-food-referral>
-          </app-referral-list-item>
+          <div [id]="'food_'+i.toString()">
+            <app-referral-list-item type="FOOD" (remove)="remove(foodReferrals, i); triggerScrollTo('food_'+(i-1).toString())" (add)="addFoodReferral()">
+              <app-food-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+              </app-food-referral>
+            </app-referral-list-item>
+          </div>
         </article>
 
         <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <app-referral-list-item type="LODGING" (remove)="remove(lodgingReferrals, i)" (add)="addLodgingReferral()">
-            <app-lodging-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
-            </app-lodging-referral>
-          </app-referral-list-item>
+          <div [id]="'lodging_'+i.toString()">
+            <app-referral-list-item type="LODGING" (remove)="remove(lodgingReferrals, i); triggerScrollTo('lodging_'+(i-1).toString())" (add)="addLodgingReferral()">
+              <app-lodging-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+              </app-lodging-referral>
+            </app-referral-list-item>
+          </div>
         </article>
 
         <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <app-referral-list-item type="CLOTHING" (remove)="remove(clothingReferrals, i)" (add)="addClothingReferral()">
-            <app-clothing-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
-            </app-clothing-referral>
-          </app-referral-list-item>
+          <div [id]="'clothing_'+i.toString()">
+            <app-referral-list-item type="CLOTHING" (remove)="remove(clothingReferrals, i); triggerScrollTo('clothing_'+(i-1).toString())" (add)="addClothingReferral()">
+              <app-clothing-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+              </app-clothing-referral>
+            </app-referral-list-item>
+          </div>
         </article>
 
         <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <app-referral-list-item type="TRANSPORTATION" (remove)="remove(transportationReferrals, i)" (add)="addTransportationReferral()">
-            <app-transportation-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
-            </app-transportation-referral>
-          </app-referral-list-item>
+          <div [id]="'transportation_'+i.toString()">
+            <app-referral-list-item type="TRANSPORTATION" (remove)="remove(transportationReferrals, i); triggerScrollTo('transportation_'+(i-1).toString())" (add)="addTransportationReferral();">
+              <app-transportation-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+              </app-transportation-referral>
+            </app-referral-list-item>
+          </div>
         </article>
 
         <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <app-referral-list-item type="INCIDENTALS" (remove)="remove(incidentalsReferrals, i)" (add)="addIncidentalsReferral()">
-            <app-incidentals-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
-            </app-incidentals-referral>
-          </app-referral-list-item>
+          <div [id]="'incidentals_'+i.toString()">
+            <app-referral-list-item type="INCIDENTALS" (remove)="remove(incidentalsReferrals, i); triggerScrollTo('incidentals_'+(i-1).toString())" (add)="addIncidentalsReferral()">
+              <app-incidentals-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+              </app-incidentals-referral>
+            </app-referral-list-item>
+          </div>
         </article>
       </section>
 
