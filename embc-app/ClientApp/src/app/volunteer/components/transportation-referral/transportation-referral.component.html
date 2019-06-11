@@ -3,9 +3,9 @@
     <form novalidate [formGroup]="form">
       <div class="space-between align-items-center">
         <app-valid-from-to [referralDate]="referral.validDates" (referralDateChange)="updateReferralDate($event)" [id]="uuid"></app-valid-from-to>
-        <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW
+        <button type="button" class="btn btn-outline-primary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW
           ESS<br>RATES SHEET</button>
-        <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES
+        <button type="button" class="btn btn-outline-primary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES
           SHEET</button>
       </div>
 

@@ -82,19 +82,33 @@ textarea.is-invalid {
 
 //----------OLD STUFF BELOW THIS LINE
 
-html {
-  background: #fff;
-  // font-size: 10px;
-}
+// html {
+//   background: #fff;
+//   font-size: 10px;
+// }
 
 body {
   color: $font-color;
 //   -webkit-font-smoothing: antialiased;
 //   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
-  line-height: 2;
+  line-height: 20px;
 }
 
+h1 {
+  font-size: 36px;
+  font-weight: 500;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
 
 // h2, .h2 {
 //   font-size: 24px;
@@ -113,58 +127,28 @@ body {
 //   font-size: 16px;
 // }
 
-// p {
-//   font-size: 14px;
-// }
+p {
+  // font-size: 14px;
+  line-height: 1.5;
+}
 
 // a {
 //   color: #1a5a96;
 // }
 
-// .btn.btn-primary {
-//   color: $white;
-//   background-color: $bg-dark;
-//   border: $bg-dark 1px solid;
-//   border-radius: 5px;
-//   font-size: 16px;
-//   font-weight: 600;
-//   line-height: 1.5;
-//   min-width: 120px;
-//   padding: 0.5rem 2rem;
+.btn.btn-primary {
+  font-weight: 600;
+  line-height: 1.25;
+  min-width: 120px;
+  padding: 7px 20px;
+}
 
-//   &:hover {
-//     background-color: #38598a;
-//   }
-// }
-
-// .btn.btn-secondary {
-//   color: $bg-dark;
-//   background-color: $white;
-//   border: $bg-dark 1px solid;
-//   border-radius: 5px;
-//   font-size: 16px;
-//   font-weight: 600;
-//   line-height: 1.5;
-//   min-width: 120px;
-//   padding: 0.5rem 2rem;
-
-//   &:hover {
-//     color: $white;
-//     background-color: $bg-dark;
-//   }
-
-//   &:focus {
-//     border-color: $white;
-//     // same as primary button:
-//     box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
-//   }
-
-//   &:not(:disabled):active {
-//     // same as primary button:
-//     background-color: #0062cc;
-//     border-color: #005cbf;
-//   }
-// }
+.btn.btn-outline-primary {
+  font-weight: 600;
+  line-height: 1.25;
+  min-width: 120px;
+  padding: 7px 20px;
+}
 
 textarea.is-invalid {
   background-image: none !important; // remove red X
