@@ -25,7 +25,7 @@ namespace embc_unit_tests
                         AddressSubtype = "OTAD",
                         Country = new Country { CountryCode = "USA" }
                     },
-                    LastName = "ofhousehold",
+                    LastName = "hevacueeh",
                     FirstName = "head"
                 },
                 DietaryNeedsDetails = "some details"
