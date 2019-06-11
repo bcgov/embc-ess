@@ -72,12 +72,18 @@ textarea.is-invalid {
   display: inline-block;
 }
 
-.card {
+.sidebox-card {
   // card overrides
   background-color: theme-color(light);
   border-radius: 0px;
   border: 0;
   border-bottom: 4px theme-color(bcgold) solid;
+}
+
+.form-check-input{
+  // the silly checkboxes are high and the text is low
+  position: relative;
+  top: 0em;
 }
 
 //----------OLD STUFF BELOW THIS LINE

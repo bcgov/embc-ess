@@ -9,11 +9,11 @@
   <h3 class="blue-header">Task List</h3>
 
   <form novalidate role="search" class="form-row" [formGroup]="form">
-    <div class="col-md">
+    <div class="col">
       <label class="sr-only" for="searchbox">Associated EMBC Regional District / Community</label>
       <app-communities-select [myParent]="form" myFormControlName="searchbox" myId="searchbox" myPlaceHolder='Start Typing an Incident Location ...'></app-communities-select>
     </div>
-    <div class="col-md-auto">
+    <div class="col-auto">
       <button class="btn btn-primary text-uppercase" (click)="filter(form.value.searchbox)">Filter</button>
     </div>
   </form>
@@ -29,7 +29,7 @@
           <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
         </app-pagination-summary>
       </div>
-      <div class="col-4">
+      <div class="col">
         <button class="btn btn-primary float-right text-uppercase" (click)="modifyTaskNumber()">Add Task Number</button>
       </div>
     </div>
