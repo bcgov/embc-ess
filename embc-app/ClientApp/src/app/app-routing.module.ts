@@ -21,7 +21,7 @@ import { VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from './constants';
 import { LandingPageGuard } from './core/guards/landing-page.guard';
 import { OrganizationMakerComponent } from './provincial-admin/components/organization-maker/organization-maker.component';
 import { TaskNumberMakerComponent } from './provincial-admin/components/task-number-maker/task-number-maker.component';
-import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
+import { VolunteerMakerComponent } from './local-authority/components/volunteer-maker/volunteer-maker.component';
 import { RegistrationSummaryFullComponent } from './registration-summary-full/registration-summary-full.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { UsefulInformationPageComponent } from './volunteer/pages/useful-information-page/useful-information-page.component';
@@ -34,6 +34,7 @@ import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referra
 import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
 import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
+import { AdminVolunteerMakerComponent } from './provincial-admin/components/admin-volunteer-maker/admin-volunteer-maker.component';
 
 /*
   /
@@ -340,7 +341,7 @@ const routes: Routes = [
       },
       {
         path: 'volunteer',
-        component: VolunteerMakerComponent,
+        component: AdminVolunteerMakerComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
