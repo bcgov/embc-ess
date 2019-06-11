@@ -8,8 +8,7 @@ export class CookieService {
 
   constructor(@Inject(DOCUMENT) private document: Document) { }
 
-  private set(key: string, value: string, expires?: Date): void {
-    // does the value have to be URI encoded?
+  set(key: string, value: string, expires?: Date): void {
     let cookieValue = `${key}=${value}`;
     if (expires) {
       cookieValue += `;expires='${expires.toUTCString()}'`;
@@ -63,8 +62,8 @@ export class CookieService {
 
   clear(): void {
     const decodedCookie: string = decodeURIComponent(this.document.cookie);
-    // split the cookie pairs and
-    const pairs: string[] = decodedCookie.split(/;\s*/).filter(c => c !== 'null');
+    const pairs: string[] = decodedCookie.split(/;\s*/);
+
     for (const cookie of pairs) {
       const eqPos = cookie.indexOf('=');
       const cookieName = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;

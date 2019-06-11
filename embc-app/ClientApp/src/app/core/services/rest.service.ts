@@ -11,7 +11,7 @@ export abstract class RestService {
   constructor(
     protected http: HttpClient,
     protected store: Store<AppState>,
-    protected cookieService: CookieService,
+    protected cookies: CookieService,
   ) { }
 
   get headers(): HttpHeaders {
