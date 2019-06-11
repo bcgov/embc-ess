@@ -1,5 +1,9 @@
 @import "../defaults.scss";
 
+table.table {
+  line-height: 25px;
+}
+
 .summary-table table {
   border-spacing: 5px;
   border-collapse: separate;
