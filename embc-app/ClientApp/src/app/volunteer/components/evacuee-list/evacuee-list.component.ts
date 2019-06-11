@@ -84,7 +84,7 @@ export class EvacueeListComponent implements OnInit {
     if (this.advancedSearchMode) {
       delete query.q;
       query.last_name = this.advancedSearchParams.last_name || null;
-      query.first_name = this.advancedSearchParams.last_name || null;
+      query.first_name = this.advancedSearchParams.first_name || null;
       query.task_no = this.advancedSearchParams.task_no || null;
       query.ess_file_no = this.advancedSearchParams.ess_file_no || null;
       query.evacuated_from = this.advancedSearchParams.evacuated_from || null;
