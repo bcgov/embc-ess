@@ -795,7 +795,7 @@
   <h2>Brief statement of how the person/family were affected by the disaster</h2>
   <ul class="summary">
     <li>
-      <span>&nbsp;{{registration?.disasterAffectDetails}}</span>
+      <span class="multi-line">{{registration?.disasterAffectDetails || '&nbsp;'}}</span>
     </li>
   </ul>
 
@@ -863,7 +863,7 @@
   <h2>Family Recovery Plan</h2>
   <ul class="summary">
     <li>
-      <span>{{registration?.familyRecoveryPlan || '&nbsp;'}}</span>
+      <span class="multi-line">{{registration?.familyRecoveryPlan || '&nbsp;'}}</span>
     </li>
   </ul>
 
@@ -892,20 +892,20 @@
     <li>
       <span class="name">Pet Care Referral:</span>
       <span class="value">{{registration?.hasPetCareReferral | yesNo}}</span>
-    </li>
+    </li>s
   </ul>
 
   <h2>Other Agency Referrals</h2>
   <ul class="summary">
     <li>
-      <span>{{registration?.externalReferralsDetails || '&nbsp;'}}</span>
+      <span class="multi-line">{{registration?.externalReferralsDetails || '&nbsp;'}}</span>
     </li>
   </ul>
 
   <h2 class="blue-header font-weight-bold">Internal Case Notes</h2>
   <ul class="summary">
     <li>
-      <span class='internal-case-notes'>{{registration?.internalCaseNotes || '&nbsp;'}}</span>
+      <span class='multi-line'>{{registration?.internalCaseNotes || '&nbsp;'}}</span>
     </li>
   </ul>
 
