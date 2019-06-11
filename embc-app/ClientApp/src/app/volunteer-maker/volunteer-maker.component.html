@@ -15,10 +15,10 @@
       <h3 class="blue-header mt-0">User Details</h3>
 
       <div class="row pt-4" *ngIf="iAmProvincialAdmin && editMode === 'ADD'">
-        <div class="col-md-9">
+        <div class="col">
           <label class="required" for="organization">Organization</label>
           <div *ngIf="doSelectOrg === true">
-              <select class="form-control" formControlName="organization" [class.is-invalid]="invalid('organization')" id="organization">
+            <select class="form-control" formControlName="organization" [class.is-invalid]="invalid('organization')" id="organization">
               <option *ngIf="!currentOrganization" [ngValue]="null">-- Select organization</option>
               <option *ngIf="currentOrganization" [ngValue]="currentOrganization">{{currentOrganization.name}}</option>
               <option *ngFor="let org of metaOrganizations.data" [ngValue]="org">{{org.name}}</option>
@@ -37,14 +37,14 @@
       </div>
 
       <div class="row pt-4" *ngIf="editMode === 'EDIT'">
-        <div class="col-md-9">
+        <div class="col">
           <label for="organization">Organization</label>
           <input class="form-control" type="text" id="organization" [value]="currentOrganization.name" readonly>
         </div>
       </div>
 
       <div class="row pt-4">
-        <div class="col-md-9">
+        <div class="col">
           <label class="required" for="lastName">Last Name</label>
           <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your legal last name."></app-font-awesome-icon>
           <input type="text" class="form-control" formControlName="lastName" [class.is-invalid]="invalid('lastName')" id="lastName" maxlength="50">
@@ -53,7 +53,7 @@
       </div>
 
       <div class="row pt-4">
-        <div class="col-md-9">
+        <div class="col">
           <label class="required" for="firstName">First Name</label>
           <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your legal first name."></app-font-awesome-icon>
           <input type="text" class="form-control" [class.is-invalid]="invalid('firstName')" formControlName="firstName" id="firstName" maxlength="50">
@@ -62,7 +62,7 @@
       </div>
 
       <div class="row pt-4">
-        <div class="col-md-9">
+        <div class="col">
           <label class="required" for="bceidAccountNumber">BCeID</label>
           <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your BCeID user ID."></app-font-awesome-icon>
           <input type="text" class="form-control" [class.is-invalid]="invalid('bceidAccountNumber')" formControlName="bceidAccountNumber" id="bceidAccountNumber">
@@ -71,7 +71,7 @@
       </div>
 
       <div class="row pt-4" *ngIf="iAmProvincialAdmin">
-        <div class="col-md-9">
+        <div class="col">
           <label class="required">Role</label>
           <fieldset class="form-group">
             <legend class="sr-only">Role</legend>
@@ -93,7 +93,7 @@
       </div>
 
       <div class="row mt-5" *ngIf="iAmProvincialAdmin && f.isAdministrator.value === true">
-        <div class="col-md-9">
+        <div class="col">
           <label class="required">Primary Contact for Organization</label>
           <fieldset class="form-group">
             <legend class="sr-only">Primary Contact for Organization</legend>
