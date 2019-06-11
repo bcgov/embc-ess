@@ -7,7 +7,7 @@
 
   <div role="search" class="form-row">
     <div class="col">
-      <input [(ngModel)]="queryString" type="text" aria-label="search" class="form-control mb-2" placeholder="Search by task number / last name / registration number / community ..." (keydown.enter)="search()">
+      <input [(ngModel)]="queryString" type="text" aria-label="search" class="form-control" placeholder="Search by task number / last name / registration number / community ..." (keydown.enter)="search()">
     </div>
     <div class="col-auto">
       <button class="btn btn-primary text-uppercase" (click)="search()">Search</button>
@@ -15,14 +15,14 @@
   </div>
   <!-- TODO: <a class="small" href="">advanced search</a> -->
   <!-- TODO: show icons for HOH, RESTRICTED FILE -->
-  <div class="clearfix my-1">
+  <div class="clearfix my-2">
     <div class="float-right">
       <app-font-awesome-icon class="mr-1" icon="user"></app-font-awesome-icon>
       <span class="ml-2">Head of Household</span>
     </div>
   </div>
 
-  <div class="row mb-2">
+  <div class="row my-2">
     <div class="col">
       <app-pagination-summary [value]="resultsAndPagination?.metadata">
         <!-- <span class="font-weight-bold">ACTIVE</span> evacuees -->

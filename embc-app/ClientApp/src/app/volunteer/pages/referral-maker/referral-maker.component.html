@@ -1,4 +1,4 @@
-<div class="row" *ngIf="registration">
+<div *ngIf="registration">
 
   <div *ngIf="editMode">
     <h1>Identify Supports</h1>
@@ -18,12 +18,12 @@
           <div class="col">
             <div>Incident start date &amp; time: {{registration?.incidentTask?.startDate | dateTimeFormatPipe}}</div>
             <span class="align-bottom">
-              <span class="h3">Support start date &amp; time: {{defaultDate | dateTimeFormatPipe}}
+              <span class="display-5">Support start date &amp; time: {{defaultDate | dateTimeFormatPipe}}
                 <span *ngIf="!defaultDate">Please enter a valid date.</span>
               </span>
             </span>
           </div>
-          <div *ngIf="stepCounter===1 && !showDefaultDatePicker" class="col-2">
+          <div *ngIf="stepCounter===1 && !showDefaultDatePicker" class="col-3">
             <span class="align-bottom">
               <a href="javascript:void(0)">
                 <app-font-awesome-icon icon="times"></app-font-awesome-icon>
@@ -57,7 +57,7 @@
       </div>
 
       <!-- select required supports -->
-      <div *ngIf="stepCounter>=2" class="card d-block border-0 p-4">
+      <div *ngIf="stepCounter >= 2" class="card d-block border-0 p-4">
         <label>Select required supports:</label>
         <div class="form-check mt-2">
           <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood" (change)="foodReferralChange()">
@@ -144,12 +144,15 @@
     </div>
 
   </div>
+
   <!-- *********************************SUMMARY BELOW****************************************** -->
   <div *ngIf="!editMode">
     <h1>Review Referrals</h1>
+
     <p>
       Please confirm that all details you entered are correct by reading through the summary below with the evacuee.
     </p>
+
     <section class="clearfix">
       <article *ngFor="let r of foodReferrals; let i = index" class="mt-4">
         <app-food-referral [referral]="r.value" [readOnly]="true"></app-food-referral>
