@@ -1,5 +1,5 @@
 using Gov.Jag.Embc.Public.DataInterfaces;
-using Gov.Jag.Embc.Public.Utils;
+using Gov.Jag.Embc.Public.ViewModels.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -18,7 +18,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(SearchQueryParameters query)
+        public async Task<IActionResult> Get([FromQuery] EvacueeSearchQueryParameters query)
         {
             var evacuees = await dataInterface.GetEvacueesAsync(query);
             return Json(evacuees);

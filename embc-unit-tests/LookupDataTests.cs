@@ -8,7 +8,7 @@ using Xunit.Abstractions;
 
 namespace embc_unit_tests
 {
-    public class LookupDataTests : BaseTest
+    public class LookupDataTests : TestBase
     {
         public LookupDataTests(ITestOutputHelper output) : base(output)
         {

@@ -14,8 +14,8 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .ForMember(d => d.Id, m => m.MapFrom(s => s.Id))
                 .ForMember(d => d.Registration, m => m.Ignore())
                 .ForMember(d => d.RegistrationId, opts => opts.MapFrom(s => s.EssNumber))
-                .ForMember(d => d.ValidFrom, opts => opts.MapFrom(s => s.ValidDates.From))
-                .ForMember(d => d.ValidTo, opts => opts.MapFrom(s => s.ValidDates.To))
+                .ForMember(d => d.ValidFrom, opts => opts.MapFrom(s => new DateTimeOffset(s.ValidDates.From)))
+                .ForMember(d => d.ValidTo, opts => opts.MapFrom(s => new DateTimeOffset(s.ValidDates.To)))
                 .ForMember(d => d.Evacuees, m => m.MapFrom(s => s.Evacuees.Select(e => new Models.Db.ReferralEvacuee
                 {
                     EvacueeId = int.Parse(e.Id.IndexOf("-", StringComparison.OrdinalIgnoreCase) > 0
@@ -33,9 +33,10 @@ namespace Gov.Jag.Embc.Public.ViewModels
                     LastName = e.Evacuee.LastName
                 })))
                 .ForMember(d => d.ValidDates, opts => opts.MapFrom(s => new DateRange { From = s.ValidFrom.DateTime, To = s.ValidTo.DateTime }))
-                ;
+           ;
 
-            CreateMap<Supplier, Models.Db.Supplier>();
+            CreateMap<Supplier, Models.Db.Supplier>()
+                .ReverseMap();
 
             CreateMap<Referral, Models.Db.ClothingReferral>()
                 .IncludeBase<Referral, Models.Db.Referral>()

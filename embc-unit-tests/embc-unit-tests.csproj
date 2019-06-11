@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.1.0" />
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="ECommerce.Data.EntityFramework.InMemory" Version="1.0.1" />
     <PackageReference Include="FakeItEasy" Version="5.1.1" />
     <PackageReference Include="MediatR" Version="7.0.0" />

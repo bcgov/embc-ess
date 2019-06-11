@@ -155,8 +155,8 @@ namespace Gov.Jag.Embc.Public
             var loggerFactory = app.ApplicationServices.GetService<ILoggerFactory>();
             var log = loggerFactory.CreateLogger<Startup>();
 
-            //Initialize the static AutoMapper
-            Mapper.Initialize(cfg => cfg.AddMaps(typeof(Startup)));
+            //inject an instance of AutoMapper to the static class
+            ViewModelConversions.mapper = app.ApplicationServices.GetService<IMapper>();
 
             // DATABASE SETUP
             log.LogInformation("Fetching the application's database context ...");
