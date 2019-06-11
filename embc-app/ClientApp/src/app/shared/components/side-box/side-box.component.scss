@@ -1,19 +1,14 @@
-// @import "~src/styles/_defaults.scss";
 
 .card{
   margin-bottom: 20px;
 }
-
-// .side-box {
-//   overflow: auto;
-//   margin-top: 40px;
-//   margin-bottom: 20px;
-//   padding: 30px;
-//   padding-top: 20px;
-//   color: $side-box-color;
-//   background-color: $side-box-bg;
-//   border-bottom: 2px solid $gold;
-//   border-radius: 0;
+.sidebox-card-info {
+  // card overrides
+  background-color: theme-color(primary);
+  border-radius: 0px;
+  border: 0;
+  border-bottom: 4px theme-color(bcgold) solid;
+}
 
 //   .round-icon-material {
 //     height: 48px;
