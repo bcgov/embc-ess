@@ -8,7 +8,7 @@ namespace Gov.Jag.Embc.Public.ViewModels.Search
         [FromQuery(Name = "last_name")]
         public string LastName { get; set; }
 
-        [FromQuery(Name = "last_name")]
+        [FromQuery(Name = "first_name")]
         public string FirstName { get; set; }
 
         [FromQuery(Name = "task_no")]
