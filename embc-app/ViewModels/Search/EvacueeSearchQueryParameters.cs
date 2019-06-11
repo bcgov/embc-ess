@@ -12,7 +12,7 @@ namespace Gov.Jag.Embc.Public.ViewModels.Search
         public string FirstName { get; set; }
 
         [FromQuery(Name = "task_no")]
-        public string IncidentTaskId { get; set; }
+        public string IncidentTaskNumber { get; set; }
 
         [FromQuery(Name = "ess_file_no")]
         public string EssFileNumber { get; set; }

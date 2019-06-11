@@ -36,9 +36,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
             else
             {
-                if (!string.IsNullOrWhiteSpace(searchQuery.LastName)) query = query.Where(e => EF.Functions.Like(e.LastName, $"%{searchQuery.Query}%"));
-                if (!string.IsNullOrWhiteSpace(searchQuery.FirstName)) query = query.Where(e => EF.Functions.Like(e.FirstName, $"%{searchQuery.Query}%"));
-                if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskId)) query = query.Where(e => e.EvacueeRegistration.IncidentTask.TaskNumber == searchQuery.IncidentTaskId);
+                if (!string.IsNullOrWhiteSpace(searchQuery.LastName)) query = query.Where(e => EF.Functions.Like(e.LastName, $"%{searchQuery.LastName}%"));
+                if (!string.IsNullOrWhiteSpace(searchQuery.FirstName)) query = query.Where(e => EF.Functions.Like(e.FirstName, $"%{searchQuery.FirstName}%"));
+                if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber)) query = query.Where(e => e.EvacueeRegistration.IncidentTask.TaskNumber == searchQuery.IncidentTaskNumber);
                 if (!string.IsNullOrWhiteSpace(searchQuery.EssFileNumber)) query = query.Where(e => e.EvacueeRegistration.EssFileNumber.ToString() == searchQuery.EssFileNumber);
                 if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom)) query = query.Where(e => e.EvacueeRegistration.IncidentTask.Community.Id.ToString() == searchQuery.EvacuatedFrom);
                 if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedTo)) query = query.Where(e => e.EvacueeRegistration.HostCommunity.Id.ToString() == searchQuery.EvacuatedFrom);

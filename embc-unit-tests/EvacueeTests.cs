@@ -14,20 +14,15 @@ namespace embc_unit_tests
         }
 
         [Fact]
-        public async Task GetAll_BasicSearch_ListReturned()
+        public async Task GetAll_All_EvacueePropertiesAreMapped()
         {
-            var ctx = EmbcDb;
-            var di = new DataInterface(ctx, Mapper);
+            var di = new DataInterface(EmbcDb, Mapper);
 
-            var fromCommunity = (await di.GetCommunitiesAsync()).First();
-            var toCommunity = (await di.GetCommunitiesAsync()).Last();
+            var fromCommunity = await GetRandomSeededCommunity();
+            var toCommunity = await GetRandomSeededCommunity();
 
-            var incidentTask = await di.CreateIncidentTaskAsync(new Gov.Jag.Embc.Public.ViewModels.IncidentTask()
-            {
-                Active = true,
-                Community = new Gov.Jag.Embc.Public.ViewModels.Community { Id = fromCommunity.Id }
-            });
-            var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateCompleted(incidentTask.Id, toCommunity.Id));
+            var incidentTaskId = await SeedIncident(fromCommunity.Id);
+            var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateCompleted(incidentTaskId, toCommunity.Id));
             var registration = await di.GetEvacueeRegistrationAsync(registrationId);
 
             var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters());
@@ -45,6 +40,82 @@ namespace embc_unit_tests
                 Assert.True(e.IsFinalized);
                 Assert.False(e.HasReferrals);
             });
+        }
+
+        [Fact]
+        public async Task GetAll_BasicSearchByHOHLastNameExact_MatchedElementReturned()
+        {
+            var di = new DataInterface(EmbcDb, Mapper);
+
+            var fromCommunity = await GetRandomSeededCommunity();
+            var toCommunity = await GetRandomSeededCommunity();
+
+            var incidentTaskId = await SeedIncident(fromCommunity.Id);
+            var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateCompleted(incidentTaskId, toCommunity.Id));
+            var registration = await di.GetEvacueeRegistrationAsync(registrationId);
+
+            var lastName = registration.HeadOfHousehold.LastName;
+
+            var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters() { Query = lastName });
+
+            Assert.All(result.Items, e => Assert.Equal(lastName, e.LastName));
+        }
+
+        [Fact]
+        public async Task GetAll_BasicSearchByHOHLastNamePartial_MatchedElementReturned()
+        {
+            var di = new DataInterface(EmbcDb, Mapper);
+
+            var fromCommunity = await GetRandomSeededCommunity();
+            var toCommunity = await GetRandomSeededCommunity();
+
+            var incidentTaskId = await SeedIncident(fromCommunity.Id);
+            var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateCompleted(incidentTaskId, toCommunity.Id));
+            var registration = await di.GetEvacueeRegistrationAsync(registrationId);
+
+            var lastName = registration.HeadOfHousehold.LastName;
+
+            var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters() { Query = lastName.Substring(1, 3) });
+
+            Assert.All(result.Items, e => Assert.Equal(lastName, e.LastName));
+        }
+
+        [Fact]
+        public async Task GetAll_BasicSearchByDifferentName_NoMatchedElementReturned()
+        {
+            var di = new DataInterface(EmbcDb, Mapper);
+
+            var fromCommunity = await GetRandomSeededCommunity();
+            var toCommunity = await GetRandomSeededCommunity();
+
+            var incidentTaskId = await SeedIncident(fromCommunity.Id);
+            var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateCompleted(incidentTaskId, toCommunity.Id));
+            var registration = await di.GetEvacueeRegistrationAsync(registrationId);
+
+            var lastName = registration.HeadOfHousehold.LastName;
+
+            var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters() { Query = "1234" });
+
+            Assert.All(result.Items, e => Assert.Equal(lastName, e.LastName));
+        }
+
+        [Fact]
+        public async Task GetAll_BasicSearchByFMRLastNamePartial_MatchedElementReturned()
+        {
+            var di = new DataInterface(EmbcDb, Mapper);
+
+            var fromCommunity = await GetRandomSeededCommunity();
+            var toCommunity = await GetRandomSeededCommunity();
+
+            var incidentTaskId = await SeedIncident(fromCommunity.Id);
+            var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateCompleted(incidentTaskId, toCommunity.Id));
+            var registration = await di.GetEvacueeRegistrationAsync(registrationId);
+
+            var lastName = registration.HeadOfHousehold.FamilyMembers.First().LastName;
+
+            var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters() { Query = lastName.Substring(1, 3) });
+
+            Assert.All(result.Items, e => Assert.Equal(lastName, e.LastName));
         }
     }
 }
