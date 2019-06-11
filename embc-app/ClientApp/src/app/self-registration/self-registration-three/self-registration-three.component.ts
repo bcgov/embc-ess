@@ -9,7 +9,6 @@ import { INSURANCE_OPTIONS, GENDER_OPTIONS } from 'src/app/constants/lookups';
 import { Registration, isBcAddress, Address } from 'src/app/core/models';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { RegistrationService } from 'src/app/core/services/registration.service';
-import { SupportedLanguages } from 'src/app/shared/components/captcha/captcha.component';
 
 @Component({
   selector: 'app-self-registration-three',
@@ -26,8 +25,6 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
   registration: Registration | null;
 
   // CAPTCHA stuff
-  supportedLanguages = SupportedLanguages;
-  selectedLanguage = 'en';
   captchaVerified = false;
 
   constructor(
