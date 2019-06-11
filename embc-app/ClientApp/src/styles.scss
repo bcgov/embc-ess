@@ -198,17 +198,18 @@ textarea.is-invalid {
 //   }
 // }
 
-// .round-icon-wrapper {
-//   height: 48px;
-//   width: 48px;
-//   min-width: 48px;
-//   min-height: 48px;
-//   border-radius: 48px;
-//   background-color: #7596c8;
-//   text-align: center;
-//   display: inline-block;
-//   padding-top: 12px;
-// }
+.round-icon-wrapper {
+  // Used for self registration background of fontawesome check
+  height: 48px;
+  width: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 48px;
+  background-color: #7596c8;
+  text-align: center;
+  display: inline-block;
+  padding-top: 12px;
+}
 
 
 
@@ -300,20 +301,20 @@ textarea.is-invalid {
 //   }
 // }
 
-// .arrow {
-//   list-style: none;
-//   margin-left: 0;
-//   padding-left: 1.2em;
-//   text-indent: -1.2em;
-// }
+.arrow {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
 
-// ul.arrow>li:before {
-//   content: "►";
-//   display: block;
-//   float: left;
-//   width: 1.2em;
-//   color: #fcba19;
-// }
+ul.arrow>li:before {
+  content: "►";
+  display: block;
+  float: left;
+  width: 1.2em;
+  color: #fcba19;
+}
 
 // .default-ul {
 //   list-style: initial;
