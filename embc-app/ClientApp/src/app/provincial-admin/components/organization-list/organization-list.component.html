@@ -56,19 +56,21 @@
         </tr>
       </tbody>
     </table>
-    <div>
-      <button class="btn btn-primary float-right text-uppercase" (click)="modifyOrganization()">Add Organization</button>
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-primary float-right text-uppercase" (click)="modifyOrganization()">Add Organization</button>
+      </div>
     </div>
   </ng-template>
 
   <ng-template #notFound>
-    <div class="space-between align-items-center my-3">
-      <section>
+    <div class="row">
+      <div class="col">
         {{notFoundMessage}}
-      </section>
-      <section>
-        <button class="btn btn-primary text-uppercase" (click)="modifyOrganization()">Add Organization</button>
-      </section>
+      </div>
+      <div class="col">
+        <button class="btn btn-primary float-right text-uppercase" (click)="modifyOrganization()">Add Organization</button>
+      </div>
     </div>
   </ng-template>
 </div>
