@@ -25,9 +25,6 @@ export class ControlledListService extends RestService {
     return this.http.get<Config>('api/config', { headers: this.headers })
       .pipe(
         map((config: Config) => {
-          // TODO: Shortened for testing purposes
-          // config.clientTimeoutWarningDurationInMinutes = 1;
-          // config.clientTimeoutWarningInMinutes = 2;
           // everything went OK
           this.store.dispatch(new ConfigActions.LoadConfigSuccess({ config }));
         }),
