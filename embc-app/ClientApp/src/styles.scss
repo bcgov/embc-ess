@@ -211,7 +211,11 @@ textarea.is-invalid {
   padding-top: 12px;
 }
 
-
+.multi-line {
+  white-space: pre-wrap;
+  word-break: break-all;
+  padding: 1rem;
+}
 
 // Flexbox helpers
 .space-between {
