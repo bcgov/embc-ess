@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ListResult, Evacuee } from '../../../core/models';
+import { ListResult, EvacueeListItem } from 'src/app/core/models';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { EvacueeSearchQueryParameters } from 'src/app/core/models/search-interfaces';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-evacuee-list',
@@ -16,7 +16,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 export class EvacueeListComponent implements OnInit {
   evacuees: any;
   // server response
-  resultsAndPagination: ListResult<Evacuee>;
+  resultsAndPagination: ListResult<EvacueeListItem>;
   notFoundMessage = 'Searching ...';
   defaultSearchQuery: EvacueeSearchQueryParameters = {
     offset: 0,
@@ -51,7 +51,7 @@ export class EvacueeListComponent implements OnInit {
   ngOnInit() {
     // save the base url path
     this.authService.path.subscribe((path: string) => this.path = path);
-    this.getEvacuees().subscribe((listResult: ListResult<Evacuee>) => {
+    this.getEvacuees().subscribe((listResult: ListResult<EvacueeListItem>) => {
       this.resultsAndPagination = listResult;
     });
   }
@@ -60,7 +60,7 @@ export class EvacueeListComponent implements OnInit {
 
   switchToBasicSearch() { this.advancedSearchMode = false; }
 
-  getEvacuees(query: EvacueeSearchQueryParameters = this.defaultSearchQuery): Observable<ListResult<Evacuee>> {
+  getEvacuees(query: EvacueeSearchQueryParameters = this.defaultSearchQuery): Observable<ListResult<EvacueeListItem>> {
     // save the generic query for repeat searches
     this.previousQuery = query;
     // save the organization id into the query from the default
@@ -71,7 +71,7 @@ export class EvacueeListComponent implements OnInit {
     // submit and collect search with a query string
     const query = this.createSearchQuery();
 
-    this.getEvacuees(query).subscribe((listResult: ListResult<Evacuee>) => {
+    this.getEvacuees(query).subscribe((listResult: ListResult<EvacueeListItem>) => {
       if (listResult.data.length <= 0) {
         this.notFoundMessage = 'No results found.';
       } else {
@@ -117,7 +117,7 @@ export class EvacueeListComponent implements OnInit {
     // save the pagination into the previous query and execute the query again
     this.previousQuery.limit = event.limit;
     this.previousQuery.offset = event.offset;
-    this.getEvacuees(this.previousQuery).subscribe((listResult: ListResult<Evacuee>) => {
+    this.getEvacuees(this.previousQuery).subscribe((listResult: ListResult<EvacueeListItem>) => {
       this.resultsAndPagination = listResult;
     });
   }

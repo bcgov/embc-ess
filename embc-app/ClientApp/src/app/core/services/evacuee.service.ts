@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CoreModule } from '../core.module';
 import { RestService } from './rest.service';
 import { Observable } from 'rxjs';
-import { ListResult, Evacuee } from '../models';
+import { ListResult, EvacueeListItem } from '../models';
 import { catchError, retry } from 'rxjs/operators';
 
 import { EvacueeSearchQueryParameters } from '../models/search-interfaces';
@@ -17,9 +17,9 @@ type StringParams = {
 export class EvacueeService extends RestService {
 
   // get the results that match the search query params
-  getEvacuees(props: EvacueeSearchQueryParameters = {}): Observable<ListResult<Evacuee>> {
+  getEvacuees(props: EvacueeSearchQueryParameters = {}): Observable<ListResult<EvacueeListItem>> {
     const params = this.toStringParams(props);
-    return this.http.get<ListResult<Evacuee>>('api/evacuees', { headers: this.headers, params })
+    return this.http.get<ListResult<EvacueeListItem>>('api/evacuees', { headers: this.headers, params })
       .pipe(
         retry(3),
         catchError(this.handleError)
