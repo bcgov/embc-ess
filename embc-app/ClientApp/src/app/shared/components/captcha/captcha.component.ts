@@ -1,8 +1,10 @@
 import {
-  Component, ElementRef, ViewChild, SimpleChanges, NgZone,
-  ChangeDetectorRef, Output, Input, AfterViewInit, OnInit, OnChanges, EventEmitter
+  Component, ElementRef, ViewChild, SimpleChanges, NgZone, ChangeDetectorRef,
+  Output, Input, AfterViewInit, OnInit, OnChanges, EventEmitter, OnDestroy
 } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { CaptchaDataService } from 'src/app/core/services/captcha-data.service';
 
 //
@@ -33,7 +35,7 @@ enum CAPTCHA_STATE {
   templateUrl: './captcha.component.html',
   styleUrls: ['./captcha.component.scss']
 })
-export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
+export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
 
   @ViewChild('image') imageContainer: ElementRef;
   @ViewChild('audioElement') audioElement: ElementRef;
@@ -132,6 +134,15 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
   incorrectAnswer: boolean;
   fetchingAudioInProgress = false;
 
+  /**
+   * Subject used to unsubscribe to all observables.
+   */
+  private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
+
+  private verifySub: Subscription = null;
+  private audioSub: Subscription = null;
+  private dataSub: Subscription = null;
+
   constructor(
     private dataService: CaptchaDataService,
     private cd: ChangeDetectorRef,
@@ -163,6 +174,12 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
     this.getNewCaptcha(false);
   }
 
+  ngOnDestroy() {
+    // trigger all observables to complete
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   forceRefresh() {
     this.getNewCaptcha(false);
     this.cd.detectChanges();
@@ -180,7 +197,14 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
     if (this.answer.length === 6) {
       this.state = CAPTCHA_STATE.VERIFYING_ANSWER;
       this.incorrectAnswer = null;
-      this.dataService.verifyCaptcha(this.nonce, this.answer, this.validation)
+
+      // pre-empt existing observable execution
+      if (this.verifySub && !this.verifySub.closed) {
+        this.verifySub.unsubscribe();
+      }
+
+      this.verifySub = this.dataService.verifyCaptcha(this.nonce, this.answer, this.validation)
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((response: HttpResponse<any>) => {
           const payload = response.body;
           if (this.isValidPayload(payload)) {
@@ -235,18 +259,6 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
     }
   }
 
-  retryFetchCaptcha() {
-    console.log('Retry captcha');
-    this.state = undefined;
-
-    /**
-     * wait for 0.1 second before resubmitting
-     */
-    setTimeout(() => {
-      this.getNewCaptcha(false);
-    }, 100);
-  }
-
   playAudio() {
     if (this.audio && this.audio.length > 0) {
       this.audioElement.nativeElement.play();
@@ -256,24 +268,29 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
   }
 
   private fetchAudio(playImmediately: boolean = false) {
-    if (!this.fetchingAudioInProgress) {
-      this.fetchingAudioInProgress = true;
-      this.dataService.fetchAudio(this.validation, this.language)
-        .subscribe((response: HttpResponse<any>) => {
-          this.fetchingAudioInProgress = false;
-          this.audio = response.body.audio;
-          this.cd.detectChanges();
-          if (playImmediately) {
-            this.audioElement.nativeElement.play();
-          }
-        }, error => {
-          this.fetchingAudioInProgress = false;
-          console.log('Error response from fetching audio CAPTCHA: ', error);
-          this.cd.detectChanges();
-          // let UI know about error
-          this.serverError.emit(error);
-        });
+    this.fetchingAudioInProgress = true;
+
+    // pre-empt existing observable execution
+    if (this.audioSub && !this.audioSub.closed) {
+      this.audioSub.unsubscribe();
     }
+
+    this.audioSub = this.dataService.fetchAudio(this.validation, this.language)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((response: HttpResponse<any>) => {
+        this.fetchingAudioInProgress = false;
+        this.audio = response.body.audio;
+        this.cd.detectChanges();
+        if (playImmediately) {
+          this.audioElement.nativeElement.play();
+        }
+      }, error => {
+        this.fetchingAudioInProgress = false;
+        console.log('Error response from fetching audio CAPTCHA: ', error);
+        this.cd.detectChanges();
+        // let UI know about error
+        this.serverError.emit(error);
+      });
   }
 
   getNewCaptcha(errorCase: boolean) {
@@ -287,7 +304,13 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges {
       this.incorrectAnswer = null;
     }
 
-    this.dataService.fetchData(this.nonce)
+    // pre-empt existing observable execution
+    if (this.dataSub && !this.dataSub.closed) {
+      this.dataSub.unsubscribe();
+    }
+
+    this.dataSub = this.dataService.fetchData(this.nonce)
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((response: HttpResponse<any>) => {
         this.state = CAPTCHA_STATE.SUCCESS_FETCH_IMG;
         const payload = response.body;
