@@ -16,9 +16,9 @@ type StringParams = {
 })
 export class EvacueeService extends RestService {
 
+  // get the results that match the search query params
   getEvacuees(props: EvacueeSearchQueryParameters = {}): Observable<ListResult<Evacuee>> {
-    // get the results
-    const params = this.propsToParams(props);
+    const params = this.toStringParams(props);
     return this.http.get<ListResult<Evacuee>>('api/evacuees', { headers: this.headers, params })
       .pipe(
         retry(3),
@@ -27,13 +27,12 @@ export class EvacueeService extends RestService {
   }
 
   // convert everything to string. Query params are strings.
-  private propsToParams(props: EvacueeSearchQueryParameters = {}): StringParams {
-    // establish parameters
-    const { limit = 100, offset = 0, } = props;
-    const params: StringParams = {
-      limit: limit.toString(), // query params are strings
-      offset: offset.toString(),
-    };
+  private toStringParams(props: EvacueeSearchQueryParameters = {}): StringParams {
+    const params: StringParams = {};
+
+    // pagination
+    params.limit = (props.limit || 100).toString();
+    params.offset = (props.offset || 0).toString();
 
     // basic search stuff
     if (props.q) { params.q = props.q; }
@@ -46,9 +45,14 @@ export class EvacueeService extends RestService {
     if (props.ess_file_no) { params.ess_file_no = props.ess_file_no; }
     if (props.evacuated_from) { params.evacuated_from = props.evacuated_from; }
     if (props.evacuated_to) { params.evacuated_to = props.evacuated_to; }
-    // convert boolean values (only if present)
-    if (props.registration_completed === true || props.registration_completed === false) { params.registration_completed = props.registration_completed.toString(); }
-    if (props.referrals_provided === true || props.referrals_provided === false) { params.referrals_provided = props.referrals_provided.toString(); }
+
+    // convert boolean values (if present)
+    if (props.registration_completed === true || props.registration_completed === false) {
+      params.registration_completed = props.registration_completed.toString();
+    }
+    if (props.referrals_provided === true || props.referrals_provided === false) {
+      params.referrals_provided = props.referrals_provided.toString();
+    }
 
     return params;
   }

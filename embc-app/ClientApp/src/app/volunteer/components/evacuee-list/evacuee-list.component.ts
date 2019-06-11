@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { EvacueeSearchQueryParameters } from 'src/app/core/models/search-interfaces';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-evacuee-list',
@@ -28,13 +29,23 @@ export class EvacueeListComponent implements OnInit {
   path: string = null; // the base path for routing
 
   advancedSearchMode = false;
-  advancedSearchParams: EvacueeSearchQueryParameters = {};
+  advancedSearchForm = this.fb.group({
+    last_name: null,
+    first_name: null,
+    task_no: null,
+    ess_file_no: null,
+    evacuated_from: null,
+    evacuated_to: null,
+    registration_completed: null,
+    referrals_provided: null,
+  });
 
   constructor(
     private evacueeService: EvacueeService,
     private router: Router,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
+    private fb: FormBuilder,
   ) { }
 
   ngOnInit() {
@@ -45,17 +56,9 @@ export class EvacueeListComponent implements OnInit {
     });
   }
 
-  switchToAdvancedSearch() {
-    this.advancedSearchMode = true;
+  switchToAdvancedSearch() { this.advancedSearchMode = true; }
 
-    // TODO: clean-up & manage new search state
-  }
-
-  switchToBasicSearch() {
-    this.advancedSearchMode = false;
-
-    // TODO: clean-up & manage new search state
-  }
+  switchToBasicSearch() { this.advancedSearchMode = false; }
 
   getEvacuees(query: EvacueeSearchQueryParameters = this.defaultSearchQuery): Observable<ListResult<Evacuee>> {
     // save the generic query for repeat searches
@@ -66,7 +69,7 @@ export class EvacueeListComponent implements OnInit {
 
   search() {
     // submit and collect search with a query string
-    const query = this.getSearchParams();
+    const query = this.createSearchQuery();
 
     this.getEvacuees(query).subscribe((listResult: ListResult<Evacuee>) => {
       if (listResult.data.length <= 0) {
@@ -78,31 +81,35 @@ export class EvacueeListComponent implements OnInit {
     });
   }
 
-  getSearchParams(): EvacueeSearchQueryParameters {
-    const query = { ...this.defaultSearchQuery };
-
+  createSearchQuery(): EvacueeSearchQueryParameters {
+    // store the sorting and pagination
+    let query = { ...this.defaultSearchQuery, sort: this.sort };
     if (this.advancedSearchMode) {
-      delete query.q;
-      query.last_name = this.advancedSearchParams.last_name || null;
-      query.first_name = this.advancedSearchParams.first_name || null;
-      query.task_no = this.advancedSearchParams.task_no || null;
-      query.ess_file_no = this.advancedSearchParams.ess_file_no || null;
-      query.evacuated_from = this.advancedSearchParams.evacuated_from || null;
-      query.evacuated_to = this.advancedSearchParams.evacuated_to || null;
+      const form = this.advancedSearchForm.value;
 
-      if (this.advancedSearchParams.registration_completed === null) {
+      // the community auto-complete returns an object. we only want the ID (string)
+      const fromCommunityId = form.evacuated_from ? form.evacuated_from.id : null;
+      const toCommunityId = form.evacuated_to ? form.evacuated_to.id : null;
+
+      query = {
+        ...query,
+        ...form,
+        evacuated_from: fromCommunityId,
+        evacuated_to: toCommunityId
+      };
+
+      // delete unneeded values
+      delete query.q;
+      if (query.registration_completed === null) {
         delete query.registration_completed;
       }
-      if (this.advancedSearchParams.referrals_provided === null) {
+      if (query.referrals_provided === null) {
         delete query.referrals_provided;
       }
     } else {
       // basic search
       query.q = this.queryString;
     }
-
-    // store the sorting
-    query.sort = this.sort;
     return query;
   }
 

@@ -12,105 +12,109 @@
           <input [(ngModel)]="queryString" type="text" aria-label="search" class="form-control mb-2" placeholder="Search by task number / last name / registration number / community ..." (keydown.enter)="search()">
         </div>
         <div class="col-auto">
-          <button class="btn btn-primary text-uppercase" (click)="search()">Search</button>
+          <button type="button" class="btn btn-primary text-uppercase" (click)="search()">Search</button>
         </div>
       </div>
       <a class="small" [routerLink]="" (click)="switchToAdvancedSearch()">advanced search</a>
     </ng-container>
     <ng-container *ngIf="advancedSearchMode">
-      <div class="feature-block">
-        <div class="d-flex justify-content-between">
-          <h2 class="h5">Advanced Search</h2>
-          <button type="button" class="close" aria-label="Close" (click)="switchToBasicSearch()">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <p>Narrow your search results by: (fill any / all fields)</p>
-        <div class="row">
-          <div class="col">
-            <div class="form-group row">
-              <label for="asLastname" class="col-5 col-form-label">Last Name:</label>
-              <div class="col-7">
-                <input type="text" class="form-control" id="asLastname" [(ngModel)]="advancedSearchParams.last_name">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="asFirstname" class="col-5 col-form-label">First Name:</label>
-              <div class="col-7">
-                <input type="text" class="form-control" id="asFirstname">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="asTaskNo" class="col-5 col-form-label">Task #:</label>
-              <div class="col-7">
-                <input type="text" class="form-control" id="asTaskNo">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="asEssFileNo" class="col-5 col-form-label">ESS File #:</label>
-              <div class="col-7">
-                <input type="text" class="form-control" id="asEssFileNo">
-              </div>
-            </div>
-            <fieldset class="form-group">
-              <div class="row">
-                <legend class="col-form-label col-5 pt-0">Reg. Completed:</legend>
+      <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="search()">
+        <div class="feature-block">
+          <div class="d-flex justify-content-between">
+            <h2 class="h5">Advanced Search</h2>
+            <button type="button" class="close" aria-label="Close" (click)="switchToBasicSearch()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <p>Narrow your search results by: (fill any / all fields)</p>
+          <div class="row">
+            <div class="col">
+              <div class="form-group row">
+                <label for="asLastname" class="col-5 col-form-label">Last Name:</label>
                 <div class="col-7">
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="asRegistrationRadios" id="asRegCompletedYes" [value]="true">
-                    <label class="form-check-label" for="asRegCompletedYes">Yes</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="asRegistrationRadios" id="asRegCompletedNo" [value]="false">
-                    <label class="form-check-label" for="asRegCompletedNo">No</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="asRegistrationRadios" id="asRegCompletedAll" [value]="" checked>
-                    <label class="form-check-label" for="asRegCompletedAll">Show all</label>
-                  </div>
+                  <input type="text" class="form-control" id="asLastname" formControlName="last_name">
                 </div>
               </div>
-            </fieldset>
-          </div>
-          <div class="col">
-            <div class="form-group row">
-              <label for="asEvacuatedFrom" class="col-5 col-form-label">Evacuated From:</label>
-              <div class="col-7">
-                <input type="text" class="form-control" id="asEvacuatedFrom">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="asEvacuatedTo" class="col-5 col-form-label">Evacuated To:</label>
-              <div class="col-7">
-                <input type="text" class="form-control" id="asEvacuatedTo">
-              </div>
-            </div>
-            <fieldset class="form-group">
-              <div class="row">
-                <legend class="col-form-label col-5 pt-0">Referrals Provided:</legend>
+              <div class="form-group row">
+                <label for="asFirstname" class="col-5 col-form-label">First Name:</label>
                 <div class="col-7">
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="asReferralRadios" id="asReferralsYes" [value]="true">
-                    <label class="form-check-label" for="asReferralsYes">Yes</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="asReferralRadios" id="asReferralsNo" [value]="false">
-                    <label class="form-check-label" for="asReferralsNo">No</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="asReferralRadios" id="asReferralsAll" [value]="" checked>
-                    <label class="form-check-label" for="asReferralsAll">Show all</label>
-                  </div>
+                  <input type="text" class="form-control" id="asFirstname" formControlName="first_name">
                 </div>
               </div>
-            </fieldset>
+              <div class="form-group row">
+                <label for="asTaskNo" class="col-5 col-form-label">Task #:</label>
+                <div class="col-7">
+                  <input type="text" class="form-control" id="asTaskNo" formControlName="task_no">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="asEssFileNo" class="col-5 col-form-label">ESS File #:</label>
+                <div class="col-7">
+                  <input type="text" class="form-control" id="asEssFileNo" formControlName="ess_file_no">
+                </div>
+              </div>
+              <fieldset class="form-group">
+                <div class="row">
+                  <legend class="col-form-label col-5 pt-0">Reg. Completed:</legend>
+                  <div class="col-7">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="registration_completed" id="asRegCompletedYes" [value]="true" formControlName="registration_completed">
+                      <label class="form-check-label" for="asRegCompletedYes">Yes</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="registration_completed" id="asRegCompletedNo" [value]="false" formControlName="registration_completed">
+                      <label class="form-check-label" for="asRegCompletedNo">No</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="registration_completed" id="asRegCompletedAll" [value]="null" formControlName="registration_completed">
+                      <label class="form-check-label" for="asRegCompletedAll">Show all</label>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <div class="col">
+              <div class="form-group row">
+                <label for="asEvacuatedFrom" class="col-5 col-form-label">Evacuated From:</label>
+                <div class="col-7">
+                  <!-- <input type="text" class="form-control" id="asEvacuatedFrom" formControlName="evacuated_from"> -->
+                  <app-communities-select [myParent]="advancedSearchForm" myFormControlName="evacuated_from" myId="asEvacuatedFrom"></app-communities-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="asEvacuatedTo" class="col-5 col-form-label">Evacuated To:</label>
+                <div class="col-7">
+                  <!-- <input type="text" class="form-control" id="asEvacuatedTo" formControlName="evacuated_to"> -->
+                  <app-communities-select [myParent]="advancedSearchForm" myFormControlName="evacuated_to" myId="asEvacuatedTo"></app-communities-select>
+                </div>
+              </div>
+              <fieldset class="form-group">
+                <div class="row">
+                  <legend class="col-form-label col-5 pt-0">Referrals Provided:</legend>
+                  <div class="col-7">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="referrals_provided" id="asReferralsYes" [value]="true" formControlName="referrals_provided">
+                      <label class="form-check-label" for="asReferralsYes">Yes</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="referrals_provided" id="asReferralsNo" [value]="false" formControlName="referrals_provided">
+                      <label class="form-check-label" for="asReferralsNo">No</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="referrals_provided" id="asReferralsAll" [value]="null" formControlName="referrals_provided">
+                      <label class="form-check-label" for="asReferralsAll">Show all</label>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end align-items-center">
+            <app-fa-link class="small" icon="exchange-alt" (click)="switchToBasicSearch()">Switch to Basic Search</app-fa-link>
+            <button type="submit" class="ml-2 btn btn-secondary text-uppercase">Search</button>
           </div>
         </div>
-        <div class="d-flex justify-content-end align-items-center">
-          <app-fa-link class="small" icon="exchange-alt" (click)="switchToBasicSearch()">Switch to Basic Search</app-fa-link>
-          <button class="ml-2 btn btn-secondary text-uppercase" (click)="search()">Search</button>
-        </div>
-      </div>
+      </form>
     </ng-container>
   </div>
 
