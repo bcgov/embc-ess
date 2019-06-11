@@ -79,6 +79,14 @@ textarea.is-invalid {
   border: 0;
   border-bottom: 4px theme-color(bcgold) solid;
 }
+.sidebox-card-info {
+  // card overrides
+  background-color: theme-color(primary);
+  border-radius: 0px;
+  border: 0;
+  border-bottom: 4px theme-color(bcgold) solid;
+}
+
 
 .form-check-input{
   // the silly checkboxes are high and the text is low
@@ -190,19 +198,24 @@ textarea.is-invalid {
 //   }
 // }
 
-// .round-icon-wrapper {
-//   height: 48px;
-//   width: 48px;
-//   min-width: 48px;
-//   min-height: 48px;
-//   border-radius: 48px;
-//   background-color: #7596c8;
-//   text-align: center;
-//   display: inline-block;
-//   padding-top: 12px;
-// }
+.round-icon-wrapper {
+  // Used for self registration background of fontawesome check
+  height: 48px;
+  width: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 48px;
+  background-color: #7596c8;
+  text-align: center;
+  display: inline-block;
+  padding-top: 12px;
+}
 
-
+.multi-line {
+  white-space: pre-wrap;
+  word-break: break-all;
+  padding: 1rem;
+}
 
 // Flexbox helpers
 .space-between {
@@ -292,20 +305,20 @@ textarea.is-invalid {
 //   }
 // }
 
-// .arrow {
-//   list-style: none;
-//   margin-left: 0;
-//   padding-left: 1.2em;
-//   text-indent: -1.2em;
-// }
+.arrow {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
 
-// ul.arrow>li:before {
-//   content: "►";
-//   display: block;
-//   float: left;
-//   width: 1.2em;
-//   color: #fcba19;
-// }
+ul.arrow>li:before {
+  content: "►";
+  display: block;
+  float: left;
+  width: 1.2em;
+  color: #fcba19;
+}
 
 // .default-ul {
 //   list-style: initial;
