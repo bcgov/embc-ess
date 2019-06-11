@@ -21,3 +21,20 @@ export interface FamilyMember extends Evacuee {
   sameLastNameAsEvacuee: boolean;
   relationshipToEvacuee: RelationshipType;
 }
+
+export interface EvacueeListItem {
+  id: string;
+  restrictedAccess: boolean;
+  isHeadOfHousehold: boolean;
+  firstName: string;
+  lastName: string;
+  nickname: string;
+  initials: string;
+  registrationId: string;
+  incidentTaskNumber: string;
+  evacuatedFrom: string;
+  evacuatedTo: string;
+  registrationCompletionDate?: string;
+  isFinalized: boolean;
+  hasReferrals: boolean;
+}
