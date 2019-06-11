@@ -76,7 +76,7 @@ textarea.is-invalid {
   // card overrides
   background-color: theme-color(light);
   border-radius: 0px;
-  border: 0;
+  // border: 0;
   border-bottom: 4px theme-color(bcgold) solid;
 }
 .sidebox-card-info {
@@ -92,6 +92,10 @@ textarea.is-invalid {
   // the silly checkboxes are high and the text is low
   position: relative;
   top: 0em;
+}
+
+app-form-field {
+  margin-top: 5px;
 }
 
 //----------OLD STUFF BELOW THIS LINE
@@ -120,7 +124,7 @@ h2 {
 }
 
 h3 {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
 }
 
@@ -168,9 +172,26 @@ textarea.is-invalid {
   background-image: none !important; // remove red X
 }
 
+select.is-invalid {
+  background-image: none !important; // remove red X
+}
+
 .form-control {
   // border-radius: 5px;
   display: inline-block;
+}
+
+// extension to Bootstrap styles
+.display-5 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.display-6 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 // // this breaks text/arrow layout in FF
@@ -178,9 +199,10 @@ textarea.is-invalid {
 // //   height: auto;
 // // }
 
-// select.is-invalid {
-//   background-image: none !important; // remove red X
-// }
+label {
+  // max-width: 100%;
+  font-weight: 700;
+}
 
 // .form-control {
 //   // border-radius: 5px;
@@ -258,9 +280,9 @@ textarea.is-invalid {
 //   display: inline-block;
 // }
 
-// .padded-section {
-//   padding-left: 15px;
-// }
+.padded-section {
+  padding-left: 15px;
+}
 
 // .notes {
 //   background-color: #f2f2f2;
@@ -370,3 +392,9 @@ ul.arrow>li:before {
 // input[type=radio] {
 //   top: 3px;
 // }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

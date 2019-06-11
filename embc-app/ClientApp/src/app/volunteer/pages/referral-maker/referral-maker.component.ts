@@ -13,7 +13,6 @@ import {
   TransportationReferral, IncidentalsReferral
 } from 'src/app/core/models';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
-import { delay } from 'q';
 
 interface ReferralFormControl<T = any> {
   value: T;
