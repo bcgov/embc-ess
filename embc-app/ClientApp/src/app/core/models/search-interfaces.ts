@@ -33,3 +33,15 @@ export interface SearchQueryParameters {
   // sort related - e.g. "name" for ASC, "-name" for DESC
   sort?: string;
 }
+
+// Evacuee advanced search fields
+export interface EvacueeSearchQueryParameters extends SearchQueryParameters {
+  last_name?: string;
+  first_name?: string;
+  task_no?: string;
+  ess_file_no?: string;
+  evacuated_from?: string;
+  evacuated_to?: string;
+  registration_completed?: boolean;
+  referrals_provided?: boolean;
+}

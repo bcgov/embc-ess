@@ -3,12 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { combineLatest, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { AuthService } from '../core/services/auth.service';
-import { VolunteerService } from '../core/services/volunteer.service';
-import { OrganizationService } from '../core/services/organization.service';
-import { Volunteer, Organization, ListResult } from '../core/models';
-import { NotificationQueueService } from '../core/services/notification-queue.service';
-import { UniqueKeyService } from '../core/services/unique-key.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { VolunteerService } from 'src/app/core/services/volunteer.service';
+import { OrganizationService } from 'src/app/core/services/organization.service';
+import { Volunteer, Organization, ListResult } from 'src/app/core/models';
+import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { invalidField } from 'src/app/shared/utils';
 
 @Component({
