@@ -245,7 +245,7 @@
 </section>
 
 <section class="mt-5 px-4">
-  <captcha language="en" (validToken)="onValidToken($event)" (serverError)="onServerError($event)"></captcha>
+  <captcha language="en" eagerFetchAudio="true" (validToken)="onValidToken($event)" (serverError)="onServerError($event)"></captcha>
 </section>
 
 <div class="mt-5 space-between">
