@@ -4,7 +4,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { VolunteerService } from 'src/app/core/services/volunteer.service';
 import { OrganizationService } from 'src/app/core/services/organization.service';
-import { Volunteer, Organization, ListResult } from 'src/app/core/models';
+import { Volunteer, Organization } from 'src/app/core/models';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { invalidField } from 'src/app/shared/utils';
@@ -55,8 +55,8 @@ export class VolunteerMakerComponent implements OnInit {
     });
 
     // get the organization from the route parameters
-    const orgId = this.route.snapshot.paramMap.get('orgId');
-    if (orgId) {
+    const orgId = this.authService.currentUser.accountid;
+    if (this.authService.currentUser.accountid) {
       this.organizationService.getOrganizationById(orgId)
         .subscribe((organization: Organization) => {
           this.currentOrganization = organization;
