@@ -115,7 +115,6 @@ export class VolunteerMakerComponent implements OnInit {
         isAdministrator: false, // if you are making a new volunteer as a local auth it won't be an admin user.
         isPrimaryContact: false // if you are making a new volunteer as a local auth it won't be the primary contact for your org.
       };
-      console.log(this.currentOrganization);
       // finally everything is loaded
       this.setInitialFocus();
     }
