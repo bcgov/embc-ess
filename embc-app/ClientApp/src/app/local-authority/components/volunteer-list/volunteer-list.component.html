@@ -27,8 +27,8 @@
         <button class="btn btn-primary text-uppercase" (click)="modifyVolunteer()">Add Users</button>
       </section>
     </div>
-    <table class="table table-striped table-hover table-sm">
-      <thead>
+    <table class="table table-hover table-sm">
+      <thead class="thead-light">
         <th scope="col text-uppercase">Last Name</th>
         <th scope="col text-uppercase">First Name</th>
         <th scope="col text-uppercase">BCeID</th>
@@ -47,13 +47,15 @@
       </tbody>
     </table>
     <!-- Pagination area -->
-    <div class="col clearfix" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
-      <div class="float-right">
-        <app-paginator [metaData]="resultsAndPagination.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+    <div class="row">
+      <div class="col">
+        <div class="float-right">
+          <button class="btn btn-primary text-uppercase" (click)="modifyVolunteer()">Add Users</button>
+        </div>
+        <div class="float-right mr-2" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
+          <app-paginator [metaData]="resultsAndPagination.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+        </div>
       </div>
-    </div>
-    <div>
-      <button class="btn btn-primary text-uppercase" (click)="modifyVolunteer()">Add Users</button>
     </div>
   </ng-template>
 

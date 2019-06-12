@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./sidebox-add-volunteer.component.scss']
 })
 export class SideboxAddVolunteerComponent implements OnInit {
+
   route: string;
 
   constructor(

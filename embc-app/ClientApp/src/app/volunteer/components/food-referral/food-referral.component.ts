@@ -34,16 +34,16 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
     super(fb);
     this.form.setControl('subType', this.fb.control(null));
     this.form.setControl('numBreakfasts', this.fb.control(null));
-    this.form.setControl('numLunches', this.fb.control(''));
-    this.form.setControl('numDinners', this.fb.control(''));
-    this.form.setControl('numDaysMeals', this.fb.control(''));
-    this.form.setControl('totalAmount', this.fb.control(''));
+    this.form.setControl('numLunches', this.fb.control(null));
+    this.form.setControl('numDinners', this.fb.control(null));
+    this.form.setControl('numDaysMeals', this.fb.control(null));
+    this.form.setControl('totalAmount', this.fb.control(null));
 
     // ensure a subType is selected
     this.f.subType.setValidators([Validators.required]); // ie, not null
 
     // set other validators according to 'subType' value
-    this.f.subType.valueChanges.subscribe(value => {
+    this.f.subType.valueChanges.subscribe((value: string) => {
       if (value === 'RESTAURANT') {
         // remove Groceries validators
         this.f.numDaysMeals.clearValidators();

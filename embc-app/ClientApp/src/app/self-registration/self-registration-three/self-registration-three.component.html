@@ -245,18 +245,12 @@
 </section>
 
 <section class="mt-5 px-4">
-  <div class="mb-3">
-    <span>Choose captcha language</span>
-    <select class="ml-3" [(ngModel)]="selectedLanguage">
-      <option *ngFor="let lang of supportedLanguages" value={{lang[0]}}>{{lang[1]}}</option>
-    </select>
-  </div>
-  <captcha language={{selectedLanguage}} (validToken)="onValidToken($event)" (serverError)="onServerError($event)"></captcha>
+  <captcha language="en" eagerFetchAudio="true" (validToken)="onValidToken($event)" (serverError)="onServerError($event)"></captcha>
 </section>
 
 <div class="mt-5 space-between">
   <section>
-    <button type="button" class="btn btn-secondary" (click)="back()">EDIT SELF-REGISTRATION</button>
+    <button type="button" class="btn btn-outline-primary" (click)="back()">EDIT SELF-REGISTRATION</button>
   </section>
   <section>
     <a routerLink="/">

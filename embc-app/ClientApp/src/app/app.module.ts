@@ -18,7 +18,7 @@ import { TaskNumberListComponent } from './provincial-admin/components/task-numb
 import { VolunteerListComponent } from './local-authority/components/volunteer-list/volunteer-list.component';
 import { OrganizationListComponent } from './provincial-admin/components/organization-list/organization-list.component';
 import { TaskNumberMakerComponent } from './provincial-admin/components/task-number-maker/task-number-maker.component';
-import { VolunteerMakerComponent } from './volunteer-maker/volunteer-maker.component';
+import { VolunteerMakerComponent } from './local-authority/components/volunteer-maker/volunteer-maker.component';
 import { OrganizationMakerComponent } from './provincial-admin/components/organization-maker/organization-maker.component';
 import { RegistrationSummaryFullComponent } from './registration-summary-full/registration-summary-full.component';
 import { VolunteerOrganizationListComponent } from './provincial-admin/components/volunteer-organization-list/volunteer-organization-list.component';
@@ -68,6 +68,9 @@ import { ReferralListItemComponent } from './volunteer/components/referral-list-
 import { AbstractReferralComponent } from './volunteer/components/abstract-referral/abstract-referral.component';
 import { EvacueePickerComponent } from './volunteer/components/evacuee-picker/evacuee-picker.component';
 import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+import { TopTabBarComponent } from './components/top-tab-bar/top-tab-bar.component';
+import { AdminVolunteerMakerComponent } from './provincial-admin/components/admin-volunteer-maker/admin-volunteer-maker.component';
 
 @NgModule({
   declarations: [
@@ -125,6 +128,8 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
     SupplierComponent,
     ReferralListItemComponent,
     AbstractReferralComponent,
+    TopTabBarComponent,
+    AdminVolunteerMakerComponent,
   ],
   imports: [
     // angular
@@ -134,6 +139,7 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
 
     // 3rd party
     StoreModule.forRoot(rootReducer, { metaReducers }),
+    ScrollToModule.forRoot(),
 
     // core & shared
     CoreModule,

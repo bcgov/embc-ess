@@ -1,11 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Organization } from '../../../core/models';
-import { Router } from '@angular/router';
-import { OrganizationService } from '../../../core/services/organization.service';
+import { Organization } from 'src/app/core/models';
+import { Router, ActivatedRoute } from '@angular/router';
+import { OrganizationService } from 'src/app/core/services/organization.service';
 import { FormControl } from '@angular/forms';
-import { NotificationQueueService } from '../../../core/services/notification-queue.service';
-import { AuthService } from '../../../core/services/auth.service';
-import { UniqueKeyService } from '../../../core/services/unique-key.service';
+import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
 @Component({
   selector: 'app-organization-maker',
@@ -18,8 +18,8 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
   editMode: boolean;
   submitting = false; // tracks if in the process of submitting for the UI
   organization: Organization = null;
-  // path for routing based on user role
-  path: string;
+
+  path: string = null; // the base path for routing
 
   // form value collectors
   organizationName: FormControl;
@@ -30,6 +30,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private organizationService: OrganizationService,
     private notificationQueueService: NotificationQueueService,
     private authService: AuthService,
@@ -47,10 +48,10 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
     this.adminFirstName = new FormControl('');
     this.community = new FormControl('');
 
-    const orgId = this.uniqueKeyService.getKey();
+    const orgId = this.route.snapshot.paramMap.get('orgId'); // may be null
+
     if (orgId) {
       // there may be an organization to edit because the route looks right
-      // TODO: error checking if org not found
       this.organizationService.getOrganizationById(orgId)
         .subscribe((organization: Organization) => {
           this.editMode = true;
@@ -63,6 +64,12 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
           this.adminLastName.setValue(organization.adminLastName);
           this.adminFirstName.setValue(organization.adminFirstName);
           this.community.setValue(organization.community);
+        }, err => {
+          this.notificationQueueService.addNotification('Failed to load organization', 'danger');
+          console.log('error getting organization =', err);
+
+          // go back to list of organizations
+          this.router.navigate([`/${this.path}/organizations`]);
         });
     } else {
       // no orgId -> add organization
@@ -74,8 +81,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
         adminLastName: '',
         adminFirstName: '',
         community: null,
-        region: null,
-        regionalDistrict: null
+        region: null
       };
       // no form fields to set
     }
@@ -83,9 +89,12 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     // focus the first input
-    const elements = document.getElementsByTagName('input');
+    const elements = document.getElementsByClassName('form-control') as HTMLCollectionOf<HTMLElement>;
     if (elements.length > 0) {
       elements[0].focus();
+    } else {
+      // wait for elements to display and try again
+      setTimeout(() => this.ngAfterViewInit(), 100);
     }
   }
 
@@ -116,6 +125,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
     // stuff the data back into the organization object
     const organization: Organization = this.organization;
     organization.id = this.organization.id || null; // keep the id for updates
+
     // save content from the form
     organization.name = this.organizationName.value;
     organization.legalName = '-'; // TODO: query API for this
@@ -138,15 +148,17 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
           // if addUsers then route to the add users page
           // else route back to the organizations list
           if (addUsers) {
-            // save the organization id and route to the volunteer adder page
-            this.uniqueKeyService.setKey(this.organization.id);
-            this.router.navigate([`/${this.path}/organization/${this.organization.id}/volunteers`]);
+            // route to the volunteer adder page
+            this.router.navigate([`/${this.path}/volunteer`, { orgId: this.organization.id }]);
           } else {
             // go back to the organization page
             this.router.navigate([`/${this.path}/organizations`]);
           }
-          // done editing the key. Clear it.
+          // done editing the key - clear it
           this.uniqueKeyService.clearKey();
+        }, err => {
+          this.notificationQueueService.addNotification('Failed to update organization', 'danger');
+          console.log('error updating organization =', err);
         });
     } else {
       // if the organization has no id then we need to create a new one
@@ -158,14 +170,16 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
           // if addUsers then route to the add users page
           // else route back to the organizations list
           if (addUsers) {
-            // save the organization id and route to the volunteer adder page
-            this.uniqueKeyService.setKey(organization.id);
-            this.router.navigate([`/${this.path}/organization/${organization.id}/volunteers`]);
+            // route to the volunteer adder page
+            this.router.navigate([`/${this.path}/volunteer`, { orgId: organization.id }]);
           } else {
             // go back to the organization page
             this.router.navigate([`/${this.path}/organizations`]);
           }
           // NB - there is no key in this scenario
+        }, err => {
+          this.notificationQueueService.addNotification('Failed to add organization', 'danger');
+          console.log('error creating organization =', err);
         });
     }
   }

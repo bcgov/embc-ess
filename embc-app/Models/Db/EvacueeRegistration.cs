@@ -15,7 +15,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public bool Active { get; set; }
 
-        public bool? RestrictedAccess { get; set; }
+        public bool RestrictedAccess { get; set; }
 
         public bool? DeclarationAndConsent { get; set; }
 

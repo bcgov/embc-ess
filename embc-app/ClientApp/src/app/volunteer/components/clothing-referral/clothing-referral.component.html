@@ -3,12 +3,12 @@
     <form novalidate [formGroup]="form">
       <div class="space-between align-items-center">
         <app-valid-from-to [referralDate]="referral.validDates" (referralDateChange)="updateReferralDate($event)" [id]="uuid"></app-valid-from-to>
-        <button type="button" class="btn btn-secondary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
-        <button type="button" class="btn btn-secondary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
+        <button type="button" class="btn btn-outline-primary ml-3 px-3 d-block d-lg-none" (click)="viewRates()">VIEW ESS<br>RATES SHEET</button>
+        <button type="button" class="btn btn-outline-primary ml-3 px-3 d-none d-lg-block" (click)="viewRates()">VIEW ESS RATES SHEET</button>
       </div>
 
-      <div class="feature-block card border-0 p-0 mt-4">
-        <div class="row mt-4 mx-4">
+      <div class="feature-block card border-0 p-0 mt-3">
+        <div class="row mt-3 mx-3">
           <div class="col-4 pl-0 pr-3">
             <app-evacuee-picker [evacuees]="evacuees" [selected]="selected.value" [errors]="selected.errors" [showErrorsWhen]="showErrorsWhen" (select)="selectEvacuee($event)" (selectAll)="selectAllEvacuees()">
             </app-evacuee-picker>
@@ -39,17 +39,16 @@
           </div>
         </div>
 
-        <div class="card border-0 m-4">
+        <div class="card border-0 m-3">
           <div class="card-body">
             <app-supplier [supplier]="referral.supplier" [showErrorsWhen]="showErrorsWhen" (formReady)="formInitialized('supplier', $event)"></app-supplier>
           </div>
         </div>
 
-        <div class="pl-4 pr-4 pb-3">
-          <textarea rows="4" appErrorBorder [when]="true" #comments class="form-control" formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
-          <span class="invalid-feedback justify-content-end">
-            The maximum line length is 250 characters and the maximum number of lines is 4
-          </span>
+        <div class="px-3 pb-3">
+          <textarea class="form-control" appErrorBorder [when]="true" #comments formControlName="comments" placeholder="Add comments" autocomplete="off"></textarea>
+          <span class="invalid-feedback" *ngIf="f.comments.errors?.tooLong">Please limit comments to 250 characters</span>
+          <span class="invalid-feedback" *ngIf="f.comments.errors?.tooTall">Please limit comments to 5 lines</span>
         </div>
       </div>
     </form>
@@ -124,7 +123,7 @@
         </span>
       </li>
       <li>
-        <span class="comments">{{referral.comments || "&nbsp;"}}</span>
+        <span class="fixed-size">{{referral.comments || "&nbsp;"}}</span>
       </li>
     </ul>
   </div>

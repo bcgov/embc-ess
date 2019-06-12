@@ -9,11 +9,11 @@
   <h3 class="blue-header">Task List</h3>
 
   <form novalidate role="search" class="form-row" [formGroup]="form">
-    <div class="col-md">
+    <div class="col">
       <label class="sr-only" for="searchbox">Associated EMBC Regional District / Community</label>
       <app-communities-select [myParent]="form" myFormControlName="searchbox" myId="searchbox" myPlaceHolder='Start Typing an Incident Location ...'></app-communities-select>
     </div>
-    <div class="col-md-auto">
+    <div class="col-auto">
       <button class="btn btn-primary text-uppercase" (click)="filter(form.value.searchbox)">Filter</button>
     </div>
   </form>
@@ -22,19 +22,19 @@
   </div>
 
   <ng-template #searchResultsTable>
-    <div class="space-between align-items-center my-3">
-      <section>
+    <div class="row mb-2">
+      <div class="col">
         <app-pagination-summary [value]="pagination">
           <span class="font-weight-bold text-uppercase">active</span> tasks
           <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
         </app-pagination-summary>
-      </section>
-      <section>
-        <button class="btn btn-primary float-right text-uppercase" routerLink="" (click)="modifyTaskNumber()">Add Task Number</button>
-      </section>
+      </div>
+      <div class="col">
+        <button class="btn btn-primary float-right text-uppercase" (click)="modifyTaskNumber()">Add Task Number</button>
+      </div>
     </div>
-    <table class="table table-striped table-hover table-sm">
-      <thead>
+    <table class="table table-hover table-sm">
+      <thead class="thead-light">
         <th scope="col text-uppercase">Task Number</th>
         <th scope="col text-uppercase">Incident Location</th>
         <th scope="col text-uppercase"># Associated Evacuees</th>
@@ -46,13 +46,15 @@
           <td>{{incidentTask?.community?.name}}</td>
           <td>{{incidentTask?.totalAssociatedEvacuees > 0 ? incidentTask?.totalAssociatedEvacuees : 'n/a'}}</td>
           <td>
-            <a routerLink="" (click)="modifyTaskNumber(incidentTask.id)">Edit Task Details</a>
+            <a href="javascript:void(0)" (click)="modifyTaskNumber(incidentTask.id)">Edit Task Details</a>
           </td>
         </tr>
       </tbody>
     </table>
-    <div>
-      <button class="btn btn-primary float-right text-uppercase" routerLink="" (click)="modifyTaskNumber()">Add Task Number</button>
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-primary float-right text-uppercase" (click)="modifyTaskNumber()">Add Task Number</button>
+      </div>
     </div>
   </ng-template>
 

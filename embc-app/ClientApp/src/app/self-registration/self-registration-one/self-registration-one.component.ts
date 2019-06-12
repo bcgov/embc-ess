@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { skipWhile, takeWhile, tap, filter } from 'rxjs/operators';
@@ -12,7 +12,6 @@ import { UpdateRegistration } from 'src/app/store/registration/registration.acti
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { clearFormArray, hasErrors, invalidField } from 'src/app/shared/utils';
-import { validateConfig } from '@angular/router/src/config';
 
 @Component({
   selector: 'app-self-registration-one',
@@ -151,12 +150,14 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         filter((registration: Registration) => !!registration)
       )
       .subscribe((registration: Registration) => {
-        // we don't want null values here
         this.displayRegistration(registration);
+
         // TODO: I don't know where this goes in the massive amount of code below.
         // if something is coming out of the state that is not null we should turn the restriction to true
         this.disableForm = registration.restrictedAccess;
         this.form.patchValue({ restrictedAccess: registration.restrictedAccess });
+      }, err => {
+        console.log('error getting current registration =', err);
       });
   }
 
@@ -267,7 +268,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     this.validationErrors = this.validationHelper.processMessages(this.form);
   }
 
-  displayRegistration(registration: Registration | null): void {
+  displayRegistration(registration: Registration): void {
     if (registration !== null) {
       this.disableForm = null;
     }
@@ -457,4 +458,5 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   nullMailingAddress() {
     this.f.mailingAddressInBC.setValidators(null);
   }
+
 }

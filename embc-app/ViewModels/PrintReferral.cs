@@ -10,7 +10,8 @@ namespace Gov.Jag.Embc.Public.ViewModels
     {
         public PrintReferralMappingProfile()
         {
-            CreateMap<Models.Db.Referral, PrintReferral>()
+            CreateMap<Models.Db.Referral, PrintReferral>(MemberList.None)
+                .IncludeBase<Models.Db.Referral, Referral>()
                 .ForMember(d => d.IncidentTaskNumber, m => m.MapFrom(s => s.Registration.IncidentTask.TaskNumber))
                 .ForMember(d => d.HostCommunity, m => m.MapFrom(s => s.Registration.HostCommunity.Name))
                 .ForMember(d => d.PrintEvacuees, m => m.MapFrom(s => s.Evacuees.Select(e => new PrintEvacuee
@@ -20,58 +21,60 @@ namespace Gov.Jag.Embc.Public.ViewModels
                     LastName = e.Evacuee.LastName,
                     EvacueeTypeCode = MapPrintEvacueeTypeCode(e.Evacuee)
                 })))
-                .IncludeBase<Models.Db.Referral, Referral>();
+                .IgnoreAllPropertiesWithAnInaccessibleSetter()
+                .IgnoreAllSourcePropertiesWithAnInaccessibleSetter()
+                ;
 
-            CreateMap<Models.Db.ClothingReferral, PrintReferral>()
+            CreateMap<Models.Db.ClothingReferral, PrintReferral>(MemberList.None)
                 .IncludeBase<Models.Db.Referral, PrintReferral>()
                 .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Clothing));
 
-            CreateMap<Models.Db.IncidentalsReferral, PrintReferral>()
+            CreateMap<Models.Db.IncidentalsReferral, PrintReferral>(MemberList.None)
                 .IncludeBase<Models.Db.Referral, PrintReferral>()
                 .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Incidentals));
 
-            CreateMap<Models.Db.TransportationReferral, PrintReferral>()
+            CreateMap<Models.Db.TransportationReferral, PrintReferral>(MemberList.None)
                 .IncludeBase<Models.Db.Referral, PrintReferral>();
 
-            CreateMap<Models.Db.TaxiTransportationReferral, PrintReferral>()
+            CreateMap<Models.Db.TaxiTransportationReferral, PrintReferral>(MemberList.None)
                 .IncludeBase<Models.Db.TransportationReferral, PrintReferral>()
                 .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Transportation_Taxi));
 
-            CreateMap<Models.Db.OtherTransportationReferral, PrintReferral>()
+            CreateMap<Models.Db.OtherTransportationReferral, PrintReferral>(MemberList.None)
                 .IncludeBase<Models.Db.TransportationReferral, PrintReferral>()
                 .ForMember(d => d.OtherTransportModeDetails, m => m.MapFrom(s => s.TransportMode))
                 .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Transportation_Other));
 
-            CreateMap<Models.Db.FoodReferral, PrintReferral>()
+            CreateMap<Models.Db.FoodReferral, PrintReferral>(MemberList.None)
                 .IncludeBase<Models.Db.Referral, PrintReferral>();
 
-            CreateMap<Models.Db.GroceriesFoodReferral, PrintReferral>()
+            CreateMap<Models.Db.GroceriesFoodReferral, PrintReferral>(MemberList.None)
                 .IncludeBase<Models.Db.FoodReferral, PrintReferral>()
                 .ForMember(d => d.IncidentTaskNumber, m => m.MapFrom(s => s.Registration.IncidentTask.TaskNumber))
                 .ForMember(d => d.NumDaysMeals, m => m.MapFrom(s => s.NumberOfMeals))
                 .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Food_Groceries));
 
-            CreateMap<Models.Db.RestaurantFoodReferral, PrintReferral>()
+            CreateMap<Models.Db.RestaurantFoodReferral, PrintReferral>(MemberList.None)
                 .IncludeBase<Models.Db.FoodReferral, PrintReferral>()
                 .ForMember(d => d.NumBreakfasts, m => m.MapFrom(s => s.NumberOfBreakfasts))
                 .ForMember(d => d.NumLunches, m => m.MapFrom(s => s.NumberOfLunches))
                 .ForMember(d => d.NumDinners, m => m.MapFrom(s => s.NumberOfDinners))
                 .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Food_Restaurant));
 
-            CreateMap<Models.Db.LodgingReferral, PrintReferral>()
+            CreateMap<Models.Db.LodgingReferral, PrintReferral>(MemberList.None)
                 .IncludeBase<Models.Db.Referral, PrintReferral>()
                 .ForMember(d => d.NumNights, m => m.MapFrom(s => s.NumberOfNights));
 
-            CreateMap<Models.Db.HotelLodgingReferral, PrintReferral>()
+            CreateMap<Models.Db.HotelLodgingReferral, PrintReferral>(MemberList.None)
                .IncludeBase<Models.Db.LodgingReferral, PrintReferral>()
                .ForMember(d => d.NumRooms, m => m.MapFrom(s => s.NumberOfRooms))
                .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Lodging_Hotel));
 
-            CreateMap<Models.Db.GroupLodgingReferral, PrintReferral>()
+            CreateMap<Models.Db.GroupLodgingReferral, PrintReferral>(MemberList.None)
                 .IncludeBase<Models.Db.LodgingReferral, PrintReferral>()
                 .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Lodging_Group));
 
-            CreateMap<Models.Db.BilletingLodgingReferral, PrintReferral>()
+            CreateMap<Models.Db.BilletingLodgingReferral, PrintReferral>(MemberList.None)
                 .IncludeBase<Models.Db.LodgingReferral, PrintReferral>()
                 .ForMember(d => d.Type, m => m.MapFrom((s, _) => Models.Db.ReferralType.Lodging_Billeting));
         }
@@ -95,9 +98,9 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string IncidentTaskNumber { get; set; }
         public string HostCommunity { get; set; }
         public string FromDate => TimeZoneConverter.GetLocalDate(ValidDates.From);
-        public string FromTime => TimeZoneConverter.GetLocalTime(ValidDates.From);
+        public string FromTime => TimeZoneConverter.GetLocalTime24h(ValidDates.From);
         public string ToDate => TimeZoneConverter.GetLocalDate(ValidDates.To);
-        public string ToTime => TimeZoneConverter.GetLocalTime(ValidDates.To);
+        public string ToTime => TimeZoneConverter.GetLocalTime24h(ValidDates.To);
         public string PrintDate => DateTime.Today.ToString("MMM-dd-yyyy");
         public IEnumerable<PrintEvacuee> PrintEvacuees { get; set; }
         public string TotalAmountPrinted => TotalAmount.ToString("N2");

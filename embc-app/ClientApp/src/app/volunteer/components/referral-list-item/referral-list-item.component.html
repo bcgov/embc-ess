@@ -1,4 +1,4 @@
-<h2 class="blue-header font-weight-bold" [ngSwitch]="type">
+<h2 class="blue-header font-weight-bold py-3" [ngSwitch]="type">
   <ng-container *ngSwitchCase="'FOOD'">
     <app-font-awesome-icon icon="utensils"></app-font-awesome-icon>&nbsp;&nbsp;FOOD
   </ng-container>
@@ -21,6 +21,6 @@
 </section>
 
 <div class="card-footer space-between align-items-center">
-  <app-fa-link icon="times" (click)="onRemove()">Remove this referral</app-fa-link>
+  <app-fa-link icon="times" (click)="confirm()">Remove this referral</app-fa-link>
   <button type="button" class="btn btn-primary text-uppercase" (click)="onAdd()">{{addReferralString}}</button>
 </div>

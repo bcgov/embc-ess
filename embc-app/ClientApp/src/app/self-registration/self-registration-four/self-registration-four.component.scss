@@ -1,24 +1,4 @@
-@import "~src/styles/_defaults.scss";
-
-.thank-you {
-  display: flex;
-  flex-direction: row;
-  margin-top: 2rem;
-  padding: 2rem;
-
-  ul.arrow {
-    > li:before {
-      margin-right: 0.8rem;
-    }
-
-    .registration-number {
-      margin: 1rem 0;
-      padding-left: 2.48rem;
-      font-family: inherit;
-      font-size: 36px;
-      font-weight: 600;
-      line-height: 1.1;
-      color: $font-color;
-    }
-  }
+.nudge{
+  position: relative;
+  bottom: 0.1em;
 }

@@ -1,5 +1,5 @@
 // tslint:disable
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
 const routes = {
   // default (not-found) route
@@ -10,6 +10,7 @@ const routes = {
       message: 'Route not found!',
     },
   },
+
   // lookup tables
   'api/countries': useEnvelope([
     { id: '1', name: 'Canada', active: true },
@@ -35,23 +36,16 @@ const routes = {
   ]),
 };
 
-// add data relationships
-routes['api/regionaldistricts'] = useEnvelope([
-  { id: '1', name: 'Capital Region', active: true, region: byId('api/regions', '1') },
-  { id: '2', name: 'Alberni-Clayoquot (Regional District)', active: true, region: byId('api/regions', '2') },
-]);
-
 routes['api/communities'] = useEnvelope([
-  { id: '1', name: 'Victoria (City)', regionalDistrict: byId('api/regionaldistricts', '1') },
-  { id: '2', name: 'Armstrong (City)', regionalDistrict: byId('api/regionaldistricts', '2') },
-  { id: '3', name: 'Belcarra (Village)', regionalDistrict: byId('api/regionaldistricts', '2') },
+  { id: '1', name: 'Victoria (City)' },
+  { id: '2', name: 'Armstrong (City)' },
+  { id: '3', name: 'Belcarra (Village)' },
 ]);
 
-// admin routes (IDIR)
+// add data relationships
 routes['api/incidenttasks'] = useEnvelope([
-  { id: '1', taskNumber: '123456', description: 'Some details about the incident here', community: byId('api/communities', '1'), regionalDistrict: null, region: null },
-  { id: '2', taskNumber: '999888', description: 'Some details about the incident here', community: null, regionalDistrict: byId('api/regionaldistricts', '2'), region: null },
-  { id: '3', taskNumber: '789012', description: 'Some details about the incident here', community: null, regionalDistrict: null, region: byId('api/regions', '2') },
+  { id: '1', taskNumber: '123456', description: 'Incident in a community', community: byId('api/communities', '1'), region: null },
+  { id: '2', taskNumber: '456789', description: 'Incident in a region', community: null, region: byId('api/regions', '1') },
 ]);
 
 // registrations

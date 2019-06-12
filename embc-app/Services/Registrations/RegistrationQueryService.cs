@@ -1,5 +1,11 @@
+using AutoMapper;
 using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.Models.Db;
 using MediatR;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,15 +13,18 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
 {
     public class RegistrationQueryService :
         IRequestHandler<RegistrationQueryRequest, RegistrationQueryResponse>,
-        IRequestHandler<RegistrationSummaryQueryRequest, ViewModels.RegistrationSummary>
+        IRequestHandler<RegistrationSummaryQueryRequest, ViewModels.RegistrationSummary>,
+        IRequestHandler<RegistrationAuditQueryRequest, IEnumerable<RegistrationViewEntry>>
     {
         private readonly IDataInterface dataInterface;
         private readonly IMediator mediator;
+        private readonly IMapper mapper;
 
-        public RegistrationQueryService(IDataInterface dataInterface, IMediator mediator)
+        public RegistrationQueryService(IDataInterface dataInterface, IMediator mediator, IMapper mapper)
         {
             this.dataInterface = dataInterface;
             this.mediator = mediator;
+            this.mapper = mapper;
         }
 
         public async Task<RegistrationQueryResponse> Handle(RegistrationQueryRequest request, CancellationToken cancellationToken)
@@ -38,6 +47,16 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         public async Task<ViewModels.RegistrationSummary> Handle(RegistrationSummaryQueryRequest request, CancellationToken cancellationToken)
         {
             return await dataInterface.GetEvacueeRegistrationSummaryAsync(request.EssFileNumber);
+        }
+
+        public async Task<IEnumerable<RegistrationViewEntry>> Handle(RegistrationAuditQueryRequest request, CancellationToken cancellationToken)
+        {
+            var auditTrail = await dataInterface.GetEvacueeRegistrationAuditTrailAsync(request.EssFileNumber);
+
+            return auditTrail
+                .Where(a => a.Action == typeof(RegistrationViewed).Name)
+                .Select(a => mapper.Map<RegistrationViewEntry>(a))
+                .Where(a => !string.IsNullOrEmpty(a.Reason));
         }
     }
 
@@ -112,6 +131,37 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         public RegistrationViewed(string essFileNumber, string reasonForView) : base(essFileNumber)
         {
             ReasonForView = reasonForView;
+        }
+    }
+
+    public class RegistrationAuditQueryRequest : IRequest<IEnumerable<RegistrationViewEntry>>
+    {
+        public RegistrationAuditQueryRequest(long essFileNumber)
+        {
+            EssFileNumber = essFileNumber;
+        }
+
+        public long EssFileNumber { get; }
+    }
+
+    public class RegistrationViewEntry
+    {
+        public string EssFileNumber { get; set; }
+        public string UserName { get; set; }
+        public DateTime DateViewed { get; set; }
+        public string Reason { get; set; }
+    }
+
+    public class MappingProfile : Profile
+    {
+        public MappingProfile()
+        {
+            CreateMap<EvacueeRegistrationAudit, RegistrationViewEntry>()
+                .ForMember(d => d.DateViewed, opts => opts.MapFrom(s => s.Date.DateTime))
+                .ForMember(d => d.Reason, opts => opts.MapFrom(s => JsonConvert.DeserializeObject<RegistrationViewed>(s.Content).ReasonForView))
+                .ReverseMap()
+                .ForMember(d => d.Date, opts => opts.MapFrom(s => new DateTimeOffset(s.DateViewed)))
+                ;
         }
     }
 }

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -24,7 +24,7 @@ import { UniqueKeyService } from '../core/services/unique-key.service';
   templateUrl: './registration-maker.component.html',
   styleUrls: ['./registration-maker.component.scss']
 })
-export class RegistrationMakerComponent implements OnInit {
+export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   // state needed by this FORM
   countries$ = this.store.select(s => s.lookups.countries.countries);
   regions$ = this.store.select(s => s.lookups.regions);
@@ -34,7 +34,8 @@ export class RegistrationMakerComponent implements OnInit {
   CANADA: Country; // the object representation of the default country
 
   pageTitle = 'Add an Evacuee';
-  activeForm = true; // this lets the user fill things out
+  activeForm: boolean; // not set by default
+
   // The model for the form data collected
   form: FormGroup;
   componentActive = true;
@@ -66,8 +67,7 @@ export class RegistrationMakerComponent implements OnInit {
   // error summary to display; i.e. 'Some required fields have not been completed.'
   errorSummary = '';
 
-  // path for this user to route from
-  path: string;
+  path: string = null; // the base path for routing
 
   readonly dateMask = [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]; // yyyy-mm-dd
   readonly phoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]; // 999-999-9999
@@ -148,8 +148,10 @@ export class RegistrationMakerComponent implements OnInit {
         required: 'Please make a selection regarding pets.',
       },
     };
+
     // TODO: Wow. it sure would be nice if we could just instatiate a class instead of using interfaces
     this.registration = this.blankRegistration();
+
     // Define an instance of the validator for use with this form,
     // passing in this form's set of validation messages.
     this.validationHelper = new ValidationHelper(this.constraints);
@@ -165,16 +167,19 @@ export class RegistrationMakerComponent implements OnInit {
   // this is a way to grab the familymembers in a typed way
   get familyMembers() { return this.f.familyMembers as FormArray; }
 
-  disableInput(disabled: boolean) {
-    // hide the form TODO: V1 shouldn't handle sensitive information. This is a workaround toggle.
-    this.activeForm = !disabled;
+  setRestricted(state: boolean) {
+    // if not restricted then show the form
+    this.activeForm = !state;
+    // set the value of the restricted form element
+    this.form.patchValue({ restrictedAccess: state });
   }
 
   ngOnInit() {
     this.authService.path.subscribe((path: string) => this.path = path);
+
     // fetch the default country
     this.countries$.subscribe((countries: Country[]) => {
-      // the only(first) element that is named Canada
+      // the only (first) element that is named Canada
       countries.forEach((country: Country) => {
         // if the canada is not set and we found one in the list
         if (country.name === 'Canada') {
@@ -193,34 +198,52 @@ export class RegistrationMakerComponent implements OnInit {
     this.authService.getCurrentUser().subscribe((user: User) => this.currentUser = user);
 
     // // if there are route params we should grab them
-    // const id = this.route.snapshot.params.id;
+    // const id = this.route.snapshot.paramMap.get('id');
 
     // get unique key if one exists
-    const key = this.uniqueKeyService.getKey();
-    if (key) {
-      // this is a form with data flowing in.
-      this.registrationService.getRegistrationById(key)
+    const regId = this.uniqueKeyService.getKey();
+    if (regId) {
+      // this is a form with data flowing in
+      this.registrationService.getRegistrationById(regId, 'editing')
         .subscribe((registration: Registration) => {
-          // set registration mode to edit and save the previous content in an object.
-          // Note: these flags are reversed.
-          // requiresAccomodation means "claims to have accomodation on self reg"
+          // explicit fallback in case value from db is null/undefined
+          registration.restrictedAccess = registration.restrictedAccess ? true : false;
+
+          // set registration mode to edit and save the previous content in an object
+          // NOTE: these flags are reversed! ie, requiresAccomodation means "claims to have accomodation on self reg"
           registration.requiresAccommodation = !registration.requiresAccommodation;
           registration.requiresClothing = !registration.requiresClothing;
           registration.requiresFood = !registration.requiresFood;
           registration.requiresIncidentals = !registration.requiresIncidentals;
           registration.requiresTransportation = !registration.requiresTransportation;
+
+          // hide/show form accordingly
+          this.activeForm = !registration.restrictedAccess;
+
           this.registration = registration;
           this.editMode = true;
           this.displayRegistration(registration);
         }, err => {
           this.notificationQueueService.addNotification('Failed to load evacuee', 'danger');
           console.log('error getting registration =', err);
-          // go back to the main dashboard
-          this.router.navigate([`/${this.path}/`]);
+
+          // go back to list of evacuees
+          this.router.navigate([`/${this.path}/registrations`]);
         });
     } else {
       // this is a fresh form
       this.displayRegistration();
+    }
+  }
+
+  ngAfterViewInit() {
+    // focus the first input
+    const elements = document.getElementsByClassName('form-control') as HTMLCollectionOf<HTMLElement>;
+    if (elements.length > 0) {
+      elements[0].focus();
+    } else {
+      // wait for elements to display and try again
+      setTimeout(() => this.ngAfterViewInit(), 100);
     }
   }
 
@@ -399,7 +422,7 @@ export class RegistrationMakerComponent implements OnInit {
   displayRegistration(r?: Registration | null): void {
     // Display the appropriate page title and form state
     if (r == null) {
-      this.pageTitle = 'Add an Evacuee';
+      this.pageTitle = 'Create New Registration';
       this.createMode = true;
       this.finalizeMode = false; // turn off these
     } else {
@@ -541,7 +564,9 @@ export class RegistrationMakerComponent implements OnInit {
   next() {
     this.submitting = true; // disables buttons while we process the form
     this.submitted = true; // used for invalid feedback // TODO: possibly get rid of this
+
     this.validateForm();
+
     // stop here if form is invalid
     if (this.form.invalid) {
       this.errorSummary = 'Some required fields have not been completed.';
@@ -563,8 +588,8 @@ export class RegistrationMakerComponent implements OnInit {
     this.submitted = true; // send data to the server
     this.submitting = true; // in transmission
 
-    const r = this.registration;
     // these are represented opposite in the db. So these are flipped on page load then flipped on submit
+    const r = this.registration;
     r.requiresAccommodation = !r.requiresAccommodation;
     r.requiresClothing = !r.requiresClothing;
     r.requiresFood = !r.requiresFood;
@@ -574,45 +599,48 @@ export class RegistrationMakerComponent implements OnInit {
     // create or update registration
     // TODO: should this be editmode instead?
     if (r.id == null) {
-      this.registrationService
-        .createRegistration(r)
-        .subscribe(() => {
+      this.registrationService.createRegistration(r)
+        .subscribe((registration: Registration) => {
           this.submitting = false;
+
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee added successfully', 'success');
           if (addReferrals) {
-            // save the registration ID for lookup in the new component
-            this.uniqueKeyService.setKey(r.id);
+            // save registration ID for lookup in the new component
+            this.uniqueKeyService.setKey(registration.id);
+
             // go to summary page
             this.router.navigate([`/${this.path}/registration/summary`]);
           } else {
             // done adding the entry - clear the reference key
             this.uniqueKeyService.clearKey();
-            // go back to the main dashboard
-            this.router.navigate([`/${this.path}/`]);
+
+            // go to home page
+            this.router.navigate([`/${this.path}`]);
           }
         }, err => {
-          this.notificationQueueService.addNotification('Failed to add evacuee', 'danger');
+          this.notificationQueueService.addNotification('Failed to add registration', 'danger');
           console.log('error creating registration =', err);
         });
     } else {
       // update existing registration
-      this.registrationService
-        .updateRegistration(r)
+      this.registrationService.updateRegistration(r)
         .subscribe(() => {
           this.submitting = false;
           // add a notification to the queue
           this.notificationQueueService.addNotification('Evacuee updated successfully', 'success');
           if (addReferrals) {
-            // save the registration ID for lookup in the new component
+            // save registration ID for lookup in the new component
             this.uniqueKeyService.setKey(r.id);
+
             // go to summary page
             this.router.navigate([`/${this.path}/registration/summary`]);
           } else {
             // done editing the entry - clear the reference key
             this.uniqueKeyService.clearKey();
-            // go back to the main dashboard
-            this.router.navigate([`/${this.path}/`]);
+
+            // go to home page
+            this.router.navigate([`/${this.path}`]);
           }
         }, err => {
           this.notificationQueueService.addNotification('Failed to update evacuee', 'danger');
@@ -628,7 +656,6 @@ export class RegistrationMakerComponent implements OnInit {
   }
 
   collectRegistrationFromForm(): Registration {
-    //
     const values = this.form.value;
     // ensure proper sub-types are assigned to people entities
     const personType: 'FMBR' = 'FMBR';

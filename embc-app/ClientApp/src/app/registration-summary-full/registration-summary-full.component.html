@@ -8,7 +8,7 @@
       </p>
     </div>
     <div>
-      <button type="submit" class="btn btn-primary ml-4" routerLink="" (click)="routeTo()">EDIT</button>
+      <button type="submit" class="btn btn-primary ml-4 text-uppercase" (click)="routeTo()">Edit</button>
     </div>
   </section>
 
@@ -212,7 +212,7 @@
       <h2>Brief statement of how the person/family were affected by the disaster</h2>
       <ul class="summary">
         <li>
-          <span>&nbsp;{{registration.disasterAffectDetails}}</span>
+          <span class="multi-line">{{registration.disasterAffectDetails || '&nbsp;'}}</span>
         </li>
       </ul>
     </div>
@@ -283,7 +283,7 @@
       <h2>Family Recovery Plan</h2>
       <ul class="summary">
         <li>
-          <span>{{registration.familyRecoveryPlan || '&nbsp;'}}</span>
+          <span class="multi-line">{{registration.familyRecoveryPlan || '&nbsp;'}}</span>
         </li>
       </ul>
     </div>
@@ -322,7 +322,7 @@
       <h2>Other Agency Referrals</h2>
       <ul class="summary">
         <li>
-          <span>{{registration.externalReferralsDetails || '&nbsp;'}}</span>
+          <span class="multi-line">{{registration.externalReferralsDetails || '&nbsp;'}}</span>
         </li>
       </ul>
     </div>
@@ -332,7 +332,7 @@
     <h2 class="blue-header font-weight-bold">Internal Case Notes</h2>
     <ul class="summary mx-3">
       <li>
-        <span class='internal-case-notes'>{{registration.internalCaseNotes || '&nbsp;'}}</span>
+        <span class="multi-line">{{registration.internalCaseNotes || '&nbsp;'}}</span>
       </li>
     </ul>
   </section>
@@ -340,10 +340,10 @@
   <section class="space-between align-items-center mt-5 mb-4">
     <div>
       <!-- TODO: Implement DEACTIVATE -->
-      <!-- <button class="btn btn-secondary text-uppercase">Deactivate</button> -->
+      <!-- <button class="btn btn-outline-primary text-uppercase">Deactivate</button> -->
     </div>
     <div>
-      <button type="submit" class="btn btn-primary ml-4 text-uppercase" routerLink="" (click)="routeTo()">Edit</button>
+      <button type="submit" class="btn btn-primary ml-4 text-uppercase" (click)="routeTo()">Edit</button>
     </div>
   </section>
 </div>

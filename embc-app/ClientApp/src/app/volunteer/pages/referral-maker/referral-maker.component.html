@@ -1,4 +1,4 @@
-<div class="row" *ngIf="registration">
+<div *ngIf="registration">
 
   <div *ngIf="editMode">
     <h1>Identify Supports</h1>
@@ -18,12 +18,12 @@
           <div class="col">
             <div>Incident start date &amp; time: {{registration?.incidentTask?.startDate | dateTimeFormatPipe}}</div>
             <span class="align-bottom">
-              <span class="h3">Support start date &amp; time: {{defaultDate | dateTimeFormatPipe}}
+              <span class="display-5">Support start date &amp; time: {{defaultDate | dateTimeFormatPipe}}
                 <span *ngIf="!defaultDate">Please enter a valid date.</span>
               </span>
             </span>
           </div>
-          <div *ngIf="stepCounter===1 && !showDefaultDatePicker" class="col-2">
+          <div *ngIf="stepCounter===1 && !showDefaultDatePicker" class="col-3">
             <span class="align-bottom">
               <a href="javascript:void(0)">
                 <app-font-awesome-icon icon="times"></app-font-awesome-icon>
@@ -49,7 +49,7 @@
             </div>
             <div class="col-2">
               <button type="button" class="btn btn-primary float-right text-uppercase" (click)="updateDefaultDate()">Update</button>
-              <button type="button" class="btn btn-secondary float-right text-uppercase mt-2" (click)="defaultDate=defaultDate; showDefaultDatePicker=false">Cancel</button>
+              <button type="button" class="btn btn-outline-primary float-right text-uppercase mt-2" (click)="defaultDate=defaultDate; showDefaultDatePicker=false">Cancel</button>
 
             </div>
           </div>
@@ -57,7 +57,7 @@
       </div>
 
       <!-- select required supports -->
-      <div *ngIf="stepCounter>=2" class="card d-block border-0 p-4">
+      <div *ngIf="stepCounter >= 2" class="card d-block border-0 p-4">
         <label>Select required supports:</label>
         <div class="form-check mt-2">
           <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood" (change)="foodReferralChange()">
@@ -84,38 +84,48 @@
       <!-- loop through all referrals by type -->
       <section class="clearfix">
         <article *ngFor="let r of foodReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <app-referral-list-item type="FOOD" (remove)="remove(foodReferrals, i)" (add)="addFoodReferral()">
-            <app-food-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
-            </app-food-referral>
-          </app-referral-list-item>
+          <div [id]="'food_'+i.toString()">
+            <app-referral-list-item type="FOOD" (remove)="remove(foodReferrals, i, 'food_'+(i-1).toString())" (add)="addFoodReferral(true)">
+              <app-food-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+              </app-food-referral>
+            </app-referral-list-item>
+          </div>
         </article>
 
         <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <app-referral-list-item type="LODGING" (remove)="remove(lodgingReferrals, i)" (add)="addLodgingReferral()">
-            <app-lodging-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
-            </app-lodging-referral>
-          </app-referral-list-item>
+          <div [id]="'lodging_'+i.toString()">
+            <app-referral-list-item type="LODGING" (remove)="remove(lodgingReferrals, i, 'lodging_'+(i-1).toString());" (add)="addLodgingReferral(true)">
+              <app-lodging-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+              </app-lodging-referral>
+            </app-referral-list-item>
+          </div>
         </article>
 
         <article *ngFor="let r of clothingReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <app-referral-list-item type="CLOTHING" (remove)="remove(clothingReferrals, i)" (add)="addClothingReferral()">
-            <app-clothing-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
-            </app-clothing-referral>
-          </app-referral-list-item>
+          <div [id]="'clothing_'+i.toString()">
+            <app-referral-list-item type="CLOTHING" (remove)="remove(clothingReferrals, i, 'clothing_'+(i-1).toString());" (add)="addClothingReferral(true)">
+              <app-clothing-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+              </app-clothing-referral>
+            </app-referral-list-item>
+          </div>
         </article>
 
         <article *ngFor="let r of transportationReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <app-referral-list-item type="TRANSPORTATION" (remove)="remove(transportationReferrals, i)" (add)="addTransportationReferral()">
-            <app-transportation-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
-            </app-transportation-referral>
-          </app-referral-list-item>
+          <div [id]="'transportation_'+i.toString()">
+            <app-referral-list-item type="TRANSPORTATION" (remove)="remove(transportationReferrals, i, 'transporation_'+(i-1).toString())" (add)="addTransportationReferral(true);">
+              <app-transportation-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+              </app-transportation-referral>
+            </app-referral-list-item>
+          </div>
         </article>
 
         <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-4" [ngClass]="{'referral-valid': isReferralValid(r), 'referral-invalid': isReferralInvalid(r)}">
-          <app-referral-list-item type="INCIDENTALS" (remove)="remove(incidentalsReferrals, i)" (add)="addIncidentalsReferral()">
-            <app-incidentals-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
-            </app-incidentals-referral>
-          </app-referral-list-item>
+          <div [id]="'incidentals_'+i.toString()">
+            <app-referral-list-item type="INCIDENTALS" (remove)="remove(incidentalsReferrals, i, 'incidentals_'+(i-1).toString())" (add)="addIncidentalsReferral(true)">
+              <app-incidentals-referral [showErrorsWhen]="userClickedNext" [referral]="r.value" [evacuees]="evacuees" [formChangeTrigger]="submitTrigger" (formValidationChange)="updateValidationStatus(r, $event)" (formChange)="updateReferral(r, $event)">
+              </app-incidentals-referral>
+            </app-referral-list-item>
+          </div>
         </article>
       </section>
 
@@ -125,7 +135,7 @@
       </div>
 
       <div class="mt-5 space-between">
-        <a routerLink="" (click)="cancel()">
+        <a href="javascript:void(0)" (click)="cancel()">
           <app-font-awesome-icon icon="times"></app-font-awesome-icon>
           <span class="ml-2">Cancel &amp; Close</span>
         </a>
@@ -134,12 +144,15 @@
     </div>
 
   </div>
+
   <!-- *********************************SUMMARY BELOW****************************************** -->
   <div *ngIf="!editMode">
     <h1>Review Referrals</h1>
+
     <p>
       Please confirm that all details you entered are correct by reading through the summary below with the evacuee.
     </p>
+
     <section class="clearfix">
       <article *ngFor="let r of foodReferrals; let i = index" class="mt-4">
         <app-food-referral [referral]="r.value" [readOnly]="true"></app-food-referral>
@@ -171,10 +184,10 @@
 
     <div class="mt-5 space-between">
       <section>
-        <button type="button" (click)="back()" class="btn btn-secondary">EDIT REFERRALS</button>
+        <button type="button" (click)="back()" class="btn btn-outline-primary">EDIT REFERRALS</button>
       </section>
       <section>
-        <a routerLink="" (click)="cancel()">
+        <a href="javascript:void(0)" (click)="cancel()">
           <app-font-awesome-icon icon="times"></app-font-awesome-icon>
           <span class="ml-2">Cancel &amp; Close</span>
         </a>

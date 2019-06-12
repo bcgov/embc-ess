@@ -24,7 +24,7 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
   deactivating = false;
   reason = null;
 
-  private path: string = null; // for relative routing
+  private path: string = null; // the base path for routing
   private confirmModal: NgbModalRef = null;
 
   constructor(
@@ -76,13 +76,15 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
   }
 
   private goHome() {
-    // go back to their home page
+    // go to home page
     this.router.navigate([`/${this.path}`]);
   }
 
   back() {
-    // go back to summary page
+    // save registration ID for lookup in the new component
     this.uniqueKeyService.setKey(this.registrationId);
+
+    // go to registration summary page
     this.router.navigate([`/${this.path}/registration/summary`]);
   }
 

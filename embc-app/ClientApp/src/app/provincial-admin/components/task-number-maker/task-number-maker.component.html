@@ -40,7 +40,7 @@
 
     <div class="mt-5 space-between">
       <section>
-        <a routerLink="" (click)="cancel()">
+        <a href="javascript:void(0)" (click)="cancel()">
           <app-font-awesome-icon icon="times"></app-font-awesome-icon>
           <span class="ml-2">Cancel &amp; Close</span>
         </a>
@@ -81,7 +81,7 @@
   </div>
   <div class="mt-5 space-between">
     <section>
-      <button type="button" class="btn btn-secondary text-uppercase" (click)="back()">Edit Task Details</button>
+      <button type="button" class="btn btn-outline-primary text-uppercase" (click)="back()">Edit Task Details</button>
     </section>
     <section>
       <button type="button" *ngIf="submitting" class="btn btn-primary text-uppercase" disabled>

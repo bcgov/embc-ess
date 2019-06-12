@@ -21,16 +21,14 @@ export class TopNavbarComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    public router: Router // used in HTML
   ) { }
 
   ngOnInit() {
     // watch the current user for changes.
     this.authService.role.subscribe((role: string) => {
-      // check that the user exists and has roles
       this.role = role;
     });
   }
-
 
 }

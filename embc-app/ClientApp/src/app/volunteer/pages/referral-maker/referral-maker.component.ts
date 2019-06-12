@@ -12,6 +12,7 @@ import {
   FoodReferral, LodgingReferral, ClothingReferral,
   TransportationReferral, IncidentalsReferral
 } from 'src/app/core/models';
+import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 
 interface ReferralFormControl<T = any> {
   value: T;
@@ -29,7 +30,7 @@ export class ReferralMakerComponent implements OnInit {
   editMode = true; // when you first land on this page
   submitting = false;
   registration: Registration = null;
-  path: string = null; // for relative routing
+  path: string = null; // the base path for routing
   regId: string = null;
   purchaser: string = null;
   evacuees: Array<Evacuee> = [];
@@ -68,7 +69,8 @@ export class ReferralMakerComponent implements OnInit {
     private referralService: ReferralService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
-    private notifications: NotificationQueueService,
+    private notificationQueueService: NotificationQueueService,
+    private scrollToService: ScrollToService,
   ) { }
 
   ngOnInit() {
@@ -76,7 +78,7 @@ export class ReferralMakerComponent implements OnInit {
     this.authService.path.subscribe((path: string) => this.path = path);
 
     // get URL params
-    this.regId = this.route.snapshot.paramMap.get('id');
+    this.regId = this.route.snapshot.paramMap.get('regId');
     this.purchaser = this.route.snapshot.paramMap.get('purchaser');
 
     if (!this.regId || !this.purchaser) {
@@ -97,11 +99,22 @@ export class ReferralMakerComponent implements OnInit {
           this.defaultDate = new Date(registration.incidentTask.startDate);
         }
       }, err => {
-        this.notifications.addNotification('Failed to load evacuee summary', 'danger');
+        this.notificationQueueService.addNotification('Failed to load evacuee summary', 'danger');
         console.log('error getting registration summary =', err);
-        // go back to the main dashboard
-        this.router.navigate([`/${this.path}/`]);
+
+        // go back to home page
+        this.router.navigate([`/${this.path}`]);
       });
+  }
+
+  public triggerScrollTo(anchor: string) {
+    const config: ScrollToConfigOptions = {
+      target: anchor
+    };
+    // wait for a split second
+    setTimeout(() => {
+      this.scrollToService.scrollTo(config);
+    }, 1);
   }
 
   updateReferral(referralForm: ReferralFormControl, value: any): void {
@@ -144,10 +157,8 @@ export class ReferralMakerComponent implements OnInit {
 
   // user clicked Cancel & Close button
   cancel() {
-    // clear the loaded record if available
-    this.uniqueKeyService.clearKey();
-    // navigate back to evacuee list
-    this.router.navigate([`/${this.path}/registrations`]);
+    // go back to registration summary
+    this.router.navigate([`/${this.path}/registration/summary`]);
   }
 
   // user clicked Create Referrals button
@@ -180,16 +191,17 @@ export class ReferralMakerComponent implements OnInit {
       this.referralService.createReferrals(this.regId, { confirmChecked: true, referrals })
         .subscribe(() => {
           this.submitting = false;
-          this.notifications.addNotification('Referrals finalized successfully', 'success');
+          this.notificationQueueService.addNotification('Referral(s) finalized successfully', 'success');
 
-          // redirect to summary page
-          // save the key for lookup
+          // save registration ID for lookup in the new component
           this.uniqueKeyService.setKey(this.registration.id);
+
+          // go to registration summary page
           this.router.navigate([`/${this.path}/registration/summary`]);
         }, err => {
           this.submitting = false;
-          this.notifications.addNotification('Failed to finalize referrals', 'danger');
-          console.log('error creating referral =', err);
+          this.notificationQueueService.addNotification('Failed to finalize referral(s)', 'danger');
+          console.log('error creating referrals =', err);
         });
     }
   }
@@ -242,7 +254,8 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
-  addIncidentalsReferral() {
+
+  addIncidentalsReferral(anchoring = false) {
     const referral: Partial<IncidentalsReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
@@ -255,9 +268,10 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.incidentalsReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    if (anchoring) { this.triggerScrollTo('incidentals_' + (this.incidentalsReferrals.length - 1).toString()); }
   }
 
-  addFoodReferral() {
+  addFoodReferral(anchoring = false) {
     const referral: Partial<FoodReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
@@ -270,9 +284,10 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.foodReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    if (anchoring) { this.triggerScrollTo('food_' + (this.foodReferrals.length - 1).toString()); }
   }
 
-  addLodgingReferral() {
+  addLodgingReferral(anchoring = false) {
     const referral: Partial<LodgingReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
@@ -285,9 +300,11 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.lodgingReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    if (anchoring) { this.triggerScrollTo('lodging_' + (this.lodgingReferrals.length - 1).toString()); }
+
   }
 
-  addClothingReferral() {
+  addClothingReferral(anchoring = false) {
     const referral: Partial<ClothingReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
@@ -300,9 +317,10 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.clothingReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    if (anchoring) { this.triggerScrollTo('clothing_' + (this.clothingReferrals.length - 1).toString()); }
   }
 
-  addTransportationReferral() {
+  addTransportationReferral(anchoring = false) {
     const referral: Partial<TransportationReferral> = {
       essNumber: this.regId,
       referralId: null, // is populated by BE after save
@@ -315,6 +333,7 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.transportationReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    if (anchoring) { this.triggerScrollTo('_' + (this.transportationReferrals.length - 1).toString()); }
   }
 
   clearIncidentalsReferrals(): void {
@@ -381,11 +400,14 @@ export class ReferralMakerComponent implements OnInit {
     !this.defaultDate ? this.showDefaultDatePicker = true : this.showDefaultDatePicker = false;
   }
   // --------------------HELPERS-----------------------------------------
-  remove(arr: [], i: number) {
+  remove(arr: [], i: number, scrollTo?: string) {
+    // Scroll to first then remove the array element
+    if (scrollTo) {
+      this.triggerScrollTo(scrollTo);
+    }
     if (arr) {
       arr.splice(i, 1);
       this.updateFormValidity();
     }
   }
-
 }

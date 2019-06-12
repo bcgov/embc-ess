@@ -12,7 +12,7 @@ using Xunit.Abstractions;
 
 namespace embc_unit_tests
 {
-    public class ReferralsServicesTests : BaseTest
+    public class ReferralsServicesTests : TestBase
     {
         public ReferralsServicesTests(ITestOutputHelper output) : base(output)
         {

@@ -1,15 +1,11 @@
 <app-warning-banner [show]="isIE"></app-warning-banner>
 <app-environment-banner></app-environment-banner>
 <app-header [currentUser]="authService.currentUser"></app-header>
+<app-top-navbar></app-top-navbar>
 <app-notification-banner></app-notification-banner>
 
 <main *ngIf="isIE == false">
   <div class="container">
-    <div class="row mb-4 mt-1">
-      <div class="col">
-        <app-top-navbar></app-top-navbar>
-      </div>
-    </div>
     <router-outlet></router-outlet>
   </div>
 </main>

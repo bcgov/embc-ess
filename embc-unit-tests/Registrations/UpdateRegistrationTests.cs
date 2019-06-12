@@ -8,7 +8,7 @@ using Xunit.Abstractions;
 
 namespace embc_unit_tests.Registrations
 {
-    public class UpdateRegistrationTests : BaseTest
+    public class UpdateRegistrationTests : TestBase
     {
         public UpdateRegistrationTests(ITestOutputHelper output) : base(output,
             (typeof(IEmailSender), typeof(EmailSender)),

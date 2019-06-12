@@ -23,6 +23,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task AppendEvacueeRegistrationAuditEntryAsync(RegistrationEvent notification, string userId, string userName, string userType);
 
+        Task<IEnumerable<Models.Db.EvacueeRegistrationAudit>> GetEvacueeRegistrationAuditTrailAsync(long essFileNumber);
+
         #endregion Registration
 
         #region Incident task
@@ -111,7 +113,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         #region Evacuee
 
-        Task<IPagedResults<EvacueeListItem>> GetEvacueesAsync(SearchQueryParameters query);
+        Task<IPagedResults<EvacueeListItem>> GetEvacueesAsync(EvacueeSearchQueryParameters query);
 
         #endregion Evacuee
     }

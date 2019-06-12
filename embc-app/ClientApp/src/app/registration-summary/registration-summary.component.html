@@ -5,7 +5,7 @@
 
     <div *ngIf="loading">Loading...</div>
 
-    <div *ngIf="registration">
+    <div *ngIf="registration" class="mt-3">
       <section class="clearfix">
         <h2 class="blue-header font-weight-bold">EVACUEE INFORMATION</h2>
         <ul class="summary mx-3">
@@ -13,11 +13,11 @@
             <div class="container py-3">
               <div class="row">
                 <div class="col">
-                  <div class="h1 my-3">
+                  <h3 class="h1 my-1 font-weight-normal">
                     {{registration.headOfHousehold?.lastName}},
                     {{registration.headOfHousehold?.firstName}}
                     {{registration.headOfHousehold?.initials}}
-                  </div>
+                  </h3>
                 </div>
               </div>
               <div class="row">
@@ -108,8 +108,7 @@
 
         <div class="feature-block card d-block border-0">
           <!-- TODO: only display 'and family' if familyMembers > 0 ? -->
-          <h3>Add referrals for
-            {{registration.headOfHousehold?.lastName + ', ' + registration.headOfHousehold?.firstName}} and family</h3>
+          <h3>Add referrals for {{registration.headOfHousehold?.lastName + ', ' + registration.headOfHousehold?.firstName}} and family</h3>
 
           <app-form-field>
             <!-- TODO: pre-select HOH? -->
@@ -157,9 +156,9 @@
 
     <div class="modal-body">
       <p>You are requesting to view an evacuee file. Please confirm that you have permission by selecting a reason code below.</p>
-
       <select class="form-control w-50" [(ngModel)]="reason">
         <option [ngValue]="null">Please select---</option>
+        <option value="checkCaseNotes">Access Internal Case Notes</option>
         <option value="evacueeError">Evacuee made an error</option>
         <option value="evacueeAddition">Evacuee wants to make an addition</option>
         <option value="invalidTaskNumber">Task number is incorrect</option>

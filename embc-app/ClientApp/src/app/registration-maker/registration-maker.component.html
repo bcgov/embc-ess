@@ -1,6 +1,6 @@
 <div *ngIf="!summaryMode">
-  <!-- ADD AN EVACUEE / EDIT EVACUEE REGISTRATION -->
-  <h1 class="mt-4">{{pageTitle}}</h1>
+  <!-- CREATE NEW REGISTRATION / EDIT EVACUEE REGISTRATION -->
+  <h1>{{pageTitle}}</h1>
 
   <p *ngIf="createMode">
     Before starting a new evacuee registration, use the search tool on your dashboard to confirm that the evacuee hasn’t already registered.
@@ -18,14 +18,10 @@
     <section class="padded-section">
       <!-- <input type="checkbox" class="form-check-input" [formControl]="declarationAndConsent"> -->
       <p>
-        <small>
-          Emergency Management BC (EMBC) will collect your personal information for the purpose of providing you with emergency services in accordance with section 26(c) of the Freedom of Information and Protection of Privacy Act (FoIPPA). EMBC will also collect the information as per section 26(e) of FoIPPA in order to evaluate the ESS program. Should you have any questions about the collection, use, or disclosure of personal information, please contact the ESS Call Centre Manager at PO Box 9201, STN PROV GOVT, Victoria, BC, V8W 9J1 or by phone toll free at 1-800-585-9559.
-        </small>
+        Emergency Management BC (EMBC) will collect your personal information for the purpose of providing you with emergency services in accordance with section 26(c) of the Freedom of Information and Protection of Privacy Act (FoIPPA). EMBC will also collect the information as per section 26(e) of FoIPPA in order to evaluate the ESS program. Should you have any questions about the collection, use, or disclosure of personal information, please contact the ESS Call Centre Manager at PO Box 9201, STN PROV GOVT, Victoria, BC, V8W 9J1 or by phone toll free at 1-800-585-9559.
       </p>
       <p>
-        <small>
-          By submitting your email address, you authorize the Emergency Management BC to communicate with you by email about your registration and to invite you to provide feedback about your experience.
-        </small>
+        By submitting your email address, you authorize the Emergency Management BC to communicate with you by email about your registration and to invite you to provide feedback about your experience.
       </p>
     </section>
   </div>
@@ -44,7 +40,6 @@
               {{incident.taskNumber}}
               <span *ngIf="incident.community">
                 <span *ngIf="incident.community.name"> - {{incident.community.name}}</span>
-                <span *ngIf="!incident.community.name"> - {{incident.community.regionalDistrict.name}}</span>
               </span>
             </option>
           </select>
@@ -79,31 +74,21 @@
       </div>
     </div>
 
-    <!-- RESTRICTION // TODO: restricted files not handled in V1 -->
-    <!-- <div class="mt-4">
-      <h2 class="blue-header font-weight-bold">RESTRICTION</h2>
-      <p class="required">Concerned family and friends may inquire about you and your family because of the emergency. We would like to provide these people with some information about you. Please check "Yes" if you <u>do not</u> want EMBC to disclose your location and the contact information for you and your family members?</p>
-      <div class="form-check">
-        <input type="checkbox" class="form-check-input" formControlName="restrictedAccess" id="restrictedAccess">
-        <label class="form-check-label" for="restrictedAccess">Yes, I <u>do not</u> want EMBC to disclose my personal information to concerned family and friends.</label>
-      </div>
-    </div> -->
-
     <!-- RESTRICTION -->
     <div class="feature-block mt-4">
-      <h2 class="required mt-0">Restriction</h2>
+      <h3 class="required mt-0">Restriction</h3>
       <p>
         Concerned family and friends may inquire about you and your family because of the emergency. We would like to provide these people with some information about you.<br>
         <strong>May we disclose your location and the contact information for you and your family members?</strong>
       </p>
       <div class="form-check">
-        <input type="radio" class="form-check-input" name="restriction" [checked]="activeForm" (click)="disableInput(false)" id="restrictionFalse">
+        <input type="radio" class="form-check-input" [value]="false" formControlName="restrictedAccess" (click)="setRestricted(false)" id="restrictionFalse">
         <label class="form-check-label" for="restrictionFalse">
           <strong>Yes</strong>
         </label>
       </div>
       <div class="form-check">
-        <input type="radio" class="form-check-input" name="restriction" [checked]="!activeForm" (click)="disableInput(true)" id="restrictionTrue">
+        <input type="radio" class="form-check-input" [value]="true" formControlName="restrictedAccess" (click)="setRestricted(true)" id="restrictionTrue">
         <label class="form-check-label" for="restrictionTrue">
           <strong>No</strong> - (Emergency Support Services Team: Requires an authorized team member to complete the form manually.)
         </label>
@@ -111,7 +96,7 @@
     </div>
 
     <!-- EMERGENCY SUPPORT SERVICES TEAM HANDLING NOTE -->
-    <div *ngIf="!activeForm" class="mt-4">
+    <div *ngIf="activeForm===false" class="mt-4">
       <h1>Emergency Support Services Team Handling Note</h1>
       <p>
         Privacy is important. Please locate a volunteer that is trained to collect and handle sensitive information.
@@ -122,7 +107,7 @@
       <a routerLink="/dashboard">Return to the Emergency Support Services Dashboard</a>
     </div>
 
-    <div *ngIf="activeForm">
+    <div *ngIf="activeForm===true">
       <!-- EVACUEE DETAILS -->
       <div formGroupName="headOfHousehold" class="mt-4">
         <h2 class="blue-header font-weight-bold">Evacuee Details</h2>
@@ -184,8 +169,8 @@
         </div>
         <div formArrayName="familyMembers">
           <!-- TODO: Refactor into sub-component -->
-          <div *ngFor="let entry of familyMembers.controls; index as i;" [formGroupName]="i" class="feature-block card p-0 mt-4">
-            <div class="card-body">
+          <div *ngFor="let entry of familyMembers.controls; index as i;" [formGroupName]="i" class="feature-block card p-0 mt-3">
+            <div class="card-body p-3">
               <div class="row mt-0">
                 <div class="col">
                   <label class="required" for="lastName-{{i}}">Last Name</label>
@@ -311,7 +296,7 @@
         <p class="required">
           Is your mailing address the same as your primary residence?
         </p>
-        <div class="form-group mt-4 mb-0">
+        <div class="form-group mb-0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('mailingAddressSameAsPrimary')" class="form-check-input" [value]="true" formControlName="mailingAddressSameAsPrimary" id="mailingAddressSameAsPrimaryTrue">
             <label class="form-check-label" for="mailingAddressSameAsPrimaryTrue">Yes</label>
@@ -385,7 +370,7 @@
           <span [class.d-block]="invalid('insuranceCode')" class="invalid-feedback">{{e.insuranceCode}}</span>
         </div>
         <div *ngIf="(form.value.insuranceCode=='yes')||(form.value.insuranceCode=='yes-unsure')" class="alert alert-warning" role="alert">
-          <p class="alert-heading h4 mt-2">Assist the evacuee in contacting their insurance agent to confirm coverage for this event.</p>
+          <p class="alert-heading display-6 my-2">Assist the evacuee in contacting their insurance agent to confirm coverage for this event.</p>
         </div>
       </div>
 
@@ -452,7 +437,7 @@
             <span [class.d-block]="invalid('hasThreeDayMedicationSupply')" class="invalid-feedback">{{e.hasThreeDayMedicationSupply}}</span>
           </div>
           <div *ngIf="form.value.hasThreeDayMedicationSupply===false" class="alert alert-warning mt-3 mb-0" role="alert">
-            <p class="alert-heading h4 mt-2">Refer the evacuee to Health Services at the Reception Centre where available.</p>
+            <p class="alert-heading display-6 my-2">Refer the evacuee to Health Services at the Reception Centre where available.</p>
           </div>
         </div>
 
@@ -484,23 +469,23 @@
         </p>
         <div class="mt-4 feature-block">
           <p>Check all that apply:</p>
-          <div class="form-check mt-3">
+          <div class="form-check mt-2">
             <input type="checkbox" class="form-check-input" formControlName="requiresFood" id="requiresFood">
             <label class="form-check-label" for="requiresFood">Food</label>
           </div>
-          <div class="form-check mt-3">
+          <div class="form-check mt-2">
             <input type="checkbox" class="form-check-input" value="" formControlName="requiresClothing" id="requiresClothing">
             <label class="form-check-label" for="requiresClothing">Clothing</label>
           </div>
-          <div class="form-check mt-3">
+          <div class="form-check mt-2">
             <input type="checkbox" class="form-check-input" value="" formControlName="requiresAccommodation" id="requiresLodging">
             <label class="form-check-label" for="requiresLodging">Lodging</label>
           </div>
-          <div class="form-check mt-3">
+          <div class="form-check mt-2">
             <input type="checkbox" class="form-check-input" value="" formControlName="requiresIncidentals" id="requiresIncidentals">
             <label class="form-check-label" for="requiresIncidentals">Incidentals</label>
           </div>
-          <div class="form-check mt-3">
+          <div class="form-check mt-2">
             <input type="checkbox" class="form-check-input" value="" formControlName="requiresTransportation" id="requiresTransportation">
             <label class="form-check-label" for="requiresTransportation">Transportation</label>
           </div>
@@ -511,7 +496,7 @@
       <div class="mb-4">
         <h2 class="blue-header font-weight-bold">Family Recovery Plans (Immediate &amp; Long Term)</h2>
         <div class="form-row">
-          <app-attention-icon [alignCenter]="false"></app-attention-icon>
+          <app-attention-icon></app-attention-icon>
           <p class="col">
             Emergency Support Services provides short term assistance to give you and your family a chance to recover.<br>
             Have you thought about what you will do after that time?
@@ -529,27 +514,27 @@
             Please check the boxes below where you have made referrals within the Reception Centre.
           </p>
         </div>
-        <div class="form-check mb-3">
+        <div class="form-check mb-2">
           <input type="checkbox" class="form-check-input" formControlName="hasInquiryReferral" id="hasInquiryReferral">
           <label class="form-check-label" for="hasInquiryReferral">Inquiry</label>
         </div>
-        <div class="form-check mb-3">
+        <div class="form-check mb-2">
           <input type="checkbox" class="form-check-input" value="" formControlName="hasHealthServicesReferral" id="hasHealthServicesReferral">
           <label class="form-check-label" for="hasHealthServicesReferral">Health Services</label>
         </div>
-        <div class="form-check mb-3">
+        <div class="form-check mb-2">
           <input type="checkbox" class="form-check-input" value="" formControlName="hasFirstAidReferral" id="hasFirstAidReferral">
           <label class="form-check-label" for="hasFirstAidReferral">First Aid</label>
         </div>
-        <div class="form-check mb-3">
+        <div class="form-check mb-2">
           <input type="checkbox" class="form-check-input" value="" formControlName="hasPersonalServicesReferral" id="hasPersonalServicesReferral">
           <label class="form-check-label" for="hasPersonalServicesReferral">Personal Services</label>
         </div>
-        <div class="form-check mb-3">
+        <div class="form-check mb-2">
           <input type="checkbox" class="form-check-input" value="" formControlName="hasChildCareReferral" id="hasChildCareReferral">
           <label class="form-check-label" for="hasChildCareReferral">Child Care</label>
         </div>
-        <div class="form-check mb3">
+        <div class="form-check mb-2">
           <input type="checkbox" class="form-check-input" value="" formControlName="hasPetCareReferral" id="hasPetCareReferral">
           <label class="form-check-label" for="hasPetCareReferral">Pet Care</label>
         </div>
@@ -559,7 +544,7 @@
       <div class="mb-4">
         <h2 class="blue-header font-weight-bold">Other Agency Referrals Made Outside of the Reception Centre</h2>
         <div class="form-row mx-0">
-          <app-attention-icon [alignCenter]="false"></app-attention-icon>
+          <app-attention-icon></app-attention-icon>
           <textarea class="form-control" placeholder="Please specify" rows="4" formControlName="externalReferralsDetails"></textarea>
         </div>
       </div>
@@ -568,11 +553,15 @@
       <div class="mb-4">
         <h2 class="blue-header font-weight-bold">Internal Case Notes</h2>
         <div class="form-row mx-0">
-          <app-attention-icon [alignCenter]="false"></app-attention-icon>
-          <p class="col">
-            Please do not include any personal/medical information pertaining to the evacuee and their family.<br>
-            Initial and date each comment that you add. Do not delete any previous case notes.
-          </p>
+          <app-attention-icon></app-attention-icon>
+          <div class="col">
+            <p>
+              A space to add any factual case notes pertaining to the evacuee and their family. Please do not add any medical information or irrelevant/speculative personal details as this information may be viewed by other volunteers and/or EMBC. Evacuees may request to view their own records, including these case notes.
+            </p>
+            <p>
+              Initial and date each comment that you add. Do not delete any previous case notes.
+            </p>
+          </div>
         </div>
         <textarea class="form-control" placeholder="Details" rows="8" formControlName="internalCaseNotes"></textarea>
       </div>
@@ -620,7 +609,7 @@
     </li> -->
   </ul>
 
-  <h2>Place of Registration</h2>
+  <h2 class="mt-3">Place of Registration</h2>
   <ul class="summary">
     <li>
       <span class="name">Facility Name/Registration Location:</span>
@@ -632,7 +621,7 @@
     </li>
   </ul>
 
-  <h2>Evacuee Information</h2>
+  <h2 class="mt-3">Evacuee Information</h2>
   <ul class="summary">
     <li>
       <span class="name">Last Name:</span>
@@ -661,7 +650,7 @@
   </ul>
 
   <div *ngIf="registration?.headOfHousehold?.familyMembers">
-    <h2>Evacuee Family Information</h2>
+    <h2 class="mt-3">Evacuee Family Information</h2>
     <ul class="summary mt-4" *ngFor="let fm of registration.headOfHousehold.familyMembers">
       <li>
         <span class="name">Last Name:</span>
@@ -690,7 +679,7 @@
     </ul>
   </div>
 
-  <h2>Primary Address &amp; Contact Details</h2>
+  <h2 class="mt-3">Primary Address &amp; Contact Details</h2>
   <ul class="summary">
     <ng-container *ngIf="isBcAddress(registration?.headOfHousehold?.primaryResidence); then content1 else other_content1"></ng-container>
     <ng-template #content1>
@@ -752,7 +741,7 @@
   </ul>
 
   <div *ngIf="registration?.headOfHousehold?.mailingAddress">
-    <h2>Mailing Address</h2>
+    <h2 class="mt-3">Mailing Address</h2>
     <ul class="summary">
       <ng-container *ngIf="isBcAddress(registration?.headOfHousehold?.mailingAddress); then content2 else other_content2"></ng-container>
       <ng-template #content2>
@@ -802,14 +791,14 @@
     </ul>
   </div>
 
-  <h2>Brief statement of how the person/family were affected by the disaster</h2>
+  <h2 class="mt-3">Brief statement of how the person/family were affected by the disaster</h2>
   <ul class="summary">
     <li>
-      <span>&nbsp;{{registration?.disasterAffectDetails}}</span>
+      <span class="multi-line">{{registration?.disasterAffectDetails || '&nbsp;'}}</span>
     </li>
   </ul>
 
-  <h2>Insurance</h2>
+  <h2 class="mt-3">Insurance</h2>
   <ul class="summary">
     <li>
       <span class="name">Do you have insurance:</span>
@@ -817,7 +806,7 @@
     </li>
   </ul>
 
-  <h2>Additional Information</h2>
+  <h2 class="mt-3">Additional Information</h2>
   <ul class="summary">
     <li>
       <span class="name">Dietary Requirements:</span>
@@ -841,7 +830,7 @@
     </li>
   </ul>
 
-  <h2>Next Steps</h2>
+  <h2 class="mt-3">Next Steps</h2>
   <ul class="summary">
     <li>
       <span class="name">Categories of support you are able to provide for yourselves:</span>
@@ -870,14 +859,14 @@
     </li>
   </ul>
 
-  <h2>Family Recovery Plan</h2>
+  <h2 class="mt-3">Family Recovery Plan</h2>
   <ul class="summary">
     <li>
-      <span>{{registration?.familyRecoveryPlan || '&nbsp;'}}</span>
+      <span class="multi-line">{{registration?.familyRecoveryPlan || '&nbsp;'}}</span>
     </li>
   </ul>
 
-  <h2>Referrals Made Within Reception Centre</h2>
+  <h2 class="mt-3">Referrals Made Within Reception Centre</h2>
   <ul class="summary">
     <li>
       <span class="name">Inquiry Referral:</span>
@@ -905,23 +894,23 @@
     </li>
   </ul>
 
-  <h2>Other Agency Referrals</h2>
+  <h2 class="mt-3">Other Agency Referrals</h2>
   <ul class="summary">
     <li>
-      <span>{{registration?.externalReferralsDetails || '&nbsp;'}}</span>
+      <span class="multi-line">{{registration?.externalReferralsDetails || '&nbsp;'}}</span>
     </li>
   </ul>
 
-  <h2 class="blue-header font-weight-bold">Internal Case Notes</h2>
+  <h2 class="blue-header font-weight-bold mt-3">Internal Case Notes</h2>
   <ul class="summary">
     <li>
-      <span class='internal-case-notes'>{{registration?.internalCaseNotes || '&nbsp;'}}</span>
+      <span class="multi-line">{{registration?.internalCaseNotes || '&nbsp;'}}</span>
     </li>
   </ul>
 
   <div class="mt-5 space-between">
     <section>
-      <button type="button" class="btn btn-secondary text-uppercase" (click)="back()">Edit Registration</button>
+      <button type="button" class="btn btn-outline-primary text-uppercase" (click)="back()">Edit Registration</button>
     </section>
     <section>
       <!-- <a routerLink="/dashboard">

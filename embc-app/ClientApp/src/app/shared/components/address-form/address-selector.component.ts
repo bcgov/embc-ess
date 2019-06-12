@@ -15,12 +15,22 @@ import { map } from 'rxjs/operators';
   styles: []
 })
 export class AddressSelectorComponent implements OnInit, OnChanges, OnDestroy {
+
   @Input() parent: FormGroup;
   @Input() withinBC = true;
   @Input() touched = false;
 
-  countries$ = this.store.select(state => state.lookups.countries.countries);
-  // Find out the country ID for Canada as it is hard-coded for BC addresses...
+  countries$ = this.store.select(state => state.lookups.countries.countries.sort((a, b) => {
+    if (b.name === 'Canada' || b.name === 'United States of America') {
+      return 1;
+    } else if (a.name === 'Canada' || a.name === 'United States of America') {
+      return -1;
+    } else {
+      return 0;
+    }
+  }));
+
+  // find out the country ID for Canada as it is hard-coded for BC addresses
   canada$ = this.countries$.pipe(map(countries => countries.find(x => x.name === 'Canada')));
 
   // convenience getter for easy access to form fields
@@ -40,8 +50,9 @@ export class AddressSelectorComponent implements OnInit, OnChanges, OnDestroy {
       // reset the form ONLY when toggling between the two states, not upon initial loading of the component
       const shouldReset = (value !== previous && !toggle.isFirstChange());
 
-      // look up the home country for BC addresses, then toggle the form between BC and non-BC addresses
-      this.canada$.subscribe((homeCountry: Country) => this.toggleAddressForm(value, homeCountry, shouldReset));
+      // look up the home country for BC addresses
+      // then toggle the form between BC and non-BC addresses
+      this.canada$.subscribe((country: Country) => this.toggleAddressForm(value, country, shouldReset));
     }
   }
 
@@ -71,4 +82,5 @@ export class AddressSelectorComponent implements OnInit, OnChanges, OnDestroy {
     this.parent.enable();
     this.parent.patchValue(values);
   }
+
 }

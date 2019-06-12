@@ -15,7 +15,14 @@ namespace Gov.Jag.Embc.Public.Utils
         {
             var pstdateTime = GetTimeZoneDateTime(dateTime);
 
-            return pstdateTime.ToString("h:mm tt");
+            return pstdateTime.ToString("h:mm tt"); // eg, 5:30 PM
+        }
+
+        public static string GetLocalTime24h(DateTime dateTime)
+        {
+            var pstdateTime = GetTimeZoneDateTime(dateTime);
+
+            return pstdateTime.ToString("HH:mm"); // eg, 17:30
         }
 
         private static DateTime GetTimeZoneDateTime(DateTime dateTime)

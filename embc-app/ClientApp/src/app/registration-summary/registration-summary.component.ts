@@ -5,6 +5,7 @@ import { RegistrationService } from '../core/services/registration.service';
 import { Registration } from '../core/models';
 import { AuthService } from '../core/services/auth.service';
 import { UniqueKeyService } from '../core/services/unique-key.service';
+import { NotificationQueueService } from '../core/services/notification-queue.service';
 
 @Component({
   selector: 'app-registration-summary',
@@ -15,7 +16,7 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
 
   confirmModal: NgbModalRef = null;
   registration: Registration = null;
-  path: string = null; // for relative routing
+  path: string = null; // the base path for routing
   selectedPurchaser: string = null;
   otherPurchaser: string = null;
   loading = true;
@@ -27,6 +28,7 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
     private registrationService: RegistrationService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
+    private notificationQueueService: NotificationQueueService,
   ) { }
 
   ngOnInit() {
@@ -39,10 +41,12 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
       this.registrationService.getRegistrationSummaryById(key)
         .subscribe((registration: Registration) => {
           this.loading = false;
+
           if (!registration.id || !registration.essFileNumber) {
-            console.log('ERROR - invalid registration object = ', registration);
-            // done with the key. It was useless. Clear the reference key.
+            console.log('ERROR - invalid registration object =', registration);
+            // Done with the key. It was useless. Clear it.
             this.uniqueKeyService.clearKey();
+
             this.goHome();
           } else {
             // store the registration object
@@ -50,7 +54,9 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
           }
         }, err => {
           this.loading = false;
-          alert(`err = ${err}`);
+
+          this.notificationQueueService.addNotification('Failed to load evacuee summary', 'danger');
+          console.log('error getting registration summary =', err);
           this.goHome();
         });
     } else {
@@ -66,7 +72,7 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
   }
 
   private goHome() {
-    // send them back to their home page
+    // go to home page
     this.router.navigate([`/${this.path}`]);
   }
 
@@ -78,8 +84,10 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
       // modal was closed
       this.confirmModal = null; // clear for next time
 
-      // save the key for lookup
+      // save registration ID for lookup in the new component
       this.uniqueKeyService.setKey(this.registration.id);
+
+      // go to registration view page
       this.router.navigate([`/${this.path}/registration/summary/full`, { reason: this.reason }]);
     }, () => {
       // modal was dismissed

@@ -33,7 +33,7 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
 
   rows: Array<RowItem> = [];
   notFoundMessage = 'Searching ...';
-  path: string; // the routing path
+  path: string = null; // the base path for routing
   referrals: Array<Referral> = [];
 
   ngOnChanges(changes: SimpleChanges) {

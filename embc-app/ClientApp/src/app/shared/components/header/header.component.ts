@@ -20,9 +20,9 @@ export class HeaderComponent implements OnInit {
   }
 
   homeButton() {
-    this.authService.role.subscribe(r => {
+    this.authService.role.subscribe((role: string) => {
       // if the role is null we redirect them to a logged out home location otherwise they go to their dash.
-      if (!r || r === 'role_everyone') {
+      if (!role || role === 'role_everyone') {
         this.router.navigate(['/']);
       } else {
         this.router.navigate(['dashboard']);

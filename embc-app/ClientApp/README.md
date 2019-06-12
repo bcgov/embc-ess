@@ -164,24 +164,24 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     applicationId: string;
 
     constructor(private route: ActivatedRoute) {
-        //Use this form if the route does not change (same route with different parameters) once the component is loaded
-    this.applicationId = this.route.snapshot.params.applicationId;
+      //Use this form if the route does not change (same route with different parameters) once the component is loaded
+      this.applicationId = this.route.snapshot.paramMap.get('applicationId');
     }
 
     ngOnInit(): void {
-    //Use this form if the route changes while the component is loaded
-    this.route.params.subscribe(p => {
+      //Use this form if the route changes while the component is loaded
+      this.route.ParamMap.subscribe(p => {
         this.applicationId = p.applicationId;
-    });
+      });
     }
 
     //this get called because the route configuation has a CanDeactivate router guard
     canDeactivate(): Observable<boolean> | boolean {
-        if (JSON.stringify(this.savedFormData) === JSON.stringify(this.form.value)) {
-            return true; //return true if form value has not changed
-        } else {
-            return this.save(); //otherwise wait for the form to load the navigate away 
-        }
+      if (JSON.stringify(this.savedFormData) === JSON.stringify(this.form.value)) {
+        return true; //return true if form value has not changed
+      } else {
+        return this.save(); //otherwise wait for the form to load the navigate away 
+      }
     }
 
     save(showProgress: boolean = false): Subject<boolean> {

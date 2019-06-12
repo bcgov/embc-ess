@@ -27,7 +27,7 @@
         </div>
 
         <section class="mt-5">
-          <button *ngIf="referral.active" type="button" class="btn btn-secondary" [disabled]="deactivating" (click)="deactivate(content)">VOID REFERRAL</button>
+          <button *ngIf="referral.active" type="button" class="btn btn-outline-primary" [disabled]="deactivating" (click)="deactivate(content)">VOID REFERRAL</button>
           <button class="btn btn-primary float-right" (click)="back()">BACK TO REFERRALS</button>
         </section>
       </div>

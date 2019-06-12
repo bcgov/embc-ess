@@ -5,13 +5,13 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./side-box.component.scss'],
   template: `
 
-    <div class="card text-white bg-primary">
-      <div class="card-header">
+    <div class="card sidebox-card-info text-white">
+      <div class="card-header text-light">
       <app-font-awesome-icon icon="info-circle" size="lg"></app-font-awesome-icon>
       <span class="h5 ml-2 text-wrap">{{title}}</span>
       </div>
       <div class="card-body">
-        <span class="card-text">
+        <span class="card-text text-light">
           <ng-content></ng-content>
         </span>
       </div>
