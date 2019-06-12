@@ -79,7 +79,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     // get route parameter
     this.orgId = this.route.snapshot.paramMap.get('orgId'); // should never be null
 
-    this.previousQuery = this.copyProperties(this.defaultSearchQuery);
+    this.previousQuery = { ...this.defaultSearchQuery };
 
     if (this.orgId) {
       // collect all volunteers
@@ -110,14 +110,6 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     if (this.confirmModal) { this.confirmModal.dismiss(); }
   }
 
-  private copyProperties(obj: {}): {} {
-    const fresh = {};
-    for (const k in obj) {
-      if (k) { fresh[k] = obj[k]; }
-    }
-    return fresh;
-  }
-
   // get volunteers with supplied params defaults defined in
   private getVolunteers() {
     // the query is the value in the searchbox
@@ -125,12 +117,6 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
 
     // the organization is the one in the global state
     this.previousQuery.org_id = this.orgId;
-
-    // pagination is calculated
-    this.previousQuery.offset = this.previousQuery.offset;
-
-    // how many records we want
-    this.previousQuery.limit = this.previousQuery.limit;
 
     // set parameter flags according to what is checked.
     this.previousQuery.ess_only = (this.userType === 'SHOW_ESS_USERS_ONLY');
@@ -164,6 +150,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
 
   search() {
     // on search return to page 1
+    this.previousQuery = { ...this.defaultSearchQuery };
     this.getVolunteers();
   }
 
