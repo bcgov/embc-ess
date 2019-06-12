@@ -111,11 +111,11 @@ export class VolunteerMakerComponent implements OnInit {
         bceidAccountNumber: '',
         personType: 'VOLN',
         canAccessRestrictedFiles: null,
-        organization: this.currentOrganization,
+        organization: null,
         isAdministrator: false, // if you are making a new volunteer as a local auth it won't be an admin user.
         isPrimaryContact: false // if you are making a new volunteer as a local auth it won't be the primary contact for your org.
       };
-
+      console.log(this.currentOrganization);
       // finally everything is loaded
       this.setInitialFocus();
     }
@@ -141,7 +141,7 @@ export class VolunteerMakerComponent implements OnInit {
     // check validation of form
     if (this.form.valid) {
       // update volunteer object
-      this.volunteer = { ...this.volunteer, ...this.form.value };
+      this.volunteer = { ...this.volunteer, ...this.form.value, organization: this.currentOrganization };
       // if successful you switch from edit to view mode.
       this.editing = false;
       window.scrollTo(0, 0); // scroll to top
