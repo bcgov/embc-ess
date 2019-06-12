@@ -149,7 +149,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
           // else route back to the organizations list
           if (addUsers) {
             // route to the volunteer adder page
-            this.router.navigate([`/${this.path}/volunteer`, { orgId: this.organization.id }]);
+            this.router.navigate([`/${this.path}/organization/${this.organization.id}/volunteer`]);
           } else {
             // go back to the organization page
             this.router.navigate([`/${this.path}/organizations`]);
