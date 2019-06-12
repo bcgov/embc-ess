@@ -124,10 +124,13 @@ namespace Gov.Jag.Embc.Public
                 //checks.AddSqlCheck(DatabaseTools.GetDatabaseName(Configuration), DatabaseTools.GetConnectionString(Configuration));
             });
 
-            services.AddSession();
-
+            services.AddSession(opts =>
+            {
+                opts.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                opts.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
+                opts.IdleTimeout = TimeSpan.FromMinutes(Configuration.ServerTimeoutInMinutes());
+            });
             // add a data interface
-
             services.AddTransient<IDataInterface, DataInterface>();
 
             //AutoMapper
@@ -259,7 +262,7 @@ namespace Gov.Jag.Embc.Public
             app.UseNoCacheHttpHeaders();
             // IMPORTANT: This session call MUST go before UseMvc()
             var sessionTimout = TimeSpan.FromMinutes(Configuration.ServerTimeoutInMinutes());
-            app.UseSession(new SessionOptions() { IdleTimeout = sessionTimout });
+            app.UseSession();
             app.UseAuthentication();
 
             // global policy - assign here or on each controller
