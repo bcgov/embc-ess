@@ -69,7 +69,7 @@ export class ReferralMakerComponent implements OnInit {
     private referralService: ReferralService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
-    private notifications: NotificationQueueService,
+    private notificationQueueService: NotificationQueueService,
     private scrollToService: ScrollToService,
   ) { }
 
@@ -99,7 +99,7 @@ export class ReferralMakerComponent implements OnInit {
           this.defaultDate = new Date(registration.incidentTask.startDate);
         }
       }, err => {
-        this.notifications.addNotification('Failed to load evacuee summary', 'danger');
+        this.notificationQueueService.addNotification('Failed to load evacuee summary', 'danger');
         console.log('error getting registration summary =', err);
 
         // go back to home page
@@ -191,7 +191,7 @@ export class ReferralMakerComponent implements OnInit {
       this.referralService.createReferrals(this.regId, { confirmChecked: true, referrals })
         .subscribe(() => {
           this.submitting = false;
-          this.notifications.addNotification('Referral(s) finalized successfully', 'success');
+          this.notificationQueueService.addNotification('Referral(s) finalized successfully', 'success');
 
           // save registration ID for lookup in the new component
           this.uniqueKeyService.setKey(this.registration.id);
@@ -200,7 +200,7 @@ export class ReferralMakerComponent implements OnInit {
           this.router.navigate([`/${this.path}/registration/summary`]);
         }, err => {
           this.submitting = false;
-          this.notifications.addNotification('Failed to finalize referral(s)', 'danger');
+          this.notificationQueueService.addNotification('Failed to finalize referral(s)', 'danger');
           console.log('error creating referrals =', err);
         });
     }
@@ -400,11 +400,14 @@ export class ReferralMakerComponent implements OnInit {
     !this.defaultDate ? this.showDefaultDatePicker = true : this.showDefaultDatePicker = false;
   }
   // --------------------HELPERS-----------------------------------------
-  remove(arr: [], i: number) {
+  remove(arr: [], i: number, scrollTo?: string) {
+    // Scroll to first then remove the array element
+    if (scrollTo) {
+      this.triggerScrollTo(scrollTo);
+    }
     if (arr) {
       arr.splice(i, 1);
       this.updateFormValidity();
     }
   }
-
 }
