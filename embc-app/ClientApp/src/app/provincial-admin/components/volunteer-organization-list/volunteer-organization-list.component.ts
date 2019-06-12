@@ -48,11 +48,6 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
   path: string = null; // the base path for routing
   orgId: string = null;
 
-  // local constants used in the FORM
-  readonly SHOW_ALL = '1';
-  readonly SHOW_ADMINS_ONLY = '2';
-  readonly SHOW_ESS_USERS_ONLY = '3';
-
   confirmModal: NgbModalRef = null;
 
   constructor(
@@ -138,18 +133,8 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     this.previousQuery.limit = this.previousQuery.limit;
 
     // set parameter flags according to what is checked.
-    switch (this.userType) {
-      case 'SHOW_ADMINS_ONLY':
-        this.previousQuery.admin_only = true;
-        break;
-      case 'SHOW_ESS_USERS_ONLY':
-        this.previousQuery.ess_only = true;
-        break;
-      case 'SHOW_ALL':
-        break;
-      default:
-        break;
-    }
+    this.previousQuery.ess_only = (this.userType === 'SHOW_ESS_USERS_ONLY');
+    this.previousQuery.admin_only = (this.userType === 'SHOW_ADMINS_ONLY');
 
     // go get the collection of meta and data
     // get the volunteers using the parameters supplied
