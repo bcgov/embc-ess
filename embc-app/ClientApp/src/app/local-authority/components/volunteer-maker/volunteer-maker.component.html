@@ -1,47 +1,12 @@
 <div *ngIf="editing">
   <!-- to prevent page/control flicker, wait for everything to be ready... -->
-  <div *ngIf="(iAmLocalAuthority || iAmProvincialAdmin) && (editMode === 'ADD' || editMode === 'EDIT') && (doSelectOrg === true || doSelectOrg === false)">
+  <div *ngIf="editMode === 'ADD' || editMode === 'EDIT'">
     <form novalidate [formGroup]="form">
-      <h1 *ngIf="iAmLocalAuthority && editMode === 'ADD'">Add Emergency Support Services User(s)</h1>
-      <h1 *ngIf="iAmLocalAuthority && editMode === 'EDIT'">Edit Emergency Support Services User Details</h1>
-      <h1 *ngIf="iAmProvincialAdmin && editMode === 'ADD'">Add User(s)</h1>
-      <h1 *ngIf="iAmProvincialAdmin && editMode === 'EDIT'">Edit Emergency Support Services User Details</h1>
-
-      <p class="pb-3" *ngIf="iAmProvincialAdmin">
-        Administrators can add users within an organization if they have their first name, last name, role, and BCeID.
-      </p>
+      <h1 *ngIf="editMode === 'ADD'">Add Emergency Support Services User(s)</h1>
+      <h1 *ngIf="editMode === 'EDIT'">Edit Emergency Support Services User Details</h1>
 
       <small>All fields are required</small>
       <h3 class="blue-header mt-0">User Details</h3>
-
-      <div class="row pt-4" *ngIf="iAmProvincialAdmin && editMode === 'ADD'">
-        <div class="col">
-          <label class="required" for="organization">Organization</label>
-          <div *ngIf="doSelectOrg === true">
-            <select class="form-control" formControlName="organization" [class.is-invalid]="invalid('organization')" id="organization">
-              <option *ngIf="!currentOrganization" [ngValue]="null">-- Select organization</option>
-              <option *ngIf="currentOrganization" [ngValue]="currentOrganization">{{currentOrganization.name}}</option>
-              <option *ngFor="let org of metaOrganizations.data" [ngValue]="org">{{org.name}}</option>
-            </select>
-            <span class="invalid-feedback">Please select an organization</span>
-          </div>
-
-          <div *ngIf="doSelectOrg === false">
-            <input class="form-control" type="text" id="organization" [value]="currentOrganization.name" readonly>
-            <button class="btn btn-link float-right" (click)="changeOrganization()">
-              <app-font-awesome-icon icon="times"></app-font-awesome-icon>
-              <span class="ml-2">Change Organization</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="row pt-4" *ngIf="editMode === 'EDIT'">
-        <div class="col">
-          <label for="organization">Organization</label>
-          <input class="form-control" type="text" id="organization" [value]="currentOrganization.name" readonly>
-        </div>
-      </div>
 
       <div class="row pt-4">
         <div class="col">
@@ -69,50 +34,6 @@
           <span class="invalid-feedback">Please enter a valid BCeID</span>
         </div>
       </div>
-
-      <div class="row pt-4" *ngIf="iAmProvincialAdmin">
-        <div class="col">
-          <label class="required">Role</label>
-          <fieldset class="form-group">
-            <legend class="sr-only">Role</legend>
-            <div class="form-check">
-              <label class="form-check-label" for="isAdministratorFalse">
-                <input type="radio" class="form-check-input" name="isAdministrator" formControlName="isAdministrator" id="isAdministratorFalse" [value]="false">
-                <span class="pl-3">Emergency Support Services User</span>
-              </label>
-            </div>
-            <div class="form-check">
-              <label class="form-check-label" for="isAdministratorTrue">
-                <input type="radio" class="form-check-input" name="isAdministrator" formControlName="isAdministrator" id="isAdministratorTrue" [value]="true">
-                <span class="pl-3">Admin</span>
-              </label>
-            </div>
-            <span [class.d-block]="invalid('isAdministrator')" class="invalid-feedback">Please select whether they are an ESS user or an admin user</span>
-          </fieldset>
-        </div>
-      </div>
-
-      <div class="row mt-5" *ngIf="iAmProvincialAdmin && f.isAdministrator.value === true">
-        <div class="col">
-          <label class="required">Primary Contact for Organization</label>
-          <fieldset class="form-group">
-            <legend class="sr-only">Primary Contact for Organization</legend>
-            <div class="form-check">
-              <label class="form-check-label" for="isPrimaryContactTrue">
-                <input type="radio" class="form-check-input" name="isPrimaryContact" formControlName="isPrimaryContact" id="isPrimaryContactTrue" [value]="true">
-                <span class="pl-3">Yes</span>
-              </label>
-            </div>
-            <div class="form-check">
-              <label class="form-check-label" for="isPrimaryContactFalse">
-                <input type="radio" class="form-check-input" name="isPrimaryContact" formControlName="isPrimaryContact" id="isPrimaryContactFalse" [value]="false">
-                <span class="pl-3">No</span>
-              </label>
-            </div>
-            <span [class.d-block]="invalid('isPrimaryContact')" class="invalid-feedback">Please select whether this user is a primary contact for the organization</span>
-          </fieldset>
-        </div>
-      </div>
     </form>
 
     <div *ngIf="shouldValidateForm && !form.valid" class="text-danger mt-5 pl-5">
@@ -137,10 +58,6 @@
   <section class="p-3">
     <h3>Emergency Support Services User Details</h3>
     <ul class="summary">
-      <li *ngIf="iAmProvincialAdmin">
-        <span class="name">Organization:</span>
-        <span class="value">{{volunteer.organization.name}}</span>
-      </li>
       <li>
         <span class="name">Last Name:</span>
         <span class="value">{{volunteer.lastName}}</span>
@@ -152,14 +69,6 @@
       <li>
         <span class="name">BCeID:</span>
         <span class="value">{{volunteer.bceidAccountNumber}}</span>
-      </li>
-      <li *ngIf="iAmProvincialAdmin">
-        <span class="name">Role:</span>
-        <span class="value">{{volunteer.isAdministrator ? 'Admin' : 'ESS User'}}</span>
-      </li>
-      <li *ngIf="iAmProvincialAdmin && volunteer.isAdministrator">
-        <span class="name">Primary Contact for Organization:</span>
-        <span class="value">{{volunteer.isPrimaryContact ? 'Yes' : 'No'}}</span>
       </li>
     </ul>
   </section>

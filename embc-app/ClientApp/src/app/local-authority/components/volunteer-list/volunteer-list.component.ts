@@ -128,7 +128,7 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
     if (!volunteerId) {
       // no id means 'add user' -> clear unique key
       this.uniqueKeyService.clearKey();
-      this.router.navigate([`/${this.path}/volunteer`, { orgId: this.defaultSearchQuery.org_id }]);
+      this.router.navigate([`/${this.path}/volunteer`]);
       return;
     }
 
@@ -140,7 +140,7 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
 
         // save volunteer ID for lookup in the new component
         this.uniqueKeyService.setKey(volunteerId);
-        this.router.navigate([`/${this.path}/volunteer`, { orgId: this.defaultSearchQuery.org_id }]);
+        this.router.navigate([`/${this.path}/volunteer`]);
       },
       () => {
         // modal was dismissed
