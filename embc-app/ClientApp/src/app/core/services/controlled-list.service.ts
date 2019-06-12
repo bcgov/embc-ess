@@ -3,12 +3,11 @@ import { map, catchError } from 'rxjs/operators';
 
 import { CoreModule } from '../core.module';
 import { RestService } from './rest.service';
-import { Config, Country, Region, RegionalDistrict, Community, RelationshipType } from '../models';
+import { Config, Country, Region, Community, RelationshipType } from '../models';
 
 import * as ConfigActions from 'src/app/store/lookups/config.actions';
 import * as CountryActions from 'src/app/store/lookups/country.actions';
 import * as RegionActions from 'src/app/store/lookups/region.actions';
-import * as RegionalDistrictActions from 'src/app/store/lookups/regional-district.actions';
 import * as CommunityActions from 'src/app/store/lookups/community.actions';
 import * as RelationshipTypeActions from 'src/app/store/lookups/relationship-type.actions';
 
@@ -61,20 +60,6 @@ export class ControlledListService extends RestService {
         }),
         catchError(error => {
           this.store.dispatch(new RegionActions.LoadRegionsFail(error));
-          return this.handleError(error);
-        }),
-      );
-  }
-
-  getAllRegionalDistricts() {
-    this.store.dispatch(new RegionalDistrictActions.LoadRegionalDistricts());
-    return this.http.get<RegionalDistrict[]>('api/regionaldistricts', { headers: this.headers })
-      .pipe(
-        map((regionalDistricts: RegionalDistrict[]) => {
-          this.store.dispatch(new RegionalDistrictActions.LoadRegionalDistrictsSuccess({ regionalDistricts }));
-        }),
-        catchError(error => {
-          this.store.dispatch(new RegionalDistrictActions.LoadRegionalDistrictsFail(error));
           return this.handleError(error);
         }),
       );

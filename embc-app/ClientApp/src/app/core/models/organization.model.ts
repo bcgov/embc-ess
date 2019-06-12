@@ -1,4 +1,4 @@
-import { Community, Region, RegionalDistrict } from './';
+import { Community, Region } from './';
 
 export interface Organization {
   active?: boolean;
@@ -11,5 +11,4 @@ export interface Organization {
   legalName?: string;
   name: string;
   region: Region | null;
-  regionalDistrict: RegionalDistrict | null;
 }

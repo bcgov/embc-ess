@@ -40,7 +40,6 @@
               {{incident.taskNumber}}
               <span *ngIf="incident.community">
                 <span *ngIf="incident.community.name"> - {{incident.community.name}}</span>
-                <span *ngIf="!incident.community.name"> - {{incident.community.regionalDistrict.name}}</span>
               </span>
             </option>
           </select>

@@ -81,8 +81,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
         adminLastName: '',
         adminFirstName: '',
         community: null,
-        region: null,
-        regionalDistrict: null
+        region: null
       };
       // no form fields to set
     }
