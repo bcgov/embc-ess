@@ -282,8 +282,7 @@ export class CaptchaComponent implements AfterViewInit, OnInit, OnChanges, OnDes
         this.audio = response.body.audio;
         this.cd.detectChanges();
         if (playImmediately) {
-          // play in next timeslice (needed for Safari)
-          setTimeout(() => this.audioElement.nativeElement.play(), 0);
+          this.audioElement.nativeElement.play();
         }
       }, error => {
         this.fetchingAudioInProgress = false;
