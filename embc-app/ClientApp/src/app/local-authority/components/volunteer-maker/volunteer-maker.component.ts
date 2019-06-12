@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { combineLatest, Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { VolunteerService } from 'src/app/core/services/volunteer.service';
 import { OrganizationService } from 'src/app/core/services/organization.service';
@@ -20,16 +18,10 @@ export class VolunteerMakerComponent implements OnInit {
 
   editing = true; // whether we are adding/editing or reviewing
   submitting = false; // whether we are submitting data to BE
-  doSelectOrg: boolean = null; // whether we can select org (not set by default)
-  iAmLocalAuthority = false;
-  iAmProvincialAdmin = false;
   editMode: ('ADD' | 'EDIT') = null; // not set by default
   path: string = null; // the base path for routing
   currentOrganization: Organization = null; // organization in context (original org)
-
   volunteer: Volunteer = null;
-
-  metaOrganizations: ListResult<Organization> = { data: null, metadata: null };
 
   // the model for the form data collected
   form: FormGroup = null;
@@ -52,105 +44,34 @@ export class VolunteerMakerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // save the appropriate path for routing
+    this.authService.path.subscribe((path: string) => this.path = path);
+
+    // initialize form
     this.form = this.fb.group({
-      organization: [null, Validators.required],
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
-      bceidAccountNumber: ['', Validators.required],
-      isAdministrator: ['', Validators.required],
-      isPrimaryContact: ['']
+      bceidAccountNumber: ['', Validators.required]
     });
 
-    // validate isPrimaryContact only if isAdministrator is true
-    this.form.controls.isAdministrator.valueChanges.subscribe(value => {
-      if (value) {
-        this.f.isPrimaryContact.setValidators([Validators.required]);
-      } else {
-        this.f.isPrimaryContact.clearValidators();
-      }
-      this.f.isPrimaryContact.updateValueAndValidity({ emitEvent: false });
-    });
+    // get the organization from the route parameters
+    const orgId = this.route.snapshot.paramMap.get('orgId');
+    if (orgId) {
+      this.organizationService.getOrganizationById(orgId)
+        .subscribe((organization: Organization) => {
+          this.currentOrganization = organization;
+        }, err => {
+          console.log('error getting organization =', err);
+          this.notificationQueueService.addNotification('Failed to load organization', 'danger');
 
-    // get a bunch of variables we need
-    combineLatest(
-      this.authService.getCurrentUser(),
-      this.authService.isLocalAuthority$,
-      this.authService.isProvincialAdmin$,
-      this.authService.path
-    ).subscribe(([currentUser, isLocalAuthority, isProvincialAdmin, path]) => {
-      this.iAmLocalAuthority = isLocalAuthority;
-      this.iAmProvincialAdmin = isProvincialAdmin;
-      this.path = path;
-
-      // if local authority then get their organization
-      if (this.iAmLocalAuthority) {
-        const volunteerId = currentUser.contactid;
-        this.getVolunteerOrganization(volunteerId)
-          .subscribe((organization: Organization) => {
-            this.currentOrganization = organization;
-            this.doSelectOrg = false;
-
-            // continue
-            this.ngOnInit2();
-          }, err => {
-            console.log('error getting volunteer organization =', err);
-            this.notificationQueueService.addNotification('Failed to load organization', 'danger');
-
-            // go back to the volunteers list
-            this.cancel();
-          });
-
-        return; // done for local authority
-      }
-
-      // if provincial admin then check for orgId query param
-      if (this.iAmProvincialAdmin) {
-        const orgId = this.route.snapshot.paramMap.get('orgId'); // may be null
-        if (orgId) {
-          this.organizationService.getOrganizationById(orgId)
-            .subscribe((organization: Organization) => {
-              this.currentOrganization = organization;
-              this.doSelectOrg = false;
-
-              // continue
-              this.ngOnInit2();
-            }, err => {
-              console.log('error getting organization =', err);
-              this.notificationQueueService.addNotification('Failed to load organization', 'danger');
-
-              // go back to the volunteers list
-              this.cancel();
-            });
-        } else {
-          // no id -- configure UI to select organization
-          this.changeOrganization();
-
-          // continue
-          this.ngOnInit2();
-        }
-
-        return; // done for provincial admin
-      }
-
-      // should never get here
-      console.log('ERROR - current user is not Local Authority or Provincial Admin');
-
-      // go back to home page
-      this.router.navigate([`/${this.path}`]);
-
-    }, err => {
-      this.notificationQueueService.addNotification('Failed to load page data', 'danger');
-      console.log('error getting data =', err);
-
-      // go back to home page
-      this.router.navigate([`/${this.path}`]);
-    });
-  }
-
-  // async continuation of above
-  private ngOnInit2() {
+          // go back to the volunteers list
+          this.cancel();
+        });
+    }
+    // get the volunteer's id from the unique key service
     const volunteerId = this.uniqueKeyService.getKey(); // may be null
     if (volunteerId) {
+      // this is an edit!
       // get volunteer to edit
       this.volunteerService.getVolunteerById(volunteerId)
         .subscribe((volunteer: Volunteer) => {
@@ -159,12 +80,9 @@ export class VolunteerMakerComponent implements OnInit {
 
           // set form fields
           this.form.patchValue({
-            organization: volunteer.organization, // assume that a volunteer has an organization
             lastName: volunteer.lastName,
             firstName: volunteer.firstName,
-            bceidAccountNumber: volunteer.bceidAccountNumber,
-            isAdministrator: volunteer.isAdministrator,
-            isPrimaryContact: volunteer.isPrimaryContact
+            bceidAccountNumber: volunteer.bceidAccountNumber
           });
 
           // finally everything is loaded
@@ -177,6 +95,7 @@ export class VolunteerMakerComponent implements OnInit {
           this.cancel();
         });
     } else {
+      // This is an add volunteer to organization
       // no volunteerId -> add user
       this.editMode = 'ADD';
 
@@ -192,14 +111,10 @@ export class VolunteerMakerComponent implements OnInit {
         bceidAccountNumber: '',
         personType: 'VOLN',
         canAccessRestrictedFiles: null,
-        organization: null,
-        isAdministrator: null,
-        isPrimaryContact: null
+        organization: this.currentOrganization,
+        isAdministrator: false, // if you are making a new volunteer as a local auth it won't be an admin user.
+        isPrimaryContact: false // if you are making a new volunteer as a local auth it won't be the primary contact for your org.
       };
-
-      // set org value
-      // other form fields remain empty
-      this.f.organization.setValue(this.currentOrganization);
 
       // finally everything is loaded
       this.setInitialFocus();
@@ -217,48 +132,17 @@ export class VolunteerMakerComponent implements OnInit {
     }
   }
 
-  private getVolunteerOrganization(volunteerId: string): Observable<Organization> {
-    if (!volunteerId) {
-      return of(null as Organization);
-    }
-
-    return this.volunteerService
-      .getVolunteerById(volunteerId)
-      .pipe(
-        switchMap(volunteer => this.organizationService.getOrganizationById(volunteer.organization.id))
-      );
-  }
-
   invalid(field: string, parent: FormGroup = this.form): boolean {
     return invalidField(field, parent, this.shouldValidateForm);
   }
 
-  changeOrganization() {
-    // get all organizations (sorted by name)
-    this.organizationService.getOrganizations(null, null, null, '+name')
-      .subscribe((listResult: ListResult<Organization>) => {
-        this.metaOrganizations = listResult;
-        this.doSelectOrg = true;
-
-        // page controls have been updated
-        // NB: page variables aren't ready yet so set focus in NEXT timeslice
-        setTimeout(() => this.setInitialFocus(), 0);
-      }, err => {
-        console.log('error getting organizations =', err);
-        this.notificationQueueService.addNotification('Failed to get organizations', 'danger');
-
-        // go back to the volunteers list
-        this.cancel();
-      });
-  }
-
   next() {
     this.shouldValidateForm = true;
-
+    // check validation of form
     if (this.form.valid) {
       // update volunteer object
       this.volunteer = { ...this.volunteer, ...this.form.value };
-
+      // if successful you switch from edit to view mode.
       this.editing = false;
       window.scrollTo(0, 0); // scroll to top
     }
@@ -275,7 +159,6 @@ export class VolunteerMakerComponent implements OnInit {
 
   submit(addAnother?: boolean) {
     this.submitting = true;
-
     // check if this is an update
     if (this.volunteer.id) {
       // if the volunteer has an ID we need to update
@@ -320,17 +203,13 @@ export class VolunteerMakerComponent implements OnInit {
     }
   }
 
-  // FUTURE: why not just reload this page?
   private resetForm() {
     // reset form fields (except organization)
     this.form.patchValue({
       lastName: '',
       firstName: '',
-      bceidAccountNumber: '',
-      isAdministrator: null,
-      isPrimaryContact: null
+      bceidAccountNumber: ''
     });
-
     this.shouldValidateForm = false;
 
     // go back to the first page
@@ -338,17 +217,8 @@ export class VolunteerMakerComponent implements OnInit {
   }
 
   cancel() {
-    if (this.iAmLocalAuthority) {
-      // go back to current user's list of volunteers
-      this.router.navigate([`/${this.path}/volunteers`]);
-    } else if (this.currentOrganization) {
-      // go back to list of current organization's volunteers
-      this.router.navigate([`/${this.path}/organization/${this.currentOrganization.id}/volunteers`]);
-    } else {
-      // we got here without an org in context
-      // go to list of organizations
-      this.router.navigate([`/${this.path}/organizations`]);
-    }
+    // go back to current user's list of volunteers
+    this.router.navigate([`/${this.path}/volunteers`]);
   }
 
 }
