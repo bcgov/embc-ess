@@ -296,7 +296,8 @@ export class ReferralMakerComponent implements OnInit {
       purchaser: this.purchaser,
       validDates: { from: this.defaultDate, to: null, days: null },
       evacuees: [],
-      supplier: { id: null, active: true, province: 'BC' }
+      supplier: { id: null, active: true, province: 'BC' },
+      numRooms: 1
     };
     this.lodgingReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
