@@ -87,13 +87,6 @@ textarea.is-invalid {
   border-bottom: 4px theme-color(bcgold) solid;
 }
 
-
-.form-check-input{
-  // the silly checkboxes are high and the text is low
-  position: relative;
-  top: 0em;
-}
-
 app-form-field {
   margin-top: 5px;
 }
@@ -125,7 +118,7 @@ h2 {
 
 h3 {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 // h2, .h2 {
@@ -133,7 +126,7 @@ h3 {
 // }
 
 // h3, .h3 {
-//   font-weight: 600;
+//   font-weight: bold;
 //   font-size: 18px;
 
 //   .blue {
@@ -155,14 +148,14 @@ p {
 // }
 
 .btn.btn-primary {
-  font-weight: 600;
+  font-weight: bold;
   line-height: 1.25;
   min-width: 120px;
   padding: 7px 20px;
 }
 
 .btn.btn-outline-primary {
-  font-weight: 600;
+  font-weight: bold;
   line-height: 1.25;
   min-width: 120px;
   padding: 7px 20px;
@@ -182,16 +175,17 @@ select.is-invalid {
 }
 
 // extension to Bootstrap styles
+// these should override any other styles
 .display-5 {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.2;
+  font-size: 18px !important;
+  font-weight: bold !important;
+  line-height: 1.2 !important;
 }
 
 .display-6 {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.2;
+  font-size: 15px !important;
+  font-weight: bold !important;
+  line-height: 1.2 !important;
 }
 
 // // this breaks text/arrow layout in FF
@@ -201,7 +195,7 @@ select.is-invalid {
 
 label {
   // max-width: 100%;
-  font-weight: 700;
+  font-weight: bolder;
 }
 
 // .form-control {

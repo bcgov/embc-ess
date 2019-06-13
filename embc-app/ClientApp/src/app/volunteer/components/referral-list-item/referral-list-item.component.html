@@ -1,4 +1,4 @@
-<h2 class="blue-header font-weight-bold py-3" [ngSwitch]="type">
+<h3 class="blue-header font-weight-bold py-3" [ngSwitch]="type">
   <ng-container *ngSwitchCase="'FOOD'">
     <app-font-awesome-icon icon="utensils"></app-font-awesome-icon>&nbsp;&nbsp;FOOD
   </ng-container>
@@ -14,7 +14,7 @@
   <ng-container *ngSwitchCase="'INCIDENTALS'">
     <app-font-awesome-icon icon="plus-circle"></app-font-awesome-icon>&nbsp;&nbsp;INCIDENTALS
   </ng-container>
-</h2>
+</h3>
 
 <section class="content">
   <ng-content></ng-content>
