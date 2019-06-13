@@ -12,7 +12,6 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { invalidField } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
-import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 
 @Component({
   selector: 'app-task-number-maker',
@@ -40,14 +39,8 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
   };
 
   // fields to collect
-  form: FormGroup;
-  shouldValidateForm = false; // run validation *after* the user clicks the NEXT button, not before.
-  errorSummary = ''; // error summary to display; i.e. 'Some required fields have not been completed.'
-  validationErrors: { [key: string]: any } = {}; // holds field-level validation errors to display in the form
-
-  // generic validation helper
-  private constraints: { [key: string]: { [key: string]: string | { [key: string]: string } } };
-  private validationHelper: ValidationHelper;
+  form: FormGroup = null;
+  showErrorsWhen = false; // run validation *after* the user clicks the NEXT button, not before.
 
   constructor(
     private router: Router,
@@ -57,31 +50,10 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private fb: FormBuilder,
-  ) {
-    // Define all of the validation messages for the form.
-    this.constraints = {
-      taskNumber: {
-        required: 'Please enter a task number',
-      },
-      community: {
-        required: 'Please select a community/region from the dropdown list where the incident took place',
-      },
-      startDate: {
-        required: 'Please enter a valid date and time for the incident',
-        maxDate: 'Date for the incident must be today or in the past',
-      },
-      details: {
-        required: 'Please enter incident details',
-      },
-    };
+  ) { }
 
-    // Define an instance of the validation helper for this form,
-    // passing in this form's set of validation messages.
-    this.validationHelper = new ValidationHelper(this.constraints);
-  }
-
-  // convenience getter for easy access to validation errors within the HTML template
-  get e(): any { return this.validationErrors; }
+  // convenience getter for easy access to form fields
+  get f(): any { return this.form.controls; }
 
   get pageTitle(): string { return this.editMode ? 'Edit a Task Number' : 'Add a Task Number'; }
 
@@ -125,26 +97,20 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     }
   }
 
-  initializeForm(): void {
+  initializeForm() {
     this.form = this.fb.group({
       taskNumber: ['', Validators.required],
-      community: ['', Validators.required],
+      community: [null, Validators.required],
       startDate: [null, [Validators.required, CustomValidators.maxDate(moment())]],
       details: ['', Validators.required],
     });
   }
 
   invalid(field: string, parent: FormGroup = this.form): boolean {
-    return invalidField(field, parent, this.shouldValidateForm);
+    return invalidField(field, parent, this.showErrorsWhen);
   }
 
-  private validateForm(): boolean {
-    this.shouldValidateForm = true;
-    this.validationErrors = this.validationHelper.processMessages(this.form);
-    return this.form.valid;
-  }
-
-  displayTaskNumber(task: IncidentTask): void {
+  private displayTaskNumber(task: IncidentTask) {
     // Reset the form back to pristine
     this.form.reset();
 
@@ -157,21 +123,22 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     });
   }
 
-  next(): void {
-    // only go next if all fields are non null
-    if (this.validateForm()) {
-      // navigate to the next page. AKA show the summary part of the form.
+  next() {
+    this.showErrorsWhen = true;
+
+    // proceed if form is valid
+    if (this.form.valid) {
+      // show the review part of the form
       this.maker = false;
-      this.errorSummary = null;
       this.onSave();
-    } else {
-      this.errorSummary = 'Some required fields have not been completed.';
+      window.scrollTo(0, 0); // scroll to top
     }
   }
 
   back() {
-    // show the editing parts of the form.
+    // show the editing parts of the form
     this.maker = true;
+    window.scrollTo(0, 0); // scroll to top
   }
 
   submit() {
@@ -227,7 +194,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     this.router.navigate([`/${this.path}/task-numbers`]);
   }
 
-  onSave(): void {
+  onSave() {
     const f = this.form.value;
     this.incidentTask.taskNumber = f.taskNumber;
     this.incidentTask.community = f.community;

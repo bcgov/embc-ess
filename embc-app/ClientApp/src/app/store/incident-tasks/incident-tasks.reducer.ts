@@ -7,7 +7,6 @@ import { Loadable } from '..';
 //   taskNumber: null,
 //   details: null,
 //   region: null,
-//   regionalDistrict: null,
 //   community: null
 // };
 

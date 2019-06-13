@@ -9,15 +9,6 @@
         "startDate": "2019-01-12T10:12:45.000Z"
     },
     {
-        "taskNumber": "789012",
-        "details": "Wildfires in a Regional District",
-        "active": true,
-        "regionalDistrict": {
-            "name": "Capital Region"
-        },
-        "startDate": "2018-12-31T23:59:10.000Z"
-    },
-    {
         "taskNumber": "456789",
         "details": "Major Emergency in an EMBC Region",
         "active": true,

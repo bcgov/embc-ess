@@ -1,0 +1,263 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "${NAME}-deployment-template"
+  },
+  "objects": [
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "annotations": {
+          "description": "Exposes and load balances the application pods."
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "3000-tcp",
+            "port": 3000,
+            "targetPort": 3000
+          }
+        ],
+        "selector": {
+          "name": "${NAME}"
+        }
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "annotations": {
+          "description": "Defines how to deploy the application server."
+        }
+      },
+      "spec": {
+        "strategy": {
+          "type": "Rolling"
+        },
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "${NAME}"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "namespace": "${IMAGE_NAMESPACE}",
+                "name": "${SOURCE_IMAGE_NAME}:${TAG_NAME}"
+              }
+            }
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": 2,
+        "selector": {
+          "name": "${NAME}"
+        },
+        "template": {
+          "metadata": {
+            "name": "${NAME}",
+            "labels": {
+              "name": "${NAME}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "${NAME}",
+                "env": [
+                  {
+                    "name": "DATABASE_SERVICE_URI",
+                    "value": "mssql.jhnamn-dev.svc"
+                  },
+                  {
+                    "name": "MSSQL_DATABASE",
+                    "value": "ess"
+                  },
+                  {
+                    "name": "DB_ADMIN_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "database-admin-password",
+                        "name": "mssql"
+                      }
+                    }
+                  },
+                  {
+                    "name": "BACKUP_DIR",
+                    "value": "/backups/"
+                  },
+                  {
+                    "name": "DAILY_BACKUPS",
+                    "value": "7"
+                  },
+                  {
+                    "name": "BACKUP_LOG_ONLY",
+                    "value": "true"
+                  }
+                ],
+                "image": " ",
+                "ports": [
+                  {
+                    "containerPort": 3000,
+                    "protocol": "TCP"
+                  }
+                ],
+                "readinessProbe": {
+                  "timeoutSeconds": 3,
+                  "initialDelaySeconds": 3,
+                  "httpGet": {
+                    "path": "/health",
+                    "port": 3000
+                  }
+                },
+                "livenessProbe": {
+                  "timeoutSeconds": 30,
+                  "initialDelaySeconds": 120,
+                  "periodSeconds": 60,
+                  "httpGet": {
+                    "path": "/health",
+                    "port": 3000
+                  }
+                },
+                "resources": {
+                  "requests": {
+                    "cpu": "${CPU_REQUEST}",
+                    "memory": "${MEMORY_REQUEST}"
+                  },
+                  "limits": {
+                    "cpu": "${CPU_LIMIT}",
+                    "memory": "${MEMORY_LIMIT}"
+                  }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File"
+              }
+            ],
+            "dnsPolicy": "ClusterFirst",
+            "restartPolicy": "Always",
+            "schedulerName": "default-scheduler",
+            "securityContext": {},
+            "terminationGracePeriodSeconds": 30
+          }
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "NAME",
+      "displayName": "Name",
+      "description": "The name assigned to all of the OpenShift resources associated to the server instance.",
+      "required": true,
+      "value": "db-backup"
+    },
+    {
+      "name": "SOURCE_IMAGE_NAME",
+      "displayName": "Source Image Name",
+      "description": "The name of the image to use for this resource.",
+      "required": true,
+      "value": "db-backup"
+    },
+    {
+      "name": "IMAGE_NAMESPACE",
+      "displayName": "Image Namespace",
+      "required": true,
+      "description": "The namespace of the OpenShift project containing the imagestream for the application.",
+      "value": "jhnamn-tools"
+    },
+    {
+      "name": "DATABASE_NAME",
+      "displayName": "Database Name",
+      "required": true,
+      "description": "The name of the database.",
+      "value": "ess"
+    },
+    {
+      "name": "DATABASE_SERVICE_NAME",
+      "displayName": "Database Deployment Name",
+      "required": true,
+      "description": "The name associated to the database deployment resources.  In particular, this is used to wire up the credentials associated to the database.",
+      "value": "mssql"
+    },
+    {
+      "name": "DATABASE_SERVICE_URI",
+      "displayName": "Database Hostname",
+      "required": true,
+      "description": "The host name address of the service mapping to the database within the cluster.",
+      "value": "mssql"
+    },
+    {
+      "name": "BACKUP_DIR",
+      "displayName": "The root backup directory",
+      "required": true,
+      "description": "The name of the root backup directory.",
+      "value": "/backups/"
+    },
+    {
+      "name": "BACKUP_LOG_ONLY",
+      "displayName": "Flag to backup of the database log only",
+      "required": true,
+      "description": "Flag to backup of the database log only.  If false the backup will be a full backup and if true it will only back up the transaction log.",
+      "value": "false"
+    },
+    {
+      "name": "NUM_BACKUPS",
+      "displayName": "The number of backup files to be retained",
+      "required": true,
+      "description": "The number of backup files to be retained.  Used for the `daily` backup strategy.  Ignored when using the `rolling` backup strategy.",
+      "value": "5"
+    },
+    {
+      "name": "DAILY_BACKUPS",
+      "displayName": "Number of Daily Backups to Retain",
+      "required": true,
+      "description": "The number of daily backup files to be retained.  Used for the `rolling` backup strategy.",
+      "value": "7"
+    },
+    {
+      "name": "TAG_NAME",
+      "displayName": "Environment TAG name",
+      "description": "The TAG name for this environment, e.g., dev, test, prod",
+      "required": true,
+      "value": "latest"
+    },
+    {
+      "name": "CPU_LIMIT",
+      "displayName": "Resources CPU Limit",
+      "description": "The resources CPU limit (in cores) for this build.",
+      "required": true,
+      "value": "2"
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "displayName": "Resources Memory Limit",
+      "description": "The resources Memory limit (in Mi, Gi, etc) for this build.",
+      "required": true,
+      "value": "1Gi"
+    },
+    {
+      "name": "CPU_REQUEST",
+      "displayName": "Resources CPU Request",
+      "description": "The resources CPU request (in cores) for this build.",
+      "required": true,
+      "value": "500m"
+    },
+    {
+      "name": "MEMORY_REQUEST",
+      "displayName": "Resources Memory Request",
+      "description": "The resources Memory request (in Mi, Gi, etc) for this build.",
+      "required": true,
+      "value": "512Mi"
+    }
+  ]
+}

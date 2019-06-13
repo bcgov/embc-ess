@@ -9,7 +9,6 @@ export * from './organization.model';
 export * from './person.model';
 export * from './referral.model';
 export * from './region.model';
-export * from './regional-district.model';
 export * from './registration.model';
 export * from './relationship-type.model';
 export * from './supplier.model';

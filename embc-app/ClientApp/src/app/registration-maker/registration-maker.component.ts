@@ -422,7 +422,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   displayRegistration(r?: Registration | null): void {
     // Display the appropriate page title and form state
     if (r == null) {
-      this.pageTitle = 'Add an Evacuee';
+      this.pageTitle = 'Create New Registration';
       this.createMode = true;
       this.finalizeMode = false; // turn off these
     } else {
@@ -619,7 +619,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
             this.router.navigate([`/${this.path}`]);
           }
         }, err => {
-          this.notificationQueueService.addNotification('Failed to add evacuee', 'danger');
+          this.notificationQueueService.addNotification('Failed to add registration', 'danger');
           console.log('error creating registration =', err);
         });
     } else {

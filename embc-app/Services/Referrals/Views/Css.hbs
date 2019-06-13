@@ -116,6 +116,7 @@
 
     .col-pushed {
         margin-left: 0.65cm;
+        padding-right: calc(5px + 20px); /* whitespace + offset for next column's icon */
     }
 
     .push-right {
@@ -412,8 +413,12 @@
     .input-output {
         padding-right: 3px;
         font-size: 12px;
-        white-space: pre-wrap;
         word-break: break-all;
+    }
+
+    /* These are the notes in the summary */
+    .notes + .input-output {
+        word-break: normal;
     }
 
     .comments-height {
