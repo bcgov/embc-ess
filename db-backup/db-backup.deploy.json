@@ -77,18 +77,18 @@
                 "env": [
                   {
                     "name": "DATABASE_SERVICE_URI",
-                    "value": "mssql.jhnamn-dev.svc"
+                    "value": ""
                   },
                   {
                     "name": "MSSQL_DATABASE",
-                    "value": "ess"
+                    "value": ""
                   },
                   {
                     "name": "DB_ADMIN_PASSWORD",
                     "valueFrom": {
                       "secretKeyRef": {
                         "key": "database-admin-password",
-                        "name": "mssql"
+                        "name": ""
                       }
                     }
                   },
@@ -98,11 +98,11 @@
                   },
                   {
                     "name": "DAILY_BACKUPS",
-                    "value": "7"
+                    "value": "31"
                   },
                   {
                     "name": "BACKUP_LOG_ONLY",
-                    "value": "true"
+                    "value": "false"
                   }
                 ],
                 "image": " ",
