@@ -17,26 +17,22 @@
         <div class="row">
           <div class="col">
             <div>Incident start date &amp; time: {{registration?.incidentTask?.startDate | dateTimeFormatPipe}}</div>
-            <span class="align-bottom">
-              <span class="display-5">Support start date &amp; time: {{defaultDate | dateTimeFormatPipe}}
-                <span *ngIf="!defaultDate">Please enter a valid date.</span>
-              </span>
-            </span>
-          </div>
-          <div *ngIf="stepCounter===1 && !showDefaultDatePicker" class="col-3">
-            <span class="align-bottom">
-              <a href="javascript:void(0)">
+            <div class="d-inline-block display-5 mr-4">Support start date &amp; time: {{defaultDate | dateTimeFormatPipe}}
+              <span *ngIf="!defaultDate">Please enter a valid date.</span>
+            </div>
+            <div class="d-inline-block" *ngIf="stepCounter===1 && !showDefaultDatePicker">
+              <a href="javascript:void(0)" (click)="toggleDefaultDatePicker()">
                 <app-font-awesome-icon icon="times"></app-font-awesome-icon>
-                <span class="ml-2" (click)="toggleDefaultDatePicker()">Override start time</span>
+                <span class="ml-1">Override start time</span>
               </a>
-            </span>
+            </div>
           </div>
-          <div *ngIf="stepCounter===1" class="col-2">
+          <div *ngIf="stepCounter===1" class="col-md-2">
             <button *ngIf="defaultDate" type="button" class="btn btn-primary float-right" (click)="stepCounter=2">NEXT</button>
             <button *ngIf="!defaultDate" type="button" class="btn btn-primary float-right" disabled>NEXT</button>
-
           </div>
         </div>
+
         <div *ngIf="showDefaultDatePicker && stepCounter===1">
           <div class="row">
             <div class="col">
