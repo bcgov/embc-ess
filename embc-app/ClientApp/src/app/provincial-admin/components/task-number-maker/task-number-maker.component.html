@@ -14,28 +14,29 @@
       <div class="col mb-4">
         <label class="required" for="taskNumber">Task Number</label>
         <input type="text" class="form-control" [class.is-invalid]="invalid('taskNumber')" formControlName="taskNumber" id="taskNumber">
-        <span class="invalid-feedback">{{e.taskNumber}}</span>
+        <span class="invalid-feedback">Please enter a task number</span>
       </div>
       <div class="col mb-4">
         <label class="required" for="community">Incident Location</label>
         <app-communities-select [class.is-invalid]="invalid('community')" [myParent]="form" myFormControlName="community" myId="community" [myRequired]="true"></app-communities-select>
-        <span class="invalid-feedback">{{e.community}}</span>
+        <span class="invalid-feedback">Please select a community/region from the dropdown list where the incident took place</span>
       </div>
       <div class="col mb-4">
         <label class="required">Incident Date &amp; Time</label>
         <app-date-time-picker [class.is-invalid]="invalid('startDate')" formControlName="startDate"></app-date-time-picker>
-        <span class="invalid-feedback">{{e.startDate}}</span>
+        <span class="invalid-feedback" *ngIf="f.startDate.errors?.required">Please enter a valid date and time for the incident</span>
+        <span class="invalid-feedback" *ngIf="f.startDate.errors?.maxDate">Date for the incident must be today or in the past</span>
       </div>
       <div class="col mb-4">
         <label class="required" for="details">Details of Incident</label>
         <textarea class="form-control" [class.is-invalid]="invalid('details')" placeholder="Please specify" formControlName="details" id="details" rows="4"></textarea>
-        <span class="invalid-feedback">{{e.details}}</span>
+        <span class="invalid-feedback">Please enter incident details</span>
       </div>
     </div>
 
-    <div *ngIf="errorSummary" class="text-danger mt-5 pl-5">
+    <div *ngIf="showErrorsWhen && !form.valid" class="text-danger mt-5 pl-5">
       <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>
-      &nbsp;{{ errorSummary }}
+      &nbsp;Some required fields have not been completed.
     </div>
 
     <div class="mt-5 space-between">
