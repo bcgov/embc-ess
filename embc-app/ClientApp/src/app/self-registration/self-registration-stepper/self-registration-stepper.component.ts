@@ -8,7 +8,7 @@ import { Router, NavigationStart } from '@angular/router';
 })
 export class SelfRegistrationStepperComponent implements OnInit {
   pages = [1, 2, 3, 4];
-  step;
+  step = 0;
   constructor(
     private router: Router
   ) { }

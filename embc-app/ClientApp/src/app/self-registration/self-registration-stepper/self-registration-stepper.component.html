@@ -1,12 +1,33 @@
-<ul class="list-group mb-4">
-  <span *ngFor="let i of pages">
-    <li class="list-group-item">
-      <span *ngIf="i <= step">
-        <i class="far fa-check-circle"></i> Step {{i}}
-      </span>
-      <span *ngIf="i>step">
-        <i class="far fa-circle"></i> Step {{i}}
-      </span>
-    </li>
-  </span>
-</ul>
+<div class="card card-default sidebox-card mb-4" style="border-left:0;border-right:0;border-top:0;">
+  <div class="card-header">
+    <span class="h6 my-0 text-uppercase">Evacuee Profile</span>
+  </div>
+  <div class="card-body">
+    <p class="card-text">
+      <i *ngIf="step<1" class="far fa-circle circle-style"></i>
+      <i *ngIf="step===1" class="far fa-check-circle checkmark-style"></i>
+      <i *ngIf="step>1" class="fas fa-circle circle-style"></i>
+      <strong class="ml-2">STEP 1:</strong> Evacuee Information
+    </p>
+    <p class="card-text">
+      <i *ngIf="step<2" class="far fa-circle circle-style"></i>
+      <i *ngIf="step===2" class="far fa-check-circle checkmark-style"></i>
+      <i *ngIf="step>2" class="fas fa-circle circle-style"></i>
+      <strong class="ml-2">STEP 2:</strong> Additional Information
+    </p>
+    <p class="card-text">
+      <i *ngIf="step<3" class="far fa-circle circle-style"></i>
+      <i *ngIf="step===3" class="far fa-check-circle checkmark-style"></i>
+      <i *ngIf="step>3" class="fas fa-circle circle-style"></i>
+      <strong class="ml-2">STEP 3:</strong> Review Details
+    </p>
+    <p class="card-text">
+      <i *ngIf="step<4" class="far fa-circle circle-style"></i>
+      <i *ngIf="step===4" class="far fa-check-circle checkmark-style"></i>
+      <i *ngIf="step>4" class="fas fa-circle circle-style"></i>
+      <strong class="ml-2">STEP 4:</strong> Confirmation
+    </p>
+  </div>
+</div>
+<button (click)="step=step+1">+</button>
+<button (click)="step=step-1">-</button>
