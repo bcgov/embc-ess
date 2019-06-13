@@ -75,10 +75,9 @@ textarea.is-invalid {
 .sidebox-card {
   // card overrides
   background-color: theme-color(light);
-  border-radius: 0px;
-  // border: 0;
   border-bottom: 4px theme-color(bcgold) solid;
 }
+
 .sidebox-card-info {
   // card overrides
   background-color: theme-color(primary);
