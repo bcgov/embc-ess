@@ -27,53 +27,6 @@
   </div>
 
   <form novalidate [formGroup]="form">
-    <!-- TASK NUMBER & PLACE OF REGISTRATION -->
-    <div class="mt-4">
-      <h2 class="blue-header font-weight-bold">Task Number &amp; Place of Registration</h2>
-      <div class="form-row">
-        <app-attention-icon></app-attention-icon>
-        <app-form-field required="true" class="col">
-          <label for="incidentTask">Task Number</label>
-          <select [compareWith]="compareById" [class.is-invalid]="invalid('incidentTask')" class="form-control" formControlName="incidentTask" id="incidentTask">
-            <option [ngValue]="null">-- Select task number</option>
-            <option [ngValue]="incident" *ngFor="let incident of incidentTasks$ | async">
-              {{incident.taskNumber}}
-              <span *ngIf="incident.community">
-                <span *ngIf="incident.community.name"> - {{incident.community.name}}</span>
-              </span>
-            </option>
-          </select>
-          <span *ngIf="submitted" class="invalid-feedback">{{e.incidentTask}}</span>
-        </app-form-field>
-        <div class="d-flex align-items-center col-md-7">
-          <small class="text-muted">
-            If the task number is not listed please contact your supervisor.
-          </small>
-        </div>
-      </div>
-      <div class="form-row">
-        <app-attention-icon></app-attention-icon>
-        <app-form-field class="col-md-8" required="true" tooltip="Tool Tip: The location where you are registering the evacuees.">
-          <label for="facility">Facility Name / Registration Location</label>
-          <input type="text" [class.is-invalid]="invalid('facility')" class="form-control" formControlName="facility" id="facility" autocomplete="off">
-          <span *ngIf="submitted" class="invalid-feedback">{{e.facility}}</span>
-        </app-form-field>
-      </div>
-      <div class="form-row">
-        <app-attention-icon></app-attention-icon>
-        <app-form-field class="col" required="true" tooltip="Tool Tip: A host community is the community where the registration is taking place and the Reception Centre is located.">
-          <label for="hostCommunity">Host Community</label>
-          <app-communities-select [class.is-invalid]="invalid('hostCommunity')" [myParent]="form" myFormControlName="hostCommunity" myId="hostCommunity"></app-communities-select>
-          <span *ngIf="submitted" class="invalid-feedback">{{e.hostCommunity}}</span>
-        </app-form-field>
-        <div class="d-flex align-items-center col-md-7">
-          <small class="text-muted">
-            If the community is not listed please select nearest community and notify your supervisor.
-          </small>
-        </div>
-      </div>
-    </div>
-
     <!-- RESTRICTION -->
     <div class="feature-block mt-4">
       <h3 class="required mt-0">Restriction</h3>
@@ -108,6 +61,53 @@
     </div>
 
     <div *ngIf="activeForm===true">
+      <!-- TASK NUMBER & PLACE OF REGISTRATION -->
+      <div class="mt-4">
+        <h2 class="blue-header font-weight-bold">Task Number &amp; Place of Registration</h2>
+        <div class="form-row">
+          <app-attention-icon></app-attention-icon>
+          <app-form-field required="true" class="col">
+            <label for="incidentTask">Task Number</label>
+            <select [compareWith]="compareById" [class.is-invalid]="invalid('incidentTask')" class="form-control" formControlName="incidentTask" id="incidentTask">
+              <option [ngValue]="null">-- Select task number</option>
+              <option [ngValue]="incident" *ngFor="let incident of incidentTasks$ | async">
+                {{incident.taskNumber}}
+                <span *ngIf="incident.community">
+                  <span *ngIf="incident.community.name"> - {{incident.community.name}}</span>
+                </span>
+              </option>
+            </select>
+            <span *ngIf="submitted" class="invalid-feedback">{{e.incidentTask}}</span>
+          </app-form-field>
+          <div class="d-flex align-items-center col-md-7">
+            <small class="text-muted">
+              If the task number is not listed please contact your supervisor.
+            </small>
+          </div>
+        </div>
+        <div class="form-row">
+          <app-attention-icon></app-attention-icon>
+          <app-form-field class="col-md-8" required="true" tooltip="Tool Tip: The location where you are registering the evacuees.">
+            <label for="facility">Facility Name / Registration Location</label>
+            <input type="text" [class.is-invalid]="invalid('facility')" class="form-control" formControlName="facility" id="facility" autocomplete="off">
+            <span *ngIf="submitted" class="invalid-feedback">{{e.facility}}</span>
+          </app-form-field>
+        </div>
+        <div class="form-row">
+          <app-attention-icon></app-attention-icon>
+          <app-form-field class="col" required="true" tooltip="Tool Tip: A host community is the community where the registration is taking place and the Reception Centre is located.">
+            <label for="hostCommunity">Host Community</label>
+            <app-communities-select [class.is-invalid]="invalid('hostCommunity')" [myParent]="form" myFormControlName="hostCommunity" myId="hostCommunity"></app-communities-select>
+            <span *ngIf="submitted" class="invalid-feedback">{{e.hostCommunity}}</span>
+          </app-form-field>
+          <div class="d-flex align-items-center col-md-7">
+            <small class="text-muted">
+              If the community is not listed please select nearest community and notify your supervisor.
+            </small>
+          </div>
+        </div>
+      </div>
+
       <!-- EVACUEE DETAILS -->
       <div formGroupName="headOfHousehold" class="mt-4">
         <h2 class="blue-header font-weight-bold">Evacuee Details</h2>
