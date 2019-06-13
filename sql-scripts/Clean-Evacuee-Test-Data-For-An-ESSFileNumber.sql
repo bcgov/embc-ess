@@ -1,4 +1,6 @@
---Will delete all regisration data 
+--Will delete all regisration data for below ess file number
+DECLARE @EssFileNumber INT = 100122;
+
 BEGIN TRANSACTION
 -- Delete all addresses
 DELETE FROM EvacueeRegistrationAddresses
@@ -6,6 +8,8 @@ FROM EvacueeRegistrationAddresses a
 INNER JOIN
 	EvacueeRegistrations d
 	ON a.RegistrationId = d.EssFileNumber
+WHERE 
+    a.RegistrationId = @EssFileNumber;
 
 -- Delete all people recorded
 DELETE FROM ReferralEvacuees 
@@ -14,6 +18,8 @@ FROM
 INNER JOIN
 	EvacueeRegistrations d
 	ON re.RegistrationId = d.EssFileNumber
+WHERE 
+    re.RegistrationId = @EssFileNumber;
 
 DELETE FROM Evacuees
 FROM 
@@ -21,6 +27,8 @@ FROM
 INNER JOIN
 	EvacueeRegistrations d
 	ON e.RegistrationId = d.EssFileNumber
+WHERE 
+    e.RegistrationId = @EssFileNumber;
 
 DELETE FROM	Referrals
 FROM
@@ -28,8 +36,12 @@ FROM
 INNER JOIN
 	EvacueeRegistrations d
 	ON r.RegistrationId = d.EssFileNumber
+WHERE 
+    r.RegistrationId = @EssFileNumber;
 
 DELETE FROM EvacueeRegistrations 
+WHERE 
+    EssFileNumber = @EssFileNumber;
 
-ROLLBACK;
---COMMIT TRANSACTION
+--ROLLBACK;
+COMMIT TRANSACTION
