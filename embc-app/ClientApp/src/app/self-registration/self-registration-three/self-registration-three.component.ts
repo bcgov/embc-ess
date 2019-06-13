@@ -77,18 +77,7 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     this.submitting = true;
 
     const reg = this.registration;
-    // stamp the dates that we want to track for this record
-    reg.selfRegisteredDate = new Date().toJSON();
-    // by clicking submit this has to be true because submit is consent
-    reg.declarationAndConsent = true;
-    // NOTE The customer asked for all of these to be reversed.
-    // e.g. requiresAccomodation means hasAccomodation
-    // reversal is done before submitting
-    reg.requiresAccommodation = !reg.requiresAccommodation;
-    reg.requiresClothing = !reg.requiresClothing;
-    reg.requiresFood = !reg.requiresFood;
-    reg.requiresIncidentals = !reg.requiresIncidentals;
-    reg.requiresTransportation = !reg.requiresTransportation;
+    this.processRegistration(reg);
 
     // update client-side state
     this.onSave(reg);
@@ -106,6 +95,25 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
         this.clearRegistration(); // prevent double submissions
         this.router.navigate(['../error'], { relativeTo: this.route });
       });
+  }
+
+  // process registration data before submitting to the server
+  private processRegistration(reg: Registration): void {
+    // stamp the dates that we want to track for this record
+    reg.selfRegisteredDate = new Date().toJSON();
+    // by clicking submit this has to be true because submit is consent
+    reg.declarationAndConsent = true;
+    // NOTE The customer asked for all of these to be reversed.
+    // e.g. requiresAccomodation means hasAccomodation
+    // reversal is done before submitting
+    reg.requiresAccommodation = !reg.requiresAccommodation;
+    reg.requiresClothing = !reg.requiresClothing;
+    reg.requiresFood = !reg.requiresFood;
+    reg.requiresIncidentals = !reg.requiresIncidentals;
+    reg.requiresTransportation = !reg.requiresTransportation;
+
+    // replace empty strings with null values to comply with server validation
+    if (reg.headOfHousehold.email === '') { reg.headOfHousehold.email = null; }
   }
 
   back() {
