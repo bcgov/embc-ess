@@ -1,0 +1,12 @@
+<ul class="list-group mb-4">
+  <span *ngFor="let i of pages">
+    <li class="list-group-item">
+      <span *ngIf="i <= step">
+        <i class="far fa-check-circle"></i> Step {{i}}
+      </span>
+      <span *ngIf="i>step">
+        <i class="far fa-circle"></i> Step {{i}}
+      </span>
+    </li>
+  </span>
+</ul>
