@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-useful-information-page',
   templateUrl: './useful-information-page.component.html',
   styleUrls: ['./useful-information-page.component.scss']
 })
-export class UsefulInformationPageComponent implements OnInit {
+export class UsefulInformationPageComponent {
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }

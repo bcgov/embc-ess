@@ -8,7 +8,6 @@ import { AuthService } from '../core/services/auth.service';
 import { NotificationQueueService } from '../core/services/notification-queue.service';
 
 @Component({
-  selector: 'app-registration-summary-full',
   templateUrl: './registration-summary-full.component.html',
   styleUrls: ['./registration-summary-full.component.scss']
 })
