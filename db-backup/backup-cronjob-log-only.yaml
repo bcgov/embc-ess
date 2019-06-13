@@ -20,8 +20,8 @@ parameters:
   - name: "SCHEDULE"
     displayName: "Cron Schedule"
     description: "Cron Schedule to Execute the Job (in UTC)"
-# Currently targeting 5:00 AM Daily
-    value: "0 13 * * *"
+# Currently targeting every hour on the hour
+    value: "0 * * * *"
     required: true
   - name: "SOURCE_IMAGE_NAME"
     displayName: "Source Image Name"
@@ -42,7 +42,7 @@ parameters:
     displayName: "Database Name"
     description: "The name of the database."
     required: true
-    value: "ess"
+    value: ""
   - name: "DATABASE_SERVICE_NAME"
     displayName: "Database Deployment Name"
     description: "The name associated to the database deployment resources.  In particular, this is used to wire up the credentials associated to the database."
@@ -67,7 +67,7 @@ parameters:
     displayName: "Flag to backup of the database log only"
     description: "Flag to backup of the database log only.  If false the backup will be a full backup and if true it will only back up the transaction log"
     required: false
-    value: "false"
+    value: "true"
   - name: "NUM_BACKUPS"
     displayName: "The number of backup files to be retained"
     description: "The number of backup files to be retained.  Used for the `daily` backup strategy.  Ignored when using the `rolling` backup strategy."

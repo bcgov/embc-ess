@@ -8,7 +8,6 @@ import { UniqueKeyService } from '../core/services/unique-key.service';
 import { NotificationQueueService } from '../core/services/notification-queue.service';
 
 @Component({
-  selector: 'app-registration-summary',
   templateUrl: './registration-summary.component.html',
   styleUrls: ['./registration-summary.component.scss']
 })
