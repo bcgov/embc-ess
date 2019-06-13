@@ -150,6 +150,7 @@ namespace Gov.Jag.Embc.Public
                         opts
                         .BlockAllMixedContent()
                         .DefaultSources(s => s.Self())
+                        .ScriptSources(s => s.Self().UnsafeInline())
                         .StyleSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.googleapis.com").UnsafeInline())
                         .FontSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.gstatic.com"));
                     })
