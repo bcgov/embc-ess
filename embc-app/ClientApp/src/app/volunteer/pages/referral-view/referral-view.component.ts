@@ -11,7 +11,6 @@ import {
 } from 'src/app/core/models';
 
 @Component({
-  selector: 'app-referral-view',
   templateUrl: './referral-view.component.html',
   styleUrls: ['./referral-view.component.scss']
 })
