@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-provincial-admin-volunteers-organization-page',
   templateUrl: './provincial-admin-volunteers-organization-page.component.html',
   styleUrls: ['./provincial-admin-volunteers-organization-page.component.scss']
 })
-export class ProvincialAdminVolunteersOrganizationPageComponent implements OnInit {
+export class ProvincialAdminVolunteersOrganizationPageComponent {
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }
