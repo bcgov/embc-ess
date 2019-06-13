@@ -13,43 +13,53 @@
 
     <small>All fields are required</small>
     <h3 class="blue-header mt-0">Organization Details</h3>
-    <form>
 
+    <form novalidate [formGroup]="form">
       <div class="row">
         <div class="col pt-4 mb-4">
           <label class="required" for="organizationName">Name of Organization</label>
-          <input class="form-control" type="text" [formControl]="organizationName" id="organizationName" maxlength="150" required>
+          <input class="form-control" type="text" [class.is-invalid]="invalid('organizationName')" formControlName="organizationName" id="organizationName" maxlength="150" required>
+          <span class="invalid-feedback">Please enter an organization name</span>
         </div>
       </div>
 
       <div class="row" *ngIf="editMode === false">
         <div class="col pt-4 mb-4">
-          <label class="required" for="adminBceid">Admin BCeID User ID</label>
-          <input class="form-control" type="text" [formControl]="adminBceid" id="adminBceid" required>
+          <label class="required" for="adminBCeID">Admin BCeID User ID</label>
+          <input class="form-control" type="text" [class.is-invalid]="invalid('adminBCeID')" formControlName="adminBCeID" id="adminBCeID" required>
+          <span class="invalid-feedback">Please enter the admin BCeID user ID</span>
         </div>
       </div>
 
       <div class="row" *ngIf="editMode === false">
         <div class="col pt-4 mb-4">
           <label class="required" for="adminLastName">Admin Last Name</label>
-          <input class="form-control" type="text" [formControl]="adminLastName" id="adminLastName" required>
+          <input class="form-control" type="text" [class.is-invalid]="invalid('adminLastName')" formControlName="adminLastName" id="adminLastName" required>
+          <span class="invalid-feedback">Please enter the admin user last name</span>
         </div>
       </div>
 
       <div class="row" *ngIf="editMode === false">
         <div class="col pt-4 mb-4">
           <label class="required" for="adminFirstName">Admin First Name</label>
-          <input class="form-control" type="text" [formControl]="adminFirstName" id="adminFirstName" required>
+          <input class="form-control" type="text" [class.is-invalid]="invalid('adminFirstName')" formControlName="adminFirstName" id="adminFirstName" required>
+          <span class="invalid-feedback">Please enter the admin user first name</span>
         </div>
       </div>
 
       <div class="row">
         <div class="col pt-4 mb-4">
           <label class="required" for="community">Associated EMBC Regional District / Community</label>
-          <app-communities-select [myFormControl]="community" myId="community" [myRequired]="true" myPlaceHolder="Start Typing..."></app-communities-select>
+          <app-communities-select [class.is-invalid]="invalid('community')" [myParent]="form" myFormControlName="community" myId="community" [myRequired]="true" myPlaceHolder="Start Typing..."></app-communities-select>
+          <span class="invalid-feedback">Please select the associated EMBC regional district/community that the organization is associated to</span>
         </div>
       </div>
     </form>
+
+    <div *ngIf="showErrorsWhen && !form.valid" class="text-danger mt-5 pl-5">
+      <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>
+      &nbsp;Some required fields have not been completed.
+    </div>
   </div>
 
   <div class="mt-5 space-between">

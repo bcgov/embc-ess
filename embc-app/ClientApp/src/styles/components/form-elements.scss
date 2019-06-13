@@ -13,11 +13,10 @@
 
   &-check {
     input {
-      // margin: 0;
-      margin-top: 2px;
+      margin-top: 0;
       margin-left: -1.25rem;
-      // vertical-align: middle;
     }
+
     &-label {
       padding-left: 5px;
       font-weight: 400;
@@ -63,6 +62,13 @@
     font-size: 20px;
     color: #6b6b6b;
   }
+}
+
+.form-check-input {
+  // the silly checkboxes are high and the text is low
+  position: relative;
+  vertical-align: top;
+  top: 3px;
 }
 
 // VALIDATION
