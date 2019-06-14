@@ -7,22 +7,8 @@
 
   <div class="col-md-4 col-sm-12">
     <!-- TODO: Refactor into a common component Stepper -->
-    <!-- <section class="step" style="display: block; background-color: #F1F4FA">
-        <h3 class="blue-header">EVACUEE PROFILE</h3>
-        <section style="padding-top: 15px; padding-bottom: 20px;">
-          <mat-vertical-stepper [linear]="true" #stepper>
-            <ng-template matStepperIcon="edit">
-              <app-font-awesome-icon icon="check"></app-font-awesome-icon>
-            </ng-template>
-            <ng-template matStepperIcon="number">
-            </ng-template>
-            <mat-step label="STEP 1: Evacuee Information"></mat-step>
-            <mat-step label="STEP 2: Additional Information"></mat-step>
-            <mat-step label="STEP 3: Review Details"></mat-step>
-            <mat-step label="STEP 4: Confirmation"></mat-step>
-          </mat-vertical-stepper>
-        </section>
-      </section> -->
+
+    <app-self-registration-stepper></app-self-registration-stepper>
 
     <app-side-box title="Useful Information" icon="list">
       <p>
