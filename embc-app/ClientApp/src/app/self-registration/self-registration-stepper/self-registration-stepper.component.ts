@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-self-registration-stepper',
@@ -7,22 +7,19 @@ import { Router, NavigationEnd } from '@angular/router';
   styleUrls: ['./self-registration-stepper.component.scss']
 })
 export class SelfRegistrationStepperComponent implements OnInit {
-  pages = [1, 2, 3, 4];
-  step = 0;
-  activeRoute;
+  step = 1;
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
 
   ) { }
 
   ngOnInit() {
     // which step is this?
-    // this.step = parseInt(this.router.url.split('/')[2].split('-')[1]);
-    this.router.events.subscribe(x => {
-      if (x instanceof NavigationEnd) {
-        this.step = parseInt(x.url.split('/')[2].split('-')[1]);
+    this.router.events.forEach(event => {
+      if (event instanceof NavigationEnd) {
+        this.step = Number(this.route.snapshot.firstChild.url[0].path.split('-')[1]);
       }
     });
   }
-
 }
