@@ -146,6 +146,30 @@
                         "name": "${SECRET_RESOURCE_NAME}"
                       }
                     }
+                  },
+                  {
+                    "name": "SESSION_TIMEOUT_MINUTES",
+                    "value": "${SESSION_TIMEOUT_MINUTES}"
+                  },
+                  {
+                    "name": "USER_TIMEOUT_WARNING_DURATION_MINUTES",
+                    "value": "${USER_TIMEOUT_WARNING_DURATION_MINUTES}"
+                  },
+                  {
+                    "name": "DEFAULT_TIMEOUT_WARNING_MINUTES",
+                    "value": "${DEFAULT_TIMEOUT_WARNING_MINUTES}"
+                  },
+                  {
+                    "name": "DEFAULT_TIMEOUT_WARNING_DURATION_MINUTES",
+                    "value": "${DEFAULT_TIMEOUT_WARNING_DURATION_MINUTES}"
+                  },
+                  {
+                    "name": "APP_ENVIRONMENT_TITLE",
+                    "value": "${APP_ENVIRONMENT_TITLE}"
+                  },
+                  {
+                    "name": "PDF_SERVICE_NAME",
+                    "value": "${PDF_SERVICE_NAME}"
                   }
                 ],
                 "resources": {
@@ -335,58 +359,6 @@
       "value": "2Gi"
     },
     {
-      "description": "The endpoint used for SiteMinder routed access to the application.",
-      "displayName": "SiteMinder Application Domain",
-      "name": "SITEMINDER_APPLICATION_DOMAIN",
-      "value": "embcess-sandbox.pathfinder.bcgov"
-    },
-    {
-      "description": "The exposed hostname that will route to the service, e.g., myappname.pathfinder.gov.bc.ca, if left blank a value will be defaulted.",
-      "displayName": "Application Domain",
-      "name": "APPLICATION_DOMAIN",
-      "value": "embcess-sandbox.pathfinder.gov.bc.ca"
-    },
-    {
-      "description": "Webname for Sharepoint, e.g., pill pressdev, if left blank a value will be defaulted.",
-      "displayName": "Sharepoint Webname",
-      "name": "SHAREPOINT_WEBNAME",
-      "required": false,
-      "value": "embcess"
-    },
-    {
-      "description": "Sharepoint Tenant ID and Dynamics Tenant ID, e.g., bcgovtrial.onmicrosoft.com, if left blank a value will be defaulted.",
-      "displayName": "AAD Tennant ID",
-      "name": "SHAREPOINT_AAD_TENANTID",
-      "required": false,
-      "value": ""
-    },
-    {
-      "description": "Sharepoint Client ID",
-      "displayName": "Sharepoint Client ID",
-      "name": "SHAREPOINT_CLIENT_ID",
-      "required": false
-    },
-    {
-      "description": "Sharepoint Certificate Password",
-      "displayName": "Sharepoint Certificate Password",
-      "name": "SHAREPOINT_CERTIFICATE_PASSWORD",
-      "required": false
-    },
-    {
-      "description": "Filename for BCGovTrial.pfx, e.g., /sharepointcert/BCGovTrial.pfx, if left blank a value will be defaulted.",
-      "displayName": "Sharepoint Certificate Filename",
-      "name": "SHAREPOINT_CERTIFICATE_FILENAME",
-      "required": false,
-      "value": ""
-    },
-    {
-      "description": "Boolean that shows login, e.g., true, if left blank a value will be defaulted.",
-      "displayName": "Show login",
-      "name": "SHOW_LOGIN",
-      "required": true,
-      "value": "true"
-    },
-    {
       "name": "DATABASE_SERVICE_NAME",
       "displayName": "Database service name",
       "description": "Database service name",
@@ -470,6 +442,48 @@
       "generate": "expression",
       "name": "DB_ADMIN_PASSWORD",
       "required": true
+    },
+    {
+      "name": "SESSION_TIMEOUT_MINUTES",
+      "displayName": "",
+      "description": "",
+      "required": true,
+      "value": "20"
+    },
+    {
+      "name": "USER_TIMEOUT_WARNING_DURATION_MINUTES",
+      "displayName": "",
+      "description": "",
+      "required": true,
+      "value": "4"
+    },
+    {
+      "name": "DEFAULT_TIMEOUT_WARNING_MINUTES",
+      "displayName": "",
+      "description": "",
+      "required": true,
+      "value": "5"
+    },
+    {
+      "name": "DEFAULT_TIMEOUT_WARNING_DURATION_MINUTES",
+      "displayName": "",
+      "description": "",
+      "required": true,
+      "value": "2"
+    },
+    {
+      "name": "APP_ENVIRONMENT_TITLE",
+      "displayName": "",
+      "description": "",
+      "required": true,
+      "value": "DEV (develop branch)"
+    },
+    {
+      "name": "PDF_SERVICE_NAME",
+      "displayName": "",
+      "description": "",
+      "required": true,
+      "value": "http://pdf-service-master.jhnamn-dev.svc:3000"
     }
   ]
 }
