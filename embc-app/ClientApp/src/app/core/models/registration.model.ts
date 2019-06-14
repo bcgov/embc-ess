@@ -44,6 +44,13 @@ export interface Registration {
   headOfHousehold: HeadOfHousehold;
   incidentTask: IncidentTask | null;
   hostCommunity: Community | null;
+
   // Make this as Partial so we can don't have to send the whole volunteer object; i.e. { id: 'guid' }
-  completedBy: Partial<Volunteer> | null;
+  // Deprecated: Back-end computes the completedBy according to session data.
+  //  The front-end has no places where this information is available.
+  //  The view model in the back end doesn't match anymore.
+  completedBy?: Partial<Volunteer> | null;
+
+  // is the registration considered finalized?
+  isFinalized?: boolean;
 }
