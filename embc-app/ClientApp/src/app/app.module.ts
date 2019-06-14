@@ -67,6 +67,7 @@ import { AbstractReferralComponent } from './volunteer/components/abstract-refer
 import { EvacueePickerComponent } from './volunteer/components/evacuee-picker/evacuee-picker.component';
 import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+import { TopTabBarComponent } from './components/top-tab-bar/top-tab-bar.component';
 import { AdminVolunteerMakerComponent } from './provincial-admin/components/admin-volunteer-maker/admin-volunteer-maker.component';
 
 @NgModule({
@@ -123,6 +124,7 @@ import { AdminVolunteerMakerComponent } from './provincial-admin/components/admi
     SupplierComponent,
     ReferralListItemComponent,
     AbstractReferralComponent,
+    TopTabBarComponent,
     AdminVolunteerMakerComponent,
   ],
   imports: [

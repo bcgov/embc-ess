@@ -140,12 +140,11 @@
               <input id="answer" type="text"
                 #userAnswerRef = "ngModel"
                 [(ngModel)]="answer"
-                (input)="answerChanged($event)"
+                (keyup)="answerChanged($event)"
                 [ngClass]="{'captcha-wrong-answer': userAnswerRef.dirty && incorrectAnswer}"
                 name="answer"
                 maxlength="6"
                 required
-                autocomplete="off"
                 autocorrect="off"
                 autocapitalize="none">
             </label>
