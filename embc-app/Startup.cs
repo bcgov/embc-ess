@@ -59,11 +59,15 @@ namespace Gov.Jag.Embc.Public
                               .SetIsOriginAllowedToAllowWildcardSubdomains();
                     });
                 })
+                //XSRF token for Angular - not working yet
+                //.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN")
                 .AddSession()
                 .AddMvc(opts =>
                 {
                     // authorize on all controllers by default
                     opts.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
+                    // anti forgery validation by default - not working yet
+                    //opts.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 })
                 .AddJsonOptions(
                     opts =>
@@ -105,7 +109,7 @@ namespace Gov.Jag.Embc.Public
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env/*, IAntiforgery antiForgery*/)
         {
             //inject an instance of AutoMapper to the static class
             ViewModelConversions.mapper = app.ApplicationServices.GetService<IMapper>();
@@ -153,7 +157,24 @@ namespace Gov.Jag.Embc.Public
                         .ScriptSources(s => s.Self().UnsafeInline())
                         .StyleSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.googleapis.com").UnsafeInline())
                         .FontSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.gstatic.com"));
+
+                        if (env.IsDevelopment()) opts.ScriptSources(s => s.Self().UnsafeEval());
                     })
+                // Anty forgery cookie for Angular - not working yet
+                //.Use(next => context =>
+                //{
+                //    var path = context.Request.Path.Value;
+
+                //    if (string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
+                //        string.Equals(path, "/index.html", StringComparison.OrdinalIgnoreCase) ||
+                //        string.Equals(path, "/login", StringComparison.OrdinalIgnoreCase))
+                //    {
+                //        // The request token can be sent as a JavaScript-readable cookie, and Angular uses it by default.
+                //        var tokens = antiForgery.GetAndStoreTokens(context);
+                //        context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions() { HttpOnly = false });
+                //    }
+                //    return next(context);
+                //})
                 .UseStaticFiles()
                 .UseSpaStaticFiles();
 
@@ -163,7 +184,9 @@ namespace Gov.Jag.Embc.Public
                 .UseCookiePolicy(new CookiePolicyOptions
                 {
                     HttpOnly = HttpOnlyPolicy.Always,
-                    Secure = CookieSecurePolicy.Always,
+                    Secure = env.IsDevelopment()
+                        ? CookieSecurePolicy.SameAsRequest
+                        : CookieSecurePolicy.Always,
                     MinimumSameSitePolicy = SameSiteMode.Strict
                 })
 
