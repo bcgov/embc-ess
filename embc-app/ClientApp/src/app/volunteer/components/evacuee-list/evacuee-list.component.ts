@@ -137,4 +137,11 @@ export class EvacueeListComponent implements OnInit {
     // go to registration summary page
     this.router.navigate([`/${this.path}/registration/summary`]);
   }
+
+  onNullQueryString() {
+    // when a user in IE11 clicks the x to clear the field we need to be sure that we reset the search
+    if (!this.queryString) {
+      this.search();
+    }
+  }
 }

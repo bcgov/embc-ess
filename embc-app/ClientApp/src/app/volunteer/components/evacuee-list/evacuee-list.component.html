@@ -9,7 +9,7 @@
     <ng-container *ngIf="!advancedSearchMode">
       <div class="form-row">
         <div class="col">
-          <input [(ngModel)]="queryString" type="text" aria-label="search" class="form-control mb-2" placeholder="Search by task number / last name / registration number / community ..." (keydown.enter)="search()">
+          <input [(ngModel)]="queryString" (ngModelChange)="onNullQueryString($event)" type="text" aria-label="search" class="form-control mb-2" placeholder="Search by task number / last name / registration number / community ..." (keydown.enter)="search()">
         </div>
         <div class="col-auto">
           <button type="button" class="btn btn-primary text-uppercase" (click)="search()">Search</button>
