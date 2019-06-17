@@ -130,7 +130,7 @@ namespace Gov.Jag.Embc.Public
 
             app
                 // HSTS header
-                .UseHsts(opts => opts.IncludeSubdomains().MaxAge(days: 365))
+                .UseHsts(opts => opts.IncludeSubdomains().MaxAge(days: 365).AllResponses())
                 // X-Content-Type-Options header
                 .UseXContentTypeOptions()
                 // Referrer-Policy header.
