@@ -43,7 +43,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
   // Flags for the different modes this form supports
   createMode = true;
-  finalizeMode = false;
+  finalizeMode = false; // finalize mode is on when the registration is incomplete
   editMode = false; // edit mode is the mode where the form is fed data from the api. (Changes text and etc.)
   summaryMode = false; // just show the summary
   submitting = false; // this is what disables buttons on submit
@@ -175,6 +175,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    // which path should this user use to route to and from this component
     this.authService.path.subscribe((path: string) => this.path = path);
 
     // fetch the default country
@@ -377,7 +378,6 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     // validate the whole form as we capture data
     this.form.valueChanges.subscribe(() => this.validateForm());
 
-
     // show/hide family members section based on the "family info" radio button
     this.f.registeringFamilyMembers.valueChanges
       .subscribe((value: string) => {
@@ -422,18 +422,18 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   displayRegistration(r?: Registration | null): void {
     // Display the appropriate page title and form state
     if (r == null) {
+      // null registration means this is a new registration
       this.pageTitle = 'Create New Registration';
       this.createMode = true;
       this.finalizeMode = false; // turn off these
+    } else if (!r.isFinalized) {
+      this.pageTitle = `Finalize Evacuee Registration ${r.essFileNumber}`;
+      this.finalizeMode = true;
+      this.createMode = false; // turn off these
     } else {
-      if (r.incidentTask == null) {
-        this.pageTitle = `Finalize Evacuee Registration ${r.essFileNumber}`;
-        this.finalizeMode = true;
-        this.createMode = false; // turn off these
-      } else {
-        this.pageTitle = 'Edit Evacuee Registration';
-        this.createMode = this.finalizeMode = false; // turn off these
-      }
+      this.pageTitle = 'Edit Evacuee Registration';
+      this.createMode = this.finalizeMode = false; // turn off these
+
     }
 
     if (r && this.form) {
@@ -520,7 +520,6 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
         // primaryResidence: r.headOfHousehold.primaryResidence as Address,
         // mailingAddress: r.headOfHousehold.mailingAddress as Address,
-        completedBy: r.completedBy as Volunteer,
         hostCommunity: hostCommunity as Community,
         incidentTask: incidentTask as IncidentTask,
 
@@ -722,7 +721,6 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       // related entities
       incidentTask: values.incidentTask,
       hostCommunity: values.hostCommunity,
-      completedBy: values.completedBy,
     };
 
     const registration = this.registration;
@@ -735,16 +733,10 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       r.headOfHousehold.id = registration.headOfHousehold.id || null;
       r.registrationCompletionDate = registration.registrationCompletionDate || null; // todo need to check if this date is being handled correctly
       r.headOfHousehold.primaryResidence.id = registration.headOfHousehold.primaryResidence.id || null;
-      r.completedBy = registration.completedBy || null;
     }
 
     // timestamp the completion date on
     r.registrationCompletionDate = r.registrationCompletionDate || new Date().toJSON();
-
-    // track who completed the registration for reporting purposes
-    const volunteer: Partial<Volunteer> = this.currentUser.contactid ? { id: this.currentUser.contactid } : null;
-    // the initial completed by volunteer is preserved unless there is a new volunteer
-    r.completedBy = r.completedBy || volunteer;
 
     // The user now consents.
     r.declarationAndConsent = true;
@@ -840,7 +832,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       headOfHousehold: null,
       incidentTask: null,
       hostCommunity: null,
-      completedBy: null,
+      isFinalized: null
     };
   }
 }

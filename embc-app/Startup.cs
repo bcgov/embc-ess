@@ -7,25 +7,17 @@ using Gov.Jag.Embc.Public.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
-using Microsoft.Net.Http.Headers;
-using NWebsec.AspNetCore.Mvc;
-using NWebsec.AspNetCore.Mvc.Csp;
 using System;
-using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,155 +25,215 @@ namespace Gov.Jag.Embc.Public
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        private readonly ILoggerFactory loggerFactory;
+        private readonly IConfiguration configuration;
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
+        {
+            this.loggerFactory = loggerFactory;
+            this.configuration = configuration;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IConfiguration>(Configuration);
             // add singleton to allow Controllers to query the Request object
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            services.AddDbContext<EmbcDbContext>(
-                options => options
-                    .UseSqlServer(DatabaseTools.GetConnectionString(Configuration)));
-
-            // Add a memory cache
-            services.AddMemoryCache();
-
-            // Add CORS policy
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAnyOrigin",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
-            });
-
-            // for security reasons, the following headers are set.
-            services.AddMvc(opts =>
-            {
-                // default deny
-                var policy = new AuthorizationPolicyBuilder()
-                 .RequireAuthenticatedUser()
-                 .Build();
-                opts.Filters.Add(new AuthorizeFilter(policy));
-                opts.Filters.Add(typeof(NoCacheHttpHeadersAttribute));
-                opts.Filters.Add(new XRobotsTagAttribute() { NoIndex = true, NoFollow = true });
-                opts.Filters.Add(typeof(XContentTypeOptionsAttribute));
-                opts.Filters.Add(typeof(XDownloadOptionsAttribute));
-                opts.Filters.Add(typeof(XFrameOptionsAttribute));
-                opts.Filters.Add(typeof(XXssProtectionAttribute));
-                //CSPReportOnly
-                opts.Filters.Add(typeof(CspReportOnlyAttribute));
-                opts.Filters.Add(new CspScriptSrcReportOnlyAttribute { None = true });
-            })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-            .AddJsonOptions(
-                opts =>
+            services
+                .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+                .AddDbContext<EmbcDbContext>(
+                    options => options
+                        .UseLoggerFactory(loggerFactory)
+                        .UseSqlServer(DatabaseTools.GetConnectionString(configuration))
+                        )
+                // CORS policy
+                .AddCors(opts =>
                 {
-                    opts.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
-                    opts.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;
-                    opts.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
-                    opts.SerializerSettings.DateParseHandling = Newtonsoft.Json.DateParseHandling.DateTimeOffset;
+                    opts.AddDefaultPolicy(builder =>
+                    {
+                        builder.WithOrigins(
+                              "http://pathfinder.bcgov",
+                              "https://pathfinder.gov.bc.ca",
+                              "https://dev.justice.gov.bc.ca",
+                              "https://test.justice.gov.bc.ca",
+                              "https://justice.gov.bc.ca")
+                              .SetIsOriginAllowedToAllowWildcardSubdomains();
+                    });
+                })
+                //XSRF token for Angular - not working yet
+                //.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN")
+                .AddSession()
+                .AddMvc(opts =>
+                {
+                    // authorize on all controllers by default
+                    opts.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
+                    // anti forgery validation by default - not working yet
+                    //opts.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                })
+                .AddJsonOptions(
+                    opts =>
+                    {
+                        opts.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+                        opts.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;
+                        opts.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+                        opts.SerializerSettings.DateParseHandling = Newtonsoft.Json.DateParseHandling.DateTimeOffset;
+                        opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    });
 
-                    // ReferenceLoopHandling is set to Ignore to prevent JSON parser issues with the
-                    // user / roles model.
-                    opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                });
-
-            // setup siteminder authentication (core 2.0)
+            // setup siteminder authentication
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
                 options.DefaultChallengeScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
-            }).AddSiteminderAuth(options =>
-            {
-            });
-
-            // setup key ring to persist in storage.
-            if (!string.IsNullOrEmpty(Configuration["KEY_RING_DIRECTORY"]))
-            {
-                services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(Configuration["KEY_RING_DIRECTORY"]));
-            }
+            }).AddSiteminderAuth();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
+                        {
+                            configuration.RootPath = "ClientApp/dist";
+                        });
 
             // health checks
             services.AddHealthChecks(checks =>
             {
                 checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
-
-                //checks.AddSqlCheck(DatabaseTools.GetDatabaseName(Configuration), DatabaseTools.GetConnectionString(Configuration));
+                checks.AddSqlCheck(configuration.GetValue<string>("DB_NAME"), DatabaseTools.GetConnectionString(configuration));
             });
 
-            services.AddSession(opts =>
-            {
-                opts.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-                opts.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
-                opts.IdleTimeout = TimeSpan.FromMinutes(Configuration.ServerTimeoutInMinutes());
-            });
-            // add a data interface
-            services.AddTransient<IDataInterface, DataInterface>();
-
-            //AutoMapper
             services.AddAutoMapper(typeof(Startup));
+            services.AddMediatR(typeof(Startup));
 
-            // Enable the IURLHelper to be able to build links within Controllers
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddScoped<IUrlHelper>(x =>
-            {
-                var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
-                var factory = x.GetRequiredService<IUrlHelperFactory>();
-                return factory.GetUrlHelper(actionContext);
-            });
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IPdfConverter, PdfConverter>();
             services.AddTransient<IReferralsService, ReferralsService>();
-
-            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+            services.AddTransient<IDataInterface, DataInterface>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env/*, IAntiforgery antiForgery*/)
         {
-            var env = app.ApplicationServices.GetService<IHostingEnvironment>();
-            var loggerFactory = app.ApplicationServices.GetService<ILoggerFactory>();
-            var log = loggerFactory.CreateLogger<Startup>();
-
             //inject an instance of AutoMapper to the static class
             ViewModelConversions.mapper = app.ApplicationServices.GetService<IMapper>();
 
             // DATABASE SETUP
+            SetupDatabase(env);
+
+            app.UsePathBase(configuration.GetValue("BASE_PATH", ""));
+
+            if (!env.IsProduction())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+            }
+
+            app
+                // HSTS header
+                .UseHsts(opts => opts.IncludeSubdomains().MaxAge(days: 365).AllResponses())
+                // X-Content-Type-Options header
+                .UseXContentTypeOptions()
+                // Referrer-Policy header.
+                .UseReferrerPolicy(opts => opts.NoReferrer())
+                // X-Xss-Protection header
+                .UseXXssProtection(opts => opts.EnabledWithBlockMode())
+                // X-Frame-Options header
+                .UseXfo(opts => opts.Deny())
+                // CORS policy
+                .UseCors()
+                // X-xss-protection header
+                .UseXXssProtection(opts => opts.EnabledWithBlockMode())
+                // X-Robots-Tag header
+                .UseXRobotsTag(opts => opts.NoIndex().NoFollow())
+                .UseXDownloadOptions()
+                // no cache  headers
+                .UseNoCacheHttpHeaders()
+                // CSP header
+                .UseCsp(opts =>
+                    {
+                        opts
+                        .BlockAllMixedContent()
+                        .DefaultSources(s => s.Self())
+                        .ScriptSources(s => s.Self().UnsafeInline())
+                        .StyleSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.googleapis.com").UnsafeInline())
+                        .FontSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.gstatic.com"));
+
+                        if (env.IsDevelopment()) opts.ScriptSources(s => s.Self().UnsafeEval());
+                    })
+                // Anty forgery cookie for Angular - not working yet
+                //.Use(next => context =>
+                //{
+                //    var path = context.Request.Path.Value;
+
+                //    if (string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
+                //        string.Equals(path, "/index.html", StringComparison.OrdinalIgnoreCase) ||
+                //        string.Equals(path, "/login", StringComparison.OrdinalIgnoreCase))
+                //    {
+                //        // The request token can be sent as a JavaScript-readable cookie, and Angular uses it by default.
+                //        var tokens = antiForgery.GetAndStoreTokens(context);
+                //        context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions() { HttpOnly = false });
+                //    }
+                //    return next(context);
+                //})
+                .UseStaticFiles()
+                .UseSpaStaticFiles();
+
+            app
+                .UseSession()
+                .UseAuthentication()
+                .UseCookiePolicy(new CookiePolicyOptions
+                {
+                    HttpOnly = HttpOnlyPolicy.Always,
+                    Secure = env.IsDevelopment()
+                        ? CookieSecurePolicy.SameAsRequest
+                        : CookieSecurePolicy.Always,
+                    MinimumSameSitePolicy = SameSiteMode.Strict
+                })
+
+                .UseMvc(routes =>
+                {
+                    routes.MapRoute(
+                        name: "default",
+                        template: "{controller}/{action=Index}/{id?}");
+                })
+
+                .UseSpa(spa =>
+                {
+                    // To learn more about options for serving an Angular SPA from ASP.NET Core, see https://go.microsoft.com/fwlink/?linkid=864501
+
+                    spa.Options.SourcePath = "ClientApp";
+
+                    // Only run the angular CLI Server in Development mode (not staging or test.)
+                    if (env.IsDevelopment())
+                    {
+                        spa.UseAngularCliServer(npmScript: "start");
+                    }
+                });
+        }
+
+        private void SetupDatabase(IHostingEnvironment env)
+        {
+            var log = loggerFactory.CreateLogger<Startup>();
             log.LogInformation("Fetching the application's database context ...");
 
             var adminCtx = new EmbcDbContext(new DbContextOptionsBuilder<EmbcDbContext>()
                 .UseLoggerFactory(loggerFactory)
-                .UseSqlServer(DatabaseTools.GetSaConnectionString(Configuration)).Options);
+                .UseSqlServer(DatabaseTools.GetSaConnectionString(configuration)).Options);
 
-            if (Configuration.DbFullRefresh())
+            if (configuration.DbFullRefresh())
             {
                 log.LogWarning("DROPPING the database! ...");
                 adminCtx.Database.EnsureDeleted();
             }
 
             log.LogInformation("Initializing the database ...");
-            if (!string.IsNullOrEmpty(Configuration["DB_ADMIN_PASSWORD"]))
+            if (!string.IsNullOrEmpty(configuration["DB_ADMIN_PASSWORD"]))
             {
                 //For OpenShift deployments
-                DatabaseTools.CreateDatabaseIfNotExists(DatabaseTools.GetSaConnectionString(Configuration, "master"),
-                    Configuration["DB_DATABASE"],
-                    Configuration["DB_USER"],
-                    Configuration["DB_PASSWORD"]);
+                DatabaseTools.CreateDatabaseIfNotExists(DatabaseTools.GetSaConnectionString(configuration, "master"),
+                    configuration["DB_DATABASE"],
+                    configuration["DB_USER"],
+                    configuration["DB_PASSWORD"]);
             }
 
             //Check if the database exists
@@ -189,7 +241,7 @@ namespace Gov.Jag.Embc.Public
             if (databaseExists)
             {
                 log.LogInformation("Syncing migrations prior to migrating...");
-                DatabaseTools.SyncInitialMigration(DatabaseTools.GetSaConnectionString(Configuration));
+                DatabaseTools.SyncInitialMigration(DatabaseTools.GetSaConnectionString(configuration));
             }
 
             log.LogInformation("Migrating the database ...");
@@ -219,75 +271,6 @@ namespace Gov.Jag.Embc.Public
                 msg.AppendLine("Error message is " + e.Message);
                 log.LogCritical(new EventId(-1, "Database Seeding Failed"), e, msg.ToString());
             }
-
-            string pathBase = Configuration["BASE_PATH"];
-
-            if (!string.IsNullOrEmpty(pathBase))
-            {
-                app.UsePathBase(pathBase);
-            }
-            if (!env.IsProduction())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-
-            app.Use(async (ctx, next) =>
-            {
-                ctx.Response.Headers.Add("Content-Security-Policy",
-                                         "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com https://code.jquery.com https://stackpath.bootstrapcdn.com https://fonts.googleapis.com");
-                ctx.Response.Headers.Add("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
-                await next();
-            });
-            app.UseXContentTypeOptions();
-            app.UseXfo(xfo => xfo.Deny());
-
-            StaticFileOptions staticFileOptions = new StaticFileOptions();
-
-            staticFileOptions.OnPrepareResponse = ctx =>
-            {
-                ctx.Context.Response.Headers[HeaderNames.CacheControl] = "no-cache, no-store, must-revalidate, private";
-                ctx.Context.Response.Headers[HeaderNames.Pragma] = "no-cache";
-                ctx.Context.Response.Headers["X-Frame-Options"] = "SAMEORIGIN";
-                ctx.Context.Response.Headers["X-XSS-Protection"] = "1; mode=block";
-                ctx.Context.Response.Headers["X-Content-Type-Options"] = "nosniff";
-            };
-
-            app.UseStaticFiles(staticFileOptions);
-            app.UseSpaStaticFiles(staticFileOptions);
-            app.UseXXssProtection(options => options.EnabledWithBlockMode());
-            app.UseNoCacheHttpHeaders();
-            // IMPORTANT: This session call MUST go before UseMvc()
-            var sessionTimout = TimeSpan.FromMinutes(Configuration.ServerTimeoutInMinutes());
-            app.UseSession();
-            app.UseAuthentication();
-
-            // global policy - assign here or on each controller
-            // IMPORTANT: Make sure UseCors() is called BEFORE UseMvc()
-            app.UseCors("AllowAnyOrigin");
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
-            });
-
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core, see https://go.microsoft.com/fwlink/?linkid=864501
-
-                spa.Options.SourcePath = "ClientApp";
-
-                // Only run the angular CLI Server in Development mode (not staging or test.)
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
         }
     }
 }

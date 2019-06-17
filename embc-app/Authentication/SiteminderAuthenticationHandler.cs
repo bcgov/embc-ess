@@ -22,15 +22,14 @@ namespace Gov.Jag.Embc.Public.Authentication
 
     public static class SiteminderAuthenticationExtensions
     {
-        /// <summary>
-        /// Add Authentication Handler
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="configureOptions"></param>
-        /// <returns></returns>
         public static AuthenticationBuilder AddSiteminderAuth(this AuthenticationBuilder builder, Action<SiteMinderAuthOptions> configureOptions)
         {
             return builder.AddScheme<SiteMinderAuthOptions, SiteminderAuthenticationHandler>(SiteMinderAuthOptions.AuthenticationSchemeName, configureOptions);
+        }
+
+        public static AuthenticationBuilder AddSiteminderAuth(this AuthenticationBuilder builder)
+        {
+            return AddSiteminderAuth(builder, opts => { });
         }
     }
 

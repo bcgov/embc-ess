@@ -40,7 +40,7 @@
                     <div class="col-4 pl-2">
                       <label for="numRooms_{{uuid}}" class="font-weight-normal required"># Rooms</label>
                       <select class="form-control" appErrorBorder [when]="showErrorsWhen" id="numRooms_{{uuid}}" formControlName="numRooms">
-                        <option [ngValue]="null">Select--</option>
+                        <!-- <option [ngValue]="null">Select--</option> -->
                         <option *ngFor="let n of rooms" [ngValue]="n">{{n}}</option>
                       </select>
                       <span class="invalid-feedback">Please select an option</span>

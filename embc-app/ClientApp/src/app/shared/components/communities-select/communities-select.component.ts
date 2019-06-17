@@ -11,13 +11,15 @@ import { Community, Organization } from 'src/app/core/models';
 // ref: https://ng-bootstrap.github.io/#/components/typeahead/
 //
 
+const MIN_SEARCH_LENGTH = 3;
+
 @Component({
   selector: 'app-communities-select',
   templateUrl: './communities-select.component.html',
   styleUrls: ['./communities-select.component.scss']
 })
 export class CommunitiesSelectComponent {
-  @Input() myFormControl: Organization = null;
+  @Input() myFormControl: FormControl;
   @Input() myParent: FormGroup = null;
   @Input() myFormControlName: string = null;
   @Input() myRequired = false;
@@ -42,7 +44,7 @@ export class CommunitiesSelectComponent {
       debounceTime(200),
       distinctUntilChanged(),
       map(term => {
-        if (term.length < 3) {
+        if (term.length < MIN_SEARCH_LENGTH) {
           return [];
         } else {
           // any apostrophe looking character get replaced.
@@ -75,16 +77,33 @@ export class CommunitiesSelectComponent {
     this.config.placement = ['bottom-left'];
   }
 
-  onBlur(search: string) {
-    // look for exact match
-    const found = this.communities.find(community => (community.name.toLowerCase() === search.toLowerCase().replace(/[‘’]/g, '\'')));
+  onBlur(term: string) {
+    let value = null;
 
-    // if exact match was found, use it
+    // ensure we have a large enough search term
+    if (term && term.length >= MIN_SEARCH_LENGTH) {
+      // prepare for case-insensitive search and replace weird quotes with regular quotes
+      term = term.toLowerCase().replace(/[‘’]/g, '\'');
+
+      // first look for an exact match
+      const exact = this.communities.find(c => c.name.toLowerCase() === term);
+      if (exact) {
+        value = exact;
+      } else {
+        // otherwise look for a single partial match
+        const partials = this.communities.filter(c => c.name.toLowerCase().includes(term));
+        if (partials.length === 1) {
+          value = partials[0];
+        }
+      }
+    }
+
+    // if a match was found, use it
     // otherwise clear control to avoid user confusion
     if (this.myParent && this.myFormControlName) {
-      this.myParent.controls[this.myFormControlName].setValue(found || null);
+      this.myParent.controls[this.myFormControlName].setValue(value);
     } else if (this.myFormControl) {
-      (this.myFormControl as unknown as FormControl).setValue(found || null);
+      this.myFormControl.setValue(value);
     }
   }
 }
