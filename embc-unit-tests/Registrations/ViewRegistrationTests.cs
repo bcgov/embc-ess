@@ -10,7 +10,7 @@ namespace embc_unit_tests.Registrations
 {
     public class ViewRegistrationTests : TestBase
     {
-        public ViewRegistrationTests(ITestOutputHelper output) : base(output, (typeof(IDataInterface), typeof(DataInterface)))
+        public ViewRegistrationTests(ITestOutputHelper output) : base(output)
         {
         }
 

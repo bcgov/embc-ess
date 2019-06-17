@@ -40,6 +40,7 @@ namespace Gov.Jag.Embc.Public
             // add singleton to allow Controllers to query the Request object
             services
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+                .AddSingleton(configuration)
                 .AddDbContext<EmbcDbContext>(
                     options => options
                         .UseLoggerFactory(loggerFactory)

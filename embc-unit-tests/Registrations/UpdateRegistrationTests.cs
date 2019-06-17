@@ -1,6 +1,4 @@
-﻿using Gov.Jag.Embc.Public.DataInterfaces;
-using Gov.Jag.Embc.Public.Services.Registrations;
-using Gov.Jag.Embc.Public.Utils;
+﻿using Gov.Jag.Embc.Public.Services.Registrations;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -10,9 +8,7 @@ namespace embc_unit_tests.Registrations
 {
     public class UpdateRegistrationTests : TestBase
     {
-        public UpdateRegistrationTests(ITestOutputHelper output) : base(output,
-            (typeof(IEmailSender), typeof(EmailSender)),
-            (typeof(IDataInterface), typeof(DataInterface)))
+        public UpdateRegistrationTests(ITestOutputHelper output) : base(output)
         {
         }
 
