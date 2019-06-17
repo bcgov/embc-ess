@@ -4,7 +4,6 @@ using Gov.Jag.Embc.Public;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Seeder;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,11 +20,7 @@ namespace embc_unit_tests
     {
         private ServiceProvider serviceProvider;
 
-        protected IMapper Mapper => serviceProvider.CreateScope().ServiceProvider.GetService<IMapper>();
-
-        protected EmbcDbContext EmbcDb => serviceProvider.CreateScope().ServiceProvider.GetService<EmbcDbContext>();
-
-        protected IMediator Mediator => serviceProvider.CreateScope().ServiceProvider.GetService<IMediator>();
+        protected IServiceScope Services => serviceProvider.CreateScope();
 
         public TestBase(ITestOutputHelper output)
         {
@@ -55,8 +50,9 @@ namespace embc_unit_tests
 
         private void SeedData()
         {
-            if (!EmbcDb.Database.IsInMemory()) return;
-            var repo = new SeederRepository(EmbcDb);
+            var db = Services.ServiceProvider.GetService<EmbcDbContext>();
+            if (!db.Database.IsInMemory()) return;
+            var repo = new SeederRepository(db);
 
             var types = new[]
             {
@@ -98,7 +94,7 @@ namespace embc_unit_tests
 
         protected async Task<string> SeedIncident(string communityId)
         {
-            var di = new DataInterface(EmbcDb, Mapper);
+            var di = Services.ServiceProvider.GetService<IDataInterface>();
             var task = IncidentTaskGenerator.Generate();
             task.Community = new Gov.Jag.Embc.Public.ViewModels.Community() { Id = communityId };
 
@@ -108,7 +104,7 @@ namespace embc_unit_tests
 
         protected async Task<string[]> SeedRegistrations(string taskId, string hostCommunity, int numberOfRegistrations)
         {
-            var di = new DataInterface(EmbcDb, Mapper);
+            var di = Services.ServiceProvider.GetService<IDataInterface>();
 
             var registrations = new List<string>();
             for (int i = 0; i < numberOfRegistrations; i++)
@@ -122,7 +118,8 @@ namespace embc_unit_tests
 
         protected async Task<Gov.Jag.Embc.Public.ViewModels.Community> GetRandomSeededCommunity()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
+            var di = Services.ServiceProvider.GetService<IDataInterface>();
+
             var rnd = new Random();
             var communities = (await di.GetCommunitiesAsync()).ToArray();
             return communities.ElementAt(Math.Abs(rnd.Next(communities.Length - 1)));

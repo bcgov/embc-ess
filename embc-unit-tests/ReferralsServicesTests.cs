@@ -3,6 +3,7 @@ using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Services.Referrals;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace embc_unit_tests
 {
     public class ReferralsServicesTests : TestBase
     {
+        private IDataInterface di => Services.ServiceProvider.GetService<IDataInterface>();
+
         public ReferralsServicesTests(ITestOutputHelper output) : base(output)
         {
         }
@@ -42,8 +45,6 @@ namespace embc_unit_tests
         [MemberData(nameof(GetReferrals), "100001")]
         public async Task CanGetReferralHtmlPages(Gov.Jag.Embc.Public.ViewModels.Referral referral)
         {
-            var ctx = EmbcDb;
-            var di = new DataInterface(ctx, Mapper);
             var pdfService = new PdfConverter();
             var service = new ReferralsService(di, pdfService);
 
@@ -99,8 +100,6 @@ namespace embc_unit_tests
         [MemberData(nameof(GetReferrals), "100001")]
         public async Task CanMapToPrintReferrals(Gov.Jag.Embc.Public.ViewModels.Referral referral)
         {
-            var ctx = EmbcDb;
-            var di = new DataInterface(ctx, Mapper);
             var pdfService = new PdfConverter();
             var service = new ReferralsService(di, pdfService);
 
@@ -173,7 +172,7 @@ namespace embc_unit_tests
         public void CanValidateReferralTypes(string type, string subType, bool expectedResult)
         {
             var pdfService = new PdfConverter();
-            var svc = new ReferralsService(new DataInterface(EmbcDb, Mapper), pdfService);
+            var svc = new ReferralsService(di, pdfService);
 
             Assert.Equal(expectedResult, svc.IsValidReferralType(type, subType));
         }

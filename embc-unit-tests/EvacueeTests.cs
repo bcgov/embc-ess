@@ -1,5 +1,6 @@
 ﻿using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.ViewModels.Search;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace embc_unit_tests
 {
     public class EvacueeTests : TestBase
     {
+        private IDataInterface di => Services.ServiceProvider.GetService<IDataInterface>();
+
         public EvacueeTests(ITestOutputHelper output) : base(output)
         {
         }
@@ -17,8 +20,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task GetAll_All_EvacueePropertiesAreMapped()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
-
             var fromCommunity = await GetRandomSeededCommunity();
             var toCommunity = await GetRandomSeededCommunity();
 
@@ -46,8 +47,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task GetAll_BasicSearchByHOHLastNameExact_MatchedElementReturned()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
-
             var fromCommunity = await GetRandomSeededCommunity();
             var toCommunity = await GetRandomSeededCommunity();
 
@@ -65,8 +64,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task GetAll_BasicSearchByHOHLastNamePartial_MatchedElementReturned()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
-
             var fromCommunity = await GetRandomSeededCommunity();
             var toCommunity = await GetRandomSeededCommunity();
 
@@ -84,8 +81,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task GetAll_BasicSearchByDifferentName_NoMatchedElementReturned()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
-
             var fromCommunity = await GetRandomSeededCommunity();
             var toCommunity = await GetRandomSeededCommunity();
 
@@ -103,8 +98,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task GetAll_BasicSearchByFMRLastNamePartial_MatchedElementReturned()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
-
             var fromCommunity = await GetRandomSeededCommunity();
             var toCommunity = await GetRandomSeededCommunity();
 
@@ -122,8 +115,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task GetAll_BasicSearchByHostCommunity_MatchedElementReturned()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
-
             var fromCommunity = await GetRandomSeededCommunity();
             var toCommunity = await GetRandomSeededCommunity();
 
@@ -141,8 +132,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task GetAll_BasicSearchByIncidentCommunity_MatchedElementReturned()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
-
             var fromCommunity = await GetRandomSeededCommunity();
             var toCommunity = await GetRandomSeededCommunity();
 
@@ -160,8 +149,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task GetAll_BasicSearchByIncidentTaskNumber_MatchedElementReturned()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
-
             var fromCommunity = await GetRandomSeededCommunity();
             var toCommunity = await GetRandomSeededCommunity();
 
@@ -177,8 +164,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task GetAll_BasicSearchByEssFileNumber_MatchedElementReturned()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
-
             var fromCommunity = await GetRandomSeededCommunity();
             var toCommunity = await GetRandomSeededCommunity();
 
@@ -197,8 +182,6 @@ namespace embc_unit_tests
         [MemberData(nameof(GetAdvancedSearchTestCases))]
         public async Task GetAll_AdvancedSearch_MatchedElementReturned(EvacueeSearchQueryParameters search, int expectedNumberOfEvacuees)
         {
-            var di = new DataInterface(EmbcDb, Mapper);
-
             var fromCommunity = await GetRandomSeededCommunity();
             var toCommunity = await GetRandomSeededCommunity();
 
