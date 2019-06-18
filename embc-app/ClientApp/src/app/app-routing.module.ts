@@ -36,6 +36,7 @@ import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial
 import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
 import { AdminVolunteerMakerComponent } from './provincial-admin/components/admin-volunteer-maker/admin-volunteer-maker.component';
 import { RegistrationPageComponent } from './volunteer/pages/registration-page/registration-page.component';
+import { VolunteerMakerPageComponent } from './local-authority/pages/volunteer-maker-page/volunteer-maker-page.component';
 
 /*
   /
@@ -263,7 +264,7 @@ const routes: Routes = [
       },
       {
         path: 'volunteer',
-        component: VolunteerMakerComponent,
+        component: VolunteerMakerPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {

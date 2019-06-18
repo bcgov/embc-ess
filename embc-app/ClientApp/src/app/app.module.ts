@@ -70,6 +70,7 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { TopTabBarComponent } from './components/top-tab-bar/top-tab-bar.component';
 import { AdminVolunteerMakerComponent } from './provincial-admin/components/admin-volunteer-maker/admin-volunteer-maker.component';
 import { RegistrationPageComponent } from './volunteer/pages/registration-page/registration-page.component';
+import { VolunteerMakerPageComponent } from './local-authority/pages/volunteer-maker-page/volunteer-maker-page.component';
 
 @NgModule({
   declarations: [
@@ -128,6 +129,7 @@ import { RegistrationPageComponent } from './volunteer/pages/registration-page/r
     TopTabBarComponent,
     AdminVolunteerMakerComponent,
     RegistrationPageComponent,
+    VolunteerMakerPageComponent,
   ],
   imports: [
     // angular
