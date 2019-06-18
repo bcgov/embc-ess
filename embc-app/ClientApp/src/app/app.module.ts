@@ -69,6 +69,7 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { TopTabBarComponent } from './components/top-tab-bar/top-tab-bar.component';
 import { AdminVolunteerMakerComponent } from './provincial-admin/components/admin-volunteer-maker/admin-volunteer-maker.component';
+import { RegistrationPageComponent } from './volunteer/pages/registration-page/registration-page.component';
 
 @NgModule({
   declarations: [
@@ -126,6 +127,7 @@ import { AdminVolunteerMakerComponent } from './provincial-admin/components/admi
     AbstractReferralComponent,
     TopTabBarComponent,
     AdminVolunteerMakerComponent,
+    RegistrationPageComponent,
   ],
   imports: [
     // angular

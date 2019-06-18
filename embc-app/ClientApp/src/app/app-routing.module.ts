@@ -35,6 +35,7 @@ import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
 import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
 import { AdminVolunteerMakerComponent } from './provincial-admin/components/admin-volunteer-maker/admin-volunteer-maker.component';
+import { RegistrationPageComponent } from './volunteer/pages/registration-page/registration-page.component';
 
 /*
   /
@@ -182,7 +183,7 @@ const routes: Routes = [
       },
       {
         path: 'registration',
-        component: RegistrationMakerComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
@@ -237,7 +238,7 @@ const routes: Routes = [
       },
       {
         path: 'registration',
-        component: RegistrationMakerComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
@@ -307,7 +308,7 @@ const routes: Routes = [
       },
       {
         path: 'registration',
-        component: RegistrationMakerComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
