@@ -11,7 +11,7 @@ import {
   SelfRegistrationErrorComponent,
 } from './self-registration';
 import { TesterPageComponent } from './tester-page/tester-page.component';
-import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
+import { RegistrationMakerComponent } from './volunteer/components/registration-maker/registration-maker.component';
 import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { LoggedInGuard } from './core/guards/logged-in.guard';

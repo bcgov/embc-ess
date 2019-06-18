@@ -22,7 +22,7 @@ import { VolunteerMakerComponent } from './local-authority/components/volunteer-
 import { OrganizationMakerComponent } from './provincial-admin/components/organization-maker/organization-maker.component';
 import { RegistrationSummaryFullComponent } from './registration-summary-full/registration-summary-full.component';
 import { VolunteerOrganizationListComponent } from './provincial-admin/components/volunteer-organization-list/volunteer-organization-list.component';
-import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
+import { RegistrationMakerComponent } from './volunteer/components/registration-maker/registration-maker.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
