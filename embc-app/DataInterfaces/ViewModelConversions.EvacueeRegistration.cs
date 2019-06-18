@@ -124,22 +124,16 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 IncidentTaskId = source.IncidentTask == null ? (Guid?)null : Guid.Parse(source.IncidentTask.Id),
             };
 
-            result.Evacuees.Add(source.HeadOfHousehold.ToModel());
-            foreach (var familyMember in source.HeadOfHousehold.FamilyMembers)
-            {
-                var evacuee = familyMember.ToModel();
-                if (string.IsNullOrEmpty(familyMember.Id))
-                {
-                    evacuee.EvacueeSequenceNumber = result.Evacuees.Count() + 1;
-                }
-                result.Evacuees.Add(evacuee);
-            }
+            var evacueeSequenceNumber = 1;
+            result.Evacuees = new[] { source.HeadOfHousehold.ToModel(source.EssFileNumber, evacueeSequenceNumber++) }
+                .Concat(source.HeadOfHousehold.FamilyMembers.Select(f => f.ToModel(source.EssFileNumber, evacueeSequenceNumber++))).ToArray();
 
-            result.EvacueeRegistrationAddresses.Add(source.HeadOfHousehold.PrimaryResidence.ToModel(Models.Db.Enumerations.AddressType.Primary));
+            var addresses = new[] { source.HeadOfHousehold.PrimaryResidence.ToModel(AddressType.Primary) };
             if (source.HeadOfHousehold.MailingAddress != null)
             {
-                result.EvacueeRegistrationAddresses.Add(source.HeadOfHousehold.MailingAddress.ToModel(Models.Db.Enumerations.AddressType.Mailing));
+                addresses = addresses.Append(source.HeadOfHousehold.MailingAddress.ToModel(AddressType.Mailing)).ToArray();
             }
+            result.EvacueeRegistrationAddresses = addresses;
 
             if (source.Id != null)
             {
@@ -153,7 +147,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public static ViewModels.Person ToViewModel(this Models.Db.Evacuee source, Models.Db.EvacueeRegistration evacueeRegistration)
+        private static ViewModels.Person ToViewModel(this Models.Db.Evacuee source, Models.Db.EvacueeRegistration evacueeRegistration)
         {
             ViewModels.Person result;
             var isHeadOfHousehold = false;
@@ -167,7 +161,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 result = new ViewModels.FamilyMember();
             }
 
-            result.Id = source.RegistrationIdSeq;
+            result.Id = $"{source.RegistrationId.ToString()}-{source.EvacueeSequenceNumber}";
 
             result.FirstName = source.FirstName;
             result.LastName = source.LastName;
@@ -213,15 +207,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public static Models.Db.Evacuee ToModel(this ViewModels.Person source)
+        private static Models.Db.Evacuee ToModel(this ViewModels.Person source, long? essFileNumber, int sequenseNumber)
         {
             var result = new Models.Db.Evacuee();
 
-            if (source.Id != null)
+            if (essFileNumber.HasValue)
             {
-                result.RegistrationId = Models.Db.Evacuee.GetEvacueeRegistrationIdFromIncidentRegSeqId(source.Id);
-                result.EvacueeSequenceNumber = Models.Db.Evacuee.GetEvacueeSequenceNumberFromIncidentRegSeqId(source.Id);
+                result.RegistrationId = essFileNumber.Value;//Models.Db.Evacuee.GetEvacueeRegistrationIdFromIncidentRegSeqId(source.Id);
             }
+            result.EvacueeSequenceNumber = string.IsNullOrEmpty(source.Id)
+                ? sequenseNumber
+                : GetEvacueeSequenceNumberFromIncidentRegSeqId(source.Id);
 
             result.FirstName = source.FirstName;
             result.LastName = source.LastName;
@@ -236,7 +232,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             if (source is ViewModels.HeadOfHousehold sourceHoh)
             {
-                result.EvacueeSequenceNumber = 1;
                 result.EvacueeTypeCode = EvacueeType.HeadOfHousehold.GetDisplayName();
             }
 
@@ -249,7 +244,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public static ViewModels.Address ToViewModel(this Models.Db.EvacueeRegistrationAddress source)
+        //public static long GetEvacueeRegistrationIdFromIncidentRegSeqId(string incidentRegSeqId)
+        //{
+        //    return long.Parse(incidentRegSeqId.Split('-')[0]);
+        //}
+
+        public static int GetEvacueeSequenceNumberFromIncidentRegSeqId(string incidentRegSeqId)
+        {
+            return int.Parse(incidentRegSeqId.Split('-')[1]);
+        }
+
+        private static ViewModels.Address ToViewModel(this Models.Db.EvacueeRegistrationAddress source)
         {
             var result = new ViewModels.Address
             {
@@ -267,7 +272,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public static Models.Db.EvacueeRegistrationAddress ToModel(this ViewModels.Address source, AddressType addressType)
+        private static Models.Db.EvacueeRegistrationAddress ToModel(this ViewModels.Address source, AddressType addressType)
         {
             var result = new Models.Db.EvacueeRegistrationAddress
             {

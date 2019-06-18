@@ -19,7 +19,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
         public HeadOfHousehold()
         {
-            PersonType = Models.Db.Evacuee.HOH;
+            PersonType = Evacuee.HOH;
         }
     }
 }

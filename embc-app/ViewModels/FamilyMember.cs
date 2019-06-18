@@ -7,7 +7,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
         public FamilyMember()
         {
-            PersonType = Models.Db.Evacuee.FAMILY_MEMBER;
+            PersonType = Evacuee.FAMILY_MEMBER;
         }
     }
 }
