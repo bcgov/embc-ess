@@ -19,7 +19,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 IsAdministrator = source.IsAdministrator,
                 IsPrimaryContact = source.IsPrimaryContact,
                 CanAccessRestrictedFiles = source.CanAccessRestrictedFiles,
-                Organization = source.Organization.ToViewModel(),
+                Organization = mapper.Map<ViewModels.Organization>(source.Organization),
                 Active = source.Active
             };
 
