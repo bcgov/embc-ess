@@ -13,9 +13,9 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .ForMember(d => d.Region, opts => opts.Ignore())
                 .ForMember(d => d.Community, opts => opts.Ignore())
                 .ReverseMap()
-                .ForMember(d => d.AdminBCeID, opts => opts.MapFrom((s, d, m, ctx) => ((Models.Db.Volunteer)ctx.Items["Admin"]).BceidAccountUserName))
-                .ForMember(d => d.AdminFirstName, opts => opts.MapFrom((s, d, m, ctx) => ((Models.Db.Volunteer)ctx.Items["Admin"]).FirstName))
-                .ForMember(d => d.AdminLastName, opts => opts.MapFrom((s, d, m, ctx) => ((Models.Db.Volunteer)ctx.Items["Admin"]).LastName))
+                .ForMember(d => d.AdminBCeID, opts => opts.MapFrom((s, d, m, ctx) => ctx.Items.ContainsKey("Admin") ? ((Models.Db.Volunteer)ctx.Items["Admin"])?.BceidAccountUserName : null))
+                .ForMember(d => d.AdminFirstName, opts => opts.MapFrom((s, d, m, ctx) => ctx.Items.ContainsKey("Admin") ? ((Models.Db.Volunteer)ctx.Items["Admin"])?.FirstName : null))
+                .ForMember(d => d.AdminLastName, opts => opts.MapFrom((s, d, m, ctx) => ctx.Items.ContainsKey("Admin") ? ((Models.Db.Volunteer)ctx.Items["Admin"])?.LastName : null))
                 .ForMember(d => d.LegalName, opts => opts.Ignore())
                 ;
         }

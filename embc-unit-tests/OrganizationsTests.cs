@@ -18,13 +18,10 @@ namespace embc_unit_tests
         [Fact]
         public async Task CanCreateOrganization()
         {
-            var fixture = new Fixture();
-            var org = fixture.Build<Gov.Jag.Embc.Public.ViewModels.Organization>()
-                .Without(o => o.Id)
-                .Without(o => o.LegalName)
-                .Without(o => o.Region)
-                .With(o => o.Community, await GetRandomSeededCommunity())
-                .Create();
+            var fixture = new Fixture().Customize(new OrganizationCustomization());
+
+            var org = fixture.Create<Gov.Jag.Embc.Public.ViewModels.Organization>();
+            org.Community = await GetRandomSeededCommunity();
 
             var orgId = await di.CreateOrganizationAsync(org);
 

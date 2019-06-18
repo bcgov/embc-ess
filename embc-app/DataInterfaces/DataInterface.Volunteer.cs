@@ -3,6 +3,7 @@ using Gov.Jag.Embc.Public.ViewModels;
 using Gov.Jag.Embc.Public.ViewModels.Search;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,7 +25,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             if (string.IsNullOrEmpty(updatedVolunteer.Organization.Id)) throw new InvalidOperationException($"Volunteer {updatedVolunteer.Id} is not associated with an organization");
 
-            var volunteer = updatedVolunteer.ToModel();
+            var volunteer = mapper.Map<Models.Db.Volunteer>(updatedVolunteer);
             var orgId = volunteer.OrganizationId.Value;
             if (volunteer.IsPrimaryContact ?? false)
             {
@@ -76,13 +77,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                  .Sort(searchQuery.SortBy ?? "lastname")
                  .ToArrayAsync();
 
-            return new PaginatedList<Volunteer>(items.Select(o => o.ToViewModel()), searchQuery.Offset, searchQuery.Limit);
+            return new PaginatedList<Volunteer>(mapper.Map<IEnumerable<Volunteer>>(items), searchQuery.Offset, searchQuery.Limit);
         }
 
         public async Task<Volunteer> GetVolunteerByIdAsync(string id)
         {
-            var person = await Volunteers.SingleOrDefaultAsync(v => v.Id == Convert.ToInt32(id));
-            return person?.ToViewModel();
+            var item = await Volunteers.SingleOrDefaultAsync(v => v.Id == Convert.ToInt32(id));
+            return mapper.Map<Volunteer>(item);
         }
 
         public async Task<bool> VolunteerExistsAsync(string id)
@@ -94,7 +95,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         {
             if (newVolunteer.Organization == null || string.IsNullOrEmpty(newVolunteer.Organization.Id)) throw new InvalidOperationException($"Volunteer {newVolunteer.Id} is not associated with an organization");
 
-            var volunteer = newVolunteer.ToModel();
+            var volunteer = mapper.Map<Models.Db.Volunteer>(newVolunteer);
             var orgId = volunteer.OrganizationId.Value;
             if (volunteer.IsPrimaryContact ?? false)
             {
@@ -134,26 +135,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public Volunteer GetVolunteerByBceidUserId(string bceidUserId)
         {
-            var volunteer = Volunteers.AsNoTracking().FirstOrDefault(x => x.BceidAccountUserName == bceidUserId);
-            if (volunteer == null) return null;
+            var item = Volunteers.AsNoTracking().FirstOrDefault(x => x.BceidAccountUserName == bceidUserId);
+            if (item == null) return null;
 
-            return volunteer?.ToViewModel();
-        }
-
-        public Volunteer GetVolunteerByExternalId(string externalId)
-        {
-            var volunteer = Volunteers.FirstOrDefault(x => x.UserId.Equals(externalId, StringComparison.OrdinalIgnoreCase));
-            if (volunteer == null) return null;
-
-            return volunteer?.ToViewModel();
-        }
-
-        public Volunteer GetVolunteerByName(string firstName, string lastName)
-        {
-            var volunteer = Volunteers.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
-            if (volunteer == null) return null;
-
-            return volunteer?.ToViewModel();
+            return mapper.Map<Volunteer>(item);
         }
     }
 }
