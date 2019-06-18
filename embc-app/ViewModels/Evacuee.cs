@@ -1,6 +1,8 @@
 using AutoMapper;
+using Gov.Jag.Embc.Public.Utils;
 using System;
 using System.Linq;
+using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
 
 namespace Gov.Jag.Embc.Public.ViewModels
 {
@@ -23,6 +25,11 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 : (bool?)null))
                 .ForMember(d => d.IsFinalized, opts => opts.MapFrom(s => s.EvacueeRegistration.RegistrationCompletionDate.HasValue))
                 ;
+
+            CreateMap<EvacueeType, FamilyRelationshipType>()
+                .ForMember(x => x.Active, opts => opts.MapFrom(s => true))
+                .ForMember(x => x.Code, opts => opts.MapFrom(s => s.GetDisplayName()))
+                .ForMember(x => x.Description, opts => opts.MapFrom(s => s.GetDescription()));
         }
     }
 
