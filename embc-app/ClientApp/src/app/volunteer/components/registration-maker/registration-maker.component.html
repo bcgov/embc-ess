@@ -417,7 +417,7 @@
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Insurance</h2>
         <p class="required">
-          Do you have insurance to cover your immediate needs?
+          Does the evacuee have insurance to cover their immediate needs?
         </p>
         <div class="form-group mb-0">
           <div class="form-check">
@@ -426,7 +426,7 @@
           </div>
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes-unsure" formControlName="insuranceCode" id="insuranceCodeYesUnsure">
-            <label class="form-check-label" for="insuranceCodeYesUnsure">Yes, but I'm not sure if I have coverage for this event</label>
+            <label class="form-check-label" for="insuranceCodeYesUnsure">Yes, but they are unsure if they have coverage for this event</label>
           </div>
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="no" formControlName="insuranceCode" id="insuranceCodeNo">
@@ -434,7 +434,7 @@
           </div>
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="unsure" formControlName="insuranceCode" id="insuranceCodeUnsure">
-            <label class="form-check-label" for="insuranceCodeUnsure">I don't know</label>
+            <label class="form-check-label" for="insuranceCodeUnsure">They don't know</label>
           </div>
           <span [class.d-block]="invalid('insuranceCode')" class="invalid-feedback">{{e.insuranceCode}}</span>
         </div>
