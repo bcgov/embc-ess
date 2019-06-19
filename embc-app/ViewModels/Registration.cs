@@ -1,7 +1,9 @@
 using AutoMapper;
 using Gov.Jag.Embc.Public.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
 
@@ -22,7 +24,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .ForMember(d => d.PhoneNumberAlt, opts => opts.MapFrom(s => s.HeadOfHousehold.PhoneNumberAlt))
                 .ForMember(d => d.Email, opts => opts.MapFrom(s => s.HeadOfHousehold.Email))
                 .ForMember(d => d.FollowUpDetails, opts => opts.MapFrom(s => s.InternalCaseNotes))
-                .ForMember(d => d.Evacuees, opts => opts.MapFrom(s => s.HeadOfHousehold.FamilyMembers.Cast<Person>().Prepend(s.HeadOfHousehold)))
+                .ForMember(d => d.Evacuees, opts => opts.MapFrom(s => s.HeadOfHousehold.FamilyMembers.Cast<Evacuee>().Prepend(s.HeadOfHousehold)))
                 .AfterMap((s, d) =>
                 {
                     var seq = 1;
@@ -59,7 +61,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .ForMember(d => d.CompletedBy, opts => opts.Ignore())
                 ;
 
-            CreateMap<Person, Models.Db.Evacuee>(MemberList.None)
+            CreateMap<Evacuee, Models.Db.Evacuee>(MemberList.None)
                 .ForMember(d => d.RegistrationId, opts => opts.MapFrom(s => s.Id.Split("-", StringSplitOptions.RemoveEmptyEntries).ElementAtOrDefault(0)))
                 .ForMember(d => d.EvacueeSequenceNumber, opts => opts.MapFrom(s => s.Id.Split("-", StringSplitOptions.RemoveEmptyEntries).ElementAtOrDefault(1)))
                 .ForMember(d => d.EvacueeRegistration, opts => opts.Ignore())
@@ -72,12 +74,12 @@ namespace Gov.Jag.Embc.Public.ViewModels
                  ;
 
             CreateMap<HeadOfHousehold, Models.Db.Evacuee>()
-                .IncludeBase<Person, Models.Db.Evacuee>()
+                .IncludeBase<Evacuee, Models.Db.Evacuee>()
                 .ForMember(d => d.EvacueeTypeCode, opts => opts.MapFrom(s => EvacueeType.HeadOfHousehold.GetDisplayName()))
                 .ForMember(d => d.SameLastNameAsEvacuee, opts => opts.Ignore())
                 .ReverseMap()
-                .IncludeBase<Models.Db.Evacuee, Person>()
-                .ForMember(d => d.PersonType, opts => opts.MapFrom(s => Person.HOH))
+                .IncludeBase<Models.Db.Evacuee, Evacuee>()
+                .ForMember(d => d.PersonType, opts => opts.MapFrom(s => Evacuee.HOH))
                 .ForMember(d => d.FamilyMembers, opts => opts.Ignore())
                 .ForMember(d => d.PhoneNumber, opts => opts.Ignore())
                 .ForMember(d => d.PhoneNumberAlt, opts => opts.Ignore())
@@ -85,12 +87,12 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 ;
 
             CreateMap<FamilyMember, Models.Db.Evacuee>()
-                .IncludeBase<Person, Models.Db.Evacuee>()
+                .IncludeBase<Evacuee, Models.Db.Evacuee>()
                 .ForMember(d => d.SameLastNameAsEvacuee, opts => opts.MapFrom(s => s.SameLastNameAsEvacuee))
                 .ForMember(d => d.EvacueeTypeCode, opts => opts.MapFrom(s => s.RelationshipToEvacuee.Code))
                 .ReverseMap()
-                .IncludeBase<Models.Db.Evacuee, Person>()
-                .ForMember(d => d.PersonType, opts => opts.MapFrom(s => Person.FAMILY_MEMBER))
+                .IncludeBase<Models.Db.Evacuee, Evacuee>()
+                .ForMember(d => d.PersonType, opts => opts.MapFrom(s => Evacuee.FAMILY_MEMBER))
                 .ForMember(d => d.RelationshipToEvacuee, opts => opts.MapFrom(s => s.EvacueeType))
                 ;
 
@@ -163,5 +165,82 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public Volunteer CompletedBy { get; set; }
 
         public bool IsFinalized { get; set; }
+    }
+
+    public abstract class Evacuee
+    {
+        public const string HOH = "HOH";
+        public const string FAMILY_MEMBER = "FMBR";
+
+        public string Id { get; set; }
+        public bool? Active { get; set; }  // no deletions from DB this is a soft delete.
+        public string PersonType { get; set; }  // one of 'VOLN' (volunteer), 'HOH' (head of household), 'FMBR' (family member)
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Nickname { get; set; }
+        public string Initials { get; set; }
+        public string Gender { get; set; }
+
+        [DataType(DataType.Date)]
+        [JsonConverter(typeof(JsonDateConverter))]
+        public DateTime? Dob { get; set; }
+    }
+
+    public class HeadOfHousehold : Evacuee
+    {
+        public string PhoneNumber { get; set; }
+
+        public string PhoneNumberAlt { get; set; }
+
+        [EmailAddress]
+        public string Email { get; set; }
+
+        public Address PrimaryResidence { get; set; }
+
+        public Address MailingAddress { get; set; }
+        public IEnumerable<FamilyMember> FamilyMembers { get; set; }
+
+        public HeadOfHousehold()
+        {
+            PersonType = Evacuee.HOH;
+        }
+    }
+
+    public class FamilyMember : Evacuee
+    {
+        public bool SameLastNameAsEvacuee { get; set; }
+        public FamilyRelationshipType RelationshipToEvacuee { get; set; }
+
+        public FamilyMember()
+        {
+            PersonType = Evacuee.FAMILY_MEMBER;
+        }
+    }
+
+    public class Address
+    {
+        // base props
+        public string Id { get; set; }
+
+        public string AddressSubtype { get; set; }  // one of ['BCAD', 'OTAD'] for BC vs non-BC addresses
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public string AddressLine3 { get; set; }
+        public string PostalCode { get; set; }
+
+        // BC address props
+        public Community Community { get; set; }
+
+        // other address props
+        public string City { get; set; }
+
+        public string Province { get; set; }
+        public Country Country { get; set; }
+
+        [JsonIgnore]
+        public bool isBcAddress => this.AddressSubtype == Models.Db.Enumerations.AddressSubType.BCAddress.GetDisplayName();  // omitted from response
+
+        [JsonIgnore]
+        public bool isOtherAddress => this.AddressSubtype == Models.Db.Enumerations.AddressSubType.OtherAddress.GetDisplayName();  // omitted from response
     }
 }

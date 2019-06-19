@@ -80,9 +80,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        private static ViewModels.Person ToViewModel(this Models.Db.Evacuee source, Models.Db.EvacueeRegistration evacueeRegistration)
+        private static ViewModels.Evacuee ToViewModel(this Models.Db.Evacuee source, Models.Db.EvacueeRegistration evacueeRegistration)
         {
-            ViewModels.Person result;
+            ViewModels.Evacuee result;
             var isHeadOfHousehold = false;
             if (source.EvacueeTypeCode == EvacueeType.HeadOfHousehold.GetDisplayName())
             {
@@ -123,7 +123,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 }
             }
 
-            var resultEvacuee = result as ViewModels.Person;
+            var resultEvacuee = result as ViewModels.Evacuee;
             resultEvacuee.Nickname = source.Nickname;
             resultEvacuee.Initials = source.Initials;
             resultEvacuee.Gender = source.Gender;
