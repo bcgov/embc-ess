@@ -284,6 +284,7 @@
             <div class="col">
               <label for="email">Email Address</label>
               <input type="email" [class.is-invalid]="invalid('email')" class="form-control" formControlName="email" id="email" autocomplete="off">
+              <small class="d-block">This email address will be used for communication with the evacuee regarding this registration.</small>
               <span *ngIf="submitted" class="invalid-feedback">{{e.email}}</span>
             </div>
           </div>
