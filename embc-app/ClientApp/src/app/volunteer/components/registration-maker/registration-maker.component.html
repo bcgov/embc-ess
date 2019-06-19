@@ -246,7 +246,7 @@
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Primary Residence &amp; Contact Details</h2>
         <p class="required">
-          Is your primary residence within BC?
+          Is the evacuee's primary residence within BC?
         </p>
         <div class="form-group mb-0">
           <div class="form-check">
@@ -310,7 +310,7 @@
         </div>
         <div *ngIf="form.value.mailingAddressSameAsPrimary === false" class="feature-block mt-4 pb-0">
           <p class="required">
-            Is your mailing address within BC?
+            Is the mailing address within BC?
           </p>
           <div class="form-group mb-0 pb-4">
             <div class="form-check">
@@ -337,7 +337,7 @@
         <div class="form-row mt-0">
           <app-attention-icon></app-attention-icon>
           <p class="col required">
-            Do you have dietary requirements?
+            Does the evacuee have any dietary requirements?
           </p>
         </div>
         <div class="form-group mb-0">
@@ -362,7 +362,7 @@
         <div class="form-row mt-4">
           <app-attention-icon></app-attention-icon>
           <p class="required">
-            Do you (or anyone registering with you) take medication?
+            Does the evacuee (or anyone registering with them) take medication?
           </p>
         </div>
         <div class="form-group mb-0">
@@ -378,7 +378,7 @@
         </div>
         <div *ngIf="form.value.medicationNeeds" class="feature-block">
           <p class="required">
-            Do you have sufficient supply for the next 72 hours?
+            Does the evacuee have sufficient supply for the next 72 hours?
           </p>
           <div class="form-group mb-0">
             <div class="form-check">
@@ -398,7 +398,7 @@
 
         <!-- PETS -->
         <p class="required mt-4">
-          Do you have pets with you?
+          Does the evacuee have any pets with them?
         </p>
         <div class="form-group mb-0">
           <div class="form-check">
