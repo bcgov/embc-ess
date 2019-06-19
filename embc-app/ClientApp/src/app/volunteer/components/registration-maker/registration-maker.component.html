@@ -465,7 +465,7 @@
         <p class="required">
           Which categories of support is the evacuee <strong>able to provide for themselves?</strong>
         </p>
-        <div class="mt-4 feature-block">
+        <div class="feature-block">
           <p>Check all that apply:</p>
           <div class="form-check mt-2">
             <input type="checkbox" class="form-check-input" formControlName="requiresFood" id="requiresFood">
@@ -508,7 +508,8 @@
         <div class="form-row">
           <app-attention-icon></app-attention-icon>
           <p class="col">
-            Please check the boxes below where you have made referrals within the Reception Centre.
+            Please review the following services available in your reception centre. <br>
+            Please select the ones you have recommended for the evacuee
           </p>
         </div>
         <div class="form-check mb-2">
@@ -556,7 +557,7 @@
               A space to add any factual case notes pertaining to the evacuee and their family. Please do not add any medical information or irrelevant/speculative personal details as this information may be viewed by other volunteers and/or EMBC. Evacuees may request to view their own records, including these case notes.
             </p>
             <p>
-              Initial and date each comment that you add. Do not delete any previous case notes.
+              Initial and date each comment that you add. Do not remove any previously added case notes.
             </p>
           </div>
         </div>
@@ -788,21 +789,6 @@
     </ul>
   </div>
 
-  <h2 class="mt-3">Brief statement of how the person/family were affected by the disaster</h2>
-  <ul class="summary">
-    <li>
-      <span class="multi-line">{{registration?.disasterAffectDetails || '&nbsp;'}}</span>
-    </li>
-  </ul>
-
-  <h2 class="mt-3">Insurance</h2>
-  <ul class="summary">
-    <li>
-      <span class="name">Do you have insurance:</span>
-      <span class="value">{{insuranceOption(registration?.insuranceCode)}}</span>
-    </li>
-  </ul>
-
   <h2 class="mt-3">Additional Information</h2>
   <ul class="summary">
     <li>
@@ -827,10 +813,25 @@
     </li>
   </ul>
 
-  <h2 class="mt-3">Next Steps</h2>
+  <h2 class="mt-3">Insurance</h2>
   <ul class="summary">
     <li>
-      <span class="name">Categories of support you are able to provide for yourselves:</span>
+      <span class="name">Does the evacuee have insurance:</span>
+      <span class="value">{{insuranceOption(registration?.insuranceCode)}}</span>
+    </li>
+  </ul>
+
+  <h2 class="mt-3">Brief statement of how the evacuee was affected by the disaster</h2>
+  <ul class="summary">
+    <li>
+      <span class="multi-line">{{registration?.disasterAffectDetails || '&nbsp;'}}</span>
+    </li>
+  </ul>
+
+  <h2 class="mt-3">Non-Essential Supports</h2>
+  <ul class="summary">
+    <li>
+      <span class="name">Categories of support the evacuee is able to provide for themselves:</span>
       <span class="value">
         <div class="form-check mt-2">
           <input type="checkbox" class="form-check-input" disabled [checked]="registration?.requiresFood">
@@ -856,14 +857,14 @@
     </li>
   </ul>
 
-  <h2 class="mt-3">Family Recovery Plan</h2>
+  <h2 class="mt-3">Family Recovery Plans</h2>
   <ul class="summary">
     <li>
       <span class="multi-line">{{registration?.familyRecoveryPlan || '&nbsp;'}}</span>
     </li>
   </ul>
 
-  <h2 class="mt-3">Referrals Made Within Reception Centre</h2>
+  <h2 class="mt-3">Reception Centre Service Recommendations</h2>
   <ul class="summary">
     <li>
       <span class="name">Inquiry Referral:</span>
@@ -891,7 +892,7 @@
     </li>
   </ul>
 
-  <h2 class="mt-3">Other Agency Referrals</h2>
+  <h2 class="mt-3">Other Agency Service Recommendations</h2>
   <ul class="summary">
     <li>
       <span class="multi-line">{{registration?.externalReferralsDetails || '&nbsp;'}}</span>
