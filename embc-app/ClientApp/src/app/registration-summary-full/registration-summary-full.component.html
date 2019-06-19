@@ -65,7 +65,7 @@
     </ul>
 
     <h2>Evacuee Family Information</h2>
-    <ul class="summary mt-4" *ngFor="let fm of registration.headOfHousehold.familyMembers">
+    <ul class="summary" *ngFor="let fm of registration.headOfHousehold.familyMembers">
       <li>
         <span class="name">Last Name:</span>
         <span class="value">{{fm?.lastName}}</span>
@@ -208,23 +208,6 @@
       </ul>
     </div>
 
-    <div *ngIf="registration.disasterAffectDetails">
-      <h2>Brief statement of how the person/family were affected by the disaster</h2>
-      <ul class="summary">
-        <li>
-          <span class="multi-line">{{registration.disasterAffectDetails || '&nbsp;'}}</span>
-        </li>
-      </ul>
-    </div>
-
-    <h2>Insurance</h2>
-    <ul class="summary">
-      <li>
-        <span class="name">Do you have insurance:</span>
-        <span class="value">{{insuranceOption(registration.insuranceCode)}}</span>
-      </li>
-    </ul>
-
     <h2>Additional Information</h2>
     <ul class="summary">
       <li>
@@ -246,6 +229,23 @@
       <li>
         <span class="name">Pets:</span>
         <span class="value">{{registration.hasPets | yesNo}}</span>
+      </li>
+    </ul>
+
+    <div *ngIf="registration.disasterAffectDetails">
+      <h2>Brief statement of how the person/family were affected by the disaster</h2>
+      <ul class="summary">
+        <li>
+          <span class="multi-line">{{registration.disasterAffectDetails || '&nbsp;'}}</span>
+        </li>
+      </ul>
+    </div>
+
+    <h2>Insurance</h2>
+    <ul class="summary">
+      <li>
+        <span class="name">Do you have insurance:</span>
+        <span class="value">{{insuranceOption(registration.insuranceCode)}}</span>
       </li>
     </ul>
 
