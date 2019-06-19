@@ -4,8 +4,7 @@
 @import "styles/defaults.scss";
 @import "styles/mixins.scss";
 
-// Bootstrap 4
-@import "~bootstrap/dist/css/bootstrap.css";
+// Bootstrap 4 bcgov overrides
 @import "assets/bootstrap-theme-dist/scss/bootstrap-theme.scss";
 
 // Components
@@ -42,7 +41,6 @@
        url('assets/LiberationMono-Regular.woff') format('woff'), /* Pretty Modern Browsers */
        url('assets/LiberationMono-Regular.ttf')  format('truetype'); /* Safari, Android, iOS */
 }
-
 
 .blue-header {
   background-color: theme-color(primary);
@@ -99,8 +97,8 @@ app-form-field {
 
 body {
   color: $font-color;
-//   -webkit-font-smoothing: antialiased;
-//   -moz-osx-font-smoothing: grayscale;
+  //   -webkit-font-smoothing: antialiased;
+  //   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
   line-height: 20px;
 }
@@ -327,7 +325,7 @@ label {
   text-indent: -1.2em;
 }
 
-ul.arrow>li:before {
+ul.arrow > li:before {
   content: "►";
   display: block;
   float: left;
