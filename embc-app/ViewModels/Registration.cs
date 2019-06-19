@@ -23,6 +23,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string FamilyRecoveryPlan { get; set; }
         public string InternalCaseNotes { get; set; }
         public string InsuranceCode { get; set; }  // one of ['yes', 'yes-unsure', 'no', 'unsure']
+        public string PetCarePlan { get; set; }
         public bool? MedicationNeeds { get; set; }
         public DateTime? SelfRegisteredDate { get; set; }
         public DateTime? RegistrationCompletionDate { get; set; }
