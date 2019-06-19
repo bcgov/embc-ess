@@ -11,7 +11,7 @@ import {
   SelfRegistrationErrorComponent,
 } from './self-registration';
 import { TesterPageComponent } from './tester-page/tester-page.component';
-import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
+import { RegistrationMakerComponent } from './volunteer/components/registration-maker/registration-maker.component';
 import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { LoggedInGuard } from './core/guards/logged-in.guard';
@@ -35,6 +35,9 @@ import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
 import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
 import { AdminVolunteerMakerComponent } from './provincial-admin/components/admin-volunteer-maker/admin-volunteer-maker.component';
+import { RegistrationPageComponent } from './volunteer/pages/registration-page/registration-page.component';
+import { VolunteerMakerPageComponent } from './local-authority/pages/volunteer-maker-page/volunteer-maker-page.component';
+import { OrganizationMakerPageComponent } from './provincial-admin/pages/organization-maker-page/organization-maker-page.component';
 
 /*
   /
@@ -182,7 +185,7 @@ const routes: Routes = [
       },
       {
         path: 'registration',
-        component: RegistrationMakerComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: VOLUNTEER },
       },
       {
@@ -237,7 +240,7 @@ const routes: Routes = [
       },
       {
         path: 'registration',
-        component: RegistrationMakerComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
@@ -262,7 +265,7 @@ const routes: Routes = [
       },
       {
         path: 'volunteer',
-        component: VolunteerMakerComponent,
+        component: VolunteerMakerPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
@@ -307,7 +310,7 @@ const routes: Routes = [
       },
       {
         path: 'registration',
-        component: RegistrationMakerComponent,
+        component: RegistrationPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
@@ -332,7 +335,7 @@ const routes: Routes = [
       },
       {
         path: 'organization',
-        component: OrganizationMakerComponent,
+        component: OrganizationMakerPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
