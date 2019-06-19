@@ -12,7 +12,9 @@ Test the migration on your local database to be sure that it applies correctly. 
 
 # Setting up a local_db to test migrations
 
-We need to add environment variables to the solution. In solution explorer right click embc-app and access properties. Under the debug tab add these environment variables.
+In Visual Studio you need to open the Visual Studio installer to get the right packages to install. "Get Tools and Features" from the "Tools" menu. Choose the `SQL Server Express 2016 LocalDB` package and install it. Be sure to have dotnet core 2.1 installed as well.
+
+We need to add environment variables to the solution so that we can connect the project to the LocalDB. In solution explorer right click embc-app and access properties. Under the debug tab add these environment variables.
 | Name | Value |
 |--|--|
 | DB_USER | ess |
