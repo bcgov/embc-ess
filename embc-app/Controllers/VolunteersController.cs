@@ -50,6 +50,11 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Volunteer item)
         {
+            if (!await dataInterface.BceidExistsAsync(item.Externaluseridentifier))
+            {
+                ModelState.AddModelError("Externaluseridentifier", "Duplicate BCeId found.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
