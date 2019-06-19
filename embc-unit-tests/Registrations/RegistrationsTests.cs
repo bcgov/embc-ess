@@ -44,9 +44,11 @@ namespace embc_unit_tests.Registrations
             ));
 
             fixture.Customize<FamilyMember>(c => c
-               .Without(f => f.Id));
+                .Without(f => f.PersonType)
+                .Without(f => f.Id));
 
             fixture.Customize<HeadOfHousehold>(c => c
+                .Without(f => f.PersonType)
                 .Without(h => h.Id)
                 .With(h => h.MailingAddress, fixture.Build<Address>()
                     .Without(a => a.Id)

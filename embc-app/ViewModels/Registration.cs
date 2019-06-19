@@ -1,7 +1,113 @@
+using AutoMapper;
+using Gov.Jag.Embc.Public.Utils;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
 
 namespace Gov.Jag.Embc.Public.ViewModels
 {
+    public class RegistrationMappingProfile : Profile
+    {
+        public RegistrationMappingProfile()
+        {
+            CreateMap<Registration, Models.Db.EvacueeRegistration>()
+                .ForMember(d => d.EssFileNumber, opts => opts.MapFrom(s => s.EssFileNumber))
+                .ForMember(d => d.CompletedById, opts => opts.MapFrom(s => s.CompletedBy.Id))
+                .ForMember(d => d.IncidentTaskId, opts => opts.MapFrom(s => s.IncidentTask.Id))
+                .ForMember(d => d.IncidentTask, opts => opts.Ignore())
+                .ForMember(d => d.HostCommunityId, opts => opts.MapFrom(s => s.HostCommunity.Id))
+                .ForMember(d => d.HostCommunity, opts => opts.Ignore())
+                .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.HeadOfHousehold.PhoneNumber))
+                .ForMember(d => d.PhoneNumberAlt, opts => opts.MapFrom(s => s.HeadOfHousehold.PhoneNumberAlt))
+                .ForMember(d => d.Email, opts => opts.MapFrom(s => s.HeadOfHousehold.Email))
+                .ForMember(d => d.FollowUpDetails, opts => opts.MapFrom(s => s.InternalCaseNotes))
+                .ForMember(d => d.Evacuees, opts => opts.MapFrom(s => s.HeadOfHousehold.FamilyMembers.Cast<Person>().Prepend(s.HeadOfHousehold)))
+                .AfterMap((s, d) =>
+                {
+                    var seq = 1;
+                    foreach (var evacuee in d.Evacuees)
+                    {
+                        if (evacuee.RegistrationId == default && s.EssFileNumber.HasValue) evacuee.RegistrationId = s.EssFileNumber.Value;
+                        if (evacuee.EvacueeSequenceNumber == default) evacuee.EvacueeSequenceNumber = seq++;
+                    }
+                })
+                .ForMember(d => d.EvacueeRegistrationAddresses, opts => opts.MapFrom(s => (new Address[] { s.HeadOfHousehold.PrimaryResidence, s.HeadOfHousehold.MailingAddress }).Where(a => a != null)))
+                .AfterMap((s, d) =>
+                {
+                    var seq = 1;
+                    foreach (var address in d.EvacueeRegistrationAddresses)
+                    {
+                        if (s.EssFileNumber.HasValue) address.RegistrationId = s.EssFileNumber.Value;
+                        address.AddressSequenceNumber = seq++;
+                        address.AddressTypeCode = (address.AddressSequenceNumber == 1 ? AddressType.Primary : AddressType.Mailing).GetDisplayName();
+                    }
+                })
+                .ReverseMap()
+                .ForMember(d => d.Id, opts => opts.MapFrom(s => s.EssFileNumber))
+                .ForMember(d => d.HeadOfHousehold, opts => opts.MapFrom(s => s.Evacuees.Single(e => e.EvacueeType == EvacueeType.HeadOfHousehold)))
+                .AfterMap((s, d, ctx) =>
+                {
+                    d.HeadOfHousehold.Email = s.Email;
+                    d.HeadOfHousehold.PhoneNumber = s.PhoneNumber;
+                    d.HeadOfHousehold.PhoneNumberAlt = s.PhoneNumberAlt;
+                    d.HeadOfHousehold.PrimaryResidence = ctx.Mapper.Map<Address>(s.EvacueeRegistrationAddresses.Single(a => a.AddressType == AddressType.Primary));
+                    var mailingAddress = s.EvacueeRegistrationAddresses.SingleOrDefault(a => a.AddressType == AddressType.Mailing);
+                    if (mailingAddress != null) d.HeadOfHousehold.MailingAddress = ctx.Mapper.Map<Address>(mailingAddress);
+                    d.HeadOfHousehold.FamilyMembers = ctx.Mapper.Map<IEnumerable<FamilyMember>>(s.Evacuees.Where(e => e.EvacueeType != EvacueeType.HeadOfHousehold));
+                })
+                .ForMember(d => d.CompletedBy, opts => opts.Ignore())
+                ;
+
+            CreateMap<Person, Models.Db.Evacuee>(MemberList.None)
+                .ForMember(d => d.RegistrationId, opts => opts.MapFrom(s => s.Id.Split("-", StringSplitOptions.RemoveEmptyEntries).ElementAtOrDefault(0)))
+                .ForMember(d => d.EvacueeSequenceNumber, opts => opts.MapFrom(s => s.Id.Split("-", StringSplitOptions.RemoveEmptyEntries).ElementAtOrDefault(1)))
+                .ForMember(d => d.EvacueeRegistration, opts => opts.Ignore())
+                .ForMember(d => d.BcServicesNumber, opts => opts.Ignore())
+                .ForMember(d => d.Referrals, opts => opts.Ignore())
+                .ForMember(d => d.EvacueeTypeCode, opts => opts.Ignore())
+                .IncludeAllDerived()
+                .ReverseMap()
+                .ForMember(d => d.Id, opts => opts.MapFrom(s => $"{s.RegistrationId}-{s.EvacueeSequenceNumber}"))
+                 ;
+
+            CreateMap<HeadOfHousehold, Models.Db.Evacuee>()
+                .IncludeBase<Person, Models.Db.Evacuee>()
+                .ForMember(d => d.EvacueeTypeCode, opts => opts.MapFrom(s => EvacueeType.HeadOfHousehold.GetDisplayName()))
+                .ForMember(d => d.SameLastNameAsEvacuee, opts => opts.Ignore())
+                .ReverseMap()
+                .IncludeBase<Models.Db.Evacuee, Person>()
+                .ForMember(d => d.PersonType, opts => opts.MapFrom(s => Person.HOH))
+                .ForMember(d => d.FamilyMembers, opts => opts.Ignore())
+                .ForMember(d => d.PhoneNumber, opts => opts.Ignore())
+                .ForMember(d => d.PhoneNumberAlt, opts => opts.Ignore())
+                .ForMember(d => d.Email, opts => opts.Ignore())
+                ;
+
+            CreateMap<FamilyMember, Models.Db.Evacuee>()
+                .IncludeBase<Person, Models.Db.Evacuee>()
+                .ForMember(d => d.SameLastNameAsEvacuee, opts => opts.MapFrom(s => s.SameLastNameAsEvacuee))
+                .ForMember(d => d.EvacueeTypeCode, opts => opts.MapFrom(s => s.RelationshipToEvacuee.Code))
+                .ReverseMap()
+                .IncludeBase<Models.Db.Evacuee, Person>()
+                .ForMember(d => d.PersonType, opts => opts.MapFrom(s => Person.FAMILY_MEMBER))
+                .ForMember(d => d.RelationshipToEvacuee, opts => opts.MapFrom(s => s.EvacueeType))
+                ;
+
+            CreateMap<Address, Models.Db.EvacueeRegistrationAddress>()
+                .ForMember(d => d.CountryCode, opts => opts.MapFrom(s => s.Country.CountryCode))
+                .ForMember(d => d.Country, opts => opts.Ignore())
+                .ForMember(d => d.CommunityId, opts => opts.MapFrom(s => s.Community.Id))
+                .ForMember(d => d.Community, opts => opts.Ignore())
+                .ForMember(d => d.RegistrationId, opts => opts.Ignore())
+                .ForMember(d => d.AddressSequenceNumber, opts => opts.Ignore())
+                .ForMember(d => d.AddressTypeCode, opts => opts.Ignore())
+                .ForMember(d => d.AddressSubtypeCode, opts => opts.MapFrom(s => s.AddressSubtype))
+                .ReverseMap()
+                ;
+        }
+    }
+
     public class Registration
     {
         public string Id { get; set; }

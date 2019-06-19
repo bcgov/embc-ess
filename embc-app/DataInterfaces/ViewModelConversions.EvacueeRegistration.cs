@@ -1,5 +1,4 @@
 using Gov.Jag.Embc.Public.Utils;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
@@ -81,72 +80,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return result;
         }
 
-        public static Models.Db.EvacueeRegistration ToModel(this ViewModels.Registration source)
-        {
-            var result = new Models.Db.EvacueeRegistration
-            {
-                RestrictedAccess = source.RestrictedAccess,
-
-                PhoneNumber = source.HeadOfHousehold.PhoneNumber,
-                PhoneNumberAlt = source.HeadOfHousehold.PhoneNumberAlt,
-                Email = source.HeadOfHousehold.Email,
-
-                RegisteringFamilyMembers = source.RegisteringFamilyMembers,
-                DietaryNeeds = source.DietaryNeeds,
-                DietaryNeedsDetails = source.DietaryNeedsDetails,
-                MedicationNeeds = source.MedicationNeeds,
-                HasThreeDayMedicationSupply = source.HasThreeDayMedicationSupply,
-                HasPets = source.HasPets,
-                InsuranceCode = source.InsuranceCode,
-                RequiresSupport = source.RequiresSupport,
-                RequiresFood = source.RequiresFood,
-
-                RequiresClothing = source.RequiresClothing,
-                RequiresAccommodation = source.RequiresAccommodation,
-                RequiresIncidentals = source.RequiresIncidentals,
-                RequiresTransportation = source.RequiresTransportation,
-                Facility = source.Facility,
-                DisasterAffectDetails = source.DisasterAffectDetails,
-                ExternalReferralsDetails = source.ExternalReferralsDetails,
-                FamilyRecoveryPlan = source.FamilyRecoveryPlan,
-                FollowUpDetails = source.InternalCaseNotes,
-                HasInquiryReferral = source.HasInquiryReferral,
-                HasHealthServicesReferral = source.HasHealthServicesReferral,
-                HasFirstAidReferral = source.HasFirstAidReferral,
-                HasPersonalServicesReferral = source.HasPersonalServicesReferral,
-                HasChildCareReferral = source.HasChildCareReferral,
-                HasPetCareReferral = source.HasPetCareReferral,
-                SelfRegisteredDate = source.SelfRegisteredDate,
-                RegistrationCompletionDate = source.RegistrationCompletionDate,
-                DeclarationAndConsent = source.DeclarationAndConsent,
-                CompletedById = source.CompletedBy?.Externaluseridentifier,
-                HostCommunityId = source.HostCommunity == null ? (Guid?)null : Guid.Parse(source.HostCommunity.Id),
-                IncidentTaskId = source.IncidentTask == null ? (Guid?)null : Guid.Parse(source.IncidentTask.Id),
-            };
-
-            var evacueeSequenceNumber = 1;
-            result.Evacuees = new[] { source.HeadOfHousehold.ToModel(source.EssFileNumber, evacueeSequenceNumber++) }
-                .Concat(source.HeadOfHousehold.FamilyMembers.Select(f => f.ToModel(source.EssFileNumber, evacueeSequenceNumber++))).ToArray();
-
-            var addresses = new[] { source.HeadOfHousehold.PrimaryResidence.ToModel(AddressType.Primary) };
-            if (source.HeadOfHousehold.MailingAddress != null)
-            {
-                addresses = addresses.Append(source.HeadOfHousehold.MailingAddress.ToModel(AddressType.Mailing)).ToArray();
-            }
-            result.EvacueeRegistrationAddresses = addresses;
-
-            if (source.Id != null)
-            {
-                result.EssFileNumber = long.Parse(source.Id);
-            }
-            if (source.Active.HasValue)
-            {
-                result.Active = source.Active.Value;
-            }
-
-            return result;
-        }
-
         private static ViewModels.Person ToViewModel(this Models.Db.Evacuee source, Models.Db.EvacueeRegistration evacueeRegistration)
         {
             ViewModels.Person result;
@@ -183,14 +116,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 if (familyMembers.Any())
                 {
                     resultHoh.FamilyMembers = new List<ViewModels.FamilyMember>();
-                    foreach (var familyMember in familyMembers)
-                    {
-                        resultHoh.FamilyMembers.Add(familyMember.ToViewModel(evacueeRegistration) as ViewModels.FamilyMember);
-                    }
+                    //foreach (var familyMember in familyMembers)
+                    //{
+                    //    resultHoh.FamilyMembers.Add(familyMember.ToViewModel(evacueeRegistration) as ViewModels.FamilyMember);
+                    //}
                 }
             }
 
-            var resultEvacuee = result as ViewModels.Evacuee;
+            var resultEvacuee = result as ViewModels.Person;
             resultEvacuee.Nickname = source.Nickname;
             resultEvacuee.Initials = source.Initials;
             resultEvacuee.Gender = source.Gender;
@@ -205,53 +138,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 resultFm.SameLastNameAsEvacuee = source.SameLastNameAsEvacuee;
             }
             return result;
-        }
-
-        private static Models.Db.Evacuee ToModel(this ViewModels.Person source, long? essFileNumber, int sequenseNumber)
-        {
-            var result = new Models.Db.Evacuee();
-
-            if (essFileNumber.HasValue)
-            {
-                result.RegistrationId = essFileNumber.Value;//Models.Db.Evacuee.GetEvacueeRegistrationIdFromIncidentRegSeqId(source.Id);
-            }
-            result.EvacueeSequenceNumber = string.IsNullOrEmpty(source.Id)
-                ? sequenseNumber
-                : GetEvacueeSequenceNumberFromIncidentRegSeqId(source.Id);
-
-            result.FirstName = source.FirstName;
-            result.LastName = source.LastName;
-
-            if (source is ViewModels.Evacuee sourceEvacuee)
-            {
-                result.Nickname = sourceEvacuee.Nickname;
-                result.Initials = sourceEvacuee.Initials;
-                result.Gender = source.Gender;
-                result.Dob = sourceEvacuee.Dob;
-            }
-
-            if (source is ViewModels.HeadOfHousehold sourceHoh)
-            {
-                result.EvacueeTypeCode = EvacueeType.HeadOfHousehold.GetDisplayName();
-            }
-
-            if (source is ViewModels.FamilyMember sourceFm)
-            {
-                result.EvacueeTypeCode = sourceFm.RelationshipToEvacuee.Code;
-                result.SameLastNameAsEvacuee = sourceFm.SameLastNameAsEvacuee;
-            }
-
-            return result;
-        }
-
-        //public static long GetEvacueeRegistrationIdFromIncidentRegSeqId(string incidentRegSeqId)
-        //{
-        //    return long.Parse(incidentRegSeqId.Split('-')[0]);
-        //}
-
-        public static int GetEvacueeSequenceNumberFromIncidentRegSeqId(string incidentRegSeqId)
-        {
-            return int.Parse(incidentRegSeqId.Split('-')[1]);
         }
 
         private static ViewModels.Address ToViewModel(this Models.Db.EvacueeRegistrationAddress source)
@@ -269,39 +155,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 Community = mapper.Map<ViewModels.Community>(source.Community),
                 City = source.City
             };
-            return result;
-        }
-
-        private static Models.Db.EvacueeRegistrationAddress ToModel(this ViewModels.Address source, AddressType addressType)
-        {
-            var result = new Models.Db.EvacueeRegistrationAddress
-            {
-                AddressLine1 = source.AddressLine1,
-                AddressLine2 = source.AddressLine2,
-                AddressLine3 = source.AddressLine3,
-                PostalCode = source.PostalCode,
-                Province = source.Province,
-                CountryCode = source.Country.CountryCode
-            };
-
-            if (source.Id != null)
-            {
-                result.RegistrationId = long.Parse(source.Id);
-            }
-            result.AddressSequenceNumber = addressType == AddressType.Primary ? 1 : 2;
-
-            result.AddressTypeCode = addressType.GetDisplayName();
-
-            if (source.isBcAddress)
-            {
-                result.AddressSubtypeCode = AddressSubType.BCAddress.GetDisplayName();
-                result.CommunityId = Guid.Parse(source.Community.Id);
-            }
-            if (source.isOtherAddress)
-            {
-                result.AddressSubtypeCode = AddressSubType.OtherAddress.GetDisplayName();
-                result.City = source.City;
-            }
             return result;
         }
     }

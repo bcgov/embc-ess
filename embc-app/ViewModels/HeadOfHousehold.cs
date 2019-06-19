@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Gov.Jag.Embc.Public.ViewModels
 {
-    public class HeadOfHousehold : Evacuee
+    public class HeadOfHousehold : Person
     {
         public string PhoneNumber { get; set; }
 
@@ -15,11 +15,11 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public Address PrimaryResidence { get; set; }
 
         public Address MailingAddress { get; set; }
-        public List<FamilyMember> FamilyMembers { get; set; }
+        public IEnumerable<FamilyMember> FamilyMembers { get; set; }
 
         public HeadOfHousehold()
         {
-            PersonType = Evacuee.HOH;
+            PersonType = Person.HOH;
         }
     }
 }

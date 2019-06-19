@@ -33,12 +33,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
         }
     }
 
-    public class Evacuee : Person
-    {
-        public const string HOH = "HOH";
-        public const string FAMILY_MEMBER = "FMBR";
-    }
-
     public class EvacueeListItem
     {
         public string Id { get; set; }

@@ -31,15 +31,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<string> CreateEvacueeRegistrationAsync(Registration registration)
         {
-            var created = await db.EvacueeRegistrations.AddAsync(registration.ToModel());
+            var created = await db.EvacueeRegistrations.AddAsync(mapper.Map<Models.Db.EvacueeRegistration>(registration));
             await db.SaveChangesAsync();
-            //return (await EvacueeRegistrations.SingleAsync(r => r.EssFileNumber == created.Entity.EssFileNumber)).ToViewModel();
             return created.Entity.EssFileNumber.ToString();
         }
 
         public async Task UpdateEvacueeRegistrationAsync(Registration registration)
         {
-            var evacueeRegistration = registration.ToModel();
+            var evacueeRegistration = mapper.Map<Models.Db.EvacueeRegistration>(registration);
             var evacueesToKeep = evacueeRegistration.Evacuees.Select(e => e.EvacueeSequenceNumber).ToArray();
             var evacueesToRemove = db.Evacuees
                 .Where(e => e.RegistrationId == evacueeRegistration.EssFileNumber && !evacueesToKeep.Contains(e.EvacueeSequenceNumber));
@@ -76,7 +75,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public async Task<Registration> GetEvacueeRegistrationAsync(string id)
         {
             var entity = await GetEvacueeRegistrationInternalAsync(id);
-            return entity?.ToViewModel();
+            return mapper.Map<Registration>(entity);
         }
 
         private async Task<Models.Db.EvacueeRegistration> GetEvacueeRegistrationInternalAsync(string id)
