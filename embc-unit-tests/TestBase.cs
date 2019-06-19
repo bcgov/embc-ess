@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FakeItEasy;
+﻿using FakeItEasy;
 using Gov.Jag.Embc.Public;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
@@ -44,7 +43,6 @@ namespace embc_unit_tests
 
             serviceProvider = services.BuildServiceProvider();
 
-            ViewModelConversions.mapper = serviceProvider.GetService<IMapper>();
             SeedData();
         }
 

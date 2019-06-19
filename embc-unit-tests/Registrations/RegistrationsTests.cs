@@ -108,6 +108,7 @@ namespace embc_unit_tests.Registrations
         {
             Assert.NotNull(result);
 
+            Assert.Equal(original.Id, result.Id);
             Assert.Equal(isComplete, result.IsFinalized);
             Assert.Equal(original.CompletedBy, result.CompletedBy);
             Assert.Equal(original.HostCommunity?.Id, result.HostCommunity?.Id);
@@ -130,6 +131,96 @@ namespace embc_unit_tests.Registrations
             Assert.Equal(original.InsuranceCode, result.InsuranceCode);
             Assert.Equal(original.InternalCaseNotes, result.InternalCaseNotes);
             Assert.Equal(original.MedicationNeeds, result.MedicationNeeds);
+            Assert.Equal(original.RegisteringFamilyMembers, result.RegisteringFamilyMembers);
+            Assert.Equal(original.RegistrationCompletionDate, result.RegistrationCompletionDate);
+            Assert.Equal(original.RequiresAccommodation, result.RequiresAccommodation);
+            Assert.Equal(original.RequiresClothing, result.RequiresClothing);
+            Assert.Equal(original.RequiresFood, result.RequiresFood);
+            Assert.Equal(original.RequiresIncidentals, result.RequiresIncidentals);
+            Assert.Equal(original.RequiresSupport, result.RequiresSupport);
+            Assert.Equal(original.RequiresTransportation, result.RequiresTransportation);
+            Assert.Equal(original.RestrictedAccess, result.RestrictedAccess);
+            Assert.Equal(original.SelfRegisteredDate, result.SelfRegisteredDate);
+            Assert.Equal(original.HeadOfHousehold.Dob, result.HeadOfHousehold.Dob);
+            Assert.Equal(original.HeadOfHousehold.Email, result.HeadOfHousehold.Email);
+            Assert.Equal(original.HeadOfHousehold.FirstName, result.HeadOfHousehold.FirstName);
+            Assert.Equal(original.HeadOfHousehold.Gender, result.HeadOfHousehold.Gender);
+            Assert.Equal(original.HeadOfHousehold.Initials, result.HeadOfHousehold.Initials);
+            Assert.Equal(original.HeadOfHousehold.LastName, result.HeadOfHousehold.LastName);
+            Assert.Equal(original.HeadOfHousehold.Nickname, result.HeadOfHousehold.Nickname);
+            Assert.Equal(original.HeadOfHousehold.PhoneNumber, result.HeadOfHousehold.PhoneNumber);
+            Assert.Equal(original.HeadOfHousehold.PhoneNumberAlt, result.HeadOfHousehold.PhoneNumberAlt);
+            Assert.Equal(original.HeadOfHousehold.MailingAddress?.AddressLine1, result.HeadOfHousehold.MailingAddress?.AddressLine1);
+            Assert.Equal(original.HeadOfHousehold.MailingAddress?.AddressLine2, result.HeadOfHousehold.MailingAddress?.AddressLine2);
+            Assert.Equal(original.HeadOfHousehold.MailingAddress?.AddressLine3, result.HeadOfHousehold.MailingAddress?.AddressLine3);
+            Assert.Equal(original.HeadOfHousehold.MailingAddress?.AddressSubtype, result.HeadOfHousehold.MailingAddress?.AddressSubtype);
+            Assert.Equal(original.HeadOfHousehold.MailingAddress?.City, result.HeadOfHousehold.MailingAddress?.City);
+            Assert.Equal(original.HeadOfHousehold.MailingAddress?.Community?.Id, result.HeadOfHousehold.MailingAddress?.Community?.Id);
+            Assert.Equal(original.HeadOfHousehold.MailingAddress?.Country?.Id, result.HeadOfHousehold.MailingAddress?.Country?.Id);
+            Assert.Equal(original.HeadOfHousehold.PrimaryResidence.AddressLine1, result.HeadOfHousehold.PrimaryResidence.AddressLine1);
+            Assert.Equal(original.HeadOfHousehold.PrimaryResidence.AddressLine2, result.HeadOfHousehold.PrimaryResidence.AddressLine2);
+            Assert.Equal(original.HeadOfHousehold.PrimaryResidence.AddressLine3, result.HeadOfHousehold.PrimaryResidence.AddressLine3);
+            Assert.Equal(original.HeadOfHousehold.PrimaryResidence.AddressSubtype, result.HeadOfHousehold.PrimaryResidence.AddressSubtype);
+            Assert.Equal(original.HeadOfHousehold.PrimaryResidence.City, result.HeadOfHousehold.PrimaryResidence.City);
+            Assert.Equal(original.HeadOfHousehold.PrimaryResidence.Community?.Id, result.HeadOfHousehold.PrimaryResidence.Community?.Id);
+            Assert.Equal(original.HeadOfHousehold.PrimaryResidence.Country?.Id, result.HeadOfHousehold.PrimaryResidence.Country?.Id);
+            Assert.Equal(original.HeadOfHousehold.FamilyMembers.Count(), result.HeadOfHousehold.FamilyMembers.Count());
+            Assert.All(original.HeadOfHousehold.FamilyMembers, fmbr =>
+            {
+                var resultFmbr = result.HeadOfHousehold.FamilyMembers.Single(f => f.FirstName == fmbr.FirstName && f.Dob == fmbr.Dob);
+                Assert.NotNull(resultFmbr.Id);
+                Assert.StartsWith(original.Id, resultFmbr.Id);
+                Assert.Equal(fmbr.Dob, resultFmbr.Dob);
+                Assert.Equal(fmbr.FirstName, resultFmbr.FirstName);
+                Assert.Equal(fmbr.Gender, resultFmbr.Gender);
+                Assert.Equal(fmbr.Initials, resultFmbr.Initials);
+                Assert.Equal(fmbr.LastName, resultFmbr.LastName);
+                Assert.Equal(fmbr.Nickname, resultFmbr.Nickname);
+                Assert.Equal(fmbr.RelationshipToEvacuee?.Code, resultFmbr.RelationshipToEvacuee?.Code);
+                Assert.Equal(fmbr.SameLastNameAsEvacuee, resultFmbr.SameLastNameAsEvacuee);
+            });
+        }
+
+        [Theory]
+        [RegistrationInlineAutoData(false)]
+        [RegistrationInlineAutoData(true)]
+        public async Task GetRegistrationSummary_Registration_Retrieved(bool generateCompleteRegistration, Registration registration)
+        {
+            var di = Services.ServiceProvider.GetService<IDataInterface>();
+
+            if (generateCompleteRegistration)
+            {
+                var fromCommunity = await GetRandomSeededCommunity();
+                var toCommunity = await GetRandomSeededCommunity();
+                var task = IncidentTaskGenerator.Generate();
+                task.Community = fromCommunity;
+                var taskId = (await di.CreateIncidentTaskAsync(task)).Id;
+
+                registration.HostCommunity = toCommunity;
+                registration.IncidentTask = new IncidentTask { Id = taskId };
+                registration.RegistrationCompletionDate = DateTime.Now;
+            }
+
+            //Workaround the auto generated community id issue
+            registration.HeadOfHousehold.MailingAddress.Community = await GetRandomSeededCommunity();
+
+            var regId = await di.CreateEvacueeRegistrationAsync(registration);
+            registration.Id = regId;
+
+            var result = await di.GetEvacueeRegistrationSummaryAsync(regId);
+
+            AssertRegistrationSummary(registration, result);
+        }
+
+        private static void AssertRegistrationSummary(Registration original, RegistrationSummary result)
+        {
+            Assert.NotNull(result);
+
+            Assert.Equal(original.Id, result.Id);
+            Assert.Equal(!string.IsNullOrEmpty(original.InternalCaseNotes), result.HasInternalCaseNotes);
+            Assert.Equal(original.HostCommunity?.Id, result.HostCommunity?.Id);
+            Assert.Equal(original.IncidentTask?.Id, result.IncidentTask?.Id);
+            Assert.Equal(original.Facility, result.Facility);
             Assert.Equal(original.RegisteringFamilyMembers, result.RegisteringFamilyMembers);
             Assert.Equal(original.RegistrationCompletionDate, result.RegistrationCompletionDate);
             Assert.Equal(original.RequiresAccommodation, result.RequiresAccommodation);

@@ -87,8 +87,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<RegistrationSummary> GetEvacueeRegistrationSummaryAsync(string id)
         {
-            var entity = await GetEvacueeRegistrationInternalAsync(id);
-            return entity?.ToSummaryViewModel();
+            var entity = await GetEvacueeRegistrationAsync(id);
+            return mapper.Map<RegistrationSummary>(entity);
         }
 
         public async Task<bool> DeactivateEvacueeRegistrationAsync(string id)
