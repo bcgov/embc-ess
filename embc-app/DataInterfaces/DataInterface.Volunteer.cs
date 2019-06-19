@@ -90,6 +90,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return await Volunteers.AnyAsync(x => x.Id == Convert.ToInt32(id));
         }
 
+        public async Task<bool> BceidExistsAsync(string bceid)
+        {
+            return await Volunteers.AllAsync(x => x.UserId == bceid);
+        }
+
         public async Task<string> CreateVolunteerAsync(Volunteer newVolunteer)
         {
             if (newVolunteer.Organization == null || string.IsNullOrEmpty(newVolunteer.Organization.Id)) throw new InvalidOperationException($"Volunteer {newVolunteer.Id} is not associated with an organization");
