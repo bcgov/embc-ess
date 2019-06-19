@@ -22,7 +22,7 @@ import { VolunteerMakerComponent } from './local-authority/components/volunteer-
 import { OrganizationMakerComponent } from './provincial-admin/components/organization-maker/organization-maker.component';
 import { RegistrationSummaryFullComponent } from './registration-summary-full/registration-summary-full.component';
 import { VolunteerOrganizationListComponent } from './provincial-admin/components/volunteer-organization-list/volunteer-organization-list.component';
-import { RegistrationMakerComponent } from './registration-maker/registration-maker.component';
+import { RegistrationMakerComponent } from './volunteer/components/registration-maker/registration-maker.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
@@ -69,6 +69,10 @@ import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacue
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { TopTabBarComponent } from './components/top-tab-bar/top-tab-bar.component';
 import { AdminVolunteerMakerComponent } from './provincial-admin/components/admin-volunteer-maker/admin-volunteer-maker.component';
+import { RegistrationPageComponent } from './volunteer/pages/registration-page/registration-page.component';
+import { VolunteerMakerPageComponent } from './local-authority/pages/volunteer-maker-page/volunteer-maker-page.component';
+import { OrganizationMakerPageComponent } from './provincial-admin/pages/organization-maker-page/organization-maker-page.component';
+import { FullRegistrationSummaryBlockComponent } from './components/full-registration-summary-block/full-registration-summary-block.component';
 
 @NgModule({
   declarations: [
@@ -126,6 +130,10 @@ import { AdminVolunteerMakerComponent } from './provincial-admin/components/admi
     AbstractReferralComponent,
     TopTabBarComponent,
     AdminVolunteerMakerComponent,
+    RegistrationPageComponent,
+    VolunteerMakerPageComponent,
+    OrganizationMakerPageComponent,
+    FullRegistrationSummaryBlockComponent,
   ],
   imports: [
     // angular
