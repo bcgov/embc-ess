@@ -827,7 +827,7 @@ namespace Gov.Jag.Embc.Public.Migrations
                         .WithMany()
                         .HasForeignKey("CountryCode");
 
-                    b.HasOne("Gov.Jag.Embc.Public.Models.Db.EvacueeRegistration", "EvacueeRegistration")
+                    b.HasOne("Gov.Jag.Embc.Public.Models.Db.EvacueeRegistration")
                         .WithMany("EvacueeRegistrationAddresses")
                         .HasForeignKey("RegistrationId")
                         .OnDelete(DeleteBehavior.Cascade);

@@ -33,27 +33,33 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 )
                 .Where(t => searchQuery.Active == t.Active)
                 .Sort(searchQuery.SortBy ?? "id")
-                .Join(Volunteers.Where(v => v.IsPrimaryContact ?? false), o => o.Id, pc => pc.Organization.Id, (org, pc) => new { org, pc })//Assume a single primary contact
+                .Join(Volunteers.Where(v => v.IsPrimaryContact ?? false).Take(1), o => o.Id, pc => pc.Organization.Id, (org, pc) => new { org, pc }) //Assume a single primary contact
                 .ToArrayAsync();
 
-            return new PaginatedList<Organization>(items.Select(i => i.org.ToViewModel(i.pc)), searchQuery.Offset, searchQuery.Limit);
+            return new PaginatedList<Organization>(items.Select(i => MapToViewModel(i.org, i.pc)), searchQuery.Offset, searchQuery.Limit);
         }
 
         public async Task<Organization> GetOrganizationByBCeIDGuidAsync(string guid)
         {
-            var org = await Organizations.FirstOrDefaultAsync(x => x.BCeIDBusinessGuid == guid);
-            if (org == null) return null;
-            return org.ToViewModel(GetPrimaryContactForOrganization(org.Id).GetAwaiter().GetResult());
+            var item = await Organizations.FirstOrDefaultAsync(x => x.BCeIDBusinessGuid == guid);
+            if (item == null) return null;
+
+            var admin = await GetPrimaryContactForOrganization(item.Id);
+            return MapToViewModel(item, admin);
         }
 
         public async Task<Organization> GetOrganizationAsync(string id)
         {
             var item = await Organizations.SingleOrDefaultAsync(x => x.Id == Guid.Parse(id));
             if (item == null) return null;
-            var admin = await GetPrimaryContactForOrganization(item.Id);
-            var org = item.ToViewModel(admin);
 
-            return org;
+            var admin = await GetPrimaryContactForOrganization(item.Id);
+            return MapToViewModel(item, admin);
+        }
+
+        private Organization MapToViewModel(Models.Db.Organization item, Models.Db.Volunteer admin)
+        {
+            return mapper.Map<Organization>(item, opts => opts.Items.Add("Admin", admin));
         }
 
         public async Task<bool> OrganizationExistsAsync(string id)
@@ -68,7 +74,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<string> CreateOrganizationAsync(Organization item)
         {
-            var newItem = await db.Organizations.AddAsync(item.ToModel());
+            var newItem = await db.Organizations.AddAsync(mapper.Map<Models.Db.Organization>(item));
             var admin = new Models.Db.Volunteer()
             {
                 Active = true,
@@ -87,7 +93,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task UpdateOrganizationAsync(Organization item)
         {
-            db.Organizations.Update(item.ToModel());
+            db.Organizations.Update(mapper.Map<Models.Db.Organization>(item));
             await db.SaveChangesAsync();
         }
 

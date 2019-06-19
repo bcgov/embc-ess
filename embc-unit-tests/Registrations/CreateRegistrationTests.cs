@@ -1,6 +1,7 @@
 ﻿using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Services.Registrations;
-using Gov.Jag.Embc.Public.Utils;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -10,20 +11,21 @@ namespace embc_unit_tests.Registrations
 {
     public class CreateRegistrationTests : TestBase
     {
-        public CreateRegistrationTests(ITestOutputHelper output) : base(output,
-            (typeof(IEmailSender), typeof(EmailSender)),
-            (typeof(IDataInterface), typeof(DataInterface)))
+        private IMediator mediator => Services.ServiceProvider.GetService<IMediator>();
+        private EmbcDbContext db => Services.ServiceProvider.GetService<EmbcDbContext>();
+
+        public CreateRegistrationTests(ITestOutputHelper output) : base(output)
         {
         }
 
         [Fact]
         public async Task Create_NewSelfRegistration_Created()
         {
-            var result = await Mediator.Send(new CreateNewRegistrationCommand(RegistrationGenerator.GenerateSelf()));
+            var result = await mediator.Send(new CreateNewRegistrationCommand(RegistrationGenerator.GenerateSelf()));
 
             Assert.NotNull(result);
 
-            var audit = EmbcDb.EvacueeRegistrationAudits.ToArray();
+            var audit = db.EvacueeRegistrationAudits.ToArray();
 
             Assert.Single(audit);
             Assert.Contains(result.DietaryNeedsDetails, audit[0].Content);

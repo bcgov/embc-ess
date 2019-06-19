@@ -1,6 +1,8 @@
 using AutoMapper;
+using Gov.Jag.Embc.Public.Utils;
 using System;
 using System.Linq;
+using static Gov.Jag.Embc.Public.Models.Db.Enumerations;
 
 namespace Gov.Jag.Embc.Public.ViewModels
 {
@@ -9,7 +11,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public EvacueeMappingProfie()
         {
             CreateMap<Models.Db.Evacuee, EvacueeListItem>()
-                .ForMember(d => d.Id, opts => opts.MapFrom(s => s.RegistrationIdSeq))
+                .ForMember(d => d.Id, opts => opts.MapFrom(s => $"{s.RegistrationId.ToString()}-{s.EvacueeSequenceNumber}"))
                 .ForMember(d => d.IsHeadOfHousehold, opts => opts.MapFrom(s => s.EvacueeType == Models.Db.Enumerations.EvacueeType.HeadOfHousehold))
                 .ForMember(d => d.RestrictedAccess, opts => opts.MapFrom(s => s.EvacueeRegistration.RestrictedAccess))
                 .ForMember(d => d.IncidentTaskNumber, opts => opts.MapFrom(s => s.EvacueeRegistration.IncidentTask.TaskNumber))
@@ -23,11 +25,12 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 : (bool?)null))
                 .ForMember(d => d.IsFinalized, opts => opts.MapFrom(s => s.EvacueeRegistration.RegistrationCompletionDate.HasValue))
                 ;
-        }
-    }
 
-    public class Evacuee : Person
-    {
+            CreateMap<EvacueeType, FamilyRelationshipType>()
+                .ForMember(x => x.Active, opts => opts.MapFrom(s => true))
+                .ForMember(x => x.Code, opts => opts.MapFrom(s => s.GetDisplayName()))
+                .ForMember(x => x.Description, opts => opts.MapFrom(s => s.GetDescription()));
+        }
     }
 
     public class EvacueeListItem

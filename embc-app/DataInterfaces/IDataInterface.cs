@@ -87,10 +87,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<bool> ActivateVolunteerAsync(string id);
 
-        Volunteer GetVolunteerByName(string firstName, string lastName);
-
-        Volunteer GetVolunteerByExternalId(string externalId);
-
         Volunteer GetVolunteerByBceidUserId(string bceidUserId);
 
         Task<bool> VolunteerExistsAsync(string id);
