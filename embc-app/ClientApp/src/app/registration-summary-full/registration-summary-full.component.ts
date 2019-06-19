@@ -69,29 +69,7 @@ export class RegistrationSummaryFullComponent implements OnInit {
     this.router.navigate([`/${this.path}`]);
   }
 
-  isBcAddress(address: Address): boolean {
-    return isBcAddress(address);
-  }
 
-  genderOption(key: string) {
-    const option = GENDER_OPTIONS.find(item => item.key === key);
-    return option ? option.value : null;
-  }
-
-  insuranceOption(key: string) {
-    const option = INSURANCE_OPTIONS.find(item => item.key === key);
-    return option ? option.value : null;
-  }
-
-  yesNo(value: boolean): string {
-    if (value === true) {
-      return 'Yes';
-    } else if (value === false) {
-      return 'No';
-    } else {
-      return '';
-    }
-  }
 
   routeTo() {
     // save registration ID for lookup in the new component
