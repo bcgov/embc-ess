@@ -65,7 +65,7 @@
     </ul>
 
     <h2>Evacuee Family Information</h2>
-    <ul class="summary mt-4" *ngFor="let fm of registration.headOfHousehold.familyMembers">
+    <ul class="summary" *ngFor="let fm of registration.headOfHousehold.familyMembers">
       <li>
         <span class="name">Last Name:</span>
         <span class="value">{{fm?.lastName}}</span>
@@ -208,23 +208,6 @@
       </ul>
     </div>
 
-    <div *ngIf="registration.disasterAffectDetails">
-      <h2>Brief statement of how the person/family were affected by the disaster</h2>
-      <ul class="summary">
-        <li>
-          <span class="multi-line">{{registration.disasterAffectDetails || '&nbsp;'}}</span>
-        </li>
-      </ul>
-    </div>
-
-    <h2>Insurance</h2>
-    <ul class="summary">
-      <li>
-        <span class="name">Do you have insurance:</span>
-        <span class="value">{{insuranceOption(registration.insuranceCode)}}</span>
-      </li>
-    </ul>
-
     <h2>Additional Information</h2>
     <ul class="summary">
       <li>
@@ -249,10 +232,29 @@
       </li>
     </ul>
 
-    <h2>Next Steps</h2>
+    <h2>Insurance</h2>
     <ul class="summary">
       <li>
-        <span class="name">Supports Provided by the Evacuee:</span>
+        <span class="name">Do you have insurance:</span>
+        <span class="value">{{insuranceOption(registration.insuranceCode)}}</span>
+      </li>
+    </ul>
+
+    <div *ngIf="registration.disasterAffectDetails">
+      <h2>Brief statement of how the person/family were affected by the disaster</h2>
+      <ul class="summary">
+        <li>
+          <span class="multi-line">{{registration.disasterAffectDetails || '&nbsp;'}}</span>
+        </li>
+      </ul>
+    </div>
+
+    <h2>Non-Essential Supports</h2>
+    <ul class="summary">
+      <li>
+        <span class="name">
+          Categories of support the evacuee is able to provide for themselves:
+        </span>
         <!-- NOTE: this should show opposite because the customer requesdted it-->
         <span class="value">
           <div class="form-check mt-2">
@@ -289,7 +291,7 @@
     </div>
 
     <div>
-      <h2>Referrals Made Within Reception Centre</h2>
+      <h2>Reception Centre Service Recommendations</h2>
       <ul class="summary">
         <li>
           <span class="name">Inquiry Referral:</span>
@@ -319,7 +321,7 @@
     </div>
 
     <div>
-      <h2>Other Agency Referrals</h2>
+      <h2>Other Agency Service Recommendations</h2>
       <ul class="summary">
         <li>
           <span class="multi-line">{{registration.externalReferralsDetails || '&nbsp;'}}</span>

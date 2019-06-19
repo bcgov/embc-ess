@@ -5,19 +5,19 @@ import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { AppState } from '../store';
-import { RegistrationService } from '../core/services/registration.service';
+import { AppState } from 'src/app/store';
+import { RegistrationService } from 'src/app/core/services/registration.service';
 import {
   Registration, FamilyMember, isBcAddress, Community, Country, Volunteer, IncidentTask, Address, User
 } from 'src/app/core/models';
-import { IncidentTaskService } from '../core/services/incident-task.service';
+import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { hasErrors, invalidField, clearFormArray, compareById } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { NotificationQueueService } from '../core/services/notification-queue.service';
-import { UniqueKeyService } from '../core/services/unique-key.service';
+import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
 @Component({
   selector: 'app-registration-maker',
