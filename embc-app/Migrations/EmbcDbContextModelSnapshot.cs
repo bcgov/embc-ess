@@ -15,7 +15,7 @@ namespace Gov.Jag.Embc.Public.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
+                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("Relational:Sequence:.ESSFileNumbers", "'ESSFileNumbers', '', '100000', '1', '', '', 'Int64', 'False'")
                 .HasAnnotation("Relational:Sequence:.seq_ReferralIds", "'seq_ReferralIds', '', '1000001', '1', '', '', 'Int64', 'False'")
@@ -212,6 +212,8 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.Property<string>("InsuranceCode");
 
                     b.Property<bool?>("MedicationNeeds");
+
+                    b.Property<string>("PetCarePlan");
 
                     b.Property<string>("PhoneNumber");
 
@@ -684,8 +686,6 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<int>("NumberOfNights");
 
-                    b.ToTable("BilletingLodgingReferral");
-
                     b.HasDiscriminator().HasValue("Lodging_Billeting");
                 });
 
@@ -694,8 +694,6 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.HasBaseType("Gov.Jag.Embc.Public.Models.Db.Referral");
 
                     b.Property<bool>("ExtremeWinterConditions");
-
-                    b.ToTable("ClothingReferral");
 
                     b.HasDiscriminator().HasValue("Clothing");
                 });
@@ -706,8 +704,6 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<int>("NumberOfMeals");
 
-                    b.ToTable("GroceriesFoodReferral");
-
                     b.HasDiscriminator().HasValue("Food_Groceries");
                 });
 
@@ -717,8 +713,6 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<int>("NumberOfNights")
                         .HasColumnName("GroupLodgingReferral_NumberOfNights");
-
-                    b.ToTable("GroupLodgingReferral");
 
                     b.HasDiscriminator().HasValue("Lodging_Group");
                 });
@@ -732,8 +726,6 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<int>("NumberOfRooms");
 
-                    b.ToTable("HotelLodgingReferral");
-
                     b.HasDiscriminator().HasValue("Lodging_Hotel");
                 });
 
@@ -742,8 +734,6 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.HasBaseType("Gov.Jag.Embc.Public.Models.Db.Referral");
 
                     b.Property<string>("ApprovedItems");
-
-                    b.ToTable("IncidentalsReferral");
 
                     b.HasDiscriminator().HasValue("Incidentals");
                 });
@@ -754,8 +744,6 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<string>("TransportMode")
                         .HasMaxLength(255);
-
-                    b.ToTable("OtherTransportationReferral");
 
                     b.HasDiscriminator().HasValue("Transportation_Other");
                 });
@@ -770,8 +758,6 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<int>("NumberOfLunches");
 
-                    b.ToTable("RestaurantFoodReferral");
-
                     b.HasDiscriminator().HasValue("Food_Restaurant");
                 });
 
@@ -784,8 +770,6 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<string>("ToAddress")
                         .HasMaxLength(255);
-
-                    b.ToTable("TaxiTransportationReferral");
 
                     b.HasDiscriminator().HasValue("Transportation_Taxi");
                 });
