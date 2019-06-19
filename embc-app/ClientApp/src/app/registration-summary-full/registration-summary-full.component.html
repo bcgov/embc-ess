@@ -232,6 +232,14 @@
       </li>
     </ul>
 
+    <h2>Insurance</h2>
+    <ul class="summary">
+      <li>
+        <span class="name">Do you have insurance:</span>
+        <span class="value">{{insuranceOption(registration.insuranceCode)}}</span>
+      </li>
+    </ul>
+
     <div *ngIf="registration.disasterAffectDetails">
       <h2>Brief statement of how the person/family were affected by the disaster</h2>
       <ul class="summary">
@@ -240,14 +248,6 @@
         </li>
       </ul>
     </div>
-
-    <h2>Insurance</h2>
-    <ul class="summary">
-      <li>
-        <span class="name">Do you have insurance:</span>
-        <span class="value">{{insuranceOption(registration.insuranceCode)}}</span>
-      </li>
-    </ul>
 
     <h2>Next Steps</h2>
     <ul class="summary">
