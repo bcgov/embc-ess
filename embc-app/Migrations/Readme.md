@@ -16,7 +16,7 @@ Test the migration on the PMC against your local database with the command `Upda
 
 In Visual Studio we need to open the Visual Studio installer to get the right packages to install. "Get Tools and Features" from the "Tools" menu. Choose the `SQL Server Express 2016 LocalDB` package and install it. Be sure to have dotnet core 2.1 installed as well.
 
-When the project runs it should connect to SQL Server Express and seed things like the country information from the seeder files.
+When the project runs it should connect to SQL Server Express and seed things like the country information from the seeder files. Run the project with the `F5` key.
 
 You can check the data in the database with Azure Data Studio or a similar GUI based Microsoft SQL client. 
 
@@ -36,4 +36,3 @@ You should be able to see the countries in one of the table that was generated.
 If you are connecting to the real database the SA user is needed in OpenShift.
 
 You need the SA user when using the sql server container and not localdb. Win auth is not a valid option in OpenShift. SA is the Admin and is required to create the DB and schema in SQL server. A reg user only has read/write permissions and no DDL.
-
