@@ -37,6 +37,7 @@ import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer
 import { AdminVolunteerMakerComponent } from './provincial-admin/components/admin-volunteer-maker/admin-volunteer-maker.component';
 import { RegistrationPageComponent } from './volunteer/pages/registration-page/registration-page.component';
 import { VolunteerMakerPageComponent } from './local-authority/pages/volunteer-maker-page/volunteer-maker-page.component';
+import { OrganizationMakerPageComponent } from './provincial-admin/pages/organization-maker-page/organization-maker-page.component';
 
 /*
   /
@@ -334,7 +335,7 @@ const routes: Routes = [
       },
       {
         path: 'organization',
-        component: OrganizationMakerComponent,
+        component: OrganizationMakerPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
