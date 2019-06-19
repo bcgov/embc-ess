@@ -328,52 +328,6 @@
         </div>
       </div>
 
-      <!-- BRIEF STATEMENT OF HOW THE PERSON/FAMILY WERE AFFECTED BY THE DISASTER -->
-      <div class="mt-4">
-        <h2 class="blue-header font-weight-bold">Brief Statement of How The Person/Family Were Affected By The Disaster</h2>
-        <div class="form-row">
-          <app-attention-icon></app-attention-icon>
-          <p class="col">
-            Please do not include any personal/medical information pertaining to the evacuee and their family.
-          </p>
-        </div>
-        <div class="form-row">
-          <div class="col">
-            <textarea class="form-control" formControlName="disasterAffectDetails" placeholder="Please specify" rows="4"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- INSURANCE -->
-      <div class="mt-4">
-        <h2 class="blue-header font-weight-bold">Insurance</h2>
-        <p class="required">
-          Do you have insurance to cover your immediate needs?
-        </p>
-        <div class="form-group mb-0">
-          <div class="form-check">
-            <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes" formControlName="insuranceCode" id="insuranceCodeYes">
-            <label class="form-check-label" for="insuranceCodeYes">Yes</label>
-          </div>
-          <div class="form-check">
-            <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes-unsure" formControlName="insuranceCode" id="insuranceCodeYesUnsure">
-            <label class="form-check-label" for="insuranceCodeYesUnsure">Yes, but I'm not sure if I have coverage for this event</label>
-          </div>
-          <div class="form-check">
-            <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="no" formControlName="insuranceCode" id="insuranceCodeNo">
-            <label class="form-check-label" for="insuranceCodeNo">No</label>
-          </div>
-          <div class="form-check">
-            <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="unsure" formControlName="insuranceCode" id="insuranceCodeUnsure">
-            <label class="form-check-label" for="insuranceCodeUnsure">I don't know</label>
-          </div>
-          <span [class.d-block]="invalid('insuranceCode')" class="invalid-feedback">{{e.insuranceCode}}</span>
-        </div>
-        <div *ngIf="(form.value.insuranceCode=='yes')||(form.value.insuranceCode=='yes-unsure')" class="alert alert-warning" role="alert">
-          <p class="alert-heading display-6 my-2">Assist the evacuee in contacting their insurance agent to confirm coverage for this event.</p>
-        </div>
-      </div>
-
       <!-- ADDITIONAL INFORMATION -->
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Additional Information</h2>
@@ -458,9 +412,55 @@
         </div>
       </div>
 
-      <!-- NEXT STEPS -->
+      <!-- INSURANCE -->
       <div class="mt-4">
-        <h2 class="blue-header font-weight-bold">Next Steps</h2>
+        <h2 class="blue-header font-weight-bold">Insurance</h2>
+        <p class="required">
+          Do you have insurance to cover your immediate needs?
+        </p>
+        <div class="form-group mb-0">
+          <div class="form-check">
+            <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes" formControlName="insuranceCode" id="insuranceCodeYes">
+            <label class="form-check-label" for="insuranceCodeYes">Yes</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes-unsure" formControlName="insuranceCode" id="insuranceCodeYesUnsure">
+            <label class="form-check-label" for="insuranceCodeYesUnsure">Yes, but I'm not sure if I have coverage for this event</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="no" formControlName="insuranceCode" id="insuranceCodeNo">
+            <label class="form-check-label" for="insuranceCodeNo">No</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="unsure" formControlName="insuranceCode" id="insuranceCodeUnsure">
+            <label class="form-check-label" for="insuranceCodeUnsure">I don't know</label>
+          </div>
+          <span [class.d-block]="invalid('insuranceCode')" class="invalid-feedback">{{e.insuranceCode}}</span>
+        </div>
+        <div *ngIf="(form.value.insuranceCode=='yes')||(form.value.insuranceCode=='yes-unsure')" class="alert alert-warning" role="alert">
+          <p class="alert-heading display-6 my-2">Assist the evacuee in contacting their insurance agent to confirm coverage for this event.</p>
+        </div>
+      </div>
+
+      <!-- BRIEF STATEMENT OF HOW THE PERSON/FAMILY WERE AFFECTED BY THE DISASTER -->
+      <div class="mt-4">
+        <h2 class="blue-header font-weight-bold">Brief Statement of How The Person/Family Were Affected By The Disaster</h2>
+        <div class="form-row">
+          <app-attention-icon></app-attention-icon>
+          <p class="col">
+            Please do not include any personal/medical information pertaining to the evacuee and their family.
+          </p>
+        </div>
+        <div class="form-row">
+          <div class="col">
+            <textarea class="form-control" formControlName="disasterAffectDetails" placeholder="Please specify" rows="4"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- NON-ESSENTIAL SUPPORTS -->
+      <div class="mt-4">
+        <h2 class="blue-header font-weight-bold">Non-essential Supports</h2>
         <p>
           While you are evacuated you may require emergency supports to ensure you and your family’s needs are met. An Emergency Support Services volunteer will meet with you in a Reception Centre in order to determine these needs.
         </p>
@@ -505,9 +505,9 @@
         <textarea class="form-control" placeholder="Details" rows="4" formControlName="familyRecoveryPlan"></textarea>
       </div>
 
-      <!-- REFERRALS MADE WITHIN RECEPTION CENTRE -->
+      <!-- Reception Centre Service Recommendations -->
       <div class="mb-4">
-        <h2 class="blue-header font-weight-bold">Referrals Made Within Reception Centre</h2>
+        <h2 class="blue-header font-weight-bold">Reception Centre Service Recommendations</h2>
         <div class="form-row">
           <app-attention-icon></app-attention-icon>
           <p class="col">
@@ -542,7 +542,7 @@
 
       <!-- OTHER AGENCY REFERRALS MADE OUTSIDE OF THE RECEPTION CENTRE< -->
       <div class="mb-4">
-        <h2 class="blue-header font-weight-bold">Other Agency Referrals Made Outside of the Reception Centre</h2>
+        <h2 class="blue-header font-weight-bold">Other Agency Service Recommendations Made Outside of the Reception Centre</h2>
         <div class="form-row mx-0">
           <app-attention-icon></app-attention-icon>
           <textarea class="form-control" placeholder="Please specify" rows="4" formControlName="externalReferralsDetails"></textarea>
