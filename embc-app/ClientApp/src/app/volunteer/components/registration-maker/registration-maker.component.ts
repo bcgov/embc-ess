@@ -423,7 +423,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     // Display the appropriate page title and form state
     if (r == null) {
       // null registration means this is a new registration
-      this.pageTitle = 'Create New Registration';
+      this.pageTitle = 'Add an Evacuee';
       this.createMode = true;
       this.finalizeMode = false; // turn off these
     } else if (!r.isFinalized) {

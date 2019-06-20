@@ -81,7 +81,7 @@
           </app-form-field>
           <div class="d-flex align-items-center col-md-7">
             <small class="text-muted">
-              If the task number is not listed please contact your supervisor.
+              If the task number you’re looking for is not listed, please contact your supervisor or the Emergency Coordination Centre at 1-800-663-3456.
             </small>
           </div>
         </div>
@@ -154,7 +154,7 @@
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Evacuee Family Information</h2>
         <p class="required">
-          Are you registering family members who live in the same household with you whom you know are safe?
+          Is the evacuee registering any immediate family members who live in the same household with them?
         </p>
         <div class="form-group mb-0">
           <div class="form-check">
@@ -246,7 +246,7 @@
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Primary Residence &amp; Contact Details</h2>
         <p class="required">
-          Is your primary residence within BC?
+          Is the evacuee's primary residence within BC?
         </p>
         <div class="form-group mb-0">
           <div class="form-check">
@@ -284,6 +284,7 @@
             <div class="col">
               <label for="email">Email Address</label>
               <input type="email" [class.is-invalid]="invalid('email')" class="form-control" formControlName="email" id="email" autocomplete="off">
+              <small class="d-block">This email address will be used for communication with the evacuee regarding this registration.</small>
               <span *ngIf="submitted" class="invalid-feedback">{{e.email}}</span>
             </div>
           </div>
@@ -294,7 +295,7 @@
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Mailing Address</h2>
         <p class="required">
-          Is your mailing address the same as your primary residence?
+          Is the evacuee's mailing address the same as their primary residence?
         </p>
         <div class="form-group mb-0">
           <div class="form-check">
@@ -309,7 +310,7 @@
         </div>
         <div *ngIf="form.value.mailingAddressSameAsPrimary === false" class="feature-block mt-4 pb-0">
           <p class="required">
-            Is your mailing address within BC?
+            Is the mailing address within BC?
           </p>
           <div class="form-group mb-0 pb-4">
             <div class="form-check">
@@ -336,7 +337,7 @@
         <div class="form-row mt-0">
           <app-attention-icon></app-attention-icon>
           <p class="col required">
-            Do you have dietary requirements?
+            Does the evacuee have any dietary requirements?
           </p>
         </div>
         <div class="form-group mb-0">
@@ -361,7 +362,7 @@
         <div class="form-row mt-4">
           <app-attention-icon></app-attention-icon>
           <p class="required">
-            Do you (or anyone registering with you) take medication?
+            Does the evacuee (or anyone registering with them) take medication?
           </p>
         </div>
         <div class="form-group mb-0">
@@ -377,7 +378,7 @@
         </div>
         <div *ngIf="form.value.medicationNeeds" class="feature-block">
           <p class="required">
-            Do you have sufficient supply for the next 72 hours?
+            Does the evacuee have sufficient supply for the next 72 hours?
           </p>
           <div class="form-group mb-0">
             <div class="form-check">
@@ -397,7 +398,7 @@
 
         <!-- PETS -->
         <p class="required mt-4">
-          Do you have pets with you?
+          Does the evacuee have any pets with them?
         </p>
         <div class="form-group mb-0">
           <div class="form-check">
@@ -416,7 +417,7 @@
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Insurance</h2>
         <p class="required">
-          Do you have insurance to cover your immediate needs?
+          Does the evacuee have insurance to cover their immediate needs?
         </p>
         <div class="form-group mb-0">
           <div class="form-check">
@@ -425,7 +426,7 @@
           </div>
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes-unsure" formControlName="insuranceCode" id="insuranceCodeYesUnsure">
-            <label class="form-check-label" for="insuranceCodeYesUnsure">Yes, but I'm not sure if I have coverage for this event</label>
+            <label class="form-check-label" for="insuranceCodeYesUnsure">Yes, but they are unsure if they have coverage for this event</label>
           </div>
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="no" formControlName="insuranceCode" id="insuranceCodeNo">
@@ -433,7 +434,7 @@
           </div>
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="unsure" formControlName="insuranceCode" id="insuranceCodeUnsure">
-            <label class="form-check-label" for="insuranceCodeUnsure">I don't know</label>
+            <label class="form-check-label" for="insuranceCodeUnsure">They don't know</label>
           </div>
           <span [class.d-block]="invalid('insuranceCode')" class="invalid-feedback">{{e.insuranceCode}}</span>
         </div>
@@ -461,13 +462,10 @@
       <!-- NON-ESSENTIAL SUPPORTS -->
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Non-essential Supports</h2>
-        <p>
-          While you are evacuated you may require emergency supports to ensure you and your family’s needs are met. An Emergency Support Services volunteer will meet with you in a Reception Centre in order to determine these needs.
-        </p>
         <p class="required">
-          To expedite this process, please indicate <strong>which categories of support you are able to provide for yourselves.</strong>
+          Which categories of support is the evacuee <strong>able to provide for themselves?</strong>
         </p>
-        <div class="mt-4 feature-block">
+        <div class="feature-block">
           <p>Check all that apply:</p>
           <div class="form-check mt-2">
             <input type="checkbox" class="form-check-input" formControlName="requiresFood" id="requiresFood">
@@ -498,8 +496,7 @@
         <div class="form-row">
           <app-attention-icon></app-attention-icon>
           <p class="col">
-            Emergency Support Services provides short term assistance to give you and your family a chance to recover.<br>
-            Have you thought about what you will do after that time?
+            Emergency Support Services provides short term assistance to give evacuees a chance to recover. Has the evacuee thought about what they will do after that time?
           </p>
         </div>
         <textarea class="form-control" placeholder="Details" rows="4" formControlName="familyRecoveryPlan"></textarea>
@@ -511,7 +508,8 @@
         <div class="form-row">
           <app-attention-icon></app-attention-icon>
           <p class="col">
-            Please check the boxes below where you have made referrals within the Reception Centre.
+            Please review the following services available in your reception centre. <br>
+            Please select the ones you have recommended for the evacuee
           </p>
         </div>
         <div class="form-check mb-2">
@@ -559,7 +557,7 @@
               A space to add any factual case notes pertaining to the evacuee and their family. Please do not add any medical information or irrelevant/speculative personal details as this information may be viewed by other volunteers and/or EMBC. Evacuees may request to view their own records, including these case notes.
             </p>
             <p>
-              Initial and date each comment that you add. Do not delete any previous case notes.
+              Initial and date each comment that you add. Do not remove any previously added case notes.
             </p>
           </div>
         </div>
@@ -598,315 +596,7 @@
     Please confirm that all details you entered are correct by reading through the summary below with the evacuee.
   </p>
 
-  <ul class="summary">
-    <li>
-      <span class="name">Task Number:</span>
-      <span class="value">{{registration?.incidentTask?.taskNumber}}</span>
-    </li>
-    <!-- <li>
-      <span class="name">Restricted File:</span>
-      <span class="value">{{registration?.restrictedAccess | yesNo}}</span>
-    </li> -->
-  </ul>
-
-  <h2 class="mt-3">Place of Registration</h2>
-  <ul class="summary">
-    <li>
-      <span class="name">Facility Name/Registration Location:</span>
-      <span class="value">{{registration?.facility}}</span>
-    </li>
-    <li>
-      <span class="name">Host Community:</span>
-      <span class="value">{{registration?.hostCommunity?.name}}</span>
-    </li>
-  </ul>
-
-  <h2 class="mt-3">Evacuee Information</h2>
-  <ul class="summary">
-    <li>
-      <span class="name">Last Name:</span>
-      <span class="value">{{registration?.headOfHousehold?.lastName}}</span>
-    </li>
-    <li>
-      <span class="name">First Name:</span>
-      <span class="value">{{registration?.headOfHousehold?.firstName}}</span>
-    </li>
-    <li>
-      <span class="name">Initial:</span>
-      <span class="value">{{registration?.headOfHousehold?.initials}}</span>
-    </li>
-    <li>
-      <span class="name">Preferred Name:</span>
-      <span class="value">{{registration?.headOfHousehold?.nickname}}</span>
-    </li>
-    <li>
-      <span class="name">Gender:</span>
-      <span class="value">{{genderOption(registration?.headOfHousehold?.gender)}}</span>
-    </li>
-    <li>
-      <span class="name">Date of Birth:</span>
-      <span class="value">{{registration?.headOfHousehold?.dob | date : 'MMM-dd-yyyy'}}</span>
-    </li>
-  </ul>
-
-  <div *ngIf="registration?.headOfHousehold?.familyMembers">
-    <h2 class="mt-3">Evacuee Family Information</h2>
-    <ul class="summary mt-4" *ngFor="let fm of registration.headOfHousehold.familyMembers">
-      <li>
-        <span class="name">Last Name:</span>
-        <span class="value">{{fm?.lastName}}</span>
-      </li>
-      <li>
-        <span class="name">First Name:</span>
-        <span class="value">{{fm?.firstName}}</span>
-      </li>
-      <li>
-        <span class="name">Initial:</span>
-        <span class="value">{{fm?.initials}}</span>
-      </li>
-      <li>
-        <span class="name">Relationship:</span>
-        <span class="value">{{fm?.relationshipToEvacuee?.description}}</span>
-      </li>
-      <li>
-        <span class="name">Gender:</span>
-        <span class="value">{{genderOption(fm?.gender)}}</span>
-      </li>
-      <li>
-        <span class="name">Date of Birth:</span>
-        <span class="value">{{fm?.dob | date : 'MMM-dd-yyyy'}}</span>
-      </li>
-    </ul>
-  </div>
-
-  <h2 class="mt-3">Primary Address &amp; Contact Details</h2>
-  <ul class="summary">
-    <ng-container *ngIf="isBcAddress(registration?.headOfHousehold?.primaryResidence); then content1 else other_content1"></ng-container>
-    <ng-template #content1>
-      <li>
-        <span class="name">Apt/Suite/Building Number &amp; Street Address/PO Box:</span>
-        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.addressLine1}}</span>
-      </li>
-      <li>
-        <span class="name">Community:</span>
-        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.community?.name}}</span>
-      </li>
-      <li>
-        <span class="name">Province:</span>
-        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.province}}</span>
-      </li>
-      <li>
-        <span class="name">Postal Code:</span>
-        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.postalCode}}</span>
-      </li>
-      <li>
-        <span class="name">Country:</span>
-        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.country?.name }}</span>
-      </li>
-    </ng-template>
-    <ng-template #other_content1>
-      <li>
-        <span class="name">Apt/Suite/Building Number &amp; Street Address/PO Box:</span>
-        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.addressLine1}}</span>
-      </li>
-      <li>
-        <span class="name">City:</span>
-        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.city}}</span>
-      </li>
-      <li>
-        <span class="name">Region/Province/State:</span>
-        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.province}}</span>
-      </li>
-      <li>
-        <span class="name">Postal /ZIP Code:</span>
-        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.postalCode}}</span>
-      </li>
-      <li>
-        <span class="name">Country/Region:</span>
-        <span class="value">{{registration?.headOfHousehold?.primaryResidence?.country?.name }}</span>
-      </li>
-    </ng-template>
-    <li>
-      <span class="name">Telephone/Mobile:</span>
-      <span class="value">{{registration?.headOfHousehold?.phoneNumber}}</span>
-    </li>
-    <li>
-      <span class="name">Alternate Telephone/Mobile:</span>
-      <span class="value">{{registration?.headOfHousehold?.phoneNumberAlt}}</span>
-    </li>
-    <li>
-      <span class="name">Email Address:</span>
-      <span class="value">{{registration?.headOfHousehold?.email}}</span>
-    </li>
-  </ul>
-
-  <div *ngIf="registration?.headOfHousehold?.mailingAddress">
-    <h2 class="mt-3">Mailing Address</h2>
-    <ul class="summary">
-      <ng-container *ngIf="isBcAddress(registration?.headOfHousehold?.mailingAddress); then content2 else other_content2"></ng-container>
-      <ng-template #content2>
-        <li>
-          <span class="name">Apt/Suite/Building Number &amp; Street Address/PO Box:</span>
-          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.addressLine1}}</span>
-        </li>
-        <li>
-          <span class="name">Community:</span>
-          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.community?.name}}</span>
-        </li>
-        <li>
-          <span class="name">Province:</span>
-          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.province}}</span>
-        </li>
-        <li>
-          <span class="name">Postal Code:</span>
-          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.postalCode}}</span>
-        </li>
-        <li>
-          <span class="name">Country:</span>
-          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.country?.name }}</span>
-        </li>
-      </ng-template>
-      <ng-template #other_content2>
-        <li>
-          <span class="name">Apt/Suite/Building Number &amp; Street Address/PO Box:</span>
-          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.addressLine1}}</span>
-        </li>
-        <li>
-          <span class="name">City:</span>
-          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.city}}</span>
-        </li>
-        <li>
-          <span class="name">Region/Province/State:</span>
-          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.province}}</span>
-        </li>
-        <li>
-          <span class="name">Postal /ZIP Code:</span>
-          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.postalCode}}</span>
-        </li>
-        <li>
-          <span class="name">Country/Region:</span>
-          <span class="value">{{registration?.headOfHousehold?.mailingAddress?.country?.name }}</span>
-        </li>
-      </ng-template>
-    </ul>
-  </div>
-
-  <h2 class="mt-3">Brief statement of how the person/family were affected by the disaster</h2>
-  <ul class="summary">
-    <li>
-      <span class="multi-line">{{registration?.disasterAffectDetails || '&nbsp;'}}</span>
-    </li>
-  </ul>
-
-  <h2 class="mt-3">Insurance</h2>
-  <ul class="summary">
-    <li>
-      <span class="name">Do you have insurance:</span>
-      <span class="value">{{insuranceOption(registration?.insuranceCode)}}</span>
-    </li>
-  </ul>
-
-  <h2 class="mt-3">Additional Information</h2>
-  <ul class="summary">
-    <li>
-      <span class="name">Dietary Requirements:</span>
-      <span class="value">{{registration?.dietaryNeeds | yesNo}}</span>
-    </li>
-    <li>
-      <span class="name">Dietary Details:</span>
-      <span class="value">{{registration?.dietaryNeedsDetails}}</span>
-    </li>
-    <li>
-      <span class="name">Medication:</span>
-      <span class="value">{{registration?.medicationNeeds | yesNo}}</span>
-    </li>
-    <li>
-      <span class="name">Medication for 72hrs:</span>
-      <span class="value">{{registration?.hasThreeDayMedicationSupply | yesNo}}</span>
-    </li>
-    <li>
-      <span class="name">Pets:</span>
-      <span class="value">{{registration?.hasPets | yesNo}}</span>
-    </li>
-  </ul>
-
-  <h2 class="mt-3">Next Steps</h2>
-  <ul class="summary">
-    <li>
-      <span class="name">Categories of support you are able to provide for yourselves:</span>
-      <span class="value">
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" disabled [checked]="registration?.requiresFood">
-          <label class="form-check-label">Food</label>
-        </div>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" disabled [checked]="registration?.requiresClothing">
-          <label class="form-check-label">Clothing</label>
-        </div>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" disabled [checked]="registration?.requiresAccommodation">
-          <label class="form-check-label">Lodging</label>
-        </div>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" disabled [checked]="registration?.requiresIncidentals">
-          <label class="form-check-label">Incidentals</label>
-        </div>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" disabled [checked]="registration?.requiresTransportation">
-          <label class="form-check-label">Transportation</label>
-        </div>
-      </span>
-    </li>
-  </ul>
-
-  <h2 class="mt-3">Family Recovery Plan</h2>
-  <ul class="summary">
-    <li>
-      <span class="multi-line">{{registration?.familyRecoveryPlan || '&nbsp;'}}</span>
-    </li>
-  </ul>
-
-  <h2 class="mt-3">Referrals Made Within Reception Centre</h2>
-  <ul class="summary">
-    <li>
-      <span class="name">Inquiry Referral:</span>
-      <span class="value">{{registration?.hasInquiryReferral | yesNo}}</span>
-    </li>
-    <li>
-      <span class="name">Health Services Referral:</span>
-      <span class="value">{{registration?.hasHealthServicesReferral | yesNo}}</span>
-    </li>
-    <li>
-      <span class="name">First Aid Referral:</span>
-      <span class="value">{{registration?.hasFirstAidReferral | yesNo}}</span>
-    </li>
-    <li>
-      <span class="name">Personal Services Referral:</span>
-      <span class="value">{{registration?.hasPersonalServicesReferral | yesNo}}</span>
-    </li>
-    <li>
-      <span class="name">Child Care Referral:</span>
-      <span class="value">{{registration?.hasChildCareReferral | yesNo}}</span>
-    </li>
-    <li>
-      <span class="name">Pet Care Referral:</span>
-      <span class="value">{{registration?.hasPetCareReferral | yesNo}}</span>
-    </li>
-  </ul>
-
-  <h2 class="mt-3">Other Agency Referrals</h2>
-  <ul class="summary">
-    <li>
-      <span class="multi-line">{{registration?.externalReferralsDetails || '&nbsp;'}}</span>
-    </li>
-  </ul>
-
-  <h2 class="blue-header font-weight-bold mt-3">Internal Case Notes</h2>
-  <ul class="summary">
-    <li>
-      <span class="multi-line">{{registration?.internalCaseNotes || '&nbsp;'}}</span>
-    </li>
-  </ul>
+  <app-full-registration-summary-block [registration]='registration'></app-full-registration-summary-block>
 
   <div class="mt-5 space-between">
     <section>
