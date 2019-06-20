@@ -21,8 +21,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         ;
 
         private IQueryable<Models.Db.Volunteer> ActiveVolunteers => db.Volunteers
-            .AsNoTracking()
             .Where(v => v.Active == true)
+            .AsNoTracking()
             .Include(v => v.Organization)
                 .ThenInclude(x => x.Region)
             .Include(v => v.Organization)
