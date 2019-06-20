@@ -28,8 +28,9 @@
             </div>
           </div>
           <div *ngIf="stepCounter===1" class="col-md-2">
-            <button *ngIf="defaultDate" type="button" class="btn btn-primary float-right" (click)="stepCounter=2">NEXT</button>
-            <button *ngIf="!defaultDate" type="button" class="btn btn-primary float-right" disabled>NEXT</button>
+
+            <button *ngIf="defaultDate && !showDefaultDatePicker" type="button" class="btn btn-primary float-right" (click)="stepCounter=2">NEXT</button>
+            <button *ngIf="!defaultDate && !showDefaultDatePicker" type="button" class="btn btn-primary float-right" disabled>NEXT</button>
           </div>
         </div>
 
