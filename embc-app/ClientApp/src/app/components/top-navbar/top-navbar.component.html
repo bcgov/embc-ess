@@ -1,8 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-secondary-nav" *ngIf="role && role !== 'role_everyone'">
-  <!-- Volunteer navbar -->
   <div class="container">
-    <span *ngIf="role===volunteer">
-      <ul class="navbar-nav mr-auto">
+    <button class="navbar-toggler" type="button" (click)="toggleMenu()" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- Volunteer navbar -->
+    <div *ngIf="role===volunteer" class="collapse navbar-collapse" id="navbarSupportedContent" #navbarSupportedContent>
+      <ul class="navbar-nav mr-auto" (click)="closeMenu()">
         <li class="nav-item">
           <a [class.active]="router.url==='/volunteer'" class="nav-link" [routerLink]="['/volunteer']" title="Go Home">Home</a>
         </li>
@@ -13,11 +16,11 @@
           <a [class.active]="router.url==='/volunteer/useful-info'" class="nav-link" [routerLink]="['/volunteer/useful-info']" title="Go to useful information">Useful Information</a>
         </li>
       </ul>
-    </span>
+    </div>
 
     <!-- Local authority navbar -->
-    <span *ngIf="role===localAuthority">
-      <ul class="navbar-nav mr-auto">
+    <div *ngIf="role===localAuthority" class="collapse navbar-collapse" id="navbarSupportedContent" #navbarSupportedContent>
+      <ul class="navbar-nav mr-auto" (click)="closeMenu()">
         <li class="nav-item">
           <a [class.active]="router.url==='/local-authority'" class="nav-link" [routerLink]="['/local-authority']" title="Go Home">Home</a>
         </li>
@@ -33,10 +36,10 @@
           <a [class.active]="router.url==='/local-authority/useful-info'" class="nav-link" [routerLink]="['/local-authority/useful-info']" title="Go to useful information">Useful Information</a>
         </li>
       </ul>
-    </span>
+    </div>
     <!-- Administrator navbar -->
-    <span *ngIf="role===provincialAdmin">
-      <ul class="navbar-nav mr-auto">
+    <div *ngIf="role===provincialAdmin" class="collapse navbar-collapse" id="navbarSupportedContent" #navbarSupportedContent>
+      <ul class="navbar-nav mr-auto" (click)="closeMenu()">
         <li class="nav-item">
           <a [class.active]="router.url==='/provincial-admin'" class="nav-link" [routerLink]="['/provincial-admin']" title="Go Home">Home</a>
         </li>
@@ -54,6 +57,6 @@
           <a [class.active]="router.url==='/provincial-admin/useful-info'" class="nav-link" [routerLink]="['/provincial-admin/useful-info']" title="Go to useful information">Useful Information</a>
         </li>
       </ul>
-    </span>
+    </div>
   </div>
 </nav>
