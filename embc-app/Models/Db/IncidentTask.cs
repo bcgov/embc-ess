@@ -7,11 +7,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
 {
     public class IncidentTask : IAuditableEntity
     {
-        public IncidentTask()
-        {
-            EvacueeRegistrations = new List<EvacueeRegistration>();
-        }
-
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }

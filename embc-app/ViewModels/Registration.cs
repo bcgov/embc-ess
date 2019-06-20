@@ -45,9 +45,12 @@ namespace Gov.Jag.Embc.Public.ViewModels
                         address.AddressTypeCode = (address.AddressSequenceNumber == 1 ? AddressType.Primary : AddressType.Mailing).GetDisplayName();
                     }
                 })
-                .ReverseMap()
+                ;
+
+            CreateMap<Models.Db.EvacueeRegistration, Registration>()
                 .ForMember(d => d.Id, opts => opts.MapFrom(s => s.EssFileNumber))
                 .ForMember(d => d.HeadOfHousehold, opts => opts.MapFrom(s => s.Evacuees.Single(e => e.EvacueeType == EvacueeType.HeadOfHousehold)))
+                .ForMember(d => d.InternalCaseNotes, opts => opts.MapFrom(s => s.FollowUpDetails))
                 .AfterMap((s, d, ctx) =>
                 {
                     d.HeadOfHousehold.Email = s.Email;

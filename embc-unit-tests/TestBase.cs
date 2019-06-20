@@ -32,8 +32,9 @@ namespace embc_unit_tests
             //This must be called before Startup.ConfigureServices to ensure the in memory db context
             //is registered first, otherwise the tests will try to connect to SQL server
             services
-               .AddEntityFrameworkInMemoryDatabase()
-               .AddDbContext<EmbcDbContext>(options => options
+                .AddLogging(opts => opts.AddProvider(new XUnitLoggerProvider(output)))
+                .AddEntityFrameworkInMemoryDatabase()
+                .AddDbContext<EmbcDbContext>(options => options
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors()
                     .UseInMemoryDatabase("ESS_Test")

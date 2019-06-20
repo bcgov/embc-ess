@@ -109,10 +109,23 @@ namespace embc_unit_tests.Registrations
 
             Assert.Equal(original.Id, result.Id);
             Assert.Equal(isComplete, result.IsFinalized);
-            Assert.Equal(original.CompletedBy, result.CompletedBy);
-            Assert.Equal(original.HostCommunity?.Id, result.HostCommunity?.Id);
-            Assert.Equal(original.IncidentTask?.Id, result.IncidentTask?.Id);
-            Assert.Equal(original.DeclarationAndConsent, result.DeclarationAndConsent);
+            if (isComplete)
+            {
+                //Assert.NotNull(result.CompletedBy);
+                //Assert.Equal(original.CompletedBy, result.CompletedBy);
+                Assert.NotNull(result.HostCommunity);
+                Assert.Equal(original.HostCommunity.Id, result.HostCommunity.Id);
+                Assert.NotNull(result.IncidentTask);
+                Assert.Equal(original.IncidentTask.Id, result.IncidentTask.Id);
+            }
+            else
+            {
+                Assert.Null(result.CompletedBy);
+                Assert.Null(result.HostCommunity);
+                Assert.Null(result.IncidentTask);
+            }
+            Assert.Equal(true, result.DeclarationAndConsent);
+            Assert.Equal(true, result.Active);
             Assert.Equal(original.DietaryNeeds, result.DietaryNeeds);
             Assert.Equal(original.DietaryNeedsDetails, result.DietaryNeedsDetails);
             Assert.Equal(original.DisasterAffectDetails, result.DisasterAffectDetails);
