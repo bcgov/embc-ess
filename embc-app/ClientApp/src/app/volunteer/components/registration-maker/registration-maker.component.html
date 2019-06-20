@@ -411,6 +411,11 @@
           </div>
           <span [class.d-block]="invalid('hasPets')" class="invalid-feedback">{{e.hasPets}}</span>
         </div>
+        <div *ngIf="form.value.hasPets" class="feature-block">
+          <label>Please describe the evacuee's pet-care plan.</label>
+          <input type="text" [class.is-invalid]="invalid('petCarePlan')" class="form-control" formControlName="petCarePlan" autocomplete="off">
+          <span *ngIf="submitted" class="invalid-feedback">{{e.petCarePlan}}</span>
+        </div>
       </div>
 
       <!-- INSURANCE -->

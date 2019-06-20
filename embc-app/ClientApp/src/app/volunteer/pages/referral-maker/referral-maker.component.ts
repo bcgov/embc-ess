@@ -96,7 +96,8 @@ export class ReferralMakerComponent implements OnInit {
         } else {
           this.registration = registration;
           this.evacuees = this.createEvacueeList(registration);
-          this.defaultDate = new Date(registration.incidentTask.startDate);
+          // this.defaultDate = new Date(registration.incidentTask.startDate); // previously default set to incident start time
+          this.defaultDate = new Date();
         }
       }, err => {
         this.notificationQueueService.addNotification('Failed to load evacuee summary', 'danger');
