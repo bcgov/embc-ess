@@ -53,27 +53,56 @@
       </div>
 
       <!-- select required supports -->
-      <div *ngIf="stepCounter >= 2" class="card border-0 p-3">
-        <h2 class="display-6">Select required supports:</h2>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood" (change)="foodReferralChange()">
-          <label class="form-check-label" for="supportFood">Food</label>
+      <div *ngIf="stepCounter >= 2" class="row mt-2">
+        <div class="col">
+          <div class="card border-0 p-3">
+            <h2 class="display-6">Select required supports:</h2>
+            <div class="form-check mt-2">
+              <input type="checkbox" class="form-check-input" [checked]="foodReferrals.length > 0" id="supportFood" (change)="foodReferralChange()">
+              <label class="form-check-label" for="supportFood">Food</label>
+            </div>
+            <div class="form-check mt-2">
+              <input type="checkbox" class="form-check-input" [checked]="lodgingReferrals.length > 0" id="supportLodging" (change)="lodgingReferralChange()">
+              <label class="form-check-label" for="supportLodging">Lodging</label>
+            </div>
+            <div class="form-check mt-2">
+              <input type="checkbox" class="form-check-input" [checked]="clothingReferrals.length > 0" id="supportClothing" (change)="clothingReferralChange()">
+              <label class="form-check-label" for="supportClothing">Clothing</label>
+            </div>
+            <div class="form-check mt-2">
+              <input type="checkbox" class="form-check-input" [checked]="transportationReferrals.length > 0" id="supportTransportation" (change)="transportationReferralChange()">
+              <label class="form-check-label" for="supportTransportation">Transportation</label>
+            </div>
+            <div class="form-check mt-2">
+              <input type="checkbox" class="form-check-input" [checked]="incidentalsReferrals.length > 0" id="supportIncidentals" (change)="incidentalsReferralChange()">
+              <label class="form-check-label" for="supportIncidentals">Incidentals</label>
+            </div>
+          </div>
         </div>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="lodgingReferrals.length > 0" id="supportLodging" (change)="lodgingReferralChange()">
-          <label class="form-check-label" for="supportLodging">Lodging</label>
-        </div>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="clothingReferrals.length > 0" id="supportClothing" (change)="clothingReferralChange()">
-          <label class="form-check-label" for="supportClothing">Clothing</label>
-        </div>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="transportationReferrals.length > 0" id="supportTransportation" (change)="transportationReferralChange()">
-          <label class="form-check-label" for="supportTransportation">Transportation</label>
-        </div>
-        <div class="form-check mt-2">
-          <input type="checkbox" class="form-check-input" [checked]="incidentalsReferrals.length > 0" id="supportIncidentals" (change)="incidentalsReferralChange()">
-          <label class="form-check-label" for="supportIncidentals">Incidentals</label>
+        <div class="col">
+          <div class="card p-3">
+            <h2 class="display-6">Supports that the evacuee is able to provide for themselves:</h2>
+            <div class="form-check mt-2">
+              <input type="checkbox" class="form-check-input" [checked]="true" id="supportFood" disabled>
+              <label class="form-check-label" for="supportFood">Food</label>
+            </div>
+            <div class="form-check mt-2">
+              <input type="checkbox" class="form-check-input" [checked]="true" id="supportLodging" disabled>
+              <label class="form-check-label" for="supportLodging">Lodging</label>
+            </div>
+            <div class="form-check mt-2">
+              <input type="checkbox" class="form-check-input" [checked]="true" id="supportClothing" disabled>
+              <label class="form-check-label" for="supportClothing">Clothing</label>
+            </div>
+            <div class="form-check mt-2">
+              <input type="checkbox" class="form-check-input" [checked]="true" id="supportTransportation" disabled>
+              <label class="form-check-label" for="supportTransportation">Transportation</label>
+            </div>
+            <div class="form-check mt-2">
+              <input type="checkbox" class="form-check-input" [checked]="true" id="supportIncidentals" disabled>
+              <label class="form-check-label" for="supportIncidentals">Incidentals</label>
+            </div>
+          </div>
         </div>
       </div>
 
