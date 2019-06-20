@@ -1,5 +1,5 @@
 --Will delete all regisration data for below ess file number
-DECLARE @EssFileNumber INT = 0;
+DECLARE @EssFileNumber INT = 0;  -- Replace 0 with a valid ESS File Number
 
 BEGIN TRANSACTION
 -- Delete all addresses
