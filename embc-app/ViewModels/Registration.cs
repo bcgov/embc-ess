@@ -106,6 +106,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .ForMember(d => d.AddressTypeCode, opts => opts.Ignore())
                 .ForMember(d => d.AddressSubtypeCode, opts => opts.MapFrom(s => s.AddressSubtype))
                 .ReverseMap()
+                .ForMember(d => d.Id, opts => opts.MapFrom(s => $"{s.RegistrationId}-{s.AddressSequenceNumber}"))
                 ;
         }
     }

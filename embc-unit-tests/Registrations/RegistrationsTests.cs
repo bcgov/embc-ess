@@ -141,6 +141,9 @@ namespace embc_unit_tests.Registrations
             Assert.Equal(original.RequiresTransportation, result.RequiresTransportation);
             Assert.Equal(original.RestrictedAccess, result.RestrictedAccess);
             Assert.Equal(original.SelfRegisteredDate, result.SelfRegisteredDate);
+            Assert.NotNull(result.HeadOfHousehold);
+            Assert.NotNull(result.HeadOfHousehold.Id);
+            Assert.Equal($"{original.Id}-1", result.HeadOfHousehold.Id);
             Assert.Equal(original.HeadOfHousehold.Dob, result.HeadOfHousehold.Dob);
             Assert.Equal(original.HeadOfHousehold.Email, result.HeadOfHousehold.Email);
             Assert.Equal(original.HeadOfHousehold.FirstName, result.HeadOfHousehold.FirstName);
@@ -150,6 +153,7 @@ namespace embc_unit_tests.Registrations
             Assert.Equal(original.HeadOfHousehold.Nickname, result.HeadOfHousehold.Nickname);
             Assert.Equal(original.HeadOfHousehold.PhoneNumber, result.HeadOfHousehold.PhoneNumber);
             Assert.Equal(original.HeadOfHousehold.PhoneNumberAlt, result.HeadOfHousehold.PhoneNumberAlt);
+            Assert.Equal($"{original.Id}-2", result.HeadOfHousehold.MailingAddress?.Id);
             Assert.Equal(original.HeadOfHousehold.MailingAddress?.AddressLine1, result.HeadOfHousehold.MailingAddress?.AddressLine1);
             Assert.Equal(original.HeadOfHousehold.MailingAddress?.AddressLine2, result.HeadOfHousehold.MailingAddress?.AddressLine2);
             Assert.Equal(original.HeadOfHousehold.MailingAddress?.AddressLine3, result.HeadOfHousehold.MailingAddress?.AddressLine3);
@@ -157,6 +161,9 @@ namespace embc_unit_tests.Registrations
             Assert.Equal(original.HeadOfHousehold.MailingAddress?.City, result.HeadOfHousehold.MailingAddress?.City);
             Assert.Equal(original.HeadOfHousehold.MailingAddress?.Community?.Id, result.HeadOfHousehold.MailingAddress?.Community?.Id);
             Assert.Equal(original.HeadOfHousehold.MailingAddress?.Country?.Id, result.HeadOfHousehold.MailingAddress?.Country?.Id);
+            Assert.NotNull(result.HeadOfHousehold.PrimaryResidence);
+            Assert.NotNull(result.HeadOfHousehold.PrimaryResidence.Id);
+            Assert.Equal($"{original.Id}-1", result.HeadOfHousehold.PrimaryResidence.Id);
             Assert.Equal(original.HeadOfHousehold.PrimaryResidence.AddressLine1, result.HeadOfHousehold.PrimaryResidence.AddressLine1);
             Assert.Equal(original.HeadOfHousehold.PrimaryResidence.AddressLine2, result.HeadOfHousehold.PrimaryResidence.AddressLine2);
             Assert.Equal(original.HeadOfHousehold.PrimaryResidence.AddressLine3, result.HeadOfHousehold.PrimaryResidence.AddressLine3);
@@ -231,6 +238,9 @@ namespace embc_unit_tests.Registrations
             Assert.Equal(original.RequiresTransportation, result.RequiresTransportation);
             Assert.Equal(original.RestrictedAccess, result.RestrictedAccess);
             Assert.Equal(original.SelfRegisteredDate, result.SelfRegisteredDate);
+            Assert.NotNull(result.HeadOfHousehold);
+            Assert.NotNull(result.HeadOfHousehold.Id);
+            Assert.Equal($"{original.Id}-1", result.HeadOfHousehold.Id);
             Assert.Equal(original.HeadOfHousehold.Dob, result.HeadOfHousehold.Dob);
             Assert.Equal(original.HeadOfHousehold.Email, result.HeadOfHousehold.Email);
             Assert.Equal(original.HeadOfHousehold.FirstName, result.HeadOfHousehold.FirstName);
@@ -240,6 +250,7 @@ namespace embc_unit_tests.Registrations
             Assert.Equal(original.HeadOfHousehold.Nickname, result.HeadOfHousehold.Nickname);
             Assert.Equal(original.HeadOfHousehold.PhoneNumber, result.HeadOfHousehold.PhoneNumber);
             Assert.Equal(original.HeadOfHousehold.PhoneNumberAlt, result.HeadOfHousehold.PhoneNumberAlt);
+            Assert.Equal($"{original.Id}-2", result.HeadOfHousehold.MailingAddress?.Id);
             Assert.Equal(original.HeadOfHousehold.MailingAddress?.AddressLine1, result.HeadOfHousehold.MailingAddress?.AddressLine1);
             Assert.Equal(original.HeadOfHousehold.MailingAddress?.AddressLine2, result.HeadOfHousehold.MailingAddress?.AddressLine2);
             Assert.Equal(original.HeadOfHousehold.MailingAddress?.AddressLine3, result.HeadOfHousehold.MailingAddress?.AddressLine3);
@@ -247,6 +258,9 @@ namespace embc_unit_tests.Registrations
             Assert.Equal(original.HeadOfHousehold.MailingAddress?.City, result.HeadOfHousehold.MailingAddress?.City);
             Assert.Equal(original.HeadOfHousehold.MailingAddress?.Community?.Id, result.HeadOfHousehold.MailingAddress?.Community?.Id);
             Assert.Equal(original.HeadOfHousehold.MailingAddress?.Country?.Id, result.HeadOfHousehold.MailingAddress?.Country?.Id);
+            Assert.NotNull(result.HeadOfHousehold.PrimaryResidence);
+            Assert.NotNull(result.HeadOfHousehold.PrimaryResidence.Id);
+            Assert.Equal($"{original.Id}-1", result.HeadOfHousehold.PrimaryResidence.Id);
             Assert.Equal(original.HeadOfHousehold.PrimaryResidence.AddressLine1, result.HeadOfHousehold.PrimaryResidence.AddressLine1);
             Assert.Equal(original.HeadOfHousehold.PrimaryResidence.AddressLine2, result.HeadOfHousehold.PrimaryResidence.AddressLine2);
             Assert.Equal(original.HeadOfHousehold.PrimaryResidence.AddressLine3, result.HeadOfHousehold.PrimaryResidence.AddressLine3);
