@@ -96,8 +96,7 @@ namespace embc_unit_tests
             var task = IncidentTaskGenerator.Generate();
             task.Community = new Gov.Jag.Embc.Public.ViewModels.Community() { Id = communityId };
 
-            var incidentTask = await di.CreateIncidentTaskAsync(task);
-            return incidentTask.Id;
+            return await di.CreateIncidentTaskAsync(task);
         }
 
         protected async Task<string[]> SeedRegistrations(string taskId, string hostCommunity, int numberOfRegistrations)

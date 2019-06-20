@@ -36,9 +36,10 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task Get_CompleteRegistrationWithReason_Success()
         {
-            var task = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
+            var incidentCommunity = await GetRandomSeededCommunity();
+            var taskId = await SeedIncident(incidentCommunity.Id);
             var hostCommunity = (await di.GetCommunitiesAsync()).First();
-            var completedReg = RegistrationGenerator.GenerateCompleted(task.Id, hostCommunity.Id);
+            var completedReg = RegistrationGenerator.GenerateCompleted(taskId, hostCommunity.Id);
             var regId = await di.CreateEvacueeRegistrationAsync(completedReg);
 
             var response = await mediator.Send(new RegistrationQueryRequest(regId, "want to read"));
@@ -51,9 +52,10 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task Get_CompleteRegistrationWithNoReason_Error()
         {
-            var task = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
-            var hostCommunity = (await di.GetCommunitiesAsync()).First();
-            var completedReg = RegistrationGenerator.GenerateCompleted(task.Id, hostCommunity.Id);
+            var incidentCommunity = await GetRandomSeededCommunity();
+            var taskId = await SeedIncident(incidentCommunity.Id);
+            var hostCommunity = await GetRandomSeededCommunity();
+            var completedReg = RegistrationGenerator.GenerateCompleted(taskId, hostCommunity.Id);
             var regId = await di.CreateEvacueeRegistrationAsync(completedReg);
 
             var response = await mediator.Send(new RegistrationQueryRequest(regId, null));
@@ -92,9 +94,10 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task Get_CompleteRegistrationWithReason_AuditCreated()
         {
-            var task = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
-            var hostCommunity = (await di.GetCommunitiesAsync()).First();
-            var completedReg = RegistrationGenerator.GenerateCompleted(task.Id, hostCommunity.Id);
+            var incidentCommunity = await GetRandomSeededCommunity();
+            var taskId = await SeedIncident(incidentCommunity.Id);
+            var hostCommunity = await GetRandomSeededCommunity();
+            var completedReg = RegistrationGenerator.GenerateCompleted(taskId, hostCommunity.Id);
             var regId = await di.CreateEvacueeRegistrationAsync(completedReg);
 
             var response = await mediator.Send(new RegistrationQueryRequest(regId, "want to read"));
@@ -107,9 +110,10 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task GetAudit_CompletedRegistrationWithSingleFullView_ViewsReturned()
         {
-            var task = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
-            var hostCommunity = (await di.GetCommunitiesAsync()).First();
-            var completedReg = RegistrationGenerator.GenerateCompleted(task.Id, hostCommunity.Id);
+            var incidentCommunity = await GetRandomSeededCommunity();
+            var taskId = await SeedIncident(incidentCommunity.Id);
+            var hostCommunity = await GetRandomSeededCommunity();
+            var completedReg = RegistrationGenerator.GenerateCompleted(taskId, hostCommunity.Id);
             var regId = await di.CreateEvacueeRegistrationAsync(completedReg);
 
             const string reason = "want to read";

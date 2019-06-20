@@ -73,8 +73,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
             item.Id = null;
             item.Active = true;
-            var result = await dataInterface.CreateIncidentTaskAsync(item);
-            return Json(result);
+            var taskId = await dataInterface.CreateIncidentTaskAsync(item);
+            return Json(await dataInterface.GetIncidentTaskAsync(taskId));
         }
 
         [HttpPut("{id}")]

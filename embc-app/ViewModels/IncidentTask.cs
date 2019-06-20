@@ -1,6 +1,5 @@
 using AutoMapper;
 using System;
-using System.Linq;
 
 namespace Gov.Jag.Embc.Public.ViewModels
 {
@@ -17,7 +16,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .ForMember(d => d.Community, opts => opts.Ignore())
                 .ReverseMap()
                 .ForMember(d => d.StartDate, opts => opts.MapFrom(s => s.StartDate.HasValue ? s.StartDate.Value.DateTime : (DateTime?)null))
-                .ForMember(d => d.TotalAssociatedEvacuees, opts => opts.MapFrom(s => s.EvacueeRegistrations.Count()))
+                .ForMember(d => d.TotalAssociatedEvacuees, opts => opts.MapFrom((s, d, v, ctx) => ctx.Items.ContainsKey("EvacueeCount") ? (int)ctx.Items["EvacueeCount"] : 0))
             ;
         }
     }

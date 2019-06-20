@@ -84,9 +84,8 @@ namespace embc_unit_tests.Registrations
             {
                 var fromCommunity = await GetRandomSeededCommunity();
                 var toCommunity = await GetRandomSeededCommunity();
-                var task = IncidentTaskGenerator.Generate();
-                task.Community = fromCommunity;
-                var taskId = (await di.CreateIncidentTaskAsync(task)).Id;
+
+                var taskId = await SeedIncident(fromCommunity.Id);
 
                 registration.HostCommunity = toCommunity;
                 registration.IncidentTask = new IncidentTask { Id = taskId };
@@ -199,9 +198,8 @@ namespace embc_unit_tests.Registrations
             {
                 var fromCommunity = await GetRandomSeededCommunity();
                 var toCommunity = await GetRandomSeededCommunity();
-                var task = IncidentTaskGenerator.Generate();
-                task.Community = fromCommunity;
-                var taskId = (await di.CreateIncidentTaskAsync(task)).Id;
+
+                var taskId = await SeedIncident(fromCommunity.Id);
 
                 registration.HostCommunity = toCommunity;
                 registration.IncidentTask = new IncidentTask { Id = taskId };

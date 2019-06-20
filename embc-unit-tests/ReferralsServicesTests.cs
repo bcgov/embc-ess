@@ -48,10 +48,11 @@ namespace embc_unit_tests
             var pdfService = new PdfConverter();
             var service = new ReferralsService(di, pdfService);
 
-            var incidentTask = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
+            var fromCommunity = await GetRandomSeededCommunity();
+            var taskId = await SeedIncident(fromCommunity.Id);
 
             var regVM = RegistrationGenerator.GenerateSelf();
-            regVM.IncidentTask = incidentTask;
+            regVM.IncidentTask = new Gov.Jag.Embc.Public.ViewModels.IncidentTask { Id = taskId };
 
             var registrationId = await di.CreateEvacueeRegistrationAsync(regVM);
 
@@ -103,10 +104,11 @@ namespace embc_unit_tests
             var pdfService = new PdfConverter();
             var service = new ReferralsService(di, pdfService);
 
-            var incidentTask = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
+            var fromCommunity = await GetRandomSeededCommunity();
+            var taskId = await SeedIncident(fromCommunity.Id);
 
             var regVM = RegistrationGenerator.GenerateSelf();
-            regVM.IncidentTask = incidentTask;
+            regVM.IncidentTask = new Gov.Jag.Embc.Public.ViewModels.IncidentTask { Id = taskId };
 
             var registrationId = await di.CreateEvacueeRegistrationAsync(regVM);
 
