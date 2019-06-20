@@ -1,66 +1,59 @@
-<!-- No navbar (default state) -->
-<!-- Volunteer navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-secondary-nav" *ngIf="role===volunteer">
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary-nav" *ngIf="role && role !== 'role_everyone'">
+  <!-- Volunteer navbar -->
   <div class="container">
+    <span *ngIf="role===volunteer">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a [class.active]="router.url==='/volunteer'" class="nav-link" [routerLink]="['/volunteer']" title="Go Home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a [class.active]="router.url==='/volunteer/registrations'" class="nav-link" [routerLink]="['/volunteer/registrations']" title="Go to Evacuees Area">Evacuees</a>
+        </li>
+        <li class="nav-item">
+          <a [class.active]="router.url==='/volunteer/useful-info'" class="nav-link" [routerLink]="['/volunteer/useful-info']" title="Go to useful information">Useful Information</a>
+        </li>
+      </ul>
+    </span>
 
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a [class.active]="router.url==='/volunteer'" class="nav-link" [routerLink]="['/volunteer']" title="Go Home">Home</a>
-      </li>
-      <li class="nav-item">
-        <a [class.active]="router.url==='/volunteer/registrations'" class="nav-link" [routerLink]="['/volunteer/registrations']" title="Go to Evacuees Area">Evacuees</a>
-      </li>
-      <li class="nav-item">
-        <a [class.active]="router.url==='/volunteer/useful-info'" class="nav-link" [routerLink]="['/volunteer/useful-info']" title="Go to useful information">Useful Information</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+    <!-- Local authority navbar -->
+    <span *ngIf="role===localAuthority">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a [class.active]="router.url==='/local-authority'" class="nav-link" [routerLink]="['/local-authority']" title="Go Home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a [class.active]="router.url==='/local-authority/registrations'" class="nav-link" [routerLink]="['/local-authority/registrations']" title="Go to Evacuees Area">Evacuees</a>
+        </li>
+        <!-- Only visible by local authority -->
+        <li class="nav-item">
+          <a [class.active]="router.url==='/local-authority/volunteers'" class="nav-link" [routerLink]="['/local-authority/volunteers']" title="Go to Emergency Support Services Team page">Emergency Support Services Team</a>
+        </li>
+        <!-- TODO: The  link goes to the useful information page. Can be uncommented when the useful information pull request is accepted-->
+        <li class="nav-item">
+          <a [class.active]="router.url==='/local-authority/useful-info'" class="nav-link" [routerLink]="['/local-authority/useful-info']" title="Go to useful information">Useful Information</a>
+        </li>
+      </ul>
+    </span>
+    <!-- Administrator navbar -->
+    <span *ngIf="role===provincialAdmin">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a [class.active]="router.url==='/provincial-admin'" class="nav-link" [routerLink]="['/provincial-admin']" title="Go Home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a [class.active]="router.url==='/provincial-admin/task-numbers'" class="nav-link" [routerLink]="['/provincial-admin/task-numbers']" title="Manage Task Numbers">Task Numbers</a>
+        </li>
+        <li class="nav-item">
+          <a [class.active]="router.url==='/provincial-admin/registrations'" class="nav-link" [routerLink]="['/provincial-admin/registrations']" title="Go to Evacuees Area">Evacuees</a>
+        </li>
 
-<!-- Local authority navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-secondary-nav" *ngIf="role===localAuthority">
-  <div class="container">
-
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a [class.active]="router.url==='/local-authority'" class="nav-link" [routerLink]="['/local-authority']" title="Go Home">Home</a>
-      </li>
-      <li class="nav-item">
-        <a [class.active]="router.url==='/local-authority/registrations'" class="nav-link" [routerLink]="['/local-authority/registrations']" title="Go to Evacuees Area">Evacuees</a>
-      </li>
-      <!-- Only visible by local authority -->
-      <li class="nav-item">
-        <a [class.active]="router.url==='/local-authority/volunteers'" class="nav-link" [routerLink]="['/local-authority/volunteers']" title="Go to Emergency Support Services Team page">Emergency Support Services Team</a>
-      </li>
-      <!-- TODO: The  link goes to the useful information page. Can be uncommented when the useful information pull request is accepted-->
-      <li class="nav-item">
-        <a [class.active]="router.url==='/local-authority/useful-info'" class="nav-link" [routerLink]="['/local-authority/useful-info']" title="Go to useful information">Useful Information</a>
-      </li>
-    </ul>
-  </div>
-</nav>
-
-<!-- Administrator navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-secondary-nav" *ngIf="role===provincialAdmin">
-  <div class="container">
-
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a [class.active]="router.url==='/provincial-admin'" class="nav-link" [routerLink]="['/provincial-admin']" title="Go Home">Home</a>
-      </li>
-      <li class="nav-item">
-        <a [class.active]="router.url==='/provincial-admin/task-numbers'" class="nav-link" [routerLink]="['/provincial-admin/task-numbers']" title="Manage Task Numbers">Task Numbers</a>
-      </li>
-      <li class="nav-item">
-        <a [class.active]="router.url==='/provincial-admin/registrations'" class="nav-link" [routerLink]="['/provincial-admin/registrations']" title="Go to Evacuees Area">Evacuees</a>
-      </li>
-
-      <li class="nav-item">
-        <a [class.active]="router.url==='/provincial-admin/organizations'" class="nav-link" [routerLink]="['/provincial-admin/organizations']" title="Manage Organizations">Organizations &amp; Users</a>
-      </li>
-      <li class="nav-item">
-        <a [class.active]="router.url==='/provincial-admin/useful-info'" class="nav-link" [routerLink]="['/provincial-admin/useful-info']" title="Go to useful information">Useful Information</a>
-      </li>
-    </ul>
+        <li class="nav-item">
+          <a [class.active]="router.url==='/provincial-admin/organizations'" class="nav-link" [routerLink]="['/provincial-admin/organizations']" title="Manage Organizations">Organizations &amp; Users</a>
+        </li>
+        <li class="nav-item">
+          <a [class.active]="router.url==='/provincial-admin/useful-info'" class="nav-link" [routerLink]="['/provincial-admin/useful-info']" title="Go to useful information">Useful Information</a>
+        </li>
+      </ul>
+    </span>
   </div>
 </nav>
