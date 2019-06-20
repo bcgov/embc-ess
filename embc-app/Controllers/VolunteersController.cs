@@ -50,7 +50,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Volunteer item)
         {
-            if (!await dataInterface.BceidExistsAsync(item.Externaluseridentifier))
+            if (await dataInterface.BceidExistsAsync(item.Externaluseridentifier))
             {
                 ModelState.AddModelError("Externaluseridentifier", "Duplicate BCeId found.");
             }
@@ -72,6 +72,10 @@ namespace Gov.Jag.Embc.Public.Controllers
             if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id)
             {
                 return BadRequest(Json(id));
+            }
+            if (await dataInterface.BceidExistsAsync(item.Externaluseridentifier, item.Id))
+            {
+                ModelState.AddModelError("Externaluseridentifier", "Duplicate BCeId found.");
             }
             if (!ModelState.IsValid)
             {

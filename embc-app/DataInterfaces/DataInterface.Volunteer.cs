@@ -101,9 +101,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return await Volunteers.AnyAsync(x => x.Id == Convert.ToInt32(id));
         }
 
-        public async Task<bool> BceidExistsAsync(string bceid)
+        public async Task<bool> BceidExistsAsync(string bceid, string volunteerId = null)
         {
-            return await ActiveVolunteers.AllAsync(x => x.BCeId == bceid);
+            int? id = string.IsNullOrEmpty(volunteerId) ? default(int?) : Convert.ToInt32(volunteerId);
+            return await ActiveVolunteers.AnyAsync(x => x.BCeId == bceid &&
+                                            (!id.HasValue || (id.HasValue && x.Id != id)));
         }
 
         public async Task<string> CreateVolunteerAsync(Volunteer newVolunteer)
