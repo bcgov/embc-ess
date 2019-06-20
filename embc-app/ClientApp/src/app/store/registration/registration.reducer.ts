@@ -24,6 +24,7 @@ const newRegistration: Registration = {
   registeringFamilyMembers: null,
   dietaryNeeds: null,
   dietaryNeedsDetails: null,
+  petCarePlan: null,
   medicationNeeds: null,
   hasThreeDayMedicationSupply: null,
   hasPets: null,

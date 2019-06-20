@@ -301,6 +301,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       essFileNumber: null,
       dietaryNeeds: [null, Validators.required],
       dietaryNeedsDetails: [null],
+      petCarePlan: [null],
       disasterAffectDetails: [null],
       externalReferralsDetails: '',
       facility: [null, Validators.required],
@@ -471,6 +472,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
         essFileNumber: r.essFileNumber as number,
         dietaryNeeds: r.dietaryNeeds as boolean,
         dietaryNeedsDetails: r.dietaryNeedsDetails as string,
+        petCarePlan: r.petCarePlan as string,
         disasterAffectDetails: r.disasterAffectDetails as string,
         externalReferralsDetails: r.externalReferralsDetails as string,
         facility: r.facility as string,
@@ -688,6 +690,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       restrictedAccess: values.restrictedAccess,
       dietaryNeeds: values.dietaryNeeds as boolean,
       dietaryNeedsDetails: values.dietaryNeedsDetails as string,
+      petCarePlan: values.petCarePlan as string,
       disasterAffectDetails: values.disasterAffectDetails as string,
       externalReferralsDetails: this.asStringAndTrim(values.externalReferralsDetails),
       facility: values.facility as string,
@@ -756,6 +759,11 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       r.dietaryNeedsDetails = '';
     }
 
+    // if they set pets to false then delete pet care plan details.
+    if (!r.petCarePlan) {
+      r.petCarePlan = '';
+    }
+
     // if they set Medication Needs to false then set Has Three Day Medication Supply to false
     if (!r.medicationNeeds) {
       r.hasThreeDayMedicationSupply = false;
@@ -806,6 +814,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       essFileNumber: null,
       dietaryNeeds: null,
       dietaryNeedsDetails: null,
+      petCarePlan: null,
       disasterAffectDetails: null,
       externalReferralsDetails: null,
       facility: null,
