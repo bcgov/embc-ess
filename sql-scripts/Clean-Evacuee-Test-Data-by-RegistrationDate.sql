@@ -1,82 +1,47 @@
---Will delete all regisration data prior to the set date below
+--Will delete all regisration data prior created prior to the set date below using the CreatedDateTime field as the
 DECLARE @RegistrationDate DATETIME = '2019-04-03' --yyyy-mm-dd
 
-DECLARE @RegistrationsToDrop TABLE(RegistrationId uniqueidentifier)
-DECLARE @HeadsOfHouseholds TABLE(PeopleId uniqueidentifier)
-DECLARE @PeopleToDrop TABLE(PeopleId uniqueidentifier)
-DECLARE @AddressesToDrop TABLE(AddressId uniqueidentifier)
-
---Obtain the registrations
-INSERT INTO @registrationsToDrop
-SELECT r.Id
-FROM
-	Registrations r
-WHERE
- -- assuming we are deleting registrations prior to a date
-	(r.SelfRegisteredDate IS NOT NULL AND r.SelfRegisteredDate <  @RegistrationDate)
-OR
-	(r.RegistrationCompletionDate IS NOT NULL AND r.RegistrationCompletionDate < @RegistrationDate)
-
---Obtain the Head of House Hold
-INSERT INTO @HeadsOfHouseholds
-SELECT p.Id
-FROM
-	People p
-INNER JOIN
-	Registrations r
-	ON p.Id = r.HeadOfHouseholdId
-INNER JOIN
-	@registrationsToDrop d
-	ON r.Id = d.RegistrationId
-
---Obtain all people with matching head of household
-INSERT INTO @PeopleToDrop
-SELECT p.Id
-FROM 
-	People p
-INNER JOIN
-	@HeadsOfHouseholds h
-	ON p.HeadOfHouseholdId = h.PeopleId
-UNION
-SELECT h.PeopleId
-FROM
-	@HeadsOfHouseholds h
-
---Obtain all Primary/Mailing Residences Address
-INSERT INTO @AddressesToDrop 
-SELECT a.Id
-FROM
-	Addresses A
-INNER JOIN
-	People p
-	ON a.Id = p.PrimaryResidenceId OR a.Id = p.MailingAddressId
-INNER JOIN
-	@PeopleToDrop d
-	ON p.Id = d.PeopleId
-
 BEGIN TRANSACTION
--- Delete to drop registrations
-DELETE FROM Registrations
-FROM Registrations r
+-- Delete all addresses
+DELETE FROM EvacueeRegistrationAddresses
+FROM EvacueeRegistrationAddresses a
 INNER JOIN
-	@RegistrationsToDrop d
-	ON r.Id = d.RegistrationId
+	EvacueeRegistrations d
+	ON a.RegistrationId = d.EssFileNumber
+WHERE 
+    a.CreatedDateTime < @RegistrationDate;
 
 -- Delete all people recorded
-DELETE FROM People
-FROM 
-	People p
+DELETE FROM ReferralEvacuees 
+FROM
+	ReferralEvacuees re
 INNER JOIN
-	@PeopleToDrop d
-	ON p.Id = d.PeopleId
+	EvacueeRegistrations d
+	ON re.RegistrationId = d.EssFileNumber
+WHERE 
+    d.CreatedDateTime < @RegistrationDate;;
 
--- Delete all addresses
-DELETE FROM Addresses 
+DELETE FROM Evacuees
 FROM 
-	Addresses a
+	Evacuees e
 INNER JOIN
-	@AddressesToDrop d
-	ON a.Id = d.AddressId
+	EvacueeRegistrations d
+	ON e.RegistrationId = d.EssFileNumber
+WHERE 
+    e.CreatedDateTime < @RegistrationDate;;
 
---ROLLBACK;
-COMMIT TRANSACTION
+DELETE FROM	Referrals
+FROM
+	Referrals r
+INNER JOIN
+	EvacueeRegistrations d
+	ON r.RegistrationId = d.EssFileNumber
+WHERE 
+    r.CreatedDateTime < @RegistrationDate;
+
+DELETE FROM EvacueeRegistrations 
+WHERE 
+    CreatedDateTime < @RegistrationDate;
+
+ROLLBACK;
+--COMMIT TRANSACTION
