@@ -52,7 +52,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             if (await dataInterface.BceidExistsAsync(item.Externaluseridentifier))
             {
-                ModelState.AddModelError("Externaluseridentifier", "Duplicate BCeId found.");
+                ModelState.AddModelError("Externaluseridentifier", $"Duplicate BCeId {item.Externaluseridentifier} found.");
             }
 
             if (!ModelState.IsValid)
@@ -77,7 +77,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             var existing = dataInterface.GetVolunteerByExternalId(item.Externaluseridentifier);
             if (existing?.Id != id)
             {
-                ModelState.AddModelError("Externaluseridentifier", "Duplicate BCeId found.");
+                ModelState.AddModelError("Externaluseridentifier", $"Duplicate BCeId {item.Externaluseridentifier} found.");
             }
             else if (existing == null)
             {
