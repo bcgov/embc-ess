@@ -32,7 +32,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public bool? CanAccessRestrictedFiles { get; set; }
 
         [MaxLength(255)]
-        public string UserId { get; set; }
+        [Column("UserId")]
+        public string BCeId { get; set; }
 
         public Guid? OrganizationId { get; set; }
 

@@ -50,6 +50,12 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Volunteer item)
         {
+            var existing = dataInterface.GetVolunteerByExternalId(item.Externaluseridentifier);
+            if (existing != null)
+            {
+                ModelState.AddModelError("Externaluseridentifier", $"Duplicate BCeId {item.Externaluseridentifier} found.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -68,14 +74,22 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest(Json(id));
             }
+
+            var existing = dataInterface.GetVolunteerByExternalId(item.Externaluseridentifier);
+            if (existing?.Id != id)
+            {
+                ModelState.AddModelError("Externaluseridentifier", $"Duplicate BCeId {item.Externaluseridentifier} found.");
+            }
+            else if (existing == null)
+            {
+                return NotFound();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (!await dataInterface.VolunteerExistsAsync(id))
-            {
-                return NotFound();
-            }
+
             await dataInterface.UpdateVolunteerAsync(item);
             return Ok();
         }
