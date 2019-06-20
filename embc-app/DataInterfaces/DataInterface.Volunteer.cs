@@ -20,16 +20,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     .ThenInclude(x => x.Region)
         ;
 
-        private IQueryable<Models.Db.Volunteer> ActiveVolunteers => db.Volunteers
-            .Where(v => v.Active)
-            .AsNoTracking()
-            .Include(v => v.Organization)
-                .ThenInclude(x => x.Region)
-            .Include(v => v.Organization)
-            .Include(v => v.Organization)
-                .ThenInclude(x => x.Community)
-                    .ThenInclude(x => x.Region)
-        ;
+        private IQueryable<Models.Db.Volunteer> ActiveVolunteers => Volunteers.Where(v => v.Active);
 
         public async Task UpdateVolunteerAsync(Volunteer updatedVolunteer)
         {
@@ -96,11 +87,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return person?.ToViewModel();
         }
 
-        public async Task<bool> BceidExistsAsync(string bceid)
-        {
-            return await ActiveVolunteers.AnyAsync(x => x.BCeId == bceid);
-        }
-
         public async Task<string> CreateVolunteerAsync(Volunteer newVolunteer)
         {
             if (newVolunteer.Organization == null || string.IsNullOrEmpty(newVolunteer.Organization.Id)) throw new InvalidOperationException($"Volunteer {newVolunteer.Id} is not associated with an organization");
@@ -154,14 +140,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public Volunteer GetVolunteerByExternalId(string externalId)
         {
             var volunteer = ActiveVolunteers.AsNoTracking().FirstOrDefault(x => x.BCeId == externalId);
-            if (volunteer == null) return null;
-
-            return volunteer?.ToViewModel();
-        }
-
-        public Volunteer GetVolunteerByName(string firstName, string lastName)
-        {
-            var volunteer = ActiveVolunteers.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
             if (volunteer == null) return null;
 
             return volunteer?.ToViewModel();
