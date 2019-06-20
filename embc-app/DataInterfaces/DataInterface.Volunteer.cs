@@ -96,11 +96,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return person?.ToViewModel();
         }
 
-        public async Task<bool> VolunteerExistsAsync(string id)
-        {
-            return await Volunteers.AnyAsync(x => x.Id == Convert.ToInt32(id));
-        }
-
         public async Task<bool> BceidExistsAsync(string bceid)
         {
             return await ActiveVolunteers.AnyAsync(x => x.BCeId == bceid);
