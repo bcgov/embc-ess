@@ -101,11 +101,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return await Volunteers.AnyAsync(x => x.Id == Convert.ToInt32(id));
         }
 
-        public async Task<bool> BceidExistsAsync(string bceid, string volunteerId = null)
+        public async Task<bool> BceidExistsAsync(string bceid)
         {
-            int? id = string.IsNullOrEmpty(volunteerId) ? default(int?) : Convert.ToInt32(volunteerId);
-            return await ActiveVolunteers.AnyAsync(x => x.BCeId == bceid &&
-                                            (!id.HasValue || (id.HasValue && x.Id != id)));
+            return await ActiveVolunteers.AnyAsync(x => x.BCeId == bceid);
         }
 
         public async Task<string> CreateVolunteerAsync(Volunteer newVolunteer)
@@ -160,7 +158,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public Volunteer GetVolunteerByExternalId(string externalId)
         {
-            var volunteer = ActiveVolunteers.FirstOrDefault(x => x.BCeId.Equals(externalId, StringComparison.OrdinalIgnoreCase));
+            var volunteer = ActiveVolunteers.AsNoTracking().FirstOrDefault(x => x.BCeId == externalId);
             if (volunteer == null) return null;
 
             return volunteer?.ToViewModel();

@@ -73,18 +73,22 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest(Json(id));
             }
-            if (await dataInterface.BceidExistsAsync(item.Externaluseridentifier, item.Id))
+
+            var existing = dataInterface.GetVolunteerByExternalId(item.Externaluseridentifier);
+            if (existing?.Id != id)
             {
                 ModelState.AddModelError("Externaluseridentifier", "Duplicate BCeId found.");
             }
+            else if (existing == null)
+            {
+                return NotFound();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (!await dataInterface.VolunteerExistsAsync(id))
-            {
-                return NotFound();
-            }
+
             await dataInterface.UpdateVolunteerAsync(item);
             return Ok();
         }

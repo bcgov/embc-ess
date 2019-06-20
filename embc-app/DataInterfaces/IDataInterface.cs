@@ -95,7 +95,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<bool> VolunteerExistsAsync(string id);
 
-        Task<bool> BceidExistsAsync(string bceid, string volunteerId = null);
+        Task<bool> BceidExistsAsync(string bceid);
 
         #endregion Volunteer
 
