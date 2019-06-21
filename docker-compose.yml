@@ -1,31 +1,40 @@
-version: '3'
+version: "3"
 services:
-  embc-app:
-    container_name: embc-app
-    image: embc-app
+  embc-api:
+    build:
+      context: .
+      dockerfile: embc-app/Dockerfile
+    container_name: embc-api
+    image: embc-api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - embc-database
+    volumes:
+      - ./embc-app:/app/embc-app
     environment:
+      - SKIP_ANGULAR_BUILD=true
       - ASPNETCORE_ENVIRONMENT=Production
       - BASE_PATH=/embc
-      - BCEID_SERVICE_SVCID=${BCEID_SERVICE_SVCID}
-      - BCEID_SERVICE_URL=${BCEID_SERVICE_URL}
-      - BCEID_SERVICE_USER=${BCEID_SERVICE_USER}
-      - BCEID_SERVICE_PASSWD=${BCEID_SERVICE_PASSWD}
-      - DYNAMICS_AAD_TENANT_ID=${DYNAMICS_AAD_TENANT_ID}
-      - DYNAMICS_CLIENT_ID=${DYNAMICS_CLIENT_ID}
-      - DYNAMICS_CLIENT_KEY=${DYNAMICS_CLIENT_KEY}
-      - DYNAMICS_SERVER_APP_ID_URI=${DYNAMICS_SERVER_APP_ID_URI}
-      - DYNAMICS_ODATA_URI=${DYNAMICS_ODATA_URI}
-      - SHAREPOINT_WEBNAME=${SHAREPOINT_WEBNAME}
-      - SHAREPOINT_AAD_TENANTID=${SHAREPOINT_AAD_TENANTID}
-      - SHAREPOINT_CLIENT_ID=${SHAREPOINT_CLIENT_ID}
-      - SHAREPOINT_CERTIFICATE_PASSWORD=${SHAREPOINT_CERTIFICATE_PASSWORD}
-      - SHAREPOINT_CERTIFICATE_FILENAME=${SHAREPOINT_CERTIFICATE_FILENAME}
-      - SHAREPOINT_SERVER_APPID_URI=${SHAREPOINT_SERVER_APPID_URI}
-      - SHAREPOINT_NATIVE_BASE_URI=${SHAREPOINT_NATIVE_BASE_URI}
-      - SHAREPOINT_ODATA_URI=${SHAREPOINT_ODATA_URI}
       - SITEMINDER_LOGOUT_URL=https://logon.gov.bc.ca/clp-cgi/logoff.cgi
-      - DYNAMICS_NATIVE_ODATA_URI=${DYNAMICS_NATIVE_ODATA_URI}
-      - KEY_RING_DIRECTORY=${KEY_RING_DIRECTORY}      
-      
+      - DATABASE_SERVICE_NAME=embc-database
+      - DB_DATABASE=ess
+      - DB_ADMIN_PASSWORD=Test@123
+      - DB_USER=ess
+      - DB_PASSWORD=embcess@123
+  embc-database:
+    build:
+      context: ./sql-server
+      dockerfile: Dockerfile.centos
+    image: embc-database
+    container_name: embc-database
     ports:
-      - '8080:8080'
+      - "1433:1433"
+    restart: always
+    volumes:
+      - db_volume:/var/opt/mssql/data
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Test@123
+volumes:
+  db_volume:

@@ -1,0 +1,27 @@
+.dockerignore
+./log
+./tmp
+*Dockerfile*
+*docker-compose*
+
+# git
+.git/
+**/.git/
+
+# IDEs
+.vscode/
+.vs/
+**/.vscode/
+**/.vs/
+
+# Frontend build output
+**/dist/
+**/node_modules/
+
+# Build results
+**/bin/
+**/obj/
+
+# NuGet v3's project.json files produces more ignorable files
+**/*.nuget.props
+**/*.nuget.targets
