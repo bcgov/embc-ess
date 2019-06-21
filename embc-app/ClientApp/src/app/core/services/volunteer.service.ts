@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 import { CoreModule } from '../core.module';
@@ -66,5 +66,10 @@ export class VolunteerService extends RestService {
         retry(3),
         catchError(this.handleError)
       );
+  }
+
+  isBceidTaken(bceid: string): Observable<boolean> {
+    // TODO: call backend API
+    return of(true);
   }
 }
