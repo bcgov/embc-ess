@@ -3,13 +3,13 @@
 }
 
 article {
-  border-right: white 1rem solid;
+  // border-right: white 1rem solid;
 
   // &.referral-valid {
   //   border-right-color: lime;
   // }
 
   &.referral-invalid {
-    border-right-color: red;
+    border-right: red 1rem solid;
   }
 }
