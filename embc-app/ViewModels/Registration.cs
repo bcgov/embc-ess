@@ -50,18 +50,15 @@ namespace Gov.Jag.Embc.Public.ViewModels
 
             CreateMap<Models.Db.EvacueeRegistration, Registration>()
                 .ForMember(d => d.Id, opts => opts.MapFrom(s => s.EssFileNumber))
-                .ForMember(d => d.HeadOfHousehold, opts => opts.MapFrom(s => s.Evacuees.Single(e => e.EvacueeType == EvacueeType.HeadOfHousehold)))
                 .ForMember(d => d.InternalCaseNotes, opts => opts.MapFrom(s => s.FollowUpDetails))
-                .AfterMap((s, d, ctx) =>
-                {
-                    d.HeadOfHousehold.Email = s.Email;
-                    d.HeadOfHousehold.PhoneNumber = s.PhoneNumber;
-                    d.HeadOfHousehold.PhoneNumberAlt = s.PhoneNumberAlt;
-                    d.HeadOfHousehold.PrimaryResidence = ctx.Mapper.Map<Address>(s.EvacueeRegistrationAddresses.Single(a => a.AddressType == AddressType.Primary));
-                    var mailingAddress = s.EvacueeRegistrationAddresses.SingleOrDefault(a => a.AddressType == AddressType.Mailing);
-                    if (mailingAddress != null) d.HeadOfHousehold.MailingAddress = ctx.Mapper.Map<Address>(mailingAddress);
-                    d.HeadOfHousehold.FamilyMembers = ctx.Mapper.Map<IEnumerable<FamilyMember>>(s.Evacuees.Where(e => e.EvacueeType != EvacueeType.HeadOfHousehold));
-                })
+                .ForMember(d => d.HeadOfHousehold, opts => opts.MapFrom(s => s.Evacuees.Single(e => e.EvacueeType == EvacueeType.HeadOfHousehold)))
+                .ForPath(d => d.HeadOfHousehold.Email, opts => opts.MapFrom(s => s.Email))
+                .ForPath(d => d.HeadOfHousehold.Email, opts => opts.MapFrom(s => s.Email))
+                .ForPath(d => d.HeadOfHousehold.PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
+                .ForPath(d => d.HeadOfHousehold.PhoneNumberAlt, opts => opts.MapFrom(s => s.PhoneNumberAlt))
+                .ForPath(d => d.HeadOfHousehold.PrimaryResidence, opts => opts.MapFrom(s => s.EvacueeRegistrationAddresses.Single(a => a.AddressType == AddressType.Primary)))
+                .ForPath(d => d.HeadOfHousehold.MailingAddress, opts => opts.MapFrom(s => s.EvacueeRegistrationAddresses.SingleOrDefault(a => a.AddressType == AddressType.Mailing)))
+                .ForPath(d => d.HeadOfHousehold.FamilyMembers, opts => opts.MapFrom(s => s.Evacuees.Where(e => e.EvacueeType != EvacueeType.HeadOfHousehold)))
                 .ForMember(d => d.CompletedBy, opts => opts.Ignore())
                 ;
 

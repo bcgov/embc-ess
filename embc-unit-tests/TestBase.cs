@@ -4,6 +4,8 @@ using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Seeder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -38,6 +40,7 @@ namespace embc_unit_tests
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors()
                     .UseInMemoryDatabase("ESS_Test")
+                    .ConfigureWarnings(opts => opts.Ignore(InMemoryEventId.TransactionIgnoredWarning))
                   );
 
             new Startup(configuration, loggerFactory).ConfigureServices(services);
