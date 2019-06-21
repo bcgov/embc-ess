@@ -36,7 +36,7 @@
       </div>
     </form>
 
-    <div *ngIf="shouldValidateForm && !form.valid" class="text-danger mt-5 pl-5">
+    <div *ngIf="shouldValidateForm && !form.valid" class="text-danger">
       <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>
       &nbsp;Some required fields have not been completed.
     </div>
@@ -55,7 +55,7 @@
   <h1 class="mt-3">Review Details</h1>
   <p>Please confirm that all details you entered are correct by reading through the summary below.</p>
 
-  <section class="p-3">
+  <section>
     <h3>Emergency Support Services User Details</h3>
     <ul class="summary">
       <li>
