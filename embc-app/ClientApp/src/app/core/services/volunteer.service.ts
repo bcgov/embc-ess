@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, retry, map } from 'rxjs/operators';
 
 import { CoreModule } from '../core.module';
 import { Volunteer, ListResult } from '../models';
 import { RestService } from './rest.service';
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { SearchQueryParameters } from '../models/search-interfaces';
 
 export interface VolunteerSearchQueryParameters extends SearchQueryParameters {
@@ -68,8 +68,19 @@ export class VolunteerService extends RestService {
       );
   }
 
+  // this API call will return:
+  // * 200 OK when the bceid is taken
+  // * 404 NOT_FOUND when the bceid is not taken
   isBceidTaken(bceid: string): Observable<boolean> {
-    // TODO: call backend API
-    return of(true);
+    return this.http.get(`${this.apiRoute}/bceid/${bceid}`, { observe: 'response' })
+      .pipe(
+        map(res => res.status === 200),
+        catchError((err: HttpErrorResponse) => {
+          if (err.status === 404) {
+            return of(false);
+          }
+          throwError(`Backend returned code ${err.status}, body was: ${err.message}`);
+        })
+      );
   }
 }
