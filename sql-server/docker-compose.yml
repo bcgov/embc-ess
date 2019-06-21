@@ -1,11 +1,11 @@
-version: "3.6"
+version: "3"
 services:
-  embc-app-database:
+  embc-database:
     build:
       context: .
       dockerfile: Dockerfile.centos
-    image: embc-app-database
-    container_name: embc-app-database
+    image: embc-database
+    container_name: embc-database
     ports:
       - "1433:1433"
     environment:
