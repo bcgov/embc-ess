@@ -57,9 +57,9 @@ namespace Gov.Jag.Embc.Public.Controllers
             var existing = await dataInterface.GetVolunteerByExternalIdAsync(bceid);
             if (existing != null)
             {
-                return BadRequest();
+                return Ok();
             }
-            return Ok();
+            return NotFound();
         }
 
         [HttpPost]
