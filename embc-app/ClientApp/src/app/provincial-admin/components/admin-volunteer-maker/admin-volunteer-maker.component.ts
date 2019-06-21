@@ -236,10 +236,6 @@ export class AdminVolunteerMakerComponent implements OnInit {
       );
   }
 
-  isBceidTaken(): boolean {
-    return this.shouldValidateForm && hasErrors('bceidAccountNumber', this.form, ['uniqueBceid']);
-  }
-
   invalid(field: string, parent: FormGroup = this.form): boolean {
     return invalidField(field, parent, this.shouldValidateForm);
   }
