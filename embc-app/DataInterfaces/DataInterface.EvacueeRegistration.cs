@@ -2,7 +2,6 @@ using Gov.Jag.Embc.Public.Services.Registrations;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,38 +37,27 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task UpdateEvacueeRegistrationAsync(Registration registration)
         {
-            var evacueeRegistration = mapper.Map<Models.Db.EvacueeRegistration>(registration);
-            var evacueesToKeep = evacueeRegistration.Evacuees.Select(e => e.EvacueeSequenceNumber).ToArray();
-            var evacueesToRemove = db.Evacuees
-                .Where(e => e.RegistrationId == evacueeRegistration.EssFileNumber && !evacueesToKeep.Contains(e.EvacueeSequenceNumber));
-
-            var addresses = evacueeRegistration.EvacueeRegistrationAddresses.Select(a => a.AddressSequenceNumber).ToArray();
-            var mailingAddressToDrop = db.EvacueeRegistrationAddresses
-                .SingleOrDefault(a => a.RegistrationId == evacueeRegistration.EssFileNumber && !addresses.Contains(a.AddressSequenceNumber));
-
-            var mailingAddressNeedsToBeUpdated = false;
-            if (addresses.Contains(2) && mailingAddressToDrop == null)
+            using (var tx = await db.Database.BeginTransactionAsync())
             {
-                mailingAddressNeedsToBeUpdated = db.EvacueeRegistrationAddresses
-                    .Any(e => e.RegistrationId == evacueeRegistration.EssFileNumber && e.AddressSequenceNumber == 2);
+                var evacueeRegistration = mapper.Map<Models.Db.EvacueeRegistration>(registration);
+                db.Evacuees.RemoveRange(db.Evacuees.Where(e => e.RegistrationId == registration.EssFileNumber));
+                db.EvacueeRegistrationAddresses.RemoveRange(db.EvacueeRegistrationAddresses.Where(e => e.RegistrationId == registration.EssFileNumber));
+
+                foreach (var evacuee in evacueeRegistration.Evacuees)
+                {
+                    db.Entry(evacuee).State = EntityState.Added;
+                }
+
+                foreach (var address in evacueeRegistration.EvacueeRegistrationAddresses)
+                {
+                    db.Entry(address).State = EntityState.Added;
+                }
+
+                db.Update(evacueeRegistration);
+
+                await db.SaveChangesAsync();
+                tx.Commit();
             }
-
-            db.EvacueeRegistrations.Update(evacueeRegistration);
-
-            if (mailingAddressNeedsToBeUpdated)
-            {
-                var mailingAddress = db.EvacueeRegistrationAddresses
-                    .Single(e => e.RegistrationId == evacueeRegistration.EssFileNumber && e.AddressSequenceNumber == 2);
-                db.Entry(mailingAddress).State = EntityState.Modified;
-            }
-
-            db.Evacuees.RemoveRange(evacueesToRemove);
-            if (mailingAddressToDrop != null)
-            {
-                db.EvacueeRegistrationAddresses.Remove(mailingAddressToDrop);
-            }
-
-            await db.SaveChangesAsync();
         }
 
         public async Task<Registration> GetEvacueeRegistrationAsync(string id)

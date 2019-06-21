@@ -30,8 +30,9 @@ namespace Gov.Jag.Embc.Public.ViewModels
                     var seq = 1;
                     foreach (var evacuee in d.Evacuees)
                     {
-                        if (evacuee.RegistrationId == default && s.EssFileNumber.HasValue) evacuee.RegistrationId = s.EssFileNumber.Value;
-                        if (evacuee.EvacueeSequenceNumber == default) evacuee.EvacueeSequenceNumber = seq++;
+                        if (s.EssFileNumber.HasValue) evacuee.RegistrationId = s.EssFileNumber.Value;
+                        evacuee.EvacueeSequenceNumber = seq;
+                        seq++;
                     }
                 })
                 .ForMember(d => d.EvacueeRegistrationAddresses, opts => opts.MapFrom(s => (new Address[] { s.HeadOfHousehold.PrimaryResidence, s.HeadOfHousehold.MailingAddress }).Where(a => a != null)))
@@ -202,6 +203,8 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public Address PrimaryResidence { get; set; }
 
         public Address MailingAddress { get; set; }
+
+        [Required]
         public IEnumerable<FamilyMember> FamilyMembers { get; set; }
 
         public HeadOfHousehold()
