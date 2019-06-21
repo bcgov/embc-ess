@@ -73,6 +73,7 @@ import { RegistrationPageComponent } from './volunteer/pages/registration-page/r
 import { VolunteerMakerPageComponent } from './local-authority/pages/volunteer-maker-page/volunteer-maker-page.component';
 import { OrganizationMakerPageComponent } from './provincial-admin/pages/organization-maker-page/organization-maker-page.component';
 import { FullRegistrationSummaryBlockComponent } from './components/full-registration-summary-block/full-registration-summary-block.component';
+import { SurveyPageComponent } from './volunteer/pages/survey-page/survey-page.component';
 
 @NgModule({
   declarations: [
@@ -134,6 +135,7 @@ import { FullRegistrationSummaryBlockComponent } from './components/full-registr
     VolunteerMakerPageComponent,
     OrganizationMakerPageComponent,
     FullRegistrationSummaryBlockComponent,
+    SurveyPageComponent,
   ],
   imports: [
     // angular
