@@ -1,4 +1,6 @@
-﻿using Xunit;
+﻿using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace embc_unit_tests
@@ -12,7 +14,7 @@ namespace embc_unit_tests
         [Fact]
         public void AssertConfig()
         {
-            Mapper.ConfigurationProvider.AssertConfigurationIsValid();
+            Services.ServiceProvider.GetService<IMapper>().ConfigurationProvider.AssertConfigurationIsValid();
         }
     }
 }

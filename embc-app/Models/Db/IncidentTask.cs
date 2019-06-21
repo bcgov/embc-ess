@@ -5,20 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
-    /// <summary>
-    /// Incident Task Database Model
-    /// </summary>
     public class IncidentTask : IAuditableEntity
     {
-        public IncidentTask()
-        {
-            EvacueeRegistrations = new List<EvacueeRegistration>();
-        }
-
-        /// <summary>
-        /// A system-generated unique identifier
-        /// </summary>
-        /// <value>A system-generated unique identifier for a Role</value>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
@@ -26,12 +14,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string TaskNumber { get; set; }
         public string Details { get; set; }
 
-        /// <summary>
-        /// true if active
-        /// </summary>
         public bool Active { get; set; }
 
-        // only one of the following will be set; ie a regional incident vs a community one, etc
         [ForeignKey("Region")]
         public string RegionName { get; set; }
 
@@ -41,7 +25,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public Community Community { get; set; }
 
-        public List<EvacueeRegistration> EvacueeRegistrations { get; set; }
+        public IEnumerable<EvacueeRegistration> EvacueeRegistrations { get; set; }
 
         public DateTimeOffset? StartDate { get; set; }
     }

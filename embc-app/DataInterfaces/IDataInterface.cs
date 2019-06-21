@@ -33,7 +33,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<IncidentTask> GetIncidentTaskAsync(string id);
 
-        Task<IncidentTask> CreateIncidentTaskAsync(IncidentTask task);
+        Task<string> CreateIncidentTaskAsync(IncidentTask task);
 
         Task UpdateIncidentTaskAsync(IncidentTask task);
 

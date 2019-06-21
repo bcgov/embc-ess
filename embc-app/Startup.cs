@@ -40,6 +40,7 @@ namespace Gov.Jag.Embc.Public
             // add singleton to allow Controllers to query the Request object
             services
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+                .AddSingleton(configuration)
                 .AddDbContext<EmbcDbContext>(
                     options => options
                         .UseLoggerFactory(loggerFactory)
@@ -111,9 +112,6 @@ namespace Gov.Jag.Embc.Public
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env/*, IAntiforgery antiForgery*/)
         {
-            //inject an instance of AutoMapper to the static class
-            ViewModelConversions.mapper = app.ApplicationServices.GetService<IMapper>();
-
             // DATABASE SETUP
             SetupDatabase(env);
 
