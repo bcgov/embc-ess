@@ -137,5 +137,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             return mapper.Map<Volunteer>(volunteer);
         }
+
+        public async Task<Volunteer> GetVolunteerByExternalIdAsync(string externalId)
+        {
+            var volunteer = await ActiveVolunteers.AsNoTracking().FirstOrDefaultAsync(x => x.BCeId == externalId);
+            if (volunteer == null) return null;
+
+            return mapper.Map<Volunteer>(volunteer);
+        }
     }
 }
