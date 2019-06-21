@@ -12,6 +12,7 @@ export interface Registration {
   dietaryNeeds: boolean;
   dietaryNeedsDetails: string;
   disasterAffectDetails: string;
+  petCarePlan: string;
   externalReferralsDetails: string;
   facility: string;
   familyRecoveryPlan: string;

@@ -1,5 +1,5 @@
 --Will delete all regisration data for below ess file number
-DECLARE @EssFileNumber INT = 100122;
+DECLARE @EssFileNumber INT = 0;  -- Replace 0 with a valid ESS File Number
 
 BEGIN TRANSACTION
 -- Delete all addresses
@@ -43,5 +43,5 @@ DELETE FROM EvacueeRegistrations
 WHERE 
     EssFileNumber = @EssFileNumber;
 
---ROLLBACK;
-COMMIT TRANSACTION
+ROLLBACK;
+--COMMIT TRANSACTION

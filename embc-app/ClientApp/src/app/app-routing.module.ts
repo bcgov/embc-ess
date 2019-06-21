@@ -38,6 +38,7 @@ import { AdminVolunteerMakerComponent } from './provincial-admin/components/admi
 import { RegistrationPageComponent } from './volunteer/pages/registration-page/registration-page.component';
 import { VolunteerMakerPageComponent } from './local-authority/pages/volunteer-maker-page/volunteer-maker-page.component';
 import { OrganizationMakerPageComponent } from './provincial-admin/pages/organization-maker-page/organization-maker-page.component';
+import { SurveyPageComponent } from './volunteer/pages/survey-page/survey-page.component';
 
 /*
   /
@@ -213,6 +214,11 @@ const routes: Routes = [
         component: UsefulInformationPageComponent,
         data: { expectedRole: VOLUNTEER },
       },
+      {
+        path: 'survey',
+        component: SurveyPageComponent,
+        data: { expectedRole: VOLUNTEER },
+      },
     ],
   },
 
@@ -271,6 +277,11 @@ const routes: Routes = [
       {
         path: 'useful-info',
         component: UsefulInformationPageComponent,
+        data: { expectedRole: LOCAL_AUTHORITY },
+      },
+      {
+        path: 'survey',
+        component: SurveyPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
     ],

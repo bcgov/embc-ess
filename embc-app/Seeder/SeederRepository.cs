@@ -171,7 +171,7 @@ namespace Gov.Jag.Embc.Public.Seeder
                 entity.BceidAccountUserName = volunteer.BceidAccountUserName;
                 entity.FirstName = volunteer.FirstName;
                 entity.LastName = volunteer.LastName;
-                entity.UserId = volunteer.UserId;
+                entity.BCeId = volunteer.BCeId;
                 entity.Active = volunteer.Active;
                 entity.CanAccessRestrictedFiles = volunteer.CanAccessRestrictedFiles;
                 entity.Email = volunteer.Email;

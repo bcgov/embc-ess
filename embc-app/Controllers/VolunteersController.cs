@@ -47,9 +47,30 @@ namespace Gov.Jag.Embc.Public.Controllers
             return Json(item);
         }
 
+        [HttpGet("bceid/{bceid}")]
+        public async Task<IActionResult> BceIdExists(string bceid)
+        {
+            if (string.IsNullOrWhiteSpace(bceid))
+            {
+                return BadRequest(Json(bceid));
+            }
+            var existing = await dataInterface.GetVolunteerByExternalIdAsync(bceid);
+            if (existing != null)
+            {
+                return Ok();
+            }
+            return NotFound();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Volunteer item)
         {
+            var existing = await dataInterface.GetVolunteerByExternalIdAsync(item.Externaluseridentifier);
+            if (existing != null)
+            {
+                ModelState.AddModelError("Externaluseridentifier", $"Duplicate BCeId {item.Externaluseridentifier} found.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -68,14 +89,22 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest(Json(id));
             }
+
+            var existing = await dataInterface.GetVolunteerByExternalIdAsync(item.Externaluseridentifier);
+            if (existing?.Id != id)
+            {
+                ModelState.AddModelError("Externaluseridentifier", $"Duplicate BCeId {item.Externaluseridentifier} found.");
+            }
+            else if (existing == null)
+            {
+                return NotFound();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (!await dataInterface.VolunteerExistsAsync(id))
-            {
-                return NotFound();
-            }
+
             await dataInterface.UpdateVolunteerAsync(item);
             return Ok();
         }

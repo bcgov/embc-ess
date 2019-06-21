@@ -1,15 +1,16 @@
---Will delete all regisration data prior created prior to the set date below using the CreatedDateTime field as the
-DECLARE @RegistrationDate DATETIME = '2019-04-03' --yyyy-mm-dd
+-- Enter the GUID root for a range of Incident Tasks and their associated records
+
+DECLARE @IncidentTaskId varchar(36) = '' --A34592F5-C12D-4F61-0CF9-08D6B3D424B5
 
 BEGIN TRANSACTION
--- Delete all addresses
+
 DELETE FROM EvacueeRegistrationAddresses
 FROM EvacueeRegistrationAddresses a
 INNER JOIN
 	EvacueeRegistrations d
 	ON a.RegistrationId = d.EssFileNumber
 WHERE 
-    a.CreatedDateTime < @RegistrationDate;
+    d.IncidentTaskId = @IncidentTaskId;
 
 -- Delete all people recorded
 DELETE FROM ReferralEvacuees 
@@ -19,7 +20,7 @@ INNER JOIN
 	EvacueeRegistrations d
 	ON re.RegistrationId = d.EssFileNumber
 WHERE 
-    d.CreatedDateTime < @RegistrationDate;;
+    d.IncidentTaskId = @IncidentTaskId;
 
 DELETE FROM Evacuees
 FROM 
@@ -28,7 +29,7 @@ INNER JOIN
 	EvacueeRegistrations d
 	ON e.RegistrationId = d.EssFileNumber
 WHERE 
-    e.CreatedDateTime < @RegistrationDate;;
+    d.IncidentTaskId = @IncidentTaskId;
 
 DELETE FROM	Referrals
 FROM
@@ -37,11 +38,16 @@ INNER JOIN
 	EvacueeRegistrations d
 	ON r.RegistrationId = d.EssFileNumber
 WHERE 
-    r.CreatedDateTime < @RegistrationDate;
+    d.IncidentTaskId = @IncidentTaskId;
 
 DELETE FROM EvacueeRegistrations 
 WHERE 
-    CreatedDateTime < @RegistrationDate;
+    IncidentTaskId = @IncidentTaskId;
+
+DELETE FROM IncidentTasks
+FROM IncidentTasks i
+WHERE
+	Id = @IncidentTaskId
 
 ROLLBACK;
 --COMMIT TRANSACTION

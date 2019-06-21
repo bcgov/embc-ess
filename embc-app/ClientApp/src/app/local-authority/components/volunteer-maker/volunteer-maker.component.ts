@@ -176,7 +176,7 @@ export class VolunteerMakerComponent implements OnInit {
         }, err => {
           this.submitting = false;
           console.log('error updating volunteer =', err);
-          this.notificationQueueService.addNotification('Failed to update user', 'danger');
+          this.notificationQueueService.addNotification('Failed to update user. Please check that the BCeID is unique.', 'danger');
         });
     } else {
       // if the volunteer has no id we need to create a new one

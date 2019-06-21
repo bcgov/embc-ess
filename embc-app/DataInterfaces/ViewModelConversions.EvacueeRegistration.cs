@@ -22,10 +22,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 MedicationNeeds = source.MedicationNeeds,
                 HasThreeDayMedicationSupply = source.HasThreeDayMedicationSupply,
                 HasPets = source.HasPets,
+                PetCarePlan = source.PetCarePlan,
                 InsuranceCode = source.InsuranceCode,
                 RequiresSupport = source.RequiresSupport,
                 RequiresFood = source.RequiresFood,
-
                 RequiresClothing = source.RequiresClothing,
                 RequiresAccommodation = source.RequiresAccommodation,
                 RequiresIncidentals = source.RequiresIncidentals,
@@ -98,9 +98,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 HasThreeDayMedicationSupply = source.HasThreeDayMedicationSupply,
                 HasPets = source.HasPets,
                 InsuranceCode = source.InsuranceCode,
+                PetCarePlan = source.PetCarePlan,
                 RequiresSupport = source.RequiresSupport,
                 RequiresFood = source.RequiresFood,
-
                 RequiresClothing = source.RequiresClothing,
                 RequiresAccommodation = source.RequiresAccommodation,
                 RequiresIncidentals = source.RequiresIncidentals,

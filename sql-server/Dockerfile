@@ -42,7 +42,7 @@ RUN REPOLIST=rhel-7-server-rpms,packages-microsoft-com-mssql-server-2017,package
     ACCEPT_EULA=Y yum -y install --disablerepo "*" --enablerepo ${REPOLIST} --setopt=tsflags=nodocs \
       mssql-server mssql-tools unixODBC-devel && \
     yum clean all
-   
+
 COPY uid_entrypoint /opt/mssql-tools/bin/
 ENV PATH=${PATH}:/opt/mssql/bin:/opt/mssql-tools/bin
 RUN mkdir -p /var/opt/mssql && \

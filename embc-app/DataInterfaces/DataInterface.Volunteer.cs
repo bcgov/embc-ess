@@ -20,6 +20,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     .ThenInclude(x => x.Region)
         ;
 
+        private IQueryable<Models.Db.Volunteer> ActiveVolunteers => Volunteers.Where(v => v.Active);
+
         public async Task UpdateVolunteerAsync(Volunteer updatedVolunteer)
         {
             if (string.IsNullOrEmpty(updatedVolunteer.Organization.Id)) throw new InvalidOperationException($"Volunteer {updatedVolunteer.Id} is not associated with an organization");
@@ -85,11 +87,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return person?.ToViewModel();
         }
 
-        public async Task<bool> VolunteerExistsAsync(string id)
-        {
-            return await Volunteers.AnyAsync(x => x.Id == Convert.ToInt32(id));
-        }
-
         public async Task<string> CreateVolunteerAsync(Volunteer newVolunteer)
         {
             if (newVolunteer.Organization == null || string.IsNullOrEmpty(newVolunteer.Organization.Id)) throw new InvalidOperationException($"Volunteer {newVolunteer.Id} is not associated with an organization");
@@ -134,23 +131,15 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public Volunteer GetVolunteerByBceidUserId(string bceidUserId)
         {
-            var volunteer = Volunteers.AsNoTracking().FirstOrDefault(x => x.BceidAccountUserName == bceidUserId);
+            var volunteer = ActiveVolunteers.AsNoTracking().FirstOrDefault(x => x.BceidAccountUserName == bceidUserId);
             if (volunteer == null) return null;
 
             return volunteer?.ToViewModel();
         }
 
-        public Volunteer GetVolunteerByExternalId(string externalId)
+        public async Task<Volunteer> GetVolunteerByExternalIdAsync(string externalId)
         {
-            var volunteer = Volunteers.FirstOrDefault(x => x.UserId.Equals(externalId, StringComparison.OrdinalIgnoreCase));
-            if (volunteer == null) return null;
-
-            return volunteer?.ToViewModel();
-        }
-
-        public Volunteer GetVolunteerByName(string firstName, string lastName)
-        {
-            var volunteer = Volunteers.FirstOrDefault(x => x.FirstName == firstName && x.LastName == lastName);
+            var volunteer = await ActiveVolunteers.AsNoTracking().FirstOrDefaultAsync(x => x.BCeId == externalId);
             if (volunteer == null) return null;
 
             return volunteer?.ToViewModel();
