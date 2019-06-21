@@ -130,9 +130,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return true;
         }
 
-        public async Task<Volunteer> GetVolunteerByBceidUserNameAsync(string bceidUserId)
+        public async Task<Volunteer> GetVolunteerByBceidUserNameAsync(string bceidUserName)
         {
-            var volunteer = await ActiveVolunteers.FirstOrDefaultAsync(x => x.BceidAccountUserName == bceidUserId);
+            var volunteer = await ActiveVolunteers.FirstOrDefaultAsync(x => x.BceidAccountUserName == bceidUserName);
             if (volunteer == null) return null;
 
             return mapper.Map<Volunteer>(volunteer);

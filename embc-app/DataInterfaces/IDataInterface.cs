@@ -87,7 +87,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<bool> ActivateVolunteerAsync(string id);
 
-        Task<Volunteer> GetVolunteerByBceidUserNameAsync(string bceidUserId);
+        Task<Volunteer> GetVolunteerByBceidUserNameAsync(string bceidUserName);
 
         #endregion Volunteer
 
