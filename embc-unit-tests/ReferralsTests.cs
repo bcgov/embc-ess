@@ -1,6 +1,7 @@
 ﻿using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Utils;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ namespace embc_unit_tests
 {
     public class ReferralsTests : TestBase
     {
+        private IDataInterface di => Services.ServiceProvider.GetService<IDataInterface>();
+
         public ReferralsTests(ITestOutputHelper output) : base(output)
         {
         }
@@ -19,10 +22,6 @@ namespace embc_unit_tests
         [MemberData(nameof(GetReferralss), "100001")]
         public async Task CanInsertReferralViewModel(Gov.Jag.Embc.Public.ViewModels.Referral referral)
         {
-            var ctx = EmbcDb;
-
-            var di = new DataInterface(ctx, Mapper);
-
             var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
             referral.EssNumber = registrationId;
@@ -66,9 +65,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task CanIgnoreExcessiveProperties()
         {
-            var ctx = EmbcDb;
-
-            var di = new DataInterface(ctx, Mapper);
             var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
             var referral = ReferralGenerator.GenerateWithExcessiveProperties(registrationId);
@@ -85,10 +81,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task CanGetAllReferralsForRegistration()
         {
-            var ctx = EmbcDb;
-
-            var di = new DataInterface(ctx, Mapper);
-
             var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
             var referrals = new[]{
@@ -112,10 +104,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task CanGetReferralsInOrder()
         {
-            var ctx = EmbcDb;
-
-            var di = new DataInterface(ctx, Mapper);
-
             var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
             var referrals = new[]{
@@ -156,10 +144,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task CanDeactivateReferral()
         {
-            var ctx = EmbcDb;
-
-            var di = new DataInterface(ctx, Mapper);
-
             var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
             var referralId = await di.CreateReferralAsync(ReferralGenerator.Generate(ReferralType.Clothing, registrationId));
@@ -174,10 +158,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task CanQueryReferralsByStatus()
         {
-            var ctx = EmbcDb;
-
-            var di = new DataInterface(ctx, Mapper);
-
             var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
             var referral1 = ReferralGenerator.Generate(ReferralType.Clothing, registrationId);
@@ -198,9 +178,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task CanMapToReferralListItem()
         {
-            var ctx = EmbcDb;
-
-            var di = new DataInterface(ctx, Mapper);
             var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateSelf());
 
             var referralId = await di.CreateReferralAsync(ReferralGenerator.Generate(ReferralType.Clothing, registrationId));

@@ -1,6 +1,7 @@
 ﻿using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Seeder;
+using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -10,6 +11,9 @@ namespace embc_unit_tests
 {
     public class LookupDataTests : TestBase
     {
+        private IDataInterface di => Services.ServiceProvider.GetService<IDataInterface>();
+        private EmbcDbContext ctx => Services.ServiceProvider.GetService<EmbcDbContext>();
+
         public LookupDataTests(ITestOutputHelper output) : base(output)
         {
         }
@@ -17,8 +21,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task CanListActiveCountries()
         {
-            var ctx = EmbcDb;
-
             var source = new[]
             {
                 new Country{Name="country1", CountryCode="USA", Active=true},
@@ -31,8 +33,6 @@ namespace embc_unit_tests
 
             repo.AddOrUpdateCountries(source);
 
-            var di = new DataInterface(ctx, Mapper);
-
             var result = await di.GetCountriesAsync();
             Assert.Equal(source.Count(c => c.Active), result.Count());
             foreach (var item in result)
@@ -44,8 +44,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task CanListActiveCommunities()
         {
-            var ctx = EmbcDb;
-
             var region = new Region { Name = "region1", Active = true };
             var source = new[]
             {
@@ -60,8 +58,6 @@ namespace embc_unit_tests
             repo.AddOrUpdateRegions(new[] { region });
             repo.AddOrUpdateCommunities(source);
 
-            var di = new DataInterface(ctx, Mapper);
-
             var result = await di.GetCommunitiesAsync();
             Assert.Equal(source.Count(c => c.Active), result.Count());
             foreach (var item in result)
@@ -73,8 +69,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task CanListActiveRegions()
         {
-            var ctx = EmbcDb;
-
             var source = new[]
             {
                 new Region {Name="region1", Active=true},
@@ -87,8 +81,6 @@ namespace embc_unit_tests
 
             repo.AddOrUpdateRegions(source);
 
-            var di = new DataInterface(ctx, Mapper);
-
             var result = await di.GetRegionsAsync();
             Assert.Equal(source.Count(c => c.Active), result.Count());
             foreach (var item in result)
@@ -100,8 +92,6 @@ namespace embc_unit_tests
         [Fact]
         public async Task CanListActiveFamilyRelationshipTypes()
         {
-            var ctx = EmbcDb;
-
             var source = new[]
             {
                 new FamilyRelationshipType{Code="FMR1", Active=true},
@@ -113,8 +103,6 @@ namespace embc_unit_tests
             var repo = new SeederRepository(ctx);
 
             repo.AddOrUpdateFamilyRelationshipTypes(source);
-
-            var di = new DataInterface(ctx, Mapper);
 
             var result = await di.GetFamilyRelationshipTypesAsync();
             Assert.Equal(source.Count(c => c.Active), result.Count());
