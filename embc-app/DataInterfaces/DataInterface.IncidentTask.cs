@@ -27,7 +27,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .Sort(searchQuery.SortBy ?? "incident.id")
                 .ToArrayAsync();
 
-            return new PaginatedList<IncidentTask>(items.Select(t => t.incident.ToViewModel(t.evacueeCount)), searchQuery.Offset, searchQuery.Limit);
+            return new PaginatedList<IncidentTask>(items.Select(i => mapper.Map<IncidentTask>(i.incident, opts => opts.Items["EvacueeCount"] = i.evacueeCount)),
+                searchQuery.Offset, searchQuery.Limit);
         }
 
         public async Task<IncidentTask> GetIncidentTaskAsync(string id)
@@ -38,21 +39,21 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     .Select(incident => new { incident, evacueeCount = incident.EvacueeRegistrations.Select(er => er.Evacuees.Count()).Sum() })
                     .SingleOrDefaultAsync(task => task.incident.Id == guid);
 
-                return entity?.incident.ToViewModel(entity.evacueeCount);
+                return mapper.Map<IncidentTask>(entity.incident, opts => opts.Items["EvacueeCount"] = entity.evacueeCount);
             }
             return null;
         }
 
-        public async Task<IncidentTask> CreateIncidentTaskAsync(IncidentTask task)
+        public async Task<string> CreateIncidentTaskAsync(IncidentTask task)
         {
-            var newItem = db.IncidentTasks.Add(task.ToModel());
+            var newItem = db.IncidentTasks.Add(mapper.Map<Models.Db.IncidentTask>(task));
             await db.SaveChangesAsync();
-            return (await IncidentTasks.SingleAsync(t => t.Id == newItem.Entity.Id)).ToViewModel();
+            return newItem.Entity.Id.ToString();
         }
 
         public async Task UpdateIncidentTaskAsync(IncidentTask task)
         {
-            db.IncidentTasks.Update(task.ToModel());
+            db.IncidentTasks.Update(mapper.Map<Models.Db.IncidentTask>(task));
             await db.SaveChangesAsync();
         }
 

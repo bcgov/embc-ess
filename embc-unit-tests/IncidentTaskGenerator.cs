@@ -11,7 +11,6 @@ namespace embc_unit_tests
             {
                 TaskNumber = "D0000001",
                 Active = true,
-                Region = new Region { Name = "Central", Active = true },
                 StartDate = DateTime.Now,
                 Details = "Test Task"
             };

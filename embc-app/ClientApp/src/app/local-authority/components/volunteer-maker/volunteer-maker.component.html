@@ -9,7 +9,7 @@
       <h3 class="blue-header mt-0">User Details</h3>
 
       <div class="row pt-4">
-        <div class="col">
+        <div class="col-8">
           <label class="required" for="lastName">Last Name</label>
           <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your legal last name."></app-font-awesome-icon>
           <input type="text" class="form-control" formControlName="lastName" [class.is-invalid]="invalid('lastName')" id="lastName" maxlength="50">
@@ -18,7 +18,7 @@
       </div>
 
       <div class="row pt-4">
-        <div class="col">
+        <div class="col-8">
           <label class="required" for="firstName">First Name</label>
           <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your legal first name."></app-font-awesome-icon>
           <input type="text" class="form-control" [class.is-invalid]="invalid('firstName')" formControlName="firstName" id="firstName" maxlength="50">
@@ -27,11 +27,17 @@
       </div>
 
       <div class="row pt-4">
-        <div class="col">
+        <div class="col-8">
           <label class="required" for="bceidAccountNumber">BCeID</label>
           <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your BCeID user ID."></app-font-awesome-icon>
           <input type="text" class="form-control" [class.is-invalid]="invalid('bceidAccountNumber')" formControlName="bceidAccountNumber" id="bceidAccountNumber">
           <span class="invalid-feedback">Please enter a valid BCeID</span>
+        </div>
+        <div class="col-4 bceid-warning-container">
+          <ng-container *ngIf="shouldValidateForm && f.bceidAccountNumber.errors?.uniqueBceid">
+            <app-attention-icon class="mr-2" [alignCenter]="false" [pullLeft]="false"></app-attention-icon>
+            <small><strong>Warning - BCeID already exists</strong></small>
+          </ng-container>
         </div>
       </div>
     </form>

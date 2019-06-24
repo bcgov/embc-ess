@@ -83,8 +83,7 @@ namespace Gov.Jag.Embc.Public.Controllers
 
         private async Task<SiteMinderAuthenticationToken> CreateDevTokenForBceid(string userName)
         {
-            //TODO: convert GetVolunteerByBceidUserId to async
-            var volunteer = await Task.FromResult(dataInterface.GetVolunteerByBceidUserId(userName));
+            var volunteer = await dataInterface.GetVolunteerByBceidUserNameAsync(userName);
             if (volunteer == null) return null;
             var secToken = new SiteMinderAuthenticationToken
             {
