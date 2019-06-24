@@ -157,7 +157,7 @@ namespace Gov.Jag.Embc.Public
                         "script-src 'self' 'unsafe-inline' " + (env.IsDevelopment() ? "'unsafe-eval'" : "") + ";" +
                         "style-src 'self' 'unsafe-inline';" +
                         "media-src 'self' data:;" +     //captcha audio
-                        "object-src 'self' blob:;" +    //refarall printout pdf
+                        "object-src 'self' blob:;" +    //referral printout pdf
                         "block-all-mixed-content");
 
                     return next(context);
