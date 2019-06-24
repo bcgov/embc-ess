@@ -158,6 +158,7 @@ namespace Gov.Jag.Embc.Public
                         "style-src 'self' 'unsafe-inline';" +
                         "media-src 'self' data:;" +     //captcha audio
                         "object-src 'self' blob:;" +    //referral printout pdf
+                        "img-src 'self' data:;" +    //svg and images
                         "block-all-mixed-content");
 
                     return next(context);
