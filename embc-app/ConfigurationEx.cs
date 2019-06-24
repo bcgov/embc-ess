@@ -33,5 +33,10 @@ namespace Gov.Jag.Embc.Public
         {
             return conf.GetValue("DB_FULL_REFRESH", "false").ToLowerInvariant() == "true";
         }
+
+        public static bool CspEnabled(this IConfiguration conf)
+        {
+            return conf.GetValue("CSP_ENABLED", "true").ToLowerInvariant() == "true";
+        }
     }
 }

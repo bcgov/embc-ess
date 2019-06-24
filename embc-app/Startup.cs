@@ -147,17 +147,21 @@ namespace Gov.Jag.Embc.Public
                 // no cache  headers
                 .UseNoCacheHttpHeaders()
                 // CSP header
-                //.UseCsp(opts =>
-                //    {
-                //        opts
-                //        .BlockAllMixedContent()
-                //        .DefaultSources(s => s.Self())
-                //        .ScriptSources(s => s.Self().UnsafeInline())
-                //        .StyleSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.googleapis.com").UnsafeInline())
-                //        .FontSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.gstatic.com"));
+                .Use(next => context =>
+                {
+                    var cspHeader = configuration.CspEnabled()
+                    ? "Content-Security-Policy"
+                    : "Content-Security-Policy-Report-Only";
 
-                //        if (env.IsDevelopment()) opts.ScriptSources(s => s.Self().UnsafeEval());
-                //    })
+                    context.Response.Headers.Append(cspHeader, "default-src 'self' https://*.pathfinder.gov.bc.ca;" +   //captcha service
+                        "script-src 'self' 'unsafe-inline' " + (env.IsDevelopment() ? "'unsafe-eval'" : "") + ";" +
+                        "style-src 'self' 'unsafe-inline';" +
+                        "media-src 'self' data:;" +     //captcha audio
+                        "object-src 'self' blob:;" +    //referral printout pdf
+                        "block-all-mixed-content");
+
+                    return next(context);
+                })
                 // Anty forgery cookie for Angular - not working yet
                 //.Use(next => context =>
                 //{
