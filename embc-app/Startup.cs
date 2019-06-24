@@ -53,7 +53,7 @@ namespace Gov.Jag.Embc.Public
                     {
                         builder.WithOrigins(
                               "http://pathfinder.bcgov",
-                              "https://pathfinder.gov.bc.ca",
+                              "https://*.pathfinder.gov.bc.ca",
                               "https://dev.justice.gov.bc.ca",
                               "https://test.justice.gov.bc.ca",
                               "https://justice.gov.bc.ca")
@@ -147,17 +147,17 @@ namespace Gov.Jag.Embc.Public
                 // no cache  headers
                 .UseNoCacheHttpHeaders()
                 // CSP header
-                .UseCsp(opts =>
-                    {
-                        opts
-                        .BlockAllMixedContent()
-                        .DefaultSources(s => s.Self())
-                        .ScriptSources(s => s.Self().UnsafeInline())
-                        .StyleSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.googleapis.com").UnsafeInline())
-                        .FontSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.gstatic.com"));
+                //.UseCsp(opts =>
+                //    {
+                //        opts
+                //        .BlockAllMixedContent()
+                //        .DefaultSources(s => s.Self())
+                //        .ScriptSources(s => s.Self().UnsafeInline())
+                //        .StyleSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.googleapis.com").UnsafeInline())
+                //        .FontSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.gstatic.com"));
 
-                        if (env.IsDevelopment()) opts.ScriptSources(s => s.Self().UnsafeEval());
-                    })
+                //        if (env.IsDevelopment()) opts.ScriptSources(s => s.Self().UnsafeEval());
+                //    })
                 // Anty forgery cookie for Angular - not working yet
                 //.Use(next => context =>
                 //{
