@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatStepper } from '@angular/material';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-self-registration',
@@ -7,7 +6,6 @@ import { MatStepper } from '@angular/material';
   styleUrls: ['./self-registration.component.scss']
 })
 export class SelfRegistrationComponent implements OnInit {
-  @ViewChild(MatStepper) stepper: MatStepper;
 
   constructor() { }
 
