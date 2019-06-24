@@ -53,7 +53,7 @@ namespace Gov.Jag.Embc.Public
                     {
                         builder.WithOrigins(
                               "http://pathfinder.bcgov",
-                              "https://pathfinder.gov.bc.ca",
+                              "https://*.pathfinder.gov.bc.ca",
                               "https://dev.justice.gov.bc.ca",
                               "https://test.justice.gov.bc.ca",
                               "https://justice.gov.bc.ca")
