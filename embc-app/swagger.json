@@ -1,0 +1,1920 @@
+{
+  "x-generator": "NSwag v13.0.2.0 (NJsonSchema v10.0.20.0 (Newtonsoft.Json v11.0.0.0))",
+  "swagger": "2.0",
+  "info": {
+    "title": "ESS API",
+    "description": "Emergency Management BC Evacuee Support System API",
+    "version": "v1"
+  },
+  "host": "localhost:5000",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/Reports/registration/audit/{id}": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "operationId": "Reports_GetRegistrationAudit",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Communities": {
+      "get": {
+        "tags": [
+          "Communities"
+        ],
+        "operationId": "Communities_Get",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Config": {
+      "get": {
+        "tags": [
+          "Config"
+        ],
+        "operationId": "Config_GetApplicationVersionInfo",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Countries": {
+      "get": {
+        "tags": [
+          "Countries"
+        ],
+        "operationId": "Countries_Get",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Evacuees": {
+      "get": {
+        "tags": [
+          "Evacuees"
+        ],
+        "operationId": "Evacuees_Get",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "last_name",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "first_name",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "task_no",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "ess_file_no",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "evacuated_from",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "evacuated_to",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "boolean",
+            "name": "referrals_provided",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "boolean",
+            "name": "registration_completed",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Offset",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Limit",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "q",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "sort",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "boolean",
+            "name": "active",
+            "in": "query",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/FamilyRelationships": {
+      "get": {
+        "tags": [
+          "FamilyRelationships"
+        ],
+        "operationId": "FamilyRelationships_GetAll",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/IncidentTasks": {
+      "get": {
+        "tags": [
+          "IncidentTasks"
+        ],
+        "operationId": "IncidentTasks_Get",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "Offset",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Limit",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "q",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "sort",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "boolean",
+            "name": "active",
+            "in": "query",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "IncidentTasks"
+        ],
+        "operationId": "IncidentTasks_Create",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "item",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IncidentTask"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/IncidentTasks/{id}": {
+      "get": {
+        "tags": [
+          "IncidentTasks"
+        ],
+        "operationId": "IncidentTasks_Get2",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "IncidentTasks"
+        ],
+        "operationId": "IncidentTasks_Update",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "item",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IncidentTask"
+            },
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "IncidentTasks"
+        ],
+        "operationId": "IncidentTasks_Delete",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "get": {
+        "tags": [
+          "Login"
+        ],
+        "operationId": "Login_Login",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "path",
+            "in": "query",
+            "default": "dashboard",
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/login/token/{userName}": {
+      "get": {
+        "tags": [
+          "Login"
+        ],
+        "operationId": "Login_LoginDevelopment",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "userName",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/Logout": {
+      "get": {
+        "tags": [
+          "Logout"
+        ],
+        "operationId": "Logout_Logout",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/404": {
+      "get": {
+        "tags": [
+          "NotFound"
+        ],
+        "operationId": "NotFound_NotFound",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "path",
+            "in": "query",
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Organizations": {
+      "get": {
+        "tags": [
+          "Organizations"
+        ],
+        "operationId": "Organizations_GetAll",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "Offset",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Limit",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "q",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "sort",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "boolean",
+            "name": "active",
+            "in": "query",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Organizations"
+        ],
+        "operationId": "Organizations_Create",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "item",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Organizations/{id}": {
+      "get": {
+        "tags": [
+          "Organizations"
+        ],
+        "operationId": "Organizations_GetOne",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Organizations"
+        ],
+        "operationId": "Organizations_Update",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "item",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            },
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Organizations"
+        ],
+        "operationId": "Organizations_Delete",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/registrations/{registrationId}/Referrals": {
+      "get": {
+        "tags": [
+          "Referrals"
+        ],
+        "operationId": "Referrals_Get",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "registrationId",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Offset",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Limit",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "q",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "sort",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "boolean",
+            "name": "active",
+            "in": "query",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Referrals"
+        ],
+        "operationId": "Referrals_Post",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "registrationId",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          },
+          {
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostRequest"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/registrations/{registrationId}/Referrals/{referralId}": {
+      "get": {
+        "tags": [
+          "Referrals"
+        ],
+        "operationId": "Referrals_Get2",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "registrationId",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "referralId",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Referrals"
+        ],
+        "operationId": "Referrals_Delete",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "registrationId",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "referralId",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/registrations/{registrationId}/Referrals/referralPdfs": {
+      "post": {
+        "tags": [
+          "Referrals"
+        ],
+        "operationId": "Referrals_GetReferralPdfs",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "printReferrals",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReferralsToPrint"
+            },
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "registrationId",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/registrations/{registrationId}/Referrals/referralHtml": {
+      "post": {
+        "tags": [
+          "Referrals"
+        ],
+        "operationId": "Referrals_GetReferralHtml",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "printReferrals",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReferralsToPrint"
+            },
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "registrationId",
+            "in": "path",
+            "required": true,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Regions": {
+      "get": {
+        "tags": [
+          "Regions"
+        ],
+        "operationId": "Regions_Get",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Registrations/{id}": {
+      "get": {
+        "tags": [
+          "Registrations"
+        ],
+        "operationId": "Registrations_GetOne",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "reason",
+            "in": "query",
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Registrations"
+        ],
+        "operationId": "Registrations_Update",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "item",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Registration"
+            },
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Registrations"
+        ],
+        "operationId": "Registrations_Delete",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Registrations/{id}/summary": {
+      "get": {
+        "tags": [
+          "Registrations"
+        ],
+        "operationId": "Registrations_GetOneSummary",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Registrations": {
+      "post": {
+        "tags": [
+          "Registrations"
+        ],
+        "operationId": "Registrations_Create",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "item",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Registration"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/current": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Users_UsersCurrentGet",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Volunteers": {
+      "get": {
+        "tags": [
+          "Volunteers"
+        ],
+        "operationId": "Volunteers_GetAll",
+        "parameters": [
+          {
+            "type": "boolean",
+            "name": "ess_only",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "boolean",
+            "name": "admin_only",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "org_id",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "Offset",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "Limit",
+            "in": "query",
+            "format": "int32",
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "q",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "string",
+            "name": "sort",
+            "in": "query",
+            "x-nullable": true
+          },
+          {
+            "type": "boolean",
+            "name": "active",
+            "in": "query",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Volunteers"
+        ],
+        "operationId": "Volunteers_Create",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "item",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Volunteer"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Volunteers/{id}": {
+      "get": {
+        "tags": [
+          "Volunteers"
+        ],
+        "operationId": "Volunteers_Get",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Volunteers"
+        ],
+        "operationId": "Volunteers_Update",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "name": "item",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Volunteer"
+            },
+            "x-nullable": false
+          },
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Volunteers"
+        ],
+        "operationId": "Volunteers_Delete",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/api/Volunteers/bceid/{bceid}": {
+      "get": {
+        "tags": [
+          "Volunteers"
+        ],
+        "operationId": "Volunteers_BceIdExists",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "bceid",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "IncidentTask": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "taskNumber": {
+          "type": "string"
+        },
+        "details": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "totalAssociatedEvacuees": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "region": {
+          "$ref": "#/definitions/Region"
+        },
+        "community": {
+          "$ref": "#/definitions/Community"
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Region": {
+      "type": "object",
+      "required": [
+        "active"
+      ],
+      "properties": {
+        "active": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Community": {
+      "type": "object",
+      "required": [
+        "active"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "region": {
+          "$ref": "#/definitions/Region"
+        }
+      }
+    },
+    "Organization": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "bCeIDBusinessGuid": {
+          "type": "string"
+        },
+        "region": {
+          "$ref": "#/definitions/Region"
+        },
+        "community": {
+          "$ref": "#/definitions/Community"
+        },
+        "adminFirstName": {
+          "type": "string"
+        },
+        "adminLastName": {
+          "type": "string"
+        },
+        "adminBCeID": {
+          "type": "string"
+        },
+        "legalName": {
+          "type": "string"
+        }
+      }
+    },
+    "PostRequest": {
+      "type": "object",
+      "required": [
+        "confirmChecked"
+      ],
+      "properties": {
+        "confirmChecked": {
+          "type": "boolean"
+        },
+        "referrals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Referral"
+          }
+        }
+      }
+    },
+    "Referral": {
+      "type": "object",
+      "required": [
+        "active",
+        "purchaser",
+        "type",
+        "validDates",
+        "totalAmount",
+        "confirmChecked",
+        "extremeWinterConditions"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "essNumber": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "purchaser": {
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subType": {
+          "type": "string"
+        },
+        "validDates": {
+          "$ref": "#/definitions/DateRange"
+        },
+        "evacuees": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReferralEvacuee"
+          }
+        },
+        "supplier": {
+          "$ref": "#/definitions/Supplier"
+        },
+        "comments": {
+          "type": "string"
+        },
+        "totalAmount": {
+          "type": "number",
+          "format": "decimal"
+        },
+        "confirmChecked": {
+          "type": "boolean"
+        },
+        "numBreakfasts": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numLunches": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numDinners": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numDaysMeals": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numNights": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numRooms": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "approvedItems": {
+          "type": "string"
+        },
+        "extremeWinterConditions": {
+          "type": "boolean"
+        },
+        "fromAddress": {
+          "type": "string"
+        },
+        "toAddress": {
+          "type": "string"
+        },
+        "otherTransportModeDetails": {
+          "type": "string"
+        }
+      }
+    },
+    "DateRange": {
+      "type": "object",
+      "required": [
+        "from",
+        "to"
+      ],
+      "properties": {
+        "from": {
+          "type": "string",
+          "format": "date-time",
+          "minLength": 1
+        },
+        "to": {
+          "type": "string",
+          "format": "date-time",
+          "minLength": 1
+        }
+      }
+    },
+    "ReferralEvacuee": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        }
+      }
+    },
+    "Supplier": {
+      "type": "object",
+      "required": [
+        "name",
+        "address",
+        "city"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "address": {
+          "type": "string",
+          "minLength": 1
+        },
+        "city": {
+          "type": "string",
+          "minLength": 1
+        },
+        "province": {
+          "type": "string"
+        },
+        "postalCode": {
+          "type": "string"
+        },
+        "telephone": {
+          "type": "string"
+        },
+        "fax": {
+          "type": "string"
+        }
+      }
+    },
+    "ReferralsToPrint": {
+      "type": "object",
+      "required": [
+        "addSummary"
+      ],
+      "properties": {
+        "referralIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "addSummary": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Registration": {
+      "type": "object",
+      "required": [
+        "restrictedAccess",
+        "isFinalized"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "restrictedAccess": {
+          "type": "boolean"
+        },
+        "declarationAndConsent": {
+          "type": "boolean"
+        },
+        "essFileNumber": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "dietaryNeeds": {
+          "type": "boolean"
+        },
+        "dietaryNeedsDetails": {
+          "type": "string"
+        },
+        "disasterAffectDetails": {
+          "type": "string"
+        },
+        "externalReferralsDetails": {
+          "type": "string"
+        },
+        "facility": {
+          "type": "string"
+        },
+        "familyRecoveryPlan": {
+          "type": "string"
+        },
+        "internalCaseNotes": {
+          "type": "string"
+        },
+        "insuranceCode": {
+          "type": "string"
+        },
+        "petCarePlan": {
+          "type": "string"
+        },
+        "medicationNeeds": {
+          "type": "boolean"
+        },
+        "selfRegisteredDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "registrationCompletionDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "registeringFamilyMembers": {
+          "type": "string"
+        },
+        "hasThreeDayMedicationSupply": {
+          "type": "boolean"
+        },
+        "hasInquiryReferral": {
+          "type": "boolean"
+        },
+        "hasHealthServicesReferral": {
+          "type": "boolean"
+        },
+        "hasFirstAidReferral": {
+          "type": "boolean"
+        },
+        "hasChildCareReferral": {
+          "type": "boolean"
+        },
+        "hasPersonalServicesReferral": {
+          "type": "boolean"
+        },
+        "hasPetCareReferral": {
+          "type": "boolean"
+        },
+        "hasPets": {
+          "type": "boolean"
+        },
+        "requiresAccommodation": {
+          "type": "boolean"
+        },
+        "requiresClothing": {
+          "type": "boolean"
+        },
+        "requiresFood": {
+          "type": "boolean"
+        },
+        "requiresIncidentals": {
+          "type": "boolean"
+        },
+        "requiresTransportation": {
+          "type": "boolean"
+        },
+        "requiresSupport": {
+          "type": "boolean"
+        },
+        "headOfHousehold": {
+          "$ref": "#/definitions/HeadOfHousehold"
+        },
+        "incidentTask": {
+          "$ref": "#/definitions/IncidentTask"
+        },
+        "hostCommunity": {
+          "$ref": "#/definitions/Community"
+        },
+        "completedBy": {
+          "$ref": "#/definitions/Volunteer"
+        },
+        "isFinalized": {
+          "type": "boolean"
+        }
+      }
+    },
+    "HeadOfHousehold": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Evacuee"
+        },
+        {
+          "type": "object",
+          "required": [
+            "familyMembers"
+          ],
+          "properties": {
+            "phoneNumber": {
+              "type": "string"
+            },
+            "phoneNumberAlt": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string",
+              "format": "email"
+            },
+            "primaryResidence": {
+              "$ref": "#/definitions/Address"
+            },
+            "mailingAddress": {
+              "$ref": "#/definitions/Address"
+            },
+            "familyMembers": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FamilyMember"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Address": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "addressSubtype": {
+          "type": "string"
+        },
+        "addressLine1": {
+          "type": "string"
+        },
+        "addressLine2": {
+          "type": "string"
+        },
+        "addressLine3": {
+          "type": "string"
+        },
+        "postalCode": {
+          "type": "string"
+        },
+        "community": {
+          "$ref": "#/definitions/Community"
+        },
+        "city": {
+          "type": "string"
+        },
+        "province": {
+          "type": "string"
+        },
+        "country": {
+          "$ref": "#/definitions/Country"
+        }
+      }
+    },
+    "Country": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "countryCode": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "FamilyMember": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Evacuee"
+        },
+        {
+          "type": "object",
+          "required": [
+            "sameLastNameAsEvacuee"
+          ],
+          "properties": {
+            "sameLastNameAsEvacuee": {
+              "type": "boolean"
+            },
+            "relationshipToEvacuee": {
+              "$ref": "#/definitions/FamilyRelationshipType"
+            }
+          }
+        }
+      ]
+    },
+    "FamilyRelationshipType": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "Evacuee": {
+      "type": "object",
+      "x-abstract": true,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "personType": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "initials": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "dob": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "Volunteer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "bceidAccountNumber": {
+          "type": "string"
+        },
+        "isAdministrator": {
+          "type": "boolean"
+        },
+        "isPrimaryContact": {
+          "type": "boolean"
+        },
+        "canAccessRestrictedFiles": {
+          "type": "boolean"
+        },
+        "externaluseridentifier": {
+          "type": "string"
+        },
+        "organization": {
+          "$ref": "#/definitions/Organization"
+        }
+      }
+    }
+  }
+}

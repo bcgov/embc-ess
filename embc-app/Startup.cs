@@ -80,6 +80,18 @@ namespace Gov.Jag.Embc.Public
                         opts.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                     });
 
+            // Register the Swagger services
+            services.AddSwaggerDocument(config=>
+            {
+                config.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "ESS API";
+                    document.Info.Description = "Emergency Management BC Evacuee Support System API";
+                };
+            }
+            );
+
             // setup siteminder authentication
             services.AddAuthentication(options =>
             {
@@ -180,6 +192,11 @@ namespace Gov.Jag.Embc.Public
                 //})
                 .UseStaticFiles()
                 .UseSpaStaticFiles();
+
+            // Use NSwag for API documentation
+            // Register the Swagger generator and the Swagger UI middlewares
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app
                 .UseSession()
