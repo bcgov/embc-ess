@@ -8,8 +8,9 @@ Technology Stack
 | Layer   | Technology |
 | ------- | ------------ |
 | Presentation | Angular 7 |
-| Business Logic | C# - Dotnet Core 2.1 |
+| API and Business Logic | C# - Dotnet Core 2.1 |
 | Web Server | Kestrel |
+| Runtime | OpenShift containers |
 
 Installation
 ------------
@@ -17,17 +18,52 @@ This application is meant to be deployed to RedHat OpenShift version 3. Full ins
 
 Developer Prerequisites
 -----------------------
-
-**Public Application**
-- .Net Core SDK (Dotnet Core 2 is used for all components)
+- .Net Core 2.1 SDK
 - Node.js version 8 LTS
-- .NET Core IDE such as Visual Studio or VS Code
+
+Project structure
+-----------------
+```
+project
++-- embc-app
+|  +-- embc-app.sln             (solution file for Visual Studio 2017+)
+|  +-- embc-app.csproj          (main application project)
++-- embc-interfaces
+|  +-- BCeID 
+|     +-- BCeID.csproj          (proxy to consume BCeID web services)
++-- embc-unit-tests
+|  +-- embc-unit-tests.csproj
++-- openshift
+|  +-- other-templates
+|  |  +-- sql-server             (sql server templates)
+|  +-- templates
+|  |  +-- embcess                (main app templates)
+|  |  +-- pdf-service            (pdf rendering service templates)
++-- pdf-service                 (pdf rendering service code
++-- sql-scripts                 (scripts for backend ops on the data)
++-- sql-server                  (SQL Server docker scripts) 
+```
 
 Backend Unit Tests
 -----------------------
-To run c# code unit tests either using a cli opened to the root of any of the projects or the "Package Manager Console" use the command:
+Run ```dotnet test``` from embc-app folder
 
-`dotnet test`
+Backend local machine debugging
+-------------------------------
+Set the following environment variables:
+```
+SET ASPNETCORE_Environment=development
+//WIP: SET BASE_URL=/embcess
+```
+
+Execute ```dotnet run``` from embc-app folder
+
+Environment Variables
+---------------------
+
+| Name | Value |
+| ---- | ----- |
+| 
 
 **DevOps**
 - RedHat OpenShift tools

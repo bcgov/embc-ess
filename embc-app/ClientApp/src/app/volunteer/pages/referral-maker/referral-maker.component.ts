@@ -94,6 +94,12 @@ export class ReferralMakerComponent implements OnInit {
           console.log('ERROR - invalid registration object = ', registration);
           this.cancel();
         } else {
+          // reverse the flags patch (Client didn't prioritize system-wide data fix.)
+          registration.requiresAccommodation = !registration.requiresAccommodation; // referred to as "lodging"
+          registration.requiresClothing = !registration.requiresClothing;
+          registration.requiresFood = !registration.requiresFood;
+          registration.requiresIncidentals = !registration.requiresIncidentals;
+          registration.requiresTransportation = !registration.requiresTransportation;
           this.registration = registration;
           this.evacuees = this.createEvacueeList(registration);
           // this.defaultDate = new Date(registration.incidentTask.startDate); // previously default set to incident start time
