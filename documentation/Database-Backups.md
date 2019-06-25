@@ -25,5 +25,30 @@
 
 ## Restore Database
 1. Connect to Database Pod
-2. Open Data management tool to the table such as Sql Server Management Server or Azure Data Studio
-3. 
+2. Open Data management tool to the table such as Sql Server Management Server (SSMS) or Azure Data Studio (ADS)
+3. On SSMS
+    <ul>
+        <li>Right click on Database and select <b>Tasks</b> -> <b>Restore</b> -> <b>Database</b></li>
+![smss-backup](./resources/ssms-restore.png) 
+        <li>On the <b>General</b> page select <b>Device</b>, then click '...' button</li>
+        <li>Click the <b>Add</b> button and enter a file name
+![smss-backup](./resources/ssms-restore-2.png) 
+        <li>Next click the <b>Options</b> Page</li>
+        <li>Ensure that <b>Overwrite the existing database</b> is selected <u>Restore Options</u></li>
+        <li>As well, under <u>Server Connections</u>, select <b>Close existing connections to the database</b>
+        <li>Click <b>Ok</b> and then <b>Ok</b> on the the main restore window</li>
+![smss-backup](./resources/ssms-restore-3.png) 
+    </u>
+
+   On ADS
+    <ul>
+        <li>Right-Click on Database and select <b>Restore</b></li>
+![smss-backup](./resources/ads-restore.png) 
+        <li>Ensure <i>Backup file</i> is selected under <b>Source</b>
+        <li>Click the "..." button to select the backup file
+        <li>Next click the <b>Options</b> Page</li>
+        <li>Ensure that <b>Overwrite the existing database</b> is selected under <u>Restore Options</u></li>
+        <li>As well, under <u>Server Connections</u>, select <b>Close existing connections to the database</b>
+        <li>Click the <b>Restore</b> button</li>
+![smss-backup](./resources/ads-restore-2.png) 
+    </ul>

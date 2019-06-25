@@ -4,7 +4,7 @@ All the following scripts are used to manage data within the MS SQL Database for
 
 They all follow a structure of having a variable at the top, which filters the target data.  All are within a transaction with the default final statement set as `ROLLBACK` with `COMMIT TRANSACTION` commented out.  Just a precaution and a quick way to test the script before executing permanently.
 
-<u>IMPORTANT NOTE: Backup up the target database first as a precaution</u>
+<u>IMPORTANT NOTE: Backup up the target database first as a precaution</u>, which you can read how to do at [Database-Backups](../documentation/Database-Backups.md)
 
 ### To Deactivate a Volunteer
 
