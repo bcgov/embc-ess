@@ -5,7 +5,7 @@ import { catchError, retry } from 'rxjs/operators';
 
 import { CoreModule } from '../core.module';
 import { RestService } from './rest.service';
-import { Registration, ListResult } from '../models';
+import { Registration, ListResult, RegistrationSummary } from '../models';
 import { SearchQueryParameters } from '../models/search-interfaces';
 
 @Injectable({
@@ -44,8 +44,8 @@ export class RegistrationService extends RestService {
       );
   }
 
-  getRegistrationSummaryById(id: string): Observable<Registration> {
-    return this.http.get<Registration>(`api/registrations/${id}/summary`, { headers: this.headers })
+  getRegistrationSummaryById(id: string): Observable<RegistrationSummary> {
+    return this.http.get<RegistrationSummary>(`api/registrations/${id}/summary`, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError),

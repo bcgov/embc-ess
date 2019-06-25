@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { RegistrationService } from '../core/services/registration.service';
-import { Registration } from '../core/models';
+import { Registration, RegistrationSummary } from '../core/models';
 import { AuthService } from '../core/services/auth.service';
 import { UniqueKeyService } from '../core/services/unique-key.service';
 import { NotificationQueueService } from '../core/services/notification-queue.service';
@@ -14,7 +14,7 @@ import { NotificationQueueService } from '../core/services/notification-queue.se
 export class RegistrationSummaryComponent implements OnInit, OnDestroy {
 
   confirmModal: NgbModalRef = null;
-  registration: Registration = null;
+  registrationSummary: RegistrationSummary = null;
   path: string = null; // the base path for routing
   selectedPurchaser: string = null;
   otherPurchaser: string = null;
@@ -38,7 +38,7 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
     const key = this.uniqueKeyService.getKey();
     if (key) {
       this.registrationService.getRegistrationSummaryById(key)
-        .subscribe((registration: Registration) => {
+        .subscribe((registration: RegistrationSummary) => {
           this.loading = false;
 
           if (!registration.id || !registration.essFileNumber) {
@@ -49,7 +49,7 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
             this.goHome();
           } else {
             // store the registration object
-            this.registration = registration;
+            this.registrationSummary = registration;
           }
         }, err => {
           this.loading = false;
@@ -84,7 +84,7 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
       this.confirmModal = null; // clear for next time
 
       // save registration ID for lookup in the new component
-      this.uniqueKeyService.setKey(this.registration.id);
+      this.uniqueKeyService.setKey(this.registrationSummary.id);
 
       // go to registration view page
       this.router.navigate([`/${this.path}/registration/summary/full`, { reason: this.reason }]);
@@ -101,7 +101,7 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
 
 
   addReferrals() {
-    this.router.navigate([`/${this.path}/referrals`, this.registration.id, this.getPurchaser()]);
+    this.router.navigate([`/${this.path}/referrals`, this.registrationSummary.id, this.getPurchaser()]);
   }
 
 }

@@ -1,4 +1,4 @@
-<div *ngIf="registration">
+<div *ngIf="registrationSummary">
 
   <div *ngIf="editMode">
     <h1>Identify Supports</h1>
@@ -9,14 +9,14 @@
     </p>
 
     <!-- confirm task start time -->
-    <div *ngIf="registration?.incidentTask?.startDate">
+    <div *ngIf="registrationSummary?.incidentTask?.startDate">
       <div class="feature-block-header">
         <h2 class="display-6 mb-0">Please confirm timing for commencement of supports:</h2>
       </div>
       <div class="feature-block card d-block border-0">
         <div class="row">
           <div class="col">
-            <p class="mb-2">Incident start date &amp; time: {{registration?.incidentTask?.startDate | dateTimeFormatPipe}}</p>
+            <p class="mb-2">Incident start date &amp; time: {{registrationSummary?.incidentTask?.startDate | dateTimeFormatPipe}}</p>
             <div class="d-inline-block display-5 mr-4">Support start date &amp; time: {{defaultDate | dateTimeFormatPipe}}
               <span *ngIf="!defaultDate">Please enter a valid date.</span>
             </div>

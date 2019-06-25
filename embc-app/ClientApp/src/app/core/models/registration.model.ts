@@ -55,3 +55,23 @@ export interface Registration {
   // is the registration considered finalized?
   isFinalized?: boolean;
 }
+export interface RegistrationSummary {
+  id: string;
+  restrictedAccess: boolean;
+  essFileNumber: number;
+  selfRegisteredDate: string | null;
+  registrationCompletionDate: string | null;
+  registeringFamilyMembers: string;
+  requiresAccommodation: boolean;
+  requiresClothing: boolean;
+  requiresFood: boolean;
+  requiresIncidentals: boolean;
+  requiresTransportation: boolean;
+  requiresSupport: boolean;
+  headOfHousehold: HeadOfHousehold;
+  incidentTask: IncidentTask;
+  hostCommunity: Community;
+  active: boolean;
+  hasInternalCaseNotes: boolean;
+  facility: string;
+}
