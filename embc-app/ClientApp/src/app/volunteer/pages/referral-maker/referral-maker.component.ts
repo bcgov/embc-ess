@@ -10,7 +10,7 @@ import { NotificationQueueService } from 'src/app/core/services/notification-que
 import {
   Registration, Evacuee, ReferralPostItem,
   FoodReferral, LodgingReferral, ClothingReferral,
-  TransportationReferral, IncidentalsReferral
+  TransportationReferral, IncidentalsReferral, RegistrationSummary
 } from 'src/app/core/models';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 
@@ -29,7 +29,7 @@ export class ReferralMakerComponent implements OnInit {
 
   editMode = true; // when you first land on this page
   submitting = false;
-  registration: Registration = null;
+  registrationSummary: RegistrationSummary = null;
   path: string = null; // the base path for routing
   regId: string = null;
   purchaser: string = null;
@@ -89,19 +89,19 @@ export class ReferralMakerComponent implements OnInit {
 
     // get registration data
     this.registrationService.getRegistrationSummaryById(this.regId)
-      .subscribe((registration: Registration) => {
-        if (!registration.id || !registration.essFileNumber) {
-          console.log('ERROR - invalid registration object = ', registration);
+      .subscribe((registrationSummary: RegistrationSummary) => {
+        if (!registrationSummary.id || !registrationSummary.essFileNumber) {
+          console.log('ERROR - invalid registration object = ', registrationSummary);
           this.cancel();
         } else {
           // reverse the flags patch (Client didn't prioritize system-wide data fix.)
-          registration.requiresAccommodation = !registration.requiresAccommodation; // referred to as "lodging"
-          registration.requiresClothing = !registration.requiresClothing;
-          registration.requiresFood = !registration.requiresFood;
-          registration.requiresIncidentals = !registration.requiresIncidentals;
-          registration.requiresTransportation = !registration.requiresTransportation;
-          this.registration = registration;
-          this.evacuees = this.createEvacueeList(registration);
+          registrationSummary.requiresAccommodation = !registrationSummary.requiresAccommodation; // referred to as "lodging"
+          registrationSummary.requiresClothing = !registrationSummary.requiresClothing;
+          registrationSummary.requiresFood = !registrationSummary.requiresFood;
+          registrationSummary.requiresIncidentals = !registrationSummary.requiresIncidentals;
+          registrationSummary.requiresTransportation = !registrationSummary.requiresTransportation;
+          this.registrationSummary = registrationSummary;
+          this.evacuees = this.createEvacueeList(registrationSummary);
           // this.defaultDate = new Date(registration.incidentTask.startDate); // previously default set to incident start time
           this.defaultDate = new Date();
         }
@@ -201,7 +201,7 @@ export class ReferralMakerComponent implements OnInit {
           this.notificationQueueService.addNotification('Referral(s) finalized successfully', 'success');
 
           // save registration ID for lookup in the new component
-          this.uniqueKeyService.setKey(this.registration.id);
+          this.uniqueKeyService.setKey(this.registrationSummary.id);
 
           // go to registration summary page
           this.router.navigate([`/${this.path}/registration/summary`]);
@@ -385,7 +385,7 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   // populate evacuees
-  private createEvacueeList(reg: Registration): Evacuee[] {
+  private createEvacueeList(reg: RegistrationSummary): Evacuee[] {
     if (!reg || !reg.headOfHousehold) { return []; }
     const hoh = reg.headOfHousehold;
     const family = hoh.familyMembers || [];
@@ -395,7 +395,7 @@ export class ReferralMakerComponent implements OnInit {
   toggleDefaultDatePicker() {
     if (this.showDefaultDatePicker) {
       // ui element is shown so user is hiding the date picker so we need to reset it back to the incident start time
-      this.defaultDate = new Date(this.registration.incidentTask.startDate);
+      this.defaultDate = new Date(this.registrationSummary.incidentTask.startDate);
       this.showDefaultDatePicker = false;
     } else {
       // ui element is hidden show the ui element

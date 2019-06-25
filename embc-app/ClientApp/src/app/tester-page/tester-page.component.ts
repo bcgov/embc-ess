@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RegistrationService } from '../core/services/registration.service';
-import { Registration } from '../core/models';
+import { Registration, RegistrationSummary } from '../core/models';
 
 @Component({
   selector: 'app-tester-page',
@@ -8,7 +8,7 @@ import { Registration } from '../core/models';
   styleUrls: ['./tester-page.component.scss']
 })
 export class TesterPageComponent implements OnInit {
-  registrationSummary;
+  registrationSummary: RegistrationSummary;
   registration: Registration;
   constructor(
     private registrationService: RegistrationService
