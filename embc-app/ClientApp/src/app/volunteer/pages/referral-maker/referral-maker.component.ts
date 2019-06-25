@@ -261,7 +261,6 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
-
   addIncidentalsReferral(anchoring = false) {
     const referral: Partial<IncidentalsReferral> = {
       essNumber: this.regId,
@@ -275,6 +274,7 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.incidentalsReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    this.keepAlive();
     if (anchoring) { this.triggerScrollTo('incidentals_' + (this.incidentalsReferrals.length - 1).toString()); }
   }
 
@@ -291,6 +291,7 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.foodReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    this.keepAlive();
     if (anchoring) { this.triggerScrollTo('food_' + (this.foodReferrals.length - 1).toString()); }
   }
 
@@ -308,8 +309,8 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.lodgingReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    this.keepAlive();
     if (anchoring) { this.triggerScrollTo('lodging_' + (this.lodgingReferrals.length - 1).toString()); }
-
   }
 
   addClothingReferral(anchoring = false) {
@@ -325,6 +326,7 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.clothingReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    this.keepAlive();
     if (anchoring) { this.triggerScrollTo('clothing_' + (this.clothingReferrals.length - 1).toString()); }
   }
 
@@ -341,10 +343,12 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.transportationReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    this.keepAlive();
     if (anchoring) { this.triggerScrollTo('_' + (this.transportationReferrals.length - 1).toString()); }
   }
 
   clearIncidentalsReferrals(): void {
+    this.keepAlive();
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Incidentals referrals?')) {
       while (this.incidentalsReferrals.length > 0) { this.incidentalsReferrals.pop(); }
@@ -353,6 +357,7 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   clearFoodReferrals(): void {
+    this.keepAlive();
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Food referrals?')) {
       while (this.foodReferrals.length > 0) { this.foodReferrals.pop(); }
@@ -361,6 +366,7 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   clearLodgingReferrals(): void {
+    this.keepAlive();
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Lodging referrals?')) {
       while (this.lodgingReferrals.length > 0) { this.lodgingReferrals.pop(); }
@@ -369,6 +375,7 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   clearClothingReferrals(): void {
+    this.keepAlive();
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Clothing referrals?')) {
       while (this.clothingReferrals.length > 0) { this.clothingReferrals.pop(); }
@@ -377,6 +384,7 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   clearTransportationReferrals(): void {
+    this.keepAlive();
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Transportation referrals?')) {
       while (this.transportationReferrals.length > 0) { this.transportationReferrals.pop(); }
@@ -402,13 +410,21 @@ export class ReferralMakerComponent implements OnInit {
       this.showDefaultDatePicker = true;
     }
   }
+
   updateDefaultDate() {
     // this hides and shows the picker
     this.defaultDate = this.workingDefaultDate;
     !this.defaultDate ? this.showDefaultDatePicker = true : this.showDefaultDatePicker = false;
   }
+
+  // reload user to refresh the session and session watchdog timer
+  private keepAlive() {
+    this.authService.login(true).subscribe();
+  }
+
   // --------------------HELPERS-----------------------------------------
   remove(arr: [], i: number, scrollTo?: string) {
+    this.keepAlive();
     // Scroll to first then remove the array element
     if (scrollTo) {
       this.triggerScrollTo(scrollTo);
