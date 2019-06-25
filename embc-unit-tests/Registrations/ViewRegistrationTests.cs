@@ -1,5 +1,7 @@
 ﻿using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Services.Registrations;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,18 +12,21 @@ namespace embc_unit_tests.Registrations
 {
     public class ViewRegistrationTests : TestBase
     {
-        public ViewRegistrationTests(ITestOutputHelper output) : base(output, (typeof(IDataInterface), typeof(DataInterface)))
+        private IDataInterface di => Services.ServiceProvider.GetService<IDataInterface>();
+        private EmbcDbContext db => Services.ServiceProvider.GetService<EmbcDbContext>();
+        private IMediator mediator => Services.ServiceProvider.GetService<IMediator>();
+
+        public ViewRegistrationTests(ITestOutputHelper output) : base(output)
         {
         }
 
         [Fact]
         public async Task Get_SelfRegistrationWithNoReason_Success()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
             var selfReg = RegistrationGenerator.GenerateSelf();
             var regId = await di.CreateEvacueeRegistrationAsync(selfReg);
 
-            var response = await Mediator.Send(new RegistrationQueryRequest(regId, null));
+            var response = await mediator.Send(new RegistrationQueryRequest(regId, null));
 
             Assert.Null(response.FailureReason);
             Assert.Equal(RegistrationQueryResponse.ResponseStatus.Success, response.Status);
@@ -31,13 +36,13 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task Get_CompleteRegistrationWithReason_Success()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
-            var task = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
+            var incidentCommunity = await GetRandomSeededCommunity();
+            var taskId = await SeedIncident(incidentCommunity.Id);
             var hostCommunity = (await di.GetCommunitiesAsync()).First();
-            var completedReg = RegistrationGenerator.GenerateCompleted(task.Id, hostCommunity.Id);
+            var completedReg = RegistrationGenerator.GenerateCompleted(taskId, hostCommunity.Id);
             var regId = await di.CreateEvacueeRegistrationAsync(completedReg);
 
-            var response = await Mediator.Send(new RegistrationQueryRequest(regId, "want to read"));
+            var response = await mediator.Send(new RegistrationQueryRequest(regId, "want to read"));
 
             Assert.Null(response.FailureReason);
             Assert.Equal(RegistrationQueryResponse.ResponseStatus.Success, response.Status);
@@ -47,13 +52,13 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task Get_CompleteRegistrationWithNoReason_Error()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
-            var task = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
-            var hostCommunity = (await di.GetCommunitiesAsync()).First();
-            var completedReg = RegistrationGenerator.GenerateCompleted(task.Id, hostCommunity.Id);
+            var incidentCommunity = await GetRandomSeededCommunity();
+            var taskId = await SeedIncident(incidentCommunity.Id);
+            var hostCommunity = await GetRandomSeededCommunity();
+            var completedReg = RegistrationGenerator.GenerateCompleted(taskId, hostCommunity.Id);
             var regId = await di.CreateEvacueeRegistrationAsync(completedReg);
 
-            var response = await Mediator.Send(new RegistrationQueryRequest(regId, null));
+            var response = await mediator.Send(new RegistrationQueryRequest(regId, null));
 
             Assert.NotNull(response.FailureReason);
             Assert.Equal(RegistrationQueryResponse.ResponseStatus.Error, response.Status);
@@ -63,11 +68,10 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task Get_SelfRegistrationWithReason_Success()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
             var selfReg = RegistrationGenerator.GenerateSelf();
             var regId = await di.CreateEvacueeRegistrationAsync(selfReg);
 
-            var response = await Mediator.Send(new RegistrationQueryRequest(regId, null));
+            var response = await mediator.Send(new RegistrationQueryRequest(regId, null));
 
             Assert.Null(response.FailureReason);
             Assert.Equal(RegistrationQueryResponse.ResponseStatus.Success, response.Status);
@@ -77,11 +81,10 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task Get_RegistrationDoesntExists_NotFound()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
             var selfReg = RegistrationGenerator.GenerateSelf();
             var regId = await di.CreateEvacueeRegistrationAsync(selfReg);
 
-            var response = await Mediator.Send(new RegistrationQueryRequest(regId + "123", null));
+            var response = await mediator.Send(new RegistrationQueryRequest(regId + "123", null));
 
             Assert.NotNull(response.FailureReason);
             Assert.Equal(RegistrationQueryResponse.ResponseStatus.NotFound, response.Status);
@@ -91,15 +94,15 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task Get_CompleteRegistrationWithReason_AuditCreated()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
-            var task = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
-            var hostCommunity = (await di.GetCommunitiesAsync()).First();
-            var completedReg = RegistrationGenerator.GenerateCompleted(task.Id, hostCommunity.Id);
+            var incidentCommunity = await GetRandomSeededCommunity();
+            var taskId = await SeedIncident(incidentCommunity.Id);
+            var hostCommunity = await GetRandomSeededCommunity();
+            var completedReg = RegistrationGenerator.GenerateCompleted(taskId, hostCommunity.Id);
             var regId = await di.CreateEvacueeRegistrationAsync(completedReg);
 
-            var response = await Mediator.Send(new RegistrationQueryRequest(regId, "want to read"));
+            var response = await mediator.Send(new RegistrationQueryRequest(regId, "want to read"));
 
-            var auditEntries = EmbcDb.EvacueeRegistrationAudits.Where(a => a.EssFileNumber == long.Parse(regId)).ToArray();
+            var auditEntries = db.EvacueeRegistrationAudits.Where(a => a.EssFileNumber == long.Parse(regId)).ToArray();
             Assert.Single(auditEntries);
             Assert.Equal(typeof(RegistrationViewed).Name, auditEntries[0].Action);
         }
@@ -107,16 +110,16 @@ namespace embc_unit_tests.Registrations
         [Fact]
         public async Task GetAudit_CompletedRegistrationWithSingleFullView_ViewsReturned()
         {
-            var di = new DataInterface(EmbcDb, Mapper);
-            var task = await di.CreateIncidentTaskAsync(IncidentTaskGenerator.Generate());
-            var hostCommunity = (await di.GetCommunitiesAsync()).First();
-            var completedReg = RegistrationGenerator.GenerateCompleted(task.Id, hostCommunity.Id);
+            var incidentCommunity = await GetRandomSeededCommunity();
+            var taskId = await SeedIncident(incidentCommunity.Id);
+            var hostCommunity = await GetRandomSeededCommunity();
+            var completedReg = RegistrationGenerator.GenerateCompleted(taskId, hostCommunity.Id);
             var regId = await di.CreateEvacueeRegistrationAsync(completedReg);
 
             const string reason = "want to read";
-            await Mediator.Send(new RegistrationQueryRequest(regId, reason));
+            await mediator.Send(new RegistrationQueryRequest(regId, reason));
 
-            var result = await Mediator.Send(new RegistrationAuditQueryRequest(long.Parse(regId)));
+            var result = await mediator.Send(new RegistrationAuditQueryRequest(long.Parse(regId)));
 
             var entry = result.First();
             Assert.Equal(reason, entry.Reason);

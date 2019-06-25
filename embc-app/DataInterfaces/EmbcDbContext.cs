@@ -109,10 +109,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .HasPrincipalKey(r => r.EssFileNumber);
 
             modelBuilder.Entity<EvacueeRegistrationAddress>()
-                .HasKey(ira => new { ira.RegistrationId, ira.AddressSequenceNumber });
+                .HasKey(a => new { a.RegistrationId, a.AddressSequenceNumber });
 
             modelBuilder.Entity<EvacueeRegistrationAddress>()
-                .HasOne(e => e.EvacueeRegistration)
+                .HasOne<EvacueeRegistration>()
                 .WithMany(r => r.EvacueeRegistrationAddresses)
                 .HasForeignKey(e => e.RegistrationId)
                 .HasPrincipalKey(r => r.EssFileNumber);

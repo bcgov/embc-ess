@@ -9,7 +9,8 @@ import { OrganizationService } from 'src/app/core/services/organization.service'
 import { Volunteer, Organization, ListResult } from 'src/app/core/models';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
-import { invalidField } from 'src/app/shared/utils';
+import { invalidField, hasErrors } from 'src/app/shared/utils';
+import { UniqueBceidValidator } from 'src/app/shared/validation/unique-bceid.validator';
 
 @Component({
   selector: 'app-admin-volunteer-maker',
@@ -49,7 +50,8 @@ export class AdminVolunteerMakerComponent implements OnInit {
     private authService: AuthService,
     private notificationQueueService: NotificationQueueService,
     private uniqueKeyService: UniqueKeyService,
-    public fb: FormBuilder
+    private fb: FormBuilder,
+    private bceidValidator: UniqueBceidValidator,
   ) { }
 
   ngOnInit() {
@@ -57,7 +59,11 @@ export class AdminVolunteerMakerComponent implements OnInit {
       organization: [null, Validators.required],
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
-      bceidAccountNumber: ['', Validators.required],
+      bceidAccountNumber: ['', {
+        validators: [Validators.required],
+        asyncValidators: [this.bceidValidator.validate.bind(this.bceidValidator)],
+        updateOn: 'blur'
+      }],
       isAdministrator: ['', Validators.required],
       isPrimaryContact: ['']
     });
@@ -295,7 +301,7 @@ export class AdminVolunteerMakerComponent implements OnInit {
         }, err => {
           this.submitting = false;
           console.log('error updating volunteer =', err);
-          this.notificationQueueService.addNotification('Failed to update user', 'danger');
+          this.notificationQueueService.addNotification('Failed to update user. Please check that the BCeID is unique.. Please check that the BCeID is unique.', 'danger');
         });
     } else {
       // if the volunteer has no id we need to create a new one
@@ -316,7 +322,7 @@ export class AdminVolunteerMakerComponent implements OnInit {
         }, err => {
           this.submitting = false;
           console.log('error creating volunteer =', err);
-          this.notificationQueueService.addNotification('Failed to add user', 'danger');
+          this.notificationQueueService.addNotification('Failed to add user. Please check that the BCeID is unique.', 'danger');
         });
     }
   }

@@ -7,21 +7,15 @@ namespace Gov.Jag.Embc.Public.Models.Db
 {
     public class EvacueeRegistration : IAuditableEntity
     {
-        public EvacueeRegistration()
-        {
-            Evacuees = new List<Evacuee>();
-            EvacueeRegistrationAddresses = new List<EvacueeRegistrationAddress>();
-        }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [Key]
+        public long EssFileNumber { get; set; }
 
         public bool Active { get; set; }
 
         public bool RestrictedAccess { get; set; }
 
         public bool? DeclarationAndConsent { get; set; }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        [Key]
-        public long EssFileNumber { get; set; }
 
         public string PhoneNumber { get; set; }
         public string PhoneNumberAlt { get; set; }
@@ -67,9 +61,9 @@ namespace Gov.Jag.Embc.Public.Models.Db
         [MaxLength(255)]
         public string CompletedById { get; set; }
 
-        public List<Evacuee> Evacuees { get; set; }
+        public IEnumerable<Evacuee> Evacuees { get; set; }
 
-        public List<EvacueeRegistrationAddress> EvacueeRegistrationAddresses { get; set; }
+        public IEnumerable<EvacueeRegistrationAddress> EvacueeRegistrationAddresses { get; set; }
 
         [NotMapped]
         public bool IsFinalized => RegistrationCompletionDate.HasValue;

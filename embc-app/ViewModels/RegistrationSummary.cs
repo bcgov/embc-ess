@@ -1,12 +1,22 @@
+using AutoMapper;
 using System;
 
 namespace Gov.Jag.Embc.Public.ViewModels
 {
+    public class RegistrationSummaryMappingProfile : Profile
+    {
+        public RegistrationSummaryMappingProfile()
+        {
+            CreateMap<Registration, RegistrationSummary>()
+                .ForMember(d => d.HasInternalCaseNotes, opts => opts.MapFrom(s => !string.IsNullOrWhiteSpace(s.InternalCaseNotes)))
+                ;
+        }
+    }
+
     public class RegistrationSummary
     {
         public string Id { get; set; }
         public bool? RestrictedAccess { get; set; }
-        public bool? DeclarationAndConsent { get; set; }
         public long? EssFileNumber { get; set; }
         public DateTime? SelfRegisteredDate { get; set; }
         public DateTime? RegistrationCompletionDate { get; set; }

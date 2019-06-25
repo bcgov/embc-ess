@@ -28,7 +28,7 @@
         <label class="form-check-label" for="medicationNeedsFalse">No</label>
       </div>
       <span [class.d-block]="invalid('medicationNeeds')" class="invalid-feedback">{{validationErrors['medicationNeeds']}}</span>
-      <div *ngIf="form.value.medicationNeeds===true" class="alert alert-warning" role="alert">
+      <div *ngIf="form.value.medicationNeeds===true" class="alert alert-info" role="alert">
         <p class="alert-heading display-6 my-2">Please ensure you have an adequate supply of medication for the duration of the evacuation.</p>
       </div>
     </div>
@@ -44,6 +44,9 @@
         <label class="form-check-label" for="hasPetsFalse">No</label>
       </div>
       <span [class.d-block]="invalid('hasPets')" class="invalid-feedback">{{validationErrors['hasPets']}}</span>
+      <div *ngIf="form.value.hasPets===true" class="alert alert-info" role="alert">
+        <p class="alert-heading display-6 my-2">Please ensure you have adequate pet care supplies for the duration of the evacuation.</p>
+      </div>
     </div>
   </section>
 

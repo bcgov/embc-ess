@@ -13,11 +13,13 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public string AddressTypeCode { get; set; }
 
+        [NotMapped]
         public AddressType AddressType => string.IsNullOrEmpty(AddressTypeCode) ?
             AddressType.NotSet : EnumHelper<AddressType>.GetValueFromDisplayName(AddressTypeCode);
 
         public string AddressSubtypeCode { get; set; }
 
+        [NotMapped]
         public AddressSubType AddressSubType => string.IsNullOrEmpty(AddressSubtypeCode)
             ? AddressSubType.NotSet : EnumHelper<AddressSubType>.GetValueFromDisplayName(AddressSubtypeCode);
 
@@ -41,7 +43,5 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string CountryCode { get; set; }
 
         public Country Country { get; set; }
-
-        public EvacueeRegistration EvacueeRegistration { get; set; }
     }
 }

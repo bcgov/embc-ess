@@ -97,8 +97,8 @@
             <span class="value">{{registration.hasInternalCaseNotes | yesNo}}</span>
           </li>
         </ul>
-        <div class="mt-4 mx-3">
-          <button type="button" class="btn btn-primary float-right" (click)="showFullProfile(viewAlert)">VIEW FULL PROFILE</button>
+        <div class="mt-4">
+          <button type="button" class="btn btn-primary float-right text-uppercase" (click)="showFullProfile(viewAlert)">View Full Profile</button>
         </div>
       </section>
 
@@ -135,7 +135,7 @@
 
       <!-- safety check: no task number means this registration isn't finalized -->
       <section *ngIf="registration.incidentTask?.taskNumber" class="clearfix">
-        <h2 class="blue-header font-weight-bold">LIST OF REFERRALS</h2>
+        <h2 class="blue-header font-weight-bold">List of Referrals</h2>
 
         <app-referral-table [registration]="registration"></app-referral-table>
       </section>

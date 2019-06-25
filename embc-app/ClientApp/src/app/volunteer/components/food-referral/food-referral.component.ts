@@ -8,11 +8,7 @@ import { ReferralDate } from 'src/app/core/models/referral-date';
 import { FoodRatesComponent } from 'src/app/shared/modals/food-rates/food-rates.component';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
-
-const BREAKFAST = 10.00;
-const LUNCH = 13.00;
-const DINNER = 22.00;
-const GROCERIES = 22.50;
+import { RESTAURANT_BREAKFAST, RESTAURANT_LUNCH, RESTAURANT_DINNER, GROCERIES } from 'src/app/constants/rates';
 
 @Component({
   selector: 'app-food-referral',
@@ -120,9 +116,9 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
       if (x instanceof FormGroup) {
         // get data from form
         if (x.value.subType === 'RESTAURANT') {
-          const b = x.value.numBreakfasts * BREAKFAST;
-          const l = x.value.numLunches * LUNCH;
-          const d = x.value.numDinners * DINNER;
+          const b = x.value.numBreakfasts * RESTAURANT_BREAKFAST;
+          const l = x.value.numLunches * RESTAURANT_LUNCH;
+          const d = x.value.numDinners * RESTAURANT_DINNER;
           const n = x.value.evacuees.length;
           return (b + l + d) * n;
         }
@@ -134,9 +130,9 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
       } else {
         // get data from referral
         if (x.subType === 'RESTAURANT') {
-          const b = x.numBreakfasts * BREAKFAST;
-          const l = x.numLunches * LUNCH;
-          const d = x.numDinners * DINNER;
+          const b = x.numBreakfasts * RESTAURANT_BREAKFAST;
+          const l = x.numLunches * RESTAURANT_LUNCH;
+          const d = x.numDinners * RESTAURANT_DINNER;
           const n = x.evacuees.length;
           return (b + l + d) * n;
         }

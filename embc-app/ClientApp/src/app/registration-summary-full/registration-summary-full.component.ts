@@ -47,6 +47,12 @@ export class RegistrationSummaryFullComponent implements OnInit {
 
             this.goHome();
           } else {
+            // reverse the flags patch (Client didn't prioritize system-wide data fix.)
+            registration.requiresAccommodation = !registration.requiresAccommodation;
+            registration.requiresClothing = !registration.requiresClothing;
+            registration.requiresFood = !registration.requiresFood;
+            registration.requiresIncidentals = !registration.requiresIncidentals;
+            registration.requiresTransportation = !registration.requiresTransportation;
             // store the registration object
             this.registration = registration;
           }

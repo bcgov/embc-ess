@@ -40,6 +40,7 @@ namespace Gov.Jag.Embc.Public
             // add singleton to allow Controllers to query the Request object
             services
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+                .AddSingleton(configuration)
                 .AddDbContext<EmbcDbContext>(
                     options => options
                         .UseLoggerFactory(loggerFactory)
@@ -52,7 +53,7 @@ namespace Gov.Jag.Embc.Public
                     {
                         builder.WithOrigins(
                               "http://pathfinder.bcgov",
-                              "https://pathfinder.gov.bc.ca",
+                              "https://*.pathfinder.gov.bc.ca",
                               "https://dev.justice.gov.bc.ca",
                               "https://test.justice.gov.bc.ca",
                               "https://justice.gov.bc.ca")
@@ -111,9 +112,6 @@ namespace Gov.Jag.Embc.Public
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env/*, IAntiforgery antiForgery*/)
         {
-            //inject an instance of AutoMapper to the static class
-            ViewModelConversions.mapper = app.ApplicationServices.GetService<IMapper>();
-
             // DATABASE SETUP
             SetupDatabase(env);
 
@@ -149,17 +147,22 @@ namespace Gov.Jag.Embc.Public
                 // no cache  headers
                 .UseNoCacheHttpHeaders()
                 // CSP header
-                .UseCsp(opts =>
-                    {
-                        opts
-                        .BlockAllMixedContent()
-                        .DefaultSources(s => s.Self())
-                        .ScriptSources(s => s.Self().UnsafeInline())
-                        .StyleSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.googleapis.com").UnsafeInline())
-                        .FontSources(s => s.Self().CustomSources("https://use.fontawesome.com", "https://fonts.gstatic.com"));
+                .Use(next => context =>
+                {
+                    var cspHeader = configuration.CspEnabled()
+                    ? "Content-Security-Policy"
+                    : "Content-Security-Policy-Report-Only";
 
-                        if (env.IsDevelopment()) opts.ScriptSources(s => s.Self().UnsafeEval());
-                    })
+                    context.Response.Headers.Append(cspHeader, "default-src 'self' https://*.pathfinder.gov.bc.ca;" +   //captcha service
+                        "script-src 'self' 'unsafe-inline' " + (env.IsDevelopment() ? "'unsafe-eval'" : "") + ";" +
+                        "style-src 'self' 'unsafe-inline';" +
+                        "media-src 'self' data:;" +     //captcha audio
+                        "object-src 'self' blob:;" +    //referral printout pdf
+                        "img-src 'self' data:;" +    //svg and images
+                        "block-all-mixed-content");
+
+                    return next(context);
+                })
                 // Anty forgery cookie for Angular - not working yet
                 //.Use(next => context =>
                 //{

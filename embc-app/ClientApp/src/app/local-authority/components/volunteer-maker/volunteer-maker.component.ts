@@ -8,6 +8,7 @@ import { Volunteer, Organization } from 'src/app/core/models';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { invalidField } from 'src/app/shared/utils';
+import { UniqueBceidValidator } from 'src/app/shared/validation/unique-bceid.validator';
 
 @Component({
   selector: 'app-volunteer-maker',
@@ -40,7 +41,8 @@ export class VolunteerMakerComponent implements OnInit {
     private authService: AuthService,
     private notificationQueueService: NotificationQueueService,
     private uniqueKeyService: UniqueKeyService,
-    public fb: FormBuilder
+    private fb: FormBuilder,
+    private bceidValidator: UniqueBceidValidator,
   ) { }
 
   ngOnInit() {
@@ -51,7 +53,11 @@ export class VolunteerMakerComponent implements OnInit {
     this.form = this.fb.group({
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
-      bceidAccountNumber: ['', Validators.required]
+      bceidAccountNumber: ['', {
+        validators: [Validators.required],
+        asyncValidators: [this.bceidValidator.validate.bind(this.bceidValidator)],
+        updateOn: 'blur'
+      }]
     });
 
     // get the organization from the route parameters
@@ -176,7 +182,7 @@ export class VolunteerMakerComponent implements OnInit {
         }, err => {
           this.submitting = false;
           console.log('error updating volunteer =', err);
-          this.notificationQueueService.addNotification('Failed to update user', 'danger');
+          this.notificationQueueService.addNotification('Failed to update user. Please check that the BCeID is unique.', 'danger');
         });
     } else {
       // if the volunteer has no id we need to create a new one
