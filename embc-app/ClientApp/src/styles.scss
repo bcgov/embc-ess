@@ -14,22 +14,6 @@
 @import "styles/components/spinner.scss";
 @import "styles/components/summary.scss";
 
-// Angular Material - define custom theme
-@import "~@angular/material/theming";
-
-// @include mat-core();
-// $primary: mat-palette($mat-grey, 400);
-// $accent: mat-palette($mat-indigo, 500, A200, A400);
-// $warn: mat-palette($mat-red, 500);
-// $theme: mat-light-theme($primary, $accent, $warn);
-// @include angular-material-theme($theme);
-
-// // Angular Material - define custom typography (i.e. no Roboto font)
-// $custom-typography: mat-typography-config(
-//   $font-family: "Myriad-Pro, Calibri, Arial, sans-serif"
-// );
-// @include angular-material-typography($custom-typography);
-
 // Components (that come after mygovbc theme)
 @import "styles/components/tables.scss";
 
@@ -54,11 +38,7 @@
 
 hr {
   display: block;
-  // height: 1px;
-  // border: 0;
   border-top: 4px solid theme-color(bcgold);
-  // margin: 1em 0;
-  // padding: 0;
 }
 
 textarea.is-invalid {
@@ -88,13 +68,6 @@ app-form-field {
   margin-top: 5px;
 }
 
-//----------OLD STUFF BELOW THIS LINE
-
-// html {
-//   background: #fff;
-//   font-size: 10px;
-// }
-
 body {
   color: $font-color;
   //   -webkit-font-smoothing: antialiased;
@@ -118,31 +91,10 @@ h3 {
   font-weight: bold;
 }
 
-// h2, .h2 {
-//   font-size: 24px;
-// }
-
-// h3, .h3 {
-//   font-weight: bold;
-//   font-size: 18px;
-
-//   .blue {
-//     color: #38598a;
-//   }
-// }
-
-// h4, .h4 {
-//   font-size: 16px;
-// }
-
 p {
   // font-size: 14px;
   line-height: 1.5;
 }
-
-// a {
-//   color: #1a5a96;
-// }
 
 .btn.btn-primary {
   font-weight: bold;
@@ -185,31 +137,10 @@ select.is-invalid {
   line-height: 1.2 !important;
 }
 
-// // this breaks text/arrow layout in FF
-// // select.form-control:not([size]):not([multiple]) {
-// //   height: auto;
-// // }
-
 label {
   // max-width: 100%;
   font-weight: bolder;
 }
-
-// .form-control {
-//   // border-radius: 5px;
-//   display: inline-block;
-// }
-
-// .extra-padding-left {
-//   padding-left: 15px;
-//   padding-right: 15px;
-// }
-
-// @media (max-width: 575.98px) {
-//   .extra-padding-left {
-//     margin-left: 0;
-//   }
-// }
 
 .round-icon-wrapper {
   // Used for self registration background of fontawesome check
@@ -246,77 +177,9 @@ label {
   align-items: center;
 }
 
-// .form-wrapper {
-//   padding-left: 50px;
-//   padding-right: 30px;
-// }
-
-// @media (max-width: 575.98px) {
-//   .form-wrapper {
-//     padding-left: 10px;
-//     padding-right: 10px;
-//   }
-// }
-
-// .red-snackbar {
-//   background: #f44336;
-// }
-
-// .green-snackbar {
-//   background: #00ff21;
-// }
-
-// .step {
-//   border-bottom: 2px solid #fcba19;
-//   display: inline-block;
-// }
-
 .padded-section {
   padding-left: 15px;
 }
-
-// .notes {
-//   background-color: #f2f2f2;
-//   border: solid 1px transparent;
-//   border-radius: 5px;
-//   padding: 10px;
-//   margin-bottom: 10px;
-// }
-
-// .submitted-header {
-//   background-color: rgba(56, 89, 138, 1);
-//   border: 1px solid transparent;
-//   border-bottom: none;
-//   border-top-left-radius: 5px;
-//   border-top-right-radius: 5px;
-//   padding-left: 20px;
-//   padding-right: 20px;
-//   padding-bottom: 10px;
-//   color: #fff !important;
-// }
-
-// .submitted-header h2 {
-//   color: #fff !important;
-// }
-
-// .submitted-content {
-//   background-color: #eee;
-//   padding: 20px;
-//   margin-bottom: 20px;
-// }
-
-// .submit-container {
-//   background-color: #38598a;
-//   border-bottom: solid 4px #ffcc00;
-//   color: #fff;
-//   margin-bottom: 20px;
-//   padding: 30px;
-//   padding-top: 20px;
-
-//   h2 {
-//     color: #fff;
-//   }
-// }
 
 .arrow {
   list-style: none;
@@ -332,57 +195,6 @@ ul.arrow > li:before {
   width: 1.2em;
   color: #fcba19;
 }
-
-// .default-ul {
-//   list-style: initial;
-//   text-indent: initial;
-// }
-
-// .scroll-box {
-//   overflow: auto;
-//   width: 800px;
-//   height: 500px;
-//   border: 1px solid;
-//   padding: 15px;
-//   margin-bottom: 30px;
-// }
-
-// .print-only {
-//   display: none;
-// }
-
-// @media print {
-
-//   header,
-//   footer,
-//   .no-print {
-//     display: none;
-//   }
-
-//   .print-only {
-//     display: initial;
-//   }
-
-//   .header {
-//     width: initial;
-//   }
-
-//   .scroll-box {
-//     border: none;
-//     height: initial;
-//     width: 110%;
-//     padding-right: 60px;
-//   }
-
-//   .footer {
-//     display: none;
-//   }
-// }
-
-// input[type=checkbox],
-// input[type=radio] {
-//   top: 3px;
-// }
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {

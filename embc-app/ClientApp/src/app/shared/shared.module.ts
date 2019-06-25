@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextMaskModule } from 'angular2-text-mask';
 import { NgbTypeaheadModule, NgbPaginationModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { MaterialModule } from './material.module';
 import { EnvironmentBannerComponent } from './components/environment-banner/environment-banner.component';
 import { WarningBannerComponent } from './components/warning-banner/warning-banner.component';
 import { NotificationBannerComponent } from './components/notification-banner/notification-banner.component';
@@ -75,7 +74,6 @@ import { ValidationBorderDirective } from './directives/validation-border.direct
     FormsModule,
     ReactiveFormsModule,
     TextMaskModule,
-    MaterialModule,
 
     // ng-bootstrap UI components
     NgbTypeaheadModule,
@@ -88,7 +86,6 @@ import { ValidationBorderDirective } from './directives/validation-border.direct
     FormsModule,
     ReactiveFormsModule,
     TextMaskModule,
-    MaterialModule,
 
     // ng-bootstrap components we want to re-export... (they are used outside of this SharedModule)
     NgbPaginationModule,
