@@ -33,7 +33,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 )
                 .Where(t => searchQuery.Active == t.Active)
                 .Sort(searchQuery.SortBy ?? "id")
-                .Join(Volunteers.Where(v => v.IsPrimaryContact ?? false).Take(1), o => o.Id, pc => pc.Organization.Id, (org, pc) => new { org, pc }) //Assume a single primary contact
+                .Join(Volunteers.Where(v => v.IsPrimaryContact ?? false), o => o.Id, pc => pc.Organization.Id, (org, pc) => new { org, pc }) //Assume a single primary contact
                 .ToArrayAsync();
 
             return new PaginatedList<Organization>(items.Select(i => MapToViewModel(i.org, i.pc)), searchQuery.Offset, searchQuery.Limit);
