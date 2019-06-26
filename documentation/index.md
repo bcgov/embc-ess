@@ -8,3 +8,4 @@
 - [PDF Printing Service](../pdf-service/README.md)
 - [How to run front-end for local development](../embc-app/ClientApp/README.md)
 - [Running in OpenShift](../openshift/README.md)
+- [Impact of Deactivated Records](Deactivated-Records.md)
