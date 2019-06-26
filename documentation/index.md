@@ -1,4 +1,4 @@
-ESS Knowledgebase
+# ESS Knowledgebase
 
 - [Main Readme](../README.md)
 - [Manual database backup and restore](Database-Backups.md)

@@ -12,6 +12,10 @@ Technology Stack
 | Web Server | Kestrel |
 | Runtime | OpenShift containers |
 
+Knowledgebase
+-----------------------
+Throughout the project there are readme documents. Those specific documents can be browsed from the [knowledgebase.](documentation/index.md)
+
 Installation
 ------------
 This application is meant to be deployed to RedHat OpenShift version 3. Full instructions to deploy to OpenShift are in the `openshift` directory.
@@ -20,6 +24,7 @@ Developer Prerequisites
 -----------------------
 - .Net Core 2.1 SDK
 - Node.js version 8 LTS
+- Angular 6 
 
 Project structure
 -----------------
