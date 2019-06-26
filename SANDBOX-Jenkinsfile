@@ -1,5 +1,6 @@
 APP_NAME = "embcess-sandbox"
 PROJECT_NAMESPACE = "jhnamn"
+DOTNET_SKIP_FIRST_TIME_EXPERIENCE="true"
 
 class AppEnvironment {
   String name

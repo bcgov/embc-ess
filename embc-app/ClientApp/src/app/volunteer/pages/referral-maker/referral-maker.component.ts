@@ -10,7 +10,7 @@ import { NotificationQueueService } from 'src/app/core/services/notification-que
 import {
   Registration, Evacuee, ReferralPostItem,
   FoodReferral, LodgingReferral, ClothingReferral,
-  TransportationReferral, IncidentalsReferral
+  TransportationReferral, IncidentalsReferral, RegistrationSummary
 } from 'src/app/core/models';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 
@@ -29,7 +29,7 @@ export class ReferralMakerComponent implements OnInit {
 
   editMode = true; // when you first land on this page
   submitting = false;
-  registration: Registration = null;
+  registrationSummary: RegistrationSummary = null;
   path: string = null; // the base path for routing
   regId: string = null;
   purchaser: string = null;
@@ -89,19 +89,19 @@ export class ReferralMakerComponent implements OnInit {
 
     // get registration data
     this.registrationService.getRegistrationSummaryById(this.regId)
-      .subscribe((registration: Registration) => {
-        if (!registration.id || !registration.essFileNumber) {
-          console.log('ERROR - invalid registration object = ', registration);
+      .subscribe((registrationSummary: RegistrationSummary) => {
+        if (!registrationSummary.id || !registrationSummary.essFileNumber) {
+          console.log('ERROR - invalid registration object = ', registrationSummary);
           this.cancel();
         } else {
           // reverse the flags patch (Client didn't prioritize system-wide data fix.)
-          registration.requiresAccommodation = !registration.requiresAccommodation; // referred to as "lodging"
-          registration.requiresClothing = !registration.requiresClothing;
-          registration.requiresFood = !registration.requiresFood;
-          registration.requiresIncidentals = !registration.requiresIncidentals;
-          registration.requiresTransportation = !registration.requiresTransportation;
-          this.registration = registration;
-          this.evacuees = this.createEvacueeList(registration);
+          registrationSummary.requiresAccommodation = !registrationSummary.requiresAccommodation; // referred to as "lodging"
+          registrationSummary.requiresClothing = !registrationSummary.requiresClothing;
+          registrationSummary.requiresFood = !registrationSummary.requiresFood;
+          registrationSummary.requiresIncidentals = !registrationSummary.requiresIncidentals;
+          registrationSummary.requiresTransportation = !registrationSummary.requiresTransportation;
+          this.registrationSummary = registrationSummary;
+          this.evacuees = this.createEvacueeList(registrationSummary);
           // this.defaultDate = new Date(registration.incidentTask.startDate); // previously default set to incident start time
           this.defaultDate = new Date();
         }
@@ -201,7 +201,7 @@ export class ReferralMakerComponent implements OnInit {
           this.notificationQueueService.addNotification('Referral(s) finalized successfully', 'success');
 
           // save registration ID for lookup in the new component
-          this.uniqueKeyService.setKey(this.registration.id);
+          this.uniqueKeyService.setKey(this.registrationSummary.id);
 
           // go to registration summary page
           this.router.navigate([`/${this.path}/registration/summary`]);
@@ -261,7 +261,6 @@ export class ReferralMakerComponent implements OnInit {
     }
   }
 
-
   addIncidentalsReferral(anchoring = false) {
     const referral: Partial<IncidentalsReferral> = {
       essNumber: this.regId,
@@ -275,6 +274,7 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.incidentalsReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    this.keepAlive();
     if (anchoring) { this.triggerScrollTo('incidentals_' + (this.incidentalsReferrals.length - 1).toString()); }
   }
 
@@ -291,6 +291,7 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.foodReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    this.keepAlive();
     if (anchoring) { this.triggerScrollTo('food_' + (this.foodReferrals.length - 1).toString()); }
   }
 
@@ -308,8 +309,8 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.lodgingReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    this.keepAlive();
     if (anchoring) { this.triggerScrollTo('lodging_' + (this.lodgingReferrals.length - 1).toString()); }
-
   }
 
   addClothingReferral(anchoring = false) {
@@ -325,6 +326,7 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.clothingReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    this.keepAlive();
     if (anchoring) { this.triggerScrollTo('clothing_' + (this.clothingReferrals.length - 1).toString()); }
   }
 
@@ -341,10 +343,12 @@ export class ReferralMakerComponent implements OnInit {
     };
     this.transportationReferrals.push({ value: referral, valid: false });
     this.updateFormValidity();
+    this.keepAlive();
     if (anchoring) { this.triggerScrollTo('_' + (this.transportationReferrals.length - 1).toString()); }
   }
 
   clearIncidentalsReferrals(): void {
+    this.keepAlive();
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Incidentals referrals?')) {
       while (this.incidentalsReferrals.length > 0) { this.incidentalsReferrals.pop(); }
@@ -353,6 +357,7 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   clearFoodReferrals(): void {
+    this.keepAlive();
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Food referrals?')) {
       while (this.foodReferrals.length > 0) { this.foodReferrals.pop(); }
@@ -361,6 +366,7 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   clearLodgingReferrals(): void {
+    this.keepAlive();
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Lodging referrals?')) {
       while (this.lodgingReferrals.length > 0) { this.lodgingReferrals.pop(); }
@@ -369,6 +375,7 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   clearClothingReferrals(): void {
+    this.keepAlive();
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Clothing referrals?')) {
       while (this.clothingReferrals.length > 0) { this.clothingReferrals.pop(); }
@@ -377,6 +384,7 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   clearTransportationReferrals(): void {
+    this.keepAlive();
     // TODO: replace confirm with a better popup
     if (confirm('Do you really want to clear all Transportation referrals?')) {
       while (this.transportationReferrals.length > 0) { this.transportationReferrals.pop(); }
@@ -385,7 +393,7 @@ export class ReferralMakerComponent implements OnInit {
   }
 
   // populate evacuees
-  private createEvacueeList(reg: Registration): Evacuee[] {
+  private createEvacueeList(reg: RegistrationSummary): Evacuee[] {
     if (!reg || !reg.headOfHousehold) { return []; }
     const hoh = reg.headOfHousehold;
     const family = hoh.familyMembers || [];
@@ -395,20 +403,28 @@ export class ReferralMakerComponent implements OnInit {
   toggleDefaultDatePicker() {
     if (this.showDefaultDatePicker) {
       // ui element is shown so user is hiding the date picker so we need to reset it back to the incident start time
-      this.defaultDate = new Date(this.registration.incidentTask.startDate);
+      this.defaultDate = new Date(this.registrationSummary.incidentTask.startDate);
       this.showDefaultDatePicker = false;
     } else {
       // ui element is hidden show the ui element
       this.showDefaultDatePicker = true;
     }
   }
+
   updateDefaultDate() {
     // this hides and shows the picker
     this.defaultDate = this.workingDefaultDate;
     !this.defaultDate ? this.showDefaultDatePicker = true : this.showDefaultDatePicker = false;
   }
+
+  // reload user to refresh the session and session watchdog timer
+  private keepAlive() {
+    this.authService.login(true).subscribe();
+  }
+
   // --------------------HELPERS-----------------------------------------
   remove(arr: [], i: number, scrollTo?: string) {
+    this.keepAlive();
     // Scroll to first then remove the array element
     if (scrollTo) {
       this.triggerScrollTo(scrollTo);
