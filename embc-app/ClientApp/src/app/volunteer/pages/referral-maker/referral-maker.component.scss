@@ -13,3 +13,18 @@ article {
     border-right: red 1rem solid;
   }
 }
+
+.ordinal {
+  border: none;
+  border-radius: 50%;
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  padding: .4em;
+  text-align: center;
+  background: #003366;
+  color: #fff;
+  &-container {
+    margin-left: -55px;
+  }
+}
