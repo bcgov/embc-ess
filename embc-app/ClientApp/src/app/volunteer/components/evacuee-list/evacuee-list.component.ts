@@ -58,7 +58,11 @@ export class EvacueeListComponent implements OnInit {
 
   switchToAdvancedSearch() { this.advancedSearchMode = true; }
 
-  switchToBasicSearch() { this.advancedSearchMode = false; }
+  switchToBasicSearch() {
+    this.advancedSearchMode = false;
+    // when you switch back reset the search
+    this.search();
+  }
 
   getEvacuees(query: EvacueeSearchQueryParameters = this.defaultSearchQuery): Observable<ListResult<EvacueeListItem>> {
     // save the generic query for repeat searches
