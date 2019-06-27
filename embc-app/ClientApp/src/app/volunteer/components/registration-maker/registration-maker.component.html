@@ -438,8 +438,13 @@
           </div>
           <span [class.d-block]="invalid('insuranceCode')" class="invalid-feedback">{{e.insuranceCode}}</span>
         </div>
-        <div *ngIf="(form.value.insuranceCode=='yes')||(form.value.insuranceCode=='yes-unsure')" class="alert alert-warning" role="alert">
-          <p class="alert-heading display-6 my-2">Assist the evacuee in contacting their insurance agent to confirm coverage for this event.</p>
+        <div class="feature-block" *ngIf="(form.value.insuranceCode=='yes')||(form.value.insuranceCode=='yes-unsure')">
+          <h5>
+            Please encourage the evacuee to contact their insurance provider as soon as possible.
+          </h5>
+          <p>
+            If they are having difficulty contacting their insurance provider, have them contact the Insurance Bureau of Canada at <a href="tel:18442275422">1-844-227-5422</a>.
+          </p>
         </div>
       </div>
 
