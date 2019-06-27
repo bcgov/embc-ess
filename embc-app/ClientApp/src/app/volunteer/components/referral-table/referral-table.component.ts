@@ -5,7 +5,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { ReferralService } from 'src/app/core/services/referral.service';
 import { RegistrationService } from 'src/app/core/services/registration.service';
-import { Registration, ListResult, PaginationSummary, Referral } from 'src/app/core/models';
+import { ListResult, PaginationSummary, Referral, RegistrationSummary } from 'src/app/core/models';
 import { ReferralSearchResults } from 'src/app/core/models/search-interfaces';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 
@@ -17,7 +17,7 @@ import { NotificationQueueService } from 'src/app/core/services/notification-que
 export class ReferralTableComponent implements OnChanges, OnDestroy {
 
   @ViewChild('summaryAlert') summaryAlert: TemplateRef<any>;
-  @Input() registration: Registration = null;
+  @Input() registrationSummary: RegistrationSummary = null;
 
   // server response
   resultsAndPagination$: Observable<ListResult<Referral>>;
@@ -52,9 +52,9 @@ export class ReferralTableComponent implements OnChanges, OnDestroy {
     // empty the previous array
     this.referrals.length = 0;
 
-    if (this.registration && this.registration.id) {
+    if (this.registrationSummary && this.registrationSummary.id) {
       // get the collection of meta and data
-      this.resultsAndPagination$ = this.referralService.getReferrals(this.registration.id, this.showActive);
+      this.resultsAndPagination$ = this.referralService.getReferrals(this.registrationSummary.id, this.showActive);
 
       // process server response into something we can display in the UI
       this.searchResults$ = this.resultsAndPagination$.pipe(
@@ -104,7 +104,7 @@ export class ReferralTableComponent implements OnChanges, OnDestroy {
 
         const referralIds = this.referrals.map(r => r.referralId);
         this.isPrinting = true;
-        this.registrationService.printReferrals(this.registration.id, referralIds, includeSummary).then(
+        this.registrationService.printReferrals(this.registrationSummary.id, referralIds, includeSummary).then(
           () => {
             this.isPrinting = false;
             this.notifications.addNotification('Referrals printed successfully', 'success');
