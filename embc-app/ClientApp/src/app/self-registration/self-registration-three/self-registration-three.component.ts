@@ -76,11 +76,8 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
   submit() {
     this.submitting = true;
 
-    const reg = this.registration;
+    const reg = { ...this.registration };
     this.processRegistration(reg);
-
-    // update client-side state
-    this.onSave(reg);
 
     // push changes to backend
     this.service.createRegistration(reg)
