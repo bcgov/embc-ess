@@ -11,29 +11,12 @@ namespace Gov.Jag.Embc.Public
         /// <returns></returns>
         public static string GetConnectionString(IConfiguration Configuration)
         {
-            var server = string.IsNullOrEmpty(Configuration["DATABASE_SERVICE_NAME"]) ? "(localdb)\\mssqllocaldb" : Configuration["DATABASE_SERVICE_NAME"];
-
-            var db = string.IsNullOrEmpty(Configuration["DB_DATABASE"]) ? "ESS" : Configuration["DB_DATABASE"];
-
-            var auth = string.IsNullOrEmpty(Configuration["DB_USER"])
-                ? "Trusted_Connection=True"
-                : "User Id=" + Configuration["DB_USER"] + ";Password=" + Configuration["DB_PASSWORD"];
-
-            return $"Server={server};Database={db};{auth};MultipleActiveResultSets=true;";
+            return Configuration.GetDbConnectionString();
         }
 
         public static string GetSaConnectionString(IConfiguration Configuration, string toDatabase = null)
         {
-            if (string.IsNullOrEmpty(Configuration["DB_ADMIN_PASSWORD"])) return GetConnectionString(Configuration);
-            var server = string.IsNullOrEmpty(Configuration["DATABASE_SERVICE_NAME"]) ? "(localdb)\\mssqllocaldb" : Configuration["DATABASE_SERVICE_NAME"];
-
-            var db = toDatabase ?? (string.IsNullOrEmpty(Configuration["DB_DATABASE"]) ? "ESS" : Configuration["DB_DATABASE"]);
-
-            var auth = string.IsNullOrEmpty(Configuration["DB_USER"])
-                ? "Trusted_Connection=True"
-                : "User Id=sa;Password=" + Configuration["DB_ADMIN_PASSWORD"];
-
-            return $"Server={server};Database={db};{auth};MultipleActiveResultSets=true;";
+            return Configuration.GetAdminDbConnectionString(toDatabase);
         }
 
         /// <summary>
