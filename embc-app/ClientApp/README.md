@@ -8,7 +8,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Installation prerequisite
 
-Run `npm install` in `ClientApp` folder. To reinstall, delete the `node_modules` directory and re-run `npm install`.
+Run `npm install` in `ClientApp` directory. To reinstall, delete the `node_modules` directory and re-run `npm install`.
 
 ## Development server
 
@@ -30,7 +30,7 @@ A basic setup of the development environment follows this procedure:
 
 6. Run `start.sh` and leave the bash window open.
 
-If you are asked for volumes permissions you must agree otherwise docker can't share the folder on your local hard-drive with the docker container. You should be able to make changes in the components and see the docker container reload your changes. The local version is now running at `http://localhost:4200` in a web browser.
+If you are asked for volumes permissions you must agree otherwise docker can't share the directory on your local hard-drive with the docker container. You should be able to make changes in the components and see the docker container reload your changes. The local version is now running at `http://localhost:4200` in a web browser.
 
 ### Environment Proxy and Tokens
 
@@ -52,7 +52,7 @@ When adding or removing packages to the docker container it adds the additional 
 
 > `docker-clean.sh` Removes old and dead containers.
 
-> `docker-shell.sh` Opens a shell into the embc-app-frontend. This allows you to inspect installed dependencies in the npm folder or make changes to packages without rebuilding the container.
+> `docker-shell.sh` Opens a shell into the embc-app-frontend. This allows you to inspect installed dependencies in the npm directory or make changes to packages without rebuilding the container.
 
 > `docker-rebuild.sh` Rebuild the docker container after making a change to the node packages.
 
@@ -78,7 +78,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 ## Ngrx Store (Client side data cache/sharing)
 
-Due to time constraints the Ngrx store is established for a limited number of models and only used when significant benefit is found. Please consult the [readme located in the ngrx folder](src/app/store/README.md).
+Due to time constraints the Ngrx store is established for a limited number of models and only used when significant benefit is found. Please consult the [readme located in the ngrx directory](src/app/store/README.md).
 
 ## Reactive forms
 
