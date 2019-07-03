@@ -617,9 +617,8 @@
         <app-font-awesome-icon icon="times"></app-font-awesome-icon>
         <span class="ml-2">Cancel &amp; Close</span>
       </a> -->
-      <button type="button" class="btn btn-primary text-uppercase" [disabled]="submitting" (click)="submit(true)">
-        <span *ngIf="submitting">Submitting</span>
-        <span *ngIf="!submitting">Save &amp; Add Referrals</span>
+      <button *ngIf="!submitting" type="button" class="btn btn-primary text-uppercase" [disabled]="submitting" (click)="submit(true)">
+        <span>Save &amp; Add Referrals</span>
       </button>
       <button type="button" class="btn btn-primary ml-3 text-uppercase" [disabled]="submitting" (click)="submit(false)">
         <span *ngIf="submitting">Submitting</span>
