@@ -68,6 +68,11 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest(ModelState);
             }
 
+            item.CompletedBy = new ViewModels.Volunteer
+            {
+                Externaluseridentifier = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID)
+            };
+
             return Json(await mediator.Send(new CreateNewRegistrationCommand(item)));
         }
 
