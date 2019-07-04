@@ -58,38 +58,55 @@ namespace Gov.Jag.Embc.Public.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] ViewModels.Registration item)
         {
+            // if the included registration isn't null, and the consent isn't null AND is set true
             if (item != null && (!item.DeclarationAndConsent.HasValue || !item.DeclarationAndConsent.Value))
             {
                 ModelState.AddModelError("DeclarationAndConsent", "Declaration And Consent must be set to 'True'");
             }
-
+            // the model must be valid
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            // set the completedBy
+            item.CompletedBy = new ViewModels.Volunteer
+            {
+                // the external user identifier is set to the user ID included in the security claim
+                Id = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System"
+            };
+
+            // return the complete registration so that the ESS number can be displayed to a self-registering user
             return Json(await mediator.Send(new CreateNewRegistrationCommand(item)));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] ViewModels.Registration item, string id)
         {
+            // the id must be included in the route, the registration must be included, the id on the route must match the one in the payload
             if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id) return BadRequest(id);
+            // if the declaration and consent flag is not set or is false the poster should fix this because they have not provided consent so we cannot accept their registration.
             if (!item.DeclarationAndConsent.HasValue || !item.DeclarationAndConsent.Value)
             {
                 ModelState.AddModelError("DeclarationAndConsent", "Declaration And Consent must be set to 'True'");
             }
+
+            // the model must be valid
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+            // set who completed the item
             item.CompletedBy = new ViewModels.Volunteer
             {
-                Externaluseridentifier = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID)
+                // the external user identifier gets set to the user ID included in the claim
+                Id = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System"
             };
 
+            // update the registration
             await mediator.Send(new UpdateRegistrationCommand(item));
+
+            // return 200
             return Ok();
         }
 
