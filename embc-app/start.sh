@@ -1,0 +1,2 @@
+ASPNETCORE_Environment=development
+dotnet run
