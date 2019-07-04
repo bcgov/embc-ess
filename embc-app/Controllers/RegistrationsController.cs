@@ -73,7 +73,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             item.CompletedBy = new ViewModels.Volunteer
             {
                 // the external user identifier is set to the user ID included in the security claim
-                Id = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID)
+                Id = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System"
             };
 
             // return the complete registration so that the ESS number can be displayed to a self-registering user
