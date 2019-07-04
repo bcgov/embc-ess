@@ -8,7 +8,7 @@ import { Volunteer, Organization } from 'src/app/core/models';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { invalidField } from 'src/app/shared/utils';
-import { UniqueBceidValidator } from 'src/app/shared/validation/unique-bceid.validator';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 
 @Component({
   selector: 'app-volunteer-maker',
@@ -42,7 +42,6 @@ export class VolunteerMakerComponent implements OnInit {
     private notificationQueueService: NotificationQueueService,
     private uniqueKeyService: UniqueKeyService,
     private fb: FormBuilder,
-    private bceidValidator: UniqueBceidValidator,
   ) { }
 
   ngOnInit() {
@@ -53,11 +52,7 @@ export class VolunteerMakerComponent implements OnInit {
     this.form = this.fb.group({
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
-      bceidAccountNumber: ['', {
-        validators: [Validators.required],
-        asyncValidators: [this.bceidValidator.validate.bind(this.bceidValidator)],
-        updateOn: 'blur'
-      }]
+      bceidAccountNumber: ['', { validators: [Validators.required], updateOn: 'blur' }]
     });
 
     // get the organization from the route parameters
@@ -91,6 +86,9 @@ export class VolunteerMakerComponent implements OnInit {
             bceidAccountNumber: volunteer.bceidAccountNumber
           });
 
+          // do not allow duplicate BCeIDs
+          this.enableBceidValidation(volunteer.bceidAccountNumber);
+
           // finally everything is loaded
           this.setInitialFocus();
         }, err => {
@@ -121,6 +119,10 @@ export class VolunteerMakerComponent implements OnInit {
         isAdministrator: false, // if you are making a new volunteer as a local auth it won't be an admin user.
         isPrimaryContact: false // if you are making a new volunteer as a local auth it won't be the primary contact for your org.
       };
+
+      // do not allow duplicate BCeIDs
+      this.enableBceidValidation('');
+
       // finally everything is loaded
       this.setInitialFocus();
     }
@@ -134,6 +136,22 @@ export class VolunteerMakerComponent implements OnInit {
     } else {
       // wait for elements to display and try again
       setTimeout(() => this.setInitialFocus(), 100);
+    }
+  }
+
+  private enableBceidValidation(originalValue?: string) {
+    const ctrl = this.form ? this.form.controls.bceidAccountNumber : null;
+    if (ctrl) {
+      ctrl.setAsyncValidators([CustomValidators.uniqueBceid(this.volunteerService, originalValue)]);
+      ctrl.updateValueAndValidity();
+    }
+  }
+
+  private disableBceidValidation() {
+    const ctrl = this.form ? this.form.controls.bceidAccountNumber : null;
+    if (ctrl) {
+      ctrl.clearAsyncValidators();
+      ctrl.updateValueAndValidity();
     }
   }
 

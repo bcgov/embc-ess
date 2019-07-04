@@ -10,51 +10,61 @@
 
     <!-- confirm task start time -->
     <div *ngIf="registrationSummary?.incidentTask?.startDate">
-      <div class="feature-block-header">
-        <h2 class="display-6 mb-0">Please confirm timing for commencement of supports:</h2>
-      </div>
-      <div class="feature-block card d-block border-0">
-        <div class="row">
-          <div class="col">
-            <p class="mb-2">Incident start date &amp; time: {{registrationSummary?.incidentTask?.startDate | dateTimeFormatPipe}}</p>
-            <div class="d-inline-block display-5 mr-4">Support start date &amp; time: {{defaultDate | dateTimeFormatPipe}}
-              <span *ngIf="!defaultDate">Please enter a valid date.</span>
-            </div>
-            <div class="d-inline-block" *ngIf="stepCounter===1 && !showDefaultDatePicker">
-              <a href="javascript:void(0)" (click)="toggleDefaultDatePicker()">
-                <app-font-awesome-icon icon="times"></app-font-awesome-icon>
-                <span class="ml-1">Override start time</span>
-              </a>
-            </div>
-          </div>
-          <div *ngIf="stepCounter===1" class="col-md-2">
-
-            <button *ngIf="defaultDate && !showDefaultDatePicker" type="button" class="btn btn-primary float-right" (click)="stepCounter=2">NEXT</button>
-            <button *ngIf="!defaultDate && !showDefaultDatePicker" type="button" class="btn btn-primary float-right" disabled>NEXT</button>
-          </div>
+      <div class="form-row ordinal-container">
+        <div class="col-auto">
+          <span class="ordinal h5">1</span>
         </div>
-
-        <div *ngIf="showDefaultDatePicker && stepCounter===1">
-          <div class="row mt-3">
-            <div class="col">
-              <strong>Valid From</strong>
-            </div>
+        <div class="col">
+          <div class="feature-block-header">
+            <h2 class="display-6 mb-0">Please confirm timing for commencement of supports:</h2>
           </div>
-          <div class="row">
-            <div class="col">
-              <app-date-time-picker [(value)]="workingDefaultDate"></app-date-time-picker>
-            </div>
-            <div class="col-2">
-              <button type="button" class="btn btn-primary float-right text-uppercase" (click)="updateDefaultDate()">Update</button>
-              <button type="button" class="btn btn-outline-primary float-right text-uppercase mt-2" (click)="defaultDate=defaultDate; showDefaultDatePicker=false">Cancel</button>
+          <div class="feature-block card d-block border-0">
+            <div class="row">
+              <div class="col">
+                <p class="mb-2">Incident start date &amp; time: {{registrationSummary?.incidentTask?.startDate | dateTimeFormatPipe}}</p>
+                <div class="d-inline-block display-5 mr-4">Support start date &amp; time: {{defaultDate | dateTimeFormatPipe}}
+                  <span *ngIf="!defaultDate">Please enter a valid date.</span>
+                </div>
+                <div class="d-inline-block" *ngIf="stepCounter===1 && !showDefaultDatePicker">
+                  <a href="javascript:void(0)" (click)="toggleDefaultDatePicker()">
+                    <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+                    <span class="ml-1">Override start time</span>
+                  </a>
+                </div>
+              </div>
+              <div *ngIf="stepCounter===1" class="col-md-2">
 
+                <button *ngIf="defaultDate && !showDefaultDatePicker" type="button" class="btn btn-primary float-right" (click)="stepCounter=2">NEXT</button>
+                <button *ngIf="!defaultDate && !showDefaultDatePicker" type="button" class="btn btn-primary float-right" disabled>NEXT</button>
+              </div>
+            </div>
+
+            <div *ngIf="showDefaultDatePicker && stepCounter===1">
+              <div class="row mt-3">
+                <div class="col">
+                  <strong>Valid From</strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <app-date-time-picker [(value)]="workingDefaultDate"></app-date-time-picker>
+                </div>
+                <div class="col-2">
+                  <button type="button" class="btn btn-primary float-right text-uppercase" (click)="updateDefaultDate()">Update</button>
+                  <button type="button" class="btn btn-outline-primary float-right text-uppercase mt-2" (click)="defaultDate=defaultDate; showDefaultDatePicker=false">Cancel</button>
+
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- select required supports -->
-      <div *ngIf="stepCounter >= 2" class="row mt-2">
+      <div *ngIf="stepCounter >= 2" class="form-row ordinal-container mt-2">
+        <div class="col-auto">
+          <span class="ordinal h5">2</span>
+        </div>
         <div class="col">
           <div class="card border-0 p-3">
             <h2 class="display-6">Select required supports:</h2>
@@ -176,24 +186,39 @@
     </p>
 
     <section class="clearfix">
-      <article *ngFor="let r of foodReferrals; let i = index" class="mt-3">
-        <app-food-referral [referral]="r.value" [readOnly]="true"></app-food-referral>
+      <article *ngFor="let r of foodReferrals; let i = index" class="form-row ordinal-container mt-3">
+        <div class="col-auto mt-4">
+          <span class="ordinal h5">{{i + 1}}</span>
+        </div>
+        <app-food-referral class="col" [referral]="r.value" [readOnly]="true"></app-food-referral>
       </article>
 
-      <article *ngFor="let r of lodgingReferrals; let i = index" class="mt-3">
-        <app-lodging-referral [referral]="r.value" [readOnly]="true"></app-lodging-referral>
+      <article *ngFor="let r of lodgingReferrals; let i = index" class="form-row ordinal-container mt-3">
+        <div class="col-auto mt-4">
+          <span class="ordinal h5">{{i + 1 + foodReferrals.length}}</span>
+        </div>
+        <app-lodging-referral class="col" [referral]="r.value" [readOnly]="true"></app-lodging-referral>
       </article>
 
-      <article *ngFor="let r of clothingReferrals; let i = index" class="mt-3">
-        <app-clothing-referral [referral]="r.value" [readOnly]="true"></app-clothing-referral>
+      <article *ngFor="let r of clothingReferrals; let i = index" class="form-row ordinal-container mt-3">
+        <div class="col-auto mt-4">
+          <span class="ordinal h5">{{i + 1 + foodReferrals.length + lodgingReferrals.length}}</span>
+        </div>
+        <app-clothing-referral class="col" [referral]="r.value" [readOnly]="true"></app-clothing-referral>
       </article>
 
-      <article *ngFor="let r of transportationReferrals; let i = index" class="mt-3">
-        <app-transportation-referral [referral]="r.value" [readOnly]="true"></app-transportation-referral>
+      <article *ngFor="let r of transportationReferrals; let i = index" class="form-row ordinal-container mt-3">
+        <div class="col-auto mt-4">
+          <span class="ordinal h5">{{i + 1 + foodReferrals.length + lodgingReferrals.length + clothingReferrals.length}}</span>
+        </div>
+        <app-transportation-referral class="col" [referral]="r.value" [readOnly]="true"></app-transportation-referral>
       </article>
 
-      <article *ngFor="let r of incidentalsReferrals; let i = index" class="mt-3">
-        <app-incidentals-referral [referral]="r.value" [readOnly]="true"></app-incidentals-referral>
+      <article *ngFor="let r of incidentalsReferrals; let i = index" class="form-row ordinal-container mt-3">
+        <div class="col-auto mt-4">
+          <span class="ordinal h5">{{i + 1 + foodReferrals.length + lodgingReferrals.length + clothingReferrals.length + transportationReferrals.length}}</span>
+        </div>
+        <app-incidentals-referral class="col" [referral]="r.value" [readOnly]="true"></app-incidentals-referral>
       </article>
     </section>
     <!-- TODO: prompt for confirmation; disable Finalize until confirmed; set confirmChecked=true -->

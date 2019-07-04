@@ -90,14 +90,16 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest(Json(id));
             }
 
-            var existing = await dataInterface.GetVolunteerByBceidUserNameAsync(item.BceidAccountNumber);
-            if (existing?.Id != id)
-            {
-                ModelState.AddModelError("Externaluseridentifier", $"Duplicate BCeId {item.BceidAccountNumber} found.");
-            }
-            else if (existing == null)
+            var existing = await dataInterface.GetVolunteerByIdAsync(id);
+            if (existing == null)
             {
                 return NotFound();
+            }
+
+            var bceidExisting = await dataInterface.GetVolunteerByBceidUserNameAsync(item.BceidAccountNumber);
+            if (bceidExisting != null && bceidExisting.Id != id)
+            {
+                ModelState.AddModelError(nameof(item.BceidAccountNumber), $"Duplicate BCeId {item.BceidAccountNumber} found.");
             }
 
             if (!ModelState.IsValid)

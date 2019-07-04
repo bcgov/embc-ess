@@ -70,7 +70,7 @@ export class EvacueeListComponent implements OnInit {
 
   getEvacuees(query: EvacueeSearchQueryParameters = this.defaultSearchQuery): Observable<ListResult<EvacueeListItem>> {
     // save the generic query for repeat searches
-    this.previousQuery = query;
+    this.previousQuery = { ...query };
     // save the organization id into the query from the default
     return this.evacueeService.getEvacuees(query);
   }
