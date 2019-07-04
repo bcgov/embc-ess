@@ -1,4 +1,5 @@
 using Gov.Jag.Embc.Public.Services.Registrations;
+using Gov.Jag.Embc.Public.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,12 +22,13 @@ namespace embc_app.Controllers
         [HttpGet("registration/audit/{id}")]
         public async Task<IActionResult> GetRegistrationAudit(string id)
         {
-            if (!long.TryParse(id, out var essFileNumber)) return BadRequest($"'{id}' not a valid ess file number");
+            if (!long.TryParse(id, out var essFileNumber)) return BadRequest($"'{id}' not a valid ESS file number");
             var registration = await mediator.Send(new RegistrationSummaryQueryRequest(id));
             if (registration == null) return NotFound();
-            var auditTrail = await mediator.Send(new RegistrationAuditQueryRequest(essFileNumber));
+            var results = await mediator.Send(new RegistrationAuditQueryRequest(essFileNumber));
 
-            return Ok(auditTrail);
+            Response.Headers.Add("Content-Disposition", $"inline; filename=\"{id}.csv\"");
+            return Content(results.ToCSV(), "text/csv");
         }
     }
 }
