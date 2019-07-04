@@ -1,6 +1,9 @@
 
-import { AbstractControl, Validators, ValidatorFn, ValidationErrors, FormGroup } from '@angular/forms';
+import { AbstractControl, Validators, ValidatorFn, ValidationErrors, FormGroup, AsyncValidatorFn } from '@angular/forms';
 import * as moment from 'moment';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { VolunteerService } from 'src/app/core/services/volunteer.service';
 
 function isEmptyInputValue(value: any): boolean {
   // we don't check for string here so it also works with arrays
@@ -203,6 +206,21 @@ export class CustomValidators {
         });
       }
       return otherControl.value === val ? Validators.required(c) : null;
+    };
+  }
+
+  static uniqueBceid(volunteerService: VolunteerService, originalValue?: string): AsyncValidatorFn {
+    const value = originalValue || '';
+    return (ctrl: AbstractControl): Observable<ValidationErrors | null> => {
+      const newValue = ctrl.value || '';
+      if (newValue === value) {
+        return of(null);  // don't validate if the value hasn't changed
+      } else {
+        return volunteerService.isBceidTaken(newValue).pipe(
+          map(isTaken => (isTaken ? { uniqueBceid: true } : null)),
+          catchError(() => null)
+        );
+      }
     };
   }
 }
