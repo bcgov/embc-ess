@@ -57,7 +57,7 @@ Backend local machine debugging
 -------------------------------
 Set the following environment variables:
 ```
-SET ASPNETCORE_Environment=development
+SET ASPNETCORE_Environment=Development
 //WIP: SET BASE_URL=/embcess
 ```
 
