@@ -70,11 +70,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
 
             // set the completedBy
-            item.CompletedBy = new ViewModels.Volunteer
-            {
-                // the external user identifier is set to the user ID included in the security claim
-                Id = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System"
-            };
+            // the external user identifier is set to the user ID included in the security claim
+            item.CompletedBy = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System";
 
             // return the complete registration so that the ESS number can be displayed to a self-registering user
             return Json(await mediator.Send(new CreateNewRegistrationCommand(item)));
@@ -96,12 +93,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest(ModelState);
             }
-            // set who completed the item
-            item.CompletedBy = new ViewModels.Volunteer
-            {
-                // the external user identifier gets set to the user ID included in the claim
-                Id = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System"
-            };
+            // the external user identifier gets set to the user ID included in the claim
+            item.CompletedBy = httpContextAccessor?.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_ID) ?? "System";
 
             // update the registration
             await mediator.Send(new UpdateRegistrationCommand(item));
