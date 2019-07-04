@@ -14,7 +14,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public RegistrationMappingProfile()
         {
             CreateMap<Registration, Models.Db.EvacueeRegistration>()
-                .ForMember(d => d.EssFileNumber, opts => opts.MapFrom(s => s.EssFileNumber))
                 .ForMember(d => d.CompletedById, opts => opts.MapFrom(s => s.CompletedBy))
                 .ForMember(d => d.IncidentTaskId, opts => opts.MapFrom(s => s.IncidentTask.Id))
                 .ForMember(d => d.IncidentTask, opts => opts.Ignore())
