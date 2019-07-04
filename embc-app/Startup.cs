@@ -81,7 +81,7 @@ namespace Gov.Jag.Embc.Public
                     });
 
             // Register the Swagger services
-            services.AddSwaggerDocument(config=>
+            services.AddSwaggerDocument(config =>
             {
                 config.PostProcess = document =>
                 {
@@ -109,7 +109,7 @@ namespace Gov.Jag.Embc.Public
             services.AddHealthChecks(checks =>
             {
                 checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
-                checks.AddSqlCheck(configuration.GetValue<string>("DB_NAME"), DatabaseTools.GetConnectionString(configuration));
+                checks.AddSqlCheck(configuration.GetDbName(), DatabaseTools.GetConnectionString(configuration));
             });
 
             services.AddAutoMapper(typeof(Startup));
@@ -127,7 +127,7 @@ namespace Gov.Jag.Embc.Public
             // DATABASE SETUP
             SetupDatabase(env);
 
-            app.UsePathBase(configuration.GetValue("BASE_PATH", ""));
+            app.UsePathBase(configuration.GetBasePath());
 
             if (!env.IsProduction())
             {
@@ -247,13 +247,13 @@ namespace Gov.Jag.Embc.Public
             }
 
             log.LogInformation("Initializing the database ...");
-            if (!string.IsNullOrEmpty(configuration["DB_ADMIN_PASSWORD"]))
+            if (configuration.HasDbAdminPassword())
             {
                 //For OpenShift deployments
                 DatabaseTools.CreateDatabaseIfNotExists(DatabaseTools.GetSaConnectionString(configuration, "master"),
-                    configuration["DB_DATABASE"],
-                    configuration["DB_USER"],
-                    configuration["DB_PASSWORD"]);
+                    configuration.GetDbName(),
+                    configuration.GetDbUser(),
+                    configuration.GetDbUserPassword());
             }
 
             //Check if the database exists

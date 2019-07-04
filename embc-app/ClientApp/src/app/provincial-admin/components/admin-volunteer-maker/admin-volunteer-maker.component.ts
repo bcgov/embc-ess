@@ -9,8 +9,8 @@ import { OrganizationService } from 'src/app/core/services/organization.service'
 import { Volunteer, Organization, ListResult } from 'src/app/core/models';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
-import { invalidField, hasErrors } from 'src/app/shared/utils';
-import { UniqueBceidValidator } from 'src/app/shared/validation/unique-bceid.validator';
+import { invalidField } from 'src/app/shared/utils';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 
 @Component({
   selector: 'app-admin-volunteer-maker',
@@ -51,7 +51,6 @@ export class AdminVolunteerMakerComponent implements OnInit {
     private notificationQueueService: NotificationQueueService,
     private uniqueKeyService: UniqueKeyService,
     private fb: FormBuilder,
-    private bceidValidator: UniqueBceidValidator,
   ) { }
 
   ngOnInit() {
@@ -59,11 +58,7 @@ export class AdminVolunteerMakerComponent implements OnInit {
       organization: [null, Validators.required],
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
-      bceidAccountNumber: ['', {
-        validators: [Validators.required],
-        asyncValidators: [this.bceidValidator.validate.bind(this.bceidValidator)],
-        updateOn: 'blur'
-      }],
+      bceidAccountNumber: ['', { validators: [Validators.required], updateOn: 'blur' }],
       isAdministrator: ['', Validators.required],
       isPrimaryContact: ['']
     });
@@ -174,6 +169,9 @@ export class AdminVolunteerMakerComponent implements OnInit {
             isPrimaryContact: volunteer.isPrimaryContact
           });
 
+          // do not allow duplicate BCeIDs
+          this.enableBceidValidation(volunteer.bceidAccountNumber);
+
           // finally everything is loaded
           this.setInitialFocus();
         }, err => {
@@ -208,6 +206,9 @@ export class AdminVolunteerMakerComponent implements OnInit {
       // other form fields remain empty
       this.f.organization.setValue(this.currentOrganization);
 
+      // do not allow duplicate BCeIDs
+      this.enableBceidValidation('');
+
       // finally everything is loaded
       this.setInitialFocus();
     }
@@ -221,6 +222,22 @@ export class AdminVolunteerMakerComponent implements OnInit {
     } else {
       // wait for elements to display and try again
       setTimeout(() => this.setInitialFocus(), 100);
+    }
+  }
+
+  private enableBceidValidation(originalValue?: string) {
+    const ctrl = this.form ? this.form.controls.bceidAccountNumber : null;
+    if (ctrl) {
+      ctrl.setAsyncValidators([CustomValidators.uniqueBceid(this.volunteerService, originalValue)]);
+      ctrl.updateValueAndValidity();
+    }
+  }
+
+  private disableBceidValidation() {
+    const ctrl = this.form ? this.form.controls.bceidAccountNumber : null;
+    if (ctrl) {
+      ctrl.clearAsyncValidators();
+      ctrl.updateValueAndValidity();
     }
   }
 

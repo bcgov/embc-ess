@@ -7,6 +7,8 @@ import { NotificationQueueService } from 'src/app/core/services/notification-que
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { invalidField } from 'src/app/shared/utils';
+import { VolunteerService } from 'src/app/core/services/volunteer.service';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 
 @Component({
   selector: 'app-organization-maker',
@@ -29,6 +31,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private volunteerService: VolunteerService,
     private organizationService: OrganizationService,
     private notificationQueueService: NotificationQueueService,
     private authService: AuthService,
@@ -61,6 +64,9 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
             adminFirstName: organization.adminFirstName,
             community: organization.community
           });
+
+          // NB - the admin user fields are not shown on UPDATE so no need to validate the BCeID
+          this.disableBceidValidation();
         }, err => {
           this.notificationQueueService.addNotification('Failed to load organization', 'danger');
           console.log('error getting organization =', err);
@@ -78,6 +84,9 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
         community: null,
         region: null
       };
+
+      // do not allow duplicate BCeIDs
+      this.enableBceidValidation('');
 
       // NB - no form fields to set
     }
@@ -97,11 +106,27 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
   private initializeForm() {
     this.form = this.fb.group({
       organizationName: ['', Validators.required],
-      adminBCeID: ['', Validators.required],
+      adminBCeID: ['', { validators: [Validators.required], updateOn: 'blur' }],
       adminLastName: ['', Validators.required],
       adminFirstName: ['', Validators.required],
       community: [null, Validators.required]
     });
+  }
+
+  private enableBceidValidation(originalValue?: string) {
+    const ctrl = this.form ? this.form.controls.adminBCeID : null;
+    if (ctrl) {
+      ctrl.setAsyncValidators([CustomValidators.uniqueBceid(this.volunteerService, originalValue)]);
+      ctrl.updateValueAndValidity();
+    }
+  }
+
+  private disableBceidValidation() {
+    const ctrl = this.form ? this.form.controls.adminBCeID : null;
+    if (ctrl) {
+      ctrl.clearAsyncValidators();
+      ctrl.updateValueAndValidity();
+    }
   }
 
   next(): void {

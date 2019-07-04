@@ -43,7 +43,7 @@ namespace Gov.Jag.Embc.Public.Controllers
 
             if (ControllerContext.HttpContext.User == null || !ControllerContext.HttpContext.User.Identity.IsAuthenticated) return Unauthorized();
 
-            return await Task.FromResult(LocalRedirect($"{configuration["BASE_PATH"]}/{path}"));
+            return await Task.FromResult(LocalRedirect($"{configuration.GetBasePath()}/{path}"));
         }
 
         [HttpGet]
@@ -62,7 +62,7 @@ namespace Gov.Jag.Embc.Public.Controllers
 
             SiteMinderAuthenticationToken.AddToResponse(secToken, Response);
 
-            return LocalRedirect($"{configuration["BASE_PATH"]}/login");
+            return LocalRedirect($"{configuration.GetBasePath()}/login");
         }
 
         private async Task<SiteMinderAuthenticationToken> CreateDevTokenForIdir(string userName)
