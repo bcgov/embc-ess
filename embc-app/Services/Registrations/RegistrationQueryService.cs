@@ -36,7 +36,7 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
             else if (result != null && result.IsFinalized && string.IsNullOrWhiteSpace(reasonForView))
                 return RegistrationQueryResponse.Error($"Must specify a valid reason to view the complete registration {request.EssFileNumber}");
             else if (!result.IsFinalized && string.IsNullOrWhiteSpace(request.Reason))
-                reasonForView = "View a not finalized registration";
+                reasonForView = "view of registration before finalization";
 
             await mediator.Publish(new RegistrationViewed(request.EssFileNumber, reasonForView));
             return RegistrationQueryResponse.Success(result);
@@ -155,10 +155,8 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         public MappingProfile()
         {
             CreateMap<EvacueeRegistrationAudit, RegistrationViewEntry>()
-                .ForMember(d => d.DateViewed, opts => opts.MapFrom(s => s.Date.DateTime))
+                .ForMember(d => d.DateViewed, opts => opts.MapFrom(s => s.Date.UtcDateTime))
                 .ForMember(d => d.Reason, opts => opts.MapFrom(s => JsonConvert.DeserializeObject<RegistrationViewed>(s.Content).ReasonForView))
-                .ReverseMap()
-                .ForMember(d => d.Date, opts => opts.MapFrom(s => new DateTimeOffset(s.DateViewed)))
                 ;
         }
     }

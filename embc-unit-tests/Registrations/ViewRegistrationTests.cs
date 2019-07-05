@@ -125,7 +125,7 @@ namespace embc_unit_tests.Registrations
             Assert.Equal(reason, entry.Reason);
             Assert.Equal(regId, entry.EssFileNumber);
             Assert.Equal("System", entry.UserName);
-            Assert.Equal(DateTime.Now, entry.DateViewed, TimeSpan.FromSeconds(1));
+            Assert.Equal(DateTime.UtcNow, entry.DateViewed, TimeSpan.FromSeconds(1));
         }
     }
 }
