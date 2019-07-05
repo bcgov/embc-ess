@@ -155,7 +155,7 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         public MappingProfile()
         {
             CreateMap<EvacueeRegistrationAudit, RegistrationViewEntry>()
-                .ForMember(d => d.DateViewed, opts => opts.MapFrom(s => s.Date.UtcDateTime))
+                .ForMember(d => d.DateViewed, opts => opts.MapFrom(s => s.Date.LocalDateTime))
                 .ForMember(d => d.Reason, opts => opts.MapFrom(s => JsonConvert.DeserializeObject<RegistrationViewed>(s.Content).ReasonForView))
                 ;
         }

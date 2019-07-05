@@ -34,7 +34,7 @@ namespace embc_app.Controllers
                 {
                     e.EssFileNumber,
                     e.UserName,
-                    Date = e.DateViewed.ToString("u"),
+                    Date = e.DateViewed.ToString("r"),
                     e.Reason
                 })
                 .ToCSV(), "text/csv");
