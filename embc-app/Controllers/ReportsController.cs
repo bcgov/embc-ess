@@ -3,6 +3,7 @@ using Gov.Jag.Embc.Public.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace embc_app.Controllers
@@ -28,7 +29,15 @@ namespace embc_app.Controllers
             var results = await mediator.Send(new RegistrationAuditQueryRequest(essFileNumber));
 
             Response.Headers.Add("Content-Disposition", $"inline; filename=\"{id}.csv\"");
-            return Content(results.ToCSV(), "text/csv");
+            return Content(results
+                .Select(e => new
+                {
+                    e.EssFileNumber,
+                    e.UserName,
+                    Date = e.DateViewed.ToString("r"),
+                    e.Reason
+                })
+                .ToCSV(), "text/csv");
         }
     }
 }
