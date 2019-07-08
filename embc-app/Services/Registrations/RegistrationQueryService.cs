@@ -29,19 +29,17 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
 
         public async Task<RegistrationQueryResponse> Handle(RegistrationQueryRequest request, CancellationToken cancellationToken)
         {
+            var reasonForView = request.Reason;
             var result = await dataInterface.GetEvacueeRegistrationAsync(request.EssFileNumber);
-            RegistrationQueryResponse response;
-            if (result != null && result.IsFinalized && string.IsNullOrWhiteSpace(request.Reason))
-                response = RegistrationQueryResponse.Error($"Must specify a valid reason to view the complete registration {request.EssFileNumber}");
-            else if (result == null)
-                response = RegistrationQueryResponse.NotFound(request.EssFileNumber);
-            else
-            {
-                response = RegistrationQueryResponse.Success(result);
-                await mediator.Publish(new RegistrationViewed(request.EssFileNumber, request.Reason));
-            }
+            if (result == null)
+                return RegistrationQueryResponse.NotFound(request.EssFileNumber);
+            else if (result != null && result.IsFinalized && string.IsNullOrWhiteSpace(reasonForView))
+                return RegistrationQueryResponse.Error($"Must specify a valid reason to view the complete registration {request.EssFileNumber}");
+            else if (!result.IsFinalized && string.IsNullOrWhiteSpace(request.Reason))
+                reasonForView = "view of registration before finalization";
 
-            return response;
+            await mediator.Publish(new RegistrationViewed(request.EssFileNumber, reasonForView));
+            return RegistrationQueryResponse.Success(result);
         }
 
         public async Task<ViewModels.RegistrationSummary> Handle(RegistrationSummaryQueryRequest request, CancellationToken cancellationToken)
@@ -157,10 +155,8 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         public MappingProfile()
         {
             CreateMap<EvacueeRegistrationAudit, RegistrationViewEntry>()
-                .ForMember(d => d.DateViewed, opts => opts.MapFrom(s => s.Date.DateTime))
+                .ForMember(d => d.DateViewed, opts => opts.MapFrom(s => s.Date.LocalDateTime))
                 .ForMember(d => d.Reason, opts => opts.MapFrom(s => JsonConvert.DeserializeObject<RegistrationViewed>(s.Content).ReasonForView))
-                .ReverseMap()
-                .ForMember(d => d.Date, opts => opts.MapFrom(s => new DateTimeOffset(s.DateViewed)))
                 ;
         }
     }

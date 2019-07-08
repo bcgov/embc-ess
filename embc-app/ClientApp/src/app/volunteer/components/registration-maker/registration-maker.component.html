@@ -256,7 +256,7 @@
         </div>
         <p class="mt-3">
           <small>
-            <strong>Primary residence:</strong> The dwelling where an individual or family spends most of their personal time. A person can only have one primary residence at any moment in time.
+            <strong>Primary residence:</strong> is the dwelling where an individual or family spends most of their personal time. A person can only have one primary residence at any time.
           </small>
         </p>
         <div *ngIf="form.value.primaryResidenceInBC !== null" class="feature-block mt-4">
@@ -438,8 +438,13 @@
           </div>
           <span [class.d-block]="invalid('insuranceCode')" class="invalid-feedback">{{e.insuranceCode}}</span>
         </div>
-        <div *ngIf="(form.value.insuranceCode=='yes')||(form.value.insuranceCode=='yes-unsure')" class="alert alert-warning" role="alert">
-          <p class="alert-heading display-6 my-2">Assist the evacuee in contacting their insurance agent to confirm coverage for this event.</p>
+        <div class="feature-block">
+          <p class="mb-0">
+            Please encourage the evacuee to contact their insurance provider as soon as possible.
+          </p>
+          <p class="mb-0">
+            If they are having difficulty contacting their insurance provider, have them contact the Insurance Bureau of Canada at <a href="tel:18442275422">1-844-227-5422</a>.
+          </p>
         </div>
       </div>
 
@@ -612,9 +617,8 @@
         <app-font-awesome-icon icon="times"></app-font-awesome-icon>
         <span class="ml-2">Cancel &amp; Close</span>
       </a> -->
-      <button type="button" class="btn btn-primary text-uppercase" [disabled]="submitting" (click)="submit(true)">
-        <span *ngIf="submitting">Submitting</span>
-        <span *ngIf="!submitting">Save &amp; Add Referrals</span>
+      <button *ngIf="!submitting" type="button" class="btn btn-primary text-uppercase" [disabled]="submitting" (click)="submit(true)">
+        <span>Save &amp; Add Referrals</span>
       </button>
       <button type="button" class="btn btn-primary ml-3 text-uppercase" [disabled]="submitting" (click)="submit(false)">
         <span *ngIf="submitting">Submitting</span>

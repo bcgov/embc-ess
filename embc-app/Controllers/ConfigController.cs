@@ -25,12 +25,12 @@ namespace Gov.Jag.Embc.Public.Controllers
 
             ConfigurationInfo avi = new ConfigurationInfo()
             {
-                BaseUri = configuration["BASE_URI"],
-                BasePath = configuration["BASE_PATH"],
-                Environment = configuration["APP_ENVIRONMENT_TITLE"],
-                SourceCommit = configuration["OPENSHIFT_BUILD_COMMIT"],
-                SourceRepository = configuration["OPENSHIFT_BUILD_SOURCE"],
-                SourceReference = configuration["OPENSHIFT_BUILD_REFERENCE"],
+                BaseUri = configuration.GetBaseUri(),
+                BasePath = configuration.GetBasePath(),
+                Environment = configuration.GetEnvironmentTitle(),
+                SourceCommit = configuration.GetBuildCommitId(),
+                SourceRepository = configuration.GetBuildSource(),
+                SourceReference = configuration.GetBuildVersion(),
                 FileCreationTime = System.IO.File.GetLastWriteTimeUtc(assembly.Location).ToString("O"), // Use the round trip format as it includes the time zone.
                 FileVersion = FileVersionInfo.GetVersionInfo(assembly.Location).FileVersion,
                 ClientTimeoutWarningInMinutes = configuration.UserTimeoutWarningInMinutes(),

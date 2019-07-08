@@ -365,7 +365,6 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
       incidentTask: [null, Validators.required], // which task is this from
       hostCommunity: [null, Validators.required], // which community is hosting
-      completedBy: null, // TODO: the volunteer completing this form (we need AUTH in place to do know who you are)
 
       // UI booleans
       primaryResidenceInBC: [null, Validators.required],
