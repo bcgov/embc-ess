@@ -40,7 +40,7 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
 
         private EmailMessage CreateEmailMessageForRegistration(ViewModels.Registration registration)
         {
-            var essRegistrationLink = @"<a target='_blank' href='https://justice.gov.bc.ca/embcess/self-registration'>Evacuee Self-Registration</a>";
+            var essRegistrationLink = @"<a target='_blank' href='https://justice.gov.bc.ca/embcess/'>Evacuee Self-Registration</a>";
             var emergencyInfoBCLink = @"<a target='_blank' href='https://www.emergencyinfobc.gov.bc.ca/'>Emergency Info BC</a>";
             var surveyLink = @"<a href='https://pbsurvey.jag.gov.bc.ca/Survey5/' target='_blank'>CLICK HERE</a>";
             var subject = "Registration completed successfully";

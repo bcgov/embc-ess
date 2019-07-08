@@ -177,9 +177,8 @@
     <section>
       <button *ngIf="!submitting" class="btn btn-primary text-uppercase" (click)="submit()">Save</button>
       <button *ngIf="submitting" class="btn btn-primary text-uppercase" disabled>Submitting</button>
-
+      <!-- when an admin is adding new volunteers we enable the add another button. -->
       <button *ngIf="editMode === 'ADD' && !submitting" class="btn btn-primary text-uppercase ml-2" (click)="submit(true)">Save &amp; Add Another</button>
-      <button *ngIf="editMode === 'ADD' && submitting" class="btn btn-primary text-uppercase ml-2" disabled>Submitting</button>
     </section>
   </div>
 </div>
