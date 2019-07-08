@@ -54,7 +54,7 @@ import { TransportationRatesComponent } from './shared/modals/transportation-rat
 import { ReferralMakerComponent } from './volunteer/components/referral-maker/referral-maker.component';
 import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
 import { ReferralTableComponent } from './volunteer/components/referral-table/referral-table.component';
-import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid-from-to.component';
+import { ValidFromToComponent } from './volunteer/components/referral-maker/subcomponents/valid-from-to/valid-from-to.component';
 import { SupplierComponent } from './volunteer/components/supplier/supplier.component';
 import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
 import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
