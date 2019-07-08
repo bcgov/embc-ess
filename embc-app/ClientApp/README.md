@@ -1,4 +1,4 @@
-# EMBC App
+# Frontend application
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.0.
 
@@ -8,11 +8,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Installation prerequisite
 
+The application requires a whole suite of npm modules for building/testing/running the application. All the required modules can be found in the **package.json** file.
+
 Run `npm install` in `ClientApp` directory. To reinstall, delete the `node_modules` directory and re-run `npm install`.
 
 ## Development server
 
-<!-- Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. -->
 
 ### Basic Setup Procedure
 
@@ -37,7 +38,7 @@ If you are asked for volumes permissions you must agree otherwise docker can't s
 It is mandatory that the foront-end application have an API to consume. The front-end respects site-minder so we need a "back door" for developers to get past. The back-door is programmed back-end only and is enabled if the project is running in a specifically designated development environment. To access the development API you need to set the proxy and token in the `.env` file in a  way similar to seen in `.env-example`.
 
 There are three different `SM_TOKEN`s that are needed to use the front-end locally. The tokens are paired to front-end roles. To see a new view the `.env` file should be modified to comment all users except for the one being developed for. A developer cannot achieve a "logged out" state if these are enabled but can manually route to public areas that are not guarded.
-   
+
    - **volunteer** - A standard ESS user is known as a volunteer. This role is for tasks done by the volunteers in an evacuation centre. This user accesses a production deployed environment using their BCeID.
    - **local authority** - A privileged user for an organization that can create "volunteers" and manage a team. This user accesses a production deployed environment using their BCeID. This user works for a local organization such as a fire-department.
    - **provincial admin** - An administrator user for the provincial government. This user can manage other users and organizations. This user accesses a production deployed environment using their IDIR.
@@ -68,7 +69,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `build.sh` to build the project inside of the docker container.
 
-<!-- ## Running unit tests
+## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
@@ -82,8 +83,7 @@ Due to time constraints the Ngrx store is established for a limited number of mo
 
 ## Reactive forms
 
-When creating angular forms, it is important to have the 'shape' of the form-group match that of the data-model
-that the form deals with. This makes it easier to get and set the form values.
+When creating angular forms, it is important to have the 'shape' of the form-group match that of the data-model that the form deals with. This makes it easier to get and set the form values.
 
 See the [angular reactive forms page](https://angular.io/guide/reactive-forms#creating-nested-form-groups) for reference.
 
