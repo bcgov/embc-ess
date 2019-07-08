@@ -29,7 +29,7 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 import { UsefulInformationPageComponent } from './volunteer/pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './local-authority/pages/local-authority-registrations-page/local-authority-registrations-page.component';
-import { ProvincialAdminRegistrationsPageComponent } from './provincial-admin/pages/registrations/provincial-admin-registrations-page.component';
+import { AdminRegistrationsPageComponent } from './provincial-admin/pages/admin-registrations-page/admin-registrations-page.component';
 import { LocalAuthorityVolunteersPageComponent } from './local-authority/pages/local-authority-volunteers-page/local-authority-volunteers-page.component';
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
 import { OrganizationsPageComponent } from './provincial-admin/pages/organizations-page/organizations-page.component';
@@ -90,7 +90,7 @@ import { SupplierComponent } from './volunteer/components/referral-maker/subcomp
     VolunteerListComponent,
     VolunteerOrganizationListComponent,
     VolunteerRegistrationsPageComponent,
-    ProvincialAdminRegistrationsPageComponent,
+    AdminRegistrationsPageComponent,
     ProvincialAdminVolunteersOrganizationPageComponent,
     OrganizationsPageComponent,
     ProvincialAdminTaskNumbersPageComponent,

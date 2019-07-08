@@ -25,7 +25,7 @@ import { UsefulInformationPageComponent } from './volunteer/pages/useful-informa
 import { LocalAuthorityRegistrationsPageComponent } from './local-authority/pages/local-authority-registrations-page/local-authority-registrations-page.component';
 import { OrganizationsPageComponent } from './provincial-admin/pages/organizations-page/organizations-page.component';
 import { ProvincialAdminTaskNumbersPageComponent } from './provincial-admin/pages/task-numbers/provincial-admin-task-numbers-page.component';
-import { ProvincialAdminRegistrationsPageComponent } from './provincial-admin/pages/registrations/provincial-admin-registrations-page.component';
+import { AdminRegistrationsPageComponent } from './provincial-admin/pages/admin-registrations-page/admin-registrations-page.component';
 import { LocalAuthorityVolunteersPageComponent } from './local-authority/pages/local-authority-volunteers-page/local-authority-volunteers-page.component';
 import { ReferralMakerComponent } from './volunteer/components/referral-maker/referral-maker.component';
 import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
@@ -298,7 +298,7 @@ const routes: Routes = [
       },
       {
         path: 'registrations',
-        component: ProvincialAdminRegistrationsPageComponent,
+        component: AdminRegistrationsPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
