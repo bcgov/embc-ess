@@ -55,7 +55,6 @@ import { ReferralMakerComponent } from './volunteer/components/referral-maker/re
 import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
 import { ReferralTableComponent } from './volunteer/components/referral-table/referral-table.component';
 import { ValidFromToComponent } from './volunteer/components/referral-maker/subcomponents/valid-from-to/valid-from-to.component';
-import { SupplierComponent } from './volunteer/components/supplier/supplier.component';
 import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
 import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
@@ -74,6 +73,7 @@ import { IncidentalsReferralComponent } from './volunteer/components/referral-ma
 import { TransportationReferralComponent } from './volunteer/components/referral-maker/subcomponents/transportation-referral/transportation-referral.component';
 import { ReferralListItemComponent } from './volunteer/components/referral-maker/subcomponents/referral-list-item/referral-list-item.component';
 import { AbstractReferralComponent } from './volunteer/components/referral-maker/subcomponents/abstract-referral/abstract-referral.component';
+import { SupplierComponent } from './volunteer/components/referral-maker/subcomponents/supplier/supplier.component';
 
 @NgModule({
   declarations: [
