@@ -53,18 +53,18 @@ import { TransportationRatesComponent } from './shared/modals/transportation-rat
 // TODO: move these to volunteer/local-authority/provincial-admin modules
 import { ReferralMakerComponent } from './volunteer/components/referral-maker/referral-maker.component';
 import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
-import { LodgingReferralComponent } from './volunteer/components/lodging-referral/lodging-referral.component';
-import { ClothingReferralComponent } from './volunteer/components/clothing-referral/clothing-referral.component';
-import { FoodReferralComponent } from './volunteer/components/food-referral/food-referral.component';
-import { IncidentalsReferralComponent } from './volunteer/components/incidentals-referral/incidentals-referral.component';
-import { TransportationReferralComponent } from './volunteer/components/transportation-referral/transportation-referral.component';
+import { LodgingReferralComponent } from './volunteer/components/referrals/lodging-referral/lodging-referral.component';
+import { ClothingReferralComponent } from './volunteer/components/referrals/clothing-referral/clothing-referral.component';
+import { FoodReferralComponent } from './volunteer/components/referrals/food-referral/food-referral.component';
+import { IncidentalsReferralComponent } from './volunteer/components/referrals/incidentals-referral/incidentals-referral.component';
+import { TransportationReferralComponent } from './volunteer/components/referrals/transportation-referral/transportation-referral.component';
 import { ReferralTableComponent } from './volunteer/components/referral-table/referral-table.component';
 import { ValidFromToComponent } from './volunteer/components/valid-from-to/valid-from-to.component';
 import { SupplierComponent } from './volunteer/components/supplier/supplier.component';
 import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
-import { ReferralListItemComponent } from './volunteer/components/referral-list-item/referral-list-item.component';
-import { AbstractReferralComponent } from './volunteer/components/abstract-referral/abstract-referral.component';
-import { EvacueePickerComponent } from './volunteer/components/evacuee-picker/evacuee-picker.component';
+import { ReferralListItemComponent } from './volunteer/components/referrals/referral-list-item/referral-list-item.component';
+import { AbstractReferralComponent } from './volunteer/components/referrals/abstract-referral/abstract-referral.component';
+import { EvacueePickerComponent } from './volunteer/components/referrals/evacuee-picker/evacuee-picker.component';
 import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { TopTabBarComponent } from './components/top-tab-bar/top-tab-bar.component';
