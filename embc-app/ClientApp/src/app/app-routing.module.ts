@@ -30,7 +30,7 @@ import { ProvincialAdminOrganizationsPageComponent } from './provincial-admin/pa
 import { ProvincialAdminTaskNumbersPageComponent } from './provincial-admin/pages/task-numbers/provincial-admin-task-numbers-page.component';
 import { ProvincialAdminRegistrationsPageComponent } from './provincial-admin/pages/registrations/provincial-admin-registrations-page.component';
 import { LocalAuthorityVolunteersPageComponent } from './local-authority/pages/local-authority-volunteers-page/local-authority-volunteers-page.component';
-import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
+import { ReferralMakerComponent } from './volunteer/components/referral-maker/referral-maker.component';
 import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
 import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';

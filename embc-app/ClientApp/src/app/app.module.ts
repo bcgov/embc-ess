@@ -51,7 +51,7 @@ import { SessionExpiringModalComponent } from './shared/modals/session-expiring/
 import { TransportationRatesComponent } from './shared/modals/transportation-rates/transportation-rates.component';
 
 // TODO: move these to volunteer/local-authority/provincial-admin modules
-import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
+import { ReferralMakerComponent } from './volunteer/components/referral-maker/referral-maker.component';
 import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
 import { LodgingReferralComponent } from './volunteer/components/lodging-referral/lodging-referral.component';
 import { ClothingReferralComponent } from './volunteer/components/clothing-referral/clothing-referral.component';
