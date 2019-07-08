@@ -32,7 +32,7 @@ import { LocalAuthorityRegistrationsPageComponent } from './local-authority/page
 import { ProvincialAdminRegistrationsPageComponent } from './provincial-admin/pages/registrations/provincial-admin-registrations-page.component';
 import { LocalAuthorityVolunteersPageComponent } from './local-authority/pages/local-authority-volunteers-page/local-authority-volunteers-page.component';
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
-import { ProvincialAdminOrganizationsPageComponent } from './provincial-admin/pages/organizations/provincial-admin-organizations-page.component';
+import { OrganizationsPageComponent } from './provincial-admin/pages/organizations-page/organizations-page.component';
 import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
 import { ProvincialAdminTaskNumbersPageComponent } from './provincial-admin/pages/task-numbers/provincial-admin-task-numbers-page.component';
 import { SideboxAddRegistrationComponent } from './components/sidebox-add-registration/sidebox-add-registration.component';
@@ -92,7 +92,7 @@ import { SupplierComponent } from './volunteer/components/referral-maker/subcomp
     VolunteerRegistrationsPageComponent,
     ProvincialAdminRegistrationsPageComponent,
     ProvincialAdminVolunteersOrganizationPageComponent,
-    ProvincialAdminOrganizationsPageComponent,
+    OrganizationsPageComponent,
     ProvincialAdminTaskNumbersPageComponent,
     SideboxAddRegistrationComponent,
     SideboxAddOrganizationComponent,
