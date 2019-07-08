@@ -85,6 +85,7 @@
     </section>
     <section>
       <button *ngIf="!submitting" class="btn btn-primary text-uppercase" (click)="submit()">Save</button>
+      <!-- Save and add another is only enabled when adding new volunteers. Not when editing one. -->
       <button *ngIf="editMode === 'ADD' && !submitting" class="btn btn-primary text-uppercase ml-2" (click)="submit(true)">Save &amp; Add Another</button>
       <button *ngIf="submitting" class="btn btn-primary text-uppercaseS" disabled>Submitting</button>
     </section>
