@@ -11,7 +11,7 @@ import {
   SelfRegistrationErrorComponent,
 } from './self-registration';
 import { TesterPageComponent } from './tester-page/tester-page.component';
-import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
+import { RegistrationSummaryComponent } from './components/registration-summary/registration-summary.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { LoggedInGuard } from './core/guards/logged-in.guard';
 import { RoleGuard } from './core/guards/role.guard';
@@ -19,7 +19,7 @@ import { RedirectGuard } from './core/guards/redirect.guard';
 import { VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from './constants';
 import { LandingPageGuard } from './core/guards/landing-page.guard';
 import { TaskNumberMakerComponent } from './provincial-admin/components/task-number-maker/task-number-maker.component';
-import { RegistrationSummaryFullComponent } from './registration-summary-full/registration-summary-full.component';
+import { RegistrationSummaryFullComponent } from './components/registration-summary-full/registration-summary-full.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { UsefulInformationPageComponent } from './volunteer/pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './local-authority/pages/local-authority-registrations-page/local-authority-registrations-page.component';
