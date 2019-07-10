@@ -27,5 +27,11 @@ namespace Gov.Jag.Embc.Public.Utils
                 .Take(limit)
                 .ToArray();
         }
+
+        public PaginatedList(IEnumerable<T> items, PaginationMetadata pagination)
+        {
+            Pagination = pagination;
+            Items = items;
+        }
     }
 }
