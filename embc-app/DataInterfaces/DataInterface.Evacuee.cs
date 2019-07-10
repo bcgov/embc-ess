@@ -49,9 +49,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             if (!searchQuery.HasSortBy()) searchQuery.SortBy = "-essFileNumber";
 
+            var pagedQuery = new PagedQuery<Models.Db.Evacuee>(query, searchQuery.Offset, searchQuery.Limit);
+            query = pagedQuery.Query;
+
             var results = await query.Sort(MapSortToFields(searchQuery.SortBy)).ToArrayAsync();
 
-            return new PaginatedList<EvacueeListItem>(results.Select(mapper.Map<EvacueeListItem>), searchQuery.Offset, searchQuery.Limit);
+            return new PagedResult<EvacueeListItem>(results.Select(mapper.Map<EvacueeListItem>), pagedQuery.Pagination);
         }
 
         private string MapSortToFields(string sort)
