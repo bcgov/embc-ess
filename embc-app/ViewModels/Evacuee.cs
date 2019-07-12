@@ -26,6 +26,8 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .ForMember(d => d.IsFinalized, opts => opts.MapFrom(s => s.EvacueeRegistration.RegistrationCompletionDate.HasValue))
                 ;
 
+            CreateMap<Models.Db.ViewEvacuee, EvacueeListItem>();
+
             CreateMap<EvacueeType, FamilyRelationshipType>()
                 .ForMember(x => x.Active, opts => opts.MapFrom(s => true))
                 .ForMember(x => x.Code, opts => opts.MapFrom(s => s.GetDisplayName()))

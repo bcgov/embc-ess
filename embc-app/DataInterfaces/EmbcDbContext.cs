@@ -93,6 +93,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<Volunteer> Volunteers { get; set; }
         public DbSet<Referral> Referrals { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<ViewEvacuee> ViewEvacuees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
