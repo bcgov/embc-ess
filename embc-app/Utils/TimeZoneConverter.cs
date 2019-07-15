@@ -30,7 +30,25 @@ namespace Gov.Jag.Embc.Public.Utils
             return pstdateTime.ToString("HH:mm"); // eg, 17:30
         }
 
+        public static string GetFormatedLocalDateTime(DateTime dateTime)
+        {
+            //Tue, 11 Jun 2019 11:36:22 PDT
+            var format = "ddd, dd MMM yyyy H:mm:ss";
+            if (GetPSTTimeZoneInfo().IsDaylightSavingTime(dateTime))
+            {
+                return dateTime.ToString($"{format} PDT");
+            }
+            return dateTime.ToString($"{format} PST");
+        }
+
         private static DateTime GetTimeZoneDateTime(DateTime dateTime)
+        {
+            var pstTime = TimeZoneInfo.ConvertTimeFromUtc(dateTime, GetPSTTimeZoneInfo());
+
+            return pstTime;
+        }
+
+        private static TimeZoneInfo GetPSTTimeZoneInfo()
         {
             var timeZoneName = "Pacific Standard Time";
             if (PlatformHelper.IsLinux)
@@ -38,10 +56,7 @@ namespace Gov.Jag.Embc.Public.Utils
                 timeZoneName = "Canada/Pacific";
             }
 
-            var pst = TimeZoneInfo.FindSystemTimeZoneById(timeZoneName);
-            var pstTime = TimeZoneInfo.ConvertTimeFromUtc(dateTime, pst);
-
-            return pstTime;
+            return TimeZoneInfo.FindSystemTimeZoneById(timeZoneName);
         }
     }
 }
