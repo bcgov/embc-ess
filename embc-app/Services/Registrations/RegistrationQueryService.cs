@@ -156,7 +156,6 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         {
             CreateMap<EvacueeRegistrationAudit, RegistrationViewEntry>()
                 .ForMember(d => d.DateViewed, opts => opts.MapFrom(s => s.Date.ToOffset(TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time").GetUtcOffset(s.Date)).DateTime))
-                //.ForMember(d => d.DateViewed, opts => opts.MapFrom(s => new DateTimeOffset(s.Date, TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time").GetUtcOffset(s.Date))))
                 .ForMember(d => d.Reason, opts => opts.MapFrom(s => JsonConvert.DeserializeObject<RegistrationViewed>(s.Content).ReasonForView))
                 ;
         }
