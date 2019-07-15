@@ -156,6 +156,7 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         public MappingProfile()
         {
             CreateMap<EvacueeRegistrationAudit, RegistrationViewEntry>()
+                //The time zone being recorded in the audit is UTC and the OpenShift pods local time is UTC, the below ensures that PST is always returned
                 .ForMember(d => d.DateViewed, opts => opts.MapFrom(s => TimeZoneConverter.GetLocalDateTime(s.Date.UtcDateTime)))
                 .ForMember(d => d.Reason, opts => opts.MapFrom(s => JsonConvert.DeserializeObject<RegistrationViewed>(s.Content).ReasonForView))
                 ;
