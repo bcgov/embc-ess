@@ -5,8 +5,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ClothingReferral } from 'src/app/core/models';
 import { ReferralDate } from 'src/app/core/models/referral-date';
 import { ClothingRatesComponent } from 'src/app/shared/modals/clothing-rates/clothing-rates.component';
-import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
 const MAXIMUM_PER = 150.00;
 const MAXIMUM_EXTREME = 200.00;
