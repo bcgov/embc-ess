@@ -4,6 +4,8 @@ namespace Gov.Jag.Embc.Public
 {
     public static class ConfigurationEx
     {
+        private static string DBConnectionRetry = "Connection Timeout=60;ConnectRetryCount=10;ConnectRetryInterval=5";
+
         public static int ServerTimeoutInMinutes(this IConfiguration conf)
         {
             return conf.GetValue("SESSION_TIMEOUT_MINUTES", 30);
@@ -111,7 +113,7 @@ namespace Gov.Jag.Embc.Public
                 ? "Trusted_Connection=True"
                 : "User Id=" + user + ";Password=" + conf.GetDbUserPassword();
 
-            return $"Server={conf.GetDbServerName()};Database={conf.GetDbName()};{auth};MultipleActiveResultSets=true;";
+            return $"Server={conf.GetDbServerName()};Database={conf.GetDbName()};{auth};MultipleActiveResultSets=true;{DBConnectionRetry}";
         }
 
         public static string GetAdminDbConnectionString(this IConfiguration conf, string toDatabase = null)
@@ -125,7 +127,7 @@ namespace Gov.Jag.Embc.Public
                 ? "Trusted_Connection=True"
                 : "User Id=sa;Password=" + conf.GetDbAdminUserPassword();
 
-            return $"Server={server};Database={db};{auth};MultipleActiveResultSets=true;";
+            return $"Server={server};Database={db};{auth};MultipleActiveResultSets=true;;{DBConnectionRetry}";
         }
     }
 }
