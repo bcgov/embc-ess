@@ -34,7 +34,7 @@ namespace embc_app.Controllers
                 {
                     e.EssFileNumber,
                     e.UserName,
-                    Date = e.DateViewed.ToString("r"),
+                    Date = TimeZoneConverter.GetFormatedLocalDateTime(e.DateViewed),  //Tue, 11 Jun 2019 11:36:22 PDT
                     e.Reason
                 })
                 .ToCSV(), "text/csv");
