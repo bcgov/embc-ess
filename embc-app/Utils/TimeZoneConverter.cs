@@ -11,6 +11,11 @@ namespace Gov.Jag.Embc.Public.Utils
             return pstdateTime.ToString("MMM-dd-yyyy");
         }
 
+        public static DateTime GetLocalDateTime(DateTime dateTime)
+        {
+            return GetTimeZoneDateTime(dateTime);
+        }
+
         public static string GetLocalTime(DateTime dateTime)
         {
             var pstdateTime = GetTimeZoneDateTime(dateTime);
