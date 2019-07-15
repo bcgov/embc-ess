@@ -6,9 +6,9 @@ import range from 'lodash/range';
 import { FoodReferral } from 'src/app/core/models';
 import { ReferralDate } from 'src/app/core/models/referral-date';
 import { FoodRatesComponent } from 'src/app/shared/modals/food-rates/food-rates.component';
-import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { RESTAURANT_BREAKFAST, RESTAURANT_LUNCH, RESTAURANT_DINNER, GROCERIES } from 'src/app/constants/rates';
+import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
 @Component({
   selector: 'app-food-referral',

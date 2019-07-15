@@ -5,8 +5,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TransportationReferral } from 'src/app/core/models';
 import { ReferralDate } from 'src/app/core/models/referral-date';
 import { TransportationRatesComponent } from 'src/app/shared/modals/transportation-rates/transportation-rates.component';
-import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
 @Component({
   selector: 'app-transportation-referral',
