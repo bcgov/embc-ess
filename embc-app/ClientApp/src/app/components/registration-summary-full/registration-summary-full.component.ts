@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RegistrationService } from 'src/app/core/services/registration.service';
 import { Registration, Address, isBcAddress } from 'src/app/core/models';
-import { GENDER_OPTIONS, INSURANCE_OPTIONS } from '../constants';
-import { UniqueKeyService } from '../core/services/unique-key.service';
-import { AuthService } from '../core/services/auth.service';
-import { NotificationQueueService } from '../core/services/notification-queue.service';
+import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 
 @Component({
   templateUrl: './registration-summary-full.component.html',

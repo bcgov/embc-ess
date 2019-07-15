@@ -11,26 +11,23 @@ import {
   SelfRegistrationErrorComponent,
 } from './self-registration';
 import { TesterPageComponent } from './tester-page/tester-page.component';
-import { RegistrationMakerComponent } from './volunteer/components/registration-maker/registration-maker.component';
-import { RegistrationSummaryComponent } from './registration-summary/registration-summary.component';
+import { RegistrationSummaryComponent } from './components/registration-summary/registration-summary.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { LoggedInGuard } from './core/guards/logged-in.guard';
 import { RoleGuard } from './core/guards/role.guard';
 import { RedirectGuard } from './core/guards/redirect.guard';
 import { VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from './constants';
 import { LandingPageGuard } from './core/guards/landing-page.guard';
-import { OrganizationMakerComponent } from './provincial-admin/components/organization-maker/organization-maker.component';
 import { TaskNumberMakerComponent } from './provincial-admin/components/task-number-maker/task-number-maker.component';
-import { VolunteerMakerComponent } from './local-authority/components/volunteer-maker/volunteer-maker.component';
-import { RegistrationSummaryFullComponent } from './registration-summary-full/registration-summary-full.component';
-import { SessionExpiredComponent } from './session-expired/session-expired.component';
+import { RegistrationSummaryFullComponent } from './components/registration-summary-full/registration-summary-full.component';
+import { SessionExpiredComponent } from './components/session-expired/session-expired.component';
 import { UsefulInformationPageComponent } from './volunteer/pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './local-authority/pages/local-authority-registrations-page/local-authority-registrations-page.component';
-import { ProvincialAdminOrganizationsPageComponent } from './provincial-admin/pages/organizations/provincial-admin-organizations-page.component';
+import { OrganizationsPageComponent } from './provincial-admin/pages/organizations-page/organizations-page.component';
 import { ProvincialAdminTaskNumbersPageComponent } from './provincial-admin/pages/task-numbers/provincial-admin-task-numbers-page.component';
-import { ProvincialAdminRegistrationsPageComponent } from './provincial-admin/pages/registrations/provincial-admin-registrations-page.component';
+import { AdminRegistrationsPageComponent } from './provincial-admin/pages/admin-registrations-page/admin-registrations-page.component';
 import { LocalAuthorityVolunteersPageComponent } from './local-authority/pages/local-authority-volunteers-page/local-authority-volunteers-page.component';
-import { ReferralMakerComponent } from './volunteer/pages/referral-maker/referral-maker.component';
+import { ReferralMakerComponent } from './volunteer/components/referral-maker/referral-maker.component';
 import { ReferralViewComponent } from './volunteer/pages/referral-view/referral-view.component';
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
 import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
@@ -301,12 +298,12 @@ const routes: Routes = [
       },
       {
         path: 'registrations',
-        component: ProvincialAdminRegistrationsPageComponent,
+        component: AdminRegistrationsPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         path: 'organizations',
-        component: ProvincialAdminOrganizationsPageComponent,
+        component: OrganizationsPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {

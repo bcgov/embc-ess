@@ -1,11 +1,11 @@
 import { Component, OnInit, TemplateRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { RegistrationService } from '../core/services/registration.service';
-import { Registration, RegistrationSummary } from '../core/models';
-import { AuthService } from '../core/services/auth.service';
-import { UniqueKeyService } from '../core/services/unique-key.service';
-import { NotificationQueueService } from '../core/services/notification-queue.service';
+import { RegistrationService } from 'src/app/core/services/registration.service';
+import { Registration, RegistrationSummary } from 'src/app/core/models';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 
 @Component({
   templateUrl: './registration-summary.component.html',
