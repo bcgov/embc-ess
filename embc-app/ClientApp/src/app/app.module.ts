@@ -74,6 +74,7 @@ import { TransportationReferralComponent } from './volunteer/components/referral
 import { ReferralListItemComponent } from './volunteer/components/referral-maker/subcomponents/referral-list-item/referral-list-item.component';
 import { AbstractReferralComponent } from './volunteer/components/referral-maker/subcomponents/abstract-referral/abstract-referral.component';
 import { SupplierComponent } from './volunteer/components/referral-maker/subcomponents/supplier/supplier.component';
+import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
 
 @NgModule({
   declarations: [
@@ -136,6 +137,7 @@ import { SupplierComponent } from './volunteer/components/referral-maker/subcomp
     OrganizationMakerPageComponent,
     FullRegistrationSummaryBlockComponent,
     SurveyPageComponent,
+    AuditorComponent,
   ],
   imports: [
     // angular

@@ -36,6 +36,7 @@ import { RegistrationPageComponent } from './volunteer/pages/registration-page/r
 import { VolunteerMakerPageComponent } from './local-authority/pages/volunteer-maker-page/volunteer-maker-page.component';
 import { OrganizationMakerPageComponent } from './provincial-admin/pages/organization-maker-page/organization-maker-page.component';
 import { SurveyPageComponent } from './volunteer/pages/survey-page/survey-page.component';
+import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
 
 /*
   /
@@ -365,7 +366,11 @@ const routes: Routes = [
         component: UsefulInformationPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
-
+      {
+        path: 'audit',
+        component: AuditorComponent,
+        data: { expectedRole: PROVINCIAL_ADMIN },
+      },
     ]
   },
 

@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col">
+    <div class="form-group">
+      <label for="essNumber">
+
+      </label>
+      <input placeholder="ESS Number" class="form-control" type="text" [(ngModel)]="recordNumber" (input)="search()">
+      <small>The ESS number to check access for.</small>
+    </div>
+    <pre>
+      {{audit|json}}
+    </pre>
+  </div>
+</div>
