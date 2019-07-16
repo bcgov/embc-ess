@@ -16,4 +16,12 @@ export class AuditService extends RestService {
         catchError(this.handleError)
       );
   }
+  getAccessAuditCsv(record: string): Observable<string> {
+    // collect and return the audit record for access
+    return this.http.get<string>(`api/reports/registration/audit/${record}`, { headers: this.headers, responseType: 'blob' as 'json' })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
+  }
 }

@@ -2,11 +2,12 @@
   <div class="col">
     <div class="form-group">
       <label for="essNumber">
-
+        File Access Record Audit
       </label>
       <input placeholder="ESS Number" class="form-control" type="text" [(ngModel)]="recordNumber" (input)="search()">
       <small>The ESS number to check access for.</small>
     </div>
+    <a [href]="'api/reports/registration/audit/'+recordNumber">Download as CSV</a>
     <pre>
       {{audit|json}}
     </pre>

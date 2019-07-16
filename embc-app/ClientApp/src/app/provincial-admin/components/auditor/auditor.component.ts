@@ -9,6 +9,7 @@ import { AuditService } from 'src/app/core/services/audit.service';
 export class AuditorComponent implements OnInit {
 
   audit: any;
+  csv: any;
   recordNumber: string;
 
   constructor(
@@ -19,10 +20,20 @@ export class AuditorComponent implements OnInit {
   }
   search() {
     // record numbers are minumum 6 digits.
-    if (parseInt(this.recordNumber) && this.recordNumber.length >= 6) {
+    if (this.recordNumber.length >= 6) {
       this.auditService.getAccessAudit(this.recordNumber)
         .subscribe(
           a => this.audit = a,
+          err => console.log(err),
+        );
+    }
+  }
+  download() {
+    // record numbers are minumum 6 digits.
+    if (this.recordNumber.length >= 6) {
+      this.auditService.getAccessAudit(this.recordNumber)
+        .subscribe(
+          a => this.csv = a,
           err => console.log(err),
         );
     }
