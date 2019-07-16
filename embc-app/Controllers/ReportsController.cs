@@ -11,7 +11,7 @@ namespace embc_app.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class ReportsController : ControllerBase
+    public class ReportsController : Controller
     {
         private readonly IMediator mediator;
 
@@ -38,6 +38,17 @@ namespace embc_app.Controllers
                     e.Reason
                 })
                 .ToCSV(), "text/csv");
+        }
+
+        [HttpGet("registration/audit/{id}/json")]
+        public async Task<IActionResult> GetRegistrationAuditJson(string id)
+        {
+            if (!long.TryParse(id, out var essFileNumber)) return BadRequest($"'{id}' not a valid ESS file number");
+            var registration = await mediator.Send(new RegistrationSummaryQueryRequest(id));
+            if (registration == null) return NotFound();
+            var results = await mediator.Send(new RegistrationAuditQueryRequest(essFileNumber));
+
+            return Json(results);
         }
     }
 }
