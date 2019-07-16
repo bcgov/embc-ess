@@ -33,12 +33,13 @@ namespace Gov.Jag.Embc.Public.Utils
         public static string GetFormatedLocalDateTime(DateTime dateTime)
         {
             //Tue, 11 Jun 2019 11:36:22 PDT
-            var format = "ddd, dd MMM yyyy H:mm:ss";
-            if (GetPSTTimeZoneInfo().IsDaylightSavingTime(dateTime))
+            var format = "ddd dd MMM yyyy H:mm:ss";
+            var pstDateTime = GetTimeZoneDateTime(dateTime);
+            if (GetPSTTimeZoneInfo().IsDaylightSavingTime(pstDateTime))
             {
-                return dateTime.ToString($"{format} PDT");
+                return pstDateTime.ToString($"{format} PDT");
             }
-            return dateTime.ToString($"{format} PST");
+            return pstDateTime.ToString($"{format} PST");
         }
 
         private static DateTime GetTimeZoneDateTime(DateTime dateTime)
