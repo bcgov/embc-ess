@@ -34,7 +34,8 @@ namespace embc_app.Controllers
                 {
                     e.EssFileNumber,
                     e.UserName,
-                    Date = TimeZoneConverter.GetFormatedLocalDateTime(e.DateViewed),  //Tue, 11 Jun 2019 11:36:22 PDT
+                    //The time zone being recorded in the audit is UTC and the OpenShift pods local time is UTC, the below ensures that PST is always returned
+                    Date = TimeZoneConverter.GetFormatedLocalDateTime(e.DateViewed),  //eg: Tue 11 Jun 2019 11:36:22 PDT
                     e.Reason
                 })
                 .ToCSV(), "text/csv");
