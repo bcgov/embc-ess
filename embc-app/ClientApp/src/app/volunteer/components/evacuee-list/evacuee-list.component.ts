@@ -96,14 +96,14 @@ export class EvacueeListComponent implements OnInit {
       const form = this.advancedSearchForm.value;
 
       // the community auto-complete returns an object. we only want the ID (string)
-      const fromCommunityId = form.evacuated_from ? form.evacuated_from.id : null;
-      const toCommunityId = form.evacuated_to ? form.evacuated_to.id : null;
+      const fromCommunity = form.evacuated_from ? form.evacuated_from.name : null;
+      const toCommunity = form.evacuated_to ? form.evacuated_to.name : null;
 
       query = {
         ...query,
         ...form,
-        evacuated_from: fromCommunityId,
-        evacuated_to: toCommunityId
+        evacuated_from: fromCommunity,
+        evacuated_to: toCommunity
       };
 
       // delete unneeded values
