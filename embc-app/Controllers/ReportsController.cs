@@ -11,7 +11,7 @@ namespace embc_app.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class ReportsController : ControllerBase
+    public class ReportsController : Controller
     {
         private readonly IMediator mediator;
 
@@ -34,10 +34,22 @@ namespace embc_app.Controllers
                 {
                     e.EssFileNumber,
                     e.UserName,
-                    Date = TimeZoneConverter.GetFormatedLocalDateTime(e.DateViewed),  //Tue, 11 Jun 2019 11:36:22 PDT
+                    //The time zone being recorded in the audit is UTC and the OpenShift pods local time is UTC, the below ensures that PST is always returned
+                    Date = TimeZoneConverter.GetFormatedLocalDateTime(e.DateViewed),  //eg: Tue 11 Jun 2019 11:36:22 PDT
                     e.Reason
                 })
                 .ToCSV(), "text/csv");
+        }
+
+        [HttpGet("registration/audit/{id}/json")]
+        public async Task<IActionResult> GetRegistrationAuditJson(string id)
+        {
+            if (!long.TryParse(id, out var essFileNumber)) return BadRequest($"'{id}' not a valid ESS file number");
+            var registration = await mediator.Send(new RegistrationSummaryQueryRequest(id));
+            if (registration == null) return NotFound();
+            var results = await mediator.Send(new RegistrationAuditQueryRequest(essFileNumber));
+
+            return Json(results);
         }
     }
 }
