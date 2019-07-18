@@ -63,7 +63,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         query = query.Where(e => !e.HasReferrals);
                     }
                 }
-                // If the 
+                // allow for filtering on registration completion state
                 if (searchQuery.RegistrationCompleted.HasValue) query = query.Where(e => e.IsFinalized == searchQuery.RegistrationCompleted.Value);
             }
 
