@@ -193,10 +193,13 @@ namespace Gov.Jag.Embc.Public
                 .UseStaticFiles()
                 .UseSpaStaticFiles();
 
-            // Use NSwag for API documentation
-            // Register the Swagger generator and the Swagger UI middlewares
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
+            if (!env.IsProduction())
+            {
+                // Use NSwag for API documentation
+                // Register the Swagger generator and the Swagger UI middlewares
+                app.UseOpenApi();
+                app.UseSwaggerUi3();
+            }
 
             app
                 .UseSession()
