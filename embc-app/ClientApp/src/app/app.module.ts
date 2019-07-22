@@ -33,11 +33,11 @@ import { LocalAuthorityVolunteersPageComponent } from './local-authority/pages/l
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
 import { OrganizationsPageComponent } from './provincial-admin/pages/organizations-page/organizations-page.component';
 import { ProvincialAdminTaskNumbersPageComponent } from './provincial-admin/pages/task-numbers/provincial-admin-task-numbers-page.component';
-import { SideboxAddRegistrationComponent } from './components/sidebox-add-registration/sidebox-add-registration.component';
-import { SideboxAddOrganizationComponent } from './components/sidebox-add-organization/sidebox-add-organization.component';
-import { SideboxAddTaskNumberComponent } from './components/sidebox-add-task-number/sidebox-add-task-number.component';
-import { SideboxAddVolunteerComponent } from './components/sidebox-add-volunteer/sidebox-add-volunteer.component';
-import { SideboxCollectionNoticeComponent } from './components/sidebox-collection-notice/sidebox-collection-notice.component';
+import { SideboxAddRegistrationComponent } from './components/sideboxes/sidebox-add-registration/sidebox-add-registration.component';
+import { SideboxAddOrganizationComponent } from './components/sideboxes/sidebox-add-organization/sidebox-add-organization.component';
+import { SideboxAddTaskNumberComponent } from './components/sideboxes/sidebox-add-task-number/sidebox-add-task-number.component';
+import { SideboxAddVolunteerComponent } from './components/sideboxes/sidebox-add-volunteer/sidebox-add-volunteer.component';
+import { SideboxCollectionNoticeComponent } from './components/sideboxes/sidebox-collection-notice/sidebox-collection-notice.component';
 
 // shared modals // TODO: move to shared module
 import { LodgingRatesComponent } from './shared/modals/lodging-rates/lodging-rates.component';
