@@ -44,6 +44,7 @@ import { ValidationBorderDirective } from './directives/validation-border.direct
 import { RegistrationSummaryFullComponent } from './components/registration-summary-full/registration-summary-full.component';
 import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
+import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     SideboxAddVolunteerComponent,
     SideboxCollectionNoticeComponent,
     PaginationSummaryComponent,
+    ReferralSearchResultsComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,
@@ -133,6 +135,7 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
     SideboxAddTaskNumberComponent,
     SideboxAddVolunteerComponent,
     SideboxCollectionNoticeComponent,
+    ReferralSearchResultsComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,
