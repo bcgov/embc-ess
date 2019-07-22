@@ -63,6 +63,7 @@ import { ReferralListItemComponent } from './volunteer/components/referral-maker
 import { AbstractReferralComponent } from './volunteer/components/referral-maker/subcomponents/abstract-referral/abstract-referral.component';
 import { SupplierComponent } from './volunteer/components/referral-maker/subcomponents/supplier/supplier.component';
 import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
+import { SharedAnonymousModule } from './shared-anonymous/shared-anonymous.module';
 
 @NgModule({
   declarations: [
@@ -126,7 +127,8 @@ import { AuditorComponent } from './provincial-admin/components/auditor/auditor.
 
     // core & shared
     CoreModule,
-    SharedModule,
+    SharedModule, // all logged in pipes/components/directives/etc extends SharedAnonymous
+    SharedAnonymousModule, // all anonymously accesible pipes/components/directives/etc
 
     // app
     AppRoutingModule,

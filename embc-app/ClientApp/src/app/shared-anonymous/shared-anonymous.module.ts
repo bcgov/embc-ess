@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextMaskModule } from 'angular2-text-mask';
 import { NgbTypeaheadModule, NgbPaginationModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { FormFieldComponent } from './components/form-field/form-field.component';
 import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
 import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
@@ -12,8 +13,10 @@ import { BcAddressComponent } from './components/address-form/bc-address/bc-addr
 import { OtherAddressComponent } from './components/address-form/other-address/other-address.component';
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
 import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
-import { YesNoPipe } from './pipes/yes-no.pipe';
 import { CaptchaComponent } from './components/captcha/captcha.component';
+import { SideInfoboxComponent } from './components/side-infobox/side-infobox.component';
+
+import { YesNoPipe } from './pipes/yes-no.pipe';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,7 @@ import { CaptchaComponent } from './components/captcha/captcha.component';
     AttentionIconComponent,
     CommunitiesSelectComponent,
     CaptchaComponent,
+    SideInfoboxComponent,
 
     YesNoPipe
   ],
@@ -58,6 +62,7 @@ import { CaptchaComponent } from './components/captcha/captcha.component';
     AttentionIconComponent,
     CommunitiesSelectComponent,
     CaptchaComponent,
+    SideInfoboxComponent,
 
     YesNoPipe,
   ]

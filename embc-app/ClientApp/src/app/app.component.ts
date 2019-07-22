@@ -14,7 +14,7 @@ import { UniqueKeyService } from './core/services/unique-key.service';
 export class AppComponent implements OnInit {
 
   isIE = false;
-
+  versionInfo = '';
   constructor(
     private controlledListService: ControlledListService,
     public authService: AuthService,

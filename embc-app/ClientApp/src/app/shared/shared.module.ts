@@ -10,7 +10,6 @@ import { WarningBannerComponent } from './components/warning-banner/warning-bann
 import { NotificationBannerComponent } from './components/notification-banner/notification-banner.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { SideInfoboxComponent } from './components/side-infobox/side-infobox.component';
 import { SideBoxComponent } from './components/side-box/side-box.component';
 import { DateTimePickerComponent } from './components/date-time-picker/date-time-picker.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
@@ -46,7 +45,6 @@ import { SharedAnonymousModule } from '../shared-anonymous/shared-anonymous.modu
     NotificationBannerComponent,
     HeaderComponent,
     FooterComponent,
-    SideInfoboxComponent,
     SideBoxComponent,
     FullRegistrationSummaryBlockComponent,
     RegistrationSummaryFullComponent,
@@ -74,12 +72,12 @@ import { SharedAnonymousModule } from '../shared-anonymous/shared-anonymous.modu
     ValidationBorderDirective,
   ],
   imports: [
+    SharedAnonymousModule, // this gets the anonymous components. Shared extends shared-anonymous.
     CommonModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
     TextMaskModule,
-    SharedAnonymousModule, // this gets the anonymous components when needed.
 
     // ng-bootstrap UI components
     NgbTypeaheadModule,
@@ -103,7 +101,6 @@ import { SharedAnonymousModule } from '../shared-anonymous/shared-anonymous.modu
     NotificationBannerComponent,
     HeaderComponent,
     FooterComponent,
-    SideInfoboxComponent,
     SideBoxComponent,
     FullRegistrationSummaryBlockComponent,
     RegistrationSummaryFullComponent,
