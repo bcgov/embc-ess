@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-side-box',
-  styleUrls: ['./side-box.component.scss'],
+  selector: 'app-side-infobox',
+  styleUrls: ['./side-infobox.component.scss'],
   template: `
 
     <div class="card sidebox-card-info text-white">
@@ -18,7 +18,7 @@ import { Component, Input } from '@angular/core';
     </div>
   `,
 })
-export class SideBoxComponent {
+export class SideInfoboxComponent {
 
   @Input() title = 'Useful Information';
   @Input() secondaryTitle = '';

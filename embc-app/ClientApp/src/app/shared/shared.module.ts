@@ -10,7 +10,7 @@ import { WarningBannerComponent } from './components/warning-banner/warning-bann
 import { NotificationBannerComponent } from './components/notification-banner/notification-banner.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { SideBoxComponent } from './components/side-box/side-box.component';
+import { SideInfoboxComponent } from './components/side-infobox/side-infobox.component';
 import { SideBoxInfoComponent } from './components/side-box-info/side-box-info.component';
 import { FormFieldComponent } from './components/form-field/form-field.component';
 import { AddressSelectorComponent } from './components/address-form/address-selector.component';
@@ -46,7 +46,7 @@ import { TopNavbarComponent } from './components/top-navbar/top-navbar.component
     NotificationBannerComponent,
     HeaderComponent,
     FooterComponent,
-    SideBoxComponent,
+    SideInfoboxComponent,
     SideBoxInfoComponent,
     FormFieldComponent,
     AddressSelectorComponent,
@@ -102,7 +102,7 @@ import { TopNavbarComponent } from './components/top-navbar/top-navbar.component
     NotificationBannerComponent,
     HeaderComponent,
     FooterComponent,
-    SideBoxComponent,
+    SideInfoboxComponent,
     SideBoxInfoComponent,
     FormFieldComponent,
     AddressSelectorComponent,
