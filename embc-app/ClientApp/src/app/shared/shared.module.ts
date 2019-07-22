@@ -27,7 +27,7 @@ import { ByIdPipe } from './pipes/by-id.pipe';
 import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
 import { NewlinesPipe } from './pipes/newlines.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
-import { YesNoPipe } from './pipes/yes-no.pipe';
+import { YesNoPipe } from '../shared-anonymous/pipes/yes-no.pipe';
 
 // directives
 import { DisableControlDirective } from './directives/disable-control.directive';
@@ -67,7 +67,6 @@ import { SharedAnonymousModule } from '../shared-anonymous/shared-anonymous.modu
     DateTimeFormatPipe,
     NewlinesPipe,
     PluckPipe,
-    YesNoPipe,
     PageNotFoundComponent,
     DateTimePickerComponent,
     CaptchaComponent,
@@ -125,7 +124,6 @@ import { SharedAnonymousModule } from '../shared-anonymous/shared-anonymous.modu
     DateTimeFormatPipe,
     NewlinesPipe,
     PluckPipe,
-    YesNoPipe,
     DateTimePickerComponent,
     CaptchaComponent,
     PaginatorComponent,
