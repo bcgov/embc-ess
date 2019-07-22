@@ -8,7 +8,7 @@ namespace Gov.Jag.Embc.Public
 
         public static int ServerTimeoutInMinutes(this IConfiguration conf)
         {
-            return conf.GetValue("SESSION_TIMEOUT_MINUTES", 30);
+            return conf.GetValue("SESSION_TIMEOUT_MINUTES", 45);
         }
 
         public static int UserTimeoutWarningDurationInMinutes(this IConfiguration conf)
