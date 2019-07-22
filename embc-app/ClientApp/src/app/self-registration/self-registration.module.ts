@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { SharedModule } from './../shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { SelfRegistrationComponent } from './self-registration.component';
 import { SelfRegistrationOneComponent } from './self-registration-one/self-registration-one.component';
 import { SelfRegistrationTwoComponent } from './self-registration-two/self-registration-two.component';
