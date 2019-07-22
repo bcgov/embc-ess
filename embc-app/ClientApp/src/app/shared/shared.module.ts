@@ -25,6 +25,11 @@ import { CaptchaComponent } from './components/captcha/captcha.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { FullRegistrationSummaryBlockComponent } from './components/full-registration-summary-block/full-registration-summary-block.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { SideboxAddRegistrationComponent } from './components/sideboxes/sidebox-add-registration/sidebox-add-registration.component';
+import { SideboxAddOrganizationComponent } from './components/sideboxes/sidebox-add-organization/sidebox-add-organization.component';
+import { SideboxAddTaskNumberComponent } from './components/sideboxes/sidebox-add-task-number/sidebox-add-task-number.component';
+import { SideboxAddVolunteerComponent } from './components/sideboxes/sidebox-add-volunteer/sidebox-add-volunteer.component';
+import { SideboxCollectionNoticeComponent } from './components/sideboxes/sidebox-collection-notice/sidebox-collection-notice.component';
 
 import { ByIdPipe } from './pipes/by-id.pipe';
 import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
@@ -59,6 +64,11 @@ import { TopNavbarComponent } from './components/top-navbar/top-navbar.component
     FullRegistrationSummaryBlockComponent,
     RegistrationSummaryFullComponent,
     TopNavbarComponent,
+    SideboxAddRegistrationComponent,
+    SideboxAddOrganizationComponent,
+    SideboxAddTaskNumberComponent,
+    SideboxAddVolunteerComponent,
+    SideboxCollectionNoticeComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,
