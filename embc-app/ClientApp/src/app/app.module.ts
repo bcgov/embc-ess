@@ -20,7 +20,6 @@ import { OrganizationListComponent } from './provincial-admin/components/organiz
 import { TaskNumberMakerComponent } from './provincial-admin/components/task-number-maker/task-number-maker.component';
 import { VolunteerMakerComponent } from './local-authority/components/volunteer-maker/volunteer-maker.component';
 import { OrganizationMakerComponent } from './provincial-admin/components/organization-maker/organization-maker.component';
-import { RegistrationSummaryFullComponent } from './shared/components/registration-summary-full/registration-summary-full.component';
 import { VolunteerOrganizationListComponent } from './provincial-admin/components/volunteer-organization-list/volunteer-organization-list.component';
 import { RegistrationMakerComponent } from './volunteer/components/registration-maker/registration-maker.component';
 import { SessionExpiredComponent } from './components/session-expired/session-expired.component';
@@ -85,7 +84,6 @@ import { AuditorComponent } from './provincial-admin/components/auditor/auditor.
     EvacueePickerComponent,
     EvacueeListComponent,
     RegistrationMakerComponent,
-    RegistrationSummaryFullComponent,
     VolunteerMakerComponent,
     VolunteerListComponent,
     VolunteerOrganizationListComponent,

@@ -36,6 +36,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
 import { DisableControlDirective } from './directives/disable-control.directive';
 import { UpperCaseDirective } from './directives/upper-case.directive';
 import { ValidationBorderDirective } from './directives/validation-border.directive';
+import { RegistrationSummaryFullComponent } from './components/registration-summary-full/registration-summary-full.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { ValidationBorderDirective } from './directives/validation-border.direct
     AttentionIconComponent,
     CommunitiesSelectComponent,
     FullRegistrationSummaryBlockComponent,
+    RegistrationSummaryFullComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,
@@ -109,6 +111,7 @@ import { ValidationBorderDirective } from './directives/validation-border.direct
     AttentionIconComponent,
     CommunitiesSelectComponent,
     FullRegistrationSummaryBlockComponent,
+    RegistrationSummaryFullComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,
