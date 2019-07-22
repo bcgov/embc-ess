@@ -15,8 +15,6 @@ import { SideBoxComponent } from './components/side-box/side-box.component';
 import { AddressSelectorComponent } from './components/address-form/address-selector.component';
 import { BcAddressComponent } from './components/address-form/bc-address/bc-address.component';
 import { OtherAddressComponent } from './components/address-form/other-address/other-address.component';
-import { FontAwesomeIconComponent } from '../shared-anonymous/components/font-awesome-icon/font-awesome-icon.component';
-import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
 import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
 import { DateTimePickerComponent } from './components/date-time-picker/date-time-picker.component';
@@ -60,7 +58,6 @@ import { SharedAnonymousModule } from '../shared-anonymous/shared-anonymous.modu
     AddressSelectorComponent,
     BcAddressComponent,
     OtherAddressComponent,
-    FontAwesomeLinkComponent,
     AttentionIconComponent,
     CommunitiesSelectComponent,
     FullRegistrationSummaryBlockComponent,
@@ -124,7 +121,6 @@ import { SharedAnonymousModule } from '../shared-anonymous/shared-anonymous.modu
     AddressSelectorComponent,
     BcAddressComponent,
     OtherAddressComponent,
-    FontAwesomeLinkComponent,
     AttentionIconComponent,
     CommunitiesSelectComponent,
     FullRegistrationSummaryBlockComponent,

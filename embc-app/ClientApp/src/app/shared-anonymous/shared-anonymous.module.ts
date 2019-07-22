@@ -6,12 +6,14 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { NgbTypeaheadModule, NgbPaginationModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormFieldComponent } from './components/form-field/form-field.component';
 import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
+import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
 
 
 @NgModule({
   declarations: [
     FormFieldComponent,
     FontAwesomeIconComponent,
+    FontAwesomeLinkComponent,
 
   ],
   imports: [
@@ -36,6 +38,7 @@ import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-aw
     // components, pipes, etc
     FormFieldComponent,
     FontAwesomeIconComponent,
+    FontAwesomeLinkComponent,
 
   ]
 })
