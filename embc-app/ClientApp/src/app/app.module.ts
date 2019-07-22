@@ -57,7 +57,6 @@ import { ValidFromToComponent } from './volunteer/components/referral-maker/subc
 import { VolunteerRegistrationsPageComponent } from './volunteer/pages/volunteer-registrations-page/volunteer-registrations-page.component';
 import { EvacueeListComponent } from './volunteer/components/evacuee-list/evacuee-list.component';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
-import { TopTabBarComponent } from './components/top-tab-bar/top-tab-bar.component';
 import { AdminVolunteerMakerComponent } from './provincial-admin/components/admin-volunteer-maker/admin-volunteer-maker.component';
 import { RegistrationPageComponent } from './volunteer/pages/registration-page/registration-page.component';
 import { VolunteerMakerPageComponent } from './local-authority/pages/volunteer-maker-page/volunteer-maker-page.component';
@@ -127,7 +126,6 @@ import { AuditorComponent } from './provincial-admin/components/auditor/auditor.
     SupplierComponent,
     ReferralListItemComponent,
     AbstractReferralComponent,
-    TopTabBarComponent,
     AdminVolunteerMakerComponent,
     RegistrationPageComponent,
     VolunteerMakerPageComponent,
