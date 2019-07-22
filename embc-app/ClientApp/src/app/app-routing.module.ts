@@ -11,7 +11,6 @@ import {
   SelfRegistrationErrorComponent,
 } from './self-registration';
 import { TesterPageComponent } from './tester-page/tester-page.component';
-import { RegistrationSummaryComponent } from './components/registration-summary/registration-summary.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { LoggedInGuard } from './core/guards/logged-in.guard';
 import { RoleGuard } from './core/guards/role.guard';
@@ -37,6 +36,7 @@ import { VolunteerMakerPageComponent } from './local-authority/pages/volunteer-m
 import { OrganizationMakerPageComponent } from './provincial-admin/pages/organization-maker-page/organization-maker-page.component';
 import { SurveyPageComponent } from './volunteer/pages/survey-page/survey-page.component';
 import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
+import { RegistrationSummaryComponent } from './volunteer/components/registration-summary/registration-summary.component';
 
 /*
   /

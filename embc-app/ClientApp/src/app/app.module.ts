@@ -13,7 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { SelfRegistrationModule } from './self-registration';
 import { SharedModule } from './shared/shared.module';
-import { RegistrationSummaryComponent } from './components/registration-summary/registration-summary.component';
+import { RegistrationSummaryComponent } from './volunteer/components/registration-summary/registration-summary.component';
 import { TaskNumberListComponent } from './provincial-admin/components/task-number-list/task-number-list.component';
 import { VolunteerListComponent } from './local-authority/components/volunteer-list/volunteer-list.component';
 import { OrganizationListComponent } from './provincial-admin/components/organization-list/organization-list.component';
