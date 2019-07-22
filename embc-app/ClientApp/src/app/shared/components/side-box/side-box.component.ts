@@ -3,11 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
 @Component({
-  selector: 'app-side-box-info',
-  templateUrl: './side-box-info.component.html',
-  styleUrls: ['./side-box-info.component.scss']
+  selector: 'app-side-box',
+  templateUrl: './side-box.component.html',
+  styleUrls: ['./side-box.component.scss']
 })
-export class SideBoxInfoComponent {
+export class SideBoxComponent {
   @Input() title = 'TITLE';
   @Input() content = 'Content can be added using the content input.';
   @Input() button = 'Ok';

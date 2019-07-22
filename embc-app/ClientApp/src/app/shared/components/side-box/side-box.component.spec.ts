@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SideBoxInfoComponent } from './side-box-info.component';
+import { SideBoxComponent } from './side-box.component';
 
 describe('SideBoxInfoComponent', () => {
-  let component: SideBoxInfoComponent;
-  let fixture: ComponentFixture<SideBoxInfoComponent>;
+  let component: SideBoxComponent;
+  let fixture: ComponentFixture<SideBoxComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SideBoxInfoComponent ]
+      declarations: [SideBoxComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SideBoxInfoComponent);
+    fixture = TestBed.createComponent(SideBoxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

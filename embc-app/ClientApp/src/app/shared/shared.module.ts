@@ -11,7 +11,7 @@ import { NotificationBannerComponent } from './components/notification-banner/no
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SideInfoboxComponent } from './components/side-infobox/side-infobox.component';
-import { SideBoxInfoComponent } from './components/side-box-info/side-box-info.component';
+import { SideBoxComponent } from './components/side-box/side-box.component';
 import { FormFieldComponent } from './components/form-field/form-field.component';
 import { AddressSelectorComponent } from './components/address-form/address-selector.component';
 import { BcAddressComponent } from './components/address-form/bc-address/bc-address.component';
@@ -47,7 +47,7 @@ import { TopNavbarComponent } from './components/top-navbar/top-navbar.component
     HeaderComponent,
     FooterComponent,
     SideInfoboxComponent,
-    SideBoxInfoComponent,
+    SideBoxComponent,
     FormFieldComponent,
     AddressSelectorComponent,
     BcAddressComponent,
@@ -103,7 +103,7 @@ import { TopNavbarComponent } from './components/top-navbar/top-navbar.component
     HeaderComponent,
     FooterComponent,
     SideInfoboxComponent,
-    SideBoxInfoComponent,
+    SideBoxComponent,
     FormFieldComponent,
     AddressSelectorComponent,
     BcAddressComponent,
