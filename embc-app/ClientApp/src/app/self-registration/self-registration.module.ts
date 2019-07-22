@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedAnonymousModule } from 'src/app/shared-anonymous/shared-anonymous.module';
 import { SelfRegistrationComponent } from './self-registration.component';
 import { SelfRegistrationOneComponent } from './self-registration-one/self-registration-one.component';
 import { SelfRegistrationTwoComponent } from './self-registration-two/self-registration-two.component';
@@ -24,7 +24,7 @@ import { SelfRegistrationStepperComponent } from './self-registration-stepper/se
   imports: [
     CommonModule,
     RouterModule,
-    SharedModule,
+    SharedAnonymousModule,
   ],
   exports: [
     SelfRegistrationComponent,
