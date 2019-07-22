@@ -63,7 +63,7 @@ import { AdminVolunteerMakerComponent } from './provincial-admin/components/admi
 import { RegistrationPageComponent } from './volunteer/pages/registration-page/registration-page.component';
 import { VolunteerMakerPageComponent } from './local-authority/pages/volunteer-maker-page/volunteer-maker-page.component';
 import { OrganizationMakerPageComponent } from './provincial-admin/pages/organization-maker-page/organization-maker-page.component';
-import { FullRegistrationSummaryBlockComponent } from './components/full-registration-summary-block/full-registration-summary-block.component';
+import { FullRegistrationSummaryBlockComponent } from './shared/components/full-registration-summary-block/full-registration-summary-block.component';
 import { SurveyPageComponent } from './volunteer/pages/survey-page/survey-page.component';
 import { EvacueePickerComponent } from './volunteer/components/referral-maker/subcomponents/evacuee-picker/evacuee-picker.component';
 import { LodgingReferralComponent } from './volunteer/components/referral-maker/subcomponents/lodging-referral/lodging-referral.component';
