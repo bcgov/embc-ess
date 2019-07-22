@@ -45,6 +45,7 @@ import { RegistrationSummaryFullComponent } from './components/registration-summ
 import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { ReferralSearchResultsComponent } from './components/referral-search-res
     SideboxCollectionNoticeComponent,
     PaginationSummaryComponent,
     ReferralSearchResultsComponent,
+    SearchBarComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,
@@ -136,6 +138,7 @@ import { ReferralSearchResultsComponent } from './components/referral-search-res
     SideboxAddVolunteerComponent,
     SideboxCollectionNoticeComponent,
     ReferralSearchResultsComponent,
+    SearchBarComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,
