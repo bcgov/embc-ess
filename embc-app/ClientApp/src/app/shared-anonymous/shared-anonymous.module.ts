@@ -13,6 +13,7 @@ import { OtherAddressComponent } from './components/address-form/other-address/o
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
 import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
 import { YesNoPipe } from './pipes/yes-no.pipe';
+import { CaptchaComponent } from './components/captcha/captcha.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     OtherAddressComponent,
     AttentionIconComponent,
     CommunitiesSelectComponent,
+    CaptchaComponent,
 
     YesNoPipe
   ],
@@ -55,6 +57,7 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
     OtherAddressComponent,
     AttentionIconComponent,
     CommunitiesSelectComponent,
+    CaptchaComponent,
 
     YesNoPipe,
   ]

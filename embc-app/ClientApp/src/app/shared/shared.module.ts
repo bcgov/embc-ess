@@ -13,7 +13,6 @@ import { FooterComponent } from './components/footer/footer.component';
 import { SideInfoboxComponent } from './components/side-infobox/side-infobox.component';
 import { SideBoxComponent } from './components/side-box/side-box.component';
 import { DateTimePickerComponent } from './components/date-time-picker/date-time-picker.component';
-import { CaptchaComponent } from './components/captcha/captcha.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { FullRegistrationSummaryBlockComponent } from './components/full-registration-summary-block/full-registration-summary-block.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -27,7 +26,6 @@ import { ByIdPipe } from './pipes/by-id.pipe';
 import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
 import { NewlinesPipe } from './pipes/newlines.pipe';
 import { PluckPipe } from './pipes/pluck.pipe';
-import { YesNoPipe } from '../shared-anonymous/pipes/yes-no.pipe';
 
 // directives
 import { DisableControlDirective } from './directives/disable-control.directive';
@@ -62,15 +60,15 @@ import { SharedAnonymousModule } from '../shared-anonymous/shared-anonymous.modu
     ReferralSearchResultsComponent,
     SearchBarComponent,
     SessionExpiredComponent,
+    PageNotFoundComponent,
+    DateTimePickerComponent,
+    PaginatorComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,
     NewlinesPipe,
     PluckPipe,
-    PageNotFoundComponent,
-    DateTimePickerComponent,
-    CaptchaComponent,
-    PaginatorComponent,
+
     DisableControlDirective,
     UpperCaseDirective,
     ValidationBorderDirective,
@@ -119,14 +117,14 @@ import { SharedAnonymousModule } from '../shared-anonymous/shared-anonymous.modu
     ReferralSearchResultsComponent,
     SearchBarComponent,
     SessionExpiredComponent,
+    DateTimePickerComponent,
+    PaginatorComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,
     NewlinesPipe,
     PluckPipe,
-    DateTimePickerComponent,
-    CaptchaComponent,
-    PaginatorComponent,
+
     DisableControlDirective,
     UpperCaseDirective,
     ValidationBorderDirective,
