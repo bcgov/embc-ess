@@ -46,6 +46,7 @@ import { TopNavbarComponent } from './components/top-navbar/top-navbar.component
 import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { SessionExpiredComponent } from './components/session-expired/session-expired.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
     PaginationSummaryComponent,
     ReferralSearchResultsComponent,
     SearchBarComponent,
+    SessionExpiredComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,
@@ -139,6 +141,7 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
     SideboxCollectionNoticeComponent,
     ReferralSearchResultsComponent,
     SearchBarComponent,
+    SessionExpiredComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,

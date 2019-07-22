@@ -19,7 +19,7 @@ import { VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from './constants';
 import { LandingPageGuard } from './core/guards/landing-page.guard';
 import { TaskNumberMakerComponent } from './provincial-admin/components/task-number-maker/task-number-maker.component';
 import { RegistrationSummaryFullComponent } from './shared/components/registration-summary-full/registration-summary-full.component';
-import { SessionExpiredComponent } from './components/session-expired/session-expired.component';
+import { SessionExpiredComponent } from './shared/components/session-expired/session-expired.component';
 import { UsefulInformationPageComponent } from './volunteer/pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './local-authority/pages/local-authority-registrations-page/local-authority-registrations-page.component';
 import { OrganizationsPageComponent } from './provincial-admin/pages/organizations-page/organizations-page.component';

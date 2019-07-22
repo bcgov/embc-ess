@@ -22,7 +22,6 @@ import { VolunteerMakerComponent } from './local-authority/components/volunteer-
 import { OrganizationMakerComponent } from './provincial-admin/components/organization-maker/organization-maker.component';
 import { VolunteerOrganizationListComponent } from './provincial-admin/components/volunteer-organization-list/volunteer-organization-list.component';
 import { RegistrationMakerComponent } from './volunteer/components/registration-maker/registration-maker.component';
-import { SessionExpiredComponent } from './components/session-expired/session-expired.component';
 import { UsefulInformationPageComponent } from './volunteer/pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './local-authority/pages/local-authority-registrations-page/local-authority-registrations-page.component';
 import { AdminRegistrationsPageComponent } from './provincial-admin/pages/admin-registrations-page/admin-registrations-page.component';
@@ -88,7 +87,6 @@ import { AuditorComponent } from './provincial-admin/components/auditor/auditor.
     TaskNumberMakerComponent,
     TesterPageComponent,
     TaskNumberListComponent,
-    SessionExpiredComponent,
     UsefulInformationPageComponent,
     LodgingRatesComponent,
     ClothingRatesComponent,
