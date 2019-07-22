@@ -23,8 +23,7 @@ import { CommunitiesSelectComponent } from './components/communities-select/comm
 import { DateTimePickerComponent } from './components/date-time-picker/date-time-picker.component';
 import { CaptchaComponent } from './components/captcha/captcha.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
-
-// import { AddEvacueeComponent, AddOrganizationComponent, AddTaskNumberComponent, AddUserComponent, CollectionNoticeComponent } from './components/side-boxes';
+import { FullRegistrationSummaryBlockComponent } from './components/full-registration-summary-block/full-registration-summary-block.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 import { ByIdPipe } from './pipes/by-id.pipe';
@@ -55,6 +54,8 @@ import { ValidationBorderDirective } from './directives/validation-border.direct
     FontAwesomeLinkComponent,
     AttentionIconComponent,
     CommunitiesSelectComponent,
+    FullRegistrationSummaryBlockComponent,
+
     ByIdPipe,
     DateTimeFormatPipe,
     NewlinesPipe,
@@ -107,6 +108,8 @@ import { ValidationBorderDirective } from './directives/validation-border.direct
     FontAwesomeLinkComponent,
     AttentionIconComponent,
     CommunitiesSelectComponent,
+    FullRegistrationSummaryBlockComponent,
+
     ByIdPipe,
     DateTimeFormatPipe,
     NewlinesPipe,
