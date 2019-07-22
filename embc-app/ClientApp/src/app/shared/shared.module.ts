@@ -37,6 +37,7 @@ import { DisableControlDirective } from './directives/disable-control.directive'
 import { UpperCaseDirective } from './directives/upper-case.directive';
 import { ValidationBorderDirective } from './directives/validation-border.directive';
 import { RegistrationSummaryFullComponent } from './components/registration-summary-full/registration-summary-full.component';
+import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { RegistrationSummaryFullComponent } from './components/registration-summ
     CommunitiesSelectComponent,
     FullRegistrationSummaryBlockComponent,
     RegistrationSummaryFullComponent,
+    TopNavbarComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,
@@ -112,6 +114,7 @@ import { RegistrationSummaryFullComponent } from './components/registration-summ
     CommunitiesSelectComponent,
     FullRegistrationSummaryBlockComponent,
     RegistrationSummaryFullComponent,
+    TopNavbarComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,

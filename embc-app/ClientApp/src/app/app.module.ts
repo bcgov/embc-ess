@@ -32,7 +32,6 @@ import { AdminRegistrationsPageComponent } from './provincial-admin/pages/admin-
 import { LocalAuthorityVolunteersPageComponent } from './local-authority/pages/local-authority-volunteers-page/local-authority-volunteers-page.component';
 import { ProvincialAdminVolunteersOrganizationPageComponent } from './provincial-admin/pages/volunteers-organization/provincial-admin-volunteers-organization-page.component';
 import { OrganizationsPageComponent } from './provincial-admin/pages/organizations-page/organizations-page.component';
-import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
 import { ProvincialAdminTaskNumbersPageComponent } from './provincial-admin/pages/task-numbers/provincial-admin-task-numbers-page.component';
 import { SideboxAddRegistrationComponent } from './components/sidebox-add-registration/sidebox-add-registration.component';
 import { SideboxAddOrganizationComponent } from './components/sidebox-add-organization/sidebox-add-organization.component';
@@ -100,7 +99,6 @@ import { AuditorComponent } from './provincial-admin/components/auditor/auditor.
     OrganizationListComponent,
     OrganizationMakerComponent,
     TaskNumberMakerComponent,
-    TopNavbarComponent,
     TesterPageComponent,
     TaskNumberListComponent,
     SessionExpiredComponent,
