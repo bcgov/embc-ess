@@ -12,11 +12,10 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SideInfoboxComponent } from './components/side-infobox/side-infobox.component';
 import { SideBoxComponent } from './components/side-box/side-box.component';
-import { FormFieldComponent } from './components/form-field/form-field.component';
 import { AddressSelectorComponent } from './components/address-form/address-selector.component';
 import { BcAddressComponent } from './components/address-form/bc-address/bc-address.component';
 import { OtherAddressComponent } from './components/address-form/other-address/other-address.component';
-import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
+import { FontAwesomeIconComponent } from '../shared-anonymous/components/font-awesome-icon/font-awesome-icon.component';
 import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
 import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
 import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
@@ -47,6 +46,7 @@ import { PaginationSummaryComponent } from './components/pagination-summary/pagi
 import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SessionExpiredComponent } from './components/session-expired/session-expired.component';
+import { SharedAnonymousModule } from '../shared-anonymous/shared-anonymous.module';
 
 @NgModule({
   declarations: [
@@ -57,11 +57,9 @@ import { SessionExpiredComponent } from './components/session-expired/session-ex
     FooterComponent,
     SideInfoboxComponent,
     SideBoxComponent,
-    FormFieldComponent,
     AddressSelectorComponent,
     BcAddressComponent,
     OtherAddressComponent,
-    FontAwesomeIconComponent,
     FontAwesomeLinkComponent,
     AttentionIconComponent,
     CommunitiesSelectComponent,
@@ -97,6 +95,7 @@ import { SessionExpiredComponent } from './components/session-expired/session-ex
     FormsModule,
     ReactiveFormsModule,
     TextMaskModule,
+    SharedAnonymousModule, // this gets the anonymous components when needed.
 
     // ng-bootstrap UI components
     NgbTypeaheadModule,
@@ -122,11 +121,9 @@ import { SessionExpiredComponent } from './components/session-expired/session-ex
     FooterComponent,
     SideInfoboxComponent,
     SideBoxComponent,
-    FormFieldComponent,
     AddressSelectorComponent,
     BcAddressComponent,
     OtherAddressComponent,
-    FontAwesomeIconComponent,
     FontAwesomeLinkComponent,
     AttentionIconComponent,
     CommunitiesSelectComponent,

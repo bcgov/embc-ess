@@ -4,10 +4,14 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextMaskModule } from 'angular2-text-mask';
 import { NgbTypeaheadModule, NgbPaginationModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormFieldComponent } from './components/form-field/form-field.component';
+import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
 
 
 @NgModule({
   declarations: [
+    FormFieldComponent,
+    FontAwesomeIconComponent,
 
   ],
   imports: [
@@ -30,6 +34,8 @@ import { NgbTypeaheadModule, NgbPaginationModule, NgbModalModule } from '@ng-boo
     TextMaskModule,
 
     // components, pipes, etc
+    FormFieldComponent,
+    FontAwesomeIconComponent,
 
   ]
 })
