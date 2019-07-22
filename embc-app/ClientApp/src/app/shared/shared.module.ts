@@ -12,11 +12,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SideInfoboxComponent } from './components/side-infobox/side-infobox.component';
 import { SideBoxComponent } from './components/side-box/side-box.component';
-import { AddressSelectorComponent } from './components/address-form/address-selector.component';
-import { BcAddressComponent } from './components/address-form/bc-address/bc-address.component';
-import { OtherAddressComponent } from './components/address-form/other-address/other-address.component';
-import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
-import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
 import { DateTimePickerComponent } from './components/date-time-picker/date-time-picker.component';
 import { CaptchaComponent } from './components/captcha/captcha.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
@@ -55,11 +50,6 @@ import { SharedAnonymousModule } from '../shared-anonymous/shared-anonymous.modu
     FooterComponent,
     SideInfoboxComponent,
     SideBoxComponent,
-    AddressSelectorComponent,
-    BcAddressComponent,
-    OtherAddressComponent,
-    AttentionIconComponent,
-    CommunitiesSelectComponent,
     FullRegistrationSummaryBlockComponent,
     RegistrationSummaryFullComponent,
     TopNavbarComponent,
@@ -118,11 +108,6 @@ import { SharedAnonymousModule } from '../shared-anonymous/shared-anonymous.modu
     FooterComponent,
     SideInfoboxComponent,
     SideBoxComponent,
-    AddressSelectorComponent,
-    BcAddressComponent,
-    OtherAddressComponent,
-    AttentionIconComponent,
-    CommunitiesSelectComponent,
     FullRegistrationSummaryBlockComponent,
     RegistrationSummaryFullComponent,
     TopNavbarComponent,

@@ -7,14 +7,22 @@ import { NgbTypeaheadModule, NgbPaginationModule, NgbModalModule } from '@ng-boo
 import { FormFieldComponent } from './components/form-field/form-field.component';
 import { FontAwesomeIconComponent } from './components/font-awesome-icon/font-awesome-icon.component';
 import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component';
-
+import { AddressSelectorComponent } from './components/address-form/address-selector.component';
+import { BcAddressComponent } from './components/address-form/bc-address/bc-address.component';
+import { OtherAddressComponent } from './components/address-form/other-address/other-address.component';
+import { AttentionIconComponent } from './components/attention-icon/attention-icon.component';
+import { CommunitiesSelectComponent } from './components/communities-select/communities-select.component';
 
 @NgModule({
   declarations: [
     FormFieldComponent,
     FontAwesomeIconComponent,
     FontAwesomeLinkComponent,
-
+    AddressSelectorComponent,
+    BcAddressComponent,
+    OtherAddressComponent,
+    AttentionIconComponent,
+    CommunitiesSelectComponent
   ],
   imports: [
     CommonModule,
@@ -39,6 +47,12 @@ import { FontAwesomeLinkComponent } from './components/fa-link/fa-link.component
     FormFieldComponent,
     FontAwesomeIconComponent,
     FontAwesomeLinkComponent,
+    AddressSelectorComponent,
+    BcAddressComponent,
+    OtherAddressComponent,
+    AttentionIconComponent,
+    CommunitiesSelectComponent,
+
 
   ]
 })
