@@ -43,6 +43,7 @@ import { UpperCaseDirective } from './directives/upper-case.directive';
 import { ValidationBorderDirective } from './directives/validation-border.directive';
 import { RegistrationSummaryFullComponent } from './components/registration-summary-full/registration-summary-full.component';
 import { TopNavbarComponent } from './components/top-navbar/top-navbar.component';
+import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { TopNavbarComponent } from './components/top-navbar/top-navbar.component
     SideboxAddTaskNumberComponent,
     SideboxAddVolunteerComponent,
     SideboxCollectionNoticeComponent,
+    PaginationSummaryComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,
@@ -125,6 +127,12 @@ import { TopNavbarComponent } from './components/top-navbar/top-navbar.component
     FullRegistrationSummaryBlockComponent,
     RegistrationSummaryFullComponent,
     TopNavbarComponent,
+    PaginationSummaryComponent,
+    SideboxAddRegistrationComponent,
+    SideboxAddOrganizationComponent,
+    SideboxAddTaskNumberComponent,
+    SideboxAddVolunteerComponent,
+    SideboxCollectionNoticeComponent,
 
     ByIdPipe,
     DateTimeFormatPipe,

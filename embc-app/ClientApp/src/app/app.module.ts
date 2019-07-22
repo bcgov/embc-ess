@@ -25,7 +25,6 @@ import { RegistrationMakerComponent } from './volunteer/components/registration-
 import { SessionExpiredComponent } from './components/session-expired/session-expired.component';
 import { ReferralSearchResultsComponent } from './components/referral-search-results/referral-search-results.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
-import { PaginationSummaryComponent } from './components/pagination-summary/pagination-summary.component';
 import { UsefulInformationPageComponent } from './volunteer/pages/useful-information-page/useful-information-page.component';
 import { LocalAuthorityRegistrationsPageComponent } from './local-authority/pages/local-authority-registrations-page/local-authority-registrations-page.component';
 import { AdminRegistrationsPageComponent } from './provincial-admin/pages/admin-registrations-page/admin-registrations-page.component';
@@ -94,7 +93,6 @@ import { AuditorComponent } from './provincial-admin/components/auditor/auditor.
     TaskNumberListComponent,
     SessionExpiredComponent,
     SearchBarComponent,
-    PaginationSummaryComponent,
     UsefulInformationPageComponent,
     LodgingRatesComponent,
     ClothingRatesComponent,
