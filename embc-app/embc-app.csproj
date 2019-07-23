@@ -280,10 +280,10 @@
     <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish" Condition="'$(SKIP_ANGULAR_BUILD)' == ''">
         <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
         <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-        <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" Condition="'$(UAT_BUILD)' == '' And '$(PROD_BUILD)' == '' And '$(PREP_BUILD)' == ''" />
-        <Exec WorkingDirectory="$(SpaRoot)" Command="npm run builduat -- --prod" Condition="'$(UAT_BUILD)' == '1'" />
-        <Exec WorkingDirectory="$(SpaRoot)" Command="npm run buildprep -- --prod" Condition="'$(PREP_BUILD)' == '1'" />
-        <Exec WorkingDirectory="$(SpaRoot)" Command="npm run buildprod -- --prod" Condition="'$(PROD_BUILD)' == '1'" />
+        <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod --aot" Condition="'$(UAT_BUILD)' == '' And '$(PROD_BUILD)' == '' And '$(PREP_BUILD)' == ''" />
+        <Exec WorkingDirectory="$(SpaRoot)" Command="npm run builduat -- --prod --aot" Condition="'$(UAT_BUILD)' == '1'" />
+        <Exec WorkingDirectory="$(SpaRoot)" Command="npm run buildprep -- --prod --aot" Condition="'$(PREP_BUILD)' == '1'" />
+        <Exec WorkingDirectory="$(SpaRoot)" Command="npm run buildprod -- --prod --aot" Condition="'$(PROD_BUILD)' == '1'" />
         <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
 
         <!-- Include the newly-built files in the publish output -->
