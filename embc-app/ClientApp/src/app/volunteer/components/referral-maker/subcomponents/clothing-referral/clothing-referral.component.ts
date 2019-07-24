@@ -7,9 +7,7 @@ import { ReferralDate } from 'src/app/core/models/referral-date';
 import { ClothingRatesComponent } from 'src/app/shared/modals/clothing-rates/clothing-rates.component';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
-
-const MAXIMUM_PER = 150.00;
-const MAXIMUM_EXTREME = 200.00;
+import { CLOTHING_PER_PERSON, CLOTHING_PER_PERSON_WINTER_CONDITIONS } from 'src/app/constants/rates';
 
 @Component({
   selector: 'app-clothing-referral',
@@ -17,6 +15,9 @@ const MAXIMUM_EXTREME = 200.00;
   styleUrls: ['./clothing-referral.component.scss']
 })
 export class ClothingReferralComponent extends AbstractReferralComponent<ClothingReferral> implements OnInit, OnDestroy {
+
+  clothingMax = CLOTHING_PER_PERSON;
+  clothingWinterMax = CLOTHING_PER_PERSON_WINTER_CONDITIONS;
 
   private ratesModal: NgbModalRef = null;
 
@@ -60,14 +61,14 @@ export class ClothingReferralComponent extends AbstractReferralComponent<Clothin
         // get data from form
         const n = x.value.evacuees.length;
         return x.value.extremeWinterConditions
-          ? (n * MAXIMUM_EXTREME)
-          : (n * MAXIMUM_PER);
+          ? (n * this.clothingWinterMax)
+          : (n * this.clothingMax);
       } else {
         // get data from referral
         const n = x.evacuees.length;
         return x.extremeWinterConditions
-          ? (n * MAXIMUM_EXTREME)
-          : (n * MAXIMUM_PER);
+          ? (n * this.clothingWinterMax)
+          : (n * this.clothingMax);
       }
     }
     return 0;
