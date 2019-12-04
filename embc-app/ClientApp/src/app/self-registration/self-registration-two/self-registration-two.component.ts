@@ -63,6 +63,21 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
       insuranceCode: {
         required: 'Please make a selection regarding insurance coverage.',
       },
+      requiresFood: {
+        required: 'Please make a selection regarding food while evacuated.',
+      },
+      requiresClothing: {
+        required: 'Please make a selection regarding clothing while evacuated.',
+      },
+      requiresAccommodation: {
+        required: 'Please make a selection regarding lodging while evacuated.',
+      },
+      requiresIncidentals: {
+        required: 'Please make a selection regarding incidentals while evacuated.',
+      },
+      requiresTransportation: {
+        required: 'Please make a selection regarding transportation while evacuated.',
+      },
     };
 
     // Define an instance of the validator for use with this form,
@@ -124,11 +139,11 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
       medicationNeeds: [null, Validators.required],
       hasPets: [null, Validators.required],
       insuranceCode: [null, Validators.required],  // one of ['yes', 'yes-unsure', 'no', 'unsure']
-      requiresFood: null,
-      requiresClothing: null,
-      requiresAccommodation: null,
-      requiresIncidentals: null,
-      requiresTransportation: null,
+      requiresFood: [null, Validators.required],
+      requiresClothing: [null, Validators.required],
+      requiresAccommodation: [null, Validators.required],
+      requiresIncidentals: [null, Validators.required],
+      requiresTransportation: [null, Validators.required],
     });
   }
 
