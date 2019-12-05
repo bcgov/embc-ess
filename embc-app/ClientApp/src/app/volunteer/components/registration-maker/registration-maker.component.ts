@@ -147,6 +147,21 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       hasPets: {
         required: 'Please make a selection regarding pets.',
       },
+        requiresAccommodation: {
+            required: 'Please make a selection regarding lodging while evacuated.',
+        },
+        requiresClothing: {
+            required: 'Please make a selection regarding clothing while evacuated.',
+        },
+        requiresFood: {
+            required: 'Please make a selection regarding food while evacuated.',
+        },
+        requiresIncidentals: {
+            required: 'Please make a selection regarding incidentals while evacuated.',
+        },
+        requiresTransportation: {
+            required: 'Please make a selection regarding transportation while evacuated.',
+        },
     };
 
     // TODO: Wow. it sure would be nice if we could just instatiate a class instead of using interfaces
@@ -212,11 +227,11 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
           // set registration mode to edit and save the previous content in an object
           // NOTE: these flags are reversed! ie, requiresAccomodation means "claims to have accomodation on self reg"
-          registration.requiresAccommodation = !registration.requiresAccommodation;
-          registration.requiresClothing = !registration.requiresClothing;
-          registration.requiresFood = !registration.requiresFood;
-          registration.requiresIncidentals = !registration.requiresIncidentals;
-          registration.requiresTransportation = !registration.requiresTransportation;
+          registration.requiresAccommodation = registration.requiresAccommodation;
+          registration.requiresClothing = registration.requiresClothing;
+          registration.requiresFood = registration.requiresFood;
+          registration.requiresIncidentals = registration.requiresIncidentals;
+          registration.requiresTransportation = registration.requiresTransportation;
 
           // hide/show form accordingly
           this.activeForm = !registration.restrictedAccess;
@@ -320,11 +335,11 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       hasPersonalServicesReferral: null,
       hasPetCareReferral: null,
       hasPets: [null, Validators.required],
-      requiresAccommodation: null,
-      requiresClothing: null,
-      requiresFood: null,
-      requiresIncidentals: null,
-      requiresTransportation: null,
+      requiresAccommodation: [null, Validators.required],
+      requiresClothing: [null, Validators.required],
+      requiresFood: [null, Validators.required],
+      requiresIncidentals: [null, Validators.required],
+      requiresTransportation: [null, Validators.required],
 
       // HOH fields that we decided to put at the parent form level to simplify things
       phoneNumber: '', // only BC phones will be validated so keep validators out of here...
