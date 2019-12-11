@@ -2,54 +2,6 @@
   <p class="step h2 text-uppercase">Step 2 of 4</p>
   <h1 class="mt-3">Register as an Evacuee</h1>
 
-  <h2 class="blue-header h3">ADDITIONAL INFORMATION</h2>
-  <section>
-    <p class="required">Do you have any dietary requirements?</p>
-    <div class="form-group">
-      <div class="form-check">
-        <input type="radio" [class.is-invalid]="invalid('dietaryNeeds')" class="form-check-input" [value]="true" formControlName="dietaryNeeds" id="dietaryNeedsTrue">
-        <label class="form-check-label" for="dietaryNeedsTrue">Yes</label>
-      </div>
-      <div class="form-check">
-        <input type="radio" [class.is-invalid]="invalid('dietaryNeeds')" class="form-check-input" [value]="false" formControlName="dietaryNeeds" id="dietaryNeedsFalse">
-        <label class="form-check-label" for="dietaryNeedsFalse">No</label>
-      </div>
-      <span [class.d-block]="invalid('dietaryNeeds')" class="invalid-feedback">{{validationErrors['dietaryNeeds']}}</span>
-    </div>
-
-    <p class="required">Do you (or anyone registering with you) take medication?</p>
-    <div class="form-group">
-      <div class="form-check">
-        <input type="radio" [class.is-invalid]="invalid('medicationNeeds')" class="form-check-input" [value]="true" formControlName="medicationNeeds" id="medicationNeedsTrue">
-        <label class="form-check-label" for="medicationNeedsTrue">Yes</label>
-      </div>
-      <div class="form-check">
-        <input type="radio" [class.is-invalid]="invalid('medicationNeeds')" class="form-check-input" [value]="false" formControlName="medicationNeeds" id="medicationNeedsFalse">
-        <label class="form-check-label" for="medicationNeedsFalse">No</label>
-      </div>
-      <span [class.d-block]="invalid('medicationNeeds')" class="invalid-feedback">{{validationErrors['medicationNeeds']}}</span>
-      <div *ngIf="form.value.medicationNeeds===true" class="alert alert-info" role="alert">
-        <p class="alert-heading display-6 my-2">Please ensure you have an adequate supply of medication for the duration of the evacuation.</p>
-      </div>
-    </div>
-
-    <p class="required">Do you have any pets with you?</p>
-    <div class="form-group">
-      <div class="form-check">
-        <input type="radio" [class.is-invalid]="invalid('hasPets')" class="form-check-input" [value]="true" formControlName="hasPets" id="hasPetsTrue">
-        <label class="form-check-label" for="hasPetsTrue">Yes</label>
-      </div>
-      <div class="form-check">
-        <input type="radio" [class.is-invalid]="invalid('hasPets')" class="form-check-input" [value]="false" formControlName="hasPets" id="hasPetsFalse">
-        <label class="form-check-label" for="hasPetsFalse">No</label>
-      </div>
-      <span [class.d-block]="invalid('hasPets')" class="invalid-feedback">{{validationErrors['hasPets']}}</span>
-      <div *ngIf="form.value.hasPets===true" class="alert alert-info" role="alert">
-        <p class="alert-heading display-6 my-2">Please ensure you have adequate pet care supplies for the duration of the evacuation.</p>
-      </div>
-    </div>
-  </section>
-
   <h2 class="blue-header h3">INSURANCE</h2>
   <section>
     <p class="required">Do you have insurance to cover your immediate needs?</p>
@@ -84,7 +36,7 @@
 
   <h2 class="blue-header h3">FOOD</h2>
   <section>
-    <p class="required">Do you have food for you and your family while you are evacuated?</p>
+    <p class="required">Do you have food for you and your family while you are evacuated? If you are unsure, select "No".</p>
     <div class="form-group">
       <div class="form-check">
         <input type="radio" [class.is-invalid]="invalid('requiresFood')" class="form-check-input" [value]="true" formControlName="requiresFood" id="requiresFoodTrue">
@@ -96,11 +48,23 @@
       </div>
       <span [class.d-block]="invalid('requiresFood')" class="invalid-feedback">{{validationErrors['requiresFood']}}</span>
     </div>
+    <p class="required">Do you have any dietary requirements?</p>
+    <div class="form-group">
+      <div class="form-check">
+        <input type="radio" [class.is-invalid]="invalid('dietaryNeeds')" class="form-check-input" [value]="true" formControlName="dietaryNeeds" id="dietaryNeedsTrue">
+        <label class="form-check-label" for="dietaryNeedsTrue">Yes</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" [class.is-invalid]="invalid('dietaryNeeds')" class="form-check-input" [value]="false" formControlName="dietaryNeeds" id="dietaryNeedsFalse">
+        <label class="form-check-label" for="dietaryNeedsFalse">No</label>
+      </div>
+      <span [class.d-block]="invalid('dietaryNeeds')" class="invalid-feedback">{{validationErrors['dietaryNeeds']}}</span>
+    </div>
   </section>
 
   <h2 class="blue-header h3">LODGING</h2>
   <section>
-    <p class="required">Are you able to provide lodging for you and your family while you are evacuated? This could include staying with relatives/friends or staying in a hotel</p>
+    <p class="required">Are you able to provide lodging for you and your family while you are evacuated? This could include staying with relatives/friends or staying in a hotel. If you are unsure, select "No".</p>
     <div class="form-group">
       <div class="form-check">
         <input type="radio" [class.is-invalid]="invalid('requiresAccommodation')" class="form-check-input" [value]="true" formControlName="requiresAccommodation" id="requiresAccommodationTrue">
@@ -116,7 +80,7 @@
 
   <h2 class="blue-header h3">CLOTHING</h2>
   <section>
-    <p class="required">Do you have appropriate clothing for you and your family while you are evacuated? This includes warm clothing should there be extreme winter conditions</p>
+    <p class="required">Do you have appropriate clothing for you and your family while you are evacuated? This includes warm clothing should there be extreme winter conditions. If you are unsure, select "No".</p>
     <div class="form-group">
       <div class="form-check">
         <input type="radio" [class.is-invalid]="invalid('requiresClothing')" class="form-check-input" [value]="true" formControlName="requiresClothing" id="requiresClothingTrue">
@@ -132,7 +96,7 @@
 
   <h2 class="blue-header h3">TRANSPORTATION</h2>
   <section>
-    <p class="required">Do you have transportation to meet your immediate needs?</p>
+    <p class="required">Do you have transportation to meet your immediate needs? If you are unsure, select "No".</p>
     <div class="form-group">
       <div class="form-check">
         <input type="radio" [class.is-invalid]="invalid('requiresTransportation')" class="form-check-input" [value]="true" formControlName="requiresTransportation" id="requiresTransportationTrue">
@@ -148,7 +112,7 @@
 
   <h2 class="blue-header h3">INCIDENTALS</h2>
   <section>
-    <p class="required">Do you have necessities for you and your family while you are evacuated? This could include miscellaneous items such as personal hygiene products, laundry supplies and/or pet food</p>
+    <p class="required">Do you have necessities for you and your family while you are evacuated? This could include miscellaneous items such as personal hygiene products, laundry supplies and/or pet food. If you are unsure, select "No".</p>
     <div class="form-group">
       <div class="form-check">
         <input type="radio" [class.is-invalid]="invalid('requiresIncidentals')" class="form-check-input" [value]="true" formControlName="requiresIncidentals" id="requiresIncidentalsTrue">
@@ -162,52 +126,43 @@
     </div>
   </section>
 
-  <!--<h2 class="blue-header h3">Next Steps</h2>
+  <h2 class="blue-header h3">MEDICATION</h2>
   <section>
-    <p>
-      While you are evacuated you may require emergency supports to ensure you and your family’s needs are met. An Emergency Support Services volunteer will meet with you in a Reception Centre in order to determine these needs.
-    </p>
-    <p>
-      To expedite this process, please indicate <strong>which categories of support you are able to provide for yourselves.</strong>
-    </p>
-    <div class="feature-block">
-      <p>Check all that apply:</p>
-      <div class="support-services__list padded-section">
-        <div class="support-services__item">
-          <div class="row">
-            <div class="form-check col-md-6">
-              <input type="checkbox" class="form-check-input" formControlName="requiresFood" id="requiresFood">
-              <label class="form-check-label" for="requiresFood">Food</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="form-check col-md-6">
-              <input type="checkbox" class="form-check-input" formControlName="requiresClothing" id="requiresClothing">
-              <label class="form-check-label" for="requiresClothing">Clothing</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="form-check col-md-6">
-              <input type="checkbox" class="form-check-input" formControlName="requiresAccommodation" id="requiresLodging">
-              <label class="form-check-label" for="requiresLodging">Lodging</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="form-check col-md-6">
-              <input type="checkbox" class="form-check-input" formControlName="requiresIncidentals" id="requiresIncidentals">
-              <label class="form-check-label" for="requiresIncidentals">Incidentals</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="form-check col-md-6">
-              <input type="checkbox" class="form-check-input" formControlName="requiresTransportation" id="requiresTransportation">
-              <label class="form-check-label" for="requiresTransportation">Transportation</label>
-            </div>
-          </div>
-        </div>
+    <p class="required">Do you (or anyone registering with you) take medication?</p>
+    <div class="form-group">
+      <div class="form-check">
+        <input type="radio" [class.is-invalid]="invalid('medicationNeeds')" class="form-check-input" [value]="true" formControlName="medicationNeeds" id="medicationNeedsTrue">
+        <label class="form-check-label" for="medicationNeedsTrue">Yes</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" [class.is-invalid]="invalid('medicationNeeds')" class="form-check-input" [value]="false" formControlName="medicationNeeds" id="medicationNeedsFalse">
+        <label class="form-check-label" for="medicationNeedsFalse">No</label>
+      </div>
+      <span [class.d-block]="invalid('medicationNeeds')" class="invalid-feedback">{{validationErrors['medicationNeeds']}}</span>
+      <div *ngIf="form.value.medicationNeeds===true" class="alert alert-info" role="alert">
+        <p class="alert-heading display-6 my-2">Please ensure you have an adequate supply of medication for the duration of the evacuation.</p>
       </div>
     </div>
-  </section>-->
+  </section>
+
+  <h2 class="blue-header h3">PETS</h2>
+  <section>
+    <p class="required">Do you have any pets with you?</p>
+    <div class="form-group">
+      <div class="form-check">
+        <input type="radio" [class.is-invalid]="invalid('hasPets')" class="form-check-input" [value]="true" formControlName="hasPets" id="hasPetsTrue">
+        <label class="form-check-label" for="hasPetsTrue">Yes</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" [class.is-invalid]="invalid('hasPets')" class="form-check-input" [value]="false" formControlName="hasPets" id="hasPetsFalse">
+        <label class="form-check-label" for="hasPetsFalse">No</label>
+      </div>
+      <span [class.d-block]="invalid('hasPets')" class="invalid-feedback">{{validationErrors['hasPets']}}</span>
+      <div *ngIf="form.value.hasPets===true" class="alert alert-info" role="alert">
+        <p class="alert-heading display-6 my-2">Please ensure you have adequate pet care supplies for the duration of the evacuation.</p>
+      </div>
+    </div>
+  </section>
 
   <div class="mt-5 space-between">
     <section>
