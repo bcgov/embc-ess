@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/core/models';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -8,8 +8,10 @@ import { AuthService } from 'src/app/core/services/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnChanges {
+
   @Input() currentUser: User;
+  displayName: string = null;
 
   constructor(
     private router: Router,
@@ -17,6 +19,19 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.displayName === null) {
+      let userChanges: SimpleChange = changes["currentUser"];
+      if (userChanges.currentValue.firstname && userChanges.currentValue.lastname) {
+        this.displayName = `${userChanges.currentValue.firstname} ${userChanges.currentValue.lastname.substr(0,1)}`;
+      }
+      // Not sure if necessary...
+      else if (userChanges.currentValue.name) {
+        this.displayName = userChanges.currentValue.name;
+      }
+    }
   }
 
   homeButton() {
