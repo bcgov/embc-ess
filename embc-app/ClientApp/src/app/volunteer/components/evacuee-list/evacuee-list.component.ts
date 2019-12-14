@@ -28,7 +28,8 @@ export class EvacueeListComponent implements OnInit {
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
 
-  advancedSearchMode = false;
+  // for R1, advanced search mode is the only mode
+  advancedSearchMode = true;
   advancedSearchForm = this.fb.group({
     last_name: null,
     first_name: null,
@@ -51,9 +52,9 @@ export class EvacueeListComponent implements OnInit {
   ngOnInit() {
     // save the base url path
     this.authService.path.subscribe((path: string) => this.path = path);
-    this.getEvacuees().subscribe((listResult: ListResult<EvacueeListItem>) => {
-      this.resultsAndPagination = listResult;
-    });
+    //this.getEvacuees().subscribe((listResult: ListResult<EvacueeListItem>) => {
+    //  this.resultsAndPagination = listResult;
+    //});
   }
 
   switchToAdvancedSearch() {
