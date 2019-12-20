@@ -1,8 +1,7 @@
 {
   "kind": "Template",
   "apiVersion": "v1",
-  "metadata":
-  {
+  "metadata": {
     "name": "${NAME}-build-template",
     "creationTimestamp": null
   },
@@ -10,24 +9,20 @@
     {
       "kind": "ImageStream",
       "apiVersion": "v1",
-      "metadata":
-      {
+      "metadata": {
         "name": "${NAME}"
       }
     },
     {
       "kind": "BuildConfig",
       "apiVersion": "v1",
-      "metadata":
-      {
+      "metadata": {
         "name": "${NAME}",
-        "labels":
-        {
+        "labels": {
           "app": "${NAME}"
         }
       },
-      "spec":
-      {
+      "spec": {
         "triggers": [
           {
             "type": "ImageChange"
@@ -37,50 +32,43 @@
           }
         ],
         "runPolicy": "Serial",
-        "source":
-        {
+        "source": {
           "type": "Git",
-          "git":
-          {
+          "git": {
             "uri": "${GIT_REPO_URL}",
             "ref": "${GIT_REF}"
           },
-          "contextDir": "${SOURCE_CONTEXT_DIR}"          
+          "contextDir": "${SOURCE_CONTEXT_DIR}"
         },
-        "strategy":
-        {
+        "strategy": {
           "type": "Source",
-          "sourceStrategy":
-          {
-            "from":
-            {
+          "sourceStrategy": {
+            "from": {
               "kind": "${SOURCE_IMAGE_KIND}",
-              "name": "${SOURCE_IMAGE_NAME}:${SOURCE_IMAGE_TAG}"              
+              "name": "${SOURCE_IMAGE_NAME}:${SOURCE_IMAGE_TAG}"
             },
             "env": [
               {
                 "name": "DOTNET_STARTUP_PROJECT",
                 "value": "${DOTNET_STARTUP_PROJECT}"
               },
-			  {
+              {
                 "name": "UAT_BUILD",
                 "value": "${UAT_BUILD}"
               },
-			  {
+              {
                 "name": "PROD_BUILD",
                 "value": "${PROD_BUILD}"
               },
-			  {
+              {
                 "name": "PREP_BUILD",
                 "value": "${PREP_BUILD}"
               }
             ]
           }
         },
-        "output":
-        {
-          "to":
-          {
+        "output": {
+          "to": {
             "kind": "ImageStreamTag",
             "name": "${NAME}:${OUTPUT_IMAGE_TAG}"
           }
@@ -153,7 +141,7 @@
       "displayName": "DotNet Startup Project",
       "description": "The path to the startup project for the .Net application.",
       "required": true,
-      "value": "pill-press-app/pill-press-app.csproj"
+      "value": "embc-app/embc-app.csproj"
     },
     {
       "name": "OUTPUT_IMAGE_TAG",
@@ -175,7 +163,7 @@
       "description": "The resources Memory limit (in Mi, Gi, etc) for this build.",
       "required": true,
       "value": "6Gi"
-    },   
+    },
     {
       "name": "CPU_REQUEST",
       "displayName": "Resources CPU Request",
@@ -190,23 +178,23 @@
       "required": true,
       "value": "4Gi"
     },
-	{
+    {
       "name": "UAT_BUILD",
       "displayName": "UAT Build",
-      "description": "1 if true",      
+      "description": "1 if true",
       "value": ""
     },
-	{
+    {
       "name": "PROD_BUILD",
       "displayName": "Prod Build",
-      "description": "1 if true",      
+      "description": "1 if true",
       "value": ""
     },
-	{
+    {
       "name": "PREP_BUILD",
       "displayName": "Prep Build",
-      "description": "1 if true",      
+      "description": "1 if true",
       "value": ""
-    }     
+    }
   ]
 }
