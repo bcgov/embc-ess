@@ -12,7 +12,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
     {
         public async Task<IPagedResults<EvacueeListItem>> GetEvacueesAsync(EvacueeSearchQueryParameters searchQuery)
         {
-            if (searchQuery.HasSortBy()) {
+            if (searchQuery.HasSortBy())
+            {
                 // Sort by whatever parameter was included with the query
                 searchQuery.SortBy = MapSortToFields(searchQuery.SortBy);
             }
@@ -22,38 +23,76 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 searchQuery.SortBy = "-essFileNumber";
             };
 
+
             var query = db.ViewEvacuees
                 // Inactive evacuees are soft deleted. We do not return them or give the user the option yet.
                 .Where(e => e.Active == searchQuery.Active)
                 // we sort the larger collection first before letting the subset (paginated ones be sorted)
                 .Sort(MapSortToFields(searchQuery.SortBy));
 
+
             if (searchQuery.HasQuery())
             {
+                // Try to parse the query as a date - if it fails it sets dob to DateTime.MinValue (Midnight @ 0001 AD), which shouldn't match anyone
+                DateTime.TryParse(searchQuery.Query, out DateTime dob);
+
                 // Simple search. When a search query is provided search should match multiple things from the record. Query can match multiple things.
                 query = query.Where(e =>
                     EF.Functions.Like(e.LastName, $"%{searchQuery.Query}%") ||
                     e.IncidentTaskNumber == searchQuery.Query ||
                     e.RegistrationId == searchQuery.Query ||
                     EF.Functions.Like(e.EvacuatedTo, $"%{searchQuery.Query}%") ||
-                    EF.Functions.Like(e.EvacuatedFrom, $"%{searchQuery.Query}%"));
+                    EF.Functions.Like(e.EvacuatedFrom, $"%{searchQuery.Query}%") ||
+                    e.Dob.Equals(dob));
             }
             else
             {
-                // Advanced search. There is a null query. However the client has supplied other specific parameters to search by.
                 // if a search parameter is not null, then add a "where" clause to the query matching the supplied UTF-16 query string
-                if (!string.IsNullOrWhiteSpace(searchQuery.LastName)) query = query.Where(e => EF.Functions.Like(e.LastName, $"%{searchQuery.LastName}%"));
-                if (!string.IsNullOrWhiteSpace(searchQuery.FirstName)) query = query.Where(e => EF.Functions.Like(e.FirstName, $"%{searchQuery.FirstName}%"));
-                if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber)) query = query.Where(e => e.IncidentTaskNumber == searchQuery.IncidentTaskNumber);
-                if (!string.IsNullOrWhiteSpace(searchQuery.EssFileNumber)) query = query.Where(e => e.RegistrationId == searchQuery.EssFileNumber);
-                if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom)) query = query.Where(e => e.EvacuatedFrom == searchQuery.EvacuatedFrom);
-                if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedTo)) query = query.Where(e => e.EvacuatedTo == searchQuery.EvacuatedTo);
+                if (!string.IsNullOrWhiteSpace(searchQuery.LastName))
+                {
+                    query = query.Where(e => EF.Functions.Like(e.LastName, $"%{searchQuery.LastName}%"));
+                }
+
+                if (!string.IsNullOrWhiteSpace(searchQuery.FirstName))
+                {
+                    query = query.Where(e => EF.Functions.Like(e.FirstName, $"%{searchQuery.FirstName}%"));
+                }
+
+                if (!string.IsNullOrWhiteSpace(searchQuery.DateOfBirth))
+                {
+                    // TryParse means that if it fails to parse a Date, the out value will be set to DateTime.MinVal (Midnight @ 0001 AD)
+                    // Otherwise it throws an exception if it fails
+                    // Letting it blow up might be more correct - Should we throw an exception if a bad date string is passed in?
+                    DateTime.TryParse(searchQuery.DateOfBirth, out DateTime dob);
+                    query = query.Where(e => e.Dob.Equals(dob));
+                }
+
+                if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber))
+                {
+                    query = query.Where(e => e.IncidentTaskNumber == searchQuery.IncidentTaskNumber);
+                }
+
+                if (!string.IsNullOrWhiteSpace(searchQuery.EssFileNumber))
+                {
+                    query = query.Where(e => e.RegistrationId == searchQuery.EssFileNumber);
+                }
+
+                if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom))
+                {
+                    query = query.Where(e => e.EvacuatedFrom == searchQuery.EvacuatedFrom);
+                }
+
+                if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedTo))
+                {
+                    query = query.Where(e => e.EvacuatedTo == searchQuery.EvacuatedTo);
+                }
 
                 // if has referrals has a value do some things. Else is omit the where clause so it is omitted
                 if (searchQuery.HasReferrals.HasValue)
                 {
                     // (Why can searchQuery be valueless in the object? It should take memory space whether we intantiate it or not.)
-                    if (searchQuery.HasReferrals.Value) {
+                    if (searchQuery.HasReferrals.Value)
+                    {
                         // set the "where" clause for only evacuees with referrals
                         query = query.Where(e => e.HasReferrals);
                     }
@@ -64,7 +103,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     }
                 }
                 // allow for filtering on registration completion state
-                if (searchQuery.RegistrationCompleted.HasValue) query = query.Where(e => e.IsFinalized == searchQuery.RegistrationCompleted.Value);
+                if (searchQuery.RegistrationCompleted.HasValue)
+                {
+                    query = query.Where(e => e.IsFinalized == searchQuery.RegistrationCompleted.Value);
+                }
             }
 
             // build the paginated query
