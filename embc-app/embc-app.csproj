@@ -34,6 +34,7 @@
         <PackageReference Include="MediatR" Version="7.0.0" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="2.1.2" />
         <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
 

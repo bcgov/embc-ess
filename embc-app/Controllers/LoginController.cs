@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("login")]
-    [Authorize]
     public class LoginController : Controller
     {
         private readonly IConfiguration configuration;
@@ -34,8 +33,11 @@ namespace Gov.Jag.Embc.Public.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> Login(string path = "dashboard")
+        public async Task<ActionResult> SiteMinderLogin(string path = "dashboard")
         {
+            //Route to ocid authenticated endpoint
+            if (configuration.GetAuthenticationMode() == "KC") return RedirectToAction(nameof(OcidLogin));
+
             if (!env.IsProduction() && "headers".Equals(path, StringComparison.OrdinalIgnoreCase))
             {
                 return Content(string.Join(Environment.NewLine, Request.Headers.Select(header => $"{header.Key}={string.Join(",", header.Value.ToArray())}")), "text/plain", Encoding.UTF8);
@@ -43,6 +45,13 @@ namespace Gov.Jag.Embc.Public.Controllers
 
             if (ControllerContext.HttpContext.User == null || !ControllerContext.HttpContext.User.Identity.IsAuthenticated) return Unauthorized();
 
+            return await Task.FromResult(LocalRedirect($"{configuration.GetBasePath()}/{path}"));
+        }
+
+        [HttpGet("oidc")]
+        [Authorize]
+        public async Task<ActionResult> OcidLogin(string path = "dashboard")
+        {
             return await Task.FromResult(LocalRedirect($"{configuration.GetBasePath()}/{path}"));
         }
 
