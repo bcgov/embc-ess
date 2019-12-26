@@ -129,5 +129,10 @@ namespace Gov.Jag.Embc.Public
 
             return $"Server={server};Database={db};{auth};MultipleActiveResultSets=true;;{DBConnectionRetry}";
         }
+
+        public static string GetAuthenticationMode(this IConfiguration conf)
+        {
+            return conf.GetValue("AUTH_MODE", "SM");
+        }
     }
 }

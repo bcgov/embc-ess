@@ -3,6 +3,7 @@ using Gov.Jag.Embc.Public;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Seeder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -26,6 +27,7 @@ namespace embc_unit_tests
         public TestBase(ITestOutputHelper output)
         {
             var configuration = A.Fake<IConfiguration>();
+            var environment = A.Fake<IHostingEnvironment>();
             var loggerFactory = new LoggerFactory();
             loggerFactory.AddProvider(new XUnitLoggerProvider(output));
 
@@ -43,7 +45,7 @@ namespace embc_unit_tests
                     .ConfigureWarnings(opts => opts.Ignore(InMemoryEventId.TransactionIgnoredWarning))
                   );
 
-            new Startup(configuration, loggerFactory).ConfigureServices(services);
+            new Startup(configuration, environment, loggerFactory).ConfigureServices(services);
 
             serviceProvider = services.BuildServiceProvider();
 

@@ -11,6 +11,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public async Task<IEnumerable<Country>> GetCountriesAsync()
         {
             return (await db.Countries
+                .AsNoTracking()
                 .Where(c => c.Active)
                 .OrderBy(c => c.CountryCode)
                 .ToArrayAsync())
@@ -19,15 +20,18 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<IEnumerable<Region>> GetRegionsAsync()
         {
-            return (await db.Regions.ToArrayAsync())
+            return (await db.Regions
+                .AsNoTracking()
                 .Where(r => r.Active)
                 .OrderBy(r => r.Name)
+                .ToArrayAsync())
                 .Select(mapper.Map<Region>);
         }
 
         public async Task<IEnumerable<Community>> GetCommunitiesAsync()
         {
             return (await db.Communities
+                .AsNoTracking()
                 .Where(c => c.Active)
                 .Include(d => d.Region)
                 .OrderBy(c => c.Name)
@@ -38,6 +42,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public async Task<IEnumerable<FamilyRelationshipType>> GetFamilyRelationshipTypesAsync()
         {
             return (await db.FamilyRelationshipTypes
+                .AsNoTracking()
                 .Where(t => t.Active)
                 .ToArrayAsync())
                 .Select(mapper.Map<FamilyRelationshipType>);
