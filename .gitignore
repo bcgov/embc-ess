@@ -356,3 +356,4 @@ MigrationBackup/
 # MacOS hidden files
 .DS_Store
 **/.DS_Store
+/embc-app/web.config

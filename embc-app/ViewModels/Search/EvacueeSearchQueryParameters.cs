@@ -28,5 +28,8 @@ namespace Gov.Jag.Embc.Public.ViewModels.Search
 
         [FromQuery(Name = "registration_completed")]
         public bool? RegistrationCompleted { get; set; }
+
+        [FromQuery(Name = "dob")]
+        public string DateOfBirth { get; set; }
     }
 }
