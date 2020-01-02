@@ -91,15 +91,19 @@ Before running the API locally, you must set some environment variables:
 | ---- | ----- |
 | BASE_PATH |/embcess|
 | BASE_URI |http://localhost|
-| APP_ENVIRONMENT_TITLE |Banner title (shown on all environments except PROD).|
-| DATABASE_SERVICE_NAME |Database service URL|
-| DB_DATABASE |<database_name>|
-| DB_ADMIN_PASSWORD |SA (admin) password|
-| DB_USER |DB connection credentials|
-| DB_PASSWORD |DB connection credentials|
-| SMTP_HOST |smtp.youremailserver.com|
-| SMTP_DEFAULT_SENDER |no-reply@youremailserver.com|
-| PDF_SERVICE_NAME |PDF microservice URL|
+| APP_ENVIRONMENT_TITLE     |   Banner title (shown on all environments except PROD).   |
+| DATABASE_SERVICE_NAME     |   Database service URL                                    |
+| DB_DATABASE               |   <database_name>                                         |
+| DB_ADMIN_PASSWORD         |   SA (admin) password                                     |
+| DB_USER                   |   DB connection credentials                               |
+| DB_PASSWORD               |   DB connection credentials                               |
+| SMTP_HOST                 |   smtp.youremailserver.com                                |
+| SMTP_DEFAULT_SENDER       |   no-reply@youremailserver.com                            |
+| PDF_SERVICE_NAME          |   PDF microservice URL                                    |
+|AUTH_MODE                  |   KC for KeyCloak  or SM for SiteMinder                   |
+|auth:oidc:MetaDataAddress  |   KeyCloak client meta data URL                           | 
+|auth:oidc:ClientId         |   KeyCloak client ID                                      |
+|auth:oidc:ClientSecret     |   KeyCloak client secert                                  |
 
 DevOps Process
 -------------

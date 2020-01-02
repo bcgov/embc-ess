@@ -59,12 +59,7 @@ export class AuthService extends RestService {
     // clear all cookies
     this.cookieService.clear();
 
-    // clear current user
-    this.setCurrentUser(null);
-
-    if (force && wasLoggedIn) {
-      // try to destroy session on server
-      // return this.http.get<void>('logout', { headers: this.headers });
+    if (wasLoggedIn) {
       document.location.href = 'logout';
     }
 

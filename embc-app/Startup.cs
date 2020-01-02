@@ -5,7 +5,6 @@ using Gov.Jag.Embc.Public.Seeder;
 using Gov.Jag.Embc.Public.Services.Referrals;
 using Gov.Jag.Embc.Public.Utils;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
@@ -106,15 +105,16 @@ namespace Gov.Jag.Embc.Public
             }
             else
             {
-                services.AddSingleton<IClaimsTransformation, KeyCloakClaimTransformer>();
+                //services.AddSingleton<IClaimsTransformation, KeyCloakClaimTransformer>(); //this will cause the transformation to be called for every request by the middleware
+                services.AddScoped<KeyCloakClaimTransformer, KeyCloakClaimTransformer>();   //this is to be able to resolve once in OnTicketReceived event only
                 services.AddAuthentication(options =>
                 {
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                     options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 })
-                    .AddCookie()
-                    .AddOpenIdConnect(options =>
+                    .AddCookie()  //cookies as default and sign in, principal will be saved as a cookie (no need to session state)
+                    .AddOpenIdConnect(options => //oidc authentication for challenge authentication request
                     {
                         configuration.GetSection("auth:oidc").Bind(options);
 
@@ -134,22 +134,12 @@ namespace Gov.Jag.Embc.Public
                                 }
                                 return c.Response.WriteAsync("An error occurred processing your authentication.");
                             },
-                            //OnAuthorizationCodeReceived = async c =>
-                            //{
-                            //    await Task.CompletedTask;
-                            //},
-                            //OnTokenResponseReceived = async c =>
-                            //{
-                            //    await Task.CompletedTask;
-                            //},
-                            //OnTicketReceived = async c =>
-                            //{
-                            //    await Task.CompletedTask;
-                            //},
-                            //OnUserInformationReceived = async c =>
-                            //{
-                            //    await Task.CompletedTask;
-                            //}
+                            OnTicketReceived = async c =>
+                            {
+                                //Transform the principal once, then it is stored in the auth cookie
+                                var claimTransformer = c.HttpContext.RequestServices.GetRequiredService<KeyCloakClaimTransformer>();
+                                c.Principal = await claimTransformer.TransformAsync(c.Principal);
+                            }
                         };
                     });
             }
