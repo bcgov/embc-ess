@@ -151,7 +151,7 @@
         <p class="required">
           Is the evacuee registering any immediate family members who live in the same household with them?
         </p>
-        <div class="form-group mb-0">
+        <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('registeringFamilyMembers')" class="form-check-input" value="yes" formControlName="registeringFamilyMembers" id="registeringFamilyMembersYes">
             <label class="form-check-label" for="registeringFamilyMembersYes">Yes</label>
@@ -243,7 +243,7 @@
         <p class="required">
           Is the evacuee's primary residence within BC?
         </p>
-        <div class="form-group mb-0">
+        <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('primaryResidenceInBC')" class="form-check-input" [value]="true" formControlName="primaryResidenceInBC" id="primaryResidenceInBCTrue">
             <label class="form-check-label" for="primaryResidenceInBCTrue">Yes</label>
@@ -292,7 +292,7 @@
         <p class="required">
           Is the evacuee's mailing address the same as their primary residence?
         </p>
-        <div class="form-group mb-0">
+        <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('mailingAddressSameAsPrimary')" class="form-check-input" [value]="true" formControlName="mailingAddressSameAsPrimary" id="mailingAddressSameAsPrimaryTrue">
             <label class="form-check-label" for="mailingAddressSameAsPrimaryTrue">Yes</label>
@@ -335,7 +335,7 @@
             Does the evacuee have any dietary requirements?
           </p>
         </div>
-        <div class="form-group mb-0">
+        <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('dietaryNeeds')" class="form-check-input" [value]="true" formControlName="dietaryNeeds" id="dietaryNeedsTrue">
             <label class="form-check-label" for="dietaryNeedsTrue">Yes</label>
@@ -360,7 +360,7 @@
             Does the evacuee (or anyone registering with them) take medication?
           </p>
         </div>
-        <div class="form-group mb-0">
+        <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('medicationNeeds')" class="form-check-input" [value]="true" formControlName="medicationNeeds" id="medicationNeedsTrue">
             <label class="form-check-label" for="medicationNeedsTrue">Yes</label>
@@ -375,7 +375,7 @@
           <p class="required">
             Does the evacuee have sufficient supply for the next 72 hours?
           </p>
-          <div class="form-group mb-0">
+          <div class="form-group mb-0" tabindex="0">
             <div class="form-check">
               <input type="radio" [class.is-invalid]="invalid('hasThreeDayMedicationSupply')" class="form-check-input" [value]="true" formControlName="hasThreeDayMedicationSupply" id="hasThreeDayMedicationSupplyTrue">
               <label class="form-check-label" for="hasThreeDayMedicationSupplyTrue">Yes</label>
@@ -395,7 +395,7 @@
         <p class="required mt-4">
           Does the evacuee have any pets with them?
         </p>
-        <div class="form-group mb-0">
+        <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('hasPets')" class="form-check-input" [value]="true" formControlName="hasPets" id="hasPetsTrue">
             <label class="form-check-label" for="hasPetsTrue">Yes</label>
@@ -419,7 +419,7 @@
         <p class="required">
           Does the evacuee have insurance to cover their immediate needs?
         </p>
-        <div class="form-group mb-0">
+        <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes" formControlName="insuranceCode" id="insuranceCodeYes">
             <label class="form-check-label" for="insuranceCodeYes">Yes</label>
@@ -470,7 +470,7 @@
         <p class="required mt-4">
           Does the evacuee have sufficient food while they are evacuated?
         </p>
-        <div class="form-group mb-0">
+        <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('requiresFood')" class="form-check-input" [value]="true" formControlName="requiresFood" id="requiresFoodTrue">
             <label class="form-check-label" for="requiresFoodTrue">Yes</label>
@@ -489,7 +489,7 @@
         <p class="required mt-4">
           Does the evacuee have lodging while evacuated? This could include staying with relatives/friends or staying in a hotel
         </p>
-        <div class="form-group mb-0">
+        <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('requiresAccommodation')" class="form-check-input" [value]="true" formControlName="requiresAccommodation" id="requiresAccommodationTrue">
             <label class="form-check-label" for="requiresAccommodationTrue">Yes</label>
@@ -508,7 +508,7 @@
         <p class="required mt-4">
           Does the evacuee have appropriate clothing while evacuated? This includes warm clothing should there be extreme winter conditions
         </p>
-        <div class="form-group mb-0">
+        <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('requiresClothing')" class="form-check-input" [value]="true" formControlName="requiresClothing" id="requiresClothingTrue">
             <label class="form-check-label" for="requiresClothingTrue">Yes</label>
@@ -527,7 +527,7 @@
         <p class="required mt-4">
           Does the evacuee have transportation to meet immediate needs during the evacuation?
         </p>
-        <div class="form-group mb-0">
+        <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('requiresTransportation')" class="form-check-input" [value]="true" formControlName="requiresTransportation" id="requiresTransportationTrue">
             <label class="form-check-label" for="requiresTransportationTrue">Yes</label>
@@ -546,7 +546,7 @@
         <p class="required mt-4">
           Does the evacuee have necessities while evacuated? This could include miscellaneous items such as personal hygiene products, laundry supplies and/or pet food.
         </p>
-        <div class="form-group mb-0">
+        <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('requiresIncidentals')" class="form-check-input" [value]="true" formControlName="requiresIncidentals" id="requiresIncidentalsTrue">
             <label class="form-check-label" for="requiresIncidentalsTrue">Yes</label>
@@ -665,7 +665,7 @@
             </p>
           </div>
         </div>
-        <textarea class="form-control" placeholder="Details" rows="8" formControlName="internalCaseNotes"></textarea>
+        <textarea class="form-control" placeholder="Details" rows="8" formControlName="internalCaseNotes" tabindex="0"></textarea>
       </div>
 
       <div *ngIf="errorSummary" class="text-danger">
@@ -694,24 +694,11 @@
 <!-- *********************************SUMMARY BELOW****************************************** -->
 <div *ngIf="summaryMode">
   <!-- REVIEW DETAILS -->
-  <h1 class="mt-4">Review Details & Save</h1>
+  <h1 class="mt-4">Review Details</h1>
 
-  <p>Please confirm that all details are correct by reading through the summary below with the evacuee.</p>
-
-  <div class="mt-5 space-between">
-    <section>
-      <p>Don't forget to click "<strong>SAVE</strong>" or "<strong>SAVE & ADD REFERRALS</strong>".</p>
-    </section>
-    <section>
-      <button *ngIf="!submitting" type="button" class="btn btn-primary text-uppercase" [disabled]="submitting" (click)="submit(true)">
-        <span>Save &amp; Add Referrals</span>
-      </button>
-      <button type="button" class="btn btn-primary ml-3 text-uppercase" [disabled]="submitting" (click)="submit(false)">
-        <span *ngIf="submitting">Submitting</span>
-        <span *ngIf="!submitting">Save & Submit</span>
-      </button>
-    </section>
-  </div>
+  <p>
+    Please confirm that all details you entered are correct by reading through the summary below with the evacuee.
+  </p>
 
   <app-full-registration-summary-block [registration]='registration'></app-full-registration-summary-block>
 
@@ -729,7 +716,7 @@
       </button>
       <button type="button" class="btn btn-primary ml-3 text-uppercase" [disabled]="submitting" (click)="submit(false)">
         <span *ngIf="submitting">Submitting</span>
-        <span *ngIf="!submitting">Save & Submit</span>
+        <span *ngIf="!submitting">Save</span>
       </button>
     </section>
   </div>
