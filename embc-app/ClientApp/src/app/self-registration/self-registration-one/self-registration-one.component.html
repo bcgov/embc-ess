@@ -37,15 +37,14 @@
     <div class="form-check">
       <input type="radio" class="form-check-input" [value]="false" formControlName="restrictedAccess" (click)="setRestricted(false)" id="restrictedAccessFalse">
       <label class="form-check-label" for="restrictedAccessFalse">
-        <strong>Yes,</strong> you may disclose my location and contact information with family or friends.
+        <strong>Yes</strong> - you may disclose my location and contact information with family or friends
       </label>
     </div>
     <div class="form-check">
       <input type="radio" class="form-check-input" [value]="true" formControlName="restrictedAccess" (click)="setRestricted(true)" id="restrictedAccessTrue">
       <label class="form-check-label" for="restrictedAccessTrue">
-        <strong>No,</strong> you may not disclose my location or contact information
-      </label> (Please proceed to the nearest open pilot community Emergency Support Services reception centre
-      to initiate your registration and receive supports).
+        <strong>No</strong> - you may not disclose my location or contact information
+      </label>
     </div>
   </div>
   <div *ngIf="disableForm === true">
