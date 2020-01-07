@@ -101,7 +101,11 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string FromTime => TimeZoneConverter.GetLocalTime24h(ValidDates.From);
         public string ToDate => TimeZoneConverter.GetLocalDate(ValidDates.To);
         public string ToTime => TimeZoneConverter.GetLocalTime24h(ValidDates.To);
+<<<<<<< HEAD
+        public string PrintDate => DateTime.Today.ToString("MMM-dd-yyyy");
+=======
         public string PrintDate => TimeZoneConverter.GetLocalDay();
+>>>>>>> 1db874e1... Change PrintReferral.PrintDate to use TimeZoneConverter to get local day string.
         public IEnumerable<PrintEvacuee> PrintEvacuees { get; set; }
         public string TotalAmountPrinted => TotalAmount.ToString("N2");
         public string CommentsPrinted => ConvertCarriageReturnToHtml(Comments);
