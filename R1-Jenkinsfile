@@ -11,6 +11,7 @@ class AppEnvironment {
 // EDIT LINE BELOW (Edit your environment TAG names)
 environments = [
   dev:new AppEnvironment(name:"Development",tag:"dev",previousTag:"dev-previous"),
+  test:new AppEnvironment(name:"Test",tag:"test",previousTag:"test-previous"),
 ]
 
 // You shouldn't have to edit these if you're following the conventions
@@ -208,4 +209,35 @@ podTemplate(label: 'owasp-zap2', name: 'owasp-zap2', serviceAccount: 'jenkins', 
             }
         }
     }
+}
+
+node('master') {
+
+	stage('Confirm') {
+		input ("Confirm TEST release")
+	}
+
+  stage("Deploy to ${environments.test.name}") {
+    def environment = environments.test.tag
+    def stableTag = environments.test.previousTag
+    node {
+      try {
+        // hold on to a copy of the last stable TEST environment (in case the upcoming deployment fails...)
+        tagLatestStable(environment, stableTag, IMAGESTREAM_NAME)
+        IMAGE_HASH = getLatestHash(IMAGESTREAM_NAME)
+        deployAndVerify(IMAGE_HASH, environment, IMAGESTREAM_NAME)
+        // all is good!
+        notifyGood(
+        "New ${APP_NAME} in ${environment} :)",
+        "Changes: ${getChangeString()}"
+        )
+      } catch(error) {
+        notifyError(
+        "Couldn't deploy ${APP_NAME} to ${environment} :(",
+        "Error: '${error.message}'"
+        )
+        throw error
+      }
+    }
+  }
 }

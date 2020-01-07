@@ -15,7 +15,6 @@ import { RegistrationSummaryComponent } from './components/registration-summary/
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { LoggedInGuard } from './core/guards/logged-in.guard';
 import { RoleGuard } from './core/guards/role.guard';
-import { RedirectGuard } from './core/guards/redirect.guard';
 import { VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from './constants';
 import { LandingPageGuard } from './core/guards/landing-page.guard';
 import { TaskNumberMakerComponent } from './provincial-admin/components/task-number-maker/task-number-maker.component';
@@ -47,8 +46,6 @@ import { AuditorComponent } from './provincial-admin/components/auditor/auditor.
       step-3
       step-4/:id
       error
-    external
-    login
 
   /volunteer
     registrations               <-- shows evacuee list page
@@ -132,20 +129,6 @@ const routes: Routes = [
         path: 'error',
         component: SelfRegistrationErrorComponent,
 
-      },
-    ]
-  },
-
-  {
-    // special route to redirect to EXTERNAL links (i.e. http://www.google.com)
-    // NOTE - we need this to redirect to the /login URL without Angular interfering
-    path: 'external',
-    canActivateChild: [RedirectGuard],
-    children: [
-      {
-        path: 'login',
-        component: PageNotFoundComponent, // We need a component here because we cannot define the route otherwise
-        data: { externalUrl: 'login' },
       },
     ]
   },
@@ -383,7 +366,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' })],
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'top', enableTracing: false })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -5,19 +5,20 @@ using Gov.Jag.Embc.Public.Seeder;
 using Gov.Jag.Embc.Public.Services.Referrals;
 using Gov.Jag.Embc.Public.Utils;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,11 +28,13 @@ namespace Gov.Jag.Embc.Public
     {
         private readonly ILoggerFactory loggerFactory;
         private readonly IConfiguration configuration;
+        private readonly IHostingEnvironment environment;
 
-        public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment, ILoggerFactory loggerFactory)
         {
             this.loggerFactory = loggerFactory;
             this.configuration = configuration;
+            this.environment = environment;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -62,7 +65,6 @@ namespace Gov.Jag.Embc.Public
                 })
                 //XSRF token for Angular - not working yet
                 //.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN")
-                .AddSession()
                 .AddMvc(opts =>
                 {
                     // authorize on all controllers by default
@@ -93,11 +95,62 @@ namespace Gov.Jag.Embc.Public
             );
 
             // setup siteminder authentication
-            services.AddAuthentication(options =>
+            if (configuration.GetAuthenticationMode() == "SM")
             {
-                options.DefaultAuthenticateScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
-                options.DefaultChallengeScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
-            }).AddSiteminderAuth();
+                services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
+                    options.DefaultChallengeScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
+                }).AddSiteminderAuth();
+            }
+            else
+            {
+                //services.AddSingleton<IClaimsTransformation, KeyCloakClaimTransformer>(); //this will cause the transformation to be called for every request by the middleware
+                services.AddScoped<KeyCloakClaimTransformer, KeyCloakClaimTransformer>();   //this is to be able to resolve once in OnTicketReceived event only
+                services.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
+                    .AddCookie()  //cookies as default and sign in, principal will be saved as a cookie (no need to session state)
+                    .AddOpenIdConnect(options => //oidc authentication for challenge authentication request
+                    {
+                        configuration.GetSection("auth:oidc").Bind(options);
+
+                        options.Events = new OpenIdConnectEvents()
+                        {
+                            OnAuthenticationFailed = c =>
+                            {
+                                c.HandleResponse();
+
+                                c.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                                c.Response.ContentType = "text/plain";
+                                if (environment.IsDevelopment())
+                                {
+                                    // Debug only, in production do not share exceptions with the
+                                    // remote host.
+                                    return c.Response.WriteAsync(c.Exception.ToString());
+                                }
+                                return c.Response.WriteAsync("An error occurred processing your authentication.");
+                            },
+                            OnTicketReceived = async c =>
+                            {
+                                //Transform the principal once, then it is stored in the auth cookie
+                                var claimTransformer = c.HttpContext.RequestServices.GetRequiredService<KeyCloakClaimTransformer>();
+                                c.Principal = await claimTransformer.TransformAsync(c.Principal);
+                            }
+                        };
+                    });
+            }
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.Secure = environment.IsDevelopment()
+                    ? CookieSecurePolicy.SameAsRequest
+                    : CookieSecurePolicy.Always;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -156,7 +209,7 @@ namespace Gov.Jag.Embc.Public
                 // X-Robots-Tag header
                 .UseXRobotsTag(opts => opts.NoIndex().NoFollow())
                 .UseXDownloadOptions()
-                // no cache  headers
+                // no cache headers
                 .UseNoCacheHttpHeaders()
                 // CSP header
                 .Use(next => context =>
@@ -195,24 +248,14 @@ namespace Gov.Jag.Embc.Public
 
             if (!env.IsProduction())
             {
-                // Use NSwag for API documentation
-                // Register the Swagger generator and the Swagger UI middlewares
+                // Use NSwag for API documentation Register the Swagger generator and the Swagger UI middlewares
                 app.UseOpenApi();
                 app.UseSwaggerUi3();
             }
 
             app
-                .UseSession()
                 .UseAuthentication()
-                .UseCookiePolicy(new CookiePolicyOptions
-                {
-                    HttpOnly = HttpOnlyPolicy.Always,
-                    Secure = env.IsDevelopment()
-                        ? CookieSecurePolicy.SameAsRequest
-                        : CookieSecurePolicy.Always,
-                    MinimumSameSitePolicy = SameSiteMode.Strict
-                })
-
+                .UseCookiePolicy()
                 .UseMvc(routes =>
                 {
                     routes.MapRoute(
@@ -223,13 +266,12 @@ namespace Gov.Jag.Embc.Public
                 .UseSpa(spa =>
                 {
                     // To learn more about options for serving an Angular SPA from ASP.NET Core, see https://go.microsoft.com/fwlink/?linkid=864501
-
                     spa.Options.SourcePath = "ClientApp";
-
                     // Only run the angular CLI Server in Development mode (not staging or test.)
                     if (env.IsDevelopment())
                     {
-                        spa.UseAngularCliServer(npmScript: "start");
+                        //spa.UseAngularCliServer(npmScript: "start");
+                        spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                     }
                 });
         }

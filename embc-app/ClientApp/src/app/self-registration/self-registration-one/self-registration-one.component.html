@@ -31,21 +31,20 @@
   <div class="mt-3 feature-block">
     <h2 class="required h3 mt-0">Restriction</h2>
     <p>
-      Concerned family and friends may inquire about you and your family because of the emergency. We would like to provide these people with some information about you.<br>
-      <strong>May we disclose your location and the contact information for you and your family members?</strong>
+      Concerned family and friends may inquire about you and your family because of the emergency. 
+      <strong>Do you consent to have your location and contact information shared with concerned family or friends who ask about your wellbeing?</strong>
     </p>
     <div class="form-check">
       <input type="radio" class="form-check-input" [value]="false" formControlName="restrictedAccess" (click)="setRestricted(false)" id="restrictedAccessFalse">
       <label class="form-check-label" for="restrictedAccessFalse">
-        <strong>Yes</strong>
+        <strong>Yes</strong> - you may disclose my location and contact information with family or friends
       </label>
     </div>
     <div class="form-check">
       <input type="radio" class="form-check-input" [value]="true" formControlName="restrictedAccess" (click)="setRestricted(true)" id="restrictedAccessTrue">
       <label class="form-check-label" for="restrictedAccessTrue">
-        <strong>No</strong>
-      </label> (Please proceed to the nearest open pilot community Emergency Support Services reception centre
-      to initiate your registration and receive supports.)
+        <strong>No</strong> - you may not disclose my location or contact information
+      </label>
     </div>
   </div>
   <div *ngIf="disableForm === true">
