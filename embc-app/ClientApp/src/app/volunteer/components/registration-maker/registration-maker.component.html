@@ -65,7 +65,6 @@
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Task Number &amp; Place of Registration</h2>
         <div class="form-row">
-          <app-attention-icon></app-attention-icon>
           <app-form-field required="true" class="col">
             <label for="incidentTask">Task Number</label>
             <select [compareWith]="compareById" [class.is-invalid]="invalid('incidentTask')" class="form-control" formControlName="incidentTask" id="incidentTask">
@@ -85,8 +84,7 @@
             </small>
           </div>
         </div>
-        <div class="form-row">
-          <app-attention-icon></app-attention-icon>
+        <div class="form-row">         
           <app-form-field class="col" required="true" tooltip="Tool Tip: The location where you are registering the evacuees.">
             <label for="facility">Facility Name / Registration Location</label>
             <input type="text" [class.is-invalid]="invalid('facility')" class="form-control" formControlName="facility" id="facility" autocomplete="off">
@@ -94,7 +92,6 @@
           </app-form-field>
         </div>
         <div class="form-row">
-          <app-attention-icon></app-attention-icon>
           <app-form-field class="col" required="true" tooltip="Tool Tip: A host community is the community where the registration is taking place and the Reception Centre is located.">
             <label for="hostCommunity">Host Community</label>
             <app-communities-select [class.is-invalid]="invalid('hostCommunity')" [myParent]="form" myFormControlName="hostCommunity" myId="hostCommunity"></app-communities-select>
@@ -330,7 +327,6 @@
 
         <!-- DIETARY REQUIREMENTS -->
         <div class="form-row mt-0">
-          <app-attention-icon></app-attention-icon>
           <p class="col required">
             Does the evacuee have any dietary requirements?
           </p>
@@ -355,7 +351,6 @@
 
         <!-- MEDICATION -->
         <div class="form-row mt-4">
-          <app-attention-icon></app-attention-icon>
           <p class="required">
             Does the evacuee (or anyone registering with them) take medication?
           </p>
@@ -452,7 +447,6 @@
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Brief Statement of How The Person/Family Were Affected By The Disaster</h2>
         <div class="form-row">
-          <app-attention-icon></app-attention-icon>
           <p class="col">
             Please do not include any personal/medical information pertaining to the evacuee and their family.
           </p>
@@ -593,7 +587,6 @@
       <div class="mb-4">
         <h2 class="blue-header font-weight-bold">Family Recovery Plans (Immediate &amp; Long Term)</h2>
         <div class="form-row">
-          <app-attention-icon></app-attention-icon>
           <div class="col">
             <p>
               Emergency Support Services provides short term assistance to give evacuees a chance to recover. Has the evacuee thought about what they will do after that time?
@@ -607,7 +600,6 @@
       <div class="mb-4">
         <h2 class="blue-header font-weight-bold">Reception Centre Service Recommendations</h2>
         <div class="form-row">
-          <app-attention-icon></app-attention-icon>
           <div class="col">
             <p>
               Please review the following services available in your reception centre.
@@ -646,7 +638,6 @@
       <div class="mb-4">
         <h2 class="blue-header font-weight-bold">Other Agency Service Recommendations Made Outside of the Reception Centre</h2>
         <div class="form-row mx-0">
-          <app-attention-icon></app-attention-icon>
           <textarea class="form-control" placeholder="Please specify" rows="4" formControlName="externalReferralsDetails"></textarea>
         </div>
       </div>
@@ -655,7 +646,6 @@
       <div class="mb-4">
         <h2 class="blue-header font-weight-bold">Internal Case Notes</h2>
         <div class="form-row mx-0">
-          <app-attention-icon></app-attention-icon>
           <div class="col">
             <p>
               A space to add any factual case notes pertaining to the evacuee and their family. Please do not add any medical information or irrelevant/speculative personal details as this information may be viewed by other volunteers and/or EMBC. Evacuees may request to view their own records, including these case notes.
