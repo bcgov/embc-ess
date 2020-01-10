@@ -35,8 +35,8 @@ namespace Gov.Jag.Embc.Public.Authentication
             var transformedClaims = new List<Claim>();
             transformedClaims.Add(new Claim(ClaimTypes.Sid, userGuid));
             transformedClaims.Add(new Claim(ClaimTypes.Upn, userName));
-            transformedClaims.Add(new Claim(ClaimTypes.Name, principal.FindFirstValue("name")));
-            transformedClaims.Add(new Claim(SiteMinderClaimTypes.NAME, principal.FindFirstValue("name")));
+            transformedClaims.Add(new Claim(ClaimTypes.Name, principal.FindFirstValue("displayName")));
+            transformedClaims.Add(new Claim(SiteMinderClaimTypes.NAME, principal.FindFirstValue("displayName")));
             if (type != null)
             {
                 if (type.Equals("bceid", StringComparison.InvariantCultureIgnoreCase)) transformedClaims.Add(new Claim(SiteMinderClaimTypes.USER_TYPE, "business"));
