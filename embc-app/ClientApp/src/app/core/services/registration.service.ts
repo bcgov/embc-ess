@@ -21,7 +21,7 @@ export class RegistrationService extends RestService {
       q,
       sort
     };
-    return this.http.get<ListResult<Registration>>('api/registrations', { headers: this.headers, params })
+    return this.http.get<ListResult<Registration>>('/api/registrations', { headers: this.headers, params })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -29,7 +29,7 @@ export class RegistrationService extends RestService {
   }
 
   createRegistration(data: Registration): Observable<Registration> {
-    return this.http.post<Registration>('api/registrations/', data, { headers: this.headers })
+    return this.http.post<Registration>('/api/registrations/', data, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -37,7 +37,7 @@ export class RegistrationService extends RestService {
   }
 
   updateRegistration(data: Registration): Observable<HttpResponse<any>> {
-    return this.http.put<HttpResponse<any>>(`api/registrations/${data.id}`, data, { headers: this.headers })
+    return this.http.put<HttpResponse<any>>(`/api/registrations/${data.id}`, data, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -45,7 +45,7 @@ export class RegistrationService extends RestService {
   }
 
   getRegistrationSummaryById(id: string): Observable<RegistrationSummary> {
-    return this.http.get<RegistrationSummary>(`api/registrations/${id}/summary`, { headers: this.headers })
+    return this.http.get<RegistrationSummary>(`/api/registrations/${id}/summary`, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError),
@@ -55,7 +55,7 @@ export class RegistrationService extends RestService {
   // NB: if registration is not finalized and no reason is provided, this will fail with response 400
   getRegistrationById(id: string, reason: string = null): Observable<Registration> {
     const params = { reason };
-    return this.http.get<Registration>(`api/registrations/${id}`, { headers: this.headers, params })
+    return this.http.get<Registration>(`/api/registrations/${id}`, { headers: this.headers, params })
       .pipe(
         retry(3),
         catchError(this.handleError),
@@ -84,7 +84,7 @@ export class RegistrationService extends RestService {
 
   private getReferralPdfs(registrationId: string, referralIds: string[], addSummary: boolean): Promise<Blob> {
     const data = { ReferralIds: referralIds, AddSummary: addSummary };
-    return this.http.post<Blob>(`api/registrations/${registrationId}/referrals/referralPdfs`, data, { headers: this.headers, responseType: 'blob' as 'json' })
+    return this.http.post<Blob>(`/api/registrations/${registrationId}/referrals/referralPdfs`, data, { headers: this.headers, responseType: 'blob' as 'json' })
       .pipe(
         retry(3),
         catchError(this.handleError)

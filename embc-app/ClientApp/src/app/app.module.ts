@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // ngrx + configuration
@@ -168,6 +169,9 @@ import { AuditorComponent } from './provincial-admin/components/auditor/auditor.
   ],
   bootstrap: [
     AppComponent
+  ],
+  providers: [
+    { provide: APP_BASE_HREF, useValue: '/' }
   ]
 })
 export class AppModule { }

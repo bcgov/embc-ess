@@ -20,7 +20,7 @@ export class IncidentTaskService extends RestService {
       q: q || '',
       sort: sort || '',
     };
-    return this.http.get<ListResult<IncidentTask>>('api/incidenttasks', { headers: this.headers, params })
+    return this.http.get<ListResult<IncidentTask>>('/api/incidenttasks', { headers: this.headers, params })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -29,7 +29,7 @@ export class IncidentTaskService extends RestService {
 
   getIncidentTask(id: string): Observable<IncidentTask> {
     // return a single matching incident
-    return this.http.get<IncidentTask>('api/incidenttasks/' + id, { headers: this.headers })
+    return this.http.get<IncidentTask>('/api/incidenttasks/' + id, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -37,7 +37,7 @@ export class IncidentTaskService extends RestService {
   }
 
   createIncidentTask(data: IncidentTask): Observable<IncidentTask> {
-    return this.http.post<IncidentTask>('api/incidenttasks/', data, { headers: this.headers })
+    return this.http.post<IncidentTask>('/api/incidenttasks/', data, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -45,7 +45,7 @@ export class IncidentTaskService extends RestService {
   }
 
   updateIncidentTask(data: IncidentTask): Observable<HttpResponse<any>> {
-    return this.http.put<HttpResponse<any>>('api/incidenttasks/' + data.id, data, { headers: this.headers })
+    return this.http.put<HttpResponse<any>>('/api/incidenttasks/' + data.id, data, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError)

@@ -28,7 +28,7 @@ export class LandingPageGuard implements CanActivate {
       .pipe(
         map(user => {
           if (!user || !navigateByRole) {
-            this.router.navigate(['/404']);
+            this.router.navigate(['login']);
             return false;
           }
 
