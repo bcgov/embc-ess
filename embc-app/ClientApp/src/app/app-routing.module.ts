@@ -356,12 +356,23 @@ const routes: Routes = [
       },
     ]
   },
-
+  {
+    path: 'login',
+    redirectTo: '/login'
+  },
+  {
+    path: 'logout',
+    redirectTo: '/logout'
+  },
+  {
+    path: 'embcess',
+    redirectTo: '/'
+  },
   // 404 route (catch all default)
   {
     path: '**',
     component: PageNotFoundComponent
-  },
+  }
 
 ];
 

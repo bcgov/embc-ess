@@ -19,7 +19,7 @@ export class EvacueeService extends RestService {
   // get the results that match the search query params
   getEvacuees(props: EvacueeSearchQueryParameters = {}): Observable<ListResult<EvacueeListItem>> {
     const params = this.toStringParams(props);
-    return this.http.get<ListResult<EvacueeListItem>>('api/evacuees', { headers: this.headers, params })
+    return this.http.get<ListResult<EvacueeListItem>>('/api/evacuees', { headers: this.headers, params })
       .pipe(
         retry(3),
         catchError(this.handleError)

@@ -48,7 +48,7 @@ namespace Gov.Jag.Embc.Public
 
         public static string GetBasePath(this IConfiguration conf)
         {
-            return conf["BASE_PATH"];
+            return conf.GetValue("BASE_PATH", "");
         }
 
         public static string GetEnvironmentTitle(this IConfiguration conf)

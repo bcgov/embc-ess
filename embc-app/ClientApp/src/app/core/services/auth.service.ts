@@ -72,7 +72,7 @@ export class AuthService extends RestService {
       return of(this.currentUser);
     }
 
-    return this.http.get<User>('api/users/current', { headers: this.headers })
+    return this.http.get<User>('/api/users/current', { headers: this.headers })
       .pipe(
         catchError(() => of<User>(null)) // ignore errors; i.e. 401 error means "no current user available/logged in"
       );

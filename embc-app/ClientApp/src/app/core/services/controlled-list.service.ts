@@ -21,7 +21,7 @@ export class ControlledListService extends RestService {
 
   getConfig() {
     this.store.dispatch(new ConfigActions.LoadConfig());
-    return this.http.get<Config>('api/config', { headers: this.headers })
+    return this.http.get<Config>('/api/config', { headers: this.headers })
       .pipe(
         map((config: Config) => {
           // everything went OK
@@ -37,7 +37,7 @@ export class ControlledListService extends RestService {
 
   getAllCountries() {
     this.store.dispatch(new CountryActions.LoadCountries());
-    return this.http.get<Country[]>('api/countries', { headers: this.headers })
+    return this.http.get<Country[]>('/api/countries', { headers: this.headers })
       .pipe(
         map((countries: Country[]) => {
           // everything went OK
@@ -53,7 +53,7 @@ export class ControlledListService extends RestService {
 
   getAllRegions() {
     this.store.dispatch(new RegionActions.LoadRegions());
-    return this.http.get<Region[]>('api/regions', { headers: this.headers })
+    return this.http.get<Region[]>('/api/regions', { headers: this.headers })
       .pipe(
         map((regions: Region[]) => {
           this.store.dispatch(new RegionActions.LoadRegionsSuccess({ regions }));
@@ -67,7 +67,7 @@ export class ControlledListService extends RestService {
 
   getAllCommunities() {
     this.store.dispatch(new CommunityActions.LoadCommunities());
-    return this.http.get<Community[]>('api/communities', { headers: this.headers })
+    return this.http.get<Community[]>('/api/communities', { headers: this.headers })
       .pipe(
         map((communities: Community[]) => {
           // sort the list of communities alphabetically.
@@ -87,7 +87,7 @@ export class ControlledListService extends RestService {
 
   getAllFamilyRelationshipTypes() {
     this.store.dispatch(new RelationshipTypeActions.LoadRelationshipTypes());
-    return this.http.get<RelationshipType[]>('api/familyRelationships', { headers: this.headers })
+    return this.http.get<RelationshipType[]>('/api/familyRelationships', { headers: this.headers })
       .pipe(
         map((relationshipTypes: RelationshipType[]) => {
           this.store.dispatch(new RelationshipTypeActions.LoadRelationshipTypesSuccess({ relationshipTypes }));

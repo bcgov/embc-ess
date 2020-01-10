@@ -180,8 +180,6 @@ namespace Gov.Jag.Embc.Public
             // DATABASE SETUP
             SetupDatabase(env);
 
-            app.UsePathBase(configuration.GetBasePath());
-
             if (!env.IsProduction())
             {
                 app.UseDeveloperExceptionPage();
