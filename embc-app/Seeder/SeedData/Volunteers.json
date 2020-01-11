@@ -48,8 +48,8 @@
         "email": "adm2@ebmc",
         "BceidAccountUserName": "ess.developerA2",
         "Active": true,
-        "isAdministrator": true,
-        "isPrimaryContact": true,
+        "isAdministrator": false,
+        "isPrimaryContact": false,
         "canAccessRestrictedFiles": false,
         "organization": {
             "BCeIDBusinessGuid": "15F6FD8BC6C6401DB319311853FC518E"
