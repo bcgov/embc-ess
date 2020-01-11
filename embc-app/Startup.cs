@@ -6,12 +6,11 @@ using Gov.Jag.Embc.Public.Services.Referrals;
 using Gov.Jag.Embc.Public.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -68,7 +67,6 @@ namespace Gov.Jag.Embc.Public
                 .AddMvc(opts =>
                 {
                     // authorize on all controllers by default
-                    opts.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
                     // anti forgery validation by default - not working yet
                     //opts.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 })
@@ -109,19 +107,57 @@ namespace Gov.Jag.Embc.Public
                 services.AddScoped<KeyCloakClaimTransformer, KeyCloakClaimTransformer>();   //this is to be able to resolve once in OnTicketReceived event only
                 services.AddAuthentication(options =>
                 {
+                    //Default to cookie auth, challenge with OIDC
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                     options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 })
-                    .AddCookie()  //cookies as default and sign in, principal will be saved as a cookie (no need to session state)
+                    //JWT bearer to support direct API authentication
+                    .AddJwtBearer(options =>
+                    {
+                        configuration.GetSection("auth:jwt").Bind(options);
+
+                        options.Events = new JwtBearerEvents
+                        {
+                            OnAuthenticationFailed = async c =>
+                            {
+                                var logger = c.HttpContext.RequestServices.GetRequiredService<ILogger<JwtBearerHandler>>();
+                                logger.LogError(c.Exception, $"Error authenticating JWTBearer token");
+                                c.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                                c.Response.ContentType = "text/plain"; if (environment.IsDevelopment())
+                                {
+                                    // Debug only, in production do not share exceptions with the
+                                    // remote host.
+                                    await c.Response.WriteAsync(c.Exception.ToString());
+                                }
+                                await c.Response.WriteAsync("An error occurred processing yourauthentication.");
+                            },
+
+                            OnTokenValidated = async c =>
+                                                        {
+                                                            var claimTransformer = c.HttpContext.RequestServices.GetRequiredService<KeyCloakClaimTransformer>();
+                                                            c.Principal = await claimTransformer.TransformAsync(c.Principal);
+                                                            c.Success();
+                                                        }
+                        };
+                    })
+                    //cookies as default and sign in, principal will be saved as a cookie (no need to session state)
+                    .AddCookie(options =>
+                    {
+                        configuration.GetSection("auth:cookie").Bind(options);
+                        options.Cookie.SameSite = SameSiteMode.Strict;
+                        options.LoginPath = "/login";
+                    })
                     .AddOpenIdConnect(options => //oidc authentication for challenge authentication request
                     {
                         configuration.GetSection("auth:oidc").Bind(options);
-
                         options.Events = new OpenIdConnectEvents()
                         {
-                            OnAuthenticationFailed = c =>
+                            OnAuthenticationFailed = async c =>
                             {
+                                var logger = c.HttpContext.RequestServices.GetRequiredService<ILogger<JwtBearerHandler>>();
+                                logger.LogError(c.Exception, $"Error authenticating OIDC token");
+
                                 c.HandleResponse();
 
                                 c.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -130,18 +166,31 @@ namespace Gov.Jag.Embc.Public
                                 {
                                     // Debug only, in production do not share exceptions with the
                                     // remote host.
-                                    return c.Response.WriteAsync(c.Exception.ToString());
+                                    await c.Response.WriteAsync(c.Exception.ToString());
                                 }
-                                return c.Response.WriteAsync("An error occurred processing your authentication.");
+                                await c.Response.WriteAsync("An error occurred processing your authentication.");
                             },
                             OnTicketReceived = async c =>
                             {
-                                //Transform the principal once, then it is stored in the auth cookie
                                 var claimTransformer = c.HttpContext.RequestServices.GetRequiredService<KeyCloakClaimTransformer>();
                                 c.Principal = await claimTransformer.TransformAsync(c.Principal);
+                                c.Success();
                             }
                         };
                     });
+
+                services.AddAuthorization(options =>
+                {
+                    //API authorization policy supports cookie or jwt authentication schemes
+                    options.AddPolicy("API", policy =>
+                    {
+                        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme);
+                        policy.RequireAuthenticatedUser();
+                    });
+
+                    //Set API policy as default for [authorize] controllers
+                    options.DefaultPolicy = options.GetPolicy("API");
+                });
             }
 
             services.Configure<CookiePolicyOptions>(options =>
