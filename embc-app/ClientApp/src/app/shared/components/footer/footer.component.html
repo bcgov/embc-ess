@@ -15,7 +15,7 @@
           <a class="nav-link" href="https://www2.gov.bc.ca/gov/content/home/copyright" target="_blank" title="Goes to BC Gov Copyright Page">Copyright</a>
         </li>
       </ul>
-      <a *ngIf="versionInfo && versionInfo.fileVersion" (click)="showVersionInfo()" class="nav-link version-info">{{versionInfo.fileVersion}}</a>
+      <a *ngIf="versionInfo" class="nav-link">{{versionInfo}}</a>
     </div>
   </nav>
 </footer>

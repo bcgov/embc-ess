@@ -12,8 +12,4 @@ export class FooterComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  showVersionInfo() {
-    // TODO: Implement
-  }
 }
