@@ -357,14 +357,6 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'login',
-    redirectTo: '/login'
-  },
-  {
-    path: 'logout',
-    redirectTo: '/logout'
-  },
-  {
     path: 'embcess',
     redirectTo: '/'
   },

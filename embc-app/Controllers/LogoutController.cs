@@ -30,8 +30,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             logger.LogInformation($"Logout requested");
 
             //log out oidc and cookies
-            return new SignOutResult(new[] { OpenIdConnectDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme },
-                new AuthenticationProperties { RedirectUri = $"{Configuration.GetBasePath()}/logout/sm" });
+            var authenticationSchemes = new[] { OpenIdConnectDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme };
+            return new SignOutResult(authenticationSchemes, new AuthenticationProperties { RedirectUri = $"{Configuration.GetBasePath()}/logout/sm" });
         }
 
         [HttpGet("sm")]

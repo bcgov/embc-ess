@@ -1,5 +1,7 @@
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -18,40 +20,37 @@ namespace Gov.Jag.Embc.Public.Controllers
     {
         private readonly IConfiguration configuration;
         private readonly IHostingEnvironment env;
-        private readonly IHttpContextAccessor httpCtx;
         private readonly ILogger logger;
         private readonly IDataInterface dataInterface;
 
-        public LoginController(IConfiguration configuration, IHostingEnvironment env, IHttpContextAccessor httpCtx, ILoggerFactory loggerFactory, IDataInterface dataInterface)
+        public LoginController(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory, IDataInterface dataInterface)
         {
             this.dataInterface = dataInterface;
             this.configuration = configuration;
             this.env = env;
-            this.httpCtx = httpCtx;
             logger = loggerFactory.CreateLogger(typeof(LoginController));
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> SiteMinderLogin(string path = "dashboard")
+        public async Task<ActionResult> Login(string path = "dashboard")
         {
-            //Route to ocid authenticated endpoint
-            if (configuration.GetAuthenticationMode() == "KC") return RedirectToAction(nameof(OcidLogin));
+            if (configuration.GetAuthenticationMode() == "KC")
+            {
+                //Oidc login
+                return new ChallengeResult(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
+                {
+                    RedirectUri = $"{configuration.GetBasePath()}/{path}"
+                });
+            }
 
             if (!env.IsProduction() && "headers".Equals(path, StringComparison.OrdinalIgnoreCase))
             {
                 return Content(string.Join(Environment.NewLine, Request.Headers.Select(header => $"{header.Key}={string.Join(",", header.Value.ToArray())}")), "text/plain", Encoding.UTF8);
             }
-
+            //SiteMinder login
             if (ControllerContext.HttpContext.User == null || !ControllerContext.HttpContext.User.Identity.IsAuthenticated) return Unauthorized();
 
-            return await Task.FromResult(LocalRedirect($"{configuration.GetBasePath()}/{path}"));
-        }
-
-        [HttpGet("oidc")]
-        [Authorize]
-        public async Task<ActionResult> OcidLogin(string path = "dashboard")
-        {
             return await Task.FromResult(LocalRedirect($"{configuration.GetBasePath()}/{path}"));
         }
 
