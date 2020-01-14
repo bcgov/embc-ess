@@ -104,6 +104,22 @@ Before running the API locally, you must set some environment variables:
 |auth:oidc:MetaDataAddress  |   KeyCloak client meta data URL                           | 
 |auth:oidc:ClientId         |   KeyCloak client ID                                      |
 |auth:oidc:ClientSecret     |   KeyCloak client secert                                  |
+|auth:oidc:MetaDataAddress  |   KeyCloak client metadata URL                            | 
+|auth:jwt:Audience          |   KeyCloak client ID                                      |
+|auth:jwt:MetaDataAddress   |   KeyCloak client metadata URL                            |
+|auth:jwt:TokenValidationParameters:ValidateLifetime | false to reuse tokens which expired |
+
+**'auth:jwt' section is optional to enable direct authentication to the API and is not required currently for test/production environments.**
+
+To authenticate using JWT Bearer, copy the token returned from KeyCloak and past it as a 'authorization' header of type 'bearer'
+
+```
+Authorization=Bearer [base 64 encoded JWT]
+```
+
+Usage of Postman is encouraged as it supports authenticating with JWT with OAuth2.0 which works well with KeyCloak OpenID Connect capabilities.
+
+
 
 DevOps Process
 -------------
@@ -124,18 +140,16 @@ Login to the OpenShift Web Console and navigate to the Tools project for the sys
 
 Authentication
 --------------
+## Users
 
-### BCeID
+#### BCeID
 
 Business BCeID may be used to login as a Volunteer.
 
-### IDIR
+#### IDIR
 
 Government users may use IDIR to login as an Administrator.
 
-### Development Users
-
-Access /login/token/username to login as a test BCeID user for development purposes.
 
 ### Environments
 
