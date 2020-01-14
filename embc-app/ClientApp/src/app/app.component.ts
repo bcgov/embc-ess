@@ -8,6 +8,7 @@ import { UniqueKeyService } from './core/services/unique-key.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from './store';
+import { Config } from './core/models';
 
 @Component({
   selector: 'app-root',
@@ -15,17 +16,22 @@ import { AppState } from './store';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
   isIE = false;
+
+  private config: Config;
 
   constructor(
     private lookups: ControlledListService,
     public authService: AuthService,
     public uniqueKeyService: UniqueKeyService,
     // private router: Router,
-    // private store: Store<AppState>, // ngrx app state
-
-  ) { }
+    private store: Store<AppState> // ngrx app state
+  ) {
+    // get config
+    this.store.select(s => s.lookups.config.config).subscribe((config: Config) => {
+      this.config = config;
+    });
+  }
 
   ngOnInit() {
     this.isIE = detectIE10orLower();
@@ -49,7 +55,9 @@ export class AppComponent implements OnInit {
   }
 
   get versionInfo(): any {
-    return null;
+    return this.config
+      ? `${this.config.sourceReference}_${this.config.sourceCommit}_${this.config.fileCreationTime}`
+      : ''
   }
 
   // get currentUser(): User {
@@ -88,5 +96,4 @@ export class AppComponent implements OnInit {
       // ...add more
     ).subscribe();
   }
-
 }
