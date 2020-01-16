@@ -9,7 +9,7 @@ import { Registration, Country } from 'src/app/core/models';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { hasErrors, invalidField } from 'src/app/shared/utils';
-import { InsuranceInfoComponent } from 'src/app/shared/modals/insurance-info/insurance-info.component';
+import {InsuranceInfoComponent} from 'src/app/shared/modals/insurance-info/insurance-info.component';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -44,11 +44,15 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
   // convenience getters so we can use helper functions in Angular templates
   hasErrors = hasErrors;
 
+  // Modal for insurance information popup
+  private infoModal: NgbModalRef = null;
+
   constructor(
     private store: Store<AppState>,
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modals: NgbModal
   ) {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
@@ -233,13 +237,11 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
   }
 
   openInsuranceInfoModal() {
-    if (!this.infoModal) {
-      this.infoModal = this.modals.open(InsuranceInfoComponent, { size: 'sm', centered: true });
-      this.infoModal.result.then(
-        () => { this.infoModal = null; },
-        () => { this.infoModal = null; }
-      );
-    }
+    this.infoModal = this.modals.open(InsuranceInfoComponent, { size: 'sm', centered: true });
+    this.infoModal.result.then(
+      () => { this.infoModal = null; },
+      () => { this.infoModal = null; }
+    );
   }
 
 }

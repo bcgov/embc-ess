@@ -1,13 +1,9 @@
 @import "~src/styles/_defaults.scss";
-
-.close-padding {
-  padding: 5px;
+// Taken from clothing-rates modal styles. 
+.modal-header {
+  padding: 2rem 4rem;
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.info-header {
-  display: list-item;
+.modal-body {
+  padding: 3rem 4rem;
 }

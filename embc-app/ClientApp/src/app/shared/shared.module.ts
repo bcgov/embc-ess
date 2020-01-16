@@ -71,13 +71,10 @@ import { InsuranceInfoComponent } from './modals/insurance-info/insurance-info.c
     // Should this be in app.module.ts? CLI placed it here and it is a shared module, but the other modals are in app.module.ts.
     InsuranceInfoComponent, 
   ],
-<<<<<<< HEAD
-=======
   entryComponents: [
     // Had to add InsuranceInfoComponent to entryComponents or else would error on open
     InsuranceInfoComponent
   ],
->>>>>>> c5215087... Add text and styles to insurance info modal
   imports: [
     CommonModule,
     RouterModule,
