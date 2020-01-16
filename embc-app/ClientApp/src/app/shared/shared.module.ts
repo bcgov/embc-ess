@@ -67,6 +67,12 @@ import { ValidationBorderDirective } from './directives/validation-border.direct
     DisableControlDirective,
     UpperCaseDirective,
     ValidationBorderDirective,
+    // Should this be in app.module.ts? CLI placed it here and it is a shared module, but the other modals are in app.module.ts.
+    InsuranceInfoComponent, 
+  ],
+  entryComponents: [
+    // Had to add InsuranceInfoComponent to entryComponents or else would error on open
+    InsuranceInfoComponent
   ],
   imports: [
     CommonModule,
