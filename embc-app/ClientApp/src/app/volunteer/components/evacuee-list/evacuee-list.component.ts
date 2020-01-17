@@ -33,6 +33,7 @@ export class EvacueeListComponent implements OnInit {
   advancedSearchForm = this.fb.group({
     last_name: null,
     first_name: null,
+    dob: null,
     task_no: null,
     ess_file_no: null,
     evacuated_from: null,
