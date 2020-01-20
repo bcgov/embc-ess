@@ -162,6 +162,15 @@
               </div>
               <div class="row mb-2">
                 <div class="col">
+                  <label for="gender-{{i}}">Gender</label>
+                  <select class="form-control" formControlName="gender" id="gender-{{i}}">
+                    <option [ngValue]="null">Please select--</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="x">X</option>
+                  </select>
+                </div>
+                <div class="col">
                   <label class="required" for="dob-{{i}}">Date of Birth</label>
                   <input type="text" [textMask]="{mask: dateMask, keepCharPositions: true}" placeholder="yyyy-mm-dd" [class.is-invalid]="invalid('dob', entry)" class="form-control" formControlName="dob" id="dob-{{i}}" autocomplete="off">
                   <small>(Format: yyyy-mm-dd)</small>
