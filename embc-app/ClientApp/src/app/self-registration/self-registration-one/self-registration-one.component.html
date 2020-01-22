@@ -161,14 +161,6 @@
                 </div>
               </div>
               <div class="row mb-2">
-                <div class="col-6">
-                  <label class="required" for="relationshipToEvacuee-{{i}}">Relationship to evacuee</label>
-                  <select [class.is-invalid]="invalid('relationshipToEvacuee', entry)" class="form-control" formControlName="relationshipToEvacuee" id="relationshipToEvacuee-{{i}}">
-                    <option [ngValue]="null">Please select--</option>
-                    <option [ngValue]="item" *ngFor="let item of relationshipTypes$ | async">{{item.description}}</option>
-                  </select>
-                  <span *ngIf="submitted" class="invalid-feedback">Please state your relationship to this family member.</span>
-                </div>
                 <div class="col">
                   <label for="gender-{{i}}">Gender</label>
                   <select class="form-control" formControlName="gender" id="gender-{{i}}">

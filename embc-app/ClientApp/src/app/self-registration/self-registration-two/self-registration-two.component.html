@@ -10,7 +10,7 @@
         <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes" formControlName="insuranceCode" id="insuranceCodeYes">
         <label class="form-check-label" for="insuranceCodeYes">Yes</label>
       </div>
-      <div class="form-check">
+      <div class="form-check" (click)='openInsuranceInfoModal()'>
         <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes-unsure" formControlName="insuranceCode" id="insuranceCodeYesUnsure">
         <label class="form-check-label" for="insuranceCodeYesUnsure">Yes, but I'm not sure if I have coverage for this event</label>
       </div>

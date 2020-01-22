@@ -50,14 +50,13 @@
 
     <!-- EMERGENCY SUPPORT SERVICES TEAM HANDLING NOTE -->
     <div *ngIf="activeForm===false" class="mt-4">
-      <h1>Emergency Support Services Team Handling Note</h1>
+      <h2 class="blue-header font-weight-bold">Proceed To Reception Centre</h2>
       <p>
-        Privacy is important. Please locate a volunteer that is trained to collect and handle sensitive information.
+        During an emergency response many people join the response effort. We want to ensure that your information remains unseen except by people that are trained to handle sensitive information. 
       </p>
       <p>
-        This does not change the support offered but does change the process of collecting and handling information. This restricts other Emergency Support Services team members from seeing the registration.
+        See your ESS Supervisor to proceed with registering a restricted file.
       </p>
-      <a routerLink="/dashboard">Return to the Emergency Support Services Dashboard</a>
     </div>
 
     <div *ngIf="activeForm===true">
@@ -146,7 +145,7 @@
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Evacuee Family Information</h2>
         <p class="required">
-          Is the evacuee registering any immediate family members who live in the same household with them?
+          Is the evacuee registering any family members who live in the same household with them?
         </p>
         <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
@@ -189,16 +188,6 @@
                 </div>
               </div>
               <div class="row mt-2">
-                <div class="col-6">
-                  <label class="required" for="relationshipToEvacuee-{{i}}">Relationship to evacuee</label>
-                  <select [compareWith]="compareById" [class.is-invalid]="invalid('relationshipToEvacuee', entry)" class="form-control" formControlName="relationshipToEvacuee" id="relationshipToEvacuee-{{i}}">
-                    <option [ngValue]="null">Please select--</option>
-                    <option *ngFor="let item of relationshipTypes$ | async" [ngValue]="item">
-                      {{item.description}}
-                    </option>
-                  </select>
-                  <span *ngIf="submitted" class="invalid-feedback">Please state your relationship to this family member.</span>
-                </div>
                 <div class="col">
                   <label for="gender-{{i}}">Gender</label>
                   <select class="form-control" formControlName="gender" id="gender-{{i}}">
