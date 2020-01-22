@@ -676,20 +676,10 @@
   <h1 class="mt-4">Review Details & Save</h1>
 
   <p>Please confirm that all details are correct by reading through the summary below with the evacuee.</p>
+  <p>Don't forget to click "<strong>SAVE</strong>" at the bottom of the page.</p>
 
   <div class="mt-5 space-between">
-    <section>
-      <p>Don't forget to click "<strong>SAVE</strong>" or "<strong>SAVE & ADD REFERRALS</strong>".</p>
-    </section>
-    <section>
-      <button *ngIf="!submitting" type="button" class="btn btn-primary text-uppercase" [disabled]="submitting" (click)="submit(true)">
-        <span>Save &amp; Add Referrals</span>
-      </button>
-      <button type="button" class="btn btn-primary ml-3 text-uppercase" [disabled]="submitting" (click)="submit(false)">
-        <span *ngIf="submitting">Submitting</span>
-        <span *ngIf="!submitting">Save & Submit</span>
-      </button>
-    </section>
+    <h2 class="blue-header font-weight-bold full-width">Evacuee Summary</h2>
   </div>
 
   <app-full-registration-summary-block [registration]='registration'></app-full-registration-summary-block>
@@ -703,9 +693,9 @@
         <app-font-awesome-icon icon="times"></app-font-awesome-icon>
         <span class="ml-2">Cancel &amp; Close</span>
       </a> -->
-      <button *ngIf="!submitting" type="button" class="btn btn-primary text-uppercase" [disabled]="submitting" (click)="submit(true)">
+      <!-- <button *ngIf="!submitting" type="button" class="btn btn-primary text-uppercase" [disabled]="submitting" (click)="submit(true)">
         <span>Save &amp; Add Referrals</span>
-      </button>
+      </button> -->
       <button type="button" class="btn btn-primary ml-3 text-uppercase" [disabled]="submitting" (click)="submit(false)">
         <span *ngIf="submitting">Submitting</span>
         <span *ngIf="!submitting">Save & Submit</span>
