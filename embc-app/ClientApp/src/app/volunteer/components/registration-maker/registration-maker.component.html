@@ -50,14 +50,13 @@
 
     <!-- EMERGENCY SUPPORT SERVICES TEAM HANDLING NOTE -->
     <div *ngIf="activeForm===false" class="mt-4">
-      <h1>Emergency Support Services Team Handling Note</h1>
+      <h2 class="blue-header font-weight-bold">Proceed To Reception Centre</h2>
       <p>
-        Privacy is important. Please locate a volunteer that is trained to collect and handle sensitive information.
+        During an emergency response many people join the response effort. We want to ensure that your information remains unseen except by people that are trained to handle sensitive information. 
       </p>
       <p>
-        This does not change the support offered but does change the process of collecting and handling information. This restricts other Emergency Support Services team members from seeing the registration.
+        See your ESS Supervisor to proceed with registering a restricted file.
       </p>
-      <a routerLink="/dashboard">Return to the Emergency Support Services Dashboard</a>
     </div>
 
     <div *ngIf="activeForm===true">
@@ -677,20 +676,10 @@
   <h1 class="mt-4">Review Details & Save</h1>
 
   <p>Please confirm that all details are correct by reading through the summary below with the evacuee.</p>
+  <p>Don't forget to click "<strong>SAVE</strong>" at the bottom of the page.</p>
 
   <div class="mt-5 space-between">
-    <section>
-      <p>Don't forget to click "<strong>SAVE</strong>" or "<strong>SAVE & ADD REFERRALS</strong>".</p>
-    </section>
-    <section>
-      <button *ngIf="!submitting" type="button" class="btn btn-primary text-uppercase" [disabled]="submitting" (click)="submit(true)">
-        <span>Save &amp; Add Referrals</span>
-      </button>
-      <button type="button" class="btn btn-primary ml-3 text-uppercase" [disabled]="submitting" (click)="submit(false)">
-        <span *ngIf="submitting">Submitting</span>
-        <span *ngIf="!submitting">Save & Submit</span>
-      </button>
-    </section>
+    <h2 class="blue-header font-weight-bold full-width">Evacuee Summary</h2>
   </div>
 
   <app-full-registration-summary-block [registration]='registration'></app-full-registration-summary-block>
@@ -704,9 +693,9 @@
         <app-font-awesome-icon icon="times"></app-font-awesome-icon>
         <span class="ml-2">Cancel &amp; Close</span>
       </a> -->
-      <button *ngIf="!submitting" type="button" class="btn btn-primary text-uppercase" [disabled]="submitting" (click)="submit(true)">
+      <!-- <button *ngIf="!submitting" type="button" class="btn btn-primary text-uppercase" [disabled]="submitting" (click)="submit(true)">
         <span>Save &amp; Add Referrals</span>
-      </button>
+      </button> -->
       <button type="button" class="btn btn-primary ml-3 text-uppercase" [disabled]="submitting" (click)="submit(false)">
         <span *ngIf="submitting">Submitting</span>
         <span *ngIf="!submitting">Save & Submit</span>
