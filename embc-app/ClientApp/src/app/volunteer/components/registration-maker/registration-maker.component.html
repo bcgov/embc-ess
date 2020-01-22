@@ -146,7 +146,7 @@
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Evacuee Family Information</h2>
         <p class="required">
-          Is the evacuee registering any immediate family members who live in the same household with them?
+          Is the evacuee registering any family members who live in the same household with them?
         </p>
         <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
@@ -189,16 +189,6 @@
                 </div>
               </div>
               <div class="row mt-2">
-                <div class="col-6">
-                  <label class="required" for="relationshipToEvacuee-{{i}}">Relationship to evacuee</label>
-                  <select [compareWith]="compareById" [class.is-invalid]="invalid('relationshipToEvacuee', entry)" class="form-control" formControlName="relationshipToEvacuee" id="relationshipToEvacuee-{{i}}">
-                    <option [ngValue]="null">Please select--</option>
-                    <option *ngFor="let item of relationshipTypes$ | async" [ngValue]="item">
-                      {{item.description}}
-                    </option>
-                  </select>
-                  <span *ngIf="submitted" class="invalid-feedback">Please state your relationship to this family member.</span>
-                </div>
                 <div class="col">
                   <label for="gender-{{i}}">Gender</label>
                   <select class="form-control" formControlName="gender" id="gender-{{i}}">
