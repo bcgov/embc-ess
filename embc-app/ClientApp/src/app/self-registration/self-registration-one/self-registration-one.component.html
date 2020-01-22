@@ -115,7 +115,7 @@
       </app-font-awesome-icon>
     </h2>
     <section>
-      <p class="required">Are you registering immediate family members who live in the same household with you whom you know are safe?</p>
+      <p class="required">Are you registering family members who live in the same household with you whom you know are safe?</p>
       <div class="form-group">
         <div class="form-check">
           <input type="radio" [class.is-invalid]="invalid('registeringFamilyMembers')" class="form-check-input" value="yes" formControlName="registeringFamilyMembers" id="registeringFamilyMembersYes">
@@ -161,14 +161,6 @@
                 </div>
               </div>
               <div class="row mb-2">
-                <div class="col-6">
-                  <label class="required" for="relationshipToEvacuee-{{i}}">Relationship to evacuee</label>
-                  <select [class.is-invalid]="invalid('relationshipToEvacuee', entry)" class="form-control" formControlName="relationshipToEvacuee" id="relationshipToEvacuee-{{i}}">
-                    <option [ngValue]="null">Please select--</option>
-                    <option [ngValue]="item" *ngFor="let item of relationshipTypes$ | async">{{item.description}}</option>
-                  </select>
-                  <span *ngIf="submitted" class="invalid-feedback">Please state your relationship to this family member.</span>
-                </div>
                 <div class="col">
                   <label for="gender-{{i}}">Gender</label>
                   <select class="form-control" formControlName="gender" id="gender-{{i}}">
