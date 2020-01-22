@@ -33,6 +33,7 @@ export class EvacueeListComponent implements OnInit {
   advancedSearchForm = this.fb.group({
     last_name: null,
     first_name: null,
+    dob: null,
     task_no: null,
     ess_file_no: null,
     evacuated_from: null,
@@ -40,6 +41,12 @@ export class EvacueeListComponent implements OnInit {
     registration_completed: null,
     referrals_provided: null,
   });
+
+  advancedSearchValid = {
+    hasLastName: true,
+    hasFirstName: true,
+    hasDob: true
+  }
 
   constructor(
     private evacueeService: EvacueeService,
@@ -74,6 +81,23 @@ export class EvacueeListComponent implements OnInit {
     this.previousQuery = { ...query };
     // save the organization id into the query from the default
     return this.evacueeService.getEvacuees(query);
+  }
+
+  advancedSearch() {
+    const dob = this.advancedSearchForm.get('dob').value;
+    const fName = this.advancedSearchForm.get('first_name').value;
+    const lName = this.advancedSearchForm.get('last_name').value;
+    // Ensure required fields are not null or empty strings
+    this.advancedSearchValid.hasDob = dob != null && dob != '';
+    this.advancedSearchValid.hasFirstName = fName != null && fName !== '';
+    this.advancedSearchValid.hasLastName = lName != null && lName !== '';
+
+    if (this.advancedSearchValid.hasDob && this.advancedSearchValid.hasFirstName && this.advancedSearchValid.hasLastName) {
+      this.search();
+    }
+    else {
+      this.notFoundMessage = 'Please fill out all fields.';
+    }
   }
 
   search() {

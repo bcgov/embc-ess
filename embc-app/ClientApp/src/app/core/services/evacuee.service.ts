@@ -45,6 +45,7 @@ export class EvacueeService extends RestService {
     if (props.ess_file_no) { params.ess_file_no = props.ess_file_no; }
     if (props.evacuated_from) { params.evacuated_from = props.evacuated_from; }
     if (props.evacuated_to) { params.evacuated_to = props.evacuated_to; }
+    if (props.dob) { params.dob = props.dob };
 
     // convert boolean values (if present)
     if (props.registration_completed === true || props.registration_completed === false) {
