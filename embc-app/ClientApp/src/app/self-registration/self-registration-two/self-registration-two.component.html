@@ -5,8 +5,8 @@
   <h2 class="blue-header h3">INSURANCE</h2>
   <section>
     <p class="required font-weight-bold">Do you have insurance to cover your immediate needs?</p>
-    <div class="form-group">
-      <div class="form-check" (click)='openInsuranceInfoModal()'>
+    <div class="form-group" tabindex="0">
+      <div class="form-check">
         <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes" formControlName="insuranceCode" id="insuranceCodeYes">
         <label class="form-check-label" for="insuranceCodeYes">Yes</label>
       </div>
@@ -37,7 +37,7 @@
   <h2 class="blue-header h3">FOOD</h2>
   <section>
     <p class="required font-weight-bold">Do you have food for you and your family while you are evacuated? If you are unsure, select "No".</p>
-    <div class="form-group">
+    <div class="form-group" tabindex="0">
       <div class="form-check">
         <input type="radio" [class.is-invalid]="invalid('requiresFood')" class="form-check-input" [value]="true" formControlName="requiresFood" id="requiresFoodTrue">
         <label class="form-check-label" for="requiresFoodTrue">Yes</label>
@@ -49,7 +49,7 @@
       <span [class.d-block]="invalid('requiresFood')" class="invalid-feedback">{{validationErrors['requiresFood']}}</span>
     </div>
     <p class="required font-weight-bold">Do you have any dietary requirements?</p>
-    <div class="form-group">
+    <div class="form-group" tabindex="0">
       <div class="form-check">
         <input type="radio" [class.is-invalid]="invalid('dietaryNeeds')" class="form-check-input" [value]="true" formControlName="dietaryNeeds" id="dietaryNeedsTrue">
         <label class="form-check-label" for="dietaryNeedsTrue">Yes</label>
@@ -65,7 +65,7 @@
   <h2 class="blue-header h3">LODGING</h2>
   <section>
     <p class="required font-weight-bold">Are you able to provide lodging for you and your family while you are evacuated? This could include staying with relatives/friends or staying in a hotel. If you are unsure, select "No".</p>
-    <div class="form-group">
+    <div class="form-group" tabindex="0">
       <div class="form-check">
         <input type="radio" [class.is-invalid]="invalid('requiresAccommodation')" class="form-check-input" [value]="true" formControlName="requiresAccommodation" id="requiresAccommodationTrue">
         <label class="form-check-label" for="requiresAccommodationTrue">Yes</label>
@@ -81,7 +81,7 @@
   <h2 class="blue-header h3">CLOTHING</h2>
   <section>
     <p class="required font-weight-bold">Do you have appropriate clothing for you and your family while you are evacuated? This includes warm clothing should there be extreme winter conditions. If you are unsure, select "No".</p>
-    <div class="form-group">
+    <div class="form-group" tabindex="0">
       <div class="form-check">
         <input type="radio" [class.is-invalid]="invalid('requiresClothing')" class="form-check-input" [value]="true" formControlName="requiresClothing" id="requiresClothingTrue">
         <label class="form-check-label" for="requiresClothingTrue">Yes</label>
@@ -97,7 +97,7 @@
   <h2 class="blue-header h3">TRANSPORTATION</h2>
   <section>
     <p class="required font-weight-bold">Do you have transportation to meet your immediate needs? If you are unsure, select "No".</p>
-    <div class="form-group">
+    <div class="form-group" tabindex="0">
       <div class="form-check">
         <input type="radio" [class.is-invalid]="invalid('requiresTransportation')" class="form-check-input" [value]="true" formControlName="requiresTransportation" id="requiresTransportationTrue">
         <label class="form-check-label" for="requiresTransportationTrue">Yes</label>
@@ -113,7 +113,7 @@
   <h2 class="blue-header h3">INCIDENTALS</h2>
   <section>
     <p class="required font-weight-bold">Do you have necessities for you and your family while you are evacuated? This could include miscellaneous items such as personal hygiene products, laundry supplies and/or pet food. If you are unsure, select "No".</p>
-    <div class="form-group">
+    <div class="form-group" tabindex="0">
       <div class="form-check">
         <input type="radio" [class.is-invalid]="invalid('requiresIncidentals')" class="form-check-input" [value]="true" formControlName="requiresIncidentals" id="requiresIncidentalsTrue">
         <label class="form-check-label" for="requiresIncidentalsTrue">Yes</label>
@@ -129,7 +129,7 @@
   <h2 class="blue-header h3">MEDICATION</h2>
   <section>
     <p class="required font-weight-bold">Do you (or anyone registering with you) take medication?</p>
-    <div class="form-group">
+    <div class="form-group" tabindex="0">
       <div class="form-check">
         <input type="radio" [class.is-invalid]="invalid('medicationNeeds')" class="form-check-input" [value]="true" formControlName="medicationNeeds" id="medicationNeedsTrue">
         <label class="form-check-label" for="medicationNeedsTrue">Yes</label>
@@ -148,7 +148,7 @@
   <h2 class="blue-header h3">PETS</h2>
   <section>
     <p class="required font-weight-bold">Do you have any pets with you?</p>
-    <div class="form-group">
+    <div class="form-group" tabindex="0">
       <div class="form-check">
         <input type="radio" [class.is-invalid]="invalid('hasPets')" class="form-check-input" [value]="true" formControlName="hasPets" id="hasPetsTrue">
         <label class="form-check-label" for="hasPetsTrue">Yes</label>
