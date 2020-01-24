@@ -116,7 +116,7 @@
     </h2>
     <section>
       <p class="required">Are you registering immediate family members who live in the same household with you whom you know are safe?</p>
-      <div class="form-group">
+      <div class="form-group" tabindex="0">
         <div class="form-check">
           <input type="radio" [class.is-invalid]="invalid('registeringFamilyMembers')" class="form-check-input" value="yes" formControlName="registeringFamilyMembers" id="registeringFamilyMembersYes">
           <label class="form-check-label" for="registeringFamilyMembersYes">Yes</label>
@@ -161,14 +161,6 @@
                 </div>
               </div>
               <div class="row mb-2">
-                <div class="col-6">
-                  <label class="required" for="relationshipToEvacuee-{{i}}">Relationship to evacuee</label>
-                  <select [class.is-invalid]="invalid('relationshipToEvacuee', entry)" class="form-control" formControlName="relationshipToEvacuee" id="relationshipToEvacuee-{{i}}">
-                    <option [ngValue]="null">Please select--</option>
-                    <option [ngValue]="item" *ngFor="let item of relationshipTypes$ | async">{{item.description}}</option>
-                  </select>
-                  <span *ngIf="submitted" class="invalid-feedback">Please state your relationship to this family member.</span>
-                </div>
                 <div class="col">
                   <label for="gender-{{i}}">Gender</label>
                   <select class="form-control" formControlName="gender" id="gender-{{i}}">
@@ -208,7 +200,7 @@
     <h2 class="blue-header h3">Primary Residence &amp; Contact Details</h2>
     <section>
       <p class="required">Is your primary residence within BC?</p>
-      <div class="form-group mb-0">
+      <div class="form-group mb-0" tabindex="0">
         <div class="form-check">
           <input type="radio" [class.is-invalid]="invalid('primaryResidenceInBC')" class="form-check-input" formControlName="primaryResidenceInBC" [value]="true" id="primaryResidenceInBCTrue">
           <label class="form-check-label" for="primaryResidenceInBCTrue">Yes</label>
@@ -256,7 +248,7 @@
     <h2 class="blue-header h3">Mailing Address</h2>
     <section>
       <p class="required">Is your mailing address the same as your primary residence?</p>
-      <div class="form-group">
+      <div class="form-group" tabindex="0">
         <div class="form-check">
           <input type="radio" [class.is-invalid]="invalid('mailingAddressSameAsPrimary')" class="form-check-input" formControlName="mailingAddressSameAsPrimary" [value]="true" (click)="nullMailingAddress()" id="mailingAddressSameAsPrimaryTrue">
           <label class="form-check-label" for="mailingAddressSameAsPrimaryTrue">Yes</label>
@@ -269,7 +261,7 @@
       </div>
       <section *ngIf="ui.showMailingAddressSelector()" class="feature-block">
         <p class="required">Is your mailing address within BC?</p>
-        <div class="form-group">
+        <div class="form-group" tabindex="0">
           <div class="form-check">
             <input type="radio" class="form-check-input" formControlName="mailingAddressInBC" [value]="true" id="mailingAddressInBCTrue">
             <label class="form-check-label" for="mailingAddressInBCTrue">Yes</label>
