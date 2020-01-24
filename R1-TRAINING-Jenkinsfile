@@ -1,6 +1,7 @@
 #!groovy
 
-APP_NAME = "embcess-r1"
+APP_NAME = "embcess-r1-training"
+IMAGESTREAM_NAME = "${APP_NAME}"
 PROJECT_NAMESPACE = "jhnamn"
 DOTNET_SKIP_FIRST_TIME_EXPERIENCE="true"
 
@@ -22,9 +23,6 @@ environments = [
 // You shouldn't have to edit these if you're following the conventions
 ARTIFACT_BUILD = APP_NAME
 RUNTIME_CHAINED_BUILD = "${APP_NAME}"
-
-IMAGESTREAM_NAME = "${APP_NAME}"
-
 PATHFINDER_URL = "pathfinder.gov.bc.ca"
 
 
