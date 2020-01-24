@@ -6,16 +6,17 @@ DOTNET_SKIP_FIRST_TIME_EXPERIENCE="true"
 
 class AppEnvironment {
   String name
+  String env
   String tag
   String previousTag
 }
 
 // EDIT LINE BELOW (Edit your environment TAG names)
 environments = [
-  dev:new AppEnvironment(name:"Development",tag:"dev",previousTag:"dev-previous"),
-  test:new AppEnvironment(name:"Test",tag:"test",previousTag:"test-previous"),
-  training:new AppEnvironment(name:"Training",tag:"training",previousTag:"training-previous"),
-  prod:new AppEnvironment(name:"Prod",tag:"Prod",previousTag:"Prod-previous")
+  dev:new AppEnvironment(name:"Development",environment:"dev",tag:"dev",previousTag:"dev-previous"),
+  test:new AppEnvironment(name:"Test",environment:"test",tag:"test",previousTag:"test-previous"),
+  training:new AppEnvironment(name:"Training",environment:"test",tag:"training",previousTag:"training-previous"),
+  prod:new AppEnvironment(name:"Prod",environment:"prod",tag:"Prod",previousTag:"Prod-previous")
 ]
 
 // You shouldn't have to edit these if you're following the conventions
@@ -141,7 +142,7 @@ node('master') {
 	}
   
   stage("Deploy to ${environments.training.name}") {
-    def environment = environments.training.tag
+    def environment = environments.training.environment
     def stableTag = environments.training.previousTag
     node {
       try {
