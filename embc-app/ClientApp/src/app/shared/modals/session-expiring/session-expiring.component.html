@@ -1,13 +1,29 @@
-<div class="modal-header">
-  <h1 class="modal-title h2">Session Expiring!</h1>
-</div>
+<div class="session-modal-wrapper">
+  <br>
+  <app-font-awesome-icon style="color: #fcba19; margin:auto" icon="exclamation-triangle fa-2x"></app-font-awesome-icon>
 
-<div class="modal-body">
-  <p>Due to inactivity you will be logged out in <strong>{{countdownStr}}</strong> seconds.</p>
-</div>
+  <div class="modal-header">
+    <h1 class="modal-title h2 w-100">
+        Session Expiring!
+    </h1>
+  </div>
 
-<div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="refreshSession()">
-    Yes, I'm still here
-  </button>
+  <div class="modal-body">
+    <p>Due to inactivity you will be logged out in <br>
+      <strong  style="color: #fcba19; font-size: larger;">{{countdownStr}}</strong>
+    </p>
+
+    <p>
+      If you are logged out you will loose any unsaved work.
+      <br>
+      <strong>Do you wand to stay signed in?</strong>
+    </p>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary m-auto"  (click)="refreshSession()">
+      YES, KEEP ME SIGNED IN
+    </button>
+  </div>
+
 </div>
