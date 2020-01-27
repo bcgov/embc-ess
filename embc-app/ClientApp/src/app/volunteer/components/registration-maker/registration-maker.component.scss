@@ -12,6 +12,7 @@ app-communities-select {
   width: 100%;
 }
 
+
 .icon-l-padding {
     padding-left: 5px;
 }
@@ -20,3 +21,21 @@ app-communities-select {
     color: $iconColor;
     cursor: help;
 }
+
+.flex-container {
+  display: flex;
+  & .vertical {
+    flex-direction: column;
+  }
+}
+
+.flex-item {
+  flex: 0 1 auto;
+}
+
+.flex-btns {
+  align-items: flex-end;
+  flex: 2 0 auto;
+}
+
+
