@@ -3297,13 +3297,6 @@
         }
     },
     {
-        "Name": "Ts?i Deldel",
-        "Active": true,
-        "Region": {
-            "Name": "North East"
-        }
-    },
-    {
         "Name": "Tumbler Ridge",
         "Active": true,
         "Region": {
@@ -3465,7 +3458,7 @@
         }
     },
     {
-        "Name": "Xat's?ll (Soda Creek First Nations)",
+        "Name": "Xats'ull First Nation",
         "Active": true,
         "Region": {
             "Name": "North East"
@@ -3486,7 +3479,7 @@
         }
     },
     {
-        "Name": "Yunes?it'in",
+        "Name": "Yunesit'in",
         "Active": true,
         "Region": {
             "Name": "North East"
