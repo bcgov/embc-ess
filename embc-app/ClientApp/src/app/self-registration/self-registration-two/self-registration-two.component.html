@@ -6,7 +6,7 @@
   <section>
     <p class="required font-weight-bold">Do you have insurance to cover your immediate needs?</p>
     <div class="form-group" tabindex="0">
-      <div class="form-check">
+      <div class="form-check" (click)='openInsuranceInfoModal()'>
         <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes" formControlName="insuranceCode" id="insuranceCodeYes">
         <label class="form-check-label" for="insuranceCodeYes">Yes</label>
       </div>
