@@ -260,9 +260,11 @@
       <!-- PRIMARY RESIDENCE & CONTACT DETAILS -->
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Primary Residence &amp; Contact Details</h2>
-        <p class="required">
+        <p class="required inline-block">
           Is the evacuee's primary residence within BC?
         </p>
+        <i class="fa fa-info-circle icon-l-padding"
+        title="The address of a primary residence should be the physical address including apartment or house number and street name."></i>
         <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('primaryResidenceInBC')" class="form-check-input"
@@ -277,12 +279,12 @@
           <span [class.d-block]="invalid('primaryResidenceInBC')"
             class="invalid-feedback">{{e.primaryResidenceInBC}}</span>
         </div>
-        <p class="mt-3">
+        <!-- <p class="mt-3">
           <small>
             <strong>Primary residence:</strong> is the dwelling where an individual or family spends most of their
             personal time. A person can only have one primary residence at any time.
           </small>
-        </p>
+        </p> -->
         <div *ngIf="form.value.primaryResidenceInBC !== null" class="feature-block mt-4">
           <app-address-selector [parent]="f.primaryResidence" [touched]="submitted"
             [withinBC]="form.value.primaryResidenceInBC"></app-address-selector>
