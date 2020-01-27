@@ -1,3 +1,4 @@
+$iconColor: #c9c9c9;
 // to make 'invalid-feedback' message visible after custom component
 app-communities-select {
   &.is-invalid {
@@ -9,4 +10,13 @@ app-communities-select {
 
 .full-width {
   width: 100%;
+}
+
+.icon-l-padding {
+    padding-left: 5px;
+}
+
+.fa {
+    color: $iconColor;
+    cursor: help;
 }
