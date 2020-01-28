@@ -858,4 +858,13 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       isFinalized: null
     };
   }
+
+  hasPetsChanged() {
+    // If the value is false, clear out any pet care plans
+    if (!Boolean(this.form.get('hasPets').value)) {
+        this.form.get('petCarePlan').setValue(null);
+    }
+  }
+
+
 }
