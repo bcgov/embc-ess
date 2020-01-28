@@ -1,3 +1,4 @@
+$iconColor: #c9c9c9;
 // to make 'invalid-feedback' message visible after custom component
 app-communities-select {
   &.is-invalid {
@@ -11,6 +12,19 @@ app-communities-select {
   width: 100%;
 }
 
+<<<<<<< HEAD
+=======
+
+.icon-l-padding {
+    padding-left: 5px;
+}
+
+.fa {
+    color: $iconColor;
+    cursor: help;
+}
+
+>>>>>>> r1develop
 .flex-container {
   display: flex;
   & .vertical {
@@ -27,3 +41,7 @@ app-communities-select {
   flex: 2 0 auto;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> r1develop
