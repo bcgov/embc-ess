@@ -26,5 +26,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public bool HasReferrals { get; set; }
         public bool Active { get; set; }
         public DateTime? Dob { get; set; }
+        public DateTime? SelfRegisteredDate { get; set; }
     }
 }

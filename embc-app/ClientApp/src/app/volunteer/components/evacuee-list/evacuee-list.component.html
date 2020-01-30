@@ -193,7 +193,8 @@
     </div>
   </div>
   <div class="search-results">
-    <div *ngIf="resultsAndPagination?.data?.length>0; then searchResultsTable; else notFound"></div>
+    <!-- <div *ngIf="resultsAndPagination?.data?.length>0; then searchResultsTable; else notFound"></div> -->
+    <app-evacuee-search-results *ngIf="resultsAndPagination?.data" [searchResults]="resultsAndPagination"></app-evacuee-search-results>
   </div>
 
   <ng-template #searchResultsTable>

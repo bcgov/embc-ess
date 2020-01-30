@@ -37,4 +37,9 @@ export interface EvacueeListItem {
   registrationCompletionDate?: string;
   isFinalized: boolean;
   hasReferrals: boolean;
+  dob?: Date;
+  selfRegisteredDate?: Date;
+  // Moved so address info is accessible for all evacuee types
+  primaryResidence: Address;
+  mailingAddress: Address | null;
 }

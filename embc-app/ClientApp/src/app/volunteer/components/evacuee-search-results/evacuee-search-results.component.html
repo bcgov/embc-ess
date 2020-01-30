@@ -1,0 +1,62 @@
+<h1>Search Results</h1>
+<!--One Result-->
+<div *ngIf="searchResults.data.length === 1">
+  <p>
+    Please confirm that the ESS File listed below belongs to the evacuee by <strong>confirming their address</strong> before viewing their profile.
+  </p>
+</div>
+<!--Multiple Results-->
+<div *ngIf="searchResults.data.length > 1">
+  <p>
+    Your search has yielded more than 1 result, please confirm which ESS File listed below belongs to the evacuee by <strong>confirming their address</strong> before viewing their profile.
+  </p>
+  <p>
+    <strong>NOTE:</strong> In the event that there is more than 1 listing for an evacuee with the <strong>same date of birth and address</strong>, select the file with the most recent "Self-Registration Date & Time" or "Registration Date & Time."
+  </p>
+</div>
+<!--No Results-->
+<div *ngIf="searchResults.data.length === 0">
+  <p>
+    Your search yielded <strong>no results</strong>. Please go back and try again.
+  </p>
+</div>
+
+<p>Ayyy we have {{searchResults.data.length}} results!</p>
+
+<!--Repeater of results; hide if empty-->
+<div *ngIf="searchResults.data.length > 0">
+  <div *ngFor="let result of searchResults.data; index as i;">
+    <div class="evacuee-result">
+      <!--Top half (darker bg)-->
+      <div>
+      <!--First Row-->
+      <div>
+        <span class="h2 bold">
+        <span class="uppercase-text">{{result.lastName}}</span>, {{result.firstName}}
+        </span>
+        <!--Float me right-->
+        <span class="bold">
+          <span *ngIf="result.isFinalized">Finalized</span>
+          <span *ngIf="!result.isFinalized">Not Finalized</span>
+        </span>
+      </div>
+      <!--Second Row-->
+      <div>
+        <!--Tombstone info column-->
+        <div>
+          <!--dob-->
+          <div>
+          Date of Birth: <strong>{{result.dob | date}}</strong>
+          </div>
+          <!--address-->
+          <div>
+            Address: <strong></strong>
+          </div>
+          <!--ESS File #-->
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
