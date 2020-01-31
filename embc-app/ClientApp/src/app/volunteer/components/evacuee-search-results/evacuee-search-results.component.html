@@ -2,16 +2,20 @@
 <!--One Result-->
 <div *ngIf="searchResults.data.length === 1">
   <p>
-    Please confirm that the ESS File listed below belongs to the evacuee by <strong>confirming their address</strong> before viewing their profile.
+    Please confirm that the ESS File listed below belongs to the evacuee by <strong>confirming their address</strong>
+    before viewing their profile.
   </p>
 </div>
 <!--Multiple Results-->
 <div *ngIf="searchResults.data.length > 1">
   <p>
-    Your search has yielded more than 1 result, please confirm which ESS File listed below belongs to the evacuee by <strong>confirming their address</strong> before viewing their profile.
+    Your search has yielded more than 1 result, please confirm which ESS File listed below belongs to the evacuee by
+    <strong>confirming their address</strong> before viewing their profile.
   </p>
   <p>
-    <strong>NOTE:</strong> In the event that there is more than 1 listing for an evacuee with the <strong>same date of birth and address</strong>, select the file with the most recent "Self-Registration Date & Time" or "Registration Date & Time."
+    <strong>NOTE:</strong> In the event that there is more than 1 listing for an evacuee with the <strong>same date of
+      birth and address</strong>, select the file with the most recent "Self-Registration Date & Time" or "Registration
+    Date & Time."
   </p>
 </div>
 <!--No Results-->
@@ -21,42 +25,69 @@
   </p>
 </div>
 
-<p>Ayyy we have {{searchResults.data.length}} results!</p>
-
 <!--Repeater of results; hide if empty-->
 <div *ngIf="searchResults.data.length > 0">
-  <div *ngFor="let result of searchResults.data; index as i;">
+  <div *ngFor="let result of searchResults.data; index as i;" class="container-spacing">
     <div class="evacuee-result">
       <!--Top half (darker bg)-->
-      <div>
-      <!--First Row-->
-      <div>
-        <span class="h2 bold">
-        <span class="uppercase-text">{{result.lastName}}</span>, {{result.firstName}}
-        </span>
-        <!--Float me right-->
-        <span class="bold">
-          <span *ngIf="result.isFinalized">Finalized</span>
-          <span *ngIf="!result.isFinalized">Not Finalized</span>
-        </span>
+      <div class="darkBg">
+        <!--First Row-->
+        <div class="flex-container space-between">
+          <span class="h1">
+            <span class="uppercase-text">{{result.lastName}}</span>, {{result.firstName}}
+          </span>
+          <!--Float me right-->
+          <span class="pull-right h6">
+            <strong *ngIf="result.isFinalized">Finalized</strong>
+            <strong *ngIf="!result.isFinalized">Not Finalized</strong>
+          </span>
+        </div>
+        <!--Second Row-->
+        <div class="flex-container align-end">
+          <!--Tombstone info column-->
+          <div class="flex-item full-width">
+            <!--dob-->
+            <p>
+              Date of Birth: <strong>{{result.dob | date}}</strong>
+            </p>
+            <!--address-->
+            <p>
+              Address: <strong>{{result.primaryAddress}}, {{result.city}}, {{result.postalCode}}</strong>
+            </p>
+            <!--ESS File #-->
+            <p>
+              ESS File #: <strong>{{result.incidentTaskNumber}}</strong>
+            </p>
+          </div>
+          <!--View Profile Button-->
+          <div class="btn-container flex-btn">
+            <button class="btn btn-primary" (click)="view(result.id)"><i class="fa fa-check icon-padding"></i>View Profile</button>
+          </div>
+        </div>
       </div>
-      <!--Second Row-->
-      <div>
-        <!--Tombstone info column-->
-        <div>
-          <!--dob-->
-          <div>
-          Date of Birth: <strong>{{result.dob | date}}</strong>
+      <!--Bottom half (lighter bg)-->
+      <div class="lightBg">
+        <div class="flex-container">
+          <!--Reg time col-->
+          <div class="">
+            <p>
+              Self-Registration Date & Time: <strong>{{result.selfRegisteredDate | date:'MMM d, y, h:mm a'}}</strong>
+            </p>
+            <p>
+              Registration Completed Date & Time: <strong>{{result.registrationCompletionDate | date:'MMM d, y, h:mm a'}}</strong>
+            </p>
           </div>
-          <!--address-->
-          <div>
-            Address: <strong></strong>
+          <!--Evacuated to/from col-->
+          <div class="">
+            <p>
+              Evacuated From: <strong>{{result.evacuatedFrom}}</strong>
+            </p>
+            <p>
+              Evacuated To: <strong>{{result.evacuatedTo}}</strong>
+            </p>
           </div>
-          <!--ESS File #-->
         </div>
       </div>
     </div>
-    </div>
   </div>
 </div>
-

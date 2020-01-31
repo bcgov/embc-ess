@@ -1,0 +1,78 @@
+$borderColor: #7596c8;
+$darkBgColor: #e1e8f2;
+$lightBgColor: #f1f4fa;
+
+.evacuee-result {
+    border-style: solid;
+    border-width: 3px;
+    border-color: $borderColor; 
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    // padding-left: 10px;
+    // padding-right: 10px;
+    &.vertical {
+        flex-direction: column;
+    }
+    &.space-between {
+        justify-content: space-between;
+    }
+    & > * {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+.flex-item {
+    flex: 1 1 auto;
+}
+
+.flex-btn {
+    flex: 1 1 100px;
+}
+
+.pull-right {
+    align-self: flex-end;
+}
+
+.content-section {
+    padding: 5px;
+}
+
+.darkBg {
+    background-color: $darkBgColor;
+}
+
+.lightBg {
+    background-color: $lightBgColor;
+}
+
+.container-spacing {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.icon-padding {
+    padding-right: 5px;
+}
+
+.align-end {
+    align-items: flex-end;
+}
+
+.btn-container {
+    flex: 1 2 250px;
+    align-self: center;
+    display: flex;
+    & button {
+        flex: 0 0 auto;
+        margin-right: 10px;
+    }
+}
+

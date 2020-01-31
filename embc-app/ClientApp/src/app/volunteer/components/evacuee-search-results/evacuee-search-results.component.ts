@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ListResult, EvacueeListItem } from 'src/app/core/models';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
 @Component({
   selector: 'app-evacuee-search-results',
@@ -9,11 +12,26 @@ import { ListResult, EvacueeListItem } from 'src/app/core/models';
 export class EvacueeSearchResultsComponent implements OnInit {
   @Input() searchResults: ListResult<EvacueeListItem>;
 
-  constructor() { }
+  path: string = null; // the base path for routing
+
+  constructor( 
+    private router: Router,
+    private authService: AuthService,
+    private uniqueKeyService: UniqueKeyService,
+    ){ }
 
   ngOnInit() {
+    // save the base url path
+    this.authService.path.subscribe((path: string) => this.path = path);
   }
 
+  view(registrationId: string) {
+    // save registration ID for lookup in the new component
+    this.uniqueKeyService.setKey(registrationId);
+
+    // go to registration summary page
+    this.router.navigate([`/${this.path}/registration/summary`]);
+  }
 
 
 }
