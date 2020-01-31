@@ -294,7 +294,6 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
         initials: fmbr.initials,
         gender: fmbr.gender,
         dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
-        relationshipToEvacuee: [fmbr.relationshipToEvacuee, Validators.required],
       });
     } else {
       // make a new family member blank and return it.
@@ -305,7 +304,6 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
         initials: '',
         gender: null,
         dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
-        relationshipToEvacuee: [null, Validators.required],
       });
     }
   }
