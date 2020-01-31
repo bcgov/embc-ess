@@ -1,13 +1,28 @@
 @import "~src/styles/_defaults.scss";
+$bgColor: #f1f4fa;
+$closeColor: #3d5d8d;
 
 .close-padding {
   padding: 5px;
+}
+
+.close-color {
+  color: $closeColor;
 }
 
 .cursor-pointer {
   cursor: pointer;
 }
 
+.info-container {
+  background-color: $bgColor;
+}
+
 .info-header {
   display: list-item;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
 }
