@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { ListResult, EvacueeListItem } from 'src/app/core/models';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -11,7 +11,7 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 })
 export class EvacueeSearchResultsComponent implements OnInit {
   @Input() searchResults: ListResult<EvacueeListItem>;
-
+  @Output() displayResults: boolean = true;
   path: string = null; // the base path for routing
 
   constructor( 
@@ -33,5 +33,8 @@ export class EvacueeSearchResultsComponent implements OnInit {
     this.router.navigate([`/${this.path}/registration/summary`]);
   }
 
+  searchAgain() {
+    this.displayResults = false;
+  }
 
 }

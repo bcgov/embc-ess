@@ -27,6 +27,7 @@ export class EvacueeListComponent implements OnInit {
   previousQuery: EvacueeSearchQueryParameters = {};
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
+  displayResults: boolean = false;
 
   // for R1, advanced search mode is the only mode
   advancedSearchMode = true;
@@ -105,6 +106,7 @@ export class EvacueeListComponent implements OnInit {
     const query = this.createSearchQuery();
 
     this.getEvacuees(query).subscribe((listResult: ListResult<EvacueeListItem>) => {
+      this.displayResults = true;
       if (listResult.data.length <= 0) {
         this.notFoundMessage = 'No results found.';
       } else {

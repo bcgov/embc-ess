@@ -30,14 +30,14 @@
   <div *ngFor="let result of searchResults.data; index as i;" class="container-spacing">
     <div class="evacuee-result">
       <!--Top half (darker bg)-->
-      <div class="darkBg">
+      <div class="dark-bg">
         <!--First Row-->
         <div class="flex-container space-between">
           <span class="h1">
             <span class="uppercase-text">{{result.lastName}}</span>, {{result.firstName}}
           </span>
           <!--Float me right-->
-          <span class="pull-right h6">
+          <span class="flex-end h6">
             <strong *ngIf="result.isFinalized">Finalized</strong>
             <strong *ngIf="!result.isFinalized">Not Finalized</strong>
           </span>
@@ -61,12 +61,13 @@
           </div>
           <!--View Profile Button-->
           <div class="btn-container flex-btn">
-            <button class="btn btn-primary" (click)="view(result.registrationId)"><i class="fa fa-check icon-padding"></i>View Profile</button>
+            <button class="btn btn-primary" (click)="view(result.registrationId)"><i
+                class="fa fa-check icon-padding"></i>View Profile</button>
           </div>
         </div>
       </div>
       <!--Bottom half (lighter bg)-->
-      <div class="lightBg">
+      <div class="light-bg">
         <div class="flex-container">
           <!--Reg time col-->
           <div class="">
@@ -74,7 +75,8 @@
               Self-Registration Date & Time: <strong>{{result.selfRegisteredDate | date:'MMM d, y, h:mm a'}}</strong>
             </p>
             <p>
-              Registration Completed Date & Time: <strong>{{result.registrationCompletionDate | date:'MMM d, y, h:mm a'}}</strong>
+              Registration Completed Date & Time:
+              <strong>{{result.registrationCompletionDate | date:'MMM d, y, h:mm a'}}</strong>
             </p>
           </div>
           <!--Evacuated to/from col-->
@@ -91,3 +93,30 @@
     </div>
   </div>
 </div>
+
+<!--Search Again Btn-->
+<div class="light-bg flex-container vertical align-center">
+  <p class="flex-item lg-top-padding">
+    <strong>
+      <div *ngIf="searchResults.data.length === 1; then singleResult"></div>
+      <div *ngIf="searchResults.data.length > 1; then multiResult"></div>
+      <div *ngIf="searchResults.data.length === 0; then noResult"></div>
+    </strong>
+    Go back and search again.
+  </p>
+  <div class="flex-item lg-btm-padding">
+    <button class="btn btn-outline-primary search-btn" (click)="searchAgain()">
+      <i class="fa fa-times icon-padding"></i> SEARCH AGAIN
+    </button>
+  </div>
+</div>
+
+<ng-template #singleResult>
+  This result not a match?
+</ng-template>
+<ng-template #multiResult>
+  None of these results is a match?
+</ng-template>
+<ng-template #noResult>
+  No Results!
+</ng-template>
