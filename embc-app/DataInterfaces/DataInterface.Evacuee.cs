@@ -43,7 +43,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     e.RegistrationId == searchQuery.Query ||
                     EF.Functions.Like(e.EvacuatedTo, $"%{searchQuery.Query}%") ||
                     EF.Functions.Like(e.EvacuatedFrom, $"%{searchQuery.Query}%") ||
-                    e.Dob.Equals(dob));
+                    (e.Dob.HasValue && e.Dob.Equals(dob)));
             }
             else
             {

@@ -1,4 +1,5 @@
 using AutoMapper;
+using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Utils;
 using System;
 using System.Linq;
@@ -51,5 +52,13 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public DateTime? RegistrationCompletionDate { get; set; }
         public bool IsFinalized { get; set; }
         public bool? HasReferrals { get; set; }
+        public DateTime? Dob { get; set; }
+        public DateTime? SelfRegisteredDate { get; set; }
+        public string PrimaryAddress { get; set; }
+        public string City { get; set; }
+        public string Province { get; set; }
+        public string PostalCode { get; set; }
+
+
     }
 }

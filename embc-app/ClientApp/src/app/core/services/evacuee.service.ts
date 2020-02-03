@@ -16,14 +16,27 @@ type StringParams = {
 })
 export class EvacueeService extends RestService {
 
+  // Reference to previous query
+  private previousQuery: Observable<ListResult<EvacueeListItem>> = null;
+
   // get the results that match the search query params
   getEvacuees(props: EvacueeSearchQueryParameters = {}): Observable<ListResult<EvacueeListItem>> {
     const params = this.toStringParams(props);
-    return this.http.get<ListResult<EvacueeListItem>>('/api/evacuees', { headers: this.headers, params })
+    this.previousQuery = this.http.get<ListResult<EvacueeListItem>>('/api/evacuees', { headers: this.headers, params })
       .pipe(
         retry(3),
         catchError(this.handleError)
       );
+
+      return this.previousQuery;
+  }
+
+  hasPreviousQuery(): boolean {
+    return this.previousQuery !== null;
+  }
+
+  getPreviousQuery(): Observable<ListResult<EvacueeListItem>> {
+    return this.previousQuery;
   }
 
   // convert everything to string. Query params are strings.

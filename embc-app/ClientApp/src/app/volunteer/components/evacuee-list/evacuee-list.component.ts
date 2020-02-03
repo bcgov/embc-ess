@@ -8,6 +8,7 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
 import { FormBuilder } from '@angular/forms';
 
+
 @Component({
   selector: 'app-evacuee-list',
   templateUrl: './evacuee-list.component.html',
@@ -17,7 +18,7 @@ export class EvacueeListComponent implements OnInit {
   evacuees: any;
   // server response
   resultsAndPagination: ListResult<EvacueeListItem>;
-  notFoundMessage = 'Searching ...';
+  notFoundMessage: string = "";
   defaultSearchQuery: EvacueeSearchQueryParameters = {
     offset: 0,
     limit: 20
@@ -27,7 +28,7 @@ export class EvacueeListComponent implements OnInit {
   previousQuery: EvacueeSearchQueryParameters = {};
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
-
+  isVolunteer: boolean;
   // for R1, advanced search mode is the only mode
   advancedSearchMode = true;
   advancedSearchForm = this.fb.group({
@@ -45,7 +46,8 @@ export class EvacueeListComponent implements OnInit {
   advancedSearchValid = {
     hasLastName: true,
     hasFirstName: true,
-    hasDob: true
+    hasDob: true,
+    hasESSNumber: true,
   }
 
   constructor(
@@ -59,10 +61,12 @@ export class EvacueeListComponent implements OnInit {
   ngOnInit() {
     // save the base url path
     this.authService.path.subscribe((path: string) => this.path = path);
-    //this.getEvacuees().subscribe((listResult: ListResult<EvacueeListItem>) => {
-    //  this.resultsAndPagination = listResult;
-    //});
+    this.authService.isVolunteer$.subscribe(result => this.isVolunteer = result);
+    this.getEvacuees().subscribe((listResult: ListResult<EvacueeListItem>) => {
+      this.resultsAndPagination = listResult;
+    });
   }
+
 
   switchToAdvancedSearch() {
     this.advancedSearchMode = true;
@@ -100,6 +104,17 @@ export class EvacueeListComponent implements OnInit {
     }
   }
 
+  essSearch() {
+    const essNum = this.advancedSearchForm.get("ess_file_no").value;
+    this.advancedSearchValid.hasESSNumber = essNum;
+    if (this.advancedSearchValid.hasESSNumber) {
+      this.search();
+    }
+    else {
+      this.notFoundMessage = 'Please fill out all fields.'
+    }
+  }
+
   search() {
     // submit and collect search with a query string
     const query = this.createSearchQuery();
@@ -112,6 +127,11 @@ export class EvacueeListComponent implements OnInit {
       }
       this.resultsAndPagination = listResult;
     });
+    // if the user is a volunteer we will route them to the results page
+    if (this.isVolunteer) {
+      // Navigate to results
+      this.router.navigate([`/${this.path}/evacuee/results`]);
+    }
   }
 
   createSearchQuery(): EvacueeSearchQueryParameters {
