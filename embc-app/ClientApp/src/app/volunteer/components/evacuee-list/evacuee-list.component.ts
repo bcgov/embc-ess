@@ -118,7 +118,7 @@ export class EvacueeListComponent implements OnInit {
     let isVol: boolean;
     this.authService.isVolunteer$.subscribe(vol => isVol = vol);
     // if the user is a volunteer we will route them to the results page
-    if (true || isVol) {
+    if (isVol) {
       // Navigate to results
       this.router.navigate([`/${this.path}/evacuee/results`]);
     }
