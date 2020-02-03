@@ -46,7 +46,8 @@ export class EvacueeListComponent implements OnInit {
   advancedSearchValid = {
     hasLastName: true,
     hasFirstName: true,
-    hasDob: true
+    hasDob: true,
+    hasESSNumber: true,
   }
 
   constructor(
@@ -100,6 +101,17 @@ export class EvacueeListComponent implements OnInit {
     }
     else {
       this.notFoundMessage = 'Please fill out all fields.';
+    }
+  }
+
+  essSearch() {
+    const essNum = this.advancedSearchForm.get("ess_file_no").value;
+    this.advancedSearchValid.hasESSNumber = essNum;
+    if (this.advancedSearchValid.hasESSNumber) {
+      this.search();
+    }
+    else {
+      this.notFoundMessage = 'Please fill out all fields.'
     }
   }
 

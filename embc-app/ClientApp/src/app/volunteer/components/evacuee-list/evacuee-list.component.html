@@ -28,7 +28,7 @@
     <ng-container *ngIf="advancedSearchMode">
 
       <h1 class="yellow-header font-weight-bold">Evacuee Emergency Support Services (ESS) File #</h1>
-      <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="search()">
+      <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="essSearch()">
         <div class="feature-block">
           <p>
             If the evacuee has their <strong>ESS File #</strong> that they received when they <strong>self
@@ -40,6 +40,9 @@
                 <label for="asEssFileNo" class="col-5 col-form-label">ESS File #:</label>
                 <div class="col-7">
                   <input type="text" class="form-control" id="asEssFileNo" formControlName="ess_file_no">
+                  <div class="missing-input" *ngIf="!advancedSearchValid.hasESSNumber">
+                    Please enter ESS File #
+                  </div>
                 </div>
               </div>
             </div>
