@@ -179,7 +179,7 @@
     </div>
   </div>
 </div>
-<div class="row my-2" *ngIf="resultsAndPagination?.data?.length>0">
+<div class="row my-2" *ngIf="resultsAndPagination?.data?.length>0 && !this.isVolunteer">
   <div class="col">
     <app-pagination-summary [value]="resultsAndPagination?.metadata">
       <!-- <span class="font-weight-bold">ACTIVE</span> evacuees -->
@@ -198,7 +198,7 @@
   </div>
 </div>
 <div class="search-results">
-  <div *ngIf="resultsAndPagination?.data?.length>0; then searchResultsTable; else notFound"></div>
+  <div *ngIf="resultsAndPagination?.data?.length>0 && !this.isVolunteer; then searchResultsTable; else notFound"></div>
 </div>
 
 <ng-template #searchResultsTable>

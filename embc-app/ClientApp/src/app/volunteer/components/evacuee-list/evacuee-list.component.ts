@@ -18,7 +18,7 @@ export class EvacueeListComponent implements OnInit {
   evacuees: any;
   // server response
   resultsAndPagination: ListResult<EvacueeListItem>;
-  notFoundMessage = 'Searching ...';
+  notFoundMessage: string = "";
   defaultSearchQuery: EvacueeSearchQueryParameters = {
     offset: 0,
     limit: 20
@@ -28,7 +28,7 @@ export class EvacueeListComponent implements OnInit {
   previousQuery: EvacueeSearchQueryParameters = {};
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
-  isVolunteer: boolean; 
+  isVolunteer: boolean;
   // for R1, advanced search mode is the only mode
   advancedSearchMode = true;
   advancedSearchForm = this.fb.group({
@@ -60,11 +60,12 @@ export class EvacueeListComponent implements OnInit {
   ngOnInit() {
     // save the base url path
     this.authService.path.subscribe((path: string) => this.path = path);
-    //this.getEvacuees().subscribe((listResult: ListResult<EvacueeListItem>) => {
-    //  this.resultsAndPagination = listResult;
-    //});
-    this.authService.isVolunteer$.subscribe(vol => this.isVolunteer = vol);
+    this.authService.isVolunteer$.subscribe(result => this.isVolunteer = result);
+    this.getEvacuees().subscribe((listResult: ListResult<EvacueeListItem>) => {
+      this.resultsAndPagination = listResult;
+    });
   }
+
 
   switchToAdvancedSearch() {
     this.advancedSearchMode = true;
