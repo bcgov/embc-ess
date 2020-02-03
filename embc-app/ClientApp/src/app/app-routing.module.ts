@@ -36,6 +36,7 @@ import { VolunteerMakerPageComponent } from './local-authority/pages/volunteer-m
 import { OrganizationMakerPageComponent } from './provincial-admin/pages/organization-maker-page/organization-maker-page.component';
 import { SurveyPageComponent } from './volunteer/pages/survey-page/survey-page.component';
 import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
+import { EAccessAgreementGuard } from './core/guards/e-access-agreement.gaurd';
 
 /*
   /
@@ -150,7 +151,7 @@ const routes: Routes = [
   // VOLUNTEER routes
   {
     path: 'volunteer',
-    canActivate: [LoggedInGuard],
+    canActivate: [LoggedInGuard, EAccessAgreementGuard],
     canActivateChild: [RoleGuard],
     data: { expectedRole: VOLUNTEER },
     children: [
