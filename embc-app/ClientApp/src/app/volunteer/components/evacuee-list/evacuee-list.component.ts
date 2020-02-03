@@ -7,8 +7,7 @@ import { EvacueeSearchQueryParameters } from 'src/app/core/models/search-interfa
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
 import { FormBuilder } from '@angular/forms';
-import { User } from 'src/app/core/models';
-import { userInfo } from 'os';
+
 
 @Component({
   selector: 'app-evacuee-list',
