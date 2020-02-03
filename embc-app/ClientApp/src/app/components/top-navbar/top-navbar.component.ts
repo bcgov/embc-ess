@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { PROVINCIAL_ADMIN, LOCAL_AUTHORITY, VOLUNTEER } from 'src/app/constants';
+import { AuthService } from 'app/core/services/auth.service';
+import { PROVINCIAL_ADMIN, LOCAL_AUTHORITY, VOLUNTEER } from 'app/constants';
 import { Router } from '@angular/router';
 
 @Component({

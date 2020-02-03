@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { IncidentTask } from 'src/app/core/models';
+import { IncidentTask } from 'app/core/models';
 
 // CRUD
 export const LOAD_ALL_START = '[IncidentTasks] Load All IncidentTasks Start';
