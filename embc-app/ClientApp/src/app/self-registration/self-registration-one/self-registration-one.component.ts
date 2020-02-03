@@ -366,7 +366,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         initials: fmbr.initials,
         gender: fmbr.gender,
         dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
-        relationshipToEvacuee: [fmbr.relationshipToEvacuee, Validators.required],
       });
     } else {
       return this.fb.group({
@@ -376,7 +375,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         initials: '',
         gender: null,
         dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
-        relationshipToEvacuee: [null, Validators.required],
       });
     }
   }
