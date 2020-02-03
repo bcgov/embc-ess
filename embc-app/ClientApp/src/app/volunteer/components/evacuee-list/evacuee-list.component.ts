@@ -28,8 +28,7 @@ export class EvacueeListComponent implements OnInit {
   previousQuery: EvacueeSearchQueryParameters = {};
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
-  displayResults: boolean = false;
-
+  isVolunteer: boolean; 
   // for R1, advanced search mode is the only mode
   advancedSearchMode = true;
   advancedSearchForm = this.fb.group({
@@ -64,6 +63,7 @@ export class EvacueeListComponent implements OnInit {
     //this.getEvacuees().subscribe((listResult: ListResult<EvacueeListItem>) => {
     //  this.resultsAndPagination = listResult;
     //});
+    this.authService.isVolunteer$.subscribe(vol => this.isVolunteer = vol);
   }
 
   switchToAdvancedSearch() {
@@ -107,7 +107,6 @@ export class EvacueeListComponent implements OnInit {
     const query = this.createSearchQuery();
 
     this.getEvacuees(query).subscribe((listResult: ListResult<EvacueeListItem>) => {
-      this.displayResults = true;
       if (listResult.data.length <= 0) {
         this.notFoundMessage = 'No results found.';
       } else {
@@ -115,10 +114,8 @@ export class EvacueeListComponent implements OnInit {
       }
       this.resultsAndPagination = listResult;
     });
-    let isVol: boolean;
-    this.authService.isVolunteer$.subscribe(vol => isVol = vol);
     // if the user is a volunteer we will route them to the results page
-    if (isVol) {
+    if (this.isVolunteer) {
       // Navigate to results
       this.router.navigate([`/${this.path}/evacuee/results`]);
     }
