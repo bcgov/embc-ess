@@ -199,10 +199,10 @@
     </div>
   </div>
   <div class="search-results">
-    <!-- <div *ngIf="resultsAndPagination?.data?.length>0; then searchResultsTable; else notFound"></div> -->
+    <div *ngIf="resultsAndPagination?.data?.length>0; then searchResultsTable; else notFound"></div>
     <!--resultsAndPagination?.data-->
-    <app-evacuee-search-results *ngIf="displayResults" (displayResults)="displayResults"
-      [searchResults]="resultsAndPagination"></app-evacuee-search-results>
+    <!-- <app-evacuee-search-results *ngIf="displayResults" (displayResults)="displayResults"
+      [searchResults]="resultsAndPagination"></app-evacuee-search-results> -->
   </div>
 
   <ng-template #searchResultsTable>

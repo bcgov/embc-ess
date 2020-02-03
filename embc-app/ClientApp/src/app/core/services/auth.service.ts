@@ -78,6 +78,11 @@ export class AuthService extends RestService {
       );
   }
 
+  // Determines if current user is only a volunteer
+  public isCurrentUserVolunteer(): boolean {
+    return this.currentUser.appRoles.some(r => r === VOLUNTEER) && this.currentUser.appRoles.some(r => r !== PROVINCIAL_ADMIN);
+  }
+
   // sets current user to a value to test the current user observable all subscribers should update
   private setCurrentUser(user: User): void {
     // this.currentUser$.next(user);

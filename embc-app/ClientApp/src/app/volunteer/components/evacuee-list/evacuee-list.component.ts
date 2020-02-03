@@ -7,6 +7,8 @@ import { EvacueeSearchQueryParameters } from 'src/app/core/models/search-interfa
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
 import { FormBuilder } from '@angular/forms';
+import { User } from 'src/app/core/models';
+import { userInfo } from 'os';
 
 @Component({
   selector: 'app-evacuee-list',
@@ -114,6 +116,13 @@ export class EvacueeListComponent implements OnInit {
       }
       this.resultsAndPagination = listResult;
     });
+    let isVol: boolean;
+    this.authService.isVolunteer$.subscribe(vol => isVol = vol);
+    // if the user is a volunteer we will route them to the results page
+    if (true || isVol) {
+      // Navigate to results
+      this.router.navigate([`/${this.path}/evacuee/results`]);
+    }
   }
 
   createSearchQuery(): EvacueeSearchQueryParameters {
