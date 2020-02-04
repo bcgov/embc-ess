@@ -36,7 +36,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 					e.Nickname,
 					e.Initials,
 					e.Dob,
-					AddressLine1 AS PrimaryAddress,
+					era.AddressLine1 AS PrimaryAddress,
 					er.SelfRegisteredDate,
 					CONVERT(VARCHAR(20), e.RegistrationId) AS RegistrationId,
 					t.TaskNumber AS IncidentTaskNumber,
@@ -57,7 +57,9 @@ namespace Gov.Jag.Embc.Public.Migrations
 				LEFT OUTER JOIN
 					Communities hc ON er.HostCommunityId = hc.Id
 				LEFT OUTER JOIN
-					referralSummary re ON e.RegistrationId = re.RegistrationId AND e.EvacueeSequenceNumber = re.EvacueeId");
+					referralSummary re ON e.RegistrationId = re.RegistrationId AND e.EvacueeSequenceNumber = re.EvacueeId
+				LEFT OUTER JOIN
+					EvacueeRegistrationAddresses era ON e.RegistrationId = era.RegistrationId");
 		}
 
 		protected override void Down(MigrationBuilder migrationBuilder)
