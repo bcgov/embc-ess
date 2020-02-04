@@ -36,7 +36,7 @@ namespace Gov.Jag.Embc.Public.Migrations
 					e.Nickname,
 					e.Initials,
 					e.Dob,
-					era.AddressLine1 AS PrimaryAddress,
+					AddressLine1 AS PrimaryAddress,
 					er.SelfRegisteredDate,
 					CONVERT(VARCHAR(20), e.RegistrationId) AS RegistrationId,
 					t.TaskNumber AS IncidentTaskNumber,
