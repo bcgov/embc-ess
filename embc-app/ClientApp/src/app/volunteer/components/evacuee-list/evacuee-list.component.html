@@ -12,7 +12,10 @@
     <ng-container *ngIf="!advancedSearchMode">
       <div class="form-row">
         <div class="col">
-          <input [(ngModel)]="queryString" (ngModelChange)="onNullQueryString($event)" type="text" aria-label="search" class="form-control mb-2" placeholder="Search by task number / last name / registration number / community ..." (keydown.enter)="search()">
+          <input [(ngModel)]="queryString" (ngModelChange)="onNullQueryString($event)" type="text" aria-label="search"
+            class="form-control mb-2"
+            placeholder="Search by task number / last name / registration number / community ..."
+            (keydown.enter)="search()">
         </div>
         <div class="col-auto">
           <button type="button" class="btn btn-primary text-uppercase" (click)="search()">Search</button>
@@ -25,10 +28,11 @@
     <ng-container *ngIf="advancedSearchMode">
 
       <h1 class="yellow-header font-weight-bold">Evacuee Emergency Support Services (ESS) File #</h1>
-      <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="search()">
+      <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="essSearch()">
         <div class="feature-block">
           <p>
-            If the evacuee has their <strong>ESS File #</strong> that they received when they <strong>self registered</strong>, enter it below to locate their evacuee file.
+            If the evacuee has their <strong>ESS File #</strong> that they received when they <strong>self
+              registered</strong>, enter it below to locate their evacuee file.
           </p>
           <div class="row">
             <div class="col">
@@ -36,6 +40,9 @@
                 <label for="asEssFileNo" class="col-5 col-form-label">ESS File #:</label>
                 <div class="col-7">
                   <input type="text" class="form-control" id="asEssFileNo" formControlName="ess_file_no">
+                  <div class="missing-input" *ngIf="!advancedSearchValid.hasESSNumber">
+                    Please enter ESS File #
+                  </div>
                 </div>
               </div>
             </div>
@@ -59,7 +66,8 @@
       </div>
       <p>Narrow your search results by: (fill any / all fields)</p>-->
           <p>
-            In the event where the <strong>evacuee doesn't have their ESS File #</strong>, you must request <strong>3 pieces of information</strong> from them in order to locate their file.
+            In the event where the <strong>evacuee doesn't have their ESS File #</strong>, you must request <strong>3
+              pieces of information</strong> from them in order to locate their file.
             Ensure accurate spelling of names. <i>All fields are required</i>
           </p>
           <div class="row">
@@ -173,32 +181,32 @@
       <span class="ml-2">Head of Household</span>
     </div>
   </div>
-
-  <div class="row my-2" *ngIf="resultsAndPagination?.data?.length>0">
-    <div class="col">
-      <app-pagination-summary [value]="resultsAndPagination?.metadata">
-        <!-- <span class="font-weight-bold">ACTIVE</span> evacuees -->
-        <span class="font-weight-bold text-uppercase">active</span> evacuees
-        <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
-      </app-pagination-summary>
-    </div>
-    <div class="col-4">
-      <select class="form-control float-right" [(ngModel)]="sort" (change)="search()">
-        <!-- <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option> -->
-        <option [value]="'-registrationId'">Sort by: Latest (default)</option>
-        <option [value]="'lastName'">Last Name</option>
-        <option [value]="'evacuatedTo'">Community Evacuated to</option>
-        <option [value]="'evacuatedFrom'">Community Evacuated from</option>
-      </select>
-    </div>
+</div>
+<div class="row my-2" *ngIf="resultsAndPagination?.data?.length>0 && !this.isVolunteer">
+  <div class="col">
+    <app-pagination-summary [value]="resultsAndPagination?.metadata">
+      <!-- <span class="font-weight-bold">ACTIVE</span> evacuees -->
+      <span class="font-weight-bold text-uppercase">active</span> evacuees
+      <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
+    </app-pagination-summary>
   </div>
-  <div class="search-results">
-    <div *ngIf="resultsAndPagination?.data?.length>0; then searchResultsTable; else notFound"></div>
+  <div class="col-4">
+    <select class="form-control float-right" [(ngModel)]="sort" (change)="search()">
+      <!-- <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option> -->
+      <option [value]="'-registrationId'">Sort by: Latest (default)</option>
+      <option [value]="'lastName'">Last Name</option>
+      <option [value]="'evacuatedTo'">Community Evacuated to</option>
+      <option [value]="'evacuatedFrom'">Community Evacuated from</option>
+    </select>
   </div>
+</div>
+<div class="search-results">
+  <div *ngIf="resultsAndPagination?.data?.length>0 && !this.isVolunteer; then searchResultsTable; else notFound"></div>
+</div>
 
-  <ng-template #searchResultsTable>
-    <table class="table table-hover table-sm">
-      <thead class="thead-light">
+<ng-template #searchResultsTable>
+  <table class="table table-hover table-sm">
+    <thead class="thead-light">
       <th scope="col"></th>
       <th scope="col">Last Name</th>
       <th scope="col">First Name</th>
@@ -207,43 +215,43 @@
       <th scope="col">Evacuated From</th>
       <th scope="col">Evacuated To</th>
       <th scope="col">Action</th>
-      </thead>
-      <tbody>
-        <tr [class.table-danger]="rowItem.restrictedAccess" *ngFor="let rowItem of resultsAndPagination.data">
-          <th scope="row">
-            <app-font-awesome-icon class="mr-1 float-left" *ngIf="rowItem.isHeadOfHousehold" icon="user">
-            </app-font-awesome-icon>
-            <app-font-awesome-icon class="float-right" *ngIf="rowItem.restrictedAccess" icon="lock">
-            </app-font-awesome-icon>
-          </th>
-          <td>{{rowItem.lastName}}</td>
-          <td>{{rowItem.firstName}}</td>
-          <td>{{rowItem.incidentTaskNumber}}</td>
-          <td>{{rowItem.registrationId}}</td>
-          <td>{{rowItem.evacuatedFrom}}</td>
-          <td>{{rowItem.evacuatedTo}}</td>
-          <td>
-            <a href="javascript:void(0)" *ngIf="!rowItem.isFinalized" (click)="edit(rowItem.registrationId)">Finalize</a>
-            <a href="javascript:void(0)" *ngIf="rowItem.isFinalized" (click)="view(rowItem.registrationId)">View</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </ng-template>
+    </thead>
+    <tbody>
+      <tr [class.table-danger]="rowItem.restrictedAccess" *ngFor="let rowItem of resultsAndPagination.data">
+        <th scope="row">
+          <app-font-awesome-icon class="mr-1 float-left" *ngIf="rowItem.isHeadOfHousehold" icon="user">
+          </app-font-awesome-icon>
+          <app-font-awesome-icon class="float-right" *ngIf="rowItem.restrictedAccess" icon="lock">
+          </app-font-awesome-icon>
+        </th>
+        <td>{{rowItem.lastName}}</td>
+        <td>{{rowItem.firstName}}</td>
+        <td>{{rowItem.incidentTaskNumber}}</td>
+        <td>{{rowItem.registrationId}}</td>
+        <td>{{rowItem.evacuatedFrom}}</td>
+        <td>{{rowItem.evacuatedTo}}</td>
+        <td>
+          <a href="javascript:void(0)" *ngIf="!rowItem.isFinalized" (click)="edit(rowItem.registrationId)">Finalize</a>
+          <a href="javascript:void(0)" *ngIf="rowItem.isFinalized" (click)="view(rowItem.registrationId)">View</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
 
-  <ng-template #notFound>
-    <p>{{notFoundMessage}}</p>
-  </ng-template>
+<ng-template #notFound>
+  <p>{{notFoundMessage}}</p>
+</ng-template>
 
-  <!-- <select class="form-control" [(ngModel)]="maxSize">
+<!-- <select class="form-control" [(ngModel)]="maxSize">
     <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option>
   </select> -->
-  <div class="row">
-    <div class="col" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
-      <div class="float-right">
-        <app-paginator [metaData]="resultsAndPagination?.metadata" (params)="onPaginationEvent($event)"></app-paginator>
-      </div>
+<div class="row">
+  <div class="col" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
+    <div class="float-right">
+      <app-paginator [metaData]="resultsAndPagination?.metadata" (params)="onPaginationEvent($event)"></app-paginator>
     </div>
   </div>
 </div>
+
 <!-- <pre>{{resultsAndPagination|json}}</pre> -->

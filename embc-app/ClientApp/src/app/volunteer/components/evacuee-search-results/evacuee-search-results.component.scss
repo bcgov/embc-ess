@@ -1,0 +1,94 @@
+$borderColor: #7596c8;
+$darkBgColor: #e1e8f2;
+$lightBgColor: #f1f4fa;
+
+.evacuee-result {
+  border-style: solid;
+  border-width: 3px;
+  border-color: $borderColor;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  &.vertical {
+    flex-direction: column;
+  }
+  &.align-center {
+    align-items: center;
+  }
+  &.space-between {
+    justify-content: space-between;
+  }
+  & > * {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+.flex-item {
+  flex: 1 1 auto;
+}
+
+.flex-btn {
+  flex: 1 1 100px;
+}
+
+.flex-end {
+  align-self: flex-end;
+}
+
+.content-section {
+  padding: 5px;
+}
+
+.dark-bg {
+  background-color: $darkBgColor;
+}
+
+.light-bg {
+  background-color: $lightBgColor;
+}
+
+.container-spacing {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.icon-padding {
+  padding-right: 5px;
+}
+
+.align-end {
+  align-items: flex-end;
+}
+
+.btn-container {
+  flex: 1 2 250px;
+  align-self: center;
+  display: flex;
+  & button {
+    flex: 0 0 auto;
+    margin-right: 10px;
+  }
+}
+
+.lg-top-padding {
+  padding-top: 20px;
+}
+
+.lg-btm-padding {
+  padding-bottom: 20px;
+}
+// Force a white background, but copy the bootstrap styles on hover
+.search-btn {
+  background-color: #fff;
+  &:hover {
+    background-color: #38598a;
+    border-color: #38598a;
+  }
+}

@@ -1,0 +1,124 @@
+<div *ngIf="searchResults && searchResults.data">
+  <h1>Search Results</h1>
+  <!--One Result-->
+  <div *ngIf="searchResults.data.length === 1">
+    <p>
+      Please confirm that the ESS File listed below belongs to the evacuee by <strong>confirming their address</strong>
+      before viewing their profile.
+    </p>
+  </div>
+  <!--Multiple Results-->
+  <div *ngIf="searchResults.data.length > 1">
+    <p>
+      Your search has yielded more than 1 result, please confirm which ESS File listed below belongs to the evacuee by
+      <strong>confirming their address</strong> before viewing their profile.
+    </p>
+    <p>
+      <strong>NOTE:</strong> In the event that there is more than 1 listing for an evacuee with the <strong>same date of
+        birth and address</strong>, select the file with the most recent "Self-Registration Date & Time" or
+      "Registration
+      Date & Time."
+    </p>
+  </div>
+  <!--No Results-->
+  <div *ngIf="searchResults.data.length === 0">
+    <p>
+      Your search yielded <strong>no results</strong>. Please go back and try again.
+    </p>
+  </div>
+
+  <!--Repeater of results; hide if empty-->
+  <div *ngIf="searchResults.data.length > 0">
+    <div *ngFor="let result of searchResults.data; index as i;" class="container-spacing">
+      <div class="evacuee-result">
+        <!--Top half (darker bg)-->
+        <div class="dark-bg">
+          <!--First Row-->
+          <div class="flex-container space-between">
+            <span class="h1">
+              <span class="uppercase-text">{{result.lastName}}</span>, {{result.firstName}}
+            </span>
+            <!--Float me right-->
+            <span class="flex-end h6">
+              <strong *ngIf="result.isFinalized">Finalized</strong>
+              <strong *ngIf="!result.isFinalized">Not Finalized</strong>
+            </span>
+          </div>
+          <!--Second Row-->
+          <div class="flex-container align-end">
+            <!--Tombstone info column-->
+            <div class="flex-item full-width">
+              <!--dob-->
+              <p>
+                Date of Birth: <strong>{{result.dob | date}}</strong>
+              </p>
+              <!--address-->
+              <p>
+                Address: <strong>{{result.primaryAddress}}, {{result.city}}, {{result.postalCode}}</strong>
+              </p>
+              <!--ESS File #-->
+              <p>
+                ESS File #: <strong>{{result.incidentTaskNumber}}</strong>
+              </p>
+            </div>
+            <!--View Profile Button-->
+            <div class="btn-container flex-btn">
+              <button class="btn btn-primary" (click)="view(result.registrationId)"><i
+                  class="fa fa-check icon-padding"></i>View Profile</button>
+            </div>
+          </div>
+        </div>
+        <!--Bottom half (lighter bg)-->
+        <div class="light-bg">
+          <div class="flex-container">
+            <!--Reg time col-->
+            <div class="">
+              <p>
+                Self-Registration Date & Time: <strong>{{result.selfRegisteredDate | date:'MMM d, y, h:mm a'}}</strong>
+              </p>
+              <p>
+                Registration Completed Date & Time:
+                <strong>{{result.registrationCompletionDate | date:'MMM d, y, h:mm a'}}</strong>
+              </p>
+            </div>
+            <!--Evacuated to/from col-->
+            <div class="">
+              <p>
+                Evacuated From: <strong>{{result.evacuatedFrom}}</strong>
+              </p>
+              <p>
+                Evacuated To: <strong>{{result.evacuatedTo}}</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Search Again Btn-->
+  <div class="light-bg flex-container vertical align-center">
+    <p class="flex-item lg-top-padding">
+      <strong>
+        <div *ngIf="searchResults.data.length === 1; then singleResult"></div>
+        <div *ngIf="searchResults.data.length > 1; then multiResult"></div>
+        <div *ngIf="searchResults.data.length === 0; then noResult"></div>
+      </strong>
+      Go back and search again.
+    </p>
+    <div class="flex-item lg-btm-padding">
+      <button class="btn btn-outline-primary search-btn" (click)="searchAgain()">
+        <i class="fa fa-times icon-padding"></i> SEARCH AGAIN
+      </button>
+    </div>
+  </div>
+</div>
+<ng-template #singleResult>
+  This result not a match?
+</ng-template>
+<ng-template #multiResult>
+  None of these results is a match?
+</ng-template>
+<ng-template #noResult>
+  No Results!
+</ng-template>

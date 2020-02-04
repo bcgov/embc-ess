@@ -4,14 +4,16 @@ using Gov.Jag.Embc.Public.DataInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Gov.Jag.Embc.Public.Migrations
 {
     [DbContext(typeof(EmbcDbContext))]
-    partial class EmbcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200130221228_AddSelfRegistrationDateToEvacueeView")]
+    partial class AddSelfRegistrationDateToEvacueeView
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -628,8 +630,6 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("City");
-
                     b.Property<DateTime?>("Dob");
 
                     b.Property<string>("EvacuatedFrom");
@@ -651,12 +651,6 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.Property<string>("LastName");
 
                     b.Property<string>("Nickname");
-
-                    b.Property<string>("PostalCode");
-
-                    b.Property<string>("PrimaryAddress");
-
-                    b.Property<string>("Province");
 
                     b.Property<DateTime?>("RegistrationCompletionDate");
 
