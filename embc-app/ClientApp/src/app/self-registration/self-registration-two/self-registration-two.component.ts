@@ -238,7 +238,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
 
   openInsuranceInfoModal() {
     if (!this.infoModal) {
-      this.infoModal = this.modals.open(InsuranceInfoComponent, { size: 'sm', centered: true });
+      this.infoModal = this.modals.open(InsuranceInfoComponent, { size: 'lg', centered: true });
       this.infoModal.result.then(
         () => { this.infoModal = null; },
         () => { this.infoModal = null; }
