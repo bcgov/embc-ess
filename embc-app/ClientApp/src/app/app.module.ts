@@ -77,6 +77,7 @@ import { AbstractReferralComponent } from './volunteer/components/referral-maker
 import { SupplierComponent } from './volunteer/components/referral-maker/subcomponents/supplier/supplier.component';
 import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
 import { ElectronicAccessAgreementComponent } from './components/electronic-access-agreement/electronic-access-agreement.component';
+import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
 
 @NgModule({
   declarations: [
@@ -141,6 +142,7 @@ import { ElectronicAccessAgreementComponent } from './components/electronic-acce
     SurveyPageComponent,
     AuditorComponent,
     ElectronicAccessAgreementComponent,
+    EvacueeSearchResultsComponent,
   ],
   imports: [
     // angular

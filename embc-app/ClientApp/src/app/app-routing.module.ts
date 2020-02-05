@@ -38,6 +38,7 @@ import { SurveyPageComponent } from './volunteer/pages/survey-page/survey-page.c
 import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
 import { EAccessAgreementGuard } from './core/guards/e-access-agreement.gaurd';
 import { ElectronicAccessAgreementComponent } from './components/electronic-access-agreement/electronic-access-agreement.component';
+import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
 
 /*
   /
@@ -205,6 +206,11 @@ const routes: Routes = [
         path: 'survey',
         component: SurveyPageComponent,
         data: { expectedRole: VOLUNTEER },
+      },
+      {
+        path: 'evacuee/results',
+        component: EvacueeSearchResultsComponent,
+        data: {expectedRole: VOLUNTEER},
       },
     ],
   },
