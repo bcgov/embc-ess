@@ -31,7 +31,7 @@ export class EAccessAgreementGuard implements CanActivate, CanActivateChild {
   checkAccessAgreement(url: string): Observable<boolean> {
     return this.authService.getCurrentUser()
       .pipe(switchMap((user: User) => {
-        return this.volunteerService.getVolunteerById(user.accountid)
+        return this.volunteerService.getVolunteerById(user.contactid)
           .pipe(map((volunter: Volunteer) => volunter.electronicAccessAgreementAccepted));
       }))
       .pipe(map((agrementAccepted: boolean) => {
@@ -39,7 +39,7 @@ export class EAccessAgreementGuard implements CanActivate, CanActivateChild {
           return true;
         } else {
           // navigate to electronic access agreement page
-          this.router.navigateByUrl(`/e-access-agreement?${url}`, { skipLocationChange: true });
+          this.router.navigateByUrl(`/e-access-agreement?redirectUrl=${encodeURIComponent(url)}`, { skipLocationChange: true });
           return false;
         }
       }));

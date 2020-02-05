@@ -37,6 +37,7 @@ import { OrganizationMakerPageComponent } from './provincial-admin/pages/organiz
 import { SurveyPageComponent } from './volunteer/pages/survey-page/survey-page.component';
 import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
 import { EAccessAgreementGuard } from './core/guards/e-access-agreement.gaurd';
+import { ElectronicAccessAgreementComponent } from './components/electronic-access-agreement/electronic-access-agreement.component';
 
 /*
   /
@@ -86,6 +87,10 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent
+  },
+  {
+    path: 'e-access-agreement',
+    component: ElectronicAccessAgreementComponent
   },
   {
     path: 'test',
@@ -207,7 +212,7 @@ const routes: Routes = [
   // LOCAL AUTHORITY routes
   {
     path: 'local-authority',
-    canActivate: [LoggedInGuard],
+    canActivate: [LoggedInGuard, EAccessAgreementGuard],
     canActivateChild: [RoleGuard],
     children: [
       {
@@ -272,7 +277,7 @@ const routes: Routes = [
   // PROVINCIAL_ADMIN routes
   {
     path: 'provincial-admin',
-    canActivate: [LoggedInGuard],
+    canActivate: [LoggedInGuard, EAccessAgreementGuard],
     canActivateChild: [RoleGuard],
     children: [
       {

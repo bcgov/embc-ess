@@ -293,8 +293,8 @@
     <br>
   </section>
   <section class="buttons">
-    <button class="btn btn-primary termsAccept" (click)="termsAccepted.emit(true);"
+    <button class="btn btn-primary termsAccept" (click)="acceptTerms()"
       [disabled]="!_termsAccepted">Continue</button>
-    <a href="logout" tabindex="1">Cancel and Exit</a>
+    <a href="/logout" tabindex="1">Cancel and Exit</a>
   </section>
 </div>
