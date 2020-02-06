@@ -15,7 +15,7 @@ namespace Gov.Jag.Embc.Public.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
+                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("Relational:Sequence:.ESSFileNumbers", "'ESSFileNumbers', '', '100000', '1', '', '', 'Int64', 'False'")
                 .HasAnnotation("Relational:Sequence:.seq_ReferralIds", "'seq_ReferralIds', '', '1000001', '1', '', '', 'Int64', 'False'")
@@ -696,8 +696,6 @@ namespace Gov.Jag.Embc.Public.Migrations
                     b.Property<DateTime>("CreatedDateTime")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GetUtcDate()");
-
-                    b.Property<bool?>("ElectronicAccessAgreementAccepted");
 
                     b.Property<string>("Email")
                         .HasMaxLength(255);

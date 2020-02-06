@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Registration } from 'app/core/models';
+import { Registration } from 'src/app/core/models';
 
 // CRUD
 export const LOAD_ALL_START = '[Registrations] Load All Registrations Start';

@@ -1,4 +1,4 @@
-import { Registration, Address } from 'app/core/models';
+import { Registration, Address } from 'src/app/core/models';
 import * as RegistrationActions from './registration.actions';
 import { Loadable } from '..';
 

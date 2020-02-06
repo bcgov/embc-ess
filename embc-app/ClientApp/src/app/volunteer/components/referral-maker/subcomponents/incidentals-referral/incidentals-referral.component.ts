@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef, OnChanges, SimpleC
 import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-import { IncidentalsReferral } from 'app/core/models';
-import { IncidentalsRatesComponent } from 'app/shared/modals/incidentals-rates/incidentals-rates.component';
-import { CustomValidators } from 'app/shared/validation/custom.validators';
-import { ReferralDate } from 'app/core/models/referral-date';
+import { IncidentalsReferral } from 'src/app/core/models';
+import { IncidentalsRatesComponent } from 'src/app/shared/modals/incidentals-rates/incidentals-rates.component';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { ReferralDate } from 'src/app/core/models/referral-date';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
 const MAXIMUM_PER_PERSON = 50.00;

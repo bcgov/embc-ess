@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ListResult, IncidentTask, PaginationSummary, Community } from 'app/core/models';
-import { IncidentTaskService } from 'app/core/services/incident-task.service';
-import { SearchQueryParameters } from 'app/core/models/search-interfaces';
-import { AuthService } from 'app/core/services/auth.service';
-import { UniqueKeyService } from 'app/core/services/unique-key.service';
+import { ListResult, IncidentTask, PaginationSummary, Community } from 'src/app/core/models';
+import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
+import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
 @Component({
   selector: 'app-task-number-list',

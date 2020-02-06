@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AuthService } from 'app/core/services/auth.service';
-import { UniqueKeyService } from 'app/core/services/unique-key.service';
-import { ReferralService } from 'app/core/services/referral.service';
-import { NotificationQueueService } from 'app/core/services/notification-queue.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { ReferralService } from 'src/app/core/services/referral.service';
+import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import {
   Referral, isLodgingReferral, isClothingReferral,
   isFoodReferral, isIncidentalsReferral, isTransportationReferral
-} from 'app/core/models';
+} from 'src/app/core/models';
 
 @Component({
   templateUrl: './referral-view.component.html',

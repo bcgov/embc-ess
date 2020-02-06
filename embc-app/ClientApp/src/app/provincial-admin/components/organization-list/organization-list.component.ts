@@ -4,12 +4,12 @@ import { Router } from '@angular/router';
 // import { map } from 'rxjs/operators';
 // import { Store } from '@ngrx/store';
 // import { AppState } from '../store';
-import { ListResult, Organization, Community, PaginationSummary } from 'app/core/models';
-import { OrganizationService } from 'app/core/services/organization.service';
+import { ListResult, Organization, Community, PaginationSummary } from 'src/app/core/models';
+import { OrganizationService } from 'src/app/core/services/organization.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { SearchQueryParameters } from 'app/core/models/search-interfaces';
-import { AuthService } from 'app/core/services/auth.service';
-import { UniqueKeyService } from 'app/core/services/unique-key.service';
+import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
 // TODO: Un-comment code below when we are ready to aggregate all communities + regions in a single drop-down
 // interface SearchFilter {

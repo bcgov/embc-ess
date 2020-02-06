@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { PaginationSummary } from 'app/core/models';
-import { SearchQueryParameters } from 'app/core/models/search-interfaces';
+import { PaginationSummary } from 'src/app/core/models';
+import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
 
 @Component({
   selector: 'app-paginator',

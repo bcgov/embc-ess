@@ -7,7 +7,6 @@ export interface Volunteer extends Person {
   isAdministrator: boolean;
   isPrimaryContact: boolean;
   canAccessRestrictedFiles: boolean;
-  electronicAccessAgreementAccepted: boolean;
 
   // related entities
   organization: Organization;

@@ -1,4 +1,4 @@
-import { Volunteer } from 'app/core/models';
+import { Volunteer } from 'src/app/core/models';
 import * as VolunteerActions from './volunteer.actions';
 import { Loadable } from '..';
 
@@ -17,7 +17,6 @@ const initialState: State = {
     isAdministrator: null,
     isPrimaryContact: null,
     canAccessRestrictedFiles: null,
-    electronicAccessAgreementAccepted: false,
     firstName: null,
     lastName: null,
     nickname: null,

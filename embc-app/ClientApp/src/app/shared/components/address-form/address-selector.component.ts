@@ -2,8 +2,8 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@
 import { FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
-import { AppState } from 'app/store';
-import { Country } from 'app/core/models';
+import { AppState } from 'src/app/store';
+import { Country } from 'src/app/core/models';
 import { map } from 'rxjs/operators';
 
 @Component({

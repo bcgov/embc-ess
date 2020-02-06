@@ -3,9 +3,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import range from 'lodash/range';
 
-import { LodgingReferral } from 'app/core/models';
-import { ReferralDate } from 'app/core/models/referral-date';
-import { LodgingRatesComponent } from 'app/shared/modals/lodging-rates/lodging-rates.component';
+import { LodgingReferral } from 'src/app/core/models';
+import { ReferralDate } from 'src/app/core/models/referral-date';
+import { LodgingRatesComponent } from 'src/app/shared/modals/lodging-rates/lodging-rates.component';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
 @Component({
