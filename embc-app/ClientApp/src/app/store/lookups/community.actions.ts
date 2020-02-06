@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Community } from 'src/app/core/models';
+import { Community } from 'app/core/models';
 
 export const LOAD_START = '[Communities] Load Start';
 export const LOAD_FAIL = '[Communities] Load Fail';

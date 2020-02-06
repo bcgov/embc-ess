@@ -1,14 +1,14 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Organization } from 'src/app/core/models';
+import { Organization } from 'app/core/models';
 import { Router, ActivatedRoute } from '@angular/router';
-import { OrganizationService } from 'src/app/core/services/organization.service';
+import { OrganizationService } from 'app/core/services/organization.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
-import { invalidField } from 'src/app/shared/utils';
-import { VolunteerService } from 'src/app/core/services/volunteer.service';
-import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { NotificationQueueService } from 'app/core/services/notification-queue.service';
+import { AuthService } from 'app/core/services/auth.service';
+import { UniqueKeyService } from 'app/core/services/unique-key.service';
+import { invalidField } from 'app/shared/utils';
+import { VolunteerService } from 'app/core/services/volunteer.service';
+import { CustomValidators } from 'app/shared/validation/custom.validators';
 
 @Component({
   selector: 'app-organization-maker',

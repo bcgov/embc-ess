@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import range from 'lodash/range';
 
-import { FoodReferral } from 'src/app/core/models';
-import { ReferralDate } from 'src/app/core/models/referral-date';
-import { FoodRatesComponent } from 'src/app/shared/modals/food-rates/food-rates.component';
-import { CustomValidators } from 'src/app/shared/validation/custom.validators';
-import { RESTAURANT_BREAKFAST, RESTAURANT_LUNCH, RESTAURANT_DINNER, GROCERIES } from 'src/app/constants/rates';
+import { FoodReferral } from 'app/core/models';
+import { ReferralDate } from 'app/core/models/referral-date';
+import { FoodRatesComponent } from 'app/shared/modals/food-rates/food-rates.component';
+import { CustomValidators } from 'app/shared/validation/custom.validators';
+import { RESTAURANT_BREAKFAST, RESTAURANT_LUNCH, RESTAURANT_DINNER, GROCERIES } from 'app/constants/rates';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
 @Component({

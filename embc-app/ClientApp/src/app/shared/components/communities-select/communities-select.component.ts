@@ -4,8 +4,8 @@ import { NgbTypeahead, NgbTypeaheadConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { AppState } from 'src/app/store';
-import { Community, Organization } from 'src/app/core/models';
+import { AppState } from 'app/store';
+import { Community, Organization } from 'app/core/models';
 
 //
 // ref: https://ng-bootstrap.github.io/#/components/typeahead/

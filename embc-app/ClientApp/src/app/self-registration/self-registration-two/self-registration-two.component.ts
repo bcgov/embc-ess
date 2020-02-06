@@ -4,12 +4,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { takeWhile } from 'rxjs/operators';
 
-import { AppState } from 'src/app/store';
-import { Registration, Country } from 'src/app/core/models';
-import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
-import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
-import { hasErrors, invalidField } from 'src/app/shared/utils';
-import { InsuranceInfoComponent } from 'src/app/shared/modals/insurance-info/insurance-info.component';
+import { AppState } from 'app/store';
+import { Registration, Country } from 'app/core/models';
+import { UpdateRegistration } from 'app/store/registration/registration.actions';
+import { ValidationHelper } from 'app/shared/validation/validation.helper';
+import { hasErrors, invalidField } from 'app/shared/utils';
+import { InsuranceInfoComponent } from 'app/shared/modals/insurance-info/insurance-info.component';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -238,7 +238,7 @@ export class SelfRegistrationTwoComponent implements OnInit, OnDestroy {
 
   openInsuranceInfoModal() {
     if (!this.infoModal) {
-      this.infoModal = this.modals.open(InsuranceInfoComponent, { size: 'sm', centered: true });
+      this.infoModal = this.modals.open(InsuranceInfoComponent, { size: 'lg', centered: true });
       this.infoModal.result.then(
         () => { this.infoModal = null; },
         () => { this.infoModal = null; }

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { ReferralDate } from 'src/app/core/models/referral-date';
+import { ReferralDate } from 'app/core/models/referral-date';
 import * as moment from 'moment';
 import range from 'lodash/range';
 

@@ -5,8 +5,8 @@ import { map } from 'rxjs/operators';
 
 import { AuthService } from '../services/auth.service';
 import { User } from '../models';
-import { normalize } from 'src/app/shared/utils';
-import { PROVINCIAL_ADMIN, LOCAL_AUTHORITY, VOLUNTEER } from 'src/app/constants';
+import { normalize } from 'app/shared/utils';
+import { PROVINCIAL_ADMIN, LOCAL_AUTHORITY, VOLUNTEER } from 'app/constants';
 
 /**
  */

@@ -1,5 +1,5 @@
 import { Loadable } from '..';
-import { Region } from 'src/app/core/models';
+import { Region } from 'app/core/models';
 import * as RegionActions from './region.actions';
 
 export interface State extends Loadable {

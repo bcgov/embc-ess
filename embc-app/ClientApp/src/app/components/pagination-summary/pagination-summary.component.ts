@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { PaginationSummary } from 'src/app/core/models';
+import { PaginationSummary } from 'app/core/models';
 
 @Component({
   selector: 'app-pagination-summary',

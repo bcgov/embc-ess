@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
-import { RegistrationService } from 'src/app/core/services/registration.service';
-import { ReferralService } from 'src/app/core/services/referral.service';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
-import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
+import { RegistrationService } from 'app/core/services/registration.service';
+import { ReferralService } from 'app/core/services/referral.service';
+import { AuthService } from 'app/core/services/auth.service';
+import { UniqueKeyService } from 'app/core/services/unique-key.service';
+import { NotificationQueueService } from 'app/core/services/notification-queue.service';
 import {
   Registration, Evacuee, ReferralPostItem,
   FoodReferral, LodgingReferral, ClothingReferral,
   TransportationReferral, IncidentalsReferral, RegistrationSummary
-} from 'src/app/core/models';
+} from 'app/core/models';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 
 interface ReferralFormControl<T = any> {

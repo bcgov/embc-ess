@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Volunteer } from 'src/app/core/models';
+import { Volunteer } from 'app/core/models';
 
 // CRUD
 export const LOAD_ALL_START = '[Volunteers] Load All Volunteers Start';

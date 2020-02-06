@@ -3,7 +3,7 @@ import { AbstractControl, Validators, ValidatorFn, ValidationErrors, FormGroup, 
 import * as moment from 'moment';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { VolunteerService } from 'src/app/core/services/volunteer.service';
+import { VolunteerService } from 'app/core/services/volunteer.service';
 
 function isEmptyInputValue(value: any): boolean {
   // we don't check for string here so it also works with arrays

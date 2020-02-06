@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { Supplier } from 'src/app/core/models';
+import { Supplier } from 'app/core/models';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 // poor man's uuid

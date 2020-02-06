@@ -5,13 +5,13 @@ import { Store } from '@ngrx/store';
 import { skipWhile, takeWhile, tap, filter } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { AppState } from 'src/app/store';
-import * as RegistrationActions from 'src/app/store/registration/registration.actions';
-import { Registration, FamilyMember, isBcAddress } from 'src/app/core/models';
-import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
-import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
-import { CustomValidators } from 'src/app/shared/validation/custom.validators';
-import { clearFormArray, hasErrors, invalidField } from 'src/app/shared/utils';
+import { AppState } from 'app/store';
+import * as RegistrationActions from 'app/store/registration/registration.actions';
+import { Registration, FamilyMember, isBcAddress } from 'app/core/models';
+import { UpdateRegistration } from 'app/store/registration/registration.actions';
+import { ValidationHelper } from 'app/shared/validation/validation.helper';
+import { CustomValidators } from 'app/shared/validation/custom.validators';
+import { clearFormArray, hasErrors, invalidField } from 'app/shared/utils';
 
 @Component({
   selector: 'app-self-registration-one',
