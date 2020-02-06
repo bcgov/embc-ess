@@ -34,8 +34,8 @@
     </li>
   </ul>
 
-  <h2 *ngIf="registration?.headOfHousehold?.familyMembers?.length > 0" class="h3">Evacuee Household Information</h2>
-  <ul class="summary" *ngFor="let fm of registration?.headOfHousehold?.familyMembers">
+  <h2 *ngIf="registration?.headOfHousehold?.familyMembers?.length > 0" class="h3 mt-3">Evacuee Household Information</h2>
+  <ul class="summary mt-4" *ngFor="let fm of registration?.headOfHousehold?.familyMembers">
     <li>
       <span class="name">Last Name:</span>
       <span class="value">{{fm?.lastName}}</span>
