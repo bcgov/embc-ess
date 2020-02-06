@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-import { TransportationReferral } from 'src/app/core/models';
-import { ReferralDate } from 'src/app/core/models/referral-date';
-import { TransportationRatesComponent } from 'src/app/shared/modals/transportation-rates/transportation-rates.component';
-import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { TransportationReferral } from 'app/core/models';
+import { ReferralDate } from 'app/core/models/referral-date';
+import { TransportationRatesComponent } from 'app/shared/modals/transportation-rates/transportation-rates.component';
+import { CustomValidators } from 'app/shared/validation/custom.validators';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
 
 @Component({

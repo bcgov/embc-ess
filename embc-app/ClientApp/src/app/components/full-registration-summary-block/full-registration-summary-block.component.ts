@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Registration, Address, isBcAddress } from 'src/app/core/models';
-import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
+import { Registration, Address, isBcAddress } from 'app/core/models';
+import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'app/constants';
 
 @Component({
   selector: 'app-full-registration-summary-block',

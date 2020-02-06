@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CLOTHING_PER_PERSON, CLOTHING_PER_PERSON_WINTER_CONDITIONS } from 'src/app/constants/rates';
+import { CLOTHING_PER_PERSON, CLOTHING_PER_PERSON_WINTER_CONDITIONS } from 'app/constants/rates';
 
 @Component({
   templateUrl: './clothing-rates.component.html',

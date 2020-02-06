@@ -4,14 +4,14 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
 
-import { AppState } from 'src/app/store';
-import { IncidentTask } from 'src/app/core/models';
-import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
-import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
-import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { invalidField } from 'src/app/shared/utils';
-import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { AppState } from 'app/store';
+import { IncidentTask } from 'app/core/models';
+import { IncidentTaskService } from 'app/core/services/incident-task.service';
+import { NotificationQueueService } from 'app/core/services/notification-queue.service';
+import { UniqueKeyService } from 'app/core/services/unique-key.service';
+import { AuthService } from 'app/core/services/auth.service';
+import { invalidField } from 'app/shared/utils';
+import { CustomValidators } from 'app/shared/validation/custom.validators';
 
 @Component({
   selector: 'app-task-number-maker',

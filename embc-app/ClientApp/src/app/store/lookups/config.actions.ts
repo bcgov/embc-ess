@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Config } from 'src/app/core/models';
+import { Config } from 'app/core/models';
 
 export const LOAD_START = '[Config] Load Start';
 export const LOAD_FAIL = '[Config] Load Fail';

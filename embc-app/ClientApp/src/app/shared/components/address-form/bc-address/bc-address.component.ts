@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Directive } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { CustomValidators } from 'src/app/shared/validation/custom.validators';
-import { compareById } from 'src/app/shared/utils';
+import { CustomValidators } from 'app/shared/validation/custom.validators';
+import { compareById } from 'app/shared/utils';
 
 @Component({
   selector: 'app-bc-address',

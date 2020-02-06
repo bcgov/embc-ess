@@ -76,6 +76,7 @@ import { ReferralListItemComponent } from './volunteer/components/referral-maker
 import { AbstractReferralComponent } from './volunteer/components/referral-maker/subcomponents/abstract-referral/abstract-referral.component';
 import { SupplierComponent } from './volunteer/components/referral-maker/subcomponents/supplier/supplier.component';
 import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
+import { ElectronicAccessAgreementComponent } from './components/electronic-access-agreement/electronic-access-agreement.component';
 import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
 
 @NgModule({
@@ -140,6 +141,7 @@ import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-se
     FullRegistrationSummaryBlockComponent,
     SurveyPageComponent,
     AuditorComponent,
+    ElectronicAccessAgreementComponent,
     EvacueeSearchResultsComponent,
   ],
   imports: [
