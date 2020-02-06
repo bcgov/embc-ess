@@ -1,5 +1,5 @@
 import { Loadable } from '..';
-import { Community } from 'app/core/models';
+import { Community } from 'src/app/core/models';
 import * as CommunityActions from './community.actions';
 
 export interface State extends Loadable {

@@ -1,5 +1,5 @@
 import { Loadable } from '..';
-import { Config } from 'app/core/models';
+import { Config } from 'src/app/core/models';
 import * as ConfigActions from './config.actions';
 
 export interface State extends Loadable {

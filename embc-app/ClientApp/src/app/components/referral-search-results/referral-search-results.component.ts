@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, OnInit } from '@angular/core';
-import { Referral } from 'app/core/models';
-import { ReferralSearchResults } from 'app/core/models/search-interfaces';
-import { AuthService } from 'app/core/services/auth.service';
+import { Referral } from 'src/app/core/models';
+import { ReferralSearchResults } from 'src/app/core/models/search-interfaces';
+import { AuthService } from 'src/app/core/services/auth.service';
 import startCase from 'lodash/startCase';
 import toLower from 'lodash/toLower';
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AppState } from 'app/store';
+import { AppState } from 'src/app/store';
 import { CookieService } from './cookie.service';
 
 @Injectable()

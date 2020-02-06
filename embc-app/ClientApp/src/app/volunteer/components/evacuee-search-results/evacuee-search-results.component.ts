@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
-import { ListResult, EvacueeListItem } from 'app/core/models';
+import { ListResult, EvacueeListItem } from 'src/app/core/models';
 import { Router } from '@angular/router';
-import { AuthService } from 'app/core/services/auth.service';
-import { UniqueKeyService } from 'app/core/services/unique-key.service';
-import { EvacueeService } from 'app/core/services/evacuee.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { EvacueeService } from 'src/app/core/services/evacuee.service';
 
 @Component({
   selector: 'app-evacuee-search-results',

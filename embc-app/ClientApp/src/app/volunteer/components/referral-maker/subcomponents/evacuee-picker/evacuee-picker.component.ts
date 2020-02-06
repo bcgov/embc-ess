@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
-import { Evacuee } from 'app/core/models';
+import { Evacuee } from 'src/app/core/models';
 
 // poor man's uuid
 let identifier = 0;

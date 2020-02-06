@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Country } from 'app/core/models';
+import { Country } from 'src/app/core/models';
 
 export const LOAD_START = '[Countries] Load Start';
 export const LOAD_FAIL = '[Countries] Load Fail';

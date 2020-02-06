@@ -2,8 +2,8 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, SimpleChange
 import { FormBuilder, Validators, FormArray, FormControl, FormGroup, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 
-import { Evacuee, ReferralBase } from 'app/core/models';
-import { clearFormArray, uuid } from 'app/shared/utils';
+import { Evacuee, ReferralBase } from 'src/app/core/models';
+import { clearFormArray, uuid } from 'src/app/shared/utils';
 
 /**
  * This is the base class for `FoodReferralComponent`, `ClothingReferralComponent`, etc.

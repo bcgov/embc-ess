@@ -18,10 +18,7 @@
       "dom"
     ],
     "module": "es2015",
-    "baseUrl": "./src",
-    "paths": {
-      "@app*": ["app*"]
-    }
+    "baseUrl": "./"
   },
   "exclude": [
     "node_modules"
