@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { ReferralType } from 'app/core/models';
+import { ReferralType } from 'src/app/core/models';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmModalComponent } from 'app/shared/modals/confirm/confirm.component';
+import { ConfirmModalComponent } from 'src/app/shared/modals/confirm/confirm.component';
 
 @Component({
   selector: 'app-referral-list-item',

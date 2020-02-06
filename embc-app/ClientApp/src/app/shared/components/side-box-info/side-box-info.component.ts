@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UniqueKeyService } from 'app/core/services/unique-key.service';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
 @Component({
   selector: 'app-side-box-info',

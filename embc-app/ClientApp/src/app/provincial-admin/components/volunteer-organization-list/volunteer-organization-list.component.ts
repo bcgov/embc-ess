@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { AuthService } from 'app/core/services/auth.service';
-import { VolunteerService, VolunteerSearchQueryParameters } from 'app/core/services/volunteer.service';
-import { ListResult, Volunteer, PaginationSummary, Organization } from 'app/core/models';
-import { UniqueKeyService } from 'app/core/services/unique-key.service';
-import { SearchQueryParameters } from 'app/core/models/search-interfaces';
-import { OrganizationService } from 'app/core/services/organization.service';
-import { NotificationQueueService } from 'app/core/services/notification-queue.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { VolunteerService, VolunteerSearchQueryParameters } from 'src/app/core/services/volunteer.service';
+import { ListResult, Volunteer, PaginationSummary, Organization } from 'src/app/core/models';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
+import { OrganizationService } from 'src/app/core/services/organization.service';
+import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 
 //
 // this is the component used by Provincial Admin users

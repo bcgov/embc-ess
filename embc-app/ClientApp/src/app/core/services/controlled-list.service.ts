@@ -5,11 +5,11 @@ import { CoreModule } from '../core.module';
 import { RestService } from './rest.service';
 import { Config, Country, Region, Community, RelationshipType } from '../models';
 
-import * as ConfigActions from 'app/store/lookups/config.actions';
-import * as CountryActions from 'app/store/lookups/country.actions';
-import * as RegionActions from 'app/store/lookups/region.actions';
-import * as CommunityActions from 'app/store/lookups/community.actions';
-import * as RelationshipTypeActions from 'app/store/lookups/relationship-type.actions';
+import * as ConfigActions from 'src/app/store/lookups/config.actions';
+import * as CountryActions from 'src/app/store/lookups/country.actions';
+import * as RegionActions from 'src/app/store/lookups/region.actions';
+import * as CommunityActions from 'src/app/store/lookups/community.actions';
+import * as RelationshipTypeActions from 'src/app/store/lookups/relationship-type.actions';
 
 @Injectable({
   providedIn: CoreModule

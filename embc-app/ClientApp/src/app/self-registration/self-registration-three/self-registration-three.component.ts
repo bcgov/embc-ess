@@ -3,12 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { takeWhile } from 'rxjs/operators';
 
-import { AppState } from 'app/store';
-import * as RegistrationActions from 'app/store/registration/registration.actions';
-import { INSURANCE_OPTIONS, GENDER_OPTIONS } from 'app/constants/lookups';
-import { Registration, isBcAddress, Address } from 'app/core/models';
-import { UpdateRegistration } from 'app/store/registration/registration.actions';
-import { RegistrationService } from 'app/core/services/registration.service';
+import { AppState } from 'src/app/store';
+import * as RegistrationActions from 'src/app/store/registration/registration.actions';
+import { INSURANCE_OPTIONS, GENDER_OPTIONS } from 'src/app/constants/lookups';
+import { Registration, isBcAddress, Address } from 'src/app/core/models';
+import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
+import { RegistrationService } from 'src/app/core/services/registration.service';
 
 @Component({
   selector: 'app-self-registration-three',

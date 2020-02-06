@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-import { AuthService } from 'app/core/services/auth.service';
-import { VolunteerService, VolunteerSearchQueryParameters } from 'app/core/services/volunteer.service';
-import { ListResult, Volunteer, User } from 'app/core/models';
-import { UniqueKeyService } from 'app/core/services/unique-key.service';
-import { SearchQueryParameters } from 'app/core/models/search-interfaces';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { VolunteerService, VolunteerSearchQueryParameters } from 'src/app/core/services/volunteer.service';
+import { ListResult, Volunteer, User } from 'src/app/core/models';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
 
 //
 // this is the component used by Local Authority users

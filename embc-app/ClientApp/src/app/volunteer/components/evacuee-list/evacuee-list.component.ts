@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ListResult, EvacueeListItem } from 'app/core/models';
+import { ListResult, EvacueeListItem } from 'src/app/core/models';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { AuthService } from 'app/core/services/auth.service';
-import { EvacueeSearchQueryParameters } from 'app/core/models/search-interfaces';
-import { UniqueKeyService } from 'app/core/services/unique-key.service';
-import { EvacueeService } from 'app/core/services/evacuee.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { EvacueeSearchQueryParameters } from 'src/app/core/models/search-interfaces';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { EvacueeService } from 'src/app/core/services/evacuee.service';
 import { FormBuilder } from '@angular/forms';
 
 

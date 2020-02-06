@@ -2,12 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-import { ClothingReferral } from 'app/core/models';
-import { ReferralDate } from 'app/core/models/referral-date';
-import { ClothingRatesComponent } from 'app/shared/modals/clothing-rates/clothing-rates.component';
-import { CustomValidators } from 'app/shared/validation/custom.validators';
+import { ClothingReferral } from 'src/app/core/models';
+import { ReferralDate } from 'src/app/core/models/referral-date';
+import { ClothingRatesComponent } from 'src/app/shared/modals/clothing-rates/clothing-rates.component';
+import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { AbstractReferralComponent } from '../abstract-referral/abstract-referral.component';
-import { CLOTHING_PER_PERSON, CLOTHING_PER_PERSON_WINTER_CONDITIONS } from 'app/constants/rates';
+import { CLOTHING_PER_PERSON, CLOTHING_PER_PERSON_WINTER_CONDITIONS } from 'src/app/constants/rates';
 
 @Component({
   selector: 'app-clothing-referral',

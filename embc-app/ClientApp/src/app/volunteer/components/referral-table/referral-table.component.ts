@@ -3,11 +3,11 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-import { ReferralService } from 'app/core/services/referral.service';
-import { RegistrationService } from 'app/core/services/registration.service';
-import { ListResult, PaginationSummary, Referral, RegistrationSummary } from 'app/core/models';
-import { ReferralSearchResults } from 'app/core/models/search-interfaces';
-import { NotificationQueueService } from 'app/core/services/notification-queue.service';
+import { ReferralService } from 'src/app/core/services/referral.service';
+import { RegistrationService } from 'src/app/core/services/registration.service';
+import { ListResult, PaginationSummary, Referral, RegistrationSummary } from 'src/app/core/models';
+import { ReferralSearchResults } from 'src/app/core/models/search-interfaces';
+import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 
 @Component({
   selector: 'app-referral-table',

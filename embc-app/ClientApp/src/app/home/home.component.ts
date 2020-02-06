@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '../store';
-import * as RegistrationActions from 'app/store/registration/registration.actions';
+import * as RegistrationActions from 'src/app/store/registration/registration.actions';
 
 @Component({
   selector: 'app-home',
