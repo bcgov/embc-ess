@@ -78,10 +78,12 @@ import { SupplierComponent } from './volunteer/components/referral-maker/subcomp
 import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
 import { ElectronicAccessAgreementComponent } from './components/electronic-access-agreement/electronic-access-agreement.component';
 import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
+import { AppVersionComponent } from './shared/modals/app-version/app-version.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AppVersionComponent,
     HomeComponent,
     LocalAuthorityRegistrationsPageComponent,
     LocalAuthorityVolunteersPageComponent,
@@ -170,6 +172,7 @@ import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-se
     IncidentalsRatesComponent,
     SessionExpiringModalComponent,
     TransportationRatesComponent,
+    AppVersionComponent,
   ],
   bootstrap: [
     AppComponent
