@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from 'app/store';
-import { Config } from 'app/core/models';
+import { AppState } from 'src/app/store';
+import { Config } from 'src/app/core/models';
 
 @Component({
   selector: 'app-environment-banner',

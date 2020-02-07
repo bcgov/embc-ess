@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 
-import { Country } from 'app/core/models';
-import { compareById } from 'app/shared/utils';
+import { Country } from 'src/app/core/models';
+import { compareById } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-other-address',

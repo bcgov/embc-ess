@@ -1,4 +1,4 @@
-import { Registration, Volunteer, Referral } from 'app/core/models';
+import { Registration, Volunteer, Referral } from 'src/app/core/models';
 
 /**
  * The search results to be displayed on an "<evacuee-search-results>" component.

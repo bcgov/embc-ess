@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { SessionExpiringModalComponent } from 'app/shared/modals/session-expiring/session-expiring.component';
+import { SessionExpiringModalComponent } from 'src/app/shared/modals/session-expiring/session-expiring.component';
 import { Store } from '@ngrx/store';
-import { AppState } from 'app/store';
-import { User, Config } from 'app/core/models';
+import { AppState } from 'src/app/store';
+import { User, Config } from 'src/app/core/models';
 import debounce from 'lodash/debounce';
 
 // defaults (in case of empty config)

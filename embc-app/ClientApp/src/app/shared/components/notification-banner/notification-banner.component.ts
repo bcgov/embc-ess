@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Notification, NotificationQueueService } from 'app/core/services/notification-queue.service';
+import { Notification, NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 
 @Component({
   selector: 'app-notification-banner',

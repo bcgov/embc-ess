@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { RelationshipType } from 'app/core/models';
+import { RelationshipType } from 'src/app/core/models';
 
 export const LOAD_START = '[Relationship Types] Load Start';
 export const LOAD_FAIL = '[Relationship Types] Load Fail';

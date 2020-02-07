@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuditService } from 'app/core/services/audit.service';
+import { AuditService } from 'src/app/core/services/audit.service';
 
 @Component({
   selector: 'app-auditor',

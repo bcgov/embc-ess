@@ -1,4 +1,4 @@
-import { IncidentTask } from 'app/core/models';
+import { IncidentTask } from 'src/app/core/models';
 import * as IncidentTaskActions from './incident-tasks.actions';
 import { Loadable } from '..';
 

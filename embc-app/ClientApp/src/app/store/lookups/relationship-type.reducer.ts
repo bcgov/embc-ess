@@ -1,5 +1,5 @@
 import { Loadable } from '..';
-import { RelationshipType } from 'app/core/models';
+import { RelationshipType } from 'src/app/core/models';
 import * as RelationshipTypeActions from './relationship-type.actions';
 
 export interface State extends Loadable {
