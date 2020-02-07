@@ -23,6 +23,22 @@ $search-container-bg: #f8f9fa;
 
 .search-container {
     background-color: $search-container-bg; 
-    text-align: center;
+    //text-align: center;
     padding: 25px;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.title-flex {
+    display: flex;
+}
+
+.flex-item {
+    flex: 1 1 auto;
+}
+
+.flex-left {
+    align-self: flex-end;
 }

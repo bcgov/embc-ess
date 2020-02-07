@@ -9,12 +9,17 @@
   <!--Basic Search-->
   <div class="search-container">
     <div role="search">
-      <h1>Locate Evacuee File &nbsp;<i class="fa fa-search"></i></h1>
-      <p>
-        Locate an evacuee file by entering their ESS File # into the box below.
-        <br />
-        <strong>No ESS File #</strong>? Enter 3 pieces of the evacuees' personal information to retrieve their file.
-      </p>
+      <div class="center-text">
+        <div class="title-flex">
+          <h1 class="flex-item">Locate Evacuee File</h1>
+          <i class="fa fa-search flex-item flex-left"></i>
+        </div>
+        <p class="">
+          Locate an evacuee file by entering their ESS File # into the box below.
+          <br />
+          <strong>No ESS File #</strong>? Enter 3 pieces of the evacuees' personal information to retrieve their file.
+        </p>
+      </div>
       <ng-container *ngIf="!advancedSearchMode">
         <div class="form-row">
           <div class="col">
@@ -29,10 +34,10 @@
         </div>
         <a class="small" [routerLink]="" (click)="switchToAdvancedSearch()">advanced search</a>
       </ng-container>
-  
+
       <!--Advanced Search-->
       <ng-container *ngIf="advancedSearchMode">
-  
+
         <h1 class="yellow-header font-weight-bold">Evacuee Emergency Support Services (ESS) File #</h1>
         <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="essSearch()">
           <div class="feature-block">
