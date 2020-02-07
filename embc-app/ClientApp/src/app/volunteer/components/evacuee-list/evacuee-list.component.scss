@@ -1,8 +1,10 @@
+$search-container-bg: #f8f9fa;
+
 .or-divider {
     display: flex;
     justify-content: center;
-    margin-bottom: -45px;
-    margin-top: -15px;
+    margin-bottom: -25px;
+    margin-top: -25px;
 }
 
 .circle {
@@ -17,4 +19,10 @@
     margin-top: 0.25rem;
     font-size: 80%;
     color: #d93e45
+}
+
+.search-container {
+    background-color: $search-container-bg; 
+    text-align: center;
+    padding: 25px;
 }
