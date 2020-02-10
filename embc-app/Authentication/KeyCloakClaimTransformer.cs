@@ -27,16 +27,23 @@ namespace Gov.Jag.Embc.Public.Authentication
 
         public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
         {
-            var userGuid = principal.FindFirstValue(ClaimTypes.Sid);
-            var userName = principal.FindFirstValue("preferred_username")?.Split('@')[0];
-            var type = principal.FindFirstValue("identity_source");
-            bool isAdmin = "admin".Equals(principal.FindFirstValue(ClaimTypes.Role), StringComparison.InvariantCultureIgnoreCase);
+            string userGuid  = principal.FindFirstValue(ClaimTypes.Sid);
+            string userName  = principal.FindFirstValue("preferred_username")?.Split('@')[0];
+            string type      = principal.FindFirstValue("identity_source");
+            string givenName = principal.FindFirstValue(ClaimTypes.GivenName);
+            string surname   = principal.FindFirstValue(ClaimTypes.Surname);
+            bool isAdmin     = "admin".Equals(principal.FindFirstValue(ClaimTypes.Role), StringComparison.InvariantCultureIgnoreCase);
 
-            var transformedClaims = new List<Claim>();
-            transformedClaims.Add(new Claim(ClaimTypes.Sid, userGuid));
-            transformedClaims.Add(new Claim(ClaimTypes.Upn, userName));
-            transformedClaims.Add(new Claim(ClaimTypes.Name, principal.FindFirstValue("displayName")));
-            transformedClaims.Add(new Claim(SiteMinderClaimTypes.NAME, principal.FindFirstValue("displayName")));
+            var transformedClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Sid, userGuid),
+                new Claim(ClaimTypes.Upn, userName),
+                new Claim(ClaimTypes.Name, principal.FindFirstValue("displayName")),
+                new Claim(SiteMinderClaimTypes.NAME, principal.FindFirstValue("displayName")),
+                new Claim(ClaimTypes.GivenName, givenName),
+                new Claim(ClaimTypes.Surname, surname)
+            };
+
             if (type != null)
             {
                 if (type.Equals("bceid", StringComparison.InvariantCultureIgnoreCase)) transformedClaims.Add(new Claim(SiteMinderClaimTypes.USER_TYPE, "business"));
