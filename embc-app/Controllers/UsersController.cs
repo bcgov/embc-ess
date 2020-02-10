@@ -32,6 +32,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 appRoles = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray(),
                 name = principal.FindFirstValue(SiteMinderClaimTypes.NAME),
+                firstname = principal.FindFirstValue(ClaimTypes.GivenName),
+                lastname = principal.FindFirstValue(ClaimTypes.Surname),
                 UserType = principal.FindFirstValue(SiteMinderClaimTypes.USER_TYPE),
                 contactid = principal.FindFirstValue(EssClaimTypes.USER_ID),
                 id = principal.FindFirstValue(ClaimTypes.Upn),
