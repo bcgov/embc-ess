@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { VersionService } from '@app/core/services/version.service';
-import { AppVersion } from '@app/core/models/app-version.model';
+import { VersionService } from 'src/app/core/services/version.service';
+import { AppVersion } from 'src/app/core/models/app-version.model';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AppVersionComponent } from '@app/shared/modals/app-version/app-version.component';
+import { AppVersionComponent } from 'src/app/shared/modals/app-version/app-version.component';
 
 @Component({
   selector: 'app-footer',

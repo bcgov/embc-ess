@@ -30,5 +30,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public bool? CanAccessRestrictedFiles { get; set; }
         public string Externaluseridentifier { get; set; }
         public Organization Organization { get; set; }
+        public bool? ElectronicAccessAgreementAccepted { get; set; }
     }
 }
