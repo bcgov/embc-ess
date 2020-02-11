@@ -60,7 +60,7 @@ export class AuthService extends RestService {
     this.cookieService.clear();
 
     if (wasLoggedIn) {
-      document.location.href = 'logout';
+      document.location.href = '/logout';
     }
 
     return of();

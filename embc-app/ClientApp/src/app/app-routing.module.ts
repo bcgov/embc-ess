@@ -36,6 +36,8 @@ import { VolunteerMakerPageComponent } from './local-authority/pages/volunteer-m
 import { OrganizationMakerPageComponent } from './provincial-admin/pages/organization-maker-page/organization-maker-page.component';
 import { SurveyPageComponent } from './volunteer/pages/survey-page/survey-page.component';
 import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
+import { EAccessAgreementGuard } from './core/guards/e-access-agreement.gaurd';
+import { ElectronicAccessAgreementComponent } from './components/electronic-access-agreement/electronic-access-agreement.component';
 import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
 import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/volunteer-evacuee-results-page/volunteer-evacuee-results-page.component';
 
@@ -87,6 +89,10 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent
+  },
+  {
+    path: 'e-access-agreement',
+    component: ElectronicAccessAgreementComponent
   },
   {
     path: 'test',
@@ -152,7 +158,7 @@ const routes: Routes = [
   // VOLUNTEER routes
   {
     path: 'volunteer',
-    canActivate: [LoggedInGuard],
+    canActivate: [LoggedInGuard, EAccessAgreementGuard],
     canActivateChild: [RoleGuard],
     data: { expectedRole: VOLUNTEER },
     children: [
@@ -213,7 +219,7 @@ const routes: Routes = [
   // LOCAL AUTHORITY routes
   {
     path: 'local-authority',
-    canActivate: [LoggedInGuard],
+    canActivate: [LoggedInGuard, EAccessAgreementGuard],
     canActivateChild: [RoleGuard],
     children: [
       {
@@ -278,7 +284,7 @@ const routes: Routes = [
   // PROVINCIAL_ADMIN routes
   {
     path: 'provincial-admin',
-    canActivate: [LoggedInGuard],
+    canActivate: [LoggedInGuard, EAccessAgreementGuard],
     canActivateChild: [RoleGuard],
     children: [
       {

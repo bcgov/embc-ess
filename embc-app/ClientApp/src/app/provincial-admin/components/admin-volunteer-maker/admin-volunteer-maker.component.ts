@@ -186,7 +186,7 @@ export class AdminVolunteerMakerComponent implements OnInit {
       this.editMode = 'ADD';
 
       // this is a fresh form and will be a simple add organization
-      this.volunteer = {
+      this.volunteer = <Volunteer>{
         id: '',
         firstName: '',
         initials: '',

@@ -17,6 +17,7 @@ const initialState: State = {
     isAdministrator: null,
     isPrimaryContact: null,
     canAccessRestrictedFiles: null,
+    electronicAccessAgreementAccepted: false,
     firstName: null,
     lastName: null,
     nickname: null,
