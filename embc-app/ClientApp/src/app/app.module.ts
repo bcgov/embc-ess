@@ -79,6 +79,7 @@ import { AuditorComponent } from './provincial-admin/components/auditor/auditor.
 import { ElectronicAccessAgreementComponent } from './components/electronic-access-agreement/electronic-access-agreement.component';
 import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
 import { AppVersionComponent } from './shared/modals/app-version/app-version.component';
+import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/volunteer-evacuee-results-page/volunteer-evacuee-results-page.component';
 
 @NgModule({
   declarations: [
@@ -145,6 +146,7 @@ import { AppVersionComponent } from './shared/modals/app-version/app-version.com
     AuditorComponent,
     ElectronicAccessAgreementComponent,
     EvacueeSearchResultsComponent,
+    VolunteerEvacueeResultsPageComponent,
   ],
   imports: [
     // angular

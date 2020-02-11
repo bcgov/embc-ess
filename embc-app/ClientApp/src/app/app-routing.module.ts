@@ -39,6 +39,7 @@ import { AuditorComponent } from './provincial-admin/components/auditor/auditor.
 import { EAccessAgreementGuard } from './core/guards/e-access-agreement.gaurd';
 import { ElectronicAccessAgreementComponent } from './components/electronic-access-agreement/electronic-access-agreement.component';
 import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
+import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/volunteer-evacuee-results-page/volunteer-evacuee-results-page.component';
 
 /*
   /
@@ -209,7 +210,7 @@ const routes: Routes = [
       },
       {
         path: 'evacuee/results',
-        component: EvacueeSearchResultsComponent,
+        component: VolunteerEvacueeResultsPageComponent,
         data: {expectedRole: VOLUNTEER},
       },
     ],
