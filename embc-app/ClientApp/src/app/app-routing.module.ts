@@ -284,7 +284,7 @@ const routes: Routes = [
   // PROVINCIAL_ADMIN routes
   {
     path: 'provincial-admin',
-    canActivate: [LoggedInGuard, EAccessAgreementGuard],
+    canActivate: [LoggedInGuard],
     canActivateChild: [RoleGuard],
     children: [
       {
