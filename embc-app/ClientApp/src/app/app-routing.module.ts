@@ -37,6 +37,7 @@ import { OrganizationMakerPageComponent } from './provincial-admin/pages/organiz
 import { SurveyPageComponent } from './volunteer/pages/survey-page/survey-page.component';
 import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
 import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
+import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/volunteer-evacuee-results-page/volunteer-evacuee-results-page.component';
 
 /*
   /
@@ -203,7 +204,7 @@ const routes: Routes = [
       },
       {
         path: 'evacuee/results',
-        component: EvacueeSearchResultsComponent,
+        component: VolunteerEvacueeResultsPageComponent,
         data: {expectedRole: VOLUNTEER},
       },
     ],

@@ -77,6 +77,7 @@ import { AbstractReferralComponent } from './volunteer/components/referral-maker
 import { SupplierComponent } from './volunteer/components/referral-maker/subcomponents/supplier/supplier.component';
 import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
 import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
+import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/volunteer-evacuee-results-page/volunteer-evacuee-results-page.component';
 
 @NgModule({
   declarations: [
@@ -141,6 +142,7 @@ import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-se
     SurveyPageComponent,
     AuditorComponent,
     EvacueeSearchResultsComponent,
+    VolunteerEvacueeResultsPageComponent,
   ],
   imports: [
     // angular
