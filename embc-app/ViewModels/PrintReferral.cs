@@ -106,6 +106,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string TotalAmountPrinted => TotalAmount.ToString("N2");
         public string CommentsPrinted => ConvertCarriageReturnToHtml(Comments);
         public string ApprovedItemsPrinted => ConvertCarriageReturnToHtml(ApprovedItems);
+        public string VolunteerDisplayName { get; set; }
 
         public object[] PrintableEvacuees
         {

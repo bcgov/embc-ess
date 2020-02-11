@@ -95,6 +95,14 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
 
             var template = handleBars.Compile(TemplateLoader.LoadTemplate(ReferalMainViews.Referral.ToString()));
 
+            // Build the volunteer display name
+            var user = this.userService.CurrentUser;
+            if (!string.IsNullOrEmpty(user.lastname))
+            {
+                string displayName = $"{user.firstname} {user.lastname.Substring(0,1)}";
+                referral.VolunteerDisplayName = displayName;
+            }
+
             var result = template(referral);
 
             return $"{result}{pageBreak}";
