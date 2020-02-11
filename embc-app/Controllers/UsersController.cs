@@ -1,4 +1,5 @@
 using Gov.Jag.Embc.Public.Authentication;
+using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,13 @@ namespace Gov.Jag.Embc.Public.Controllers
     {
         private readonly IConfiguration configuration;
         private readonly IHttpContextAccessor ctx;
+        private readonly ICurrentUser cus;
 
-        public UsersController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public UsersController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ICurrentUser userServ)
         {
             this.configuration = configuration;
             this.ctx = httpContextAccessor;
+            this.cus = userServ;
         }
 
         protected ClaimsPrincipal CurrentUser => ctx.HttpContext.User;
@@ -26,23 +29,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet("current")]
         public virtual IActionResult UsersCurrentGet()
         {
-            var principal = HttpContext.User;
-            //TODO: refactor client and server property names to match claim names in order to simplify the code readability
-            ViewModels.User user = new ViewModels.User()
-            {
-                appRoles = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray(),
-                name = principal.FindFirstValue(SiteMinderClaimTypes.NAME),
-                firstname = principal.FindFirstValue(ClaimTypes.GivenName),
-                lastname = principal.FindFirstValue(ClaimTypes.Surname),
-                UserType = principal.FindFirstValue(SiteMinderClaimTypes.USER_TYPE),
-                contactid = principal.FindFirstValue(EssClaimTypes.USER_ID),
-                id = principal.FindFirstValue(ClaimTypes.Upn),
-                accountid = principal.FindFirstValue(EssClaimTypes.ORG_ID),
-                ClientTimeoutWarningInMinutes = configuration.UserTimeoutWarningInMinutes(),
-                ClientTimeoutWarningDurationInMinutes = configuration.UserTimeoutWarningInMinutes()
-            };
-
-            return new JsonResult(user);
+            return new JsonResult(this.cus.CurrentUser);
         }
     }
 }

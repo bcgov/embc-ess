@@ -16,7 +16,7 @@ namespace embc_unit_tests
     public class ReferralsServicesTests : TestBase
     {
         private IDataInterface di => Services.ServiceProvider.GetService<IDataInterface>();
-
+        private ICurrentUser cus => Services.ServiceProvider.GetService<ICurrentUser>();
         public ReferralsServicesTests(ITestOutputHelper output) : base(output)
         {
         }
@@ -46,7 +46,7 @@ namespace embc_unit_tests
         public async Task CanGetReferralHtmlPages(Gov.Jag.Embc.Public.ViewModels.Referral referral)
         {
             var pdfService = new PdfConverter();
-            var service = new ReferralsService(di, pdfService);
+            var service = new ReferralsService(di, pdfService, cus);
 
             var fromCommunity = await GetRandomSeededCommunity();
             var taskId = await SeedIncident(fromCommunity.Id);
@@ -102,7 +102,7 @@ namespace embc_unit_tests
         public async Task CanMapToPrintReferrals(Gov.Jag.Embc.Public.ViewModels.Referral referral)
         {
             var pdfService = new PdfConverter();
-            var service = new ReferralsService(di, pdfService);
+            var service = new ReferralsService(di, pdfService, cus);
 
             var fromCommunity = await GetRandomSeededCommunity();
             var taskId = await SeedIncident(fromCommunity.Id);
@@ -174,7 +174,7 @@ namespace embc_unit_tests
         public void CanValidateReferralTypes(string type, string subType, bool expectedResult)
         {
             var pdfService = new PdfConverter();
-            var svc = new ReferralsService(di, pdfService);
+            var svc = new ReferralsService(di, pdfService, cus);
 
             Assert.Equal(expectedResult, svc.IsValidReferralType(type, subType));
         }

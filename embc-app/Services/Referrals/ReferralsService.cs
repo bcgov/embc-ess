@@ -15,13 +15,15 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
     {
         private readonly IDataInterface dataInterface;
         private readonly IPdfConverter pdfConverter;
+        private readonly ICurrentUser userService;
 
         private readonly string pageBreak = $@"{Environment.NewLine}<div class=""page-break""></div>{Environment.NewLine}";
 
-        public ReferralsService(IDataInterface dataInterface, IPdfConverter pdfConverter)
+        public ReferralsService(IDataInterface dataInterface, IPdfConverter pdfConverter, ICurrentUser currentUser)
         {
             this.dataInterface = dataInterface;
             this.pdfConverter = pdfConverter;
+            this.userService = currentUser;
         }
 
         public async Task<byte[]> GetReferralPdfsAsync(ReferralsToPrint printReferrals)
@@ -92,6 +94,14 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             handleBars.RegisterTemplate("checklistPartial", partialChecklistSource);
 
             var template = handleBars.Compile(TemplateLoader.LoadTemplate(ReferalMainViews.Referral.ToString()));
+
+            // Build the volunteer display name
+            var user = this.userService.CurrentUser;
+            if (!string.IsNullOrEmpty(user.lastname))
+            {
+                string displayName = $"{user.firstname} {user.lastname.Substring(0,1)}";
+                referral.VolunteerDisplayName = displayName;
+            }
 
             var result = template(referral);
 

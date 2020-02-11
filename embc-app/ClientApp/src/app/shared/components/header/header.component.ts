@@ -24,7 +24,6 @@ export class HeaderComponent implements OnInit {
   ngOnChanges(changes: SimpleChange) {
     // Only build the display name once, after all inputs are initialized
     if (this.currentUser && this.displayName === null) {
-      console.log("Hey there",this.currentUser);
       let lName: string = "";
       // Extract the first letter of the last name if exists
       // Wanted to write it as if (this.currentUser.lastname?.length > 0) but it wouldn't compile even though there were no errors <\(-_-)/>
