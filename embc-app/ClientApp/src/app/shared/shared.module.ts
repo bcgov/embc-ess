@@ -38,6 +38,7 @@ import { DisableControlDirective } from './directives/disable-control.directive'
 import { UpperCaseDirective } from './directives/upper-case.directive';
 import { ValidationBorderDirective } from './directives/validation-border.directive';
 import { InsuranceInfoComponent } from './modals/insurance-info/insurance-info.component';
+import { MaskDirective } from './directives/mask.directive';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { InsuranceInfoComponent } from './modals/insurance-info/insurance-info.c
     UpperCaseDirective,
     ValidationBorderDirective,
     // Should this be in app.module.ts? CLI placed it here and it is a shared module, but the other modals are in app.module.ts.
-    InsuranceInfoComponent, 
+    InsuranceInfoComponent,
+    // MaskDirective, // I want to declare this in the shared module, but it has a 'Can't bind because x isn't a known property of Input' error
   ],
   entryComponents: [
     // Had to add InsuranceInfoComponent to entryComponents or else would error on open
@@ -125,6 +127,8 @@ import { InsuranceInfoComponent } from './modals/insurance-info/insurance-info.c
     DisableControlDirective,
     UpperCaseDirective,
     ValidationBorderDirective,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class SharedModule { }

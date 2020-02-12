@@ -7,6 +7,7 @@ import { EvacueeSearchQueryParameters } from 'src/app/core/models/search-interfa
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
 import { FormBuilder } from '@angular/forms';
+import {MaskUtils} from 'src/app/shared/utils/mask-utils'
 
 
 @Component({
@@ -29,6 +30,7 @@ export class EvacueeListComponent implements OnInit {
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
   isVolunteer: boolean;
+  dateMask = MaskUtils.DATE_MASK_GENERATOR;
   // for R1, advanced search mode is the only mode
   advancedSearchMode = true;
   advancedSearchForm = this.fb.group({
@@ -43,10 +45,13 @@ export class EvacueeListComponent implements OnInit {
     referrals_provided: null,
   });
 
+  dobValue = this.advancedSearchForm.controls["dob"].value;
+
   advancedSearchValid = {
     hasLastName: true,
     hasFirstName: true,
     hasDob: true,
+    hasValidDobFormat: true,
     hasESSNumber: true,
   }
 
@@ -92,16 +97,34 @@ export class EvacueeListComponent implements OnInit {
     const fName = this.advancedSearchForm.get('first_name').value;
     const lName = this.advancedSearchForm.get('last_name').value;
     // Ensure required fields are not null or empty strings
-    this.advancedSearchValid.hasDob = dob != null && dob != '';
+    //this.advancedSearchValid.hasDob = dob != null && dob !== '';
+    this.dobIsValid(dob);
     this.advancedSearchValid.hasFirstName = fName != null && fName !== '';
     this.advancedSearchValid.hasLastName = lName != null && lName !== '';
 
-    if (this.advancedSearchValid.hasDob && this.advancedSearchValid.hasFirstName && this.advancedSearchValid.hasLastName) {
+    
+
+    if (this.advancedSearchValid.hasDob && this.advancedSearchValid.hasValidDobFormat && this.advancedSearchValid.hasFirstName && this.advancedSearchValid.hasLastName) {
       this.search();
     }
     else {
       this.notFoundMessage = 'Please fill out all fields.';
     }
+  }
+
+  private dobIsValid(dob: string): boolean {
+    let result: boolean;
+    const dobRegex = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/;
+    // Check if dob has anything
+    result = dob != null && dob !== '';
+    this.advancedSearchValid.hasDob = result;
+    // if dob has a value, check it against the regex
+    if (result) {
+      result = dobRegex.test(dob);
+      this.advancedSearchValid.hasValidDobFormat = result;
+    }
+
+    return result;
   }
 
   essSearch() {

@@ -80,8 +80,8 @@
         </div>
         <p>Narrow your search results by: (fill any / all fields)</p>-->
             <p>
-              In the event where the <strong>evacuee doesn't have their ESS File #</strong>, you must request <strong>3
-                pieces of information</strong> from them in order to locate their file.
+              In the event where the evacuee doesn't have their ESS File #, you must request 3
+                pieces of information from them in order to locate their file.
               Ensure accurate spelling of names. <i>All fields are required</i>
             </p>
             <div class="row">
@@ -107,9 +107,12 @@
                 <div class="form-group row">
                   <label for="asDob" class="col-5 col-form-label">Date of Birth:</label>
                   <div class="col-7">
-                    <input type="date" class="form-control" id="asDob" formControlName="dob" required>
+                    <input type="text" class="form-control" id="asDob" formControlName="dob" required [appMask]="dateMask" [(appMaskValue)]="dobValue" [appKeepMask]="true" placeholder="YYYY-MM-DD">
                     <div class="missing-input" *ngIf="!advancedSearchValid.hasDob">
                       Please enter evacuee date of birth
+                    </div>
+                    <div class="missing-input" *ngIf="advancedSearchValid.hasDob && !advancedSearchValid.hasValidDobFormat">
+                      Please enter valid date of birth
                     </div>
                   </div>
                 </div>
@@ -255,7 +258,7 @@
 </ng-template>
 
 <ng-template #notFound>
-  <p>{{notFoundMessage}}</p>
+  <p *ngIf="!this.isVolunteer">{{notFoundMessage}}</p>
 </ng-template>
 
 <!-- <select class="form-control" [(ngModel)]="maxSize">
