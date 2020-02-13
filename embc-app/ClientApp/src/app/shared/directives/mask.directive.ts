@@ -9,13 +9,13 @@ import { MaskGenerator } from '../interfaces/mask-generator';
 // TODO: It would be nice if it didn't wipe out the mask as you typed (e.g. half way through a YYYY-DD-MM mask you'd see '1992-1D-MM')
 export class MaskDirective {
 
-  private static readonly ALPHA = 'A';
-  private static readonly NUMERIC = '9';
+  private static readonly ALPHA        = 'A';
+  private static readonly NUMERIC      = '9';
   private static readonly ALPHANUMERIC = '?';
   // Should date masks have different regex rules?
-  private static readonly YEAR = 'Y';
-  private static readonly MONTH = 'M';
-  private static readonly DAY = 'D';
+  private static readonly YEAR      = 'Y';
+  private static readonly MONTH     = 'M';
+  private static readonly DAY       = 'D';
   private static readonly REGEX_MAP = new Map([
     [MaskDirective.ALPHA, /\w/],
     [MaskDirective.NUMERIC, /\d/],
