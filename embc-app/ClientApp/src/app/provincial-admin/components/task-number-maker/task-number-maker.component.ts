@@ -35,7 +35,9 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     details: '',
     community: null,
     region: null,
-    startDate: null // datetime
+    startDate: null, // datetime
+    taskNumberStartDate: null,
+    taskNumberEndDate: null
   };
 
   // fields to collect
