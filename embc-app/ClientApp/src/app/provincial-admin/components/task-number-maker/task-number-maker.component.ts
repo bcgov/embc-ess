@@ -130,7 +130,8 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
       details: task.details,
       startDate: new Date(task.startDate),
       taskNumberStartDate: new Date(task.taskNumberStartDate),
-      taskNumberEndDate: new Date(task.taskNumberEndDate)
+      taskNumberEndDate: new Date(task.taskNumberEndDate),
+      overrideDate: new Date(task.taskNumberEndDate)
     });
   }
 
