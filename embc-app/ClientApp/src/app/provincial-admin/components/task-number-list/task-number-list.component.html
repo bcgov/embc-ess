@@ -11,7 +11,7 @@
   <form novalidate role="search" class="form-row" [formGroup]="form">
     <div class="col">
       <label class="sr-only" for="searchbox">Associated EMBC Regional District / Community</label>
-      <app-communities-select [myParent]="form" myFormControlName="searchbox" myId="searchbox" myPlaceHolder='Start Typing an Incident Location ...'></app-communities-select>
+      <app-communities-select [myParent]="form" myFormControlName="searchbox" myId="searchbox" myPlaceHolder='Start Typing a Host Community ...'></app-communities-select>
     </div>
     <div class="col-auto">
       <button class="btn btn-primary text-uppercase" (click)="filter(form.value.searchbox)">Filter</button>
@@ -36,7 +36,7 @@
     <table class="table table-hover table-sm">
       <thead class="thead-light">
         <th scope="col text-uppercase">Task Number</th>
-        <th scope="col text-uppercase">Incident Location</th>
+        <th scope="col text-uppercase">Host Community</th>
         <th scope="col text-uppercase"># Associated Evacuees</th>
         <th scope="col text-uppercase">Action</th>
       </thead>
