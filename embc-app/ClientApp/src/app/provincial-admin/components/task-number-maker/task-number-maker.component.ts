@@ -101,10 +101,12 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
 
   initializeForm() {
     this.form = this.fb.group({
-      taskNumber: ['', Validators.required],
-      community: [null, Validators.required],
-      startDate: [null, [Validators.required, CustomValidators.maxDate(moment())]],
-      details: ['', Validators.required],
+      taskNumber         : ['', Validators.required],
+      community          : [null, Validators.required],
+      startDate          : [null, [Validators.required, CustomValidators.maxDate(moment())]],
+      taskNumberStartDate: [null, [Validators.required, CustomValidators.maxDate(moment())]],
+      taskNumberEndDate  : [null, [Validators.required, CustomValidators.minDate(moment().add(80, 'h'))]],
+      details            : ['', Validators.required],
     });
   }
 
@@ -122,6 +124,8 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
       community: task.community,
       details: task.details,
       startDate: new Date(task.startDate),
+      taskNumberStartDate: new Date(task.taskNumberStartDate),
+      taskNumberEndDate: new Date(task.taskNumberEndDate)
     });
   }
 
@@ -202,5 +206,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     this.incidentTask.community = f.community;
     this.incidentTask.details = f.details;
     this.incidentTask.startDate = (f.startDate as Date).toJSON(); // make sure JS dates are properly serialized
+    this.incidentTask.taskNumberStartDate = (f.taskNumberStartDate as Date).toJSON();
+    this.incidentTask.taskNumberEndDate = (f.taskNumberEndDate as Date).toJSON();
   }
 }

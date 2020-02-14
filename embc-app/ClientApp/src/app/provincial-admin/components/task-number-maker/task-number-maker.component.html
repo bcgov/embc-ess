@@ -35,6 +35,22 @@
       </div>
       <div class="row">
         <div class="col mb-4">
+          <label class="required">Task Number Start Date &amp; Time</label>
+          <app-date-time-picker [class.is-invalid]="invalid('taskNumberStartDate')" formControlName="taskNumberStartDate"></app-date-time-picker>
+          <span class="invalid-feedback" *ngIf="f.taskNumberStartDate.errors?.required">Please enter a valid date and time for the task number</span>
+          <span class="invalid-feedback" *ngIf="f.taskNumberStartDate.errors?.maxDate">Date for the task number must be today or in the past</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col mb-4">
+          <label class="required">Task Number End Date &amp; Time</label>
+          <app-date-time-picker [class.is-invalid]="invalid('taskNumberEndDate')" formControlName="taskNumberEndDate"></app-date-time-picker>
+          <span class="invalid-feedback" *ngIf="f.taskNumberEndDate.errors?.required">Please enter a valid date and time for the task number</span>
+          <span class="invalid-feedback" *ngIf="f.taskNumberEndDate.errors?.minDate">Date for the task number end date must be at least 80 hours from the start date</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col mb-4">
           <label class="required" for="details">Details of Incident</label>
           <textarea class="form-control" [class.is-invalid]="invalid('details')" placeholder="Please specify" formControlName="details" id="details" rows="4"></textarea>
           <span class="invalid-feedback">Please enter incident details</span>
