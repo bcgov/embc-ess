@@ -40,6 +40,7 @@ import { EAccessAgreementGuard } from './core/guards/e-access-agreement.gaurd';
 import { ElectronicAccessAgreementComponent } from './components/electronic-access-agreement/electronic-access-agreement.component';
 import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
 import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/volunteer-evacuee-results-page/volunteer-evacuee-results-page.component';
+import { TaskNumberMakerPageComponent } from './provincial-admin/pages/task-number-maker-page/task-number-maker-page.component';
 
 /*
   /
@@ -354,7 +355,7 @@ const routes: Routes = [
       },
       {
         path: 'task-number',
-        component: TaskNumberMakerComponent,
+        component: TaskNumberMakerPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {

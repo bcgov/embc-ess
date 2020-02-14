@@ -24,6 +24,8 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
   editMode = false;
   submitting = false;
   path: string = null; // the base path for routing
+  endDateOverride: boolean = false; 
+  overrideDate: Date = null;
 
   // whatever is in the application state
   currentIncidentTask$ = this.store.select(i => i.incidentTasks.currentIncidentTask);
@@ -43,6 +45,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
   // fields to collect
   form: FormGroup = null;
   showErrorsWhen = false; // run validation *after* the user clicks the NEXT button, not before.
+  overrideForm: FormGroup = null;
 
   constructor(
     private router: Router,
@@ -103,10 +106,12 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     this.form = this.fb.group({
       taskNumber         : ['', Validators.required],
       community          : [null, Validators.required],
-      startDate          : [null, [Validators.required, CustomValidators.maxDate(moment())]],
-      taskNumberStartDate: [null, [Validators.required, CustomValidators.maxDate(moment())]],
-      taskNumberEndDate  : [null, [Validators.required, CustomValidators.minDate(moment().add(80, 'h'))]],
-      details            : ['', Validators.required],
+      startDate          : [moment(), [Validators.required, CustomValidators.maxDate(moment())]],
+      taskNumberStartDate: [moment(), [Validators.required, CustomValidators.maxDate(moment())]],
+      // The UI says it's 72 hours after the taskNumberStartDate, but we are intentionally making it 80 hours to give some more 'wiggle room'
+      taskNumberEndDate: [moment().add(80, 'h'), [Validators.required, CustomValidators.minDate(moment().add(80, 'h'))]],
+      details          : ['', Validators.required],
+      overrideDate     : [moment().add(80, 'h'), [Validators.required, CustomValidators.minDate(moment().add(80, 'h'))]]
     });
   }
 
@@ -191,6 +196,17 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
           });
       }
     }
+  }
+
+  toggleOverride(): void {
+    this.endDateOverride = !this.endDateOverride;
+  }
+
+  updateEndDate(): void {
+    this.form.patchValue({
+      taskNumberEndDate: this.form.controls.overrideDate.value
+    });
+    this.toggleOverride();
   }
 
   cancel() {
