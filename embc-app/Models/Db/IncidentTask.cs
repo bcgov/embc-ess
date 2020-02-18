@@ -22,6 +22,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public Region Region { get; set; }
 
         public Guid? CommunityId { get; set; }
+        // Host Community
 
         public Community Community { get; set; }
 

@@ -34,6 +34,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public bool? Active { get; set; }
         public int? TotalAssociatedEvacuees { get; set; }
         public Region Region { get; set; }
+        // Host Community
         public Community Community { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? TaskNumberStartDate { get; set; }
