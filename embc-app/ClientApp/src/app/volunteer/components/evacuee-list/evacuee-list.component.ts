@@ -7,7 +7,7 @@ import { EvacueeSearchQueryParameters } from 'src/app/core/models/search-interfa
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
 import { FormBuilder } from '@angular/forms';
-import {MaskUtils} from 'src/app/shared/utils/mask-utils'
+import * as moment from 'moment';
 
 
 @Component({
@@ -30,7 +30,8 @@ export class EvacueeListComponent implements OnInit {
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
   isVolunteer: boolean;
-  dateMask = MaskUtils.DATE_MASK_GENERATOR;
+  readonly dateMask = [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]; // yyyy-mm-dd
+  dobString: string = null;
   // for R1, advanced search mode is the only mode
   advancedSearchMode = true;
   advancedSearchForm = this.fb.group({
@@ -44,8 +45,6 @@ export class EvacueeListComponent implements OnInit {
     registration_completed: null,
     referrals_provided: null,
   });
-
-  dobValue = this.advancedSearchForm.controls["dob"].value;
 
   advancedSearchValid = {
     hasLastName: true,
@@ -125,6 +124,20 @@ export class EvacueeListComponent implements OnInit {
     }
 
     return result;
+  }
+
+  updateDob(dob: string): void {
+    const m = moment(dob, 'YYYY-MM-DD', true);
+
+    if (m.isValid()) {
+      // update dob
+      this.advancedSearchForm.patchValue(
+        {"dob": dob}
+      );
+    } else {
+      // error message
+      this.dobString = null;
+    }
   }
 
   essSearch() {

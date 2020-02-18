@@ -107,7 +107,8 @@
                 <div class="form-group row">
                   <label for="asDob" class="col-5 col-form-label">Date of Birth:</label>
                   <div class="col-7">
-                    <input type="text" class="form-control" id="asDob" formControlName="dob" required [appMask]="dateMask" [(appMaskValue)]="dobValue" [appKeepMask]="true" placeholder="YYYY-MM-DD">
+                    <input type="text" class="form-control" id="asDob" formControlName="dob" required placeholder="YYYY-MM-DD"
+                    [value]="this.dobString" [textMask]="{mask: dateMask, keepCharPositions: true}" (blur)="this.updateDob()">
                     <div class="missing-input" *ngIf="!advancedSearchValid.hasDob">
                       Please enter evacuee date of birth
                     </div>
