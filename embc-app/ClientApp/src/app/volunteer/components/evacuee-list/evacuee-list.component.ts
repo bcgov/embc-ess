@@ -29,7 +29,6 @@ export class EvacueeListComponent implements OnInit {
   previousQuery: EvacueeSearchQueryParameters = {};
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
-  isVolunteer: boolean;
   readonly dateMask = [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]; // yyyy-mm-dd
   dobString: string = null;
   // for R1, advanced search mode is the only mode
@@ -65,10 +64,6 @@ export class EvacueeListComponent implements OnInit {
   ngOnInit() {
     // save the base url path
     this.authService.path.subscribe((path: string) => this.path = path);
-    this.authService.isVolunteer$.subscribe(result => this.isVolunteer = result);
-    this.getEvacuees().subscribe((listResult: ListResult<EvacueeListItem>) => {
-      this.resultsAndPagination = listResult;
-    });
   }
 
 
@@ -163,11 +158,9 @@ export class EvacueeListComponent implements OnInit {
       }
       this.resultsAndPagination = listResult;
     });
-    // if the user is a volunteer we will route them to the results page
-    if (this.isVolunteer) {
-      // Navigate to results
-      this.router.navigate([`/${this.path}/evacuee/results`]);
-    }
+    // Navigate to results
+    this.router.navigate([`/${this.path}/evacuee/results`]);
+    
   }
 
   createSearchQuery(): EvacueeSearchQueryParameters {
