@@ -168,6 +168,10 @@ import { LocalAuthorityEvacueeListComponent } from './local-authority/components
     AppRoutingModule,
     SelfRegistrationModule,
   ],
+  exports: [
+    FormsModule,
+    ReactiveFormsModule
+  ],
   entryComponents: [
     LodgingRatesComponent,
     ClothingRatesComponent,
