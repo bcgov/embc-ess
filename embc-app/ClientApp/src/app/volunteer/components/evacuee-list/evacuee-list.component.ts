@@ -29,6 +29,7 @@ export class EvacueeListComponent implements OnInit {
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
   isVolunteer: boolean;
+  isLocalAuthority: boolean;
   // for R1, advanced search mode is the only mode
   advancedSearchMode = true;
   advancedSearchForm = this.fb.group({
@@ -62,6 +63,7 @@ export class EvacueeListComponent implements OnInit {
     // save the base url path
     this.authService.path.subscribe((path: string) => this.path = path);
     this.authService.isVolunteer$.subscribe(result => this.isVolunteer = result);
+    this.authService.isLocalAuthority$.subscribe(result => this.isLocalAuthority = result);
     this.getEvacuees().subscribe((listResult: ListResult<EvacueeListItem>) => {
       this.resultsAndPagination = listResult;
     });
@@ -87,7 +89,7 @@ export class EvacueeListComponent implements OnInit {
     return this.evacueeService.getEvacuees(query);
   }
 
-  advancedSearch() {
+  doBasicSearch() {
     const dob = this.advancedSearchForm.get('dob').value;
     const fName = this.advancedSearchForm.get('first_name').value;
     const lName = this.advancedSearchForm.get('last_name').value;
