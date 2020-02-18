@@ -38,7 +38,6 @@ import { DisableControlDirective } from './directives/disable-control.directive'
 import { UpperCaseDirective } from './directives/upper-case.directive';
 import { ValidationBorderDirective } from './directives/validation-border.directive';
 import { InsuranceInfoComponent } from './modals/insurance-info/insurance-info.component';
-import { MaskDirective } from './directives/mask.directive';
 
 @NgModule({
   declarations: [

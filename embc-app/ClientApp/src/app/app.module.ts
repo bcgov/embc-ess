@@ -80,7 +80,6 @@ import { ElectronicAccessAgreementComponent } from './components/electronic-acce
 import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
 import { AppVersionComponent } from './shared/modals/app-version/app-version.component';
 import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/volunteer-evacuee-results-page/volunteer-evacuee-results-page.component';
-import { MaskDirective } from './shared/directives/mask.directive';
 
 @NgModule({
   declarations: [
@@ -148,7 +147,6 @@ import { MaskDirective } from './shared/directives/mask.directive';
     ElectronicAccessAgreementComponent,
     EvacueeSearchResultsComponent,
     VolunteerEvacueeResultsPageComponent,
-    MaskDirective // Want to declare this in Shared Modules, but it errors with "Can't bind to '[attribute]' since it isn't a known property of 'Input'"
   ],
   imports: [
     // angular
