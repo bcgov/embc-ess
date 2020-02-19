@@ -35,9 +35,9 @@ namespace Gov.Jag.Embc.Public.ViewModels.Search
         public string SelfRegistrationDateStart { get; set; }
         [FromQuery(Name = "self_reg_date_to")]
         public string SelfRegistrationDateEnd { get; set; }
-        [FromQuery(Name = "finalization_date_to")]
-        public string FinalizationDateStart { get; set; }
         [FromQuery(Name = "finalization_date_from")]
+        public string FinalizationDateStart { get; set; }
+        [FromQuery(Name = "finalization_date_to")]
         public string FinalizationDateEnd { get; set; }
     }
 }

@@ -92,16 +92,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateStart)
                     && !string.IsNullOrWhiteSpace(searchQuery.FinalizationDateEnd))
                 {
-                    DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
-                    DateTime.TryParse(searchQuery.FinalizationDateEnd, out DateTime end);
+                    var startGood  = DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
+                    var endGood    = DateTime.TryParse(searchQuery.FinalizationDateEnd, out DateTime end);
+                    
                     query = query.Where(e => e.RegistrationCompletionDate.HasValue &&
-                                        e.RegistrationCompletionDate > start && e.RegistrationCompletionDate < end);
+                                        e.RegistrationCompletionDate.Value > start && e.RegistrationCompletionDate.Value < end);
                 }
                 // Only start (all finalized evacuees after start)
                 else if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateStart))
                 {
-                    DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
-                    query = query.Where(e => e.RegistrationCompletionDate.HasValue && e.RegistrationCompletionDate > start);
+                    //DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
+                    //var uStart = start.ToUniversalTime();
+                    DateTime start = DateTime.Parse(searchQuery.FinalizationDateStart).ToUniversalTime();
+                    query = query.Where(e => e.RegistrationCompletionDate.HasValue && e.RegistrationCompletionDate.Value > start);
                 }
                 // Only end (all finalized evacuees before end)
                 else if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateEnd))

@@ -62,7 +62,7 @@ export class EvacueeService extends RestService {
     if (props.finalization_date_from) { params.finalization_date_from = props.finalization_date_from; }
     if (props.finalization_date_to) { params.finalization_date_to = props.finalization_date_to; }
     if (props.self_reg_date_from) { params.self_reg_date_from = props.self_reg_date_from; }
-    if (props.self_reg_date_to) { params.self_reg_date_to; }
+    if (props.self_reg_date_to) { params.self_reg_date_to = props.self_reg_date_to; }
 
     // convert boolean values (if present)
     if (props.registration_completed === true || props.registration_completed === false) {
