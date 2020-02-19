@@ -69,6 +69,7 @@ def buildAndVerify(buildConfigName) {
 }
 
 def tagImage(srcHash, destination, imageStream) {
+  echo "Tagging $imageStream with $destination"
   openshiftTag(
     destStream: imageStream,
     verbose: 'true',
@@ -89,7 +90,6 @@ def tagLatestStable(environment, backupTag, imageStream) {
 
 def deployAndVerify(srcHash, environment, imageStream) {
   echo "Deploying ${APP_NAME} to ${environment}"
-  tagImage(srcHash, environment, imageStream)
   // verify deployment to an environment; e.g. [your-project-name]-dev
   openshiftVerifyDeployment(
     deploymentConfig: APP_NAME,
@@ -141,12 +141,14 @@ node('master') {
   
   stage("Deploy to ${environments.training.name}") {
     def environment = environments.training.env
+    def newTag = environments.training.tag	  
     def stableTag = environments.training.previousTag
     node {
       try {
         // hold on to a copy of the last stable TRAINING environment (in case the upcoming deployment fails...)
         tagLatestStable(environment, stableTag, IMAGESTREAM_NAME)
         IMAGE_HASH = getLatestHash(IMAGESTREAM_NAME)
+	tagImage(IMAGE_HASH, newTag, IMAGESTREAM_NAME)
         deployAndVerify(IMAGE_HASH, environment, IMAGESTREAM_NAME)
         // all is good!
         notifyGood(

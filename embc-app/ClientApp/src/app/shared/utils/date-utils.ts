@@ -19,3 +19,19 @@ export function numberOfDays(from: Date, to: Date): number {
   const b = moment(to);
   return b.diff(a, 'days') + 1;
 }
+
+/** 
+ * Normalizes a date by removing timezone offset. 
+ * Fixes issues with JS adding unwanted time zone info to dates.
+ * Returns a Date object with normalized time zone information.
+ * @param date The date to normalize
+ */
+export function normalizeDate(date: Date): Date {
+  if (date != null) {
+    // Not sure why, but sometimes the date properties on objects are strings at run time.
+    date = new Date(date);
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+  }
+
+  return date;
+}

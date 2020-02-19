@@ -169,6 +169,10 @@ import { TaskNumberMakerPageComponent } from './provincial-admin/pages/task-numb
     AppRoutingModule,
     SelfRegistrationModule,
   ],
+  exports: [
+    FormsModule,
+    ReactiveFormsModule
+  ],
   entryComponents: [
     LodgingRatesComponent,
     ClothingRatesComponent,

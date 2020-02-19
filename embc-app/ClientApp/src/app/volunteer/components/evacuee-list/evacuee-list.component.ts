@@ -7,6 +7,7 @@ import { EvacueeSearchQueryParameters } from 'src/app/core/models/search-interfa
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
 import { FormBuilder } from '@angular/forms';
+import * as moment from 'moment';
 
 
 @Component({
@@ -29,7 +30,8 @@ export class EvacueeListComponent implements OnInit {
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
   isVolunteer: boolean;
-  isLocalAuthority: boolean;
+  readonly dateMask = [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]; // yyyy-mm-dd
+  dobString: string = null;
   // for R1, advanced search mode is the only mode
   advancedSearchMode = true;
   advancedSearchForm = this.fb.group({
@@ -48,6 +50,7 @@ export class EvacueeListComponent implements OnInit {
     hasLastName: true,
     hasFirstName: true,
     hasDob: true,
+    hasValidDobFormat: true,
     hasESSNumber: true,
   }
 
@@ -63,7 +66,6 @@ export class EvacueeListComponent implements OnInit {
     // save the base url path
     this.authService.path.subscribe((path: string) => this.path = path);
     this.authService.isVolunteer$.subscribe(result => this.isVolunteer = result);
-    this.authService.isLocalAuthority$.subscribe(result => this.isLocalAuthority = result);
     this.getEvacuees().subscribe((listResult: ListResult<EvacueeListItem>) => {
       this.resultsAndPagination = listResult;
     });
@@ -94,15 +96,47 @@ export class EvacueeListComponent implements OnInit {
     const fName = this.advancedSearchForm.get('first_name').value;
     const lName = this.advancedSearchForm.get('last_name').value;
     // Ensure required fields are not null or empty strings
-    this.advancedSearchValid.hasDob = dob != null && dob != '';
+    //this.advancedSearchValid.hasDob = dob != null && dob !== '';
+    this.dobIsValid(dob);
     this.advancedSearchValid.hasFirstName = fName != null && fName !== '';
     this.advancedSearchValid.hasLastName = lName != null && lName !== '';
 
-    if (this.advancedSearchValid.hasDob && this.advancedSearchValid.hasFirstName && this.advancedSearchValid.hasLastName) {
+    
+
+    if (this.advancedSearchValid.hasDob && this.advancedSearchValid.hasValidDobFormat && this.advancedSearchValid.hasFirstName && this.advancedSearchValid.hasLastName) {
       this.search();
     }
     else {
       this.notFoundMessage = 'Please fill out all fields.';
+    }
+  }
+
+  private dobIsValid(dob: string): boolean {
+    let result: boolean;
+    const dobRegex = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/;
+    // Check if dob has anything
+    result = dob != null && dob !== '';
+    this.advancedSearchValid.hasDob = result;
+    // if dob has a value, check it against the regex
+    if (result) {
+      result = dobRegex.test(dob);
+      this.advancedSearchValid.hasValidDobFormat = result;
+    }
+
+    return result;
+  }
+
+  updateDob(dob: string): void {
+    const m = moment(dob, 'YYYY-MM-DD', true);
+
+    if (m.isValid()) {
+      // update dob
+      this.advancedSearchForm.patchValue(
+        {"dob": dob}
+      );
+    } else {
+      // error message
+      this.dobString = null;
     }
   }
 
