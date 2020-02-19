@@ -166,6 +166,10 @@ import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/voluntee
     AppRoutingModule,
     SelfRegistrationModule,
   ],
+  exports: [
+    FormsModule,
+    ReactiveFormsModule
+  ],
   entryComponents: [
     LodgingRatesComponent,
     ClothingRatesComponent,
