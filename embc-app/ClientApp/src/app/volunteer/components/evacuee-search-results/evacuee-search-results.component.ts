@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
+import { normalizeDate } from "src/app/shared/utils/date-utils";
 
 @Component({
   selector: 'app-evacuee-search-results',
@@ -26,6 +27,12 @@ export class EvacueeSearchResultsComponent implements OnInit {
     this.authService.path.subscribe((path: string) => this.path = path);
     // Get results of the previous search
     this.evacueeService.getPreviousQuery().subscribe((listResult: ListResult<EvacueeListItem>) => {
+      // Normalize the dates of the results - fixes off by 1 day issue.
+      listResult.data.forEach(item => {
+        item.dob                        = normalizeDate(item.dob);
+        item.registrationCompletionDate = normalizeDate(item.registrationCompletionDate);
+        item.selfRegisteredDate         = normalizeDate(item.selfRegisteredDate);
+      });
       this.searchResults = listResult;
     });
   }
