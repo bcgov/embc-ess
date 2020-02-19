@@ -1,6 +1,5 @@
 <div class="mb-4">
-  <h1>Emergency Support Services Dashboard</h1>
-  <h2>Welcome to your Dashboard!</h2>
+  <h1>Welcome to the ESS Dashboard!</h1>
   <p>
     As an Emergency Support Services user you'll be able to register new evacuees, complete an existing evacuee
     self-registration, or if needed, search and edit evacuee information.
@@ -8,179 +7,199 @@
   <!--<h3 class="blue-header">List of Evacuees</h3>-->
 
   <!--Basic Search-->
-  <div role="search">
-    <ng-container *ngIf="!advancedSearchMode">
-      <div class="form-row">
-        <div class="col">
-          <input [(ngModel)]="queryString" (ngModelChange)="onNullQueryString($event)" type="text" aria-label="search"
-            class="form-control mb-2"
-            placeholder="Search by task number / last name / registration number / community ..."
-            (keydown.enter)="search()">
+  <div class="search-container">
+    <div role="search">
+      <div class="center-text">
+        <div class="title-flex">
+          <h1 class="flex-item">Locate Evacuee File</h1>
+          <span class="large-icon icon-stack">
+            <i class="fa fa-search back-icon"></i>
+            <i class="fa fa-user front-icon"></i>
+          </span>
         </div>
-        <div class="col-auto">
-          <button type="button" class="btn btn-primary text-uppercase" (click)="search()">Search</button>
-        </div>
+        <p>
+          Locate an evacuee file by entering their ESS File # into the box below.
+          <br />
+          <strong>No ESS File #</strong>? Enter 3 pieces of the evacuees' personal information to retrieve their file.
+        </p>
       </div>
-      <a class="small" [routerLink]="" (click)="switchToAdvancedSearch()">advanced search</a>
-    </ng-container>
+      <ng-container *ngIf="!advancedSearchMode">
+        <div class="form-row">
+          <div class="col">
+            <input [(ngModel)]="queryString" (ngModelChange)="onNullQueryString($event)" type="text" aria-label="search"
+              class="form-control mb-2"
+              placeholder="Search by task number / last name / registration number / community ..."
+              (keydown.enter)="search()">
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-primary text-uppercase" (click)="search()">Search</button>
+          </div>
+        </div>
+        <a class="small" [routerLink]="" (click)="switchToAdvancedSearch()">advanced search</a>
+      </ng-container>
 
-    <!--Advanced Search-->
-    <ng-container *ngIf="advancedSearchMode">
+      <!--Advanced Search-->
+      <ng-container *ngIf="advancedSearchMode">
 
-      <h1 class="yellow-header font-weight-bold">Evacuee Emergency Support Services (ESS) File #</h1>
-      <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="essSearch()">
-        <div class="feature-block">
-          <p>
-            If the evacuee has their <strong>ESS File #</strong> that they received when they <strong>self
-              registered</strong>, enter it below to locate their evacuee file.
-          </p>
-          <div class="row">
-            <div class="col">
-              <div class="form-group row">
-                <label for="asEssFileNo" class="col-5 col-form-label">ESS File #:</label>
-                <div class="col-7">
-                  <input type="text" class="form-control" id="asEssFileNo" formControlName="ess_file_no">
-                  <div class="missing-input" *ngIf="!advancedSearchValid.hasESSNumber">
-                    Please enter ESS File #
+        <h1 class="yellow-header header-text">Evacuee Emergency Support Services (ESS) File #</h1>
+        <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="essSearch()">
+          <div class="feature-block">
+            <p>
+              If the evacuee has their <strong>ESS File #</strong> that they received when they <strong>self
+                registered</strong>, enter it below to locate their evacuee file.
+            </p>
+            <div class="row">
+              <div class="col">
+                <div class="form-group row">
+                  <label for="asEssFileNo" class="col-5 col-form-label">ESS File #:</label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" id="asEssFileNo" formControlName="ess_file_no">
+                    <div class="missing-input" *ngIf="!advancedSearchValid.hasESSNumber">
+                      Please enter ESS File #
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            <div class="d-flex justify-content-end align-items-center">
+              <button type="submit" class="ml-2 btn btn-secondary text-uppercase">Search</button>
+            </div>
           </div>
-          <div class="d-flex justify-content-end align-items-center">
-            <button type="submit" class="ml-2 btn btn-secondary text-uppercase">Search</button>
-          </div>
+        </form>
+        <div class="or-divider">
+          <h1 class="circle">OR</h1>
         </div>
-      </form>
-      <div class="or-divider">
-        <h1 class="circle">OR</h1>
-      </div>
-      <h1 class="blue-header font-weight-bold">Evacuee Details</h1>
-      <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="advancedSearch()">
-        <div class="feature-block">
-          <!--<div class="d-flex justify-content-between">
-        <h2 class="h5">Advanced Search</h2>
-        <button type="button" class="close" aria-label="Close" (click)="switchToBasicSearch()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <p>Narrow your search results by: (fill any / all fields)</p>-->
-          <p>
-            In the event where the <strong>evacuee doesn't have their ESS File #</strong>, you must request <strong>3
-              pieces of information</strong> from them in order to locate their file.
-            Ensure accurate spelling of names. <i>All fields are required</i>
-          </p>
-          <div class="row">
-            <div class="col">
-              <div class="form-group row">
-                <label for="asLastname" class="col-5 col-form-label">Last Name:</label>
-                <div class="col-7">
-                  <input type="text" class="form-control" id="asLastname" formControlName="last_name" required>
-                  <div class="missing-input" *ngIf="!advancedSearchValid.hasLastName">
-                    Please enter evacuee last name
+        <h1 class="blue-header header-text">Evacuee Details</h1>
+        <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="advancedSearch()">
+          <div class="feature-block">
+            <!--<div class="d-flex justify-content-between">
+          <h2 class="h5">Advanced Search</h2>
+          <button type="button" class="close" aria-label="Close" (click)="switchToBasicSearch()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <p>Narrow your search results by: (fill any / all fields)</p>-->
+            <p>
+              In the event where the evacuee doesn't have their ESS File #, you must request 3
+                pieces of information from them in order to locate their file.
+              Ensure accurate spelling of names. <i>All fields are required</i>
+            </p>
+            <div class="row">
+              <div class="col">
+                <div class="form-group row">
+                  <label for="asLastname" class="col-5 col-form-label">Last Name:</label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" id="asLastname" formControlName="last_name" required>
+                    <div class="missing-input" *ngIf="!advancedSearchValid.hasLastName">
+                      Please enter evacuee last name
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="asFirstname" class="col-5 col-form-label">First Name:</label>
-                <div class="col-7">
-                  <input type="text" class="form-control" id="asFirstname" formControlName="first_name" required>
-                  <div class="missing-input" *ngIf="!advancedSearchValid.hasFirstName">
-                    Please enter evacuee first name
+                <div class="form-group row">
+                  <label for="asFirstname" class="col-5 col-form-label">First Name:</label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" id="asFirstname" formControlName="first_name" required>
+                    <div class="missing-input" *ngIf="!advancedSearchValid.hasFirstName">
+                      Please enter evacuee first name
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="asDob" class="col-5 col-form-label">Date of Birth:</label>
-                <div class="col-7">
-                  <input type="date" class="form-control" id="asDob" formControlName="dob" required>
-                  <div class="missing-input" *ngIf="!advancedSearchValid.hasDob">
-                    Please enter evacuee date of birth
+                <div class="form-group row">
+                  <label for="asDob" class="col-5 col-form-label">Date of Birth:</label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" id="asDob" formControlName="dob" required placeholder="YYYY-MM-DD"
+                    [value]="this.dobString" [textMask]="{mask: dateMask, keepCharPositions: true}" (blur)="this.updateDob()">
+                    <div class="missing-input" *ngIf="!advancedSearchValid.hasDob">
+                      Please enter evacuee date of birth
+                    </div>
+                    <div class="missing-input" *ngIf="advancedSearchValid.hasDob && !advancedSearchValid.hasValidDobFormat">
+                      Please enter valid date of birth
+                    </div>
                   </div>
                 </div>
+                <!--<div class="form-group row">
+              <label for="asTaskNo" class="col-5 col-form-label">Task #:</label>
+              <div class="col-7">
+                <input type="text" class="form-control" id="asTaskNo" formControlName="task_no">
               </div>
-              <!--<div class="form-group row">
-            <label for="asTaskNo" class="col-5 col-form-label">Task #:</label>
-            <div class="col-7">
-              <input type="text" class="form-control" id="asTaskNo" formControlName="task_no">
             </div>
-          </div>
-          <div class="form-group row">
-            <label for="asEssFileNo" class="col-5 col-form-label">ESS File #:</label>
-            <div class="col-7">
-              <input type="text" class="form-control" id="asEssFileNo" formControlName="ess_file_no">
+            <div class="form-group row">
+              <label for="asEssFileNo" class="col-5 col-form-label">ESS File #:</label>
+              <div class="col-7">
+                <input type="text" class="form-control" id="asEssFileNo" formControlName="ess_file_no">
+              </div>
+            </div>-->
+                <!--<fieldset class="form-group">
+              <div class="row">
+                <legend class="col-form-label col-5 pt-0">Reg. Completed:</legend>
+                <div class="col-7">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="registration_completed" id="asRegCompletedYes" [value]="true" formControlName="registration_completed">
+                    <label class="form-check-label" for="asRegCompletedYes">Yes</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="registration_completed" id="asRegCompletedNo" [value]="false" formControlName="registration_completed">
+                    <label class="form-check-label" for="asRegCompletedNo">No</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="registration_completed" id="asRegCompletedAll" [value]="null" formControlName="registration_completed">
+                    <label class="form-check-label" for="asRegCompletedAll">Show all</label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>-->
+              </div>
+              <!--<div class="col">
+            <div class="form-group row">
+              <label for="asEvacuatedFrom" class="col-5 col-form-label">Evacuated From:</label>
+              <div class="col-7">
+                <app-communities-select [myParent]="advancedSearchForm" myFormControlName="evacuated_from" myId="asEvacuatedFrom"></app-communities-select>
+              </div>
             </div>
+            <div class="form-group row">
+              <label for="asEvacuatedTo" class="col-5 col-form-label">Evacuated To:</label>
+              <div class="col-7">
+                <app-communities-select [myParent]="advancedSearchForm" myFormControlName="evacuated_to" myId="asEvacuatedTo"></app-communities-select>
+              </div>
+            </div>
+            <fieldset class="form-group">
+              <div class="row">
+                <legend class="col-form-label col-5 pt-0">Referrals Provided:</legend>
+                <div class="col-7">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="referrals_provided" id="asReferralsYes" [value]="true" formControlName="referrals_provided">
+                    <label class="form-check-label" for="asReferralsYes">Yes</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="referrals_provided" id="asReferralsNo" [value]="false" formControlName="referrals_provided">
+                    <label class="form-check-label" for="asReferralsNo">No</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="referrals_provided" id="asReferralsAll" [value]="null" formControlName="referrals_provided">
+                    <label class="form-check-label" for="asReferralsAll">Show all</label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
           </div>-->
-              <!--<fieldset class="form-group">
-            <div class="row">
-              <legend class="col-form-label col-5 pt-0">Reg. Completed:</legend>
-              <div class="col-7">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="registration_completed" id="asRegCompletedYes" [value]="true" formControlName="registration_completed">
-                  <label class="form-check-label" for="asRegCompletedYes">Yes</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="registration_completed" id="asRegCompletedNo" [value]="false" formControlName="registration_completed">
-                  <label class="form-check-label" for="asRegCompletedNo">No</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="registration_completed" id="asRegCompletedAll" [value]="null" formControlName="registration_completed">
-                  <label class="form-check-label" for="asRegCompletedAll">Show all</label>
-                </div>
-              </div>
             </div>
-          </fieldset>-->
-            </div>
-            <!--<div class="col">
-          <div class="form-group row">
-            <label for="asEvacuatedFrom" class="col-5 col-form-label">Evacuated From:</label>
-            <div class="col-7">
-              <app-communities-select [myParent]="advancedSearchForm" myFormControlName="evacuated_from" myId="asEvacuatedFrom"></app-communities-select>
+            <div class="d-flex justify-content-end align-items-center">
+              <!-- Basic search. For Release 1, advanced search mode is the only mode-->
+              <!--<app-fa-link class="small" icon="exchange-alt" (click)="switchToBasicSearch()">Switch to Basic Search</app-fa-link>-->
+              <button type="submit" class="ml-2 btn btn-secondary text-uppercase">Search</button>
             </div>
           </div>
-          <div class="form-group row">
-            <label for="asEvacuatedTo" class="col-5 col-form-label">Evacuated To:</label>
-            <div class="col-7">
-              <app-communities-select [myParent]="advancedSearchForm" myFormControlName="evacuated_to" myId="asEvacuatedTo"></app-communities-select>
-            </div>
-          </div>
-          <fieldset class="form-group">
-            <div class="row">
-              <legend class="col-form-label col-5 pt-0">Referrals Provided:</legend>
-              <div class="col-7">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="referrals_provided" id="asReferralsYes" [value]="true" formControlName="referrals_provided">
-                  <label class="form-check-label" for="asReferralsYes">Yes</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="referrals_provided" id="asReferralsNo" [value]="false" formControlName="referrals_provided">
-                  <label class="form-check-label" for="asReferralsNo">No</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="referrals_provided" id="asReferralsAll" [value]="null" formControlName="referrals_provided">
-                  <label class="form-check-label" for="asReferralsAll">Show all</label>
-                </div>
-              </div>
-            </div>
-          </fieldset>
-        </div>-->
-          </div>
-          <div class="d-flex justify-content-end align-items-center">
-            <!-- Basic search. For Release 1, advanced search mode is the only mode-->
-            <!--<app-fa-link class="small" icon="exchange-alt" (click)="switchToBasicSearch()">Switch to Basic Search</app-fa-link>-->
-            <button type="submit" class="ml-2 btn btn-secondary text-uppercase">Search</button>
-          </div>
-        </div>
-      </form>
-    </ng-container>
+        </form>
+      </ng-container>
+    </div>
   </div>
 
-  <div class="clearfix my-2">
+  <!-- <div class="clearfix my-2">
     <div class="float-right">
       <app-font-awesome-icon class="mr-1" icon="user"></app-font-awesome-icon>
       <span class="ml-2">Head of Household</span>
     </div>
-  </div>
+  </div> -->
 </div>
 <div class="row my-2" *ngIf="resultsAndPagination?.data?.length>0 && !this.isVolunteer">
   <div class="col">
@@ -240,14 +259,14 @@
 </ng-template>
 
 <ng-template #notFound>
-  <p>{{notFoundMessage}}</p>
+  <p *ngIf="!this.isVolunteer">{{notFoundMessage}}</p>
 </ng-template>
 
 <!-- <select class="form-control" [(ngModel)]="maxSize">
     <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option>
   </select> -->
 <div class="row">
-  <div class="col" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
+  <div class="col" *ngIf="!this.isVolunteer && resultsAndPagination?.metadata?.totalPages > 1">
     <div class="float-right">
       <app-paginator [metaData]="resultsAndPagination?.metadata" (params)="onPaginationEvent($event)"></app-paginator>
     </div>

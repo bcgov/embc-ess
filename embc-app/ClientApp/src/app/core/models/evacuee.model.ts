@@ -34,7 +34,7 @@ export interface EvacueeListItem {
   incidentTaskNumber: string;
   evacuatedFrom: string;
   evacuatedTo: string;
-  registrationCompletionDate?: string;
+  registrationCompletionDate?: Date;
   isFinalized: boolean;
   hasReferrals: boolean;
   dob?: Date;

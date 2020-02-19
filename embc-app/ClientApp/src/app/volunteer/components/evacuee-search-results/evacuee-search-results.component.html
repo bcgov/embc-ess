@@ -50,7 +50,7 @@
             <div class="flex-item full-width">
               <!--dob-->
               <p>
-                Date of Birth: <strong>{{result.dob | date}}</strong>
+                Date of Birth: <strong>{{result.dob | date:'MMM-d-yyyy'}}</strong>
               </p>
               <!--address-->
               <p>
@@ -74,11 +74,11 @@
             <!--Reg time col-->
             <div class="">
               <p>
-                Self-Registration Date & Time: <strong>{{result.selfRegisteredDate | date:'MMM d, y, h:mm a'}}</strong>
+                Self-Registration Date & Time: <strong>{{result.selfRegisteredDate | date:'MMM-d-y, h:mm a'}}</strong>
               </p>
               <p>
-                Registration Completed Date & Time:
-                <strong>{{result.registrationCompletionDate | date:'MMM d, y, h:mm a'}}</strong>
+                Registration Finalized Date & Time:
+                <strong>{{result.registrationCompletionDate | date:'MMM-d-y, h:mm a'}}</strong>
               </p>
             </div>
             <!--Evacuated to/from col-->

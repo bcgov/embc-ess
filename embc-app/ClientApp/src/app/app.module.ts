@@ -76,11 +76,15 @@ import { ReferralListItemComponent } from './volunteer/components/referral-maker
 import { AbstractReferralComponent } from './volunteer/components/referral-maker/subcomponents/abstract-referral/abstract-referral.component';
 import { SupplierComponent } from './volunteer/components/referral-maker/subcomponents/supplier/supplier.component';
 import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
+import { ElectronicAccessAgreementComponent } from './components/electronic-access-agreement/electronic-access-agreement.component';
 import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
+import { AppVersionComponent } from './shared/modals/app-version/app-version.component';
+import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/volunteer-evacuee-results-page/volunteer-evacuee-results-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AppVersionComponent,
     HomeComponent,
     LocalAuthorityRegistrationsPageComponent,
     LocalAuthorityVolunteersPageComponent,
@@ -140,7 +144,9 @@ import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-se
     FullRegistrationSummaryBlockComponent,
     SurveyPageComponent,
     AuditorComponent,
+    ElectronicAccessAgreementComponent,
     EvacueeSearchResultsComponent,
+    VolunteerEvacueeResultsPageComponent,
   ],
   imports: [
     // angular
@@ -160,6 +166,10 @@ import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-se
     AppRoutingModule,
     SelfRegistrationModule,
   ],
+  exports: [
+    FormsModule,
+    ReactiveFormsModule
+  ],
   entryComponents: [
     LodgingRatesComponent,
     ClothingRatesComponent,
@@ -168,6 +178,7 @@ import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-se
     IncidentalsRatesComponent,
     SessionExpiringModalComponent,
     TransportationRatesComponent,
+    AppVersionComponent,
   ],
   bootstrap: [
     AppComponent
