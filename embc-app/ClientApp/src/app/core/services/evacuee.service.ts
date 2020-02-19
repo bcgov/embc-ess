@@ -28,7 +28,7 @@ export class EvacueeService extends RestService {
         catchError(this.handleError)
       );
 
-      return this.previousQuery;
+    return this.previousQuery;
   }
 
   hasPreviousQuery(): boolean {
@@ -59,6 +59,10 @@ export class EvacueeService extends RestService {
     if (props.evacuated_from) { params.evacuated_from = props.evacuated_from; }
     if (props.evacuated_to) { params.evacuated_to = props.evacuated_to; }
     if (props.dob) { params.dob = props.dob };
+    if (props.finalization_date_from) { params.finalization_date_from = props.finalization_date_from; }
+    if (props.finalization_date_to) { params.finalization_date_to = props.finalization_date_to; }
+    if (props.self_reg_date_from) { params.self_reg_date_from = props.self_reg_date_from; }
+    if (props.self_reg_date_to) { params.self_reg_date_to; }
 
     // convert boolean values (if present)
     if (props.registration_completed === true || props.registration_completed === false) {
