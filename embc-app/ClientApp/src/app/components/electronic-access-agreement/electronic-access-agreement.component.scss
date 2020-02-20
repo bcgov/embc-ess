@@ -1,19 +1,74 @@
-.buttons
-{
-    padding-top: 30px;
+.buttons {
+  padding-top: 30px;
 }
 
-.scroll-box
-{
-    overflow: auto;
-    width: 800px;
-    height: 500px;
-    border: 1px solid;
-    padding: 15px;
-    margin-bottom: 30px;
+.scroll-box {
+  overflow: auto;
+  width: 800px;
+  height: 500px;
+  border: 1px solid;
+  padding: 15px;
+  margin-bottom: 30px;
 }
 
-.btn
-{
-    margin-right: 40px;
+.btn {
+  margin-right: 40px;
+}
+
+ol.brackets {
+  counter-reset: item;
+  list-style: none;
+}
+
+ol.closing-bracket-a {
+  counter-reset: itemC;
+  list-style: none;
+}
+
+ol.brackets-a {
+  counter-reset: itemA;
+  list-style: none;
+}
+
+ol.brackets-i {
+  counter-reset: itemI;
+  list-style: none;
+}
+
+// ol.brackets li,
+// ol.brackets-a li,
+// ol.brackets-i li {
+//   padding-left: 16px;
+//   position: relative;
+// }
+
+// ol.brackets li:before,
+// ol.brackets-a li:before,
+// ol.brackets-i li:before {
+//   text-align: right;
+//   padding-right: 6px;
+//   width: 10px;
+//   position: absolute;
+//   left: 0;
+//   top: -0.2em;
+// }
+
+ol.brackets > li:before {
+  counter-increment: item;
+  content: "(" counter(item) ") ";
+}
+
+ol.closing-bracket-a > li:before {
+  counter-increment: itemC;
+  content: counter(itemC, lower-alpha) ") ";
+}
+
+ol.brackets-i > li:before {
+  counter-increment: itemI;
+  content: "(" counter(itemI, lower-roman) ") ";
+}
+
+ol.brackets-a > li:before {
+  counter-increment: itemA;
+  content: "(" counter(itemA, lower-alpha) ") ";
 }
