@@ -21,26 +21,9 @@
           <strong>No ESS File #</strong>? Enter 3 pieces of the evacuees' personal information to retrieve their file.
         </p>
       </div>
-      <ng-container *ngIf="!advancedSearchMode">
-        <div class="form-row">
-          <div class="col">
-            <input [(ngModel)]="queryString" (ngModelChange)="onNullQueryString($event)" type="text" aria-label="search"
-              class="form-control mb-2"
-              placeholder="Search by task number / last name / registration number / community ..."
-              (keydown.enter)="search()">
-          </div>
-          <div class="col-auto">
-            <button type="button" class="btn btn-primary text-uppercase" (click)="search()">Search</button>
-          </div>
-        </div>
-        <a class="small" [routerLink]="" (click)="switchToAdvancedSearch()">advanced search</a>
-      </ng-container>
-
-      <!--Advanced Search-->
-      <ng-container *ngIf="advancedSearchMode">
-
+      <ng-container>
         <h1 class="yellow-header header-text">Evacuee Emergency Support Services (ESS) File #</h1>
-        <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="essSearch()">
+        <form novalidate [formGroup]="searchForm" (ngSubmit)="essSearch()">
           <div class="feature-block">
             <p>
               If the evacuee has their <strong>ESS File #</strong> that they received when they <strong>self
@@ -52,7 +35,7 @@
                   <label for="asEssFileNo" class="col-5 col-form-label">ESS File #:</label>
                   <div class="col-7">
                     <input type="text" class="form-control" id="asEssFileNo" formControlName="ess_file_no">
-                    <div class="missing-input" *ngIf="!advancedSearchValid.hasESSNumber">
+                    <div class="missing-input" *ngIf="!formValid.hasESSNumber">
                       Please enter ESS File #
                     </div>
                   </div>
@@ -68,7 +51,7 @@
           <h1 class="circle">OR</h1>
         </div>
         <h1 class="blue-header header-text">Evacuee Details</h1>
-        <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="advancedSearch()">
+        <form novalidate [formGroup]="searchForm" (ngSubmit)="advancedSearch()">
           <div class="feature-block">
             <p>
               In the event where the evacuee doesn't have their ESS File #, you must request 3
@@ -81,7 +64,7 @@
                   <label for="asLastname" class="col-5 col-form-label">Last Name:</label>
                   <div class="col-7">
                     <input type="text" class="form-control" id="asLastname" formControlName="last_name" required>
-                    <div class="missing-input" *ngIf="!advancedSearchValid.hasLastName">
+                    <div class="missing-input" *ngIf="!formValid.hasLastName">
                       Please enter evacuee last name
                     </div>
                   </div>
@@ -90,7 +73,7 @@
                   <label for="asFirstname" class="col-5 col-form-label">First Name:</label>
                   <div class="col-7">
                     <input type="text" class="form-control" id="asFirstname" formControlName="first_name" required>
-                    <div class="missing-input" *ngIf="!advancedSearchValid.hasFirstName">
+                    <div class="missing-input" *ngIf="!formValid.hasFirstName">
                       Please enter evacuee first name
                     </div>
                   </div>
@@ -101,11 +84,11 @@
                     <input type="text" class="form-control" id="asDob" formControlName="dob" required
                       placeholder="YYYY-MM-DD" [value]="this.dobString"
                       [textMask]="{mask: dateMask, keepCharPositions: true}" (blur)="this.updateDob()">
-                    <div class="missing-input" *ngIf="!advancedSearchValid.hasDob">
+                    <div class="missing-input" *ngIf="!formValid.hasDob">
                       Please enter evacuee date of birth
                     </div>
                     <div class="missing-input"
-                      *ngIf="advancedSearchValid.hasDob && !advancedSearchValid.hasValidDobFormat">
+                      *ngIf="formValid.hasDob && !formValid.hasValidDobFormat">
                       Please enter valid date of birth
                     </div>
                   </div>
@@ -121,38 +104,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #searchResultsTable>
-  <table class="table table-hover table-sm">
-    <thead class="thead-light">
-      <th scope="col"></th>
-      <th scope="col">Last Name</th>
-      <th scope="col">First Name</th>
-      <th scope="col">Task #</th>
-      <th scope="col">ESS File #</th>
-      <th scope="col">Evacuated From</th>
-      <th scope="col">Evacuated To</th>
-      <th scope="col">Action</th>
-    </thead>
-    <tbody>
-      <tr [class.table-danger]="rowItem.restrictedAccess" *ngFor="let rowItem of resultsAndPagination.data">
-        <th scope="row">
-          <app-font-awesome-icon class="mr-1 float-left" *ngIf="rowItem.isHeadOfHousehold" icon="user">
-          </app-font-awesome-icon>
-          <app-font-awesome-icon class="float-right" *ngIf="rowItem.restrictedAccess" icon="lock">
-          </app-font-awesome-icon>
-        </th>
-        <td>{{rowItem.lastName}}</td>
-        <td>{{rowItem.firstName}}</td>
-        <td>{{rowItem.incidentTaskNumber}}</td>
-        <td>{{rowItem.registrationId}}</td>
-        <td>{{rowItem.evacuatedFrom}}</td>
-        <td>{{rowItem.evacuatedTo}}</td>
-        <td>
-          <a href="javascript:void(0)" *ngIf="!rowItem.isFinalized" (click)="edit(rowItem.registrationId)">Finalize</a>
-          <a href="javascript:void(0)" *ngIf="rowItem.isFinalized" (click)="view(rowItem.registrationId)">View</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</ng-template>
