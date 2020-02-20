@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { EvacueeSearchQueryParameters } from 'src/app/core/models/search-interfaces';
-import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
 import { FormBuilder } from '@angular/forms';
 import * as moment from 'moment';
@@ -56,7 +55,6 @@ export class EvacueeListComponent implements OnInit {
     private evacueeService: EvacueeService,
     private router: Router,
     private authService: AuthService,
-    private uniqueKeyService: UniqueKeyService,
     private fb: FormBuilder,
   ) { }
 
