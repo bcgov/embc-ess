@@ -162,6 +162,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public HeadOfHousehold HeadOfHousehold { get; set; }
 
         public IncidentTask IncidentTask { get; set; }
+        // HostCommunity == EvacuatedFrom (would be nice to rename this column to EvacuatedFromCommunity or something)
         public Community HostCommunity { get; set; }
 
         public string CompletedBy { get; set; }
