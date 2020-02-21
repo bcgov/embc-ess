@@ -24,6 +24,8 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
   editMode = false;
   submitting = false;
   path: string = null; // the base path for routing
+  endDateOverride: boolean = false; 
+  overrideDate: Date = null;
 
   // whatever is in the application state
   currentIncidentTask$ = this.store.select(i => i.incidentTasks.currentIncidentTask);
@@ -35,12 +37,15 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     details: '',
     community: null,
     region: null,
-    startDate: null // datetime
+    startDate: null, // datetime
+    taskNumberStartDate: null,
+    taskNumberEndDate: null
   };
 
   // fields to collect
   form: FormGroup = null;
   showErrorsWhen = false; // run validation *after* the user clicks the NEXT button, not before.
+  overrideForm: FormGroup = null;
 
   constructor(
     private router: Router,
@@ -99,10 +104,14 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
 
   initializeForm() {
     this.form = this.fb.group({
-      taskNumber: ['', Validators.required],
-      community: [null, Validators.required],
-      startDate: [null, [Validators.required, CustomValidators.maxDate(moment())]],
-      details: ['', Validators.required],
+      taskNumber         : ['', Validators.required],
+      community          : [null, Validators.required],
+      startDate          : [moment(), [Validators.required, CustomValidators.maxDate(moment())]],
+      taskNumberStartDate: [moment(), [Validators.required, CustomValidators.maxDate(moment())]],
+      // The UI says it's 72 hours after the taskNumberStartDate, but we are intentionally making it 80 hours to give some more 'wiggle room'
+      taskNumberEndDate: [moment().add(80, 'h'), [Validators.required, CustomValidators.minDate(moment().add(80, 'h'))]],
+      details          : ['', Validators.required],
+      overrideDate     : [moment().add(80, 'h'), [Validators.required, CustomValidators.minDate(moment().add(80, 'h'))]]
     });
   }
 
@@ -120,6 +129,9 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
       community: task.community,
       details: task.details,
       startDate: new Date(task.startDate),
+      taskNumberStartDate: new Date(task.taskNumberStartDate),
+      taskNumberEndDate: new Date(task.taskNumberEndDate),
+      overrideDate: new Date(task.taskNumberEndDate)
     });
   }
 
@@ -187,6 +199,17 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     }
   }
 
+  toggleOverride(): void {
+    this.endDateOverride = !this.endDateOverride;
+  }
+
+  updateEndDate(): void {
+    this.form.patchValue({
+      taskNumberEndDate: this.form.controls.overrideDate.value
+    });
+    this.toggleOverride();
+  }
+
   cancel() {
     // clear the loaded record if available
     this.uniqueKeyService.clearKey();
@@ -200,5 +223,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     this.incidentTask.community = f.community;
     this.incidentTask.details = f.details;
     this.incidentTask.startDate = (f.startDate as Date).toJSON(); // make sure JS dates are properly serialized
+    this.incidentTask.taskNumberStartDate = (f.taskNumberStartDate as Date).toJSON();
+    this.incidentTask.taskNumberEndDate = (f.taskNumberEndDate as Date).toJSON();
   }
 }

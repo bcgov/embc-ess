@@ -54,6 +54,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public IncidentTask IncidentTask { get; set; }
 
+        // HostCommunity == EvacuatedFrom. It would be nice to rename this column to EvacuatedFromId.
         public Guid? HostCommunityId { get; set; }
 
         public Community HostCommunity { get; set; }
