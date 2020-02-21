@@ -92,8 +92,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateStart)
                     && !string.IsNullOrWhiteSpace(searchQuery.FinalizationDateEnd))
                 {
-                    var startGood  = DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
-                    var endGood    = DateTime.TryParse(searchQuery.FinalizationDateEnd, out DateTime end);
+                    DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
+                    DateTime.TryParse(searchQuery.FinalizationDateEnd, out DateTime end);
                     
                     query = query.Where(e => e.RegistrationCompletionDate.HasValue &&
                                         e.RegistrationCompletionDate.Value > start && e.RegistrationCompletionDate.Value < end);
@@ -101,9 +101,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 // Only start (all finalized evacuees after start)
                 else if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateStart))
                 {
-                    //DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
-                    //var uStart = start.ToUniversalTime();
-                    DateTime start = DateTime.Parse(searchQuery.FinalizationDateStart).ToUniversalTime();
+                    DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
                     query = query.Where(e => e.RegistrationCompletionDate.HasValue && e.RegistrationCompletionDate.Value > start);
                 }
                 // Only end (all finalized evacuees before end)
