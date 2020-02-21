@@ -59,14 +59,12 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] IncidentTask item)
         {
-            if (!item.StartDate.HasValue)
+            var errors = IncidentTaskHelper.ValidateClientTaskProperties(item);
+            if (errors != null)
             {
-                ModelState.AddModelError("StartDate", "Incident task must have a start date");
+                ModelState.AddModelError(errors.Item1, errors.Item2);
             }
-            if (item.StartDate.HasValue && item.StartDate.Value > DateTime.Now)
-            {
-                ModelState.AddModelError("StartDate", "Incident start date cannot be in the future");
-            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -84,14 +82,13 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest();
             }
-            if (!item.StartDate.HasValue)
+
+            var errors = IncidentTaskHelper.ValidateClientTaskProperties(item);
+            if (errors != null)
             {
-                ModelState.AddModelError("StartDate", "Incident task must have a start date");
+                ModelState.AddModelError(errors.Item1, errors.Item2);
             }
-            if (item.StartDate.HasValue && item.StartDate.Value > DateTime.Now)
-            {
-                ModelState.AddModelError("StartDate", "Incident start date cannot be in the future");
-            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
