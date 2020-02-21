@@ -35,23 +35,19 @@ ol.brackets-i {
   list-style: none;
 }
 
-// ol.brackets li,
-// ol.brackets-a li,
-// ol.brackets-i li {
-//   padding-left: 16px;
-//   position: relative;
-// }
+li {
+  padding-left: 20px;
+  position: relative;
+}
 
-// ol.brackets li:before,
-// ol.brackets-a li:before,
-// ol.brackets-i li:before {
-//   text-align: right;
-//   padding-right: 6px;
-//   width: 10px;
-//   position: absolute;
-//   left: 0;
-//   top: -0.2em;
-// }
+li:before {
+  text-align: right;
+  padding-right: 16px;
+  width: 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
 
 ol.brackets > li:before {
   counter-increment: item;
@@ -71,4 +67,8 @@ ol.brackets-i > li:before {
 ol.brackets-a > li:before {
   counter-increment: itemA;
   content: "(" counter(itemA, lower-alpha) ") ";
+}
+
+.w-flex-40 {
+  flex: 0 0 40px;
 }
