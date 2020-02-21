@@ -70,7 +70,7 @@ export class EvacueeListComponent implements OnInit {
     return this.evacueeService.getEvacuees(query);
   }
 
-  advancedSearch() {
+  doBasicSearch() {
     const dob = this.searchForm.get('dob').value;
     const fName = this.searchForm.get('first_name').value;
     const lName = this.searchForm.get('last_name').value;

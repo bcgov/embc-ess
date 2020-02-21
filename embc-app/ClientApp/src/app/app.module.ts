@@ -80,7 +80,11 @@ import { ElectronicAccessAgreementComponent } from './components/electronic-acce
 import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
 import { AppVersionComponent } from './shared/modals/app-version/app-version.component';
 import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/volunteer-evacuee-results-page/volunteer-evacuee-results-page.component';
+<<<<<<< HEAD
 import { LocalAuthorityEvacueeListComponent } from './local-authority/components/local-authority-evacuee-list/local-authority-evacuee-list.component';
+=======
+import { TaskNumberMakerPageComponent } from './provincial-admin/pages/task-number-maker-page/task-number-maker-page.component';
+>>>>>>> r1develop
 
 @NgModule({
   declarations: [
@@ -148,7 +152,12 @@ import { LocalAuthorityEvacueeListComponent } from './local-authority/components
     ElectronicAccessAgreementComponent,
     EvacueeSearchResultsComponent,
     VolunteerEvacueeResultsPageComponent,
+<<<<<<< HEAD
     LocalAuthorityEvacueeListComponent,
+=======
+    TaskNumberMakerPageComponent,
+  
+>>>>>>> r1develop
   ],
   imports: [
     // angular
