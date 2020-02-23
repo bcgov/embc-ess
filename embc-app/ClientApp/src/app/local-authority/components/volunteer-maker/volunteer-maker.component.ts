@@ -52,7 +52,8 @@ export class VolunteerMakerComponent implements OnInit {
     this.form = this.fb.group({
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
-      bceidAccountNumber: ['', { validators: [Validators.required], updateOn: 'blur' }]
+      bceidAccountNumber: ['', { validators: [Validators.required], updateOn: 'blur' }],
+      isAdministrator: ['', Validators.required]
     });
 
     // get the organization from the route parameters
@@ -83,7 +84,8 @@ export class VolunteerMakerComponent implements OnInit {
           this.form.patchValue({
             lastName: volunteer.lastName,
             firstName: volunteer.firstName,
-            bceidAccountNumber: volunteer.bceidAccountNumber
+            bceidAccountNumber: volunteer.bceidAccountNumber,
+            isAdministrator: volunteer.isAdministrator
           });
 
           // do not allow duplicate BCeIDs
@@ -231,7 +233,8 @@ export class VolunteerMakerComponent implements OnInit {
     this.form.patchValue({
       lastName: '',
       firstName: '',
-      bceidAccountNumber: ''
+      bceidAccountNumber: '',
+      isAdministrator: false // default to false
     });
     this.shouldValidateForm = false;
 

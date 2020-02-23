@@ -40,6 +40,28 @@
           </ng-container>
         </div>
       </div>
+
+      <div class="row pt-4">
+        <div class="col">
+          <label class="required">Role</label>
+          <fieldset class="form-group">
+            <legend class="sr-only">Role</legend>
+            <div class="form-check">
+              <label class="form-check-label" for="isAdministratorFalse">
+                <input type="radio" class="form-check-input" name="isAdministrator" formControlName="isAdministrator" id="isAdministratorFalse" [value]="false">
+                <span class="pl-3">Emergency Support Services User</span>
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label" for="isAdministratorTrue">
+                <input type="radio" class="form-check-input" name="isAdministrator" formControlName="isAdministrator" id="isAdministratorTrue" [value]="true">
+                <span class="pl-3">Admin</span>
+              </label>
+            </div>
+            <span [class.d-block]="invalid('isAdministrator')" class="invalid-feedback">Please select whether they are an ESS user or an admin user</span>
+          </fieldset>
+        </div>
+      </div>
     </form>
 
     <div *ngIf="shouldValidateForm && !form.valid" class="text-danger">
