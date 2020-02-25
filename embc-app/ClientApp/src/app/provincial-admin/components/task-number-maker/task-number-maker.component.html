@@ -20,7 +20,7 @@
       </div>
       <div class="row">
         <div class="col mb-4">
-          <label class="required" for="community">Host Community</label>
+          <label class="required" for="community">Support Community</label>
           <app-communities-select [class.is-invalid]="invalid('community')" [myParent]="form" myFormControlName="community" myId="community" [myRequired]="true"></app-communities-select>
           <span class="invalid-feedback">Please select a community/region from the dropdown list where the incident took place</span>
         </div>
@@ -110,7 +110,7 @@
           <span class="value">{{incidentTask.taskNumber}}</span>
         </li>
         <li>
-          <span class="name">Host Community:</span>
+          <span class="name">Support Community:</span>
           <span class="value">{{incidentTask.community.name}}</span>
         </li>
         <li>
