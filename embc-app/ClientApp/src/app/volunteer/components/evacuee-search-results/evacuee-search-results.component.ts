@@ -29,9 +29,11 @@ export class EvacueeSearchResultsComponent implements OnInit {
     this.evacueeService.getPreviousQuery().subscribe((listResult: ListResult<EvacueeListItem>) => {
       // Normalize the dates of the results - fixes off by 1 day issue.
       listResult.data.forEach(item => {
+        // If you don't normalize the dob, you get an off by one error
         item.dob                        = normalizeDate(item.dob);
-        item.registrationCompletionDate = normalizeDate(item.registrationCompletionDate);
-        item.selfRegisteredDate         = normalizeDate(item.selfRegisteredDate);
+        // ...but if you normalize these dates you get FUNKY timezones and can be off by a day depending on the time (JavaScript dates are fun and good to deal with)
+        //item.registrationCompletionDate = normalizeDate(item.registrationCompletionDate);
+        //item.selfRegisteredDate         = normalizeDate(item.selfRegisteredDate);
       });
       this.searchResults = listResult;
     });
