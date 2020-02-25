@@ -50,12 +50,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 // if a search parameter is not null, then add a "where" clause to the query matching the supplied UTF-16 query string
                 if (!string.IsNullOrWhiteSpace(searchQuery.LastName))
                 {
-                    query = query.Where(e => EF.Functions.Like(e.LastName, $"%{searchQuery.LastName}%"));
+                    query = query.Where(e => e.LastName.Equals(searchQuery.LastName));
                 }
 
                 if (!string.IsNullOrWhiteSpace(searchQuery.FirstName))
                 {
-                    query = query.Where(e => EF.Functions.Like(e.FirstName, $"%{searchQuery.FirstName}%"));
+                    query = query.Where(e => e.FirstName.Equals(searchQuery.FirstName));
                 }
 
                 if (!string.IsNullOrWhiteSpace(searchQuery.DateOfBirth))
