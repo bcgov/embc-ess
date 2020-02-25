@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ListResult, EvacueeListItem } from 'src/app/core/models';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { EvacueeSearchQueryParameters } from 'src/app/core/models/search-interfaces';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
 import { FormBuilder } from '@angular/forms';
+import {dateStringIsValid} from 'src/app/shared/utils/date-utils';
 import * as moment from 'moment';
 
 
@@ -92,10 +93,9 @@ export class EvacueeListComponent implements OnInit {
     // Check if dob has anything
     result = dob != null && dob !== '';
     this.formValid.hasDob = result;
-    // if dob has a value, check it against the regex
+    // if dob has a value, check it is a valid date
     if (result) {
-      // Using moment.isValid to handle leap year weirdness and such
-      result = moment(dob).isValid();
+      result = dateStringIsValid(dob);
       this.formValid.hasValidDobFormat = result;
     }
 

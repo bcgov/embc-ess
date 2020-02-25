@@ -35,3 +35,12 @@ export function normalizeDate(date: Date): Date {
 
   return date;
 }
+
+/**
+ * Checks if the provided string is a valid date.
+ * Returns a boolean indicating if the string is a valid date or not.
+ * @param date The date string to validate
+ */
+export function dateStringIsValid(date: string): boolean {
+  return moment(date).isValid();
+}

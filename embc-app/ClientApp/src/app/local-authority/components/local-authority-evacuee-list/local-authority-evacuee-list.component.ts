@@ -8,6 +8,7 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
 import { FormBuilder } from '@angular/forms';
 import * as moment from 'moment';
+import { dateStringIsValid } from 'src/app/shared/utils/date-utils';
 
 @Component({
   selector: 'app-local-authority-evacuee-list',
@@ -130,13 +131,12 @@ export class LocalAuthorityEvacueeListComponent implements OnInit {
 
   private dobIsValid(dob: string): boolean {
     let result: boolean;
-    const dobRegex = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/;
     // Check if dob has anything
     result = dob != null && dob !== '';
     this.advancedSearchValid.hasDob = result;
-    // if dob has a value, check it against the regex
+    // if dob has a value, check it is a valid date
     if (result) {
-      result = dobRegex.test(dob);
+      result = dateStringIsValid(dob);
       this.advancedSearchValid.hasValidDobFormat = result;
     }
 
