@@ -1,12 +1,10 @@
 using Gov.Jag.Embc.Public.Authentication;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
 {
