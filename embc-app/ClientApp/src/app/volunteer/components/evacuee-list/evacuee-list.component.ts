@@ -89,13 +89,13 @@ export class EvacueeListComponent implements OnInit {
 
   private dobIsValid(dob: string): boolean {
     let result: boolean;
-    const dobRegex = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/;
     // Check if dob has anything
     result = dob != null && dob !== '';
     this.formValid.hasDob = result;
     // if dob has a value, check it against the regex
     if (result) {
-      result = dobRegex.test(dob);
+      // Using moment.isValid to handle leap year weirdness and such
+      result = moment(dob).isValid();
       this.formValid.hasValidDobFormat = result;
     }
 

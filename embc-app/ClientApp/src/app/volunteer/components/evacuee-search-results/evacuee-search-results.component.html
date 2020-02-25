@@ -107,6 +107,26 @@
     </div>
   </div>
 </div>
+<!--Troubleshooting paragraph-->
+<div *ngIf="searchResults.data.length === 0" class="lg-top-padding">
+  <h2>Troubleshooting</h2>
+  <div>
+    <strong>If you entered an Evacuee ESS File#:</strong>
+    <ul>
+      <li>Ensure the ESS File # entered was correct</li>
+      <li>Enter the evacuee details and search again</li>
+      <li>Speak to your ESS Supervisor for further assistance</li>
+    </ul>
+  </div>
+  <div>
+    <strong>If the evacuee didn't have an ESS File # and you entered the evacuee's details:</strong>
+    <ul>
+      <li>Ensure all details entered were correct (this includes spelling and/or special characters)</li>
+      <li>Speak to your ESS Supervisor for further assistance</li>
+    </ul>
+  </div>
+</div>
+
 <ng-template #singleResult>
   This result not a match?
 </ng-template>
