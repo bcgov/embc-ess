@@ -192,7 +192,7 @@ export class VolunteerMakerComponent implements OnInit {
           this.submitting = false;
           // add a notification about the update
           this.notificationQueueService.addNotification('User updated successfully', 'success');
-
+          this.authService.refreshCurrentUser();
           if (addAnother) {
             this.resetForm();
           } else {
@@ -211,7 +211,7 @@ export class VolunteerMakerComponent implements OnInit {
           this.submitting = false;
           // add a notification about the creation
           this.notificationQueueService.addNotification('User added successfully', 'success');
-
+          this.authService.refreshCurrentUser();
           // if addAnother route then reset this form
           // else route back to the volunteers list
           if (addAnother) {

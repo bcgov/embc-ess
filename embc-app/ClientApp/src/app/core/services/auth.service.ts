@@ -107,6 +107,10 @@ export class AuthService extends RestService {
     this.setPath();
   }
 
+  refreshCurrentUser() {
+    return this.getCurrentUser(true).subscribe(user => this.setCurrentUser(user));
+  }
+
   setPath() {
     // set the correct path for routing the user in the application
     switch (this.role.getValue()) {
