@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ListResult, EvacueeListItem } from 'src/app/core/models';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { EvacueeSearchQueryParameters } from 'src/app/core/models/search-interfaces';
@@ -8,6 +8,7 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
 import { FormBuilder } from '@angular/forms';
 import * as moment from 'moment';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -68,6 +69,13 @@ export class EvacueeListComponent implements OnInit {
     this.authService.isVolunteer$.subscribe(result => this.isVolunteer = result);
     this.getEvacuees().subscribe((listResult: ListResult<EvacueeListItem>) => {
       this.resultsAndPagination = listResult;
+    });
+
+    forkJoin(this.authService.isVolunteer$, this.authService.isLocalAuthority$)
+    .subscribe(result => { 
+      const isVolunteer = result[0];
+      const isLocalAuthority = result[1];
+      
     });
   }
 

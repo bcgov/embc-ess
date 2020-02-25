@@ -2,6 +2,7 @@ using Gov.Jag.Embc.Public.Services.Registrations;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Gov.Jag.Embc.Public.ViewModels.Search;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -72,6 +73,15 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<bool> OrganizationExistsAsync(string id);
 
         #endregion Organization
+
+        #region VolunteerTask
+
+        Task<VolunteerTask> GetVolunteerTaskByIdAsync(int id);
+        Task<VolunteerTask> GetVolunteerTaskByIncideTaskIdAsync(Guid taskId);
+        Task UpdateVolunteerTasksAsync(VolunteerTask updatedVolunteerTask);
+        Task<string> CreateVolunteerTaskAsync(VolunteerTask newVolunteerTask);
+
+        #endregion VolunteerTask
 
         #region Volunteer
 
