@@ -102,13 +102,13 @@ export class EvacueeListComponent implements OnInit {
     return result;
   }
 
-  updateDob(dob: string): void {
-    const m = moment(dob, 'YYYY-MM-DD', true);
+  updateDob(): void {
+    const m = moment(this.dobString, 'YYYY-MM-DD', true);
 
     if (m.isValid()) {
       // update dob
       this.searchForm.patchValue(
-        { "dob": dob }
+        { "dob": this.dobString }
       );
     } else {
       // error message
