@@ -1,4 +1,4 @@
-<div *ngIf="searchResults && searchResults.data">
+<div *ngIf="resultsLoaded">
   <h1>Search Results</h1>
   <!--One Result-->
   <div *ngIf="searchResults.data.length === 1">
@@ -91,7 +91,7 @@
   </div>
 
   <!--Search Again Btn-->
-  <div class="light-bg flex-container vertical align-center">
+  <div *ngIf="resultsLoaded" class="light-bg flex-container vertical align-center">
     <p class="flex-item lg-top-padding">
       <strong>
         <div *ngIf="searchResults.data.length === 1; then singleResult"></div>
@@ -108,22 +108,24 @@
   </div>
 </div>
 <!--Troubleshooting paragraph-->
-<div *ngIf="searchResults.data.length === 0" class="lg-top-padding">
-  <h2>Troubleshooting</h2>
-  <div>
-    <strong>If you entered an Evacuee ESS File#:</strong>
-    <ul>
-      <li>Ensure the ESS File # entered was correct</li>
-      <li>Enter the evacuee details and search again</li>
-      <li>Speak to your ESS Supervisor for further assistance</li>
-    </ul>
-  </div>
-  <div>
-    <strong>If the evacuee didn't have an ESS File # and you entered the evacuee's details:</strong>
-    <ul>
-      <li>Ensure all details entered were correct (this includes spelling and/or special characters)</li>
-      <li>Speak to your ESS Supervisor for further assistance</li>
-    </ul>
+<div *ngIf="resultsLoaded">
+  <div *ngIf="searchResults.data.length === 0" class="lg-top-padding">
+    <h2>Troubleshooting</h2>
+    <div>
+      <strong>If you entered an Evacuee ESS File#:</strong>
+      <ul>
+        <li>Ensure the ESS File # entered was correct</li>
+        <li>Enter the evacuee details and search again</li>
+        <li>Speak to your ESS Supervisor for further assistance</li>
+      </ul>
+    </div>
+    <div>
+      <strong>If the evacuee didn't have an ESS File # and you entered the evacuee's details:</strong>
+      <ul>
+        <li>Ensure all details entered were correct (this includes spelling and/or special characters)</li>
+        <li>Speak to your ESS Supervisor for further assistance</li>
+      </ul>
+    </div>
   </div>
 </div>
 
