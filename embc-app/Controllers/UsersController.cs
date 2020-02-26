@@ -21,6 +21,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             this.ctx = httpContextAccessor;
         }
 
+        protected ClaimsPrincipal CurrentUser => ctx.HttpContext.User;
+
         [HttpGet("current")]
         public virtual IActionResult UsersCurrentGet()
         {
