@@ -25,11 +25,18 @@ ARTIFACT_BUILD = APP_NAME
 RUNTIME_CHAINED_BUILD = "${APP_NAME}"
 PATHFINDER_URL = "pathfinder.gov.bc.ca"
 
+// Gets the container hash for the latest image in an image stream
+def getLatestHashTrainingEnv(imageStreamName) {
+  return sh (
+    script: """oc get istag ${imageStreamName}:training -o=jsonpath='{@.image.metadata.name}' | sed -e 's/sha256://g'""",
+    returnStdout: true
+  ).trim()
+}
 
 // Gets the container hash for the latest image in an image stream
 def getLatestHash(imageStreamName) {
   return sh (
-    script: """oc get istag ${imageStreamName}:training -o=jsonpath='{@.image.metadata.name}' | sed -e 's/sha256://g'""",
+    script: """oc get istag ${imageStreamName}:latest -o=jsonpath='{@.image.metadata.name}' | sed -e 's/sha256://g'""",
     returnStdout: true
   ).trim()
 }
@@ -139,6 +146,11 @@ node('master') {
 	  input ("Confirm PROD deployment")
 	}
   
+  // Deployment Process for R1 using the single image stream "embcess-r1"
+  // 1. dev tag: built with r1develop-pipeline
+  // 2. test tag: copy from latest
+  // 3. training tag: copy from test tag
+  // 4. prod tag: copy from training tag
   stage("Deploy to ${environments.prod.name}") {
     def environment = environments.prod.env
     def stableTag = environments.prod.previousTag
@@ -146,7 +158,8 @@ node('master') {
       try {
         // hold on to a copy of the last stable PROD environment (in case the upcoming deployment fails...)
         tagLatestStable(environment, stableTag, IMAGESTREAM_NAME)
-        IMAGE_HASH = getLatestHash(IMAGESTREAM_NAME)
+        // Deployment to Production must come from Training Env. Get the latest training image. 
+        IMAGE_HASH = getLatestHashTrainingEnv(IMAGESTREAM_NAME)
         deployAndVerify(IMAGE_HASH, environment, IMAGESTREAM_NAME)
         // all is good!
         notifyGood(
