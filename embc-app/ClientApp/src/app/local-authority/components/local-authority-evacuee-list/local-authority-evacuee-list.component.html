@@ -1,0 +1,254 @@
+<div class="mb-4">
+  <h1>Welcome to the ESS Dashboard!</h1>
+  <p>
+    <strong>Welcome to your dashboard!</strong>
+  </p>
+  <p>
+    As an Emergency Support Services user you'll be able to register new evacuees, complete an existing evacuee
+    self-registration, or if needed, search and edit evacuee information.
+  </p>
+
+  <!--Basic Search-->
+  <div>
+    <div role="search">
+      <!--Basic Search-->
+      <ng-container *ngIf="!advancedSearchMode">
+        <h1 class="blue-header header-text">ALL EVACUEES</h1>
+        <div class="form-row">
+          <div class="col">
+            <input [(ngModel)]="queryString" (ngModelChange)="onNullQueryString($event)" type="text" aria-label="search"
+              class="form-control mb-2"
+              placeholder="Search by task number / last name / registration number / community ..."
+              (keydown.enter)="search()">
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-primary text-uppercase" (click)="search()">Search</button>
+          </div>
+        </div>
+        <a class="small" [routerLink]="" (click)="switchToAdvancedSearch()">advanced search</a>
+      </ng-container>
+
+      <!--Advanced Search-->
+      <ng-container *ngIf="advancedSearchMode">
+        <h1 class="blue-header header-text">Evacuee Details</h1>
+        <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="advancedSearch()">
+          <div class="feature-block">
+            <div class="d-flex justify-content-between">
+              <h2 class="h5">Advanced Search</h2>
+              <button type="button" class="close" aria-label="Close" (click)="switchToBasicSearch()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <p>Narrow your search results by: (fill any / all fields)</p>
+            <div class="row">
+              <div class="col">
+                <div class="form-group row">
+                  <label for="asLastname" class="col-5 col-form-label">Last Name:</label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" id="asLastname" formControlName="last_name">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="asFirstname" class="col-5 col-form-label">First Name:</label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" id="asFirstname" formControlName="first_name">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="asDob" class="col-5 col-form-label">Date of Birth:</label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" id="asDob" formControlName="dob" placeholder="YYYY-MM-DD"
+                      [value]="this.dobString" [textMask]="{mask: dateMask, keepCharPositions: true}"
+                      (blur)="this.updateDob()">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="asTaskNo" class="col-5 col-form-label">Task #:</label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" id="asTaskNo" formControlName="task_no">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="asEssFileNo" class="col-5 col-form-label">ESS File #:</label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" id="asEssFileNo" formControlName="ess_file_no">
+                  </div>
+                </div>
+                <fieldset class="form-group">
+                  <div class="row">
+                    <legend class="col-form-label col-5 pt-0">Reg. Completed:</legend>
+                    <div class="col-7">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="registration_completed"
+                          id="asRegCompletedYes" [value]="true" formControlName="registration_completed">
+                        <label class="form-check-label" for="asRegCompletedYes">Yes</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="registration_completed" id="asRegCompletedNo"
+                          [value]="false" formControlName="registration_completed">
+                        <label class="form-check-label" for="asRegCompletedNo">No</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="registration_completed"
+                          id="asRegCompletedAll" [value]="null" formControlName="registration_completed">
+                        <label class="form-check-label" for="asRegCompletedAll">Show all</label>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="col">
+                <div class="form-group row">
+                  <label for="asEvacuatedFrom" class="col-5 col-form-label">Evacuated From:</label>
+                  <div class="col-7">
+                    <app-communities-select [myParent]="advancedSearchForm" myFormControlName="evacuated_from"
+                      myId="asEvacuatedFrom"></app-communities-select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="asEvacuatedTo" class="col-5 col-form-label">Evacuated To:</label>
+                  <div class="col-7">
+                    <app-communities-select [myParent]="advancedSearchForm" myFormControlName="evacuated_to"
+                      myId="asEvacuatedTo"></app-communities-select>
+                  </div>
+                </div>
+                <!-- <div class="form-group row">
+                  <label for="asSelfRegStart" class="col-5 col-form-label">Self-Registration Date (Starting From):</label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" placeholder="YYYY-MM-DD" id="asSelfRegStart" formControlName="self_reg_date_from" [textMask]="{mask: dateMask, keepCharPositions: true}">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="asSelfRegEnd" class="col-5 col-form-label">Self-Registration Date (Up Until):</label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" placeholder="YYYY-MM-DD" id="asSelfRegEnd" formControlName="self_reg_date_to" [textMask]="{mask: dateMask, keepCharPositions: true}">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="asFinalizedDateStart" class="col-5 col-form-label">Finalization Date (Starting From):</label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" placeholder="YYYY-MM-DD" id="asFinalizedDateStart" formControlName="finalization_date_from" [textMask]="{mask: dateMask, keepCharPositions: true}">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="asFinalizedDateEnd" class="col-5 col-form-label">Finalization Date (Up Until):</label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" placeholder="YYYY-MM-DD" id="asFinalizedDateEnd" formControlName="finalization_date_to" [textMask]="{mask: dateMask, keepCharPositions: true}">
+                  </div>
+                </div> -->
+                <fieldset class="form-group">
+                  <div class="row">
+                    <legend class="col-form-label col-5 pt-0">Referrals Provided:</legend>
+                    <div class="col-7">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="referrals_provided" id="asReferralsYes"
+                          [value]="true" formControlName="referrals_provided">
+                        <label class="form-check-label" for="asReferralsYes">Yes</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="referrals_provided" id="asReferralsNo"
+                          [value]="false" formControlName="referrals_provided">
+                        <label class="form-check-label" for="asReferralsNo">No</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="referrals_provided" id="asReferralsAll"
+                          [value]="null" formControlName="referrals_provided">
+                        <label class="form-check-label" for="asReferralsAll">Show all</label>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+            <div class="d-flex justify-content-end align-items-center">
+              <!-- Basic search. For Release 1, advanced search mode is the only mode-->
+              <app-fa-link class="small" icon="exchange-alt" (click)="switchToBasicSearch()">Switch to Basic Search
+              </app-fa-link>
+              <button type="submit" class="ml-2 btn btn-secondary text-uppercase">Search</button>
+            </div>
+          </div>
+        </form>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="clearfix my-2">
+    <div class="float-right">
+      <app-font-awesome-icon class="mr-1" icon="user"></app-font-awesome-icon>
+      <span class="ml-2">Head of Household</span>
+    </div>
+  </div>
+</div>
+<div class="row my-2" *ngIf="resultsAndPagination?.data?.length>0">
+  <div class="col">
+    <app-pagination-summary [value]="resultsAndPagination?.metadata">
+      <!-- <span class="font-weight-bold">ACTIVE</span> evacuees -->
+      <span class="font-weight-bold text-uppercase">active</span> evacuees
+      <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
+    </app-pagination-summary>
+  </div>
+  <div class="col-4">
+    <select class="form-control float-right" [(ngModel)]="sort" (change)="search()">
+      <!-- <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option> -->
+      <option [value]="'-registrationId'">Sort by: Latest (default)</option>
+      <option [value]="'lastName'">Last Name</option>
+      <option [value]="'evacuatedTo'">Community Evacuated to</option>
+      <option [value]="'evacuatedFrom'">Community Evacuated from</option>
+    </select>
+  </div>
+</div>
+<div class="search-results">
+  <div *ngIf="resultsAndPagination?.data?.length>0; then searchResultsTable; else notFound"></div>
+</div>
+
+<ng-template #searchResultsTable>
+  <table class="table table-hover table-sm">
+    <thead class="thead-light">
+      <th scope="col"></th>
+      <th scope="col">Last Name</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Task #</th>
+      <th scope="col">ESS File #</th>
+      <th scope="col">Evacuated From</th>
+      <th scope="col">Evacuated To</th>
+      <th scope="col">Action</th>
+    </thead>
+    <tbody>
+      <tr [class.table-danger]="rowItem.restrictedAccess" *ngFor="let rowItem of resultsAndPagination.data">
+        <th scope="row">
+          <app-font-awesome-icon class="mr-1 float-left" *ngIf="rowItem.isHeadOfHousehold" icon="user">
+          </app-font-awesome-icon>
+          <app-font-awesome-icon class="float-right" *ngIf="rowItem.restrictedAccess" icon="lock">
+          </app-font-awesome-icon>
+        </th>
+        <td>{{rowItem.lastName}}</td>
+        <td>{{rowItem.firstName}}</td>
+        <td>{{rowItem.incidentTaskNumber}}</td>
+        <td>{{rowItem.registrationId}}</td>
+        <td>{{rowItem.evacuatedFrom}}</td>
+        <td>{{rowItem.evacuatedTo}}</td>
+        <td>
+          <a href="javascript:void(0)" *ngIf="!rowItem.isFinalized" (click)="edit(rowItem.registrationId)">Finalize</a>
+          <a href="javascript:void(0)" *ngIf="rowItem.isFinalized" (click)="view(rowItem.registrationId)">View</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
+
+<ng-template #notFound>
+  <p>{{notFoundMessage}}</p>
+</ng-template>
+
+<!-- <select class="form-control" [(ngModel)]="maxSize">
+    <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option>
+  </select> -->
+<div class="row">
+  <div class="col" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
+    <div class="float-right">
+      <app-paginator [metaData]="resultsAndPagination?.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+    </div>
+  </div>
+</div>
+
+<!-- <pre>{{resultsAndPagination|json}}</pre> -->

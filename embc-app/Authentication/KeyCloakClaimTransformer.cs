@@ -53,7 +53,7 @@ namespace Gov.Jag.Embc.Public.Authentication
                 var user = await dataInterface.GetVolunteerByBceidUserNameAsync(userName);
                 var roles = user == null
                     ? EvacueeRoles  //evacuee default role
-                    : user.IsPrimaryContact ?? false ? LocalAuthorityRoles : VolunteerRoles; //volunteer/volunteer admin roles
+                    : user.IsAdministrator ?? false ? LocalAuthorityRoles : VolunteerRoles; //volunteer/volunteer admin roles
 
                 transformedClaims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
