@@ -1,5 +1,4 @@
 using Gov.Jag.Embc.Public.Authentication;
-using Gov.Jag.Embc.Public.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
