@@ -14,7 +14,7 @@ import { normalizeDate } from "src/app/shared/utils/date-utils";
 export class EvacueeSearchResultsComponent implements OnInit {
   path: string = null; // the base path for routing
   searchResults: ListResult<EvacueeListItem>;
-
+  resultsLoaded: boolean = false;
   constructor( 
     private router: Router,
     private authService: AuthService,
@@ -36,6 +36,7 @@ export class EvacueeSearchResultsComponent implements OnInit {
         //item.selfRegisteredDate         = normalizeDate(item.selfRegisteredDate);
       });
       this.searchResults = listResult;
+      this.resultsLoaded = true;
     });
   }
 
