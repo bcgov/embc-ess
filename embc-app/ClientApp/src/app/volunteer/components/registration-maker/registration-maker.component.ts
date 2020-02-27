@@ -33,7 +33,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
   CANADA: Country; // the object representation of the default country
 
-  pageTitle = 'Add an Evacuee';
+  pageTitle = 'New Registration';
   activeForm: boolean; // not set by default
 
   // The model for the form data collected
@@ -436,7 +436,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     // Display the appropriate page title and form state
     if (r == null) {
       // null registration means this is a new registration
-      this.pageTitle = 'Add an Evacuee';
+      this.pageTitle = 'New Registration';
       this.createMode = true;
       this.finalizeMode = false; // turn off these
     } else if (!r.isFinalized) {
