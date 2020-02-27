@@ -2,6 +2,7 @@ using AutoMapper;
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Seeder;
+using Gov.Jag.Embc.Public.Services;
 using Gov.Jag.Embc.Public.Services.Referrals;
 using Gov.Jag.Embc.Public.Utils;
 using MediatR;
@@ -221,6 +222,8 @@ namespace Gov.Jag.Embc.Public
             services.AddTransient<IPdfConverter, PdfConverter>();
             services.AddTransient<IReferralsService, ReferralsService>();
             services.AddTransient<IDataInterface, DataInterface>();
+            // Using AddScoped rather than transient because of state. Might be incorrect.
+            services.AddScoped<ICurrentUser, CurrentUserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
