@@ -21,7 +21,7 @@
           <div class="feature-block card d-block border-0">
             <div class="row">
               <div class="col">
-                <p class="mb-2">Incident start date &amp; time: {{registrationSummary?.incidentTask?.startDate | dateTimeFormatPipe}}</p>
+                <p class="mb-2">Task start date &amp; time: {{registrationSummary?.incidentTask?.startDate | dateTimeFormatPipe}}</p>
                 <div class="d-inline-block display-5 mr-4">Support start date &amp; time: {{defaultDate | dateTimeFormatPipe}}
                   <span *ngIf="!defaultDate">Please enter a valid date.</span>
                 </div>
