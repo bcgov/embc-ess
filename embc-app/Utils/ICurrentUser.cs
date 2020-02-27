@@ -9,6 +9,6 @@ namespace Gov.Jag.Embc.Public.Utils
     public interface ICurrentUser
     {
         User CurrentUser { get; }
-        public string GetDisplayName();
+        string GetDisplayName();
     }
 }
