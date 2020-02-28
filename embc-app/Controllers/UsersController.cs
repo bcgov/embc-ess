@@ -27,6 +27,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         public virtual IActionResult UsersCurrentGet()
         {
             var principal = HttpContext.User;
+
             //TODO: refactor client and server property names to match claim names in order to simplify the code readability
             ViewModels.User user = new ViewModels.User()
             {

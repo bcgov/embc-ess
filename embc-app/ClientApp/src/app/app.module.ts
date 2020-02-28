@@ -80,6 +80,7 @@ import { ElectronicAccessAgreementComponent } from './components/electronic-acce
 import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
 import { AppVersionComponent } from './shared/modals/app-version/app-version.component';
 import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/volunteer-evacuee-results-page/volunteer-evacuee-results-page.component';
+import { LocalAuthorityEvacueeListComponent } from './local-authority/components/local-authority-evacuee-list/local-authority-evacuee-list.component';
 import { TaskNumberMakerPageComponent } from './provincial-admin/pages/task-number-maker-page/task-number-maker-page.component';
 import { ActiveTaskComponent } from './shared/modals/active-task/active-task.component';
 
@@ -150,6 +151,7 @@ import { ActiveTaskComponent } from './shared/modals/active-task/active-task.com
     ElectronicAccessAgreementComponent,
     EvacueeSearchResultsComponent,
     VolunteerEvacueeResultsPageComponent,
+    LocalAuthorityEvacueeListComponent,
     TaskNumberMakerPageComponent,
   
   ],

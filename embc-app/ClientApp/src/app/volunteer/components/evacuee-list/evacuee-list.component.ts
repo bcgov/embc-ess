@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ListResult, EvacueeListItem } from 'src/app/core/models';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { EvacueeSearchQueryParameters } from 'src/app/core/models/search-interfaces';
-import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
 import { FormBuilder } from '@angular/forms';
+import {dateStringIsValid} from 'src/app/shared/utils/date-utils';
 import * as moment from 'moment';
 import { map } from 'rxjs/operators';
 
@@ -17,7 +17,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./evacuee-list.component.scss']
 })
 export class EvacueeListComponent implements OnInit {
-  evacuees: any;
+
   // server response
   resultsAndPagination: ListResult<EvacueeListItem>;
   notFoundMessage: string = "";
@@ -30,12 +30,10 @@ export class EvacueeListComponent implements OnInit {
   previousQuery: EvacueeSearchQueryParameters = {};
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
-  isVolunteer: boolean;
   readonly dateMask = [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]; // yyyy-mm-dd
   dobString: string = null;
-  // for R1, advanced search mode is the only mode
-  advancedSearchMode = true;
-  advancedSearchForm = this.fb.group({
+
+  searchForm = this.fb.group({
     last_name: null,
     first_name: null,
     dob: null,
@@ -47,7 +45,7 @@ export class EvacueeListComponent implements OnInit {
     referrals_provided: null,
   });
 
-  advancedSearchValid = {
+  formValid = {
     hasLastName: true,
     hasFirstName: true,
     hasDob: true,
@@ -59,37 +57,12 @@ export class EvacueeListComponent implements OnInit {
     private evacueeService: EvacueeService,
     private router: Router,
     private authService: AuthService,
-    private uniqueKeyService: UniqueKeyService,
     private fb: FormBuilder,
   ) { }
 
   ngOnInit() {
     // save the base url path
     this.authService.path.subscribe((path: string) => this.path = path);
-    this.authService.isVolunteer$.subscribe(result => this.isVolunteer = result);
-    this.getEvacuees().subscribe((listResult: ListResult<EvacueeListItem>) => {
-      this.resultsAndPagination = listResult;
-    });
-
-    forkJoin(this.authService.isVolunteer$, this.authService.isLocalAuthority$)
-    .subscribe(result => { 
-      const isVolunteer = result[0];
-      const isLocalAuthority = result[1];
-      
-    });
-  }
-
-
-  switchToAdvancedSearch() {
-    this.advancedSearchMode = true;
-    // when you switch back reset the search
-    this.search();
-  }
-
-  switchToBasicSearch() {
-    this.advancedSearchMode = false;
-    // when you switch back reset the search
-    this.search();
   }
 
   getEvacuees(query: EvacueeSearchQueryParameters = this.defaultSearchQuery): Observable<ListResult<EvacueeListItem>> {
@@ -100,18 +73,15 @@ export class EvacueeListComponent implements OnInit {
   }
 
   doBasicSearch() {
-    const dob = this.advancedSearchForm.get('dob').value;
-    const fName = this.advancedSearchForm.get('first_name').value;
-    const lName = this.advancedSearchForm.get('last_name').value;
+    const dob = this.searchForm.get('dob').value;
+    const fName = this.searchForm.get('first_name').value;
+    const lName = this.searchForm.get('last_name').value;
     // Ensure required fields are not null or empty strings
-    //this.advancedSearchValid.hasDob = dob != null && dob !== '';
     this.dobIsValid(dob);
-    this.advancedSearchValid.hasFirstName = fName != null && fName !== '';
-    this.advancedSearchValid.hasLastName = lName != null && lName !== '';
+    this.formValid.hasFirstName = fName != null && fName !== '';
+    this.formValid.hasLastName = lName != null && lName !== '';
 
-    
-
-    if (this.advancedSearchValid.hasDob && this.advancedSearchValid.hasValidDobFormat && this.advancedSearchValid.hasFirstName && this.advancedSearchValid.hasLastName) {
+    if (this.formValid.hasDob && this.formValid.hasValidDobFormat && this.formValid.hasFirstName && this.formValid.hasLastName) {
       this.search();
     }
     else {
@@ -121,26 +91,25 @@ export class EvacueeListComponent implements OnInit {
 
   private dobIsValid(dob: string): boolean {
     let result: boolean;
-    const dobRegex = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/;
     // Check if dob has anything
     result = dob != null && dob !== '';
-    this.advancedSearchValid.hasDob = result;
-    // if dob has a value, check it against the regex
+    this.formValid.hasDob = result;
+    // if dob has a value, check it is a valid date
     if (result) {
-      result = dobRegex.test(dob);
-      this.advancedSearchValid.hasValidDobFormat = result;
+      result = dateStringIsValid(dob);
+      this.formValid.hasValidDobFormat = result;
     }
 
     return result;
   }
 
-  updateDob(dob: string): void {
-    const m = moment(dob, 'YYYY-MM-DD', true);
+  updateDob(): void {
+    const m = moment(this.dobString, 'YYYY-MM-DD', true);
 
     if (m.isValid()) {
       // update dob
-      this.advancedSearchForm.patchValue(
-        {"dob": dob}
+      this.searchForm.patchValue(
+        { "dob": this.dobString }
       );
     } else {
       // error message
@@ -149,9 +118,9 @@ export class EvacueeListComponent implements OnInit {
   }
 
   essSearch() {
-    const essNum = this.advancedSearchForm.get("ess_file_no").value;
-    this.advancedSearchValid.hasESSNumber = essNum;
-    if (this.advancedSearchValid.hasESSNumber) {
+    const essNum = this.searchForm.get("ess_file_no").value;
+    this.formValid.hasESSNumber = essNum;
+    if (this.formValid.hasESSNumber) {
       this.search();
     }
     else {
@@ -171,74 +140,36 @@ export class EvacueeListComponent implements OnInit {
       }
       this.resultsAndPagination = listResult;
     });
-    // if the user is a volunteer we will route them to the results page
-    if (this.isVolunteer) {
-      // Navigate to results
-      this.router.navigate([`/${this.path}/evacuee/results`]);
-    }
+    // Navigate to results
+    this.router.navigate([`/${this.path}/evacuee/results`]);
+
   }
 
   createSearchQuery(): EvacueeSearchQueryParameters {
     // store the sorting and pagination
     let query = { ...this.defaultSearchQuery, sort: this.sort };
-    if (this.advancedSearchMode) {
-      const form = this.advancedSearchForm.value;
+    const form = this.searchForm.value;
+    // the community auto-complete returns an object. we only want the ID (string)
+    const fromCommunity = form.evacuated_from ? form.evacuated_from.name : null;
+    const toCommunity = form.evacuated_to ? form.evacuated_to.name : null;
 
-      // the community auto-complete returns an object. we only want the ID (string)
-      const fromCommunity = form.evacuated_from ? form.evacuated_from.name : null;
-      const toCommunity = form.evacuated_to ? form.evacuated_to.name : null;
+    query = {
+      ...query,
+      ...form,
+      evacuated_from: fromCommunity,
+      evacuated_to: toCommunity
+    };
 
-      query = {
-        ...query,
-        ...form,
-        evacuated_from: fromCommunity,
-        evacuated_to: toCommunity
-      };
-
-      // delete unneeded values
-      delete query.q;
-      if (query.registration_completed === null) {
-        delete query.registration_completed;
-      }
-      if (query.referrals_provided === null) {
-        delete query.referrals_provided;
-      }
-    } else {
-      // basic search
-      query.q = this.queryString;
+    // delete unneeded values
+    delete query.q;
+    if (query.registration_completed === null) {
+      delete query.registration_completed;
     }
+    if (query.referrals_provided === null) {
+      delete query.referrals_provided;
+    }
+
     return query;
   }
 
-  onPaginationEvent(event: EvacueeSearchQueryParameters) {
-    // save the pagination into the previous query and execute the query again
-    this.previousQuery.limit = event.limit;
-    this.previousQuery.offset = event.offset;
-    this.getEvacuees(this.previousQuery).subscribe((listResult: ListResult<EvacueeListItem>) => {
-      this.resultsAndPagination = listResult;
-    });
-  }
-
-  edit(registrationId: string) {
-    // save registration ID for lookup in the new component
-    this.uniqueKeyService.setKey(registrationId);
-
-    // go to registration maker
-    this.router.navigate([`/${this.path}/registration`]);
-  }
-
-  view(registrationId: string) {
-    // save registration ID for lookup in the new component
-    this.uniqueKeyService.setKey(registrationId);
-
-    // go to registration summary page
-    this.router.navigate([`/${this.path}/registration/summary`]);
-  }
-
-  onNullQueryString() {
-    // when a user in IE11 clicks the x to clear the field we need to be sure that we reset the search
-    if (!this.queryString) {
-      this.search();
-    }
-  }
 }

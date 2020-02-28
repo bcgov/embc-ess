@@ -45,4 +45,8 @@ export interface EvacueeSearchQueryParameters extends SearchQueryParameters {
   evacuated_to?: string;
   registration_completed?: boolean;
   referrals_provided?: boolean;
+  self_reg_date_from?: string;
+  self_reg_date_to?: string;
+  finalization_date_to?: string;
+  finalization_date_from?: string;
 }
