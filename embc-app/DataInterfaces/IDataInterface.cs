@@ -79,7 +79,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<VolunteerTask> GetVolunteerTaskByIdAsync(int id);
         Task<VolunteerTask> GetVolunteerTaskByIncideTaskIdAsync(Guid taskId);
         Task UpdateVolunteerTasksAsync(VolunteerTask updatedVolunteerTask);
-        Task<string> CreateVolunteerTaskAsync(VolunteerTask newVolunteerTask);
+        Task<VolunteerTask> CreateVolunteerTaskAsync(VolunteerTask newVolunteerTask);
 
         #endregion VolunteerTask
 

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/volunteer-task")]
     [Authorize]
     public class VolunteerTasksController : Controller
     {
@@ -33,12 +33,32 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
         
 
-        [HttpGet("task/{id}")]
-        public async Task<IActionResult> GetByTask(string id)
+        [HttpPost("task/{id}")]
+        public async Task<IActionResult> SetVolunteerTask(string id)
         {
-            var item = await dataInterface.GetVolunteerTaskByIncideTaskIdAsync(Guid.Parse(id));
-            if (item == null) return NotFound(Json(id));
-            return Json(item);
+            // get incident task
+            var task = await dataInterface.GetIncidentTaskAsync(id);
+            if (task == null) return NotFound(Json(id));
+
+            // get volunteerTask by incident task id
+            var volunteerTask = await dataInterface.GetVolunteerTaskByIncideTaskIdAsync(Guid.Parse(task.Id));
+
+            //if volunteerTask does not exist, create it
+            if(volunteerTask == null){
+                var newVolunteerTask = new VolunteerTask(){
+                    IncidentTaskId = Guid.Parse(task.Id),
+                    VolunteerId = 3,
+                    LastDateVolunteerConfirmedTask = DateTime.Now
+                };
+                volunteerTask = await dataInterface.CreateVolunteerTaskAsync(newVolunteerTask);
+            }
+            // otherwise update the task
+            else{
+                volunteerTask.LastDateVolunteerConfirmedTask = DateTime.Now;
+                await dataInterface.UpdateVolunteerTasksAsync(volunteerTask);
+            }
+
+            return Json(volunteerTask);
         }
 
 
@@ -57,7 +77,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
 
             var result = await dataInterface.CreateVolunteerTaskAsync(item);
-            return Json(await dataInterface.GetVolunteerTaskByIdAsync(int.Parse(result)));
+            return Json(await dataInterface.GetVolunteerTaskByIdAsync(result.Id));
         }
 
         [HttpPut("{id}")]

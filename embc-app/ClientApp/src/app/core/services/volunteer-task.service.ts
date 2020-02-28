@@ -9,11 +9,6 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { SearchQueryParameters } from '../models/search-interfaces';
 import { VolunteerTask } from '../models/volunteer-task.model';
 
-export interface VolunteerSearchQueryParameters extends SearchQueryParameters {
-  org_id?: string;
-  ess_only?: boolean;
-  admin_only?: boolean;
-}
 
 @Injectable({
   providedIn: CoreModule
@@ -21,29 +16,29 @@ export interface VolunteerSearchQueryParameters extends SearchQueryParameters {
 export class VolunteerTaskService extends RestService {
   apiRoute = '/api/volunteer-task';
 
-  getVolunteers({ limit, offset, q, sort, org_id, ess_only, admin_only }: VolunteerSearchQueryParameters = {}): Observable<ListResult<Volunteer>> {
-    const params = {
-      limit: (limit || 100).toString(), // query params are strings
-      offset: (offset || 0).toString(),
-      q: q || '',
-      sort: sort || 'name',
-      org_id: org_id || '',
-      ess_only: (!!ess_only).toString(),
-      admin_only: (!!admin_only).toString(),
-    };
+  // getVolunteers({ limit, offset, q, sort, org_id, ess_only, admin_only }: VolunteerSearchQueryParameters = {}): Observable<ListResult<Volunteer>> {
+  //   const params = {
+  //     limit: (limit || 100).toString(), // query params are strings
+  //     offset: (offset || 0).toString(),
+  //     q: q || '',
+  //     sort: sort || 'name',
+  //     org_id: org_id || '',
+  //     ess_only: (!!ess_only).toString(),
+  //     admin_only: (!!admin_only).toString(),
+  //   };
 
-    // get a list of all volunteers back from the api
-    return this.http.get<ListResult<Volunteer>>(this.apiRoute, { headers: this.headers, params })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      );
-  }
+  //   // get a list of all volunteers back from the api
+  //   return this.http.get<ListResult<Volunteer>>(this.apiRoute, { headers: this.headers, params })
+  //     .pipe(
+  //       retry(3),
+  //       catchError(this.handleError)
+  //     );
+  // }
 
-  getVolunteerTaskForCurrentUser(): Observable<Volunteer> {
+  setVolunteerTaskForCurrentUser(taskId: string): Observable<VolunteerTask> {
     // get a single volunteer by their bceidAccountNumber
     // return of(VOLUNTEERS[0]);
-    return this.http.get<Volunteer>(this.apiRoute + '/current-user', { headers: this.headers })
+    return this.http.post<VolunteerTask>(this.apiRoute + '/task/' + taskId, null, { headers: this.headers })
       .pipe(
         catchError(this.handleError)
       );

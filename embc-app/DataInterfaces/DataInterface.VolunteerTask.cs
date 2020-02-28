@@ -35,13 +35,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return mapper.Map<VolunteerTask>(volunteerTask);
         }
 
-        public async Task<string> CreateVolunteerTaskAsync(VolunteerTask newVolunteerTask)
+        public async Task<VolunteerTask> CreateVolunteerTaskAsync(VolunteerTask newVolunteerTask)
         {
             // if (newVolunteerTask.IncidentTaskId == null) throw new InvalidOperationException($"VolunteerTasks {newVolunteerTask.Id} is not associated with an organization");
             var volunteerTask = mapper.Map<Models.Db.VolunteerTask>(newVolunteerTask);
             var newEntity = await db.VolunteerTasks.AddAsync(volunteerTask);
             await db.SaveChangesAsync();
-            return newEntity.Entity.Id.ToString();
+            return mapper.Map<VolunteerTask>( newEntity.Entity);
         }
 
     }
