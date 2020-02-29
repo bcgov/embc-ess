@@ -1,3 +1,4 @@
+using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.ViewModels;
 using Gov.Jag.Embc.Public.ViewModels.Search;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -31,30 +33,36 @@ namespace Gov.Jag.Embc.Public.Controllers
             logger = loggerFactory.CreateLogger(typeof(VolunteerTasksController));
             this.env = env;
         }
-        
+
 
         [HttpPost("task/{id}")]
         public async Task<IActionResult> SetVolunteerTask(string id)
         {
             // get incident task
-            var task = await dataInterface.GetIncidentTaskAsync(id);
+            var task = await dataInterface.GetIncidentTaskByTaskNumbetAsync(id);
             if (task == null) return NotFound(Json(id));
 
             // get volunteerTask by incident task id
             var volunteerTask = await dataInterface.GetVolunteerTaskByIncideTaskIdAsync(Guid.Parse(task.Id));
 
             //if volunteerTask does not exist, create it
-            if(volunteerTask == null){
-                var newVolunteerTask = new VolunteerTask(){
+            var volunteerId = HttpContext.User.FindFirstValue(EssClaimTypes.USER_ID);
+
+            if (volunteerTask == null)
+            {
+                var newVolunteerTask = new VolunteerTask()
+                {
                     IncidentTaskId = Guid.Parse(task.Id),
-                    VolunteerId = 3,
+                    VolunteerId = int.Parse(volunteerId),
                     LastDateVolunteerConfirmedTask = DateTime.Now
                 };
                 volunteerTask = await dataInterface.CreateVolunteerTaskAsync(newVolunteerTask);
             }
             // otherwise update the task
-            else{
+            else
+            {
                 volunteerTask.LastDateVolunteerConfirmedTask = DateTime.Now;
+                volunteerTask.VolunteerId = int.Parse(volunteerId);
                 await dataInterface.UpdateVolunteerTasksAsync(volunteerTask);
             }
 

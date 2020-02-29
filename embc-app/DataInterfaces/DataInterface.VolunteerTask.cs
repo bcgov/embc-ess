@@ -37,7 +37,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<VolunteerTask> CreateVolunteerTaskAsync(VolunteerTask newVolunteerTask)
         {
-            // if (newVolunteerTask.IncidentTaskId == null) throw new InvalidOperationException($"VolunteerTasks {newVolunteerTask.Id} is not associated with an organization");
             var volunteerTask = mapper.Map<Models.Db.VolunteerTask>(newVolunteerTask);
             var newEntity = await db.VolunteerTasks.AddAsync(volunteerTask);
             await db.SaveChangesAsync();

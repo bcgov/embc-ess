@@ -33,6 +33,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<IPagedResults<IncidentTask>> GetIncidentTasksAsync(SearchQueryParameters searchQuery);
 
         Task<IncidentTask> GetIncidentTaskAsync(string id);
+        Task<IncidentTask> GetIncidentTaskByTaskNumbetAsync(string taskNumber);
 
         Task<string> CreateIncidentTaskAsync(IncidentTask task);
 

@@ -7,14 +7,13 @@ namespace Gov.Jag.Embc.Public.ViewModels
     {
         public VolunteerTaskMappingProfile()
         {
-            // CreateMap<Volunteer, Models.Db.VolunteerTask>()
-            //     .ForMember(d => d.VolunteerId, opts => opts.MapFrom(s => s.Id))
-            //     .ForMember(d => d.Organization, opts => opts.Ignore())
-            //     .ForMember(d => d.BceidAccountUserName, opts => opts.MapFrom(s => s.BceidAccountNumber))
-            //     .ForMember(d => d.BCeId, opts => opts.MapFrom(s => s.Externaluseridentifier))
-            //     .ForMember(d => d.IsNewUser, opts => opts.Ignore())
-            //     .ReverseMap()
-            //     ;
+            CreateMap<VolunteerTask, Models.Db.VolunteerTask>()
+                .ForMember(d => d.VolunteerId, opts => opts.MapFrom(s => s.VolunteerId))
+                .ForMember(d => d.IncidentTaskId, opts => opts.MapFrom(s => s.IncidentTaskId))
+                .ForMember(d => d.Volunteer, opts => opts.Ignore())
+                .ForMember(d => d.IncidentTask, opts => opts.Ignore())
+                .ReverseMap()
+                ;
         }
     }
 
