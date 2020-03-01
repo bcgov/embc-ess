@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -306,6 +307,10 @@ namespace Gov.Jag.Embc.Public
             app
                 .UseAuthentication()
                 .UseCookiePolicy()
+                .UseForwardedHeaders(new ForwardedHeadersOptions
+                {
+                    ForwardedHeaders = ForwardedHeaders.All
+                })
                 .UseMvc(routes =>
                 {
                     routes.MapRoute(
