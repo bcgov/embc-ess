@@ -305,12 +305,12 @@ namespace Gov.Jag.Embc.Public
             }
 
             app
-                .UseAuthentication()
-                .UseCookiePolicy()
                 .UseForwardedHeaders(new ForwardedHeadersOptions
                 {
                     ForwardedHeaders = ForwardedHeaders.All
                 })
+                .UseAuthentication()
+                .UseCookiePolicy()
                 .UseMvc(routes =>
                 {
                     routes.MapRoute(
