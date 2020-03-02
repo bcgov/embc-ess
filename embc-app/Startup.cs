@@ -304,14 +304,17 @@ namespace Gov.Jag.Embc.Public
                 app.UseOpenApi();
                 app.UseSwaggerUi3();
             }
-            
+
             var fwdHeadersOpts = new ForwardedHeadersOptions
             {
-                ForwardedHeaders = ForwardedHeaders.All
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto
             };
-            fwdHeadersOpts.KnownProxies.Add(IPAddress.Parse("[::ffff:172.51.20.1]:59510"));
-            
+            //Add the reverse proxy to known proxies, otherwise the headers are rejected
+            fwdHeadersOpts.KnownProxies.Add(IPAddress.Parse(configuration.GetReverseProxyAddress()));
+
             app
+                //Pass x-forward-* headers to middlewares so OICD knows to add https in front of return url
+                // (otherwise it breaks Safari oidc login)
                 .UseForwardedHeaders(fwdHeadersOpts)
                 .UseAuthentication()
                 .UseCookiePolicy()
