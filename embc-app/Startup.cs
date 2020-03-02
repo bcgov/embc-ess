@@ -303,12 +303,15 @@ namespace Gov.Jag.Embc.Public
                 app.UseOpenApi();
                 app.UseSwaggerUi3();
             }
-
+            
+            var fwdHeadersOpts = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.All
+            };
+            fwdHeadersOpts.KnownProxies.Add(IPAddress.Parse("[::ffff:172.51.20.1]:59510"));
+            
             app
-                .UseForwardedHeaders(new ForwardedHeadersOptions
-                {
-                    ForwardedHeaders = ForwardedHeaders.All
-                })
+                .UseForwardedHeaders(fwdHeadersOpts)
                 .UseAuthentication()
                 .UseCookiePolicy()
                 .UseMvc(routes =>
