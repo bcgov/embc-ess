@@ -8,6 +8,7 @@ import { EvacueeService } from 'src/app/core/services/evacuee.service';
 import { FormBuilder } from '@angular/forms';
 import {dateStringIsValid} from 'src/app/shared/utils/date-utils';
 import * as moment from 'moment';
+import { map } from 'rxjs/operators';
 
 
 @Component({
