@@ -1,0 +1,16 @@
+@import "~src/styles/_defaults.scss";
+
+.modal-header {
+  padding: 9px 0;
+  background-color: #38598a;
+  .header-text {
+    font-weight: 400;
+    font-size: 30px;
+  }
+}
+
+.modal-body {
+  .btn.btn-primary {
+    padding: 9px 20px;
+  }
+}

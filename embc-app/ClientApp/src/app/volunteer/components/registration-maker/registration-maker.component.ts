@@ -1,8 +1,8 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs/operators';
+import { map, mergeMap, filter } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { AppState } from 'src/app/store';
@@ -18,6 +18,7 @@ import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-registration-maker',
@@ -25,6 +26,7 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
   styleUrls: ['./registration-maker.component.scss']
 })
 export class RegistrationMakerComponent implements OnInit, AfterViewInit {
+
   // state needed by this FORM
   countries$ = this.store.select(s => s.lookups.countries.countries);
   regions$ = this.store.select(s => s.lookups.regions);
@@ -147,21 +149,21 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       hasPets: {
         required: 'Please make a selection regarding pets.',
       },
-        requiresAccommodation: {
-            required: 'Please make a selection regarding lodging while evacuated.',
-        },
-        requiresClothing: {
-            required: 'Please make a selection regarding clothing while evacuated.',
-        },
-        requiresFood: {
-            required: 'Please make a selection regarding food while evacuated.',
-        },
-        requiresIncidentals: {
-            required: 'Please make a selection regarding incidentals while evacuated.',
-        },
-        requiresTransportation: {
-            required: 'Please make a selection regarding transportation while evacuated.',
-        },
+      requiresAccommodation: {
+        required: 'Please make a selection regarding lodging while evacuated.',
+      },
+      requiresClothing: {
+        required: 'Please make a selection regarding clothing while evacuated.',
+      },
+      requiresFood: {
+        required: 'Please make a selection regarding food while evacuated.',
+      },
+      requiresIncidentals: {
+        required: 'Please make a selection regarding incidentals while evacuated.',
+      },
+      requiresTransportation: {
+        required: 'Please make a selection regarding transportation while evacuated.',
+      },
     };
 
     // TODO: Wow. it sure would be nice if we could just instatiate a class instead of using interfaces
@@ -385,6 +387,16 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       mailingAddressInBC: [null, CustomValidators.requiredWhenFalse('mailingAddressSameAsPrimary')],
       mailingAddressSameAsPrimary: [null, Validators.required],
     });
+
+    // set task number
+    this.store.select(state => state.volunterTask.taskNumber)
+      .pipe(filter(n => !!n))
+      .pipe(map(taskNumber => {
+        this.incidentTasks$.subscribe(tasks => {
+          const task = tasks.find(t => t.taskNumber === taskNumber);
+          this.form.get('incidentTask').patchValue(task);
+        });
+      })).subscribe();
   }
 
   onFormChange(): void {
@@ -860,7 +872,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   hasPetsChanged() {
     // If the value is false, clear out any pet care plans
     if (!Boolean(this.form.get('hasPets').value)) {
-        this.form.get('petCarePlan').setValue(null);
+      this.form.get('petCarePlan').setValue(null);
     }
   }
 

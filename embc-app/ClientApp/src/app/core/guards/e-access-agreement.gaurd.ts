@@ -6,6 +6,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { VolunteerService } from '../services/volunteer.service';
 import { User, Volunteer } from '../models';
+import { VOLUNTEER } from 'src/app/constants';
 
 /**
  * Guard that requires an accepted electronic access agreement before proceeding to load a page.
@@ -31,7 +32,8 @@ export class EAccessAgreementGuard implements CanActivate, CanActivateChild {
   checkAccessAgreement(url: string): Observable<boolean> {
     return this.authService.getCurrentUser()
       .pipe(switchMap((user: User) => {
-        if(user.userType === 'business'){
+        if(user.userType === 'business' 
+        && user.appRoles.indexOf(VOLUNTEER)){
         return this.volunteerService.getVolunteerById(user.contactid)
           .pipe(map((volunter: Volunteer) => volunter.electronicAccessAgreementAccepted));
         } else {

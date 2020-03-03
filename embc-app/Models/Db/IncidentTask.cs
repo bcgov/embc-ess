@@ -32,5 +32,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
 
         public DateTimeOffset? TaskNumberStartDate { get; set; }
         public DateTimeOffset? TaskNumberEndDate { get; set; }
+        public List<VolunteerTask> VolunteerTasks { get; set; }
     }
 }

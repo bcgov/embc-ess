@@ -44,6 +44,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return null;
         }
 
+        public async Task<IncidentTask> GetIncidentTaskByTaskNumbetAsync(string taskNumber)
+        {
+            var entity = await IncidentTasks
+                .SingleOrDefaultAsync(task => task.TaskNumber == taskNumber);
+            return mapper.Map<IncidentTask>(entity);
+        }
+
         public async Task<string> CreateIncidentTaskAsync(IncidentTask task)
         {
             var newItem = db.IncidentTasks.Add(mapper.Map<Models.Db.IncidentTask>(task));
