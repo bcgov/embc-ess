@@ -1,5 +1,13 @@
 .buttons {
   padding-top: 30px;
+  width: 800px; // match width of scroll-box
+  display: flex;
+  & a {
+    flex: 2 1 auto;
+  }
+  & button {
+    //flex: 1 1 78px;
+  }
 }
 
 .scroll-box {
@@ -12,7 +20,7 @@
 }
 
 .btn {
-  margin-right: 40px;
+  //margin-right: 40px;
 }
 
 ol.brackets {
