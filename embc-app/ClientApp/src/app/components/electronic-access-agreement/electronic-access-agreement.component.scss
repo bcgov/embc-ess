@@ -1,6 +1,8 @@
+$scrollBoxWidth: 800px;
+
 .buttons {
   padding-top: 30px;
-  width: 800px; // match width of scroll-box
+  width: $scrollBoxWidth; 
   display: flex;
   & a {
     flex: 2 1 auto;
@@ -9,7 +11,7 @@
 
 .scroll-box {
   overflow: auto;
-  width: 800px;
+  width: $scrollBoxWidth;
   height: 500px;
   border: 1px solid;
   padding: 15px;
