@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -87,6 +87,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     private notificationQueueService: NotificationQueueService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
+    private el: ElementRef
   ) {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
@@ -596,6 +597,8 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     if (this.form.invalid) {
       this.errorSummary = 'Some required fields have not been completed.';
       this.submitting = false; // reenable so they can try again
+      this.form.markAsTouched();
+      this.scrollToFirstInvalidControl();
     } else {
       // success!
       this.errorSummary = null;
@@ -608,6 +611,24 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       window.scrollTo(0, 0); // scroll to top
     }
   }
+
+  private scrollToFirstInvalidControl() {
+    // Reference to the first invalid control
+    const firstInvalidControl: HTMLElement = this.el.nativeElement.querySelector("form .ng-invalid");
+    window.scroll({
+      top: this.getTopOffset(firstInvalidControl),
+      left: 0,
+      behavior: "smooth"
+    });
+  }
+
+  private getTopOffset(controlEl: HTMLElement): number {
+    // Could calculate this with another dom query - we want the height of the closest label element (or <p> for radio groups) + ~5px more for comfort
+    // 25 seems pretty comfortable testing in a desktop browser and it's mobile emulators.
+    const labelOffset = 25;
+    return controlEl.getBoundingClientRect().top + window.scrollY - labelOffset;
+  }
+
 
   submit(addReferrals: boolean = false) {
     this.submitted = true; // send data to the server

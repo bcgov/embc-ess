@@ -40,7 +40,8 @@ namespace Gov.Jag.Embc.Public.Controllers
                 //Oidc login
                 return new ChallengeResult(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
                 {
-                    RedirectUri = $"{configuration.GetBasePath()}/{path}"
+                    RedirectUri = $"{configuration.GetBasePath()}/{path}",
+                    IsPersistent = true
                 });
             }
 

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,7 @@ using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -303,7 +305,17 @@ namespace Gov.Jag.Embc.Public
                 app.UseSwaggerUi3();
             }
 
+            var fwdHeadersOpts = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto
+            };
+            //Add the reverse proxy to known proxies, otherwise the headers are rejected
+            fwdHeadersOpts.KnownProxies.Add(IPAddress.Parse(configuration.GetReverseProxyAddress()));
+
             app
+                //Pass x-forward-* headers to middlewares so OICD knows to add https in front of return url
+                // (otherwise it breaks Safari oidc login)
+                .UseForwardedHeaders(fwdHeadersOpts)
                 .UseAuthentication()
                 .UseCookiePolicy()
                 .UseMvc(routes =>

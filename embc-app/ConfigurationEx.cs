@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Gov.Jag.Embc.Public
 {
@@ -33,12 +34,12 @@ namespace Gov.Jag.Embc.Public
 
         public static bool DbFullRefresh(this IConfiguration conf)
         {
-            return conf.GetValue("DB_FULL_REFRESH", "false").ToLowerInvariant() == "true";
+            return string.Equals(conf.GetValue("DB_FULL_REFRESH", "false"), "true", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public static bool CspEnabled(this IConfiguration conf)
         {
-            return conf.GetValue("CSP_ENABLED", "true").ToLowerInvariant() == "true";
+            return string.Equals(conf.GetValue("CSP_ENABLED", "true"), "true", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public static string GetBaseUri(this IConfiguration conf)
@@ -133,6 +134,11 @@ namespace Gov.Jag.Embc.Public
         public static string GetAuthenticationMode(this IConfiguration conf)
         {
             return conf.GetValue("AUTH_MODE", "SM");
+        }
+
+        public static string GetReverseProxyAddress(this IConfiguration conf)
+        {
+            return conf.GetValue("REVERSE_PROXY_ADDRESS", "[::ffff:172.51.20.1]:59510");
         }
     }
 }

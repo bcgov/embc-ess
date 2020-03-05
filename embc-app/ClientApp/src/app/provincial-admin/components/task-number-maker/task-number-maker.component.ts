@@ -106,9 +106,8 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     this.form = this.fb.group({
       taskNumber         : ['', Validators.required],
       community          : [null, Validators.required],
-      startDate          : [moment(), [Validators.required, CustomValidators.maxDate(moment())]],
+      //startDate          : [moment(), [Validators.required, CustomValidators.maxDate(moment())]],
       taskNumberStartDate: [moment(), [Validators.required, CustomValidators.maxDate(moment())]],
-      // The UI says it's 72 hours after the taskNumberStartDate, but we are intentionally making it 80 hours to give some more 'wiggle room'
       taskNumberEndDate: [moment().add(80, 'h'), [Validators.required, CustomValidators.minDate(moment().add(80, 'h'))]],
       details          : ['', Validators.required],
       overrideDate     : [moment().add(80, 'h'), [Validators.required, CustomValidators.minDate(moment().add(80, 'h'))]]
@@ -128,7 +127,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
       taskNumber: task.taskNumber,
       community: task.community,
       details: task.details,
-      startDate: new Date(task.startDate),
+      //startDate: new Date(task.startDate),
       taskNumberStartDate: new Date(task.taskNumberStartDate),
       taskNumberEndDate: new Date(task.taskNumberEndDate),
       overrideDate: new Date(task.taskNumberEndDate)
@@ -222,7 +221,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     this.incidentTask.taskNumber = f.taskNumber;
     this.incidentTask.community = f.community;
     this.incidentTask.details = f.details;
-    this.incidentTask.startDate = (f.startDate as Date).toJSON(); // make sure JS dates are properly serialized
+    //this.incidentTask.startDate = (f.startDate as Date).toJSON(); // make sure JS dates are properly serialized
     this.incidentTask.taskNumberStartDate = (f.taskNumberStartDate as Date).toJSON();
     this.incidentTask.taskNumberEndDate = (f.taskNumberEndDate as Date).toJSON();
   }
