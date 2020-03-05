@@ -5,7 +5,6 @@
 
       <p>
         The Emergency Coordination Centre is responsible for adding task numbers to the system.
-        If you need a new task number, contact the ECC at 1-800-663-3456.
       </p>
 
       <small>All fields are required</small>
@@ -37,6 +36,14 @@
       <div class="row">
         <div class="col mb-4">
           <label class="required">Task Number End Date &amp; Time</label>
+          <div class="bott-pad-med">
+            <div>
+              End date and time is set to 72 hours plus an 8 hour buffer (a total of 80 hours) after the task start date.
+            </div>
+            <div>
+              Task number end date can be overridden, if needed.
+            </div>
+          </div>
           <!--Read only-->
           <div class="strong" *ngIf="!this.endDateOverride">
             {{f.taskNumberEndDate.value | date : 'MMM-dd-yyyy'}} at {{f.taskNumberEndDate.value | date : "HH:mm"}}
