@@ -101,7 +101,6 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             
             referral.VolunteerDisplayName = userService.GetDisplayName();
             // If we're in prod, we don't want the watermark
-            var foo = env.IsProduction(); // do this work????????
             referral.DisplayWatermark = !env.IsProduction();
 
             var result = template(referral);
