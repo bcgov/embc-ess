@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Gov.Jag.Embc.Public.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Gov.Jag.Embc.Public.Services.Referrals
 {
@@ -16,14 +17,16 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
         private readonly IDataInterface dataInterface;
         private readonly IPdfConverter pdfConverter;
         private readonly ICurrentUser userService;
+        private readonly IHostingEnvironment env;
 
         private readonly string pageBreak = $@"{Environment.NewLine}<div class=""page-break""></div>{Environment.NewLine}";
 
-        public ReferralsService(IDataInterface dataInterface, IPdfConverter pdfConverter, ICurrentUser currentUser)
+        public ReferralsService(IDataInterface dataInterface, IPdfConverter pdfConverter, ICurrentUser currentUser, IHostingEnvironment environment)
         {
             this.dataInterface = dataInterface;
             this.pdfConverter  = pdfConverter;
             this.userService   = currentUser;
+            this.env           = environment;
         }
 
         public async Task<byte[]> GetReferralPdfsAsync(ReferralsToPrint printReferrals)
@@ -97,6 +100,8 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
 
             
             referral.VolunteerDisplayName = userService.GetDisplayName();
+            // If we're in prod, we don't want the watermark
+            referral.DisplayWatermark = !env.IsProduction();
 
             var result = template(referral);
 

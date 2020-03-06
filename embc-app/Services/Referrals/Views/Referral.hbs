@@ -6,6 +6,11 @@
             Not redeemable for cash
         </p>
     </div>
+    {{#if DisplayWatermark}}
+    <div class="watermark">
+        Training Sample Only
+    </div>
+    {{/if}}
     <div class="volunteer-name">
         Volunteer: {{VolunteerDisplayName}}
     </div>
@@ -25,7 +30,7 @@
             </div>
             <div class="col-6">
                 <div class="stamp-goes-here">
-                    <p>Place Stamp Here</p>
+                    
                 </div>
             </div>
         </div>
