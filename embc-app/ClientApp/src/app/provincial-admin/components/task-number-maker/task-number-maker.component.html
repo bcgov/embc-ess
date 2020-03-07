@@ -55,7 +55,7 @@
           </div>
           <!--Edit-->
           <div *ngIf="this.endDateOverride">
-            <app-date-time-picker [class.is-invalid]="invalid('overrideDate')" formControlName="overrideDate"></app-date-time-picker>
+            <app-date-time-picker [class.is-invalid]="invalid('taskNumberEndDate')" formControlName="overrideDate"></app-date-time-picker>
             <div style="display: inline-block;">
               <button class="btn btn-primary" (click)="updateEndDate()">UPDATE</button>
               &nbsp;
