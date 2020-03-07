@@ -36,6 +36,15 @@ export class IncidentTaskService extends RestService {
       );
   }
 
+  getOpenIncidentTaks(): Observable<IncidentTask> {
+    // Returns all incident tasks that are open (e.g. EndDate is in the future)
+    return this.http.get<IncidentTask>('/api/incidenttasks', {headers: this.headers})
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
+  }
+
   createIncidentTask(data: IncidentTask): Observable<IncidentTask> {
     return this.http.post<IncidentTask>('/api/incidenttasks/', data, { headers: this.headers })
       .pipe(

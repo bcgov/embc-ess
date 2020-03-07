@@ -44,6 +44,17 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return null;
         }
 
+        public async Task<IPagedResults<IncidentTask>> GetOpenIncidentTasksAsync(int limit = 100, int offset = 0)
+        {
+            // Tasks are considered open if their TaskNumberEndDate is in the future
+            DateTime now = DateTime.UtcNow;
+            var items = await IncidentTasks
+                        .Where(i => i.TaskNumberEndDate.HasValue && i.TaskNumberEndDate > now)
+                        .ToArrayAsync();
+
+            return new PaginatedList<IncidentTask>(items.Select(i => mapper.Map<IncidentTask>(i)), offset, limit);
+        }
+
         public async Task<IncidentTask> GetIncidentTaskByTaskNumbetAsync(string taskNumber)
         {
             var entity = await IncidentTasks
