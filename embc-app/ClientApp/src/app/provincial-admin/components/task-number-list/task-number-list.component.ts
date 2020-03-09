@@ -6,6 +6,7 @@ import { IncidentTaskService } from 'src/app/core/services/incident-task.service
 import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-task-number-list',
@@ -17,9 +18,13 @@ export class TaskNumberListComponent implements OnInit {
   resultsAndPagination: ListResult<IncidentTask>;
   notFoundMessage = 'Searching ...';
   path: string = null; // the base path for routing
-
+  
   form: FormGroup;
-
+  // default to showing active tasks
+  showActiveTasks = true; 
+  // private variable holding all tasks so we can filter active/inactive on the client
+  private allTasks: ListResult<IncidentTask>; 
+  private taskArray: IncidentTask[] = [];
   constructor(
     private incidentTaskService: IncidentTaskService,
     private router: Router,
@@ -30,9 +35,9 @@ export class TaskNumberListComponent implements OnInit {
 
   // convenience getters
   get results(): IncidentTask[] {
-    return this.resultsAndPagination ? this.resultsAndPagination.data : null;
+    return this.taskArray;
   }
-
+  // TODO: This is probably broken now... we will need to know the # of active and inactive tasks
   get pagination(): PaginationSummary {
     return this.resultsAndPagination ? this.resultsAndPagination.metadata : null;
   }
@@ -54,7 +59,11 @@ export class TaskNumberListComponent implements OnInit {
   getIncidentTasks(params: SearchQueryParameters = {}) {
     this.incidentTaskService.getIncidentTasks(params)
       .subscribe((listResult: ListResult<IncidentTask>) => {
-        this.resultsAndPagination = listResult;
+        this.allTasks = listResult;
+        this.resultsAndPagination = this.allTasks;
+        this.taskArray = listResult.data;
+        
+        this.filterTasks();
         this.notFoundMessage = 'No results found.';
       }, err => {
         console.log('error getting tasks =', err);
@@ -73,4 +82,22 @@ export class TaskNumberListComponent implements OnInit {
     // go to task number maker
     this.router.navigate([`/${this.path}/task-number`]);
   }
+
+  toggleDisplayedTasks() {
+    this.showActiveTasks = !this.showActiveTasks;
+    this.filterTasks();
+  }
+
+  // Filters out active/inactive tasks
+  private filterTasks() {
+    this.taskArray = [];
+    let now = moment.utc();
+    if (this.showActiveTasks) {
+      this.taskArray = this.allTasks.data.filter(task => now.isBefore(moment.utc(task.taskNumberEndDate)))
+    }
+    else {
+      this.taskArray = this.allTasks.data.filter(task => now.isAfter(moment.utc(task.taskNumberEndDate)))
+    }
+  }
+
 }

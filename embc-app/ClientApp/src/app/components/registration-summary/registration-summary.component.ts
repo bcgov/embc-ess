@@ -6,6 +6,7 @@ import { Registration, RegistrationSummary } from 'src/app/core/models';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
+import * as moment from 'moment';
 
 @Component({
   templateUrl: './registration-summary.component.html',
@@ -20,6 +21,9 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
   otherPurchaser: string = null;
   loading = true;
   reason: string = null;
+  canAddReferrals = true;
+  // This is here for nicer boolean logic in the template (e.g. disabled = referralsDisabled, rather than !canAddReferrals).
+  get referralsDisabled() { return !this.canAddReferrals; }
 
   constructor(
     private router: Router,
@@ -40,7 +44,10 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
       this.registrationService.getRegistrationSummaryById(key)
         .subscribe((registration: RegistrationSummary) => {
           this.loading = false;
-
+          if (registration.incidentTask.taskNumberEndDate) {
+            // Cannot add tasks if the task number end date has passed
+            this.canAddReferrals = moment.utc().isBefore(moment.utc(registration.incidentTask.taskNumberEndDate));
+          }
           if (!registration.id || !registration.essFileNumber) {
             console.log('ERROR - invalid registration object =', registration);
             // Done with the key. It was useless. Clear it.
@@ -101,7 +108,12 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
 
 
   addReferrals() {
-    this.router.navigate([`/${this.path}/referrals`, this.registrationSummary.id, this.getPurchaser()]);
+    if (this.canAddReferrals) {
+      this.router.navigate([`/${this.path}/referrals`, this.registrationSummary.id, this.getPurchaser()]);
+    }
+    else {
+      this.notificationQueueService.addNotification('Cannot add referrals against a closed task!', 'danger');
+    }
   }
 
 }

@@ -56,6 +56,16 @@ namespace Gov.Jag.Embc.Public.Controllers
             return Json(result);
         }
 
+        [HttpGet("getopenincidenttasks")]
+        public async Task<IActionResult> GetOpenIncidentTasks([FromQuery] SearchQueryParameters searchQuery)
+        {
+            int limit  = searchQuery.Limit;
+            int offset = searchQuery.Offset;
+            var items  = await dataInterface.GetOpenIncidentTasksAsync(limit, offset);
+            
+            return Json(items);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] IncidentTask item)
         {

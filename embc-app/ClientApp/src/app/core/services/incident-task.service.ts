@@ -36,6 +36,22 @@ export class IncidentTaskService extends RestService {
       );
   }
 
+  getOpenIncidentTasks(props: SearchQueryParameters = {}): Observable<ListResult<IncidentTask>> {
+    const { limit = 100, offset = 0, q = '', sort = '' } = props;
+    const params = {
+      limit: (limit || 100).toString(), // query params are strings
+      offset: (offset || 0).toString(),
+      q: q || '',
+      sort: sort || '',
+    };
+    // Returns all incident tasks that are open (e.g. EndDate is in the future)
+    return this.http.get<ListResult<IncidentTask>>('/api/incidenttasks/getopenincidenttasks', {headers: this.headers, params})
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      );
+  }
+
   createIncidentTask(data: IncidentTask): Observable<IncidentTask> {
     return this.http.post<IncidentTask>('/api/incidenttasks/', data, { headers: this.headers })
       .pipe(
