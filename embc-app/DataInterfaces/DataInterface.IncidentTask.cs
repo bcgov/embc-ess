@@ -49,7 +49,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             // Tasks are considered open if their TaskNumberEndDate is in the future
             DateTime now = DateTime.UtcNow;
             var items = await IncidentTasks
-                        .Where(i => i.TaskNumberEndDate.HasValue && i.TaskNumberEndDate > now)
+                        .Where(i => i.Active && i.TaskNumberEndDate.HasValue && i.TaskNumberEndDate > now)
                         .ToArrayAsync();
 
             return new PaginatedList<IncidentTask>(items.Select(i => mapper.Map<IncidentTask>(i)), offset, limit);

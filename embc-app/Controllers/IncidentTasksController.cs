@@ -56,8 +56,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             return Json(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetOpenIncidentTaks()
+        [HttpGet("getopenincidenttasks")]
+        public async Task<IActionResult> GetOpenIncidentTasks()
         {
             // Currently using default limit, offset. Client should probably request that.
             var items = await dataInterface.GetOpenIncidentTasksAsync();
