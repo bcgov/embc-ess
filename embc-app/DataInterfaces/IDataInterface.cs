@@ -34,7 +34,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<IncidentTask> GetIncidentTaskAsync(string id);
 
-        Task<IncidentTask> GetOpenIncidentTasksAsync(int limit = 100, int offset = 0);
+        Task<IPagedResults<IncidentTask>> GetOpenIncidentTasksAsync(int limit = 100, int offset = 0);
 
         Task<IncidentTask> GetIncidentTaskByTaskNumbetAsync(string taskNumber);
 
