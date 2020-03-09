@@ -52,7 +52,7 @@ export class TaskNumberListComponent implements OnInit {
   }
 
   getIncidentTasks(params: SearchQueryParameters = {}) {
-    this.incidentTaskService.getIncidentTasks(params)
+    this.incidentTaskService.getOpenIncidentTasks(params)
       .subscribe((listResult: ListResult<IncidentTask>) => {
         this.resultsAndPagination = listResult;
         this.notFoundMessage = 'No results found.';

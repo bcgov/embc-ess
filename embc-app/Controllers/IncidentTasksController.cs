@@ -57,11 +57,12 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet("getopenincidenttasks")]
-        public async Task<IActionResult> GetOpenIncidentTasks()
+        public async Task<IActionResult> GetOpenIncidentTasks([FromQuery] SearchQueryParameters searchQuery)
         {
-            // Currently using default limit, offset. Client should probably request that.
-            var items = await dataInterface.GetOpenIncidentTasksAsync();
-
+            int limit  = searchQuery.Limit;
+            int offset = searchQuery.Offset;
+            var items  = await dataInterface.GetOpenIncidentTasksAsync(limit, offset);
+            
             return Json(items);
         }
 
