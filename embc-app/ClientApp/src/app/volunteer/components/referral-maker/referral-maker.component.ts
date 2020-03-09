@@ -38,7 +38,7 @@ export class ReferralMakerComponent implements OnInit {
   defaultDate: Date;
   showDefaultDatePicker = false;
   confirmChecked = false;
-
+  isAdmin = false;
   private triggerSubject = new Subject<void>();
   submitTrigger = this.triggerSubject.asObservable();
 
@@ -76,7 +76,7 @@ export class ReferralMakerComponent implements OnInit {
   ngOnInit() {
     // get path for routing
     this.authService.path.subscribe((path: string) => this.path = path);
-
+    this.authService.isProvincialAdmin$.subscribe(result => this.isAdmin = result);
     // get URL params
     this.regId = this.route.snapshot.paramMap.get('regId');
     this.purchaser = this.route.snapshot.paramMap.get('purchaser');
