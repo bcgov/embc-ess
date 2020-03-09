@@ -31,7 +31,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   countries$ = this.store.select(s => s.lookups.countries.countries);
   regions$ = this.store.select(s => s.lookups.regions);
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
-  incidentTasks$ = this.incidentTaskService.getIncidentTasks().pipe(map(x => x.data));
+  incidentTasks$ = this.incidentTaskService.getOpenIncidentTasks().pipe(map(x => x.data));
 
   CANADA: Country; // the object representation of the default country
 
