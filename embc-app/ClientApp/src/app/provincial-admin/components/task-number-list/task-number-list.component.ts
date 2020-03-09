@@ -24,7 +24,7 @@ export class TaskNumberListComponent implements OnInit {
   showActiveTasks = true; 
   // private variable holding all tasks so we can filter active/inactive on the client
   private allTasks: ListResult<IncidentTask>; 
- private taskArray: IncidentTask[] = [];
+  private taskArray: IncidentTask[] = [];
   constructor(
     private incidentTaskService: IncidentTaskService,
     private router: Router,
@@ -35,10 +35,9 @@ export class TaskNumberListComponent implements OnInit {
 
   // convenience getters
   get results(): IncidentTask[] {
-    //return this.resultsAndPagination ? this.resultsAndPagination.data : null;
     return this.taskArray;
   }
-
+  // TODO: This is probably broken now... we will need to know the # of active and inactive tasks
   get pagination(): PaginationSummary {
     return this.resultsAndPagination ? this.resultsAndPagination.metadata : null;
   }
