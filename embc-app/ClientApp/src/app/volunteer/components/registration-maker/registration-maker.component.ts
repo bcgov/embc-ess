@@ -590,15 +590,16 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   next() {
     this.submitting = true; // disables buttons while we process the form
     this.submitted = true; // used for invalid feedback // TODO: possibly get rid of this
-
+    this.errorSummary = null;
     this.validateForm();
 
     // stop here if form is invalid
     if (this.form.invalid) {
-      this.errorSummary = 'Some required fields have not been completed.';
+      //this.errorSummary = 'Some required fields have not been completed.';
+      this.errorSummary = this.getValidationErrorSummary();
       this.submitting = false; // reenable so they can try again
-      this.form.markAsTouched();
-      this.scrollToFirstInvalidControl();
+      //this.form.markAsTouched();
+      //this.scrollToFirstInvalidControl();
     } else {
       // success!
       this.errorSummary = null;
@@ -611,6 +612,36 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       window.scrollTo(0, 0); // scroll to top
     }
   }
+
+  private getValidationErrorSummary(): string {
+    let result: string = "";
+    const errors = this.validationErrors;
+    // loop through each validation error and add it to the string
+    for (let key in errors) {
+      // Most errors are just strings
+      if (typeof errors[key] === "string") {
+        let err = errors[key];
+        // Do not add empty line breaks
+        err = err !== "" && err != null
+          ? `${err}\n`
+          : '';
+        result += err;
+      }
+      // a few errors are nested objects
+      else {
+        let nestedErrors = errors[key];
+        for (let nestedKey in nestedErrors) {
+          let err = nestedErrors[nestedKey];
+          err = err !== "" && err != null
+            ? `${err}\n`
+            : '';
+          result += err;
+        }
+      }
+    }
+    return result;
+  }
+
 
   private scrollToFirstInvalidControl() {
     // Reference to the first invalid control
