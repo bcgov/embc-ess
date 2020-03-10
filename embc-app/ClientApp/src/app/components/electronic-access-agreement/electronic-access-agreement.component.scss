@@ -72,6 +72,10 @@ ol.brackets-a > li:before {
   content: "(" counter(itemA, lower-alpha) ") ";
 }
 
+ul li {
+  list-style-type: disc;
+}
+
 .w-flex-40 {
   flex: 0 0 40px;
 }
