@@ -590,7 +590,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   next() {
     this.submitting = true; // disables buttons while we process the form
     this.submitted = true; // used for invalid feedback // TODO: possibly get rid of this
-
+    this.errorSummary = null;
     this.validateForm();
 
     // stop here if form is invalid
@@ -620,13 +620,22 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     for (let key in errors) {
       // Most errors are just strings
       if (typeof errors[key] === "string") {
-        result += `${errors[key]}\n`;
+        let err = errors[key];
+        // Do not add empty line breaks
+        err = err !== "" && err != null
+          ? `${err}\n`
+          : '';
+        result += err;
       }
-      // a few are nested objects
+      // a few errors are nested objects
       else {
         let nestedErrors = errors[key];
         for (let nestedKey in nestedErrors) {
-          result += `${nestedErrors[nestedKey]}\n`;
+          let err = nestedErrors[nestedKey];
+          err = err !== "" && err != null
+            ? `${err}\n`
+            : '';
+          result += err;
         }
       }
     }
