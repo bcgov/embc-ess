@@ -264,7 +264,7 @@
           Is the evacuee's primary residence within BC?
         </p>
         <i class="fa fa-info-circle icon-l-padding"
-        title="Primary residence: is the dwelling where an individual or family spends most of their personal time. A person can only have one primary residence at any time."></i>
+          title="Primary residence: is the dwelling where an individual or family spends most of their personal time. A person can only have one primary residence at any time."></i>
         <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('primaryResidenceInBC')" class="form-check-input"
@@ -750,7 +750,12 @@
 
       <div *ngIf="errorSummary" class="text-danger">
         <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>
-        &nbsp;{{ errorSummary }}
+        &nbsp;
+        Some required fields have not been completed
+        <br><br>
+        <span class="validation-error-summary">
+          {{ errorSummary }}
+        </span>
       </div>
 
       <section class="space-between align-items-center mt-5 mb-4">
@@ -777,12 +782,12 @@
   <h1 class="mt-4">Review Details & Save</h1>
   <!--Flex container-->
   <div class="flex-container">
-      <!--Col 1-->
+    <!--Col 1-->
     <div class="flex-item vertical">
       <p>Please confirm that all details are correct by reading through the summary below with the evacuee.</p>
       <p>Don't forget to click "<strong>SAVE</strong>" or "<strong>SAVE & ADD REFERRALS</strong>".</p>
     </div>
-      <!--Col 2-->
+    <!--Col 2-->
     <div class="flex-container flex-btns">
       <button *ngIf="!submitting" type="button" class="btn btn-primary text-uppercase" [disabled]="submitting"
         (click)="submit(true)">

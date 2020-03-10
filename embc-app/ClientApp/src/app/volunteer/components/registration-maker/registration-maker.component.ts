@@ -595,10 +595,11 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
     // stop here if form is invalid
     if (this.form.invalid) {
-      this.errorSummary = 'Some required fields have not been completed.';
+      //this.errorSummary = 'Some required fields have not been completed.';
+      this.errorSummary = this.getValidationErrorSummary();
       this.submitting = false; // reenable so they can try again
-      this.form.markAsTouched();
-      this.scrollToFirstInvalidControl();
+      //this.form.markAsTouched();
+      //this.scrollToFirstInvalidControl();
     } else {
       // success!
       this.errorSummary = null;
@@ -611,6 +612,27 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       window.scrollTo(0, 0); // scroll to top
     }
   }
+
+  private getValidationErrorSummary(): string {
+    let result: string = "";
+    const errors = this.validationErrors;
+    // loop through each validation error and add it to the string
+    for (let key in errors) {
+      // Most errors are just strings
+      if (typeof errors[key] === "string") {
+        result += `${errors[key]}\n`;
+      }
+      // a few are nested objects
+      else {
+        let nestedErrors = errors[key];
+        for (let nestedKey in nestedErrors) {
+          result += `${nestedErrors[nestedKey]}\n`;
+        }
+      }
+    }
+    return result;
+  }
+
 
   private scrollToFirstInvalidControl() {
     // Reference to the first invalid control
