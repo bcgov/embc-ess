@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ListResult, IncidentTask, PaginationSummary, Community } from 'src/app/core/models';
+import { ListResult, IncidentTask, PaginationSummary, Community, OpenAndClosedTasksMetadata } from 'src/app/core/models';
 import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
 import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
-import { OpenAndClosedTasksMetadata } from 'src/app/core/models/open-and-closed-tasks-metaData.model';
+
 import * as moment from 'moment';
 
 @Component({
