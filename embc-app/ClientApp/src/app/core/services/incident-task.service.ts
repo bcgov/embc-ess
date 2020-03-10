@@ -2,12 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 
-import { IncidentTask, ListResult } from '../models';
+import { IncidentTask, ListResult, OpenAndClosedTasksMetadata } from '../models';
 import { CoreModule } from '../core.module';
 import { RestService } from './rest.service';
 import { HttpResponse } from '@angular/common/http';
 import { SearchQueryParameters } from '../models/search-interfaces';
-import { OpenAndClosedTasksMetadata } from '../models/open-and-closed-tasks-metaData.model';
 
 @Injectable({
   providedIn: CoreModule

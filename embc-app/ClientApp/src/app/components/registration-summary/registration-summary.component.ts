@@ -44,7 +44,7 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
       this.registrationService.getRegistrationSummaryById(key)
         .subscribe((registration: RegistrationSummary) => {
           this.loading = false;
-          if (registration.incidentTask.taskNumberEndDate) {
+          if (registration.incidentTask && registration.incidentTask.taskNumberEndDate) {
             // Cannot add tasks if the task number end date has passed
             this.canAddReferrals = moment.utc().isBefore(moment.utc(registration.incidentTask.taskNumberEndDate));
           }
