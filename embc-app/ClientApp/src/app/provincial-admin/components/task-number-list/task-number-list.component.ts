@@ -6,6 +6,7 @@ import { IncidentTaskService } from 'src/app/core/services/incident-task.service
 import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { OpenAndClosedTasksMetadata } from 'src/app/core/models/open-and-closed-tasks-metaData.model';
 import * as moment from 'moment';
 
 @Component({
@@ -25,6 +26,9 @@ export class TaskNumberListComponent implements OnInit {
   // private variable holding all tasks so we can filter active/inactive on the client
   private allTasks: ListResult<IncidentTask>; 
   private taskArray: IncidentTask[] = [];
+  private openTasksPagination: PaginationSummary;
+  private closedTasksPagination: PaginationSummary;
+  
   constructor(
     private incidentTaskService: IncidentTaskService,
     private router: Router,
@@ -37,9 +41,10 @@ export class TaskNumberListComponent implements OnInit {
   get results(): IncidentTask[] {
     return this.taskArray;
   }
-  // TODO: This is probably broken now... we will need to know the # of active and inactive tasks
+
+  
   get pagination(): PaginationSummary {
-    return this.resultsAndPagination ? this.resultsAndPagination.metadata : null;
+    return this.showActiveTasks ? this.openTasksPagination : this.closedTasksPagination;
   }
 
   ngOnInit() {
@@ -50,6 +55,7 @@ export class TaskNumberListComponent implements OnInit {
 
     // collect all incident tasks
     this.getIncidentTasks();
+    this.getMetaData();
   }
 
   initSearchForm(): void {
@@ -68,6 +74,14 @@ export class TaskNumberListComponent implements OnInit {
       }, err => {
         console.log('error getting tasks =', err);
       });
+  }
+
+  private getMetaData() {
+    this.incidentTaskService.getOpenAndClosedIncidentTaskMetadata()
+      .subscribe((pageData: OpenAndClosedTasksMetadata) => {
+        this.openTasksPagination = pageData.openTasks;
+        this.closedTasksPagination = pageData.closedTasks;
+      })
   }
 
   filter(community: Community) {
