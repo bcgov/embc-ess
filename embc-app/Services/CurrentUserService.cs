@@ -12,8 +12,10 @@ namespace Gov.Jag.Embc.Public.Services
 {
     public class CurrentUserService : ICurrentUser
     {
+        // should probably have this in a constants files
+        private readonly string IDIR_USER_TYPE = "internal"; 
         private string _displayName;
-        
+        private bool _isIDIR;
         public User CurrentUser { get; }
 
         public CurrentUserService(IHttpContextAccessor context)
@@ -30,6 +32,7 @@ namespace Gov.Jag.Embc.Public.Services
                 id        = principal.FindFirstValue(ClaimTypes.Upn),
                 accountid = principal.FindFirstValue(EssClaimTypes.ORG_ID)
             };
+            _isIDIR = principal.FindFirstValue(SiteMinderClaimTypes.USER_TYPE) == IDIR_USER_TYPE;
         }
 
         public string GetDisplayName()
@@ -60,16 +63,35 @@ namespace Gov.Jag.Embc.Public.Services
 
         private void GenerateDisplayName(string[] nameArray)
         {
-            string fName = nameArray[0];
-            string lName = nameArray[1];
-            if (lName.Length >= 1)
+            UserNames names = GetUserNamesFromArray(nameArray);
+
+            if (names.LastName.Length >= 1)
             {
-                lName = lName.Substring(0, 1);
+                names.LastName = names.LastName.Substring(0, 1);
             }
-            _displayName = $"{fName} {lName}";
+            _displayName = $"{names.FirstName} {names.LastName}";
             // clean up any rogue commas
             _displayName = _displayName.Replace(",", string.Empty).Trim();
 
+        }
+
+        private UserNames GetUserNamesFromArray(string[] nameArray)
+        {
+            // IDIR users have their names returned as lastName, firstName
+            // BCeID users have their names returned as firstName, lastName
+            UserNames result = new UserNames()
+            {
+                FirstName = _isIDIR ? nameArray[1] : nameArray[0],
+                LastName = _isIDIR ? nameArray[0] : nameArray[1]
+            };
+
+            return result;
+        }
+
+        private class UserNames
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
         }
     }
 }
