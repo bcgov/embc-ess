@@ -55,6 +55,40 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return new PaginatedList<IncidentTask>(items.Select(i => mapper.Map<IncidentTask>(i)), offset, limit);
         }
 
+        public async Task<PaginationMetadata> GetOpenIncidentTasksMetadataAsync(int limit = 100, int offset = 0)
+        {
+            DateTime now = DateTime.UtcNow;
+            int count = await IncidentTasks
+                        .Where(i => i.Active && i.TaskNumberEndDate.HasValue && i.TaskNumberEndDate > now)
+                        .CountAsync();
+            // Build the meta data
+            var result = new PaginationMetadata()
+            {
+                CurrentPage = (int)Math.Floor((decimal)offset / limit) + 1,
+                PageSize = limit,
+                TotalCount = count,
+                TotalPages = (int)Math.Ceiling((decimal)count / limit)
+            };
+            return result;
+        }
+
+        public async Task<PaginationMetadata> GetClosedIncidentTasksMetadataAsync(int limit = 100, int offset = 0)
+        {
+            DateTime now = DateTime.UtcNow;
+            int count = await IncidentTasks
+                        .Where(i => i.Active && i.TaskNumberEndDate.HasValue && i.TaskNumberEndDate < now)
+                        .CountAsync();
+            // Build the meta data
+            var result = new PaginationMetadata()
+            {
+                CurrentPage = (int)Math.Floor((decimal)offset / limit) + 1,
+                PageSize = limit,
+                TotalCount = count,
+                TotalPages = (int)Math.Ceiling((decimal)count / limit)
+            };
+            return result;
+        }
+
         public async Task<IncidentTask> GetIncidentTaskByTaskNumbetAsync(string taskNumber)
         {
             var entity = await IncidentTasks

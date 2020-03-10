@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
@@ -66,6 +67,20 @@ namespace Gov.Jag.Embc.Public.Controllers
             return Json(items);
         }
 
+        [HttpGet("getOpenAndClosedIncidentTaskMetadata")]
+        public async Task<IActionResult> GetOpenAndClosedIncidentTaskMetadata([FromQuery] SearchQueryParameters searchQuery)
+        {
+            int limit  = searchQuery.Limit;
+            int offset = searchQuery.Offset;
+            var result = new OpenAndClosedTasksMetadata
+            {
+                OpenTasks   = await dataInterface.GetOpenIncidentTasksMetadataAsync(limit, offset),
+                ClosedTasks = await dataInterface.GetClosedIncidentTasksMetadataAsync(limit, offset)
+            };
+
+            return Json(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] IncidentTask item)
         {
@@ -116,5 +131,13 @@ namespace Gov.Jag.Embc.Public.Controllers
             var result = await dataInterface.DeactivateIncidentTaskAsync(id);
             return Ok();
         }
+    }
+
+    public class OpenAndClosedTasksMetadata
+    {
+        [JsonProperty("openTasks")]
+        public PaginationMetadata OpenTasks { get; set; }
+        [JsonProperty("closedTasks")]
+        public PaginationMetadata ClosedTasks { get; set; }
     }
 }

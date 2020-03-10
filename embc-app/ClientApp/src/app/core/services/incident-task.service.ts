@@ -7,6 +7,7 @@ import { CoreModule } from '../core.module';
 import { RestService } from './rest.service';
 import { HttpResponse } from '@angular/common/http';
 import { SearchQueryParameters } from '../models/search-interfaces';
+import { OpenAndClosedTasksMetadata } from '../models/open-and-closed-tasks-metaData.model';
 
 @Injectable({
   providedIn: CoreModule
@@ -50,6 +51,22 @@ export class IncidentTaskService extends RestService {
         retry(3),
         catchError(this.handleError)
       );
+  }
+
+  getOpenAndClosedIncidentTaskMetadata(props: SearchQueryParameters = {}): Observable<OpenAndClosedTasksMetadata> {
+    const { limit = 100, offset = 0, q = '', sort = '' } = props;
+    const params = {
+      limit: (limit || 100).toString(), // query params are strings
+      offset: (offset || 0).toString(),
+      q: q || '',
+      sort: sort || '',
+    };
+    
+    return this.http.get<OpenAndClosedTasksMetadata>('/api/incidenttasks/getOpenAndClosedIncidentTaskMetadata', {headers: this.headers, params})
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
   }
 
   createIncidentTask(data: IncidentTask): Observable<IncidentTask> {
