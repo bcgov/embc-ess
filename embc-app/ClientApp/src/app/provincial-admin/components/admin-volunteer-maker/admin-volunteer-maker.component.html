@@ -2,13 +2,13 @@
   <!-- to prevent page/control flicker, wait for everything to be ready... -->
   <div *ngIf="(iAmLocalAuthority || iAmProvincialAdmin) && (editMode === 'ADD' || editMode === 'EDIT') && (doSelectOrg === true || doSelectOrg === false)">
     <form novalidate [formGroup]="form">
-      <h1 *ngIf="iAmLocalAuthority && editMode === 'ADD'">Add Emergency Support Services User(s)</h1>
-      <h1 *ngIf="iAmLocalAuthority && editMode === 'EDIT'">Edit Emergency Support Services User Details</h1>
-      <h1 *ngIf="iAmProvincialAdmin && editMode === 'ADD'">Add User(s)</h1>
-      <h1 *ngIf="iAmProvincialAdmin && editMode === 'EDIT'">Edit Emergency Support Services User Details</h1>
+      <h1 *ngIf="iAmLocalAuthority && editMode === 'ADD'">Add Evacuee Registration &amp; Assistance (ERA) User</h1>
+      <h1 *ngIf="iAmLocalAuthority && editMode === 'EDIT'">Edit ERA User Details</h1>
+      <h1 *ngIf="iAmProvincialAdmin && editMode === 'ADD'">Add ERA User</h1>
+      <h1 *ngIf="iAmProvincialAdmin && editMode === 'EDIT'">Edit ERA User Details</h1>
 
       <p class="pb-3" *ngIf="iAmProvincialAdmin">
-        Administrators can add users within an organization if they have their first name, last name, role, and BCeID.
+        Administrators can add users within an organization if they have their first name, last name, role, and Business BCeID.
       </p>
 
       <small>All fields are required</small>
@@ -63,7 +63,7 @@
 
       <div class="row pt-4">
         <div class="col-8">
-          <label class="required" for="bceidAccountNumber">BCeID</label>
+          <label class="required" for="bceidAccountNumber">Business BCeID</label>
           <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your BCeID user ID."></app-font-awesome-icon>
           <input type="text" class="form-control" [class.is-invalid]="invalid('bceidAccountNumber')" formControlName="bceidAccountNumber" id="bceidAccountNumber">
           <span class="invalid-feedback">Please enter a valid BCeID</span>
@@ -84,13 +84,13 @@
             <div class="form-check">
               <label class="form-check-label" for="isAdministratorFalse">
                 <input type="radio" class="form-check-input" name="isAdministrator" formControlName="isAdministrator" id="isAdministratorFalse" [value]="false">
-                <span class="pl-3">Emergency Support Services User</span>
+                <span class="pl-3">ERA User</span>
               </label>
             </div>
             <div class="form-check">
               <label class="form-check-label" for="isAdministratorTrue">
                 <input type="radio" class="form-check-input" name="isAdministrator" formControlName="isAdministrator" id="isAdministratorTrue" [value]="true">
-                <span class="pl-3">Admin</span>
+                <span class="pl-3">ERA Superuser</span>
               </label>
             </div>
             <span [class.d-block]="invalid('isAdministrator')" class="invalid-feedback">Please select whether they are an ESS user or an admin user</span>
@@ -156,12 +156,12 @@
         <span class="value">{{volunteer.firstName}}</span>
       </li>
       <li>
-        <span class="name">BCeID:</span>
+        <span class="name">Business BCeID:</span>
         <span class="value">{{volunteer.bceidAccountNumber}}</span>
       </li>
       <li *ngIf="iAmProvincialAdmin">
         <span class="name">Role:</span>
-        <span class="value">{{volunteer.isAdministrator ? 'Admin' : 'ESS User'}}</span>
+        <span class="value">{{volunteer.isAdministrator ? 'ERA Superuser' : 'ERA User'}}</span>
       </li>
       <li *ngIf="iAmProvincialAdmin && volunteer.isAdministrator">
         <span class="name">Primary Contact for Organization:</span>

@@ -1,8 +1,8 @@
 <div class="mb-4">
-  <h1>List of Organizations &amp; Users</h1>
+  <h1>List of Organizations &amp; ERA Users</h1>
 
   <p class="pb-3">
-    Use this page to view organizations and users that are currently registered in the system. If you are unable to find
+    Use this page to view organizations and ERA Users that are currently registered in the system. If you are unable to find
     an organization or a user, please add them.
   </p>
 
@@ -49,7 +49,7 @@
           <td>{{organization?.community?.name}}</td>
           <td>{{organization?.adminLastName}}, {{organization?.adminFirstName}}</td>
           <td>
-            <a href="javascript:void(0)" (click)="modifyOrganizationVolunteers(organization.id)">View / Add Users</a>
+            <a href="javascript:void(0)" (click)="modifyOrganizationVolunteers(organization.id)">View/Add ERA Users</a>
             <br>
             <a href="javascript:void(0)" (click)="modifyOrganization(organization.id)">Edit Details</a>
           </td>
