@@ -3,11 +3,18 @@
     <div class="home-header">
       <h2>Emergency Support Services</h2>
       <p>
-        Emergency Support Services is for British Columbians who have been evacuated from their home by fire, floods, earthquakes or other emergencies and may receive support for up to 72 hours. If you have been issued an Evacuation Order and are being asked to leave your home, please register for Emergency Support Services by using the <a routerLink="self-registration">Evacuee Self-Registration</a> or proceed to your nearest Reception Centre as listed at <a target="_blank" href="https://www.emergencyinfobc.gov.bc.ca/">EmergencyInfoBC</a>. If you need further support with the Evacuee Self Registration system, please contact the Emergency Support Services team through your local government.
+        Emergency Support Services is for British Columbians who have been evacuated from their home by fire, floods,
+        earthquakes or other emergencies and may receive support for up to 72 hours. If you have been issued an
+        Evacuation Order and are being asked to leave your home, please register for Emergency Support Services by using
+        the <a routerLink="self-registration">Evacuee Self-Registration</a> or proceed to your nearest Reception Centre
+        as listed at <a target="_blank" href="https://www.emergencyinfobc.gov.bc.ca/">EmergencyInfoBC</a>. If you need
+        further support with the Evacuee Self Registration system, please contact the Emergency Support Services team
+        through your local government.
       </p>
       <p class="mb-2">
         <em style="color: red;">
-          Please note: Scheduled maintenance occurs on Sunday from 6am to 9am. Users may experience interruptions during this time.
+          Please note: Scheduled maintenance occurs on Sunday from 6am to 9am. Users may experience interruptions during
+          this time.
         </em>
       </p>
     </div>
@@ -18,32 +25,45 @@
     <div class="card-body">
       <span class="h3">Evacuee Self-Registration</span>
     </div>
-    <img *ngIf="!browserIE" src="assets/fingerForceRectangle.png" class="card-img-top " alt="A stylized finger touching a black rectangle">
-    <img *ngIf="browserIE" src="assets/fingerForceRectangle.png" height="50%" width="50%" alt="A stylized finger touching a black rectangle">
+    <img *ngIf="!browserIE" src="assets/fingerForceRectangle.png" class="card-img-top "
+      alt="A stylized finger touching a black rectangle">
+    <img *ngIf="browserIE" src="assets/fingerForceRectangle.png" height="50%" width="50%"
+      alt="A stylized finger touching a black rectangle">
 
     <div class="card-body">
       <p>
-        The Evacuee Self-Registration form is for evacuees to register with Emergency Support Services if you have been given an Evacuation Order and have been asked to leave your home.
+        The Evacuee Self-Registration form is for evacuees to register with Emergency Support Services if you have been
+        given an Evacuation Order and have been asked to leave your home.
       </p>
     </div>
     <div class="card-body mx-auto">
       <button class="btn btn-primary mx-auto" (click)="newRegistration()">EVACUEE SELF-REGISTRATION</button>
     </div>
+    <div class="banner-spacing">
+      <span>&nbsp;</span>
+    </div>
   </div>
   <div class="card">
     <div class="card-body">
-      <span class="h3">Volunteer Login</span>
+      <span class="h3">ERA User Login</span>
     </div>
-    <img *ngIf="!browserIE" src="assets/sittingAtTheCheckmark.png" class="card-img-top " alt="Two people sitting at a checkmark clock">
-    <img *ngIf="browserIE" src="assets/sittingAtTheCheckmark.png" height="50%" width="50%" alt="Two people sitting at a checkmark clock">
+    <img *ngIf="!browserIE" src="assets/sittingAtTheCheckmark.png" class="card-img-top "
+      alt="Two people sitting at a checkmark clock">
+    <img *ngIf="browserIE" src="assets/sittingAtTheCheckmark.png" height="50%" width="50%"
+      alt="Two people sitting at a checkmark clock">
 
     <div class="card-body">
       <p>
-        The Evacuee Self-Registration form is for evacuees to register with Emergency Support Services if you have been given an Evacuation Order and have been asked to leave your home.
+        This Login is for Emergency Support Services team members who are responding to an emergency.
       </p>
     </div>
     <div class="card-body mx-auto">
-      <a class="btn btn-primary" href="login/">VOLUNTEER LOGIN</a>
+      <a class="btn btn-primary" href="login/">ERA USER LOGIN</a>
+    </div>
+    <div class="first-time-login-banner">
+      <span>
+        <strong>First time ERA User?</strong> Please contact your Local Authority for set up.
+      </span>
     </div>
   </div>
 </div>

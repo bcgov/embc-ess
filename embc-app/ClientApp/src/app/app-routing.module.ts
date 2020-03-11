@@ -41,6 +41,7 @@ import { ElectronicAccessAgreementComponent } from './components/electronic-acce
 import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
 import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/volunteer-evacuee-results-page/volunteer-evacuee-results-page.component';
 import { TaskNumberMakerPageComponent } from './provincial-admin/pages/task-number-maker-page/task-number-maker-page.component';
+import { AdminVolunteerMakerPageComponent } from './provincial-admin/pages/admin-volunteer-maker-page/admin-volunteer-maker-page/admin-volunteer-maker-page.component';
 
 /*
   /
@@ -266,7 +267,7 @@ const routes: Routes = [
       },
       {
         path: 'volunteer',
-        component: VolunteerMakerPageComponent,
+        component: AdminVolunteerMakerPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
@@ -350,7 +351,7 @@ const routes: Routes = [
       },
       {
         path: 'volunteer',
-        component: AdminVolunteerMakerComponent,
+        component: AdminVolunteerMakerPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
