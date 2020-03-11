@@ -77,6 +77,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
           // save the incident task for filling in information later.
           this.displayTaskNumber(incidentTask);
           this.incidentTask = incidentTask;
+          this.initFormFromIncidentTask();
           this.editMode = true;
         }, err => {
           this.notificationQueueService.addNotification('Failed to load task', 'danger');
@@ -106,11 +107,22 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     this.form = this.fb.group({
       taskNumber         : ['', Validators.required],
       community          : [null, Validators.required],
-      //startDate          : [moment(), [Validators.required, CustomValidators.maxDate(moment())]],
       taskNumberStartDate: [moment(), [Validators.required, CustomValidators.maxDate(moment())]],
-      taskNumberEndDate: [moment().add(80, 'h'), [Validators.required, CustomValidators.minDate(moment().add(80, 'h'))]],
-      details          : ['', Validators.required],
-      overrideDate     : [moment().add(80, 'h'), [Validators.required, CustomValidators.minDate(moment().add(80, 'h'))]]
+      taskNumberEndDate  : [moment().add(80, 'h'), [Validators.required, CustomValidators.minDate(moment().add(80, 'h'))]],
+      details            : ['', Validators.required],
+      overrideDate       : [moment().add(80, 'h')]
+    });
+  }
+
+  initFormFromIncidentTask() {
+    const startDate: moment.Moment = moment(this.incidentTask.taskNumberStartDate);
+    this.form = this.fb.group({
+      taskNumber         : [this.incidentTask.taskNumber, Validators.required],
+      community          : [this.incidentTask.community, Validators.required],
+      taskNumberStartDate: [startDate, [Validators.required, CustomValidators.maxDate(moment())]],
+      taskNumberEndDate  : [this.incidentTask.taskNumberEndDate, [Validators.required, CustomValidators.minDate(startDate.add(80, 'h'))]],
+      details            : [this.incidentTask.details, Validators.required],
+      overrideDate       : [this.incidentTask.taskNumberEndDate]
     });
   }
 
@@ -207,6 +219,18 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
       taskNumberEndDate: this.form.controls.overrideDate.value
     });
     this.toggleOverride();
+  }
+
+  startDateChange(date: Date): void {
+    const minEndDate: moment.Moment = moment(date).add(80, 'h');
+    const currentEndDate: moment.Moment = moment(this.form.controls.taskNumberEndDate.value);
+    // ensure the end date is at least 80 hours after the start
+    if (minEndDate.isAfter(currentEndDate)) {
+      this.form.patchValue({
+        taskNumberEndDate: minEndDate.toDate()
+      });
+      this.overrideDate = minEndDate.toDate();
+    }
   }
 
   cancel() {
