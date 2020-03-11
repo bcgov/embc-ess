@@ -24,3 +24,18 @@ $first-time-login-banner-color: #ff6625;
     padding: 20px;
   }
 }
+
+// Probably a better way to get the buttons to align but I am the worst and just doing this 
+.banner-spacing {
+  background-color: $bg-light-blue;
+  color: white;
+  width: 100%;
+  height: 2.5em;
+  align-items: center;
+  & span {
+    flex: 1 1 auto;
+    text-align: center;
+    padding: 20px;
+  }
+}
+
