@@ -11,6 +11,9 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class HeaderComponent implements OnInit {
   @Input() currentUser: User;
   displayName: string = null;
+  // This should be in a constants file or something
+  private IDIR_USER_TYPE: string = "internal";
+  private isIDIR: boolean;
   constructor(
     private router: Router,
     private authService: AuthService
@@ -21,6 +24,8 @@ export class HeaderComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChange) {
     if (this.displayName == null && this.currentUser !== null) {
+      // Determine user type: IDIR format is lName, fName while BCeID is fName, lName
+      this.isIDIR = this.currentUser.userType === this.IDIR_USER_TYPE;
       // Separated by spaces... usually
       let spaceSplit: string[] = this.currentUser.name.split(' ');
       let commaSplit: string[] = this.currentUser.name.split(',');
@@ -42,8 +47,8 @@ export class HeaderComponent implements OnInit {
     let fName: string = null;
     let lName: string = null;
     if (nameArray.length >= 2) {
-      fName = nameArray[0];
-      lName = nameArray[1];
+      fName = this.isIDIR ? nameArray[1] : nameArray[0];
+      lName = this.isIDIR ? nameArray[0] : nameArray[1];
       if (lName.length >= 1) {
         lName = lName.substr(0, 1);
       }
