@@ -108,7 +108,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
       taskNumber         : ['', Validators.required],
       community          : [null, Validators.required],
       taskNumberStartDate: [moment(), [Validators.required, CustomValidators.maxDate(moment())]],
-      taskNumberEndDate  : [moment().add(80, 'h'), [Validators.required, CustomValidators.minDate(moment().add(80, 'h'))]],
+      taskNumberEndDate  : [moment().add(80, 'h'), [Validators.required]],
       details            : ['', Validators.required],
       overrideDate       : [moment().add(80, 'h')]
     });
@@ -119,8 +119,8 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     this.form = this.fb.group({
       taskNumber         : [this.incidentTask.taskNumber, Validators.required],
       community          : [this.incidentTask.community, Validators.required],
-      taskNumberStartDate: [startDate, [Validators.required, CustomValidators.maxDate(moment())]],
-      taskNumberEndDate  : [this.incidentTask.taskNumberEndDate, [Validators.required, CustomValidators.minDate(startDate.add(80, 'h'))]],
+      taskNumberStartDate: [startDate, [Validators.required]], // removed [CustomValidators.maxDate(moment())]; if we init from form we are editing
+      taskNumberEndDate  : [this.incidentTask.taskNumberEndDate, [Validators.required]],
       details            : [this.incidentTask.details, Validators.required],
       overrideDate       : [this.incidentTask.taskNumberEndDate]
     });

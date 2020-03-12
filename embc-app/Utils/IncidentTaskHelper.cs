@@ -37,10 +37,6 @@ namespace Gov.Jag.Embc.Public.Utils
             {
                 results = new Tuple<string, string>("TaskNumberEndDate", "Incident task must have a task number end date");
             }
-            else if (item.TaskNumberEndDate.HasValue && item.TaskNumberEndDate.Value.ToUniversalTime() < item.TaskNumberStartDate.Value.ToUniversalTime().AddHours(80))
-            {
-                results = new Tuple<string, string>("TaskNumberEndDate", "Incident task number end date must be at least 80 hours ahead of the start time");
-            }
 
             return results;
         }
