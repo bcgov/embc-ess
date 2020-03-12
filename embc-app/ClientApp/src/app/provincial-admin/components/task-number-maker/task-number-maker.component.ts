@@ -230,9 +230,6 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
         taskNumberEndDate: minEndDate.toDate()
       });
       this.overrideDate = minEndDate.toDate();
-      // if (this.incidentTask.id != null) {
-      //   this.initFormFromIncidentTask();
-      // }
     }
   }
 
