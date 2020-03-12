@@ -10,7 +10,7 @@ import { IncidentTaskService } from 'src/app/core/services/incident-task.service
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { invalidField, normalizeDate } from 'src/app/shared/utils';
+import { invalidField } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 
 @Component({
@@ -117,9 +117,6 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
   initFormFromIncidentTask() {
     let startDate: Date = new Date(this.incidentTask.taskNumberStartDate);
     let endDate: Date   = new Date(this.incidentTask.taskNumberEndDate);
-    // Normalize the dates (date times have funky offset issues)
-    //startDate = normalizeDate(startDate);
-    //endDate   = normalizeDate(endDate);
     this.form = this.fb.group({
       taskNumber         : [this.incidentTask.taskNumber, Validators.required],
       community          : [this.incidentTask.community, Validators.required],
@@ -139,9 +136,6 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     this.form.reset();
     let startDate: Date = new Date(this.incidentTask.taskNumberStartDate);
     let endDate: Date   = new Date(this.incidentTask.taskNumberEndDate);
-    // Normalize the dates (date times have funky offset issues)
-    //startDate = normalizeDate(startDate);
-    endDate   = normalizeDate(endDate);
     // flow data back into the form
     this.form.patchValue({
       taskNumber: task.taskNumber,
