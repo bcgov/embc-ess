@@ -4,9 +4,9 @@ import { AppVersion } from 'src/app/core/models/app-version.model';
 import { VolunteerTaskService } from 'src/app/core/services/volunteer-task.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store';
-import * as VolunteerTaskActions from 'src/app/store/volunteer-task/volunteer-task.actions';
 import { Volunteer } from 'src/app/core/models';
 import { VolunteerTask } from 'src/app/core/models/volunteer-task.model';
+import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -20,12 +20,17 @@ export class ActiveTaskComponent {
     public activeModal: NgbActiveModal,
     private store: Store<AppState>,
     private volunteerTaskService: VolunteerTaskService
-  ) { }
+  ) { 
+    this.store.select(state => state.volunterTask)
+    .pipe(filter(task => !!task))
+    .subscribe(task => {
+        this.activeModal.close();
+    });
+  }
 
   assignTaskNumber() {
-    this.volunteerTaskService.setVolunteerTaskForCurrentUser(this.taskNumber)
+    this.volunteerTaskService.setVolunteerTask(this.taskNumber)
       .subscribe((result: VolunteerTask) => {
-        this.store.dispatch(new VolunteerTaskActions.SetCurrentVolunteerTask({ task: result.incidentTask.taskNumber }));
         this.activeModal.close();
       });
   }

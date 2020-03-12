@@ -86,6 +86,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<VolunteerTask> GetVolunteerTaskByIdAsync(int id);
         Task<VolunteerTask> GetVolunteerTaskByIncideTaskIdAsync(Guid taskId);
+        Task<VolunteerTask> GetVolunteerTaskByVolunteerIdAsync(int volunteerId);
         Task UpdateVolunteerTasksAsync(VolunteerTask updatedVolunteerTask);
         Task<VolunteerTask> CreateVolunteerTaskAsync(VolunteerTask newVolunteerTask);
 

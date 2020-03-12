@@ -35,6 +35,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return mapper.Map<VolunteerTask>(volunteerTask);
         }
 
+          public async Task<VolunteerTask> GetVolunteerTaskByVolunteerIdAsync(int volunteerId)
+        {
+            var volunteerTask = await VolunteerTasks.SingleOrDefaultAsync(v => v.Volunteer.Id == volunteerId);
+            return mapper.Map<VolunteerTask>(volunteerTask);
+        }
+
         public async Task<VolunteerTask> CreateVolunteerTaskAsync(VolunteerTask newVolunteerTask)
         {
             var volunteerTask = mapper.Map<Models.Db.VolunteerTask>(newVolunteerTask);
