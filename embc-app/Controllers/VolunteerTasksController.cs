@@ -70,22 +70,26 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] VolunteerTask item)
+        [HttpGet("active-task")]
+        public async Task<IActionResult> GetActiveTask()
         {
-            // var existing = await dataInterface.GetVolunteerByBceidUserNameAsync(item.BceidAccountNumber);
-            // if (existing != null)
-            // {
-            //     ModelState.AddModelError("Externaluseridentifier", $"Duplicate Id {item.Id} found.");
-            // }
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var result = await dataInterface.CreateVolunteerTaskAsync(item);
-            return Json(await dataInterface.GetVolunteerTaskByIdAsync(result.Id));
+            var volunteerId = HttpContext.User.FindFirstValue(EssClaimTypes.USER_ID);
+            // get volunteerTask by incident task id
+            var volunteerTask = await dataInterface.GetVolunteerTaskByVolunteerIdAsync(int.Parse(volunteerId));
+
+            var sessionTimeout = configuration.ServerTimeoutInMinutes();
+
+            //check if volunteer task is valid
+            var endOfLife = volunteerTask.LastDateVolunteerConfirmedTask.AddMinutes(sessionTimeout);
+            if(DateTime.Now > endOfLife){
+                return null;
+            }
+            return Json(volunteerTask);
         }
 
         [HttpPut("{id}")]

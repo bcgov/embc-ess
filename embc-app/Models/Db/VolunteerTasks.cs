@@ -15,6 +15,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public int Id { get; set; }
         public int VolunteerId { get; set; }
         public Volunteer Volunteer { get; set; }
+        public DateTimeOffset LastDateVolunteerConfirmedTask { get; set; }
 
         public Guid IncidentTaskId { get; set; }
         public IncidentTask IncidentTask { get; set; }

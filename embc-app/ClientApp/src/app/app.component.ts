@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from './store';
 import { Config } from './core/models';
+import { WatchdogService } from './core/services/watchdog.service';
 
 @Component({
   selector: 'app-root',

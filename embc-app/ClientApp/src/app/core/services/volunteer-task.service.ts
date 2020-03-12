@@ -5,41 +5,66 @@ import { catchError, retry, map } from 'rxjs/operators';
 import { CoreModule } from '../core.module';
 import { Volunteer, ListResult } from '../models';
 import { RestService } from './rest.service';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { SearchQueryParameters } from '../models/search-interfaces';
 import { VolunteerTask } from '../models/volunteer-task.model';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store';
+import { CookieService } from './cookie.service';
+import * as VolunteerTaskActions from 'src/app/store/volunteer-task/volunteer-task.actions';
+import { WatchdogService } from './watchdog.service';
 
 
 @Injectable({
   providedIn: CoreModule
 })
 export class VolunteerTaskService extends RestService {
+
   apiRoute = '/api/volunteer-task';
 
-  // getVolunteers({ limit, offset, q, sort, org_id, ess_only, admin_only }: VolunteerSearchQueryParameters = {}): Observable<ListResult<Volunteer>> {
-  //   const params = {
-  //     limit: (limit || 100).toString(), // query params are strings
-  //     offset: (offset || 0).toString(),
-  //     q: q || '',
-  //     sort: sort || 'name',
-  //     org_id: org_id || '',
-  //     ess_only: (!!ess_only).toString(),
-  //     admin_only: (!!admin_only).toString(),
-  //   };
+  /**
+   *
+   */
+  constructor(protected http: HttpClient,
+    protected store: Store<AppState>,
+    private watchDogService: WatchdogService,
+    protected cookieService: CookieService, ) {
+    super(http, store, cookieService);
+      this.loadVolunteerTask();
+      // this.watchDogService.sessionRefresed
+      // .subscribe(() => {
+      //   this.loadVolunteerTask();
+      // })
+  }
 
-  //   // get a list of all volunteers back from the api
-  //   return this.http.get<ListResult<Volunteer>>(this.apiRoute, { headers: this.headers, params })
-  //     .pipe(
-  //       retry(3),
-  //       catchError(this.handleError)
-  //     );
-  // }
+  loadVolunteerTask() {
+    this.getActiveVolunteerTask()
+    .subscribe(task => {
+      if(task){
+        this.setVolunteerTask(task.incidentTask.taskNumber)
+        .subscribe();
+      }
+    });
+  }
 
-  setVolunteerTaskForCurrentUser(taskId: string): Observable<VolunteerTask> {
+  setVolunteerTask(taskId: string): Observable<VolunteerTask> {
     // get a single volunteer by their bceidAccountNumber
     // return of(VOLUNTEERS[0]);
     return this.http.post<VolunteerTask>(this.apiRoute + '/task/' + taskId, null, { headers: this.headers })
+      .pipe(map(result => {
+        //  add task to store
+        this.store.dispatch(new VolunteerTaskActions.SetCurrentVolunteerTask({ task: result.incidentTask.taskNumber }));
+        return result;
+      }))
       .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  getActiveVolunteerTask(): Observable<VolunteerTask> {
+    return this.http.get<VolunteerTask>(this.apiRoute + '/active-task/', { headers: this.headers })
+      .pipe(
+        retry(3),
         catchError(this.handleError)
       );
   }
@@ -63,6 +88,5 @@ export class VolunteerTaskService extends RestService {
         catchError(this.handleError)
       );
   }
-
 
 }

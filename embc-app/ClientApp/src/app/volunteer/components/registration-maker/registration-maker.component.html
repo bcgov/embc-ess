@@ -78,7 +78,7 @@
         <div class="form-row">
           <app-form-field required="true" class="col">
             <label for="incidentTask">Task Number</label>
-            <select [compareWith]="compareById" [class.is-invalid]="invalid('incidentTask')" class="form-control"
+            <select [compareWith]="compareById"  [class.is-invalid]="invalid('incidentTask')" class="form-control"
               formControlName="incidentTask" id="incidentTask">
               <option [ngValue]="null">-- Select task number</option>
               <option [ngValue]="incident" *ngFor="let incident of incidentTasks$ | async">
