@@ -2,8 +2,7 @@
   <h1>Tasks</h1>
 
   <p>
-    The Emergency Coordination Centre (ECC) is responsible for adding task numbers to this list.
-    If you need a new task number, contact the ECC at 1-800-663-3456.
+    EMBC is responsible for adding task numbers to this list.
   </p>
 
   <h3 class="blue-header">Task List</h3>
@@ -30,7 +29,7 @@
           <span class="font-weight-bold text-uppercase">
             <span *ngIf="showActiveTasks; then active; else inactive"></span>
           </span> tasks
-          <small class="ml-3">(<a href="#" (click)="toggleDisplayedTasks()">show <span *ngIf="showActiveTasks; then active; else inactive"></span></a>)</small>
+          <small class="ml-3">(<a href="#" (click)="toggleDisplayedTasks()">show <span *ngIf="showActiveTasks; then inactive; else active"></span></a>)</small>
         </app-pagination-summary>
       </div>
       <div class="col">

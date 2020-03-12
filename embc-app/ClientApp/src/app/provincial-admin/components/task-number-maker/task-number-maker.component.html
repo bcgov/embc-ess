@@ -2,14 +2,11 @@
   <form novalidate [formGroup]="form">
     <div class="mb-4">
       <h1>{{ pageTitle }}</h1>
-
       <p>
-        The Emergency Coordination Centre is responsible for adding task numbers to the system.
+        EMBC is responsible for adding task numbers to the system.
       </p>
-
       <small>All fields are required</small>
       <h3 class="blue-header mt-0">Task Details</h3>
-
       <div class="row">
         <div class="col mb-4">
           <label class="required" for="taskNumber">Task Number</label>
@@ -26,16 +23,17 @@
       </div>
       <div class="row">
         <div class="col mb-4">
-          <label class="">Task Number Start Date &amp; Time</label>
+          <label class="">Task Number Start Date</label>
           <div class="bott-pad-med">Start date is set to the current date and time, this can be changed if needed.</div>
-          <app-date-time-picker [class.is-invalid]="invalid('taskNumberStartDate')" formControlName="taskNumberStartDate"></app-date-time-picker>
+          <app-date-time-picker [class.is-invalid]="invalid('taskNumberStartDate')" 
+          formControlName="taskNumberStartDate" (valueChange)="startDateChange($event)"></app-date-time-picker>
           <span class="invalid-feedback" *ngIf="f.taskNumberStartDate.errors?.required">Please enter a valid date and time for the task number</span>
           <span class="invalid-feedback" *ngIf="f.taskNumberStartDate.errors?.maxDate">Date for the task number must be today or in the past</span>
         </div>
       </div>
       <div class="row">
         <div class="col mb-4">
-          <label class="required">Task Number End Date &amp; Time</label>
+          <label class="required">Task Number End Date</label>
           <div class="bott-pad-med">
             <div>
               End date and time is set to 72 hours plus an 8 hour buffer (a total of 80 hours) after the task start date.
