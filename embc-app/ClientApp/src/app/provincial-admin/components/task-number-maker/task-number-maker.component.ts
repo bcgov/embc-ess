@@ -1,5 +1,5 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
@@ -12,13 +12,14 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { invalidField } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-task-number-maker',
   templateUrl: './task-number-maker.component.html',
   styleUrls: ['./task-number-maker.component.scss']
 })
-export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
+export class TaskNumberMakerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   maker = true; // determines if the widget is in edit or confirmation mode
   editMode = false;
@@ -26,6 +27,10 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
   path: string = null; // the base path for routing
   endDateOverride: boolean = false; 
   overrideDate: Date = null;
+  // Subscription for the taskNumberStartDate control's value change event
+  // Whenever the start date's value is changed we need to update the validator
+  // on end date (end date can never be before the start date).
+  private startDateSub: Subscription;
 
   // whatever is in the application state
   currentIncidentTask$ = this.store.select(i => i.incidentTasks.currentIncidentTask);
@@ -103,15 +108,20 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     }
   }
 
+  ngOnDestroy() {
+    this.startDateSub.unsubscribe();
+  }
+
   initializeForm() {
     this.form = this.fb.group({
       taskNumber         : ['', Validators.required],
       community          : [null, Validators.required],
       taskNumberStartDate: [moment(), [Validators.required, CustomValidators.maxDate(moment())]],
-      taskNumberEndDate  : [moment().add(80, 'h'), [Validators.required]],
+      taskNumberEndDate  : [moment().add(80, 'h'), [Validators.required, CustomValidators.minDate(moment())]],
       details            : ['', Validators.required],
       overrideDate       : [moment().add(80, 'h')]
     });
+    this.setEndDateValidatorSubscription();
   }
 
   initFormFromIncidentTask() {
@@ -121,9 +131,20 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
       taskNumber         : [this.incidentTask.taskNumber, Validators.required],
       community          : [this.incidentTask.community, Validators.required],
       taskNumberStartDate: [startDate, [Validators.required]], 
-      taskNumberEndDate  : [endDate, [Validators.required]],
+      taskNumberEndDate  : [endDate, [Validators.required, CustomValidators.minDate(startDate)]],
       details            : [this.incidentTask.details, Validators.required],
       overrideDate       : [endDate]
+    });
+    this.setEndDateValidatorSubscription();
+  }
+
+  private setEndDateValidatorSubscription() {
+    const startDateControl = <FormControl>this.form.get('taskNumberStartDate');
+    const endDateControl   = <FormControl>this.form.get('taskNumberEndDate');
+    // subscribe to taskNumberStartDate value changes
+    this.startDateSub = startDateControl.valueChanges.subscribe(value => {
+      endDateControl.setValidators([Validators.required, CustomValidators.minDate(moment(value))]);
+      endDateControl.updateValueAndValidity();
     });
   }
 
@@ -221,6 +242,8 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
       taskNumberEndDate: this.form.controls.overrideDate.value
     });
     this.toggleOverride();
+    const endDateControl = <FormControl>this.form.get("taskNumberEndDate");
+    endDateControl.updateValueAndValidity();
   }
 
   startDateChange(date: Date): void {
