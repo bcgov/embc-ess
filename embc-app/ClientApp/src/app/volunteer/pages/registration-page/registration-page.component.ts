@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistrationPageComponent implements OnInit {
 
+  onSummaryPage: boolean = false;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onSummaryChange(onSummary: boolean) {
+    this.onSummaryPage = onSummary;
   }
 
 }
