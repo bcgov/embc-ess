@@ -36,12 +36,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.store.select(s => s.lookups.config.config).subscribe((config: Config) => {
       this.config = config;
     });
-    let sub = this.authService.userLogOutEvent$
-      .subscribe((user) => {
-        this.volunteerTaskService.invalidateActiveVolunteerTask()
-          .subscribe();
-      });
-    this.subscriptions.push(sub);
+    // let sub = this.authService.userLogOutEvent$
+    //   .subscribe((user) => {
+    //     this.volunteerTaskService.invalidateActiveVolunteerTask()
+    //       .subscribe();
+    //   });
+    // this.subscriptions.push(sub);
   }
 
   ngOnInit() {

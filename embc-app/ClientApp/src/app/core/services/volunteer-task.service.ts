@@ -30,7 +30,7 @@ export class VolunteerTaskService extends RestService {
     private watchDogService: WatchdogService,
     protected cookieService: CookieService, ) {
     super(http, store, cookieService);
-      this.loadVolunteerTask();
+      // this.loadVolunteerTask();
   }
 
   loadVolunteerTask() {
@@ -49,6 +49,7 @@ export class VolunteerTaskService extends RestService {
     return this.http.post<VolunteerTask>(this.apiRoute + '/task/' + taskId, null, { headers: this.headers })
       .pipe(map(result => {
         //  add task to store
+        debugger
         this.store.dispatch(new VolunteerTaskActions.SetCurrentVolunteerTask({ task: result.incidentTask.taskNumber }));
         return result;
       }))
