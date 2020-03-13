@@ -23,7 +23,7 @@
       </div>
       <div class="row">
         <div class="col mb-4">
-          <label class="">Task Number Start Date</label>
+          <label class="required">Task Number Start Date</label>
           <div class="bott-pad-med">Start date is set to the current date and time, this can be changed if needed.</div>
           <app-date-time-picker [class.is-invalid]="invalid('taskNumberStartDate')" 
           formControlName="taskNumberStartDate" (valueChange)="startDateChange($event)"></app-date-time-picker>
