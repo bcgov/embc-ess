@@ -7,6 +7,7 @@ import { EvacueeSearchQueryParameters } from 'src/app/core/models/search-interfa
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { EvacueeService } from 'src/app/core/services/evacuee.service';
 import { FormBuilder } from '@angular/forms';
+import { EVERYONE, VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from 'src/app/constants';
 import * as moment from 'moment';
 import { dateStringIsValid } from 'src/app/shared/utils/date-utils';
 
@@ -29,7 +30,7 @@ export class LocalAuthorityEvacueeListComponent implements OnInit {
   previousQuery: EvacueeSearchQueryParameters = {};
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
-
+  isAdmin = false; // flag that controls whether to display the Superuser or Admin text
   readonly dateMask = [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]; // yyyy-mm-dd
   dobString: string = null;
   // for R1, advanced search mode is the only mode
@@ -71,6 +72,11 @@ export class LocalAuthorityEvacueeListComponent implements OnInit {
     this.authService.path.subscribe((path: string) => this.path = path);
     this.getEvacuees().subscribe((listResult: ListResult<EvacueeListItem>) => {
       this.resultsAndPagination = listResult;
+    });
+    // Determine if user is Superuser or Admin
+    this.authService.role.subscribe((role: string) => {
+      // Only Superusers and Admins can be routed here, so only need to check the one role
+      this.isAdmin = role === PROVINCIAL_ADMIN;
     });
   }
 
