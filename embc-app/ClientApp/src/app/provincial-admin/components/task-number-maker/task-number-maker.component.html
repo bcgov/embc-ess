@@ -23,7 +23,7 @@
       </div>
       <div class="row">
         <div class="col mb-4">
-          <label class="">Task Number Start Date</label>
+          <label class="required">Task Number Start Date</label>
           <div class="bott-pad-med">Start date is set to the current date and time, this can be changed if needed.</div>
           <app-date-time-picker [class.is-invalid]="invalid('taskNumberStartDate')" 
           formControlName="taskNumberStartDate" (valueChange)="startDateChange($event)"></app-date-time-picker>
@@ -44,7 +44,10 @@
           </div>
           <!--Read only-->
           <div class="strong" *ngIf="!this.endDateOverride">
-            {{f.taskNumberEndDate.value | date : 'MMM-dd-yyyy'}} at {{f.taskNumberEndDate.value | date : "HH:mm"}}
+            <br />
+            <p class="start-date-text">
+              <strong>{{f.taskNumberEndDate.value | date : 'MMM-dd-yyyy'}}</strong>&nbsp; at &nbsp;<strong>{{f.taskNumberEndDate.value | date : "HH:mm"}}</strong>
+            </p>
             &nbsp;
             <a href="javascript:void(0)" (click)="toggleOverride()">
               <app-font-awesome-icon icon="times"></app-font-awesome-icon>
