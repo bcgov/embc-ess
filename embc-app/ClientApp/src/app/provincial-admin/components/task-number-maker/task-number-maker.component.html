@@ -44,7 +44,10 @@
           </div>
           <!--Read only-->
           <div class="strong" *ngIf="!this.endDateOverride">
-            {{f.taskNumberEndDate.value | date : 'MMM-dd-yyyy'}} at {{f.taskNumberEndDate.value | date : "HH:mm"}}
+            <br />
+            <p class="start-date-text">
+              <strong>{{f.taskNumberEndDate.value | date : 'MMM-dd-yyyy'}}</strong>&nbsp; at &nbsp;<strong>{{f.taskNumberEndDate.value | date : "HH:mm"}}</strong>
+            </p>
             &nbsp;
             <a href="javascript:void(0)" (click)="toggleOverride()">
               <app-font-awesome-icon icon="times"></app-font-awesome-icon>
