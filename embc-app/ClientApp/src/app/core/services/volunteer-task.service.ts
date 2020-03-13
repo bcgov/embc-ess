@@ -31,10 +31,6 @@ export class VolunteerTaskService extends RestService {
     protected cookieService: CookieService, ) {
     super(http, store, cookieService);
       this.loadVolunteerTask();
-      // this.watchDogService.sessionRefresed
-      // .subscribe(() => {
-      //   this.loadVolunteerTask();
-      // })
   }
 
   loadVolunteerTask() {
@@ -69,20 +65,8 @@ export class VolunteerTaskService extends RestService {
       );
   }
 
-  createVolunteer(data: VolunteerTask): Observable<VolunteerTask> {
-    // this will return a response string of 200. This may need to become a Response eventually
-    // return of('200');
-    return this.http.post<VolunteerTask>(this.apiRoute, data, { headers: this.headers })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      );
-  }
-
-  updateVolunteer(data: VolunteerTask): Observable<HttpResponse<any>> {
-    // this will return a response string of 200. This may need to become a Response eventually
-    // return of('200');
-    return this.http.put<HttpResponse<any>>(this.apiRoute + '/' + data.id, data, { headers: this.headers })
+  invalidateActiveVolunteerTask(): Observable<HttpResponse<any>> {
+    return this.http.put<HttpResponse<any>>(this.apiRoute + '/invalidate-active-task', null, { headers: this.headers })
       .pipe(
         retry(3),
         catchError(this.handleError)

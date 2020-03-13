@@ -54,7 +54,8 @@ namespace Gov.Jag.Embc.Public.Controllers
                 {
                     IncidentTaskId = Guid.Parse(task.Id),
                     VolunteerId = int.Parse(volunteerId),
-                    LastDateVolunteerConfirmedTask = DateTime.Now
+                    LastDateVolunteerConfirmedTask = DateTime.Now,
+                    IsValid = true
                 };
                 volunteerTask = await dataInterface.CreateVolunteerTaskAsync(newVolunteerTask);
             }
@@ -62,6 +63,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             else
             {
                 volunteerTask.LastDateVolunteerConfirmedTask = DateTime.Now;
+                volunteerTask.IsValid = true;
                 volunteerTask.VolunteerId = int.Parse(volunteerId);
                 await dataInterface.UpdateVolunteerTasksAsync(volunteerTask);
             }
@@ -79,39 +81,32 @@ namespace Gov.Jag.Embc.Public.Controllers
             }
 
             var volunteerId = HttpContext.User.FindFirstValue(EssClaimTypes.USER_ID);
-            // get volunteerTask by incident task id
+            // get volunteerTask by volunteer id
             var volunteerTask = await dataInterface.GetVolunteerTaskByVolunteerIdAsync(int.Parse(volunteerId));
 
             var sessionTimeout = configuration.ServerTimeoutInMinutes();
 
             //check if volunteer task is valid
             var endOfLife = volunteerTask.LastDateVolunteerConfirmedTask.AddMinutes(sessionTimeout);
-            if(DateTime.Now > endOfLife){
-                return null;
+            if(DateTime.Now > endOfLife || !volunteerTask.IsValid){
+                return Json(null);
             }
             return Json(volunteerTask);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromBody] Volunteer item, string id)
+        [HttpPut("invalidate-active-task")]
+        public async Task<IActionResult> Update()
         {
-            if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id)
-            {
-                return BadRequest(Json(id));
+            var volunteerId = HttpContext.User.FindFirstValue(EssClaimTypes.USER_ID);
+            // get volunteerTask by volunteer id
+            var volunteerTask = await dataInterface.GetVolunteerTaskByVolunteerIdAsync(int.Parse(volunteerId));
+
+            if(volunteerTask != null){
+                volunteerTask.IsValid = false;
+                volunteerTask.VolunteerId = int.Parse(volunteerId);
+                await dataInterface.UpdateVolunteerTasksAsync(volunteerTask);
             }
 
-            var existing = await dataInterface.GetVolunteerTaskByIdAsync(int.Parse(id));
-            if (existing == null)
-            {
-                return NotFound();
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            await dataInterface.UpdateVolunteerAsync(item);
             return Ok();
         }
     }

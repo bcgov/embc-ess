@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { RestService } from './rest.service';
 import { User } from '../models';
 import { EVERYONE, VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from 'src/app/constants';
@@ -22,7 +22,10 @@ export class AuthService extends RestService {
   // // whether the user is currently logged in.
   // isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
-  public currentUser: User = null; // local copy of user profile
+  // event that is fired when user logs in
+  public userLogOutEvent$ = new Subject<boolean>();
+
+  public currentUser: User; // local copy of user profile
 
   get isLoggedIn(): boolean {
     return !!this.currentUser;
@@ -55,11 +58,12 @@ export class AuthService extends RestService {
 
     // remove all saved data from session storage
     sessionStorage.clear();
-
+    
     // clear all cookies
     this.cookieService.clear();
-
+    
     if (wasLoggedIn) {
+      this.userLogOutEvent$.next(true);
       document.location.href = '/logout';
     }
 
