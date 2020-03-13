@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin-volunteer-maker-page.component.scss']
 })
 export class AdminVolunteerMakerPageComponent implements OnInit {
-
+  onSummaryPage: boolean = false;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onSummaryChange(onSummary: boolean) {
+    this.onSummaryPage = onSummary;
   }
 
 }
