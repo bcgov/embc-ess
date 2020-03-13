@@ -65,7 +65,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit, OnDestro
   // convenience getter for easy access to form fields
   get f(): any { return this.form.controls; }
 
-  get pageTitle(): string { return this.editMode ? 'Edit a Task Number' : 'Add a Task Number'; }
+  get pageTitle(): string { return this.editMode ? 'Edit Task Details' : 'Add a Task Number'; }
 
   ngOnInit() {
     // keep the current path up to date

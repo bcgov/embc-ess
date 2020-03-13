@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { combineLatest, Observable, of } from 'rxjs';
@@ -19,6 +19,8 @@ import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 })
 export class AdminVolunteerMakerComponent implements OnInit {
 
+  @Output()
+  onSummary: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   editing = true; // whether we are adding/editing or reviewing
   submitting = false; // whether we are submitting data to BE
@@ -54,6 +56,7 @@ export class AdminVolunteerMakerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.onSummary.emit(this.editing);
     this.form = this.fb.group({
       organization: [null, Validators.required],
       lastName: ['', Validators.required],
@@ -284,6 +287,7 @@ export class AdminVolunteerMakerComponent implements OnInit {
       this.volunteer = { ...this.volunteer, ...this.form.value };
 
       this.editing = false;
+      this.onSummary.emit(this.editing);
       window.scrollTo(0, 0); // scroll to top
     }
   }
@@ -291,6 +295,7 @@ export class AdminVolunteerMakerComponent implements OnInit {
   back() {
     // show the editing parts of the form
     this.editing = true;
+    this.onSummary.emit(this.editing);
     window.scrollTo(0, 0); // scroll to top
 
     // page controls have been updated
