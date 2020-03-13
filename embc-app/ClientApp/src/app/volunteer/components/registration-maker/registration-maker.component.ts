@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -14,7 +14,7 @@ import { IncidentTaskService } from 'src/app/core/services/incident-task.service
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { hasErrors, invalidField, clearFormArray, compareById } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
-import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
+import { GENDER_OPTIONS, INSURANCE_OPTIONS, EVERYONE, VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from 'src/app/constants';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
@@ -26,6 +26,9 @@ import { of } from 'rxjs';
   styleUrls: ['./registration-maker.component.scss']
 })
 export class RegistrationMakerComponent implements OnInit, AfterViewInit {
+
+  @Output()
+  onSummary: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   // state needed by this FORM
   countries$ = this.store.select(s => s.lookups.countries.countries);
@@ -49,7 +52,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   editMode = false; // edit mode is the mode where the form is fed data from the api. (Changes text and etc.)
   summaryMode = false; // just show the summary
   submitting = false; // this is what disables buttons on submit
-
+  taskSelectDisabled = true; // whether or not the user is allowed to choose a task for the registration
   // DECLARATION AND CONSENT MUST BE CHECKED BEFORE SUBMIT
   declarationAndConsent: FormControl = new FormControl(null);
 
@@ -215,7 +218,11 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
     // Know the current user
     this.authService.getCurrentUser().subscribe((user: User) => this.currentUser = user);
-
+    this.authService.role.subscribe((role: string) => {
+      // If the user Everyone or Volunteer (ERA User) then they cannot choose the task number. 
+      this.taskSelectDisabled = role !== PROVINCIAL_ADMIN && role !== LOCAL_AUTHORITY;
+      this.initForm();
+    });
     // // if there are route params we should grab them
     // const id = this.route.snapshot.paramMap.get('id');
 
@@ -379,7 +386,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
       familyMembers: this.formBuilder.array([]), // array of formGroups
 
-      incidentTask: [null, Validators.required], // which task is this from
+      incidentTask: [{value: null, disabled: this.taskSelectDisabled}, [Validators.required]], // which task is this from
       hostCommunity: [null, Validators.required], // which community is hosting
 
       // UI booleans
@@ -608,6 +615,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
       // navigate to the next page. AKA show the summary part of the form.
       this.summaryMode = true;
+      this.onSummary.emit(true);
       this.submitting = false; // reenable when we parse data
       window.scrollTo(0, 0); // scroll to top
     }
@@ -729,6 +737,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   back() {
     // return to the edit mode so you can change the form data
     this.summaryMode = false;
+    this.onSummary.emit(false);
     window.scrollTo(0, 0); // scroll to top
   }
 

@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-lg-9">
-    <app-admin-volunteer-maker></app-admin-volunteer-maker>
+    <app-admin-volunteer-maker (onSummary)="onSummaryChange($event)"></app-admin-volunteer-maker>
   </div>
   <div class="col-lg-3">
-    <app-side-box>
+    <app-side-box *ngIf="onSummaryPage">
       <p>
         <strong>ERA User versus ERA Superuser</strong>
       </p>

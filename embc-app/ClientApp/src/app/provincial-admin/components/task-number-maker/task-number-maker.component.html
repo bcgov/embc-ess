@@ -5,7 +5,7 @@
       <p>
         EMBC is responsible for adding task numbers to the system.
       </p>
-      <small>All fields are required</small>
+      <small>All required fields are marked with a red asterisk  <i class="text-danger">*</i></small>
       <h3 class="blue-header mt-0">Task Details</h3>
       <div class="row">
         <div class="col mb-4">
@@ -23,7 +23,7 @@
       </div>
       <div class="row">
         <div class="col mb-4">
-          <label class="">Task Number Start Date</label>
+          <label class="required">Task Number Start Date</label>
           <div class="bott-pad-med">Start date is set to the current date and time, this can be changed if needed.</div>
           <app-date-time-picker [class.is-invalid]="invalid('taskNumberStartDate')" 
           formControlName="taskNumberStartDate" (valueChange)="startDateChange($event)"></app-date-time-picker>
@@ -44,7 +44,12 @@
           </div>
           <!--Read only-->
           <div class="strong" *ngIf="!this.endDateOverride">
-            {{f.taskNumberEndDate.value | date : 'MMM-dd-yyyy'}} at {{f.taskNumberEndDate.value | date : "HH:mm"}}
+            <br />
+            <p class="start-date-text">
+              <strong>{{f.taskNumberEndDate.value | date : 'MMM-dd-yyyy'}}</strong>&nbsp; at &nbsp;<strong>{{f.taskNumberEndDate.value | date : "HH:mm"}}</strong>
+            </p>
+            <span class="text-danger" *ngIf="f.taskNumberEndDate.errors?.required">Please enter a valid date and time for the task number</span>
+            <span class="text-danger" *ngIf="f.taskNumberEndDate.errors?.minDate">Date for the task number end date must be after the start date</span>
             &nbsp;
             <a href="javascript:void(0)" (click)="toggleOverride()">
               <app-font-awesome-icon icon="times"></app-font-awesome-icon>
@@ -60,7 +65,7 @@
               <button class="btn btn-outline-secondary" (click)="toggleOverride()">CANCEL</button>
             </div>
             <span class="invalid-feedback" *ngIf="f.taskNumberEndDate.errors?.required">Please enter a valid date and time for the task number</span>
-            <span class="invalid-feedback" *ngIf="f.taskNumberEndDate.errors?.minDate">Date for the task number end date must be at least 80 hours from the start date</span>
+            <span class="invalid-feedback" *ngIf="f.taskNumberEndDate.errors?.minDate">Date for the task number end date must be after the start date</span>
           </div>
         </div>
       </div>
@@ -76,6 +81,7 @@
     <div *ngIf="showErrorsWhen && !form.valid" class="text-danger">
       <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>
       &nbsp;Some required fields have not been completed.
+      
     </div>
 
     <div class="mt-5 space-between">
