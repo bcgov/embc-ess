@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -26,6 +26,9 @@ import { of } from 'rxjs';
   styleUrls: ['./registration-maker.component.scss']
 })
 export class RegistrationMakerComponent implements OnInit, AfterViewInit {
+
+  @Output()
+  onSummary: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   // state needed by this FORM
   countries$ = this.store.select(s => s.lookups.countries.countries);
@@ -217,7 +220,8 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     this.authService.getCurrentUser().subscribe((user: User) => this.currentUser = user);
     this.authService.role.subscribe((role: string) => {
       // If the user Everyone or Volunteer (ERA User) then they cannot choose the task number. 
-      this.taskSelectDisabled = role === EVERYONE || role === VOLUNTEER;
+      this.taskSelectDisabled = role !== PROVINCIAL_ADMIN && role !== LOCAL_AUTHORITY;
+      this.initForm();
     });
     // // if there are route params we should grab them
     // const id = this.route.snapshot.paramMap.get('id');
@@ -611,6 +615,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
       // navigate to the next page. AKA show the summary part of the form.
       this.summaryMode = true;
+      this.onSummary.emit(true);
       this.submitting = false; // reenable when we parse data
       window.scrollTo(0, 0); // scroll to top
     }
@@ -732,6 +737,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   back() {
     // return to the edit mode so you can change the form data
     this.summaryMode = false;
+    this.onSummary.emit(false);
     window.scrollTo(0, 0); // scroll to top
   }
 

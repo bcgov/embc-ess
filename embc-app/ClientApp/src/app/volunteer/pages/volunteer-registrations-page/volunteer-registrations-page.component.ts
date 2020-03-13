@@ -29,7 +29,7 @@ export class VolunteerRegistrationsPageComponent {
 
   
   showVersion(){
-    const modalRef =this.modals.open(ActiveTaskComponent, {backdrop:true, beforeDismiss: () => false});
+    const modalRef =this.modals.open(ActiveTaskComponent, {backdrop:true, beforeDismiss: () => false, size: 'lg'});
     // modalRef.componentInstance.version = this.appVersion;
   }
 

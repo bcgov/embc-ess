@@ -3,16 +3,16 @@
   <div *ngIf="(iAmLocalAuthority || iAmProvincialAdmin) && (editMode === 'ADD' || editMode === 'EDIT') && (doSelectOrg === true || doSelectOrg === false)">
     <form novalidate [formGroup]="form">
       <h1 *ngIf="iAmLocalAuthority && editMode === 'ADD'">Add Evacuee Registration &amp; Assistance (ERA) User</h1>
-      <h1 *ngIf="iAmLocalAuthority && editMode === 'EDIT'">Edit ERA User Details</h1>
+      <h1 *ngIf="iAmLocalAuthority && editMode === 'EDIT'">Edit Evacuee Registration &amp; Assistance (ERA)</h1>
       <h1 *ngIf="iAmProvincialAdmin && editMode === 'ADD'">Add ERA User</h1>
-      <h1 *ngIf="iAmProvincialAdmin && editMode === 'EDIT'">Edit ERA User Details</h1>
+      <h1 *ngIf="iAmProvincialAdmin && editMode === 'EDIT'">Edit Evacuee Registration &amp; Assistance (ERA)</h1>
 
       <p class="pb-3" *ngIf="iAmProvincialAdmin">
         Administrators can add users within an organization if they have their first name, last name, role, and Business BCeID.
       </p>
 
       <small>All fields are required</small>
-      <h3 class="blue-header mt-0">User Details</h3>
+      <h3 class="blue-header mt-0">ERA User Details</h3>
 
       <div class="row pt-4" *ngIf="iAmProvincialAdmin && editMode === 'ADD'">
         <div class="col-8">
@@ -76,7 +76,7 @@
         </div>
       </div>
 
-      <div class="row pt-4" *ngIf="iAmProvincialAdmin">
+      <div class="row pt-4">
         <div class="col">
           <label class="required">Role</label>
           <fieldset class="form-group">

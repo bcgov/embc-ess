@@ -1,7 +1,7 @@
 <!-- Local Authority -->
 <div class="mb-4">
   <h1>Emergency Support Services Team Management Dashboard</h1>
-  <p>Use this section to add new Emergency Support Services users, as well as edit existing user information and permissions.</p>
+  <p>Use this section to add new ERA Users, as well as edit existing user information and permissions.</p>
 
   <h3 class="blue-header">Users List</h3>
   <div class="form-row">
@@ -31,7 +31,8 @@
       <thead class="thead-light">
         <th scope="col text-uppercase">Last Name</th>
         <th scope="col text-uppercase">First Name</th>
-        <th scope="col text-uppercase">BCeID</th>
+        <th scope="col text-uppercase">Business BCeID</th>
+        <th scope="col text-uppercase">Role</th>
         <!-- <th scope="col">RESTRICTED FILES</th> -->
         <th scope="col text-uppercase">Action</th>
       </thead>
@@ -40,6 +41,7 @@
           <td>{{volunteer.lastName}}</td>
           <td>{{volunteer.firstName}}</td>
           <td>{{volunteer.bceidAccountNumber}}</td>
+          <td>{{!!volunteer.isAdministrator ? 'ERA Superuser' : 'ERA User'}}</td>
           <td>
             <a href="javascript:void(0)" (click)="modifyVolunteer(volunteer.id)">Edit</a>
           </td>
