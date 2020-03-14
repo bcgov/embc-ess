@@ -42,6 +42,7 @@ import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-se
 import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/volunteer-evacuee-results-page/volunteer-evacuee-results-page.component';
 import { TaskNumberMakerPageComponent } from './provincial-admin/pages/task-number-maker-page/task-number-maker-page.component';
 import { AdminVolunteerMakerPageComponent } from './provincial-admin/pages/admin-volunteer-maker-page/admin-volunteer-maker-page/admin-volunteer-maker-page.component';
+import { AccessDeniedComponent } from './shared/components/access-denied/access-denied.component';
 
 /*
   /
@@ -95,6 +96,10 @@ const routes: Routes = [
   {
     path: 'e-access-agreement',
     component: ElectronicAccessAgreementComponent
+  },
+  {
+    path: 'access-denied',
+    component: AccessDeniedComponent
   },
   {
     path: 'test',

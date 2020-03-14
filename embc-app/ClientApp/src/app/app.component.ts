@@ -1,5 +1,5 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { forkJoin } from 'rxjs';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
+import { forkJoin, Subscription } from 'rxjs';
 // import { User } from './core/models';
 import { detectIE10orLower } from './shared/utils';
 import { ControlledListService } from './core/services/controlled-list.service';
@@ -10,20 +10,24 @@ import { Store } from '@ngrx/store';
 import { AppState } from './store';
 import { Config } from './core/models';
 import { WatchdogService } from './core/services/watchdog.service';
+import { VolunteerTaskService } from './core/services/volunteer-task.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   isIE = false;
 
   private config: Config;
 
+  private subscriptions: Subscription[] = [];
+
   constructor(
     private lookups: ControlledListService,
     public authService: AuthService,
+    private volunteerTaskService: VolunteerTaskService,
     public uniqueKeyService: UniqueKeyService,
     // private router: Router,
     private store: Store<AppState> // ngrx app state
@@ -32,6 +36,12 @@ export class AppComponent implements OnInit {
     this.store.select(s => s.lookups.config.config).subscribe((config: Config) => {
       this.config = config;
     });
+    // let sub = this.authService.userLogOutEvent$
+    //   .subscribe((user) => {
+    //     this.volunteerTaskService.invalidateActiveVolunteerTask()
+    //       .subscribe();
+    //   });
+    // this.subscriptions.push(sub);
   }
 
   ngOnInit() {
@@ -96,5 +106,11 @@ export class AppComponent implements OnInit {
       this.lookups.getAllFamilyRelationshipTypes(),
       // ...add more
     ).subscribe();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
 }
