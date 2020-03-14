@@ -58,7 +58,9 @@ export class CustomValidators {
       }
       const d = moment(c.value, format, true);
       if (isDate(d)) {
-        return d.isSameOrAfter(moment(minDate), 'days') ? null : { minDate: true };
+        return d.isSameOrAfter(moment(minDate), 'second')
+        ? null 
+        : { minDate: true };
       }
       return { minDate: true };
     };
