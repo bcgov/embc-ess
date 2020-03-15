@@ -141,7 +141,7 @@
   <p>Please confirm that all details you entered are correct by reading through the summary below.</p>
 
   <section class="p-3">
-    <h3>Emergency Support Services User Details</h3>
+    <h3>ERA User Details</h3>
     <ul class="summary">
       <li *ngIf="iAmProvincialAdmin">
         <span class="name">Organization:</span>
@@ -159,7 +159,7 @@
         <span class="name">Business BCeID:</span>
         <span class="value">{{volunteer.bceidAccountNumber}}</span>
       </li>
-      <li *ngIf="iAmProvincialAdmin">
+      <li>
         <span class="name">Role:</span>
         <span class="value">{{volunteer.isAdministrator ? 'ERA Superuser' : 'ERA User'}}</span>
       </li>
