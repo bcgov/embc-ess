@@ -7,10 +7,22 @@
     font-weight: 400;
     font-size: 30px;
   }
+  margin: 0px !important;
 }
 
 .modal-body {
   .btn.btn-primary {
     padding: 9px 20px;
   }
+  background-color: $bg-light-blue;
+}
+
+.search-box-row {
+  padding-top: 10px;
+  margin-left: 8em;
+  margin-right: 8em;
+}
+
+.no-caps {
+  text-transform: none !important;
 }

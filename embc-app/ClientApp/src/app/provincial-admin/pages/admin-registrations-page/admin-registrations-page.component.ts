@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-admin-registrations-page',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminRegistrationsPageComponent implements OnInit {
 
-  constructor() { }
+  isAdmin: boolean = false;
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
+    this.authService.isProvincialAdmin$.subscribe((result: boolean) => this.isAdmin = result);
   }
+
+
 
 }

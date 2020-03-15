@@ -1,15 +1,14 @@
 <div class="row">
   <div class="col-lg-9">
     <!-- TODO: this registration list should be broken into components without the header block -->
-    <app-organization-maker></app-organization-maker>
+    <app-organization-maker (onEditModeChanged)="editModeChange($event)"></app-organization-maker>
     <hr>
   </div>
 
   <div class="col-lg-3">
     <app-side-box>
       <p>
-        Did you know that each organization will have a Business Accounts Manager who manages all aspects of the
-        Business BCeID such as adding and removing users, resetting passwords and more.
+      {{usefulInformationText}}
       </p>
     </app-side-box>
   </div>

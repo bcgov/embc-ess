@@ -1,5 +1,5 @@
 <div class="mb-4">
-  <h1>Evacuee Registration &amp; Assistance (ERA)
+  <h1>Evacuee Registration &amp; Assistance (ERA) <br />
     <span *ngIf="isAdmin; then admin; else superuser;"></span>
     Dashboard</h1>
   <p>
@@ -9,7 +9,7 @@
     As an <span *ngIf="isAdmin; then admin; else superuser;"></span> you'll be able to register new evacuees, complete
     an existing evacuee self-registration, or if
     needed, search and edit evacuee information. You will also be able to manage ERA Users within your ESS team,
-    including adding new users and manager permissions.
+    including adding new users and managing permissions.
   </p>
   <!--Basic Search-->
   <div>
@@ -248,7 +248,7 @@
 </ng-template>
 
 <ng-template #superuser>
-  ERA Superuser
+  Superuser
 </ng-template>
 <!-- <select class="form-control" [(ngModel)]="maxSize">
     <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option>

@@ -10,12 +10,7 @@
     <app-sidebox-add-registration></app-sidebox-add-registration>
     <app-side-box title="Useful Information">
       <section role="content">
-        <p>
-          Evacuees listed here that do not have a task number are self-registered and have not yet received Emergency Support Services.
-        </p>
-        <p>
-          Use the “Action” column to “view” evacuee registrations as well as “finalize” evacuee self-registrations.
-        </p>
+        <div *ngIf="isAdmin; then admin; else superuser"></div>
       </section>
       <!-- <section role="footer">
         <button class="btn btn-primary" routerLink="/">Learn More</button>
@@ -23,3 +18,21 @@
     </app-side-box>
   </div>
 </div>
+
+<ng-template #admin>
+  <p>
+    A Business BCeID will be needed if an organization and/or a user is accessing this system.
+  </p>
+  <p>
+    If you have any questions regarding your Business BCeID, please read the 
+    <a href="https://www.bceid.ca/aboutbceid/faqs.aspx" style="color: inherit">Frequently Asked Questions</a>.
+  </p>
+</ng-template>
+<ng-template #superuser>
+  <p>
+    Evacuees listed here that do not have a task number are self-registered and have not yet received Emergency Support Services.
+  </p>
+  <p>
+    Use the “Action” column to “view” evacuee registrations as well as “finalize” evacuee self-registrations.
+  </p>
+</ng-template>

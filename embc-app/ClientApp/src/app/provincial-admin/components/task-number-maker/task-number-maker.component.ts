@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -20,6 +20,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./task-number-maker.component.scss']
 })
 export class TaskNumberMakerComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  @Output()
+  onMakeView: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   maker = true; // determines if the widget is in edit or confirmation mode
   editMode = false;
@@ -176,6 +179,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit, OnDestro
     if (this.form.valid) {
       // show the review part of the form
       this.maker = false;
+      this.onMakeView.emit(this.maker);
       this.onSave();
       window.scrollTo(0, 0); // scroll to top
     }
@@ -184,6 +188,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit, OnDestro
   back() {
     // show the editing parts of the form
     this.maker = true;
+    this.onMakeView.emit(this.maker);
     window.scrollTo(0, 0); // scroll to top
   }
 
@@ -193,6 +198,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit, OnDestro
       // TODO: go somewhere useful for this provincial user after routing is fixed.
       this.submitting = false;
       this.maker = true; // switch back into maker mode because information is somehow missed.
+      this.onMakeView.emit(this.maker);
     } else {
       // check if this is an update
       if (this.incidentTask.id) {
