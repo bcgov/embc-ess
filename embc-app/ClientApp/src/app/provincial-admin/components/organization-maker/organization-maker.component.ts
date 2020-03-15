@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { Organization } from 'src/app/core/models';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrganizationService } from 'src/app/core/services/organization.service';
@@ -24,6 +24,9 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
   path: string = null; // the base path for routing
   form: FormGroup = null;
   showErrorsWhen = false; // wait until the user click NEXT before showing any validation errors
+
+  @Output()
+  onEditModeChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   // convenience getter for easy access to form fields
   get f(): any { return this.form.controls; }
@@ -53,6 +56,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
       this.organizationService.getOrganizationById(orgId)
         .subscribe((organization: Organization) => {
           this.editMode = true;
+          this.onEditModeChanged.emit(this.editMode);
           this.maker = true;
           this.organization = organization;
 
@@ -75,6 +79,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
     } else {
       // no orgId -> add organization
       this.editMode = false;
+      this.onEditModeChanged.emit(this.editMode);
       this.maker = true;
       this.organization = {
         name: '',
