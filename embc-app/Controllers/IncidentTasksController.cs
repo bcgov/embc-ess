@@ -108,15 +108,15 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest();
             }
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var errors = IncidentTaskHelper.ValidateClientTaskProperties(item);
             if (errors != null)
             {
                 ModelState.AddModelError(errors.Item1, errors.Item2);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
             }
 
             await dataInterface.UpdateIncidentTaskAsync(item);
