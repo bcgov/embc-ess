@@ -20,7 +20,7 @@
           <div *ngIf="doSelectOrg === true">
             <select class="form-control" formControlName="organization" [class.is-invalid]="invalid('organization')" id="organization">
               <option *ngIf="!currentOrganization" [ngValue]="null">-- Select organization</option>
-              <option *ngIf="currentOrganization" [ngValue]="currentOrganization">{{currentOrganization.name}}</option>
+              <!-- <option *ngIf="currentOrganization" [ngValue]="currentOrganization">{{currentOrganization.name}}</option> -->
               <option *ngFor="let org of metaOrganizations.data" [ngValue]="org">{{org.name}}</option>
             </select>
             <span class="invalid-feedback">Please select an organization</span>
