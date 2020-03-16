@@ -14,13 +14,13 @@
       <small>All fields are required</small>
       <h3 class="blue-header mt-0">ERA User Details</h3>
 
-      <div class="row pt-4" *ngIf="iAmProvincialAdmin && editMode === 'ADD'">
+      <div class="row pt-4" *ngIf="iAmProvincialAdmin">
         <div class="col-8">
           <label class="required" for="organization">Organization</label>
           <div *ngIf="doSelectOrg === true">
             <select class="form-control" formControlName="organization" [class.is-invalid]="invalid('organization')" id="organization">
               <option *ngIf="!currentOrganization" [ngValue]="null">-- Select organization</option>
-              <option *ngIf="currentOrganization" [ngValue]="currentOrganization">{{currentOrganization.name}}</option>
+              <!-- <option *ngIf="currentOrganization" [ngValue]="currentOrganization">{{currentOrganization.name}}</option> -->
               <option *ngFor="let org of metaOrganizations.data" [ngValue]="org">{{org.name}}</option>
             </select>
             <span class="invalid-feedback">Please select an organization</span>
@@ -36,12 +36,12 @@
         </div>
       </div>
 
-      <div class="row pt-4" *ngIf="editMode === 'EDIT' && iAmProvincialAdmin">
+      <!-- <div class="row pt-4" *ngIf="editMode === 'EDIT' && iAmProvincialAdmin">
         <div class="col-8">
           <label for="organization">Organization</label>
           <input class="form-control" type="text" id="organization" [value]="currentOrganization.name" readonly>
         </div>
-      </div>
+      </div> -->
 
       <div class="row pt-4">
         <div class="col-8">
