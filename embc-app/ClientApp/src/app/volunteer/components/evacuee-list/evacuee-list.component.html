@@ -54,9 +54,8 @@
         <form novalidate [formGroup]="searchForm" (ngSubmit)="doBasicSearch()">
           <div class="feature-block">
             <p>
-              In the event where the <strong>evacuee doesn't have their ESS File #</strong>, you must request <strong>3
-                pieces of information</strong>from them in order to locate their file.
-              Ensure accurate spelling of names. <i>All fields are required</i>
+              In the event where the evacuee doesn't have their ESS File #, you must confirm 3 pieces of information in
+              order to locate their file. Ensure accurate spelling of names. <i>All fields are required</i>
             </p>
             <div class="row">
               <div class="col">
@@ -87,8 +86,7 @@
                     <div class="missing-input" *ngIf="!formValid.hasDob">
                       Please enter evacuee date of birth
                     </div>
-                    <div class="missing-input"
-                      *ngIf="formValid.hasDob && !formValid.hasValidDobFormat">
+                    <div class="missing-input" *ngIf="formValid.hasDob && !formValid.hasValidDobFormat">
                       Please enter valid date of birth
                     </div>
                   </div>
