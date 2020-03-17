@@ -17,7 +17,7 @@
       <div class="row pt-4" *ngIf="iAmProvincialAdmin">
         <div class="col-8">
           <label class="required" for="organization">Organization</label>
-          <div *ngIf="doSelectOrg === true">
+          <div *ngIf="changeOrg">
             <select class="form-control" formControlName="organization" [class.is-invalid]="invalid('organization')" id="organization">
               <option *ngIf="!currentOrganization" [ngValue]="null">-- Select organization</option>
               <!-- <option *ngIf="currentOrganization" [ngValue]="currentOrganization">{{currentOrganization.name}}</option> -->
@@ -26,7 +26,7 @@
             <span class="invalid-feedback">Please select an organization</span>
           </div>
 
-          <div *ngIf="doSelectOrg === false">
+          <div *ngIf="!changeOrg">
             <input class="form-control" type="text" id="organization" [value]="currentOrganization.name" readonly>
             <button class="btn btn-link float-right" (click)="changeOrganization()">
               <app-font-awesome-icon icon="times"></app-font-awesome-icon>
