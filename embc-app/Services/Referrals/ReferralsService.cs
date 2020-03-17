@@ -24,9 +24,9 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
         public ReferralsService(IDataInterface dataInterface, IPdfConverter pdfConverter, ICurrentUser currentUser, IHostingEnvironment environment)
         {
             this.dataInterface = dataInterface;
-            this.pdfConverter  = pdfConverter;
-            this.userService   = currentUser;
-            this.env           = environment;
+            this.pdfConverter = pdfConverter;
+            this.userService = currentUser;
+            this.env = environment;
         }
 
         public async Task<byte[]> GetReferralPdfsAsync(ReferralsToPrint printReferrals)
@@ -98,7 +98,6 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
 
             var template = handleBars.Compile(TemplateLoader.LoadTemplate(ReferalMainViews.Referral.ToString()));
 
-            
             referral.VolunteerDisplayName = userService.GetDisplayName();
             // If we're in prod, we don't want the watermark
             referral.DisplayWatermark = !env.IsProduction();
@@ -116,6 +115,8 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             var itemsHtml = string.Empty;
             var summaryBreakCount = 0;
             var printedCount = 0;
+            var VolunteerDisplayName = userService.GetDisplayName();
+            var purchaserName = referrals.FirstOrDefault()?.Purchaser;
             foreach (var referral in referrals)
             {
                 summaryBreakCount += 1;
@@ -146,7 +147,7 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
 
                     var mainTemplate = handleBars.Compile(TemplateLoader.LoadTemplate(ReferalMainViews.Summary.ToString()));
 
-                    var data = new { purchaser = referrals.First().Purchaser };
+                    var data = new { VolunteerDisplayName, purchaserName };
                     result = $"{result}{mainTemplate(data)}{pageBreak}";
                     itemsHtml = string.Empty;
                 }
