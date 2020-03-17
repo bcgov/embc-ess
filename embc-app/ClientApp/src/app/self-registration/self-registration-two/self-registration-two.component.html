@@ -2,38 +2,6 @@
   <p class="step h2 text-uppercase">Step 2 of 4</p>
   <h1 class="mt-3">Register as an Evacuee</h1>
 
-  <h2 class="blue-header h3">INSURANCE</h2>
-  <section>
-    <p class="required font-weight-bold">Do you have insurance to cover your immediate needs?</p>
-    <div class="form-group" tabindex="0">
-      <div class="form-check" (click)='openInsuranceInfoModal()'>
-        <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes" formControlName="insuranceCode" id="insuranceCodeYes">
-        <label class="form-check-label" for="insuranceCodeYes">Yes</label>
-      </div>
-      <div class="form-check" (click)='openInsuranceInfoModal()'>
-        <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes-unsure" formControlName="insuranceCode" id="insuranceCodeYesUnsure">
-        <label class="form-check-label" for="insuranceCodeYesUnsure">Yes, but I'm not sure if I have coverage for this event</label>
-      </div>
-      <div class="form-check">
-        <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="no" formControlName="insuranceCode" id="insuranceCodeNo">
-        <label class="form-check-label" for="insuranceCodeNo">No</label>
-      </div>
-      <div class="form-check">
-        <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="unsure" formControlName="insuranceCode" id="insuranceCodeUnsure">
-        <label class="form-check-label" for="insuranceCodeUnsure">I don't know</label>
-      </div>
-      <span [class.d-block]="invalid('insuranceCode')" class="invalid-feedback">{{validationErrors['insuranceCode']}}</span>
-    </div>
-    <div class="feature-block">
-      <p class="mb-0">
-        If you have insurance, please keep all of your receipts, and contact your insurance provider as soon as possible.
-      </p>
-      <p class="mb-0">
-        If you are having difficulty contacting your insurance provider, please contact the Insurance Bureau of Canada at <a href="tel:18442275422">1-844-227-5422</a>.
-      </p>
-    </div>
-  </section>
-
   <h2 class="blue-header h3">FOOD</h2>
   <section>
     <p class="required font-weight-bold">Do you have food for you and your family while you are evacuated? If you are unsure, select "No".</p>
@@ -126,7 +94,46 @@
     </div>
   </section>
 
-  <h2 class="blue-header h3">MEDICATION</h2>
+  <h2 class="blue-header h3">INSURANCE</h2>
+  <section>
+    <p class="required font-weight-bold">Do you have insurance to cover your immediate needs?</p>
+    <div class="form-group" tabindex="0">
+      <div class="form-check" (click)='openInsuranceInfoModal()'>
+        <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes"
+          formControlName="insuranceCode" id="insuranceCodeYes">
+        <label class="form-check-label" for="insuranceCodeYes">Yes</label>
+      </div>
+      <div class="form-check" (click)='openInsuranceInfoModal()'>
+        <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="yes-unsure"
+          formControlName="insuranceCode" id="insuranceCodeYesUnsure">
+        <label class="form-check-label" for="insuranceCodeYesUnsure">Yes, but I'm not sure if I have coverage for this
+          event</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="no"
+          formControlName="insuranceCode" id="insuranceCodeNo">
+        <label class="form-check-label" for="insuranceCodeNo">No</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" [class.is-invalid]="invalid('insuranceCode')" class="form-check-input" value="unsure"
+          formControlName="insuranceCode" id="insuranceCodeUnsure">
+        <label class="form-check-label" for="insuranceCodeUnsure">I don't know</label>
+      </div>
+      <span [class.d-block]="invalid('insuranceCode')"
+        class="invalid-feedback">{{validationErrors['insuranceCode']}}</span>
+    </div>
+    <div class="feature-block">
+      <p class="mb-0">
+        If you have insurance, please keep all of your receipts, and contact your insurance provider as soon as possible.
+      </p>
+      <p class="mb-0">
+        If you are having difficulty contacting your insurance provider, please contact the Insurance Bureau of Canada at
+        <a href="tel:18442275422">1-844-227-5422</a>.
+      </p>
+    </div>
+  </section>
+
+  <h2 class="blue-header h3">ADDITIONAL INFORMATION</h2>
   <section>
     <p class="required font-weight-bold">Do you (or anyone registering with you) take medication?</p>
     <div class="form-group" tabindex="0">
@@ -143,10 +150,6 @@
         <p class="alert-heading display-6 my-2">Please ensure you have an adequate supply of medication for the duration of the evacuation.</p>
       </div>
     </div>
-  </section>
-
-  <h2 class="blue-header h3">PETS</h2>
-  <section>
     <p class="required font-weight-bold">Do you have any pets with you?</p>
     <div class="form-group" tabindex="0">
       <div class="form-check">
