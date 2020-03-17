@@ -25,6 +25,7 @@ export class AdminVolunteerMakerComponent implements OnInit {
   editing = true; // whether we are adding/editing or reviewing
   submitting = false; // whether we are submitting data to BE
   doSelectOrg: boolean = null; // whether we can select org (not set by default)
+  changeOrg: boolean = false;
   iAmLocalAuthority = false;
   iAmProvincialAdmin = false;
   editMode: ('ADD' | 'EDIT') = null; // not set by default
@@ -56,6 +57,12 @@ export class AdminVolunteerMakerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+       // get all organizations (sorted by name)
+    this.organizationService.getOrganizations(null, null, null, '+name')
+      .subscribe((listResult: ListResult<Organization>) => {
+        this.metaOrganizations = listResult;
+      });
+      
     this.onSummary.emit(this.editing);
     this.form = this.fb.group({
       organization: [null, Validators.required],
@@ -261,22 +268,24 @@ export class AdminVolunteerMakerComponent implements OnInit {
   }
 
   changeOrganization() {
+    this.doSelectOrg = true;
+    this.changeOrg = true;
     // get all organizations (sorted by name)
-    this.organizationService.getOrganizations(null, null, null, '+name')
-      .subscribe((listResult: ListResult<Organization>) => {
-        this.metaOrganizations = listResult;
-        this.doSelectOrg = true;
+    // this.organizationService.getOrganizations(null, null, null, '+name')
+    //   .subscribe((listResult: ListResult<Organization>) => {
+    //     this.metaOrganizations = listResult;
+    //     this.doSelectOrg = true;
 
-        // page controls have been updated
-        // NB: page variables aren't ready yet so set focus in NEXT timeslice
-        setTimeout(() => this.setInitialFocus(), 0);
-      }, err => {
-        console.log('error getting organizations =', err);
-        this.notificationQueueService.addNotification('Failed to get organizations', 'danger');
+    //     // page controls have been updated
+    //     // NB: page variables aren't ready yet so set focus in NEXT timeslice
+    //     setTimeout(() => this.setInitialFocus(), 0);
+    //   }, err => {
+    //     console.log('error getting organizations =', err);
+    //     this.notificationQueueService.addNotification('Failed to get organizations', 'danger');
 
-        // go back to the volunteers list
-        this.cancel();
-      });
+    //     // go back to the volunteers list
+    //     this.cancel();
+    //   });
   }
 
   next() {
