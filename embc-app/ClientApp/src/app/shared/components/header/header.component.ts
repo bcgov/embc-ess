@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     // This if statement evaluates to true but then when we access currentUser.userType, that propety doesn't exist
     // This isn't breaking anything... the next change it evaluates correctly, but we do get an error in the console.
-    if (this.displayName == null && this.currentUser !== undefined && this.currentUser.userType != null) {
+    if (this.displayName == null && this.currentUser != undefined && this.currentUser.userType != null) {
       // Determine user type: IDIR format is lName, fName while BCeID is fName, lName
       this.isIDIR = this.currentUser.userType === this.IDIR_USER_TYPE;
       // Separated by spaces... usually

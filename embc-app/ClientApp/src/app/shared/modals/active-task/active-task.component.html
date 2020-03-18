@@ -16,7 +16,7 @@
   </div>
   <div class="form-row search-box-row">
     <div class="col">
-      <input [(ngModel)]="taskNumber" type="text" aria-label="search" class="form-control mb-2"
+      <input [formControl]="taskNumberControl" type="text" aria-label="search" class="form-control mb-2"
         placeholder="Enter task number">
     </div>
     <div class="col-auto">
