@@ -219,9 +219,9 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     this.authService.getCurrentUser().subscribe((user: User) => this.currentUser = user);
     this.authService.role.subscribe((role: string) => {
       // If the user Everyone or Volunteer (ERA User) then they cannot choose the task number.
-      if (role !== PROVINCIAL_ADMIN && role !== LOCAL_AUTHORITY){
+      if (role !== PROVINCIAL_ADMIN && role !== LOCAL_AUTHORITY) {
         this.f.incidentTask.disable();
-      }      
+      }
     });
     // // if there are route params we should grab them
     // const id = this.route.snapshot.paramMap.get('id');
