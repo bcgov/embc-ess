@@ -52,7 +52,6 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   editMode = false; // edit mode is the mode where the form is fed data from the api. (Changes text and etc.)
   summaryMode = false; // just show the summary
   submitting = false; // this is what disables buttons on submit
-  taskSelectDisabled = true; // whether or not the user is allowed to choose a task for the registration
   // DECLARATION AND CONSENT MUST BE CHECKED BEFORE SUBMIT
   declarationAndConsent: FormControl = new FormControl(null);
 
@@ -219,9 +218,11 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     // Know the current user
     this.authService.getCurrentUser().subscribe((user: User) => this.currentUser = user);
     this.authService.role.subscribe((role: string) => {
-      // If the user Everyone or Volunteer (ERA User) then they cannot choose the task number. 
-      this.taskSelectDisabled = role !== PROVINCIAL_ADMIN && role !== LOCAL_AUTHORITY;
-      this.initForm();
+      // If the user Everyone or Volunteer (ERA User) then they cannot choose the task number.
+      if (role !== PROVINCIAL_ADMIN && role !== LOCAL_AUTHORITY){
+        this.f.incidentTask.disable();
+      }
+      console.log(this.f.incidentTask.disabled);
     });
     // // if there are route params we should grab them
     // const id = this.route.snapshot.paramMap.get('id');
@@ -386,7 +387,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
       familyMembers: this.formBuilder.array([]), // array of formGroups
 
-      incidentTask: [{value: null, disabled: this.taskSelectDisabled}, [Validators.required]], // which task is this from
+      incidentTask: [{value: null}, [Validators.required]], // which task is this from
       hostCommunity: [null, Validators.required], // which community is hosting
 
       // UI booleans
