@@ -37,14 +37,11 @@
     </div>
     <div class="form-row">
       <div class="col">
-        <strong>{{selectedTask.taskNumber}}&nbsp;&nbsp;-&nbsp;&nbsp;{{selectedTask.community.name}}</strong>
+        <h3><strong>{{selectedTask.taskNumber}}&nbsp;&nbsp;-&nbsp;&nbsp;{{selectedTask.community.name}}</strong></h3>
       </div>
       <div class="col">
-        <a href="#" (click)="back()"><i class="fa fa-times"></i>&nbsp;Enter a Different Task #</a>
+        <a href="#" (click)="back()"><i class="fa fa-times"></i>&nbsp;Enter a Different Task #</a>&nbsp;
         <button type="button" class="btn btn-primary text-uppercase" (click)="assignTaskNumber()">Continue</button>
       </div>
     </div> 
-
-    Hello world lol
-    <button type="button" class="btn btn-primary text-uppercase" (click)="back()">BACK</button>
   </div>

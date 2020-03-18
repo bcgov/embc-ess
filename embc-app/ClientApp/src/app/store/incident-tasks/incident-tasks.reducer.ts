@@ -23,7 +23,6 @@ const initialState: State = {
     details: null, // as string
     totalAssociatedEvacuees: 0, // as number
     community: null,// as Community,
-    hostCommunityName: null as string,
     region: null, // as Region
     startDate: null, // as string (datetime)
     taskNumberEndDate: null,

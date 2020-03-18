@@ -23,7 +23,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .ForMember(d => d.TaskNumberEndDate, opts => opts.MapFrom(s => s.TaskNumberEndDate.HasValue ? s.TaskNumberEndDate.Value.DateTime : (DateTime?)null))
                 .ForMember(d => d.TotalAssociatedEvacuees, opts => opts.MapFrom((s, d, v, ctx) => ctx.Items.ContainsKey("EvacueeCount") ? (int)ctx.Items["EvacueeCount"] : 0))
                 .ForMember(d => d.Community, opts => opts.MapFrom(s => s.Community))
-                .ForMember(d => d.HostCommunityName, opts => opts.MapFrom(s => s.Community.Name))
                 ;
         }
     }
@@ -38,7 +37,6 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public Region Region { get; set; }
         // Host Community
         public Community Community { get; set; }
-        public string HostCommunityName { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? TaskNumberStartDate { get; set; }
         public DateTime? TaskNumberEndDate { get; set; }
