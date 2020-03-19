@@ -58,7 +58,8 @@ export class ActiveTaskComponent implements OnInit {
   assignTaskNumber() {
     this.volunteerTaskService.setVolunteerTask(this.taskNumberControl.value)
       .subscribe((result: VolunteerTask) => {
-        this.activeModal.close();
+        //this.activeModal.close();
       });
+      this.activeModal.close();
   }
 }
