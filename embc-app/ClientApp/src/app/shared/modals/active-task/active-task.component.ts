@@ -39,8 +39,7 @@ export class ActiveTaskComponent implements OnInit {
   submitTaskNumber() {
     console.log(this.openTasks);
     // Validate that they've selected an open task
-    this.selectedTask = this.openTasks.data.find(task => task.taskNumber === this.taskNumberControl.value);
-    console.log("selected task:", this.selectedTask);
+    this.selectedTask = this.openTasks.data.find(task => task.taskNumber.toLowerCase() === this.taskNumberControl.value.toLowerCase());
     const isValid: boolean = this.selectedTask != null && this.taskNumberControl.valid;
     this.displayErrorText = !isValid;
     if (isValid) {
@@ -54,12 +53,11 @@ export class ActiveTaskComponent implements OnInit {
       this.displayErrorText = false;
     }
 
-
   assignTaskNumber() {
-    this.volunteerTaskService.setVolunteerTask(this.taskNumberControl.value)
+      this.volunteerTaskService.setVolunteerTask(this.taskNumberControl.value)
       .subscribe((result: VolunteerTask) => {
-        //this.activeModal.close();
+        this.activeModal.close();
       });
-      this.activeModal.close();
+      //this.activeModal.close();
   }
 }
