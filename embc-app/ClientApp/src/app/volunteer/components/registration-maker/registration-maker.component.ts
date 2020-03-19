@@ -450,12 +450,12 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
   validateForm(focusOnError: boolean = false): void {
     this.validationErrors = this.validationHelper.processMessages(this.form);
-    if (focusOnError) {
-      const invalidControl = this.el.nativeElement.querySelector('[formcontrolname].ng-invalid');
-      if (invalidControl) {
-        invalidControl.focus();
-      }
-    }
+    // if (focusOnError) {
+    //   const invalidControl = this.el.nativeElement.querySelector('[formcontrolname].ng-invalid');
+    //   if (invalidControl) {
+    //     invalidControl.focus();
+    //   }
+    // }
   }
 
   displayRegistration(r?: Registration | null): void {
@@ -611,8 +611,8 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       //this.errorSummary = 'Some required fields have not been completed.';
       this.errorSummary = this.getValidationErrorSummary();
       this.submitting = false; // reenable so they can try again
-      //this.form.markAsTouched();
-      //this.scrollToFirstInvalidControl();
+      this.form.markAsTouched();
+      this.scrollToFirstInvalidControl();
     } else {
       // success!
       this.errorSummary = null;
