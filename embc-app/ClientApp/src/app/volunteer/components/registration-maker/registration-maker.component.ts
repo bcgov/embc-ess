@@ -219,10 +219,9 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     this.authService.getCurrentUser().subscribe((user: User) => this.currentUser = user);
     this.authService.role.subscribe((role: string) => {
       // If the user Everyone or Volunteer (ERA User) then they cannot choose the task number.
-      if (role !== PROVINCIAL_ADMIN && role !== LOCAL_AUTHORITY){
+      if (role !== PROVINCIAL_ADMIN && role !== LOCAL_AUTHORITY) {
         this.f.incidentTask.disable();
       }
-      console.log(this.f.incidentTask.disabled);
     });
     // // if there are route params we should grab them
     // const id = this.route.snapshot.paramMap.get('id');
@@ -410,7 +409,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
   onFormChange(): void {
     // validate the whole form as we capture data
-    this.form.valueChanges.subscribe(() => this.validateForm());
+    this.form.valueChanges.subscribe(() => this.validateForm(false));
 
     // show/hide family members section based on the "family info" radio button
     this.f.registeringFamilyMembers.valueChanges
@@ -449,8 +448,14 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       });
   }
 
-  validateForm(): void {
+  validateForm(focusOnError: boolean = false): void {
     this.validationErrors = this.validationHelper.processMessages(this.form);
+    if (focusOnError) {
+      const invalidControl = this.el.nativeElement.querySelector('[formcontrolname].ng-invalid');
+      if (invalidControl) {
+        invalidControl.focus();
+      }
+    }
   }
 
   displayRegistration(r?: Registration | null): void {
@@ -599,7 +604,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     this.submitting = true; // disables buttons while we process the form
     this.submitted = true; // used for invalid feedback // TODO: possibly get rid of this
     this.errorSummary = null;
-    this.validateForm();
+    this.validateForm(true);
 
     // stop here if form is invalid
     if (this.form.invalid) {
