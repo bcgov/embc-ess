@@ -120,6 +120,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             .WithMany(v => v.VolunteerTasks)
             .HasForeignKey(e => e.IncidentTaskId);
 
+            modelBuilder.Entity<VolunteerTask>()
+                .Property(p => p.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<VolunteerTask>()
+                .HasIndex(p => new { p.VolunteerId, p.IncidentTaskId }).IsUnique();
 
             modelBuilder.Entity<Evacuee>()
                 .HasOne(e => e.EvacueeRegistration)
