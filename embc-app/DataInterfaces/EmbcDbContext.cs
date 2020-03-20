@@ -122,7 +122,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             modelBuilder.Entity<VolunteerTask>()
                 .Property(p => p.Id).ValueGeneratedOnAdd();
-            //modelBuilder.Entity<Foo>().Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            modelBuilder.Entity<VolunteerTask>()
+                .HasIndex(p => new { p.VolunteerId, p.IncidentTaskId }).IsUnique();
 
             modelBuilder.Entity<Evacuee>()
                 .HasOne(e => e.EvacueeRegistration)
