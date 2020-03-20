@@ -109,7 +109,7 @@
         <div class="form-row">
           <app-form-field class="col" required="true"
             tooltip="Tool Tip: A host community is the community where the registration is taking place and the Reception Centre is located.">
-            <label for="hostCommunity">Host Community</label>
+            <label for="hostCommunity">Evacuated From</label>
             <app-communities-select [class.is-invalid]="invalid('hostCommunity')" [myParent]="form"
               myFormControlName="hostCommunity" myId="hostCommunity"></app-communities-select>
             <span *ngIf="submitted" class="invalid-feedback">{{e.hostCommunity}}</span>
