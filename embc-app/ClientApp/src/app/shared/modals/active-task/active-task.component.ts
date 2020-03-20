@@ -37,7 +37,6 @@ export class ActiveTaskComponent implements OnInit {
   }
 
   submitTaskNumber() {
-    console.log(this.openTasks);
     // Validate that they've selected an open task
     this.selectedTask = this.openTasks.data.find(task => task.taskNumber.toLowerCase() === this.taskNumberControl.value.toLowerCase());
     const isValid: boolean = this.selectedTask != null && this.taskNumberControl.valid;
