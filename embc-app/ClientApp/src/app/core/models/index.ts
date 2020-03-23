@@ -14,3 +14,4 @@ export * from './relationship-type.model';
 export * from './supplier.model';
 export * from './user.model';
 export * from './volunteer.model';
+export * from './volunteer-task.model';
