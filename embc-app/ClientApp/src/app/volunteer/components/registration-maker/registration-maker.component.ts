@@ -835,7 +835,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       registrationCompletionDate: new Date().toJSON() as string, // this stamps whenever the registration was completed
 
       // related entities
-      incidentTask: values.incidentTask,
+      incidentTask: values.incidentTask != null ? values.incidentTask : this.activeTask,
       hostCommunity: values.hostCommunity,
     };
 

@@ -45,9 +45,9 @@
           <!--Read only-->
           <div class="strong" *ngIf="!this.endDateOverride">
             <br />
-            <p class="start-date-text">
+            <span class="start-date-text">
               <strong>{{f.taskNumberEndDate.value | date : 'MMM-dd-yyyy'}}</strong>&nbsp; at &nbsp;<strong>{{f.taskNumberEndDate.value | date : "HH:mm"}}</strong>
-            </p>
+            </span>
             <span class="text-danger" *ngIf="f.taskNumberEndDate.errors?.required">Please enter a valid date and time for the task number</span>
             <span class="text-danger" *ngIf="f.taskNumberEndDate.errors?.minDate">Date for the task number end date must be after the start date</span>
             &nbsp;
