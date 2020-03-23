@@ -85,9 +85,9 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return BadRequest(ModelState);
             }
 
-            var volunteerId = HttpContext.User.FindFirstValue(EssClaimTypes.USER_ID);
+            var volunteerId = int.Parse(userService.CurrentUser.contactid);
             // get volunteerTask by volunteer id
-            var volunteerTask = await dataInterface.GetVolunteerTaskByVolunteerIdAsync(int.Parse(volunteerId));
+            var volunteerTask = await dataInterface.GetVolunteerTaskByVolunteerIdAsync(volunteerId);
 
             var sessionTimeout = configuration.ServerTimeoutInMinutes();
 
