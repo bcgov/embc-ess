@@ -77,11 +77,11 @@
             </div>
             <!--Evacuated to/from col-->
             <div class="">
-              <p>
-                Evacuated From: <strong>{{result.evacuatedFrom}}</strong>
+              <p> <!--These are bound correctly on the server but backwards on the client.-->
+                Evacuated From: <strong>{{result.evacuatedTo}}</strong>
               </p>
               <p>
-                Evacuated To: <strong>{{result.evacuatedTo}}</strong>
+                Evacuated To: <strong>{{result.evacuatedFrom}}</strong>
               </p>
             </div>
           </div>
