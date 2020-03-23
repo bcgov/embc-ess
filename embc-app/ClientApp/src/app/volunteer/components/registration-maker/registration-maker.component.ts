@@ -8,7 +8,7 @@ import * as moment from 'moment';
 import { AppState } from 'src/app/store';
 import { RegistrationService } from 'src/app/core/services/registration.service';
 import {
-  Registration, FamilyMember, isBcAddress, Community, Country, Volunteer, IncidentTask, Address, User
+  Registration, FamilyMember, isBcAddress, Community, Country, Volunteer, IncidentTask, Address, User, VolunteerTask
 } from 'src/app/core/models';
 import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
@@ -19,6 +19,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { of } from 'rxjs';
+import { VolunteerTaskService } from 'src/app/core/services/volunteer-task.service';
 
 @Component({
   selector: 'app-registration-maker',
@@ -35,6 +36,10 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   regions$ = this.store.select(s => s.lookups.regions);
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
   incidentTasks$ = this.incidentTaskService.getOpenIncidentTasks().pipe(map(x => x.data));
+
+  // Required by ERA users
+  isVolunteer: boolean;
+  activeTask: IncidentTask;
 
   CANADA: Country; // the object representation of the default country
 
@@ -89,7 +94,8 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     private notificationQueueService: NotificationQueueService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
-    private el: ElementRef
+    private el: ElementRef,
+    private volTaskServ: VolunteerTaskService
   ) {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
@@ -220,7 +226,17 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     this.authService.role.subscribe((role: string) => {
       // If the user Everyone or Volunteer (ERA User) then they cannot choose the task number.
       if (role !== PROVINCIAL_ADMIN && role !== LOCAL_AUTHORITY) {
+        this.isVolunteer = true;
         this.f.incidentTask.disable();
+        // get that task number
+        // this.volTaskServ.getActiveVolunteerTask().subscribe(result => {
+        //   // Look, I don't know why the compiler wouldn't let me make result a VolunteerTask
+        //   // so I did it this way.
+        //   const task: VolunteerTask = result as VolunteerTask;
+        //   let tControl = this.form.get("incidentTask");
+        //   tControl.patchValue(task);
+        //   tControl.updateValueAndValidity();
+        // });
       }
     });
     // // if there are route params we should grab them
@@ -267,6 +283,10 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     const elements = document.getElementsByClassName('form-control') as HTMLCollectionOf<HTMLElement>;
     if (elements.length > 0) {
       elements[0].focus();
+      if (this.isVolunteer) {
+        // I'm not sure why we have to do this, but the task isn't being set properly when editing a registration as a volunteer
+        this.form.get("incidentTask").setValue(this.activeTask);
+      }
     } else {
       // wait for elements to display and try again
       setTimeout(() => this.ngAfterViewInit(), 100);
@@ -402,7 +422,9 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       .pipe(map(taskNumber => {
         this.incidentTasks$.subscribe(tasks => {
           const task = tasks.find(t => t.taskNumber === taskNumber);
-          this.form.get('incidentTask').patchValue(task);
+          this.activeTask = task;
+          //this.form.get('incidentTask').patchValue(task);
+          this.form.get('incidentTask').setValue(task);
         });
       })).subscribe();
   }
