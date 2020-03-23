@@ -37,8 +37,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
           public async Task<VolunteerTask> GetVolunteerTaskByVolunteerIdAsync(int volunteerId)
         {
-            //var volunteerTask = await VolunteerTasks.SingleOrDefaultAsync(v => v.VolunteerId == volunteerId);
-            //return mapper.Map<VolunteerTask>(volunteerTask);
             // Get the most recent record in volunteer tasks with the volunteer Id
             var vTask = await VolunteerTasks.Where(vt => vt.VolunteerId == volunteerId)
                             .OrderByDescending(vt => vt.LastDateVolunteerConfirmedTask)
