@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TaskNumberMakerPageComponent implements OnInit {
 
+  makerMode: boolean = true;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  makerModeChange(onDetails: boolean) {
+    this.makerMode = onDetails;
   }
 
 }

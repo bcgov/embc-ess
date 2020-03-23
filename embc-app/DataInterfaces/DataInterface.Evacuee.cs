@@ -3,6 +3,7 @@ using Gov.Jag.Embc.Public.ViewModels;
 using Gov.Jag.Embc.Public.ViewModels.Search;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -159,8 +160,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             // get results back from 
             var results = await pagedQuery.Query.Sort(MapSortToFields(searchQuery.SortBy)).ToArrayAsync();
 
+            // strip out any duplicates
+            // The view we are querying for evacuees returns duplicate results when dependants are included
+            // This should be fixed in the view
+            var distinct = results.ToList().Distinct<Models.Db.ViewEvacuee>();
+
+            
             // map the evacueeList
-            return new PaginatedList<EvacueeListItem>(results.Select(mapper.Map<EvacueeListItem>), pagedQuery.Pagination);
+            return new PaginatedList<EvacueeListItem>(distinct.Select(mapper.Map<EvacueeListItem>), pagedQuery.Pagination);
         }
 
         private string MapSortToFields(string sort)

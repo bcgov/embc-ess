@@ -3,11 +3,11 @@
     <h1 *ngIf="editMode === false">Add an Organization</h1>
     <h1 *ngIf="editMode === true">Edit Organization</h1>
 
-    <p class="pb-3">
+    <p>
       The term organization refers to a Regional District, Local Authority, First Nations Community, or NGO that your
-      Emergency Support Services Team is responsible to.
+      Emergency Support Services (ESS) Team is responsible to.
     </p>
-    <p class="pb-3">
+    <p>
       In order to add an organization, you will need the Business BCeID User ID of the admin user for the organization.
     </p>
 
@@ -55,7 +55,7 @@
 
       <div class="row">
         <div class="col-8 pt-4 mb-4">
-          <label class="required" for="community">Associated EMBC Regional District / Community</label>
+          <label class="required" for="community">Associated EMBC Region / Regional District / Community </label>
           <app-communities-select [class.is-invalid]="invalid('community')" [myParent]="form" myFormControlName="community" myId="community" [myRequired]="true" myPlaceHolder="Start Typing..."></app-communities-select>
           <span class="invalid-feedback">Please select the associated EMBC regional district/community that the organization is associated to</span>
         </div>

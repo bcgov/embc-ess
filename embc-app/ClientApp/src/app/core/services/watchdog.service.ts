@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store';
 import { User, Config } from 'src/app/core/models';
 import debounce from 'lodash/debounce';
+import { Subject } from 'rxjs/Subject';
 
 // defaults (in case of empty config)
 const DEFAULT_WARNING_IN_MINUTES = 5;
@@ -27,6 +28,7 @@ export class WatchdogService {
   private sessionExpiringModal: NgbModalRef = null;
   private attachedEventListener: EventListenerOrEventListenerObject = null;
   private config: Config = null;
+  sessionRefresed: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private router: Router,
@@ -95,6 +97,7 @@ export class WatchdogService {
       (this.auth.currentUser ? this.config.clientTimeoutWarningDurationInMinutes : this.config.defaultWarningDurationInMinutes)
       : DEFAULT_WARNING_DURATION_IN_MINUTES;
 
+      this.sessionRefresed.next(true);
     // start a new session watchdog timer
     this.sessionWatchdogTimer = window.setTimeout(() => {
       this.sessionWatchdogTimer = null;

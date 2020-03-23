@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -14,7 +14,7 @@ import { IncidentTaskService } from 'src/app/core/services/incident-task.service
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { hasErrors, invalidField, clearFormArray, compareById } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
-import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
+import { GENDER_OPTIONS, INSURANCE_OPTIONS, EVERYONE, VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from 'src/app/constants';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
@@ -27,11 +27,14 @@ import { of } from 'rxjs';
 })
 export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
+  @Output()
+  onSummary: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   // state needed by this FORM
   countries$ = this.store.select(s => s.lookups.countries.countries);
   regions$ = this.store.select(s => s.lookups.regions);
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
-  incidentTasks$ = this.incidentTaskService.getIncidentTasks().pipe(map(x => x.data));
+  incidentTasks$ = this.incidentTaskService.getOpenIncidentTasks().pipe(map(x => x.data));
 
   CANADA: Country; // the object representation of the default country
 
@@ -49,7 +52,6 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   editMode = false; // edit mode is the mode where the form is fed data from the api. (Changes text and etc.)
   summaryMode = false; // just show the summary
   submitting = false; // this is what disables buttons on submit
-
   // DECLARATION AND CONSENT MUST BE CHECKED BEFORE SUBMIT
   declarationAndConsent: FormControl = new FormControl(null);
 
@@ -215,7 +217,12 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
     // Know the current user
     this.authService.getCurrentUser().subscribe((user: User) => this.currentUser = user);
-
+    this.authService.role.subscribe((role: string) => {
+      // If the user Everyone or Volunteer (ERA User) then they cannot choose the task number.
+      if (role !== PROVINCIAL_ADMIN && role !== LOCAL_AUTHORITY) {
+        this.f.incidentTask.disable();
+      }
+    });
     // // if there are route params we should grab them
     // const id = this.route.snapshot.paramMap.get('id');
 
@@ -379,7 +386,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
       familyMembers: this.formBuilder.array([]), // array of formGroups
 
-      incidentTask: [null, Validators.required], // which task is this from
+      incidentTask: [{value: null}, [Validators.required]], // which task is this from
       hostCommunity: [null, Validators.required], // which community is hosting
 
       // UI booleans
@@ -402,7 +409,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
   onFormChange(): void {
     // validate the whole form as we capture data
-    this.form.valueChanges.subscribe(() => this.validateForm());
+    this.form.valueChanges.subscribe(() => this.validateForm(false));
 
     // show/hide family members section based on the "family info" radio button
     this.f.registeringFamilyMembers.valueChanges
@@ -441,8 +448,14 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       });
   }
 
-  validateForm(): void {
+  validateForm(focusOnError: boolean = false): void {
     this.validationErrors = this.validationHelper.processMessages(this.form);
+    // if (focusOnError) {
+    //   const invalidControl = this.el.nativeElement.querySelector('[formcontrolname].ng-invalid');
+    //   if (invalidControl) {
+    //     invalidControl.focus();
+    //   }
+    // }
   }
 
   displayRegistration(r?: Registration | null): void {
@@ -590,12 +603,13 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   next() {
     this.submitting = true; // disables buttons while we process the form
     this.submitted = true; // used for invalid feedback // TODO: possibly get rid of this
-
-    this.validateForm();
+    this.errorSummary = null;
+    this.validateForm(true);
 
     // stop here if form is invalid
     if (this.form.invalid) {
-      this.errorSummary = 'Some required fields have not been completed.';
+      //this.errorSummary = 'Some required fields have not been completed.';
+      this.errorSummary = this.getValidationErrorSummary();
       this.submitting = false; // reenable so they can try again
       this.form.markAsTouched();
       this.scrollToFirstInvalidControl();
@@ -607,10 +621,41 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
       // navigate to the next page. AKA show the summary part of the form.
       this.summaryMode = true;
+      this.onSummary.emit(true);
       this.submitting = false; // reenable when we parse data
       window.scrollTo(0, 0); // scroll to top
     }
   }
+
+  private getValidationErrorSummary(): string {
+    let result: string = "";
+    const errors = this.validationErrors;
+    // loop through each validation error and add it to the string
+    for (let key in errors) {
+      // Most errors are just strings
+      if (typeof errors[key] === "string") {
+        let err = errors[key];
+        // Do not add empty line breaks
+        err = err !== "" && err != null
+          ? `${err}\n`
+          : '';
+        result += err;
+      }
+      // a few errors are nested objects
+      else {
+        let nestedErrors = errors[key];
+        for (let nestedKey in nestedErrors) {
+          let err = nestedErrors[nestedKey];
+          err = err !== "" && err != null
+            ? `${err}\n`
+            : '';
+          result += err;
+        }
+      }
+    }
+    return result;
+  }
+
 
   private scrollToFirstInvalidControl() {
     // Reference to the first invalid control
@@ -698,6 +743,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   back() {
     // return to the edit mode so you can change the form data
     this.summaryMode = false;
+    this.onSummary.emit(false);
     window.scrollTo(0, 0); // scroll to top
   }
 

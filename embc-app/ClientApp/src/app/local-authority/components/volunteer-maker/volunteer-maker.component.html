@@ -6,7 +6,7 @@
       <h1 *ngIf="editMode === 'EDIT'">Edit Emergency Support Services User Details</h1>
 
       <small>All fields are required</small>
-      <h3 class="blue-header mt-0">User Details</h3>
+      <h3 class="blue-header mt-0">ERA User Details</h3>
 
       <div class="row pt-4">
         <div class="col-8">
@@ -28,7 +28,7 @@
 
       <div class="row pt-4">
         <div class="col-8">
-          <label class="required" for="bceidAccountNumber">BCeID</label>
+          <label class="required" for="bceidAccountNumber">Business BCeID</label>
           <app-font-awesome-icon icon="info-circle" color="#C9C9C9" className="ml-3" title="Tool Tip: Please use your BCeID user ID."></app-font-awesome-icon>
           <input type="text" class="form-control" [class.is-invalid]="invalid('bceidAccountNumber')" formControlName="bceidAccountNumber" id="bceidAccountNumber">
           <span class="invalid-feedback">Please enter a valid BCeID</span>
@@ -49,13 +49,13 @@
             <div class="form-check">
               <label class="form-check-label" for="isAdministratorFalse">
                 <input type="radio" class="form-check-input" name="isAdministrator" formControlName="isAdministrator" id="isAdministratorFalse" [value]="false">
-                <span class="pl-3">Emergency Support Services User</span>
+                <span class="pl-3">ERA User</span>
               </label>
             </div>
             <div class="form-check">
               <label class="form-check-label" for="isAdministratorTrue">
                 <input type="radio" class="form-check-input" name="isAdministrator" formControlName="isAdministrator" id="isAdministratorTrue" [value]="true">
-                <span class="pl-3">Admin</span>
+                <span class="pl-3">ERA Superuser</span>
               </label>
             </div>
             <span [class.d-block]="invalid('isAdministrator')" class="invalid-feedback">Please select whether they are an ESS user or an admin user</span>
@@ -95,7 +95,7 @@
         <span class="value">{{volunteer.firstName}}</span>
       </li>
       <li>
-        <span class="name">BCeID:</span>
+        <span class="name">Business BCeID:</span>
         <span class="value">{{volunteer.bceidAccountNumber}}</span>
       </li>
     </ul>

@@ -7,6 +7,10 @@
         <img class="img-fluid d-md-none" src="/assets/bootstrap-theme-dist/images/bcid-symbol-rev.svg" width="64"
           height="45" alt="B.C. Government Logo">
       </a>
+      <!--If we're in self registration, display some additional text-->
+      <span *ngIf="showSelfRegText" class="h2" style="color: white;">
+        Evacuee Self-Registration
+      </span>
       <span class="navbar-text" *ngIf="currentUser">
         <span>{{this.displayName}}</span>
         &nbsp;

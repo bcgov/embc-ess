@@ -1,5 +1,6 @@
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Gov.Jag.Embc.Public.ViewModels.Search;
 using Microsoft.AspNetCore.Authorization;
@@ -23,11 +24,14 @@ namespace Gov.Jag.Embc.Public.Controllers
         private readonly ILogger logger;
         private readonly IHostingEnvironment env;
         private readonly IDataInterface dataInterface;
+        private readonly ICurrentUser userService;
 
-        public VolunteerTasksController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ILoggerFactory loggerFactory, IHostingEnvironment env, IDataInterface dataInterface)
+        public VolunteerTasksController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor,
+            ILoggerFactory loggerFactory, IHostingEnvironment env, IDataInterface dataInterface, ICurrentUser user)
         {
             this.dataInterface = dataInterface;
             this.configuration = configuration;
+            this.userService = user;
 
             this.httpContextAccessor = httpContextAccessor;
             logger = loggerFactory.CreateLogger(typeof(VolunteerTasksController));
@@ -46,15 +50,17 @@ namespace Gov.Jag.Embc.Public.Controllers
             var volunteerTask = await dataInterface.GetVolunteerTaskByIncideTaskIdAsync(Guid.Parse(task.Id));
 
             //if volunteerTask does not exist, create it
-            var volunteerId = HttpContext.User.FindFirstValue(EssClaimTypes.USER_ID);
-
+            //var volunteerId = HttpContext.User.FindFirstValue(EssClaimTypes.USER_ID);
+            var user = this.userService.CurrentUser;
+            var volunteerId = user.contactid;
             if (volunteerTask == null)
             {
                 var newVolunteerTask = new VolunteerTask()
                 {
                     IncidentTaskId = Guid.Parse(task.Id),
                     VolunteerId = int.Parse(volunteerId),
-                    LastDateVolunteerConfirmedTask = DateTime.Now
+                    LastDateVolunteerConfirmedTask = DateTime.Now,
+                    IsValid = true
                 };
                 volunteerTask = await dataInterface.CreateVolunteerTaskAsync(newVolunteerTask);
             }
@@ -62,6 +68,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             else
             {
                 volunteerTask.LastDateVolunteerConfirmedTask = DateTime.Now;
+                volunteerTask.IsValid = true;
                 volunteerTask.VolunteerId = int.Parse(volunteerId);
                 await dataInterface.UpdateVolunteerTasksAsync(volunteerTask);
             }
@@ -70,44 +77,41 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] VolunteerTask item)
+        [HttpGet("active-task")]
+        public async Task<IActionResult> GetActiveTask()
         {
-            // var existing = await dataInterface.GetVolunteerByBceidUserNameAsync(item.BceidAccountNumber);
-            // if (existing != null)
-            // {
-            //     ModelState.AddModelError("Externaluseridentifier", $"Duplicate Id {item.Id} found.");
-            // }
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var result = await dataInterface.CreateVolunteerTaskAsync(item);
-            return Json(await dataInterface.GetVolunteerTaskByIdAsync(result.Id));
+            var volunteerId = HttpContext.User.FindFirstValue(EssClaimTypes.USER_ID);
+            // get volunteerTask by volunteer id
+            var volunteerTask = await dataInterface.GetVolunteerTaskByVolunteerIdAsync(int.Parse(volunteerId));
+
+            var sessionTimeout = configuration.ServerTimeoutInMinutes();
+
+            //check if volunteer task is valid
+            var endOfLife = volunteerTask.LastDateVolunteerConfirmedTask.AddMinutes(sessionTimeout);
+            if(DateTime.Now > endOfLife || !volunteerTask.IsValid){
+                return Json(null);
+            }
+            return Json(volunteerTask);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromBody] Volunteer item, string id)
+        [HttpPut("invalidate-active-task")]
+        public async Task<IActionResult> Update()
         {
-            if (string.IsNullOrWhiteSpace(id) || item == null || id != item.Id)
-            {
-                return BadRequest(Json(id));
+            var volunteerId = HttpContext.User.FindFirstValue(EssClaimTypes.USER_ID);
+            // get volunteerTask by volunteer id
+            var volunteerTask = await dataInterface.GetVolunteerTaskByVolunteerIdAsync(int.Parse(volunteerId));
+
+            if(volunteerTask != null){
+                volunteerTask.IsValid = false;
+                volunteerTask.VolunteerId = int.Parse(volunteerId);
+                await dataInterface.UpdateVolunteerTasksAsync(volunteerTask);
             }
 
-            var existing = await dataInterface.GetVolunteerTaskByIdAsync(int.Parse(id));
-            if (existing == null)
-            {
-                return NotFound();
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            await dataInterface.UpdateVolunteerAsync(item);
             return Ok();
         }
     }

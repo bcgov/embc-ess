@@ -17,10 +17,10 @@ namespace Gov.Jag.Embc.Public.ViewModels
                 .ForMember(d => d.RestrictedAccess, opts => opts.MapFrom(s => s.EvacueeRegistration.RestrictedAccess))
                 .ForMember(d => d.IncidentTaskNumber, opts => opts.MapFrom(s => s.EvacueeRegistration.IncidentTask.TaskNumber))
                 .ForMember(d => d.RegistrationCompletionDate, opts => opts.MapFrom(s => s.EvacueeRegistration.RegistrationCompletionDate))
-                .ForMember(d => d.EvacuatedFrom, opts => opts.MapFrom(s => s.EvacueeRegistration.IncidentTask.Community != null
-                    ? s.EvacueeRegistration.IncidentTask.Community.Name
-                    : s.EvacueeRegistration.IncidentTask.Region.Name))
-                .ForMember(d => d.EvacuatedTo, opts => opts.MapFrom(s => s.EvacueeRegistration.HostCommunity.Name))
+                .ForMember(d => d.EvacuatedFrom, opts => opts.MapFrom(s => s.EvacueeRegistration.HostCommunity.Name))
+                .ForMember(d => d.EvacuatedTo, opts => opts.MapFrom(s => s.EvacueeRegistration.IncidentTask.Community != null
+                                                                        ? s.EvacueeRegistration.IncidentTask.Community.Name
+                                                                        : s.EvacueeRegistration.IncidentTask.Region.Name))
                 .ForMember(d => d.HasReferrals, opts => opts.MapFrom(s => s.EvacueeRegistration.RegistrationCompletionDate.HasValue
                 ? s.Referrals.Any()
                 : (bool?)null))

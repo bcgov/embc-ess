@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Gov.Jag.Embc.Public.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Gov.Jag.Embc.Public.Services.Referrals
 {
@@ -16,14 +17,16 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
         private readonly IDataInterface dataInterface;
         private readonly IPdfConverter pdfConverter;
         private readonly ICurrentUser userService;
+        private readonly IHostingEnvironment env;
 
         private readonly string pageBreak = $@"{Environment.NewLine}<div class=""page-break""></div>{Environment.NewLine}";
 
-        public ReferralsService(IDataInterface dataInterface, IPdfConverter pdfConverter, ICurrentUser currentUser)
+        public ReferralsService(IDataInterface dataInterface, IPdfConverter pdfConverter, ICurrentUser currentUser, IHostingEnvironment environment)
         {
             this.dataInterface = dataInterface;
-            this.pdfConverter  = pdfConverter;
-            this.userService   = currentUser;
+            this.pdfConverter = pdfConverter;
+            this.userService = currentUser;
+            this.env = environment;
         }
 
         public async Task<byte[]> GetReferralPdfsAsync(ReferralsToPrint printReferrals)
@@ -95,8 +98,9 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
 
             var template = handleBars.Compile(TemplateLoader.LoadTemplate(ReferalMainViews.Referral.ToString()));
 
-            
             referral.VolunteerDisplayName = userService.GetDisplayName();
+            // If we're in prod, we don't want the watermark
+            referral.DisplayWatermark = !env.IsProduction();
 
             var result = template(referral);
 
@@ -111,6 +115,8 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
             var itemsHtml = string.Empty;
             var summaryBreakCount = 0;
             var printedCount = 0;
+            var VolunteerDisplayName = userService.GetDisplayName();
+            var purchaserName = referrals.FirstOrDefault()?.Purchaser;
             foreach (var referral in referrals)
             {
                 summaryBreakCount += 1;
@@ -141,7 +147,7 @@ namespace Gov.Jag.Embc.Public.Services.Referrals
 
                     var mainTemplate = handleBars.Compile(TemplateLoader.LoadTemplate(ReferalMainViews.Summary.ToString()));
 
-                    var data = new { purchaser = referrals.First().Purchaser };
+                    var data = new { VolunteerDisplayName, purchaserName };
                     result = $"{result}{mainTemplate(data)}{pageBreak}";
                     itemsHtml = string.Empty;
                 }

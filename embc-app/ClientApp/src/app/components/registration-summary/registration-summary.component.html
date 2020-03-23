@@ -55,7 +55,7 @@
             <span class="value">{{registrationSummary.facility}}</span>
           </li>
           <li>
-            <span class="name">Host Community:</span>
+            <span class="name">Evacuated From:</span>
             <span class="value">{{registrationSummary.hostCommunity?.name}}</span>
           </li>
           <li>
@@ -127,9 +127,14 @@
             <input type="text" *ngIf="selectedPurchaser === 'other'" class="form-control w-25 ml-3" [(ngModel)]="otherPurchaser" placeholder="Please specify">
           </app-form-field>
 
-          <button type="button" class="btn btn-primary d-block" [disabled]="!getPurchaser()" (click)="addReferrals()">
+          <button type="button" class="btn btn-primary d-block" [disabled]="referralsDisabled" (click)="addReferrals()">
             ADD REFERRALS
           </button>
+        </div>
+        <div *ngIf="referralsDisabled" class="inactive-task-warning">
+          <div>
+            Referrals can no longer be added to this Task Number, as it is inactive. Please contact your ESS Supervisor for assistance.
+          </div>
         </div>
       </section>
 

@@ -1,15 +1,47 @@
 <div class="modal-header">
-  <h1 class="blue-header header-text w-100 m-1">Enter Active Task #</h1>
-
+  <h1 class="blue-header header-text w-100 m-1 no-caps">Enter Active Task #</h1>
 </div>
 <div class="modal-body">
-  <div class="form-row">
-    <div class="col">
-      <input [(ngModel)]="taskNumber"  type="text" aria-label="search"
-        class="form-control mb-2"
-        placeholder="Enter task number">
+  <div *ngIf="enterTaskNumView">
+    <div class="form-row">
+      <div class="col">
+        <div>
+          All Evacuee Registration & Assistance (ERA) Users are required to enter an active task number before accessing
+          the system.
+        </div>
+        <div>
+          <strong>Please enter the task number that you are working under.</strong> If you do not have a task number,
+          please contact your supervisor.
+        </div>
+      </div>
     </div>
-    <div class="col-auto">
-      <button type="button" class="btn btn-primary text-uppercase" (click)="assignTaskNumber()">SUBMIT</button>
+    <div class="form-row search-box-row">
+      <div class="col">
+        <input [formControl]="taskNumberControl" type="text" aria-label="search" class="form-control mb-2"
+          placeholder="Enter task number">
+        <span *ngIf="displayErrorText" class="error-txt">{{errorText}}</span>
+      </div>
+      <div class="col-auto">
+        <button type="button" class="btn btn-primary text-uppercase" (click)="submitTaskNumber()">SUBMIT</button>
+      </div>
     </div>
-</div>
+  </div>
+  <div *ngIf="!enterTaskNumView">
+    <div class="form-row">
+      <div class="col">
+        <div>
+          Please <strong>confirm that the task number you are about to sign in under is correct</strong> by checking it
+          against the support community listed below.
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col">
+        <h3><strong>{{selectedTask.taskNumber}}&nbsp;&nbsp;-&nbsp;&nbsp;{{selectedTask.community.name}}</strong></h3>
+      </div>
+      <div class="col">
+        <a href="#" (click)="back()"><i class="fa fa-times"></i>&nbsp;Enter a Different Task #</a>&nbsp;
+        <button type="button" class="btn btn-primary text-uppercase" (click)="assignTaskNumber()">Continue</button>
+      </div>
+    </div> 
+  </div>

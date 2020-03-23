@@ -1,13 +1,21 @@
 <div class="mb-4">
-  <h1>Welcome to the ESS Dashboard!</h1>
+  <h1>Evacuee Registration &amp; Assistance (ERA) <br />
+    <span *ngIf="isAdmin; then admin; else superuser;"></span>
+    Dashboard</h1>
   <p>
-    <strong>Welcome to your dashboard!</strong>
+    <strong>Welcome to your Dashboard!</strong>
   </p>
-  <p>
-    As an Emergency Support Services user you'll be able to register new evacuees, complete an existing evacuee
-    self-registration, or if needed, search and edit evacuee information.
+  <p *ngIf="isAdmin">
+    As an EMBC Admin ERA User you'll be able to register new evacuees, complete an existing evacuee self-registration,
+    or if needed, search and edit evacuee information. You will also be able to add and manage task numbers in the
+    system, as well as organizations and ERA Users.
   </p>
-
+  <p *ngIf="!isAdmin">
+    As a Superuser you'll be able to register new evacuees, complete
+    an existing evacuee self-registration, or if
+    needed, search and edit evacuee information. You will also be able to manage ERA Users within your ESS team,
+    including adding new users and managing permissions.
+  </p>
   <!--Basic Search-->
   <div>
     <div role="search">
@@ -225,8 +233,8 @@
         <td>{{rowItem.firstName}}</td>
         <td>{{rowItem.incidentTaskNumber}}</td>
         <td>{{rowItem.registrationId}}</td>
+        <td>{{rowItem.evacuatedTo}}</td> <!--These are coming back reversed from the server, even though the mapping seems correct-->
         <td>{{rowItem.evacuatedFrom}}</td>
-        <td>{{rowItem.evacuatedTo}}</td>
         <td>
           <a href="javascript:void(0)" *ngIf="!rowItem.isFinalized" (click)="edit(rowItem.registrationId)">Finalize</a>
           <a href="javascript:void(0)" *ngIf="rowItem.isFinalized" (click)="view(rowItem.registrationId)">View</a>
@@ -240,6 +248,13 @@
   <p>{{notFoundMessage}}</p>
 </ng-template>
 
+<ng-template #admin>
+  EMBC Admin
+</ng-template>
+
+<ng-template #superuser>
+  Superuser
+</ng-template>
 <!-- <select class="form-control" [(ngModel)]="maxSize">
     <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option>
   </select> -->

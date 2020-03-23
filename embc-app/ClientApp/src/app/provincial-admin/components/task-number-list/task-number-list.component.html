@@ -2,8 +2,7 @@
   <h1>Tasks</h1>
 
   <p>
-    The Emergency Coordination Centre (ECC) is responsible for adding task numbers to this list.
-    If you need a new task number, contact the ECC at 1-800-663-3456.
+    EMBC is responsible for adding task numbers to this list.
   </p>
 
   <h3 class="blue-header">Task List</h3>
@@ -11,22 +10,26 @@
   <form novalidate role="search" class="form-row" [formGroup]="form">
     <div class="col">
       <label class="sr-only" for="searchbox">Associated EMBC Regional District / Community</label>
-      <app-communities-select [myParent]="form" myFormControlName="searchbox" myId="searchbox" myPlaceHolder='Start Typing a Host Community ...'></app-communities-select>
+      <app-communities-select [myParent]="form" myFormControlName="searchbox" myId="searchbox"
+        myPlaceHolder='Start Typing a Host Community ...'></app-communities-select>
     </div>
     <div class="col-auto">
       <button class="btn btn-primary text-uppercase" (click)="filter(form.value.searchbox)">Filter</button>
     </div>
   </form>
   <div class="search-results mt-4">
-    <div *ngIf="results && results.length > 0; then searchResultsTable; else notFound"></div>
+    <!-- <div *ngIf="results && results.length > 0; then searchResultsTable; else notFound"></div> -->
+    <div *ngIf="true; then searchResultsTable; else notFound"></div>
   </div>
 
   <ng-template #searchResultsTable>
     <div class="row mb-2">
       <div class="col">
         <app-pagination-summary [value]="pagination">
-          <span class="font-weight-bold text-uppercase">active</span> tasks
-          <!-- TODO: <small class="ml-3">(<a href="">show deactivated</a>)</small> -->
+          <span class="font-weight-bold text-uppercase">
+            <span *ngIf="showActiveTasks; then active; else inactive"></span>
+          </span> tasks
+          <small class="ml-3">(<a href="#" (click)="toggleDisplayedTasks()">show <span *ngIf="showActiveTasks; then inactive; else active"></span></a>)</small>
         </app-pagination-summary>
       </div>
       <div class="col">
@@ -62,5 +65,11 @@
     <p>
       {{notFoundMessage}}
     </p>
+  </ng-template>
+  <ng-template #active>
+    active
+  </ng-template>
+  <ng-template #inactive>
+    inactive
   </ng-template>
 </div>

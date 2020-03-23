@@ -83,6 +83,7 @@ import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/voluntee
 import { LocalAuthorityEvacueeListComponent } from './local-authority/components/local-authority-evacuee-list/local-authority-evacuee-list.component';
 import { TaskNumberMakerPageComponent } from './provincial-admin/pages/task-number-maker-page/task-number-maker-page.component';
 import { ActiveTaskComponent } from './shared/modals/active-task/active-task.component';
+import { AdminVolunteerMakerPageComponent } from './provincial-admin/pages/admin-volunteer-maker-page/admin-volunteer-maker-page/admin-volunteer-maker-page.component';
 
 @NgModule({
   declarations: [
@@ -153,6 +154,7 @@ import { ActiveTaskComponent } from './shared/modals/active-task/active-task.com
     VolunteerEvacueeResultsPageComponent,
     LocalAuthorityEvacueeListComponent,
     TaskNumberMakerPageComponent,
+    AdminVolunteerMakerPageComponent,
   
   ],
   imports: [

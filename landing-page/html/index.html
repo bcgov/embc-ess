@@ -1,4 +1,496 @@
-<p><h1>EMBC ESS LANDING PAGE</h1></p>
-<p><h2>EVACUEE REGISTRATION ASSISTANCE TOOL</h2></p>
-<p><a href="https://embcess-r1-test.pathfinder.gov.bc.ca/">ERA TEST Application</a></p>
-<p><a href="https://embcess-r1-training.pathfinder.gov.bc.ca/">ERA TRAINING Application</a></p>
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evacuation Registration & Assistance (ERA)</title>
+<style>
+    
+	* {
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+	
+	body {
+        margin: 0;
+        padding: 0;
+		font-family: 'Myriad Pro',Calibri,Arial,sans-serif;
+		color: #494949;
+		background: #bdd3e8; 
+		background: -webkit-gradient(linear, left top, left bottom, from(#bdd3e8),to(#ffffff)); 
+		background: -o-linear-gradient(top, #bdd3e8 0%,#ffffff 100%); 
+		background: linear-gradient(to bottom, #bdd3e8 0%,#ffffff 100%); 
+    }
+
+	img {
+		width: 100%;
+	}
+
+	p {
+		font-size: 15px;
+		line-height: 22px;
+		margin-bottom: 20px;
+	}
+	
+	@media (min-width: 1024px) {
+		.lead {
+			font-size: 19px;
+			line-height: 29px;
+			max-width: 640px;
+			margin-bottom: 20px;
+			font-weight: medium;
+		}
+	}
+	
+	h1 {
+		font-size: 28px;
+		font-weight: bold;
+		max-width: 540px;
+		margin-bottom: 10px;
+	}
+
+	h2 {
+		font-size: 24px;
+		font-weight: normal;
+	}
+
+	h3 {
+		font-size: 20px;
+		font-weight: 400;
+		margin-bottom: 10px;
+	}
+	
+	@media (min-width: 1024px) {
+		h1 {
+			font-size: 45px;
+			line-height: 49px;
+			margin-bottom: 10px;
+		}
+
+		h2 {
+			font-size: 45px; 
+		}
+
+		h3 {
+			font-size: 28px;
+			margin-bottom: 16px;
+		}
+	}
+
+	.container {
+		max-width: 1262px;
+		margin: 0 auto;
+		padding: 0 20px;
+	}
+
+	.center {
+		text-align: center;
+	}
+	
+	.site-header {
+        background-color: #003366;
+        width: 100%;
+        height: 64px;
+		border-bottom: 2px solid #FCBA19;
+    }
+
+	.site-header-content {
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		-webkit-box-align: center;
+		    -ms-flex-align: center;
+		        align-items: center;
+		height: 64px;
+	}
+
+	.site-logo {
+		max-width: 154px;
+		width: 100%;
+	}
+
+	.hero-content {
+		padding: 30px 0 10px 0;
+	}
+
+	@media (min-width: 1024px) {
+		.hero-content {
+			background: url(img/hands.png) no-repeat top right;
+			padding: 54px 0;
+			height: 320px;
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-align: start;
+			    -ms-flex-align: start;
+			        align-items: flex-start;
+			margin-right: -60px;
+		}
+	}
+
+	.emergency-support-logo {
+		max-width: 100px;
+	}
+
+	@media (min-width: 720px) {
+		.emergency-support-logo {
+			max-width: 144px;
+		}
+	}
+
+	.registration-cta p {
+		font-size: 17px;
+		line-height: 22px;
+		max-width: 800px;
+		text-align:center;
+		margin: 15px auto;
+	}
+	
+	.registration-cta-content {
+		max-width: 1222px;
+		width: 100%;
+		margin-bottom: 30px;
+		padding: 30px;
+		color: #fff; /* FF3.6-15 */ /* Chrome10-25,Safari5.1-6 */
+		background: -webkit-gradient(linear, left top, right top, from(#245079),to(#4b96ae));
+		background: -o-linear-gradient(left, #245079 0%,#4b96ae 100%);
+		background: linear-gradient(to right, #245079 0%,#4b96ae 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		-webkit-box-shadow: 0px 5px 8px 2px rgba(0,0,0,0.09);
+		box-shadow: 0px 5px 8px 2px rgba(0,0,0,0.09);
+	}
+
+	.registration-cta-content {
+		font-size: 17px;
+	}
+
+	.cards {
+		margin-bottom: 72px;
+		-webkit-box-align: start;
+		    -ms-flex-align: start;
+		        align-items: flex-start;
+	
+	}
+
+	.cards 	.cards-content {
+		max-width: 1122px;
+		margin: 0 auto;
+	}
+
+	.cards-content {
+		-webkit-box-pack: justify;
+		    -ms-flex-pack: justify;
+		        justify-content: space-between;
+		-webkit-box-align: start;
+		    -ms-flex-align: start;
+		        align-items: flex-start;
+	}
+
+	.card {
+		background: #fff;
+		border: 1px solid #D7D7D7;
+		-webkit-box-shadow: 0px 5px 8px 2px rgba(0,0,0,0.09);
+		box-shadow: 0px 5px 8px 2px rgba(0,0,0,0.09);
+		padding: 20px;
+		width: 100%;
+		margin-bottom: 20px;
+	}
+
+	@media (min-width: 720px) {
+		.card {
+			padding-top: 40px;
+		}
+	}
+	
+	
+	.card__image {
+		margin-bottom: 20px;
+		max-height: 113px;
+	}
+	
+	@media (min-width: 720px) {
+		.card__image {
+			margin-bottom: 40px;
+		}
+	}
+
+	.card--isdark {
+		background-color: #245079;
+		color: #fff;
+	}
+
+	.era {
+		max-width: 108px;
+	}
+
+	.evacuee {
+		max-width: 113px;
+	}
+
+	.user {
+		max-width: 157px;
+	}
+
+	@media (min-width: 1024px) {
+		.card {
+			max-width: 32%;
+			min-height: 480px;
+		}
+		.cards-content {
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+		}
+	}
+
+
+	.site-footer {
+		background-color: #003366;
+		width: 100%;
+		min-height: 60px;
+		padding: 20px 0;
+		border-top: 2px solid #FCBA19;
+	}
+
+	.site-footer-links {
+		list-style: none;
+		margin-bottom: 0;
+	}
+
+	.site-footer-links li {
+		margin-bottom: 16px;
+	}
+
+	.site-footer-links a {
+		font-size: 14px;
+		color: #fff;
+		text-decoration: none;
+		font-weight: 200;
+	}
+
+	.site-footer-links a:hover {
+		text-decoration: underline;
+	}
+
+	
+
+	.site-footer .container {
+		max-width: 760px;
+	}
+
+	.divider {
+		color: #fff;
+		display: none;
+	}
+
+	@media (min-width: 720px) {
+		.divider {
+			display: inline-block;
+		}
+	}
+
+
+	@media (min-width: 720px) {
+		.site-footer-links {
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			list-style: none;
+			-webkit-box-pack: justify;
+			    -ms-flex-pack: justify;
+			        justify-content: space-between;
+		}
+		.site-footer-links li {
+			margin-bottom: 0;
+		}
+	}
+
+	.btn {
+		display: inline-block;
+		background-color: #FCBA19;
+		text-decoration: none;
+		font-weight: bold;
+		color: #fff;
+	}
+
+	.btn--strong {
+		font-size: 22px;
+		height: 49px;
+		display: inline-block;
+		font-weight: 600;
+		line-height: 49px;
+		max-width: 581px;
+		width: 100%;
+		position: relative;
+		
+	}
+
+	.btn--strong:before {
+		content: "";
+		position: absolute;
+		z-index: 400;
+		right: 10px;
+		background: url(img/right-arrow.svg) no-repeat;
+		display: inline-block;
+		width: 20px;
+    	height: 20px;
+    	top: 15px;
+	}
+
+	@media (min-width: 1024px) {
+		.btn--strong {
+			font-size: 33px;
+			height: 69px;
+			display: inline-block;
+			line-height: 69px;
+			max-width: 581px;
+			width: 100%;
+			position: relative;
+		}
+
+		.btn--strong:before {
+			content: "";
+			vertical-align: center;
+			position: absolute;
+			z-index: 400;
+			right: 15px;
+			background: url(img/right-arrow.svg) no-repeat;
+			display: inline-block;
+			width: 33px;
+    		height: 33px;
+    		top: 20px;
+		}
+	}
+
+	.btn--strong:hover {
+		background-color: #003366;
+	}
+
+	.btn--white {
+		color: #38598A;
+		background-color: #fff;
+		-webkit-box-shadow: 0px 5px 8px 2px rgba(0,0,0,0.09);
+		box-shadow: 0px 5px 8px 2px rgba(0,0,0,0.09);
+	}
+
+	.btn--white:hover {
+		color: #fff;
+		background-color: #FCBA19;
+	}
+
+	.btn--orange {
+		color: #fff;
+		background-color: #FF6625;
+		-webkit-box-shadow: 0px 5px 8px 2px rgba(0,0,0,0.09);
+		box-shadow: 0px 5px 8px 2px rgba(0,0,0,0.09);
+	}
+
+	.btn--orange:hover {
+		background-color: #FCBA19;
+	}
+
+	.btn--user {
+		width: 100%;
+		max-width: 217px;
+		padding: 8px;
+		margin-bottom: 12px;
+	}
+
+	.link--strong {
+		color: #38598A;
+		font-weight: bold;
+	}
+
+	.link--strong:hover {
+		color: #FCBA19;
+	}
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+	<div class="container">
+		<div class="site-header-content">
+			<a href="https://gov.bc.ca" class="site-logo"><img src="img/gov_bc_logo.svg" alt="Government of B.C."></a>
+		</div>
+	</div>
+</header>
+
+<main>
+    <section class="hero">
+		<div class="container">
+			<div class="hero-content">
+				<img class="emergency-support-logo" src="img/emergency-support-services-logo.svg" alt="Emergency Support Services">
+				<div>
+					<h1>Evacuation Registration &amp; Assistance (ERA)</h1>
+					<p class="lead">British Columbians forced from their homes by fire, floods, earthquakes or other emergencies may receive emergency support services for up to 72 hours.</p>
+					<p class="lead"><a class="link--strong" href="https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/volunteers/emergency-support-services">Find out more</a> about Provincial Emergency Support Services (ESS)</p>
+				</div>
+			</div>
+		</div>
+    </section>
+   
+    <section class="registration-cta">
+		<div class="container">
+		   <div class="registration-cta-content center">
+				<h2>Are you registering for <strong>Emergency Support Services?</strong></h2>
+				<p>If you are on an <strong>evacuation ALERT</strong> or <strong>ORDER</strong>, or if you have been <strong>displaced from your home</strong> due to an emergency please self-register for Emergency Support Services here.</p>
+				<a class="btn btn--strong" href="https://embcess-r1.pathfinder.gov.bc.ca/self-registration">Self-Register Now</a>
+			</div>
+		</div>
+    </section>
+
+    <section class="cards">
+		<div class="container">
+			<div class="cards-content">
+				<div class="card center">
+					<div class="card__image">
+						<img class="era" src="img/laptop-user.svg">
+					</div>
+					<h3>What is ERA?</h3>
+					<p>The <strong>Evacuee Registration & Assistance (ERA) tool</strong> is a new digital platform for Emergency Support Services. ERA is designed to increase the efficiency and speed of service delivery for evacuees across the province.</p>
+					<a class="link--strong" href="https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/volunteers/emergency-support-services">Find out more</a>
+				</div>
+				<div class="card center">
+					<div class="card__image">
+						<img class="evacuee" src="img/question.svg">
+					</div>
+					<h3>Are you an Evacuee?</h3>
+					<p>If you are <strong>evacuated</strong> or <strong>displaced</strong> from your home and require support please <a href="https://embcess-r1.pathfinder.gov.bc.ca/self-registration" class="link--strong">register online</a>.</p>
+					<p>If you are unable to register online you can also register in person at the reception centre.</p>
+					<a class="link--strong" href="https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/volunteers/emergency-support-services">Find out more</a>
+				</div>
+				<div class="card center card--isdark">
+					<div class="card__image">
+						<img class="user" src="img/users.svg">
+					</div>
+					<h3>ERA User Login</h3>
+					<p><strong>ERA Users</strong> who are responding to an active emergency, or who would like to access the ERA Training Environment, choose your login below.</p>
+					<a class="btn btn--white btn--primary btn--user" href="https://embcess-r1.pathfinder.gov.bc.ca/login">ERA User Login</a>
+					<a class="btn btn--orange btn--primary btn--user" href="https://embcess-r1-training.pathfinder.gov.bc.ca/login">ERA User Training Login</a>
+				</div>
+			</div>
+		</div>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+	<div class="container">
+		<ul class="site-footer-links">
+			<li><a href="/">Home</a></li><span class="divider">|</span>
+			<li><a href="https://www2.gov.bc.ca/gov/content/about-gov-bc-ca">About gov.bc.ca</a></li><span class="divider">|</span>
+			<li><a href="https://www2.gov.bc.ca/gov/content/home/disclaimer">Disclaimer</a></li><span class="divider">|</span>
+			<li><a href="https://www2.gov.bc.ca/gov/content/home/privacy">Privacy</a></li><span class="divider">|</span>
+			<li><a href="https://www2.gov.bc.ca/gov/content/home/accessibility">Accessibility</a></li><span class="divider">|</span>
+			<li><a href="https://www2.gov.bc.ca/gov/content/home/copyright">Copyright</a></li><span class="divider">|</span>
+			<li><a href="https://www2.gov.bc.ca/gov/content/home/get-help-with-government-services">Contact Us</a></li><span class="divider">
+		</ul>
+	</div>
+</footer>
+
+
+</body>
+</html>

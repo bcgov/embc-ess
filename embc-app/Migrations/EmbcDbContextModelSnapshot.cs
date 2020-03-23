@@ -755,6 +755,10 @@ namespace Gov.Jag.Embc.Public.Migrations
 
                     b.Property<Guid>("IncidentTaskId");
 
+                    b.Property<bool>("IsValid");
+
+                    b.Property<DateTimeOffset>("LastDateVolunteerConfirmedTask");
+
                     b.Property<DateTime>("UpdateDateTime")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GetUtcDate()");
@@ -773,6 +777,9 @@ namespace Gov.Jag.Embc.Public.Migrations
 
 
                     b.HasAlternateKey("VolunteerId");
+
+                    b.HasIndex("VolunteerId", "IncidentTaskId")
+                        .IsUnique();
 
                     b.ToTable("VolunteerTasks");
                 });

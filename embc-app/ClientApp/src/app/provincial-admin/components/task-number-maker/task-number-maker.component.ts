@@ -1,5 +1,5 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
@@ -12,13 +12,17 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { invalidField } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-task-number-maker',
   templateUrl: './task-number-maker.component.html',
   styleUrls: ['./task-number-maker.component.scss']
 })
-export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
+export class TaskNumberMakerComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  @Output()
+  onMakeView: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   maker = true; // determines if the widget is in edit or confirmation mode
   editMode = false;
@@ -26,6 +30,10 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
   path: string = null; // the base path for routing
   endDateOverride: boolean = false; 
   overrideDate: Date = null;
+  // Subscription for the taskNumberStartDate control's value change event
+  // Whenever the start date's value is changed we need to update the validator
+  // on end date (end date can never be before the start date).
+  private startDateSub: Subscription;
 
   // whatever is in the application state
   currentIncidentTask$ = this.store.select(i => i.incidentTasks.currentIncidentTask);
@@ -60,7 +68,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
   // convenience getter for easy access to form fields
   get f(): any { return this.form.controls; }
 
-  get pageTitle(): string { return this.editMode ? 'Edit a Task Number' : 'Add a Task Number'; }
+  get pageTitle(): string { return this.editMode ? 'Edit Task Details' : 'Add a Task Number'; }
 
   ngOnInit() {
     // keep the current path up to date
@@ -75,8 +83,9 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
       this.incidentTaskService.getIncidentTask(taskId)
         .subscribe((incidentTask: IncidentTask) => {
           // save the incident task for filling in information later.
-          this.displayTaskNumber(incidentTask);
+          //this.displayTaskNumber(incidentTask);
           this.incidentTask = incidentTask;
+          this.initFormFromIncidentTask();
           this.editMode = true;
         }, err => {
           this.notificationQueueService.addNotification('Failed to load task', 'danger');
@@ -102,15 +111,43 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     }
   }
 
+  ngOnDestroy() {
+    this.startDateSub.unsubscribe();
+  }
+
   initializeForm() {
     this.form = this.fb.group({
       taskNumber         : ['', Validators.required],
       community          : [null, Validators.required],
-      //startDate          : [moment(), [Validators.required, CustomValidators.maxDate(moment())]],
       taskNumberStartDate: [moment(), [Validators.required, CustomValidators.maxDate(moment())]],
-      taskNumberEndDate: [moment().add(80, 'h'), [Validators.required, CustomValidators.minDate(moment().add(80, 'h'))]],
-      details          : ['', Validators.required],
-      overrideDate     : [moment().add(80, 'h'), [Validators.required, CustomValidators.minDate(moment().add(80, 'h'))]]
+      taskNumberEndDate  : [moment().add(80, 'h'), [Validators.required, CustomValidators.minDate(moment())]],
+      details            : ['', Validators.required],
+      overrideDate       : [moment().add(80, 'h')]
+    });
+    this.setEndDateValidatorSubscription();
+  }
+
+  initFormFromIncidentTask() {
+    let startDate: Date = new Date(this.incidentTask.taskNumberStartDate);
+    let endDate: Date   = new Date(this.incidentTask.taskNumberEndDate);
+    this.form = this.fb.group({
+      taskNumber         : [this.incidentTask.taskNumber, Validators.required],
+      community          : [this.incidentTask.community, Validators.required],
+      taskNumberStartDate: [startDate, [Validators.required]], 
+      taskNumberEndDate  : [endDate, [Validators.required, CustomValidators.minDate(startDate)]],
+      details            : [this.incidentTask.details, Validators.required],
+      overrideDate       : [endDate]
+    });
+    this.setEndDateValidatorSubscription();
+  }
+
+  private setEndDateValidatorSubscription() {
+    const startDateControl = <FormControl>this.form.get('taskNumberStartDate');
+    const endDateControl   = <FormControl>this.form.get('taskNumberEndDate');
+    // subscribe to taskNumberStartDate value changes
+    this.startDateSub = startDateControl.valueChanges.subscribe(value => {
+      endDateControl.setValidators([Validators.required, CustomValidators.minDate(moment(value))]);
+      endDateControl.updateValueAndValidity();
     });
   }
 
@@ -121,16 +158,17 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
   private displayTaskNumber(task: IncidentTask) {
     // Reset the form back to pristine
     this.form.reset();
-
+    let startDate: Date = new Date(this.incidentTask.taskNumberStartDate);
+    let endDate: Date   = new Date(this.incidentTask.taskNumberEndDate);
     // flow data back into the form
     this.form.patchValue({
       taskNumber: task.taskNumber,
       community: task.community,
       details: task.details,
       //startDate: new Date(task.startDate),
-      taskNumberStartDate: new Date(task.taskNumberStartDate),
-      taskNumberEndDate: new Date(task.taskNumberEndDate),
-      overrideDate: new Date(task.taskNumberEndDate)
+      taskNumberStartDate: startDate,
+      taskNumberEndDate: endDate,
+      overrideDate: endDate
     });
   }
 
@@ -141,6 +179,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
     if (this.form.valid) {
       // show the review part of the form
       this.maker = false;
+      this.onMakeView.emit(this.maker);
       this.onSave();
       window.scrollTo(0, 0); // scroll to top
     }
@@ -149,6 +188,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
   back() {
     // show the editing parts of the form
     this.maker = true;
+    this.onMakeView.emit(this.maker);
     window.scrollTo(0, 0); // scroll to top
   }
 
@@ -158,6 +198,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
       // TODO: go somewhere useful for this provincial user after routing is fixed.
       this.submitting = false;
       this.maker = true; // switch back into maker mode because information is somehow missed.
+      this.onMakeView.emit(this.maker);
     } else {
       // check if this is an update
       if (this.incidentTask.id) {
@@ -207,6 +248,20 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit {
       taskNumberEndDate: this.form.controls.overrideDate.value
     });
     this.toggleOverride();
+    const endDateControl = <FormControl>this.form.get("taskNumberEndDate");
+    endDateControl.updateValueAndValidity();
+  }
+
+  startDateChange(date: Date): void {
+    const minEndDate: moment.Moment = moment(date).add(80, 'h');
+    const currentEndDate: moment.Moment = moment(this.form.controls.taskNumberEndDate.value);
+    // ensure the end date is at least 80 hours after the start
+    if (minEndDate.isAfter(currentEndDate)) {
+      this.form.patchValue({
+        taskNumberEndDate: minEndDate.toDate()
+      });
+      this.overrideDate = minEndDate.toDate();
+    }
   }
 
   cancel() {
