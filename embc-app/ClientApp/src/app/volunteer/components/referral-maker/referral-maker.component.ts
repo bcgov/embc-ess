@@ -403,7 +403,7 @@ export class ReferralMakerComponent implements OnInit {
   toggleDefaultDatePicker() {
     if (this.showDefaultDatePicker) {
       // ui element is shown so user is hiding the date picker so we need to reset it back to the incident start time
-      this.defaultDate = new Date(this.registrationSummary.incidentTask.startDate);
+      this.defaultDate = new Date(this.registrationSummary.incidentTask.taskNumberStartDate);
       this.showDefaultDatePicker = false;
     } else {
       // ui element is hidden show the ui element
