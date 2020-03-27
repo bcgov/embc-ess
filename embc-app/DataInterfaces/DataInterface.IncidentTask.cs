@@ -122,5 +122,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             return true;
         }
+
+        public async Task<bool> IsUniqueTaskNumber(string taskNumber)
+        {
+            bool isTaken = await IncidentTasks.AnyAsync(task =>
+                string.Equals(taskNumber, task.TaskNumber, StringComparison.InvariantCultureIgnoreCase));
+            return !isTaken;
+        }
     }
 }
