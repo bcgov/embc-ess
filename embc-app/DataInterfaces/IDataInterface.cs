@@ -48,6 +48,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<bool> DeactivateIncidentTaskAsync(string id);
 
+        Task<bool> IsUniqueTaskNumber(string taskNumber);
+
         #endregion Incident task
 
         #region Lookup data
