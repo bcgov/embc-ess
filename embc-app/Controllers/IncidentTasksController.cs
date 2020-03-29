@@ -81,6 +81,13 @@ namespace Gov.Jag.Embc.Public.Controllers
             return Json(result);
         }
 
+        [HttpGet("getIsUniqueTaskNumber/{taskNum}")]
+        public async Task<IActionResult> GetIsUniqueTaskNumber(string taskNum)
+        {
+            bool result = await dataInterface.IsUniqueTaskNumber(taskNum);
+            return Json(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] IncidentTask item)
         {

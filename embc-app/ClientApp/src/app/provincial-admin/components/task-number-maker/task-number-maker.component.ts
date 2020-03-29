@@ -29,6 +29,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit, OnDestro
   submitting = false;
   path: string = null; // the base path for routing
   endDateOverride: boolean = false; 
+  taskNumberIsUnique: boolean = true;
   overrideDate: Date = null;
   // Subscription for the taskNumberStartDate control's value change event
   // Whenever the start date's value is changed we need to update the validator
@@ -176,7 +177,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit, OnDestro
     this.showErrorsWhen = true;
 
     // proceed if form is valid
-    if (this.form.valid) {
+    if (this.form.valid && this.taskNumberIsUnique) {
       // show the review part of the form
       this.maker = false;
       this.onMakeView.emit(this.maker);
@@ -262,6 +263,14 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit, OnDestro
       });
       this.overrideDate = minEndDate.toDate();
     }
+  }
+
+  taskNumberBlur(): void {
+    const taskNum: string = this.form.get("taskNumber").value as string;
+    // Don't do anything if tasknumber is empty
+    if (taskNum == null || taskNum === '') {return;}
+    this.incidentTaskService.isTaskNumberUnique(taskNum)
+      .subscribe(result => this.taskNumberIsUnique = result);
   }
 
   cancel() {

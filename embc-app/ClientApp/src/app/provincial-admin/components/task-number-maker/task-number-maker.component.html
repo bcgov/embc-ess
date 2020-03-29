@@ -10,8 +10,10 @@
       <div class="row">
         <div class="col mb-4">
           <label class="required" for="taskNumber">Task Number</label>
-          <input type="text" class="form-control" [class.is-invalid]="invalid('taskNumber')" formControlName="taskNumber" id="taskNumber">
+          <input type="text" class="form-control" [class.is-invalid]="invalid('taskNumber')" 
+          formControlName="taskNumber" id="taskNumber" (blur)="taskNumberBlur()">
           <span class="invalid-feedback">Please enter a task number</span>
+          <span *ngIf="!taskNumberIsUnique" class="taken-task-num-error">The Task Number you entered already exists in the system, please enter a unique number</span>
         </div>
       </div>
       <div class="row">

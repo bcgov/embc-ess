@@ -102,7 +102,7 @@ export class FoodReferralComponent extends AbstractReferralComponent<FoodReferra
 
     // update array for number dropdowns
     const max = this.referral.validDates.days;
-    this.days = range(0, max + 1); // [0..max]
+    this.days = range(0, max + 2); // [0..max]
 
     // update any dropdowns that exceed max
     if (this.f.numBreakfasts.value > max) { this.f.numBreakfasts.setValue(max); }

@@ -232,7 +232,7 @@ namespace Gov.Jag.Embc.Public
         public void Configure(IApplicationBuilder app, IHostingEnvironment env/*, IAntiforgery antiForgery*/)
         {
             // DATABASE SETUP
-            //SetupDatabase(env);
+            SetupDatabase(env);
 
             if (!env.IsProduction())
             {

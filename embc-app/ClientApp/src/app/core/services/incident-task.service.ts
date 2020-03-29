@@ -83,4 +83,13 @@ export class IncidentTaskService extends RestService {
         catchError(this.handleError)
       );
   }
+
+  isTaskNumberUnique(taskNum: string): Observable<boolean> {
+    return this.http.get<boolean>('/api/incidenttasks/getIsUniqueTaskNumber/' + taskNum, {headers: this.headers})
+    .pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
+  }
+
 }
