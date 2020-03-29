@@ -47,12 +47,13 @@ export class RegistrationSummaryFullComponent implements OnInit {
 
             this.goHome();
           } else {
+            // 03/29/2020 commented out reverssal of flags because questions text changed again
             // reverse the flags patch (Client didn't prioritize system-wide data fix.)
-            registration.requiresAccommodation = !registration.requiresAccommodation;
-            registration.requiresClothing = !registration.requiresClothing;
-            registration.requiresFood = !registration.requiresFood;
-            registration.requiresIncidentals = !registration.requiresIncidentals;
-            registration.requiresTransportation = !registration.requiresTransportation;
+            //registration.requiresAccommodation = !registration.requiresAccommodation;
+            //registration.requiresClothing = !registration.requiresClothing;
+            //registration.requiresFood = !registration.requiresFood;
+            //registration.requiresIncidentals = !registration.requiresIncidentals;
+            //registration.requiresTransportation = !registration.requiresTransportation;
             // store the registration object
             this.registration = registration;
           }
