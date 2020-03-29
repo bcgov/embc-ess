@@ -701,13 +701,12 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     this.submitted = true; // send data to the server
     this.submitting = true; // in transmission
 
-    // these are represented opposite in the db. So these are flipped on page load then flipped on submit
     const r = this.registration;
-    r.requiresAccommodation = !r.requiresAccommodation;
-    r.requiresClothing = !r.requiresClothing;
-    r.requiresFood = !r.requiresFood;
-    r.requiresIncidentals = !r.requiresIncidentals;
-    r.requiresTransportation = !r.requiresTransportation;
+    r.requiresAccommodation = r.requiresAccommodation;
+    r.requiresClothing = r.requiresClothing;
+    r.requiresFood = r.requiresFood;
+    r.requiresIncidentals = r.requiresIncidentals;
+    r.requiresTransportation = r.requiresTransportation;
 
     // create or update registration
     // TODO: should this be editmode instead?
