@@ -108,15 +108,16 @@
               <div class="col">
                 <div class="form-group row">
                   <label for="asEvacuatedFrom" class="col-5 col-form-label">Evacuated From:</label>
+                  <!--This is reversed on the client... Server returns correct info, client maps it backwards-->
                   <div class="col-7">
-                    <app-communities-select [myParent]="advancedSearchForm" myFormControlName="evacuated_from"
+                    <app-communities-select [myParent]="advancedSearchForm" myFormControlName="evacuated_to"
                       myId="asEvacuatedFrom"></app-communities-select>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="asEvacuatedTo" class="col-5 col-form-label">Evacuated To:</label>
                   <div class="col-7">
-                    <app-communities-select [myParent]="advancedSearchForm" myFormControlName="evacuated_to"
+                    <app-communities-select [myParent]="advancedSearchForm" myFormControlName="evacuated_from"
                       myId="asEvacuatedTo"></app-communities-select>
                   </div>
                 </div>
