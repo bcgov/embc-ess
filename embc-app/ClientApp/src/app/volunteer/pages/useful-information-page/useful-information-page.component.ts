@@ -14,4 +14,6 @@ export class UsefulInformationPageComponent implements OnInit {
     this.isSuperUser = this.authService.isSuperUserOrAdmin();
   }
 
+  
+
 }
