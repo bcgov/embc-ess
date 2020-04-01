@@ -2,12 +2,11 @@
   <div class="col-lg-9">
     <h1>ERA Training Material & Useful Information</h1>
     <p>Welcome to the ERA training material and useful information page.</p>
-    <!--New stuff-->
+    <h2 class="blue-header">Training Materials</h2>
+    <p>These training materials are for ERA <span *ngIf="isSuperUser; then superuser; else user;"></span>
+      and best intended for anyone wanting to complete ERA training
+      and require step-by-step instructions on how to navigate the ERA tool.</p>
     <div class="mb-4">
-      <h2 class="blue-header">Training Materials</h2>
-      <p>These training materials are for ERA <span *ngIf="isSuperUser; then superuser; else user;"></span>
-        and best intended for anyone wanting to complete ERA training
-        and require step-by-step instructions on how to navigate the ERA tool.</p>
       <h3 class="section-header">Training Guides</h3>
       <div>
         <div class="guide-btn reference-guide">
@@ -29,23 +28,25 @@
           </span>
         </div>
       </div>
-      <div *ngIf="isSuperUser">
+    </div>
+    <div *ngIf="isSuperUser">
+      <div class="mb-4">
         <h3 class="section-header">ERA Superuser Video Tutorials</h3>
-        <div class="section-container">
-          <div>
-            <i class="far fa-file-video list-icon"></i> &nbsp;
-            <a href="#">1. Accessing ERA - Superusers</a>
-          </div>
-          <div>
-            <i class="far fa-file-video list-icon"></i>&nbsp; <a href="#">2. Locate an Evacuee File - Superusers</a>
-          </div>
-          <div>
-            <i class="far fa-file-video list-icon"></i>&nbsp; <a href="#">3. Add Users - Superusers</a>
-          </div>
-          <div>
-            <i class="far fa-file-video list-icon"></i>&nbsp; <a href="#">4. Edit Users - Superusers</a>
-          </div>
+        <div>
+          <i class="far fa-file-video list-icon"></i> &nbsp;
+          <a href="#">1. Accessing ERA - Superusers</a>
         </div>
+        <div>
+          <i class="far fa-file-video list-icon"></i>&nbsp; <a href="#">2. Locate an Evacuee File - Superusers</a>
+        </div>
+        <div>
+          <i class="far fa-file-video list-icon"></i>&nbsp; <a href="#">3. Add Users - Superusers</a>
+        </div>
+        <div>
+          <i class="far fa-file-video list-icon"></i>&nbsp; <a href="#">4. Edit Users - Superusers</a>
+        </div>
+      </div>
+      <div class="mb-4">
         <h3 class="section-header">ERA User Video Tutorials</h3>
         <div>
           <i class="far fa-file-video list-icon"></i>&nbsp; <a href="#">1. Accessing ERA</a>
@@ -65,8 +66,9 @@
         <div>
           <i class="far fa-file-video list-icon"></i>&nbsp; <a href="#">6. Add Referrals</a>
         </div>
-        </div>
+      </div>
     </div>
+
     <div *ngIf="isSuperUser">
       <h3 class="section-header">Facilitator Package</h3>
       <div class="section-container">
