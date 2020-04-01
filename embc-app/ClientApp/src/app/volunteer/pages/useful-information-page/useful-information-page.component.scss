@@ -1,0 +1,73 @@
+.section-header {
+    background-color: #e1e8f2;
+    color: black;
+    padding: 5px 5px 5px 10px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: semi-bold;
+    text-transform: uppercase;
+}
+
+.section-container {
+    margin-bottom: 20px;
+}
+.guide-btn {
+    //display: flex;
+    color: white;
+    text-transform: uppercase;
+    padding: 15px;
+    width: 50%;
+    margin-bottom: 10px;
+    cursor: pointer;
+    //justify-content: center;
+    // & > span {
+    //     flex: 1 1 auto;
+    //     justify-self: center;
+    //     margin: auto;
+    // }
+    & i {
+        //flex: 1 2 auto;
+        justify-self: start;
+        align-self: center;
+    }
+    & > span > span {
+        //flex: 1 1 auto;
+        justify-self: center;
+        align-self: center;
+    }
+    &.reference-guide {
+        background-color: #fcba19;
+    }
+    &.training-guide {
+        background-color: #38598a;
+    }
+}
+
+.reference-guide-box {
+
+    background-color: #fcba19;
+
+}
+
+.training-guide-box {
+    background-color: #38598a;
+
+}
+
+.big-icon {
+    font-size: 32px;
+}
+
+.btn-text {
+    font-weight: 700;
+    font-style: normal;
+    font-size: 15px;
+    text-align: left;
+    line-height: 15px;
+}
+
+.list-icon {
+    font-size: 23px;
+    color: #38598a;
+}

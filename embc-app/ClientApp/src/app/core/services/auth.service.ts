@@ -82,6 +82,12 @@ export class AuthService extends RestService {
       );
   }
 
+  
+  public isSuperUserOrAdmin(): boolean {
+    const role: string =  this.currentUser.appRoles[this.currentUser.appRoles.length - 1];
+    return role === LOCAL_AUTHORITY || role === PROVINCIAL_ADMIN;
+  }
+
   // sets current user to a value to test the current user observable all subscribers should update
   private setCurrentUser(user: User): void {
     // this.currentUser$.next(user);
