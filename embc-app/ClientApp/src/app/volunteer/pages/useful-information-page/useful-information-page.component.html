@@ -9,13 +9,14 @@
     <div class="mb-4">
       <h3 class="section-header">Training Guides</h3>
       <div>
-        <div class="guide-btn reference-guide">
+        <div class="guide-btn reference-guide" (click)="openRefGuide()">
           <span>
-            <i class="fas fa-file-pdf big-icon"></i>&nbsp;&nbsp;&nbsp;<span class="btn-text">Quick Reference
-              Guide</span>
+            <i class="fas fa-file-pdf big-icon"></i>&nbsp;&nbsp;&nbsp;<span class="btn-text">
+              Quick Reference Guide
+            </span>
           </span>
         </div>
-        <div class="guide-btn training-guide" *ngIf="isSuperUser">
+        <div class="guide-btn training-guide" *ngIf="isSuperUser" (click)="openTrainingGuide()">
           <span>
             <i class="fas fa-file-pdf big-icon"></i>&nbsp;&nbsp;&nbsp;
             <span class="btn-text">
@@ -23,7 +24,7 @@
             </span>
           </span>
         </div>
-        <div class="guide-btn training-guide" *ngIf="!isSuperUser">
+        <div class="guide-btn training-guide" *ngIf="!isSuperUser" (click)="openTrainingGuide()">
           <span>
             <i class="fas fa-file-pdf big-icon"></i>&nbsp;&nbsp;&nbsp;
             <span class="btn-text">
@@ -111,15 +112,21 @@
         </p>
         <div>
           <i class="fas fa-file-pdf list-icon"></i>&nbsp;
-          <a href="#">ERA Tool Training - Facilitator Guide (for in-person training)</a>
+          <a href="https://ess.pathfinder.gov.bc.ca/era/documents/ERA-Tool-Training-Facililatator.pdf" target="_blank">
+            ERA Tool Training - Facilitator Guide (for in-person training)
+          </a>
         </div>
         <div>
           <i class="fas fa-file-pdf list-icon"></i>&nbsp;
-          <a href="#">ERA Tool Training Schedule (for in-person training)</a>
+          <a href="https://ess.pathfinder.gov.bc.ca/era/documents/ERA-Tool-Training-Schedule-Template.pdf" target="_blank">
+            ERA Tool Training Schedule (for in-person training)
+          </a>
         </div>
         <div>
           <i class="fas fa-file-pdf list-icon"></i>&nbsp;
-          <a href="#">ERA Tool Training Evaluation</a>
+          <a href="https://ess.pathfinder.gov.bc.ca/era/documents/ERA-Training-Evaluation.pdf" target="_blank">
+            ERA Tool Training Evaluation
+          </a>
         </div>
       </div>
     </div>
