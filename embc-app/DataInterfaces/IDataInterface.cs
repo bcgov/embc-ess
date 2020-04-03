@@ -87,9 +87,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         #region VolunteerTask
 
         Task<VolunteerTask> GetVolunteerTaskByIdAsync(int id);
+
         Task<VolunteerTask> GetVolunteerTaskByIncideTaskIdAsync(Guid taskId);
+
         Task<VolunteerTask> GetVolunteerTaskByVolunteerIdAsync(int volunteerId);
+
         Task UpdateVolunteerTasksAsync(VolunteerTask updatedVolunteerTask);
+
         Task<VolunteerTask> CreateVolunteerTaskAsync(VolunteerTask newVolunteerTask);
 
         #endregion VolunteerTask
@@ -128,7 +132,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         #region Evacuee
 
-        Task<IPagedResults<EvacueeListItem>> GetEvacueesAsync(EvacueeSearchQueryParameters query);
+        Task<IEnumerable<EvacueeListItem>> GetEvacueesAsync(EvacueeSearchQueryParameters query);
+
+        Task<IPagedResults<EvacueeListItem>> GetEvacueesPaginatedAsync(EvacueeSearchQueryParameters query);
 
         #endregion Evacuee
     }

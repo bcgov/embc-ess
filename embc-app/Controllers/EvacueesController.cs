@@ -1,7 +1,9 @@
 using Gov.Jag.Embc.Public.DataInterfaces;
+using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -18,10 +20,21 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] EvacueeSearchQueryParameters query)
+        public async Task<IActionResult> Get([FromQuery] EvacueeSearchQueryParameters query, string format = "json")
         {
-            var evacuees = await dataInterface.GetEvacueesAsync(query);
-            return Json(evacuees);
+            if (format.Equals("csv", System.StringComparison.OrdinalIgnoreCase))
+            {
+                var evacuees = await dataInterface.GetEvacueesAsync(query);
+
+                Response.Headers.Add("Content-Disposition", $"inline; filename=\"evacuees_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.csv\"");
+
+                return Content(evacuees.ToCSV(), "text/csv");
+            }
+            else
+            {
+                var evacuees = await dataInterface.GetEvacueesPaginatedAsync(query);
+                return Json(evacuees);
+            }
         }
     }
 }

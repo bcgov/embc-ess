@@ -241,4 +241,14 @@ export class LocalAuthorityEvacueeListComponent implements OnInit {
       this.search();
     }
   }
+
+  onExportClick() {
+    const query = this.createSearchQuery();
+
+    this.evacueeService.getEvacueesCSV(query).subscribe((data: File) => {
+      const url = window.URL.createObjectURL(data);
+      window.open(url);
+    });
+  }
+
 }
