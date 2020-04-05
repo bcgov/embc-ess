@@ -31,12 +31,14 @@ namespace Gov.Jag.Embc.Public
         private readonly ILoggerFactory loggerFactory;
         private readonly IConfiguration configuration;
         private readonly IHostingEnvironment environment;
+        private readonly ILogger log;
 
         public Startup(IConfiguration configuration, IHostingEnvironment environment, ILoggerFactory loggerFactory)
         {
             this.loggerFactory = loggerFactory;
             this.configuration = configuration;
             this.environment = environment;
+            this.log = loggerFactory.CreateLogger<Startup>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -307,14 +309,16 @@ namespace Gov.Jag.Embc.Public
 
             var fwdHeadersOpts = new ForwardedHeadersOptions
             {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto,
             };
-            //Add the reverse proxy to known proxies, otherwise the headers are rejected
-            fwdHeadersOpts.KnownProxies.Add(IPAddress.Parse(configuration.GetReverseProxyAddress()));
+            //Add the internal network to known networks, otherwise the headers are rejected
+            var network = configuration.GetInternalNetworkAddress();
+            log.LogInformation($"Adding known network to Fwd headers middleware: {network.Prefix.ToString()}/{network.PrefixLength}");
+            fwdHeadersOpts.KnownNetworks.Add(network);
 
             app
                 //Pass x-forward-* headers to middlewares so OICD knows to add https in front of return url
-                // (otherwise it breaks Safari oidc login)
+                // (otherwise it breaks OIDC login)
                 .UseForwardedHeaders(fwdHeadersOpts)
                 .UseAuthentication()
                 .UseCookiePolicy()
@@ -340,7 +344,6 @@ namespace Gov.Jag.Embc.Public
 
         private void SetupDatabase(IHostingEnvironment env)
         {
-            var log = loggerFactory.CreateLogger<Startup>();
             log.LogInformation("Fetching the application's database context ...");
 
             var adminCtx = new EmbcDbContext(new DbContextOptionsBuilder<EmbcDbContext>()
