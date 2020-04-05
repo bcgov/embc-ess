@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Net;
 
 namespace Gov.Jag.Embc.Public
 {
@@ -136,9 +138,11 @@ namespace Gov.Jag.Embc.Public
             return conf.GetValue("AUTH_MODE", "SM");
         }
 
-        public static string GetReverseProxyAddress(this IConfiguration conf)
+        public static IPNetwork GetInternalNetworkAddress(this IConfiguration conf)
         {
-            return conf.GetValue("REVERSE_PROXY_ADDRESS", "[::ffff:172.51.20.1]:59510");
+            var value = conf.GetValue("INTERNAL_NETWORK_ADDRESS", "172.51.0.0/16").Split('/');
+            if (value.Length != 2) throw new InvalidOperationException($"INTERNAL_NETWORK_ADDRESS config value is not in the right format. Expecting a network subnet like 172.51.0.0/16");
+            return new IPNetwork(IPAddress.Parse(value[0]), int.Parse(value[1]));
         }
     }
 }
