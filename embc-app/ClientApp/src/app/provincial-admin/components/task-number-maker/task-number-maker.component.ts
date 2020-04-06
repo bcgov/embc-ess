@@ -31,6 +31,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit, OnDestro
   endDateOverride: boolean = false; 
   taskNumberIsUnique: boolean = true;
   overrideDate: Date = null;
+  originalTaskNum: string = "";
   // Subscription for the taskNumberStartDate control's value change event
   // Whenever the start date's value is changed we need to update the validator
   // on end date (end date can never be before the start date).
@@ -88,6 +89,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit, OnDestro
           this.incidentTask = incidentTask;
           this.initFormFromIncidentTask();
           this.editMode = true;
+          this.originalTaskNum = incidentTask.taskNumber;
         }, err => {
           this.notificationQueueService.addNotification('Failed to load task', 'danger');
           console.log('error getting task =', err);
@@ -266,9 +268,10 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   taskNumberBlur(): void {
+    this.taskNumberIsUnique = true;
     const taskNum: string = this.form.get("taskNumber").value as string;
-    // Don't do anything if tasknumber is empty
-    if (taskNum == null || taskNum === '') {return;}
+    // Don't do anything if tasknumber is empty or if it hasn't changed
+    if ((taskNum == null || taskNum === '') || (this.editMode && taskNum === this.originalTaskNum)) {return;}
     this.incidentTaskService.isTaskNumberUnique(taskNum)
       .subscribe(result => this.taskNumberIsUnique = result);
   }
