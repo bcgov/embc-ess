@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -19,8 +20,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -216,8 +219,19 @@ namespace Gov.Jag.Embc.Public
             services.AddHealthChecks(checks =>
             {
                 checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
-                checks.AddSqlCheck(configuration.GetDbName(), DatabaseTools.GetConnectionString(configuration));
             });
+
+            var keyRingPath = configuration.GetKeyRingPath();
+            var dpBuilder = services.AddDataProtection();
+            if (!string.IsNullOrEmpty(keyRingPath))
+            {
+                log.LogInformation($"Setting data protection keys to persist in {keyRingPath}");
+                dpBuilder.PersistKeysToFileSystem(new DirectoryInfo(keyRingPath));
+            }
+            else
+            {
+                log.LogWarning("data protection key folder is not set, check if KEY_RING_DIRECTORY env var is missing");
+            }
 
             services.AddAutoMapper(typeof(Startup));
             services.AddMediatR(typeof(Startup));
@@ -366,13 +380,8 @@ namespace Gov.Jag.Embc.Public
                     configuration.GetDbUserPassword());
             }
 
-            //Check if the database exists
-            var databaseExists = adminCtx.Database.CanConnect();
-            if (databaseExists)
-            {
-                log.LogInformation("Syncing migrations prior to migrating...");
-                DatabaseTools.SyncInitialMigration(DatabaseTools.GetSaConnectionString(configuration));
-            }
+            log.LogInformation("Syncing migrations prior to migrating...");
+            DatabaseTools.SyncInitialMigration(DatabaseTools.GetSaConnectionString(configuration));
 
             log.LogInformation("Migrating the database ...");
             adminCtx.Database.Migrate();

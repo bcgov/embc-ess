@@ -27,16 +27,12 @@ namespace embc_unit_tests
         //{
         //    var ctx = EmbcDb;
 
-        //    var di = new DataInterface(ctx, mapper);
+        // var di = new DataInterface(ctx, mapper);
 
-        //    var referrals = GetReferrals();
+        // var referrals = GetReferrals();
 
-        //    var referralIds = new List<string>();
-        //    foreach (var referral in referrals)
-        //    {
-        //        var id = await di.CreateReferralAsync(referral);
-        //        referralIds.Add(id);
-        //    }
+        // var referralIds = new List<string>(); foreach (var referral in referrals) { var id =
+        // await di.CreateReferralAsync(referral); referralIds.Add(id); }
 
         //    var result = await di.GetReferralsAsync(referralIds);
         //    Assert.Equal(referralIds.Count(), result.Count());
@@ -47,7 +43,7 @@ namespace embc_unit_tests
         public async Task CanGetReferralHtmlPages(Gov.Jag.Embc.Public.ViewModels.Referral referral)
         {
             var pdfService = new PdfConverter();
-            var service = new ReferralsService(di, pdfService, cus);
+            var service = new ReferralsService(di, pdfService, cus, null);
 
             var fromCommunity = await GetRandomSeededCommunity();
             var taskId = await SeedIncident(fromCommunity.Id);
@@ -103,7 +99,7 @@ namespace embc_unit_tests
         public async Task CanMapToPrintReferrals(Gov.Jag.Embc.Public.ViewModels.Referral referral)
         {
             var pdfService = new PdfConverter();
-            var service = new ReferralsService(di, pdfService, cus);
+            var service = new ReferralsService(di, pdfService, cus, null);
 
             var fromCommunity = await GetRandomSeededCommunity();
             var taskId = await SeedIncident(fromCommunity.Id);
@@ -175,7 +171,7 @@ namespace embc_unit_tests
         public void CanValidateReferralTypes(string type, string subType, bool expectedResult)
         {
             var pdfService = new PdfConverter();
-            var svc = new ReferralsService(di, pdfService, cus);
+            var svc = new ReferralsService(di, pdfService, cus, null);
 
             Assert.Equal(expectedResult, svc.IsValidReferralType(type, subType));
         }
