@@ -14,3 +14,9 @@ export interface PaginationSummary {
   totalPages: number;
   links?: object[];
 }
+
+export interface OpenAndClosedTasksMetadata {
+  openTasks: PaginationSummary;
+  closedTasks: PaginationSummary;
+}
+

@@ -1,13 +1,17 @@
 <div class="row">
   <div class="col-lg-9">
     <!-- TODO: this registration list should be broken into components without the header block -->
-    <app-evacuee-list></app-evacuee-list>
+    <app-local-authority-evacuee-list></app-local-authority-evacuee-list>
     <hr>
   </div>
   <div class="col-lg-3">
     <!-- <app-collection-notice></app-collection-notice> -->
     <app-sidebox-add-registration></app-sidebox-add-registration>
-    <app-sidebox-add-volunteer></app-sidebox-add-volunteer>
+    <!-- <app-sidebox-add-volunteer></app-sidebox-add-volunteer> -->
+    <app-side-box-info title="Add Users"
+    content="Before adding an ERA User, confirm that they have been given a Business BCeID account with their Organization."
+    button="Add Users" [route]="route">
+    </app-side-box-info>
     <app-side-box>
       <p>
         Evacuees listed here that do not have a task number are self-registered and have not yet received Emergency Support Services.

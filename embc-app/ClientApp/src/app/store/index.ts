@@ -4,6 +4,7 @@ import * as fromRegistration from './registration/registration.reducer';
 import * as fromLookups from './lookups';
 import * as fromIncidentTasks from './incident-tasks/incident-tasks.reducer';
 import * as fromVolunteers from './volunteer/volunteer.reducer';
+import * as fromVolunteerTasks from './volunteer-task/volunteer-task.reducer';
 
 export interface Loadable {
   loading: boolean;
@@ -20,6 +21,8 @@ export interface AppState {
   lookups: fromLookups.State;
   incidentTasks: fromIncidentTasks.State;
   volunteers: fromVolunteers.State;
+
+  volunterTask: fromVolunteerTasks.State;
 }
 
 /**
@@ -32,6 +35,7 @@ export const rootReducer: ActionReducerMap<AppState> = {
   lookups: fromLookups.reducer,
   incidentTasks: fromIncidentTasks.reducer,
   volunteers: fromVolunteers.reducer,
+  volunterTask: fromVolunteerTasks.reducer
 };
 
 // TODO: Discard this when done developing/debugging

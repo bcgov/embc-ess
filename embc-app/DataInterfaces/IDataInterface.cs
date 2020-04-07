@@ -2,6 +2,7 @@ using Gov.Jag.Embc.Public.Services.Registrations;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Gov.Jag.Embc.Public.ViewModels.Search;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -33,11 +34,21 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<IncidentTask> GetIncidentTaskAsync(string id);
 
+        Task<IPagedResults<IncidentTask>> GetOpenIncidentTasksAsync(int limit = 100, int offset = 0);
+
+        Task<PaginationMetadata> GetOpenIncidentTasksMetadataAsync(int limit = 100, int offset = 0);
+
+        Task<PaginationMetadata> GetClosedIncidentTasksMetadataAsync(int limit = 100, int offset = 0);
+
+        Task<IncidentTask> GetIncidentTaskByTaskNumbetAsync(string taskNumber);
+
         Task<string> CreateIncidentTaskAsync(IncidentTask task);
 
         Task UpdateIncidentTaskAsync(IncidentTask task);
 
         Task<bool> DeactivateIncidentTaskAsync(string id);
+
+        Task<bool> IsUniqueTaskNumber(string taskNumber);
 
         #endregion Incident task
 
@@ -72,6 +83,16 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<bool> OrganizationExistsAsync(string id);
 
         #endregion Organization
+
+        #region VolunteerTask
+
+        Task<VolunteerTask> GetVolunteerTaskByIdAsync(int id);
+        Task<VolunteerTask> GetVolunteerTaskByIncideTaskIdAsync(Guid taskId);
+        Task<VolunteerTask> GetVolunteerTaskByVolunteerIdAsync(int volunteerId);
+        Task UpdateVolunteerTasksAsync(VolunteerTask updatedVolunteerTask);
+        Task<VolunteerTask> CreateVolunteerTaskAsync(VolunteerTask newVolunteerTask);
+
+        #endregion VolunteerTask
 
         #region Volunteer
 

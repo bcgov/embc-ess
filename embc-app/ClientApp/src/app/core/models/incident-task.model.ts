@@ -9,4 +9,6 @@ export interface IncidentTask {
   region: Region | null;
   community: Community | null;
   startDate: string | null; // ISO String for datetime
+  taskNumberStartDate: string | null;
+  taskNumberEndDate: string | null;
 }

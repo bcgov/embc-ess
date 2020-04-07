@@ -22,11 +22,16 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public Region Region { get; set; }
 
         public Guid? CommunityId { get; set; }
+        // Host Community
 
         public Community Community { get; set; }
 
         public IEnumerable<EvacueeRegistration> EvacueeRegistrations { get; set; }
 
         public DateTimeOffset? StartDate { get; set; }
+
+        public DateTimeOffset? TaskNumberStartDate { get; set; }
+        public DateTimeOffset? TaskNumberEndDate { get; set; }
+        public List<VolunteerTask> VolunteerTasks { get; set; }
     }
 }

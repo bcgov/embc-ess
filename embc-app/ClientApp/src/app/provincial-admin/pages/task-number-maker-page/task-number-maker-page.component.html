@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-lg-9">
+    <!-- TODO: this registration list should be broken into components without the header block -->
+    <app-task-number-maker (onMakeView)="makerModeChange($event)"></app-task-number-maker>
+    <hr>
+  </div>
+
+  <div class="col-lg-3">
+    <app-side-box *ngIf="makerMode">
+      <p>
+        Task Number End Date &amp; Time is set to 72 hours plus an 8 hour buffer (a total of 80 hours) after the task start date.
+      </p>
+      <p>
+        This time can be overridden if required.
+      </p>
+    </app-side-box>
+  </div>
+</div>

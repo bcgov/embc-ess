@@ -2,35 +2,75 @@
   <form novalidate [formGroup]="form">
     <div class="mb-4">
       <h1>{{ pageTitle }}</h1>
-
       <p>
-        The Emergency Coordination Centre is responsible for adding task numbers to the system.
-        If you need a new task number, contact the ECC at 1-800-663-3456.
+        EMBC is responsible for adding task numbers to the system.
       </p>
-
-      <small>All fields are required</small>
+      <small>All required fields are marked with a red asterisk  <i class="text-danger">*</i></small>
       <h3 class="blue-header mt-0">Task Details</h3>
-
       <div class="row">
         <div class="col mb-4">
           <label class="required" for="taskNumber">Task Number</label>
-          <input type="text" class="form-control" [class.is-invalid]="invalid('taskNumber')" formControlName="taskNumber" id="taskNumber">
+          <input type="text" class="form-control" [class.is-invalid]="invalid('taskNumber')" 
+          formControlName="taskNumber" id="taskNumber" (blur)="taskNumberBlur()">
           <span class="invalid-feedback">Please enter a task number</span>
+          <span *ngIf="!taskNumberIsUnique" class="taken-task-num-error">
+            <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>  The Task Number you entered already exists in the system, please enter a unique number.
+          </span>
         </div>
       </div>
       <div class="row">
         <div class="col mb-4">
-          <label class="required" for="community">Incident Location</label>
+          <label class="required" for="community">Support Community</label>
           <app-communities-select [class.is-invalid]="invalid('community')" [myParent]="form" myFormControlName="community" myId="community" [myRequired]="true"></app-communities-select>
           <span class="invalid-feedback">Please select a community/region from the dropdown list where the incident took place</span>
         </div>
       </div>
       <div class="row">
         <div class="col mb-4">
-          <label class="required">Incident Date &amp; Time</label>
-          <app-date-time-picker [class.is-invalid]="invalid('startDate')" formControlName="startDate"></app-date-time-picker>
-          <span class="invalid-feedback" *ngIf="f.startDate.errors?.required">Please enter a valid date and time for the incident</span>
-          <span class="invalid-feedback" *ngIf="f.startDate.errors?.maxDate">Date for the incident must be today or in the past</span>
+          <label class="required">Task Number Start Date</label>
+          <div class="bott-pad-med">Start date is set to the current date and time, this can be changed if needed.</div>
+          <app-date-time-picker [class.is-invalid]="invalid('taskNumberStartDate')" 
+          formControlName="taskNumberStartDate" (valueChange)="startDateChange($event)"></app-date-time-picker>
+          <span class="invalid-feedback" *ngIf="f.taskNumberStartDate.errors?.required">Please enter a valid date and time for the task number</span>
+          <span class="invalid-feedback" *ngIf="f.taskNumberStartDate.errors?.maxDate">Date for the task number must be today or in the past</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col mb-4">
+          <label class="required">Task Number End Date</label>
+          <div class="bott-pad-med">
+            <div>
+              End date and time is set to 72 hours plus an 8 hour buffer (a total of 80 hours) after the task start date.
+            </div>
+            <div>
+              Task number end date can be overridden, if needed.
+            </div>
+          </div>
+          <!--Read only-->
+          <div class="strong" *ngIf="!this.endDateOverride">
+            <br />
+            <span class="start-date-text">
+              <strong>{{f.taskNumberEndDate.value | date : 'MMM-dd-yyyy'}}</strong>&nbsp; at &nbsp;<strong>{{f.taskNumberEndDate.value | date : "HH:mm"}}</strong>
+            </span>
+            <span class="text-danger" *ngIf="f.taskNumberEndDate.errors?.required">Please enter a valid date and time for the task number</span>
+            <span class="text-danger" *ngIf="f.taskNumberEndDate.errors?.minDate">Date for the task number end date must be after the start date</span>
+            &nbsp;
+            <a href="javascript:void(0)" (click)="toggleOverride()">
+              <app-font-awesome-icon icon="times"></app-font-awesome-icon>
+              <span class="ml-2">Override end time</span>
+            </a>
+          </div>
+          <!--Edit-->
+          <div *ngIf="this.endDateOverride">
+            <app-date-time-picker [class.is-invalid]="invalid('taskNumberEndDate')" formControlName="overrideDate"></app-date-time-picker>
+            <div style="display: inline-block;">
+              <button class="btn btn-primary" (click)="updateEndDate()">UPDATE</button>
+              &nbsp;
+              <button class="btn btn-outline-secondary" (click)="toggleOverride()">CANCEL</button>
+            </div>
+            <span class="invalid-feedback" *ngIf="f.taskNumberEndDate.errors?.required">Please enter a valid date and time for the task number</span>
+            <span class="invalid-feedback" *ngIf="f.taskNumberEndDate.errors?.minDate">Date for the task number end date must be after the start date</span>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -45,6 +85,7 @@
     <div *ngIf="showErrorsWhen && !form.valid" class="text-danger">
       <app-font-awesome-icon icon="exclamation-triangle"></app-font-awesome-icon>
       &nbsp;Some required fields have not been completed.
+      
     </div>
 
     <div class="mt-5 space-between">
@@ -74,12 +115,16 @@
           <span class="value">{{incidentTask.taskNumber}}</span>
         </li>
         <li>
-          <span class="name">Incident Location:</span>
+          <span class="name">Support Community:</span>
           <span class="value">{{incidentTask.community.name}}</span>
         </li>
         <li>
-          <span class="name">Incident Date &amp; Time:</span>
-          <span class="value">{{incidentTask.startDate | dateTimeFormatPipe}}</span>
+          <span class="name">Task Number Start Date &amp; Time:</span>
+          <span class="value">{{incidentTask.taskNumberStartDate | dateTimeFormatPipe}}</span>
+        </li>
+        <li>
+          <span class="name">Task Number End Date &amp; Time:</span>
+          <span class="value">{{incidentTask.taskNumberEndDate | dateTimeFormatPipe}}</span>
         </li>
         <li>
           <span class="name">Details of Incident:</span>

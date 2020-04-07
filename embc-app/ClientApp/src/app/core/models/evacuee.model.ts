@@ -34,7 +34,13 @@ export interface EvacueeListItem {
   incidentTaskNumber: string;
   evacuatedFrom: string;
   evacuatedTo: string;
-  registrationCompletionDate?: string;
+  registrationCompletionDate?: Date;
   isFinalized: boolean;
   hasReferrals: boolean;
+  dob?: Date;
+  selfRegisteredDate?: Date;
+  primaryAddress: string;
+  city: string;
+  province: string;
+  postalCode: string;
 }

@@ -34,7 +34,8 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "es5BrowserSupport": true
+            "es5BrowserSupport": true,
+            "deployUrl": "/"
           },
           "configurations": {
             "production": {
@@ -66,8 +67,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "embc-app:build",
-            "proxyConfig": "src/proxy.conf.js"
+            "browserTarget": "embc-app:build"
           },
           "configurations": {
             "production": {

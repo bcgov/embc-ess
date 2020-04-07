@@ -38,10 +38,15 @@ export interface SearchQueryParameters {
 export interface EvacueeSearchQueryParameters extends SearchQueryParameters {
   last_name?: string;
   first_name?: string;
+  dob?: string;
   task_no?: string;
   ess_file_no?: string;
   evacuated_from?: string;
   evacuated_to?: string;
   registration_completed?: boolean;
   referrals_provided?: boolean;
+  self_reg_date_from?: string;
+  self_reg_date_to?: string;
+  finalization_date_to?: string;
+  finalization_date_from?: string;
 }

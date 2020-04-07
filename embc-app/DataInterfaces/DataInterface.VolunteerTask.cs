@@ -1,0 +1,56 @@
+using Gov.Jag.Embc.Public.Utils;
+using Gov.Jag.Embc.Public.ViewModels;
+using Gov.Jag.Embc.Public.ViewModels.Search;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Gov.Jag.Embc.Public.DataInterfaces
+{
+    public partial class DataInterface
+    {
+        private IQueryable<Models.Db.VolunteerTask> VolunteerTasks => db.VolunteerTasks
+            .AsNoTracking()
+            .Include(v => v.Volunteer)
+            .Include(v => v.IncidentTask);
+
+        public async Task UpdateVolunteerTasksAsync(VolunteerTask updatedVolunteerTask)
+        {
+            var volunteerTask = mapper.Map<Models.Db.VolunteerTask>(updatedVolunteerTask);
+            db.VolunteerTasks.Update(volunteerTask);
+            await db.SaveChangesAsync();
+        }
+
+          public async Task<VolunteerTask> GetVolunteerTaskByIdAsync(int id)
+        {
+            var volunteerTask = await VolunteerTasks.SingleOrDefaultAsync(v => v.Id == id);
+            return mapper.Map<VolunteerTask>(volunteerTask);
+        }
+
+          public async Task<VolunteerTask> GetVolunteerTaskByIncideTaskIdAsync(Guid taskId)
+        {
+            var volunteerTask = await VolunteerTasks.SingleOrDefaultAsync(v => v.IncidentTask.Id == taskId);
+            return mapper.Map<VolunteerTask>(volunteerTask);
+        }
+
+          public async Task<VolunteerTask> GetVolunteerTaskByVolunteerIdAsync(int volunteerId)
+        {
+            // Get the most recent record in volunteer tasks with the volunteer Id
+            var vTask = await VolunteerTasks.Where(vt => vt.VolunteerId == volunteerId)
+                            .OrderByDescending(vt => vt.LastDateVolunteerConfirmedTask)
+                            .FirstAsync();
+            return mapper.Map<VolunteerTask>(vTask);
+        }
+
+        public async Task<VolunteerTask> CreateVolunteerTaskAsync(VolunteerTask newVolunteerTask)
+        {
+            var volunteerTask = mapper.Map<Models.Db.VolunteerTask>(newVolunteerTask);
+            var newEntity = await db.VolunteerTasks.AddAsync(volunteerTask);
+            await db.SaveChangesAsync();
+            return mapper.Map<VolunteerTask>( newEntity.Entity);
+        }
+
+    }
+}

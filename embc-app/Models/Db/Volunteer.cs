@@ -38,5 +38,9 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public Guid? OrganizationId { get; set; }
 
         public Organization Organization { get; set; }
+
+        public bool? ElectronicAccessAgreementAccepted { get; set; }
+        public List<VolunteerTask> VolunteerTasks { get; set; }
+
     }
 }

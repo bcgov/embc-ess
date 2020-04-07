@@ -91,6 +91,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<EvacueeRegistrationAudit> EvacueeRegistrationAudits { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Volunteer> Volunteers { get; set; }
+        public DbSet<VolunteerTask> VolunteerTasks { get; set; }
         public DbSet<Referral> Referrals { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<ViewEvacuee> ViewEvacuees { get; set; }
@@ -102,6 +103,28 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             modelBuilder.Entity<Evacuee>()
                 .HasKey(e => new { e.RegistrationId, e.EvacueeSequenceNumber });
+
+            modelBuilder.Entity<VolunteerTask>()
+            .HasAlternateKey(e => e.IncidentTaskId);
+
+            modelBuilder.Entity<VolunteerTask>()
+            .HasAlternateKey(e => e.VolunteerId);
+
+            modelBuilder.Entity<VolunteerTask>()
+            .HasOne(e => e.Volunteer)
+            .WithMany(v => v.VolunteerTasks)
+            .HasForeignKey(e => e.VolunteerId);
+
+            modelBuilder.Entity<VolunteerTask>()
+            .HasOne(e => e.IncidentTask)
+            .WithMany(v => v.VolunteerTasks)
+            .HasForeignKey(e => e.IncidentTaskId);
+
+            modelBuilder.Entity<VolunteerTask>()
+                .Property(p => p.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<VolunteerTask>()
+                .HasIndex(p => new { p.VolunteerId, p.IncidentTaskId }).IsUnique();
 
             modelBuilder.Entity<Evacuee>()
                 .HasOne(e => e.EvacueeRegistration)

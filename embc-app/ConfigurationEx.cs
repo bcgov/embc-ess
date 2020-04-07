@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Net;
 
 namespace Gov.Jag.Embc.Public
 {
@@ -8,7 +11,7 @@ namespace Gov.Jag.Embc.Public
 
         public static int ServerTimeoutInMinutes(this IConfiguration conf)
         {
-            return conf.GetValue("SESSION_TIMEOUT_MINUTES", 30);
+            return conf.GetValue("SESSION_TIMEOUT_MINUTES", 45);
         }
 
         public static int UserTimeoutWarningDurationInMinutes(this IConfiguration conf)
@@ -33,12 +36,12 @@ namespace Gov.Jag.Embc.Public
 
         public static bool DbFullRefresh(this IConfiguration conf)
         {
-            return conf.GetValue("DB_FULL_REFRESH", "false").ToLowerInvariant() == "true";
+            return string.Equals(conf.GetValue("DB_FULL_REFRESH", "false"), "true", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public static bool CspEnabled(this IConfiguration conf)
         {
-            return conf.GetValue("CSP_ENABLED", "true").ToLowerInvariant() == "true";
+            return string.Equals(conf.GetValue("CSP_ENABLED", "true"), "true", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public static string GetBaseUri(this IConfiguration conf)
@@ -48,7 +51,7 @@ namespace Gov.Jag.Embc.Public
 
         public static string GetBasePath(this IConfiguration conf)
         {
-            return conf["BASE_PATH"];
+            return conf.GetValue("BASE_PATH", "");
         }
 
         public static string GetEnvironmentTitle(this IConfiguration conf)
@@ -128,6 +131,18 @@ namespace Gov.Jag.Embc.Public
                 : "User Id=sa;Password=" + conf.GetDbAdminUserPassword();
 
             return $"Server={server};Database={db};{auth};MultipleActiveResultSets=true;;{DBConnectionRetry}";
+        }
+
+        public static string GetAuthenticationMode(this IConfiguration conf)
+        {
+            return conf.GetValue("AUTH_MODE", "SM");
+        }
+
+        public static IPNetwork GetInternalNetworkAddress(this IConfiguration conf)
+        {
+            var value = conf.GetValue("INTERNAL_NETWORK_ADDRESS", "172.51.0.0/16").Split('/');
+            if (value.Length != 2) throw new InvalidOperationException($"INTERNAL_NETWORK_ADDRESS config value is not in the right format. Expecting a network subnet like 172.51.0.0/16");
+            return new IPNetwork(IPAddress.Parse(value[0]), int.Parse(value[1]));
         }
     }
 }

@@ -25,5 +25,12 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public bool IsFinalized { get; set; }
         public bool HasReferrals { get; set; }
         public bool Active { get; set; }
+        public DateTime? Dob { get; set; }
+        public DateTime? SelfRegisteredDate { get; set; }
+        public string PrimaryAddress { get; set; }
+        public string City { get; set; }
+        public string Province { get; set; }
+        public string PostalCode { get; set; }
+
     }
 }

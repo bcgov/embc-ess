@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // ngrx + configuration
@@ -75,10 +76,20 @@ import { ReferralListItemComponent } from './volunteer/components/referral-maker
 import { AbstractReferralComponent } from './volunteer/components/referral-maker/subcomponents/abstract-referral/abstract-referral.component';
 import { SupplierComponent } from './volunteer/components/referral-maker/subcomponents/supplier/supplier.component';
 import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
+import { ElectronicAccessAgreementComponent } from './components/electronic-access-agreement/electronic-access-agreement.component';
+import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
+import { AppVersionComponent } from './shared/modals/app-version/app-version.component';
+import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/volunteer-evacuee-results-page/volunteer-evacuee-results-page.component';
+import { LocalAuthorityEvacueeListComponent } from './local-authority/components/local-authority-evacuee-list/local-authority-evacuee-list.component';
+import { TaskNumberMakerPageComponent } from './provincial-admin/pages/task-number-maker-page/task-number-maker-page.component';
+import { ActiveTaskComponent } from './shared/modals/active-task/active-task.component';
+import { AdminVolunteerMakerPageComponent } from './provincial-admin/pages/admin-volunteer-maker-page/admin-volunteer-maker-page/admin-volunteer-maker-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AppVersionComponent,
+    ActiveTaskComponent,
     HomeComponent,
     LocalAuthorityRegistrationsPageComponent,
     LocalAuthorityVolunteersPageComponent,
@@ -138,6 +149,13 @@ import { AuditorComponent } from './provincial-admin/components/auditor/auditor.
     FullRegistrationSummaryBlockComponent,
     SurveyPageComponent,
     AuditorComponent,
+    ElectronicAccessAgreementComponent,
+    EvacueeSearchResultsComponent,
+    VolunteerEvacueeResultsPageComponent,
+    LocalAuthorityEvacueeListComponent,
+    TaskNumberMakerPageComponent,
+    AdminVolunteerMakerPageComponent,
+  
   ],
   imports: [
     // angular
@@ -157,6 +175,10 @@ import { AuditorComponent } from './provincial-admin/components/auditor/auditor.
     AppRoutingModule,
     SelfRegistrationModule,
   ],
+  exports: [
+    FormsModule,
+    ReactiveFormsModule
+  ],
   entryComponents: [
     LodgingRatesComponent,
     ClothingRatesComponent,
@@ -165,9 +187,14 @@ import { AuditorComponent } from './provincial-admin/components/auditor/auditor.
     IncidentalsRatesComponent,
     SessionExpiringModalComponent,
     TransportationRatesComponent,
+    AppVersionComponent,
+    ActiveTaskComponent
   ],
   bootstrap: [
     AppComponent
+  ],
+  providers: [
+    { provide: APP_BASE_HREF, useValue: '/' }
   ]
 })
 export class AppModule { }

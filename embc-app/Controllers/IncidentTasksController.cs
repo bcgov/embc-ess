@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
@@ -56,17 +57,46 @@ namespace Gov.Jag.Embc.Public.Controllers
             return Json(result);
         }
 
+        [HttpGet("getopenincidenttasks")]
+        public async Task<IActionResult> GetOpenIncidentTasks([FromQuery] SearchQueryParameters searchQuery)
+        {
+            int limit  = searchQuery.Limit;
+            int offset = searchQuery.Offset;
+            var items  = await dataInterface.GetOpenIncidentTasksAsync(limit, offset);
+            
+            return Json(items);
+        }
+
+        [HttpGet("getOpenAndClosedIncidentTaskMetadata")]
+        public async Task<IActionResult> GetOpenAndClosedIncidentTaskMetadata([FromQuery] SearchQueryParameters searchQuery)
+        {
+            int limit  = searchQuery.Limit;
+            int offset = searchQuery.Offset;
+            var result = new OpenAndClosedTasksMetadata
+            {
+                OpenTasks   = await dataInterface.GetOpenIncidentTasksMetadataAsync(limit, offset),
+                ClosedTasks = await dataInterface.GetClosedIncidentTasksMetadataAsync(limit, offset)
+            };
+
+            return Json(result);
+        }
+
+        [HttpGet("getIsUniqueTaskNumber/{taskNum}")]
+        public async Task<IActionResult> GetIsUniqueTaskNumber(string taskNum)
+        {
+            bool result = await dataInterface.IsUniqueTaskNumber(taskNum);
+            return Json(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] IncidentTask item)
         {
-            if (!item.StartDate.HasValue)
+            var errors = IncidentTaskHelper.ValidateClientTaskProperties(item);
+            if (errors != null)
             {
-                ModelState.AddModelError("StartDate", "Incident task must have a start date");
+                ModelState.AddModelError(errors.Item1, errors.Item2);
             }
-            if (item.StartDate.HasValue && item.StartDate.Value > DateTime.Now)
-            {
-                ModelState.AddModelError("StartDate", "Incident start date cannot be in the future");
-            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -84,17 +114,16 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 return BadRequest();
             }
-            if (!item.StartDate.HasValue)
-            {
-                ModelState.AddModelError("StartDate", "Incident task must have a start date");
-            }
-            if (item.StartDate.HasValue && item.StartDate.Value > DateTime.Now)
-            {
-                ModelState.AddModelError("StartDate", "Incident start date cannot be in the future");
-            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            var errors = IncidentTaskHelper.ValidateClientTaskProperties(item);
+            if (errors != null)
+            {
+                ModelState.AddModelError(errors.Item1, errors.Item2);
             }
 
             await dataInterface.UpdateIncidentTaskAsync(item);
@@ -109,5 +138,13 @@ namespace Gov.Jag.Embc.Public.Controllers
             var result = await dataInterface.DeactivateIncidentTaskAsync(id);
             return Ok();
         }
+    }
+
+    public class OpenAndClosedTasksMetadata
+    {
+        [JsonProperty("openTasks")]
+        public PaginationMetadata OpenTasks { get; set; }
+        [JsonProperty("closedTasks")]
+        public PaginationMetadata ClosedTasks { get; set; }
     }
 }
