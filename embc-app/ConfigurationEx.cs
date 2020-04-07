@@ -144,5 +144,10 @@ namespace Gov.Jag.Embc.Public
             if (value.Length != 2) throw new InvalidOperationException($"INTERNAL_NETWORK_ADDRESS config value is not in the right format. Expecting a network subnet like 172.51.0.0/16");
             return new IPNetwork(IPAddress.Parse(value[0]), int.Parse(value[1]));
         }
+
+        public static string GetKeyRingPath(this IConfiguration conf)
+        {
+            return conf.GetValue("KEY_RING_DIRECTORY", string.Empty);
+        }
     }
 }
