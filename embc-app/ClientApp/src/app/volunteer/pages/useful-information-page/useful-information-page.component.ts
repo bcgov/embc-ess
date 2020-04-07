@@ -14,14 +14,14 @@ export class UsefulInformationPageComponent implements OnInit {
   }
 
   openRefGuide() {
-    const url = "https://ess.pathfinder.gov.bc.ca/era/documents/ERA-Quick-Reference-Guide-Getting-Started.pdf";
+    const url = "https://ess.gov.bc.ca/era/documents/ERA-Quick-Reference-Guide-Getting-Started.pdf";
     window.open(url, "_blank");
   }
 
   openTrainingGuide() {
     const url = this.isSuperUser
-                ? "https://ess.pathfinder.gov.bc.ca/era/documents/ERA-User-Guide-ERA-Superusers.pdf"
-                : "https://ess.pathfinder.gov.bc.ca/era/documents/ERA-User-Guide-ERA-Users.pdf";
+                ? "https://ess.gov.bc.ca/era/documents/ERA-User-Guide-ERA-Superusers.pdf"
+                : "https://ess.gov.bc.ca/era/documents/ERA-User-Guide-ERA-Users.pdf";
     window.open(url, "_blank");
   }
 
