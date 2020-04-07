@@ -40,7 +40,6 @@ namespace embc_unit_tests
                 .AddEntityFrameworkInMemoryDatabase()
                 .AddDbContext<EmbcDbContext>(options => options
                     .EnableSensitiveDataLogging()
-                    .EnableDetailedErrors()
                     .UseInMemoryDatabase("ESS_Test")
                     .ConfigureWarnings(opts => opts.Ignore(InMemoryEventId.TransactionIgnoredWarning))
                   );
