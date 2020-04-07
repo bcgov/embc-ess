@@ -219,7 +219,6 @@ namespace Gov.Jag.Embc.Public
             services.AddHealthChecks(checks =>
             {
                 checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
-                checks.AddSqlCheck(configuration.GetDbName(), DatabaseTools.GetConnectionString(configuration));
             });
 
             var keyRingPath = configuration.GetKeyRingPath();
@@ -381,13 +380,8 @@ namespace Gov.Jag.Embc.Public
                     configuration.GetDbUserPassword());
             }
 
-            //Check if the database exists
-            var databaseExists = adminCtx.Database.CanConnect();
-            if (databaseExists)
-            {
-                log.LogInformation("Syncing migrations prior to migrating...");
-                DatabaseTools.SyncInitialMigration(DatabaseTools.GetSaConnectionString(configuration));
-            }
+            log.LogInformation("Syncing migrations prior to migrating...");
+            DatabaseTools.SyncInitialMigration(DatabaseTools.GetSaConnectionString(configuration));
 
             log.LogInformation("Migrating the database ...");
             adminCtx.Database.Migrate();
