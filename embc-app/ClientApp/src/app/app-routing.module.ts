@@ -15,7 +15,6 @@ import { RegistrationSummaryComponent } from './components/registration-summary/
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { LoggedInGuard } from './core/guards/logged-in.guard';
 import { RoleGuard } from './core/guards/role.guard';
-import { RedirectGuard } from './core/guards/redirect.guard';
 import { VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from './constants';
 import { LandingPageGuard } from './core/guards/landing-page.guard';
 import { TaskNumberMakerComponent } from './provincial-admin/components/task-number-maker/task-number-maker.component';
@@ -37,6 +36,13 @@ import { VolunteerMakerPageComponent } from './local-authority/pages/volunteer-m
 import { OrganizationMakerPageComponent } from './provincial-admin/pages/organization-maker-page/organization-maker-page.component';
 import { SurveyPageComponent } from './volunteer/pages/survey-page/survey-page.component';
 import { AuditorComponent } from './provincial-admin/components/auditor/auditor.component';
+import { EAccessAgreementGuard } from './core/guards/e-access-agreement.gaurd';
+import { ElectronicAccessAgreementComponent } from './components/electronic-access-agreement/electronic-access-agreement.component';
+import { EvacueeSearchResultsComponent } from './volunteer/components/evacuee-search-results/evacuee-search-results.component';
+import { VolunteerEvacueeResultsPageComponent } from './volunteer/pages/volunteer-evacuee-results-page/volunteer-evacuee-results-page.component';
+import { TaskNumberMakerPageComponent } from './provincial-admin/pages/task-number-maker-page/task-number-maker-page.component';
+import { AdminVolunteerMakerPageComponent } from './provincial-admin/pages/admin-volunteer-maker-page/admin-volunteer-maker-page/admin-volunteer-maker-page.component';
+import { AccessDeniedComponent } from './shared/components/access-denied/access-denied.component';
 
 /*
   /
@@ -47,8 +53,6 @@ import { AuditorComponent } from './provincial-admin/components/auditor/auditor.
       step-3
       step-4/:id
       error
-    external
-    login
 
   /volunteer
     registrations               <-- shows evacuee list page
@@ -88,6 +92,14 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent
+  },
+  {
+    path: 'e-access-agreement',
+    component: ElectronicAccessAgreementComponent
+  },
+  {
+    path: 'access-denied',
+    component: AccessDeniedComponent
   },
   {
     path: 'test',
@@ -136,20 +148,6 @@ const routes: Routes = [
     ]
   },
 
-  {
-    // special route to redirect to EXTERNAL links (i.e. http://www.google.com)
-    // NOTE - we need this to redirect to the /login URL without Angular interfering
-    path: 'external',
-    canActivateChild: [RedirectGuard],
-    children: [
-      {
-        path: 'login',
-        component: PageNotFoundComponent, // We need a component here because we cannot define the route otherwise
-        data: { externalUrl: 'login' },
-      },
-    ]
-  },
-
   // Landing Page
   {
     path: 'dashboard',
@@ -167,7 +165,7 @@ const routes: Routes = [
   // VOLUNTEER routes
   {
     path: 'volunteer',
-    canActivate: [LoggedInGuard],
+    canActivate: [LoggedInGuard, EAccessAgreementGuard],
     canActivateChild: [RoleGuard],
     data: { expectedRole: VOLUNTEER },
     children: [
@@ -217,13 +215,18 @@ const routes: Routes = [
         component: SurveyPageComponent,
         data: { expectedRole: VOLUNTEER },
       },
+      {
+        path: 'evacuee/results',
+        component: VolunteerEvacueeResultsPageComponent,
+        data: {expectedRole: VOLUNTEER},
+      },
     ],
   },
 
   // LOCAL AUTHORITY routes
   {
     path: 'local-authority',
-    canActivate: [LoggedInGuard],
+    canActivate: [LoggedInGuard, EAccessAgreementGuard],
     canActivateChild: [RoleGuard],
     children: [
       {
@@ -269,7 +272,7 @@ const routes: Routes = [
       },
       {
         path: 'volunteer',
-        component: VolunteerMakerPageComponent,
+        component: AdminVolunteerMakerPageComponent,
         data: { expectedRole: LOCAL_AUTHORITY },
       },
       {
@@ -353,12 +356,12 @@ const routes: Routes = [
       },
       {
         path: 'volunteer',
-        component: AdminVolunteerMakerComponent,
+        component: AdminVolunteerMakerPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
         path: 'task-number',
-        component: TaskNumberMakerComponent,
+        component: TaskNumberMakerPageComponent,
         data: { expectedRole: PROVINCIAL_ADMIN },
       },
       {
@@ -373,17 +376,20 @@ const routes: Routes = [
       },
     ]
   },
-
+  {
+    path: 'embcess',
+    redirectTo: '/'
+  },
   // 404 route (catch all default)
   {
     path: '**',
     component: PageNotFoundComponent
-  },
+  }
 
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' })],
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'top', enableTracing: false })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

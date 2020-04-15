@@ -11,7 +11,7 @@ import { HttpResponse } from '@angular/common/http';
   providedIn: CoreModule
 })
 export class OrganizationService extends RestService {
-  apiRoute = 'api/organizations';
+  apiRoute = '/api/organizations';
 
   getOrganizations(limit?: number, offset?: number, q?: string, sort?: string): Observable<ListResult<Organization>> {
     const params = {

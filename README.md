@@ -2,6 +2,8 @@
 
 Emergency Management BC - Emergency Support Services Modernization
 
+ERA portal - This repository contains the code base for self registration and emergency response assistants functions
+
 
 Technology Stack
 -----------------
@@ -12,26 +14,27 @@ Technology Stack
 | API and Business Logic | C# - Dotnet Core 2.1 |
 | Web Server | Kestrel |
 | Data | SQL Server 2017 |
-| Runtime | OpenShift containers |
+| Runtime | OpenShift |
+| Authentication | BC.Gov SSO services |
 
-Knowledgebase
+Knowledge base
 -----------------------
 Throughout the project there are readme documents. Those specific documents can be browsed from the [knowledgebase.](documentation/index.md)
 
 Installation
 ------------
-This application is meant to be deployed to RedHat OpenShift version 3. Full instructions to deploy to OpenShift are in the `openshift` directory.
+This application is meant to be deployed to RedHat OpenShift version 3.11. Full instructions to deploy to OpenShift are in the `openshift` directory.
 
 Developer Prerequisites
 -----------------------
 
 **Public Application**
 
-- .Net Core 2.1 SDK
-- Node.js version 8 LTS
-- Angular 7 
-- .NET Core IDE such as Visual Studio or VS Code
-- Local instance of SQL Server
+- Visual Studio 2017+ with .net core 2.1 SDK or above
+- Sql Server Local DB 2016+
+- Node.js version 10 LTS
+- Angular 7 CLI
+
 
 **DevOps**
 
@@ -57,6 +60,8 @@ project
 |     +-- BCeID.csproj          (proxy to consume BCeID web services)
 +-- embc-unit-tests
 |  +-- embc-unit-tests.csproj
++-- landing-page
+|  +-- html                     (html for ESS landing page ess.gov.bc.ca)
 +-- openshift
 |  +-- other-templates
 |  |  +-- sql-server             (sql server templates)
@@ -70,17 +75,51 @@ project
 
 Backend Unit Tests
 -----------------------
-Run ```dotnet test``` from embc-app folder
+Run `dotnet test` from embc-app folder
 
 Backend local machine debugging
 -------------------------------
-Set the following environment variables:
-```
-SET ASPNETCORE_Environment=Development
-//WIP: SET BASE_URL=/embcess
-```
 
-Execute ```dotnet run``` from embc-app folder
+1. Create or edit embc-app/Properties/launchSettings.json to contain the required environment variables:
+
+```json
+{
+    "profiles": {
+        "embc-app": {
+            "commandName": "Project",
+            "launchBrowser": false,
+            "environmentVariables": {
+                "DB_DATABASE": "ESS_Dev",
+                "DB_FULL_REFRESH": "true",
+                "PDF_SERVICE_NAME": "https://pdfservice-dev.pathfinder.gov.bc.ca",
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "CSP_ENABLED": "true",
+                "SITEMINDER_LOGOUT_URL": "https://logontest.gov.bc.ca/clp-cgi/logoff.cgi",
+                "BASE_URI": "http://localhost:49200",
+                "auth:oidc:ClientId": "embcess-app",
+                "auth:oidc:ClientSecret": "[client secert from sso-dev.pathfinder.gov.bc.ca]",
+                "auth:oidc:MetaDataAddress": "https://sso-dev.pathfinder.gov.bc.ca/auth/realms/udb1ycga/.well-known/openid-configuration",
+                "auth:jwt:Audience": "embcess-app",
+                "auth:jwt:MetaDataAddress": "https://sso-dev.pathfinder.gov.bc.ca/auth/realms/udb1ycga/.well-known/openid-configuration",
+                "auth:jwt:TokenValidationParameters:ValidateLifetime": "false",
+                "AUTH_MODE": "KC"
+            },
+            "applicationUrl": "http://0.0.0.0:49200"
+        }
+    }
+}
+
+```
+2. from Visual Studio, run embc-app.csproj
+3. run `ng serve' from embc-app/ClientApp folder
+4. open a browser to http://localhost:49200
+5. to test the API directly, it is recommended to use Postman and use its oauth2 support to obtain the required JWT in order to be authenticated
+
+**Defaults for development environment**
+- Angular requests to localhost:4200
+- A new database will be recreated every time the project is executed, to prevent this, set `DB_FULL_REFRESH` to `false`
+- The default connection string is set to use `(localdb)\MSSQLLocalDB` with integrated authentication, to change the connection string, set `DATABASE_SERVICE_NAME` to the server name.
+
 
 Environment Variables
 ---------------------
@@ -91,55 +130,46 @@ Before running the API locally, you must set some environment variables:
 | ---- | ----- |
 | BASE_PATH |/embcess|
 | BASE_URI |http://localhost|
-| APP_ENVIRONMENT_TITLE |Banner title (shown on all environments except PROD).|
-| DATABASE_SERVICE_NAME |Database service URL|
-| DB_DATABASE |<database_name>|
-| DB_ADMIN_PASSWORD |SA (admin) password|
-| DB_USER |DB connection credentials|
-| DB_PASSWORD |DB connection credentials|
-| SMTP_HOST |smtp.youremailserver.com|
-| SMTP_DEFAULT_SENDER |no-reply@youremailserver.com|
-| PDF_SERVICE_NAME |PDF microservice URL|
-
-DevOps Process
--------------
-
-### Jenkins
-
-If any pipeline steps do not start, a common root cause is issues with Jenkins.  Restart the Jenkins service by scaling it down to 0 pods, then back up to 1 pod.
-
-### DEV builds
-Dev builds are triggered by source code being committed to the repository.  This process triggers a webhook which initiates the DEV build pipeline.
-
-## Promotion to TEST
-Login to the OpenShift Web Console and navigate to the Tools project for the system.  Go to Builds->Pipelines.  Click  Start Pipeline on the Test Pipeline.
-
-## Promotion to PROD
-Login to the OpenShift Web Console and navigate to the Tools project for the system.  Go to Builds->Pipelines.  Click  Start Pipeline on the Prod Pipeline.
+| APP_ENVIRONMENT_TITLE     |   Banner title (shown on all environments except PROD).   |
+| DATABASE_SERVICE_NAME     |   Database service URL                                    |
+| DB_DATABASE               |   <database_name>                                         |
+| DB_ADMIN_PASSWORD         |   SA (admin) password                                     |
+| DB_USER                   |   DB connection credentials                               |
+| DB_PASSWORD               |   DB connection credentials                               |
+| SMTP_HOST                 |   smtp.youremailserver.com                                |
+| SMTP_DEFAULT_SENDER       |   no-reply@youremailserver.com                            |
+| PDF_SERVICE_NAME          |   PDF microservice URL                                    |
+|AUTH_MODE                  |   KC for KeyCloak  or SM for SiteMinder                   |
+|auth:oidc:MetaDataAddress  |   KeyCloak client meta data URL                           | 
+|auth:oidc:ClientId         |   KeyCloak client ID                                      |
+|auth:oidc:ClientSecret     |   KeyCloak client secert                                  |
+|auth:oidc:MetaDataAddress  |   KeyCloak client metadata URL                            | 
+|auth:jwt:Audience          |   KeyCloak client ID                                      |
+|auth:jwt:MetaDataAddress   |   KeyCloak client metadata URL                            |
+|auth:jwt:TokenValidationParameters:ValidateLifetime | false to reuse tokens which expired |
+|INTERNAL_NETWORK_ADDRESS   | network subnet address for trusted reverse proxies, must be in the form of IPv6 |
+|KEY_RING_DIRECTORY| path to a shared folder for key sharing between running instances|
 
 
 Authentication
 --------------
+## Users
 
-### BCeID
+Provincial admins can log in using their IDIR accounts
 
-Business BCeID may be used to login as a Volunteer.
+Volunteers and local authority admins can log in using their BCeID accounts
 
-### IDIR
-
-Government users may use IDIR to login as an Administrator.
-
-### Development Users
-
-Access /login/token/username to login as a test BCeID user for development purposes.
 
 ### Environments
 
-| Environment | URL                                    | VPN Required? |
-| ----------- | -------------------------------------- | ------------- |
-| DEV         | https://dev.justice.gov.bc.ca/embcess  | Yes           |
-| TEST        | https://test.justice.gov.bc.ca/embcess | Yes           |
-| PROD        | https://justice.gov.bc.ca/embcess      | No            |
+| Environment | URL                                    |
+| ----------- | -------------------------------------- |
+| DEV         | https://embcess-r1-dev.pathfinder.gov.bc.ca  |
+| DEV landing page | http://dev.ess.gov.bc.ca |
+| TEST        | https://embcess-r1-test.pathfinder.gov.bc.ca |
+| TRAINING    | https://embcess-r1-training.pathfinder.gov.bc.ca |
+| PROD        | https://embcess-r1.pathfinder.gov.bc.ca |
+| PROD landing page | http://ess.gov.bc.ca |
 
 
 Contribution

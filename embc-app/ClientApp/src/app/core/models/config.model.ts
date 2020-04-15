@@ -1,6 +1,4 @@
 export interface Config {
-  basePath: string | null;
-  baseUri: string | null;
   environment: string | null;
   fileCreationTime: string | null;
   fileVersion: string | null;

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { PROVINCIAL_ADMIN, LOCAL_AUTHORITY, VOLUNTEER } from 'src/app/constants';
 import { Router } from '@angular/router';
+import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
 @Component({
   selector: 'app-top-navbar',
@@ -22,7 +23,8 @@ export class TopNavbarComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    public router: Router // used in HTML
+    public router: Router, // used in HTML
+    private uniqueKeyService: UniqueKeyService
   ) { }
 
   ngOnInit() {
@@ -45,4 +47,11 @@ export class TopNavbarComponent implements OnInit {
       this.navbarSupportedContent.nativeElement.classList.add('collapse');
     }
   }
+
+  // Clear out any stored registration Id - when the link is clicked we're always going to be doing a new one.
+  clearCachedKey() {
+    this.uniqueKeyService.clearKey();
+  }
+
+
 }

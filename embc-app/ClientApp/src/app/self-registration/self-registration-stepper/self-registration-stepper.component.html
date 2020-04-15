@@ -32,9 +32,15 @@
 
 <!-- Contextual side-boxes. -->
 <div *ngIf="step===1">
-  <app-side-box title="Registering Family Members" icon="list">
+  <app-side-box>
     <p>
-      If unsure as to how to register additional family members, please contact the Emergency Support Services team through your local government.
+      A separate registration is not required for each of your family members.
+    </p>
+    <p>
+      Additional family members who reside in the same household and <strong>whom you know are safe</strong>, can be
+      added to your registration.
+      <br>
+      You can do so in the 'Evacuee Family Information' section by selecting the 'Yes' option.
     </p>
   </app-side-box>
 </div>
@@ -56,7 +62,8 @@
 <div *ngIf="step===4">
   <app-side-box title="Useful Information" icon="list">
     <p>
-      An updated list of reception centres can be found at <a class="text-light" href="https://www.emergencyinfobc.gov.bc.ca/">EmergencyInfoBC</a>.
+      An updated list of reception centres can be found at <a class="text-light"
+        href="https://www.emergencyinfobc.gov.bc.ca/">EmergencyInfoBC</a>.
     </p>
   </app-side-box>
 </div>

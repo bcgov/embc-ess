@@ -101,11 +101,15 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public string FromTime => TimeZoneConverter.GetLocalTime24h(ValidDates.From);
         public string ToDate => TimeZoneConverter.GetLocalDate(ValidDates.To);
         public string ToTime => TimeZoneConverter.GetLocalTime24h(ValidDates.To);
-        public string PrintDate => DateTime.Today.ToString("MMM-dd-yyyy");
+        public string PrintDate => TimeZoneConverter.GetLocalDay();
         public IEnumerable<PrintEvacuee> PrintEvacuees { get; set; }
         public string TotalAmountPrinted => TotalAmount.ToString("N2");
         public string CommentsPrinted => ConvertCarriageReturnToHtml(Comments);
         public string ApprovedItemsPrinted => ConvertCarriageReturnToHtml(ApprovedItems);
+        // Not mapped, only used when printing a referral.
+        public string VolunteerDisplayName { get; set; }
+        // Not mapped, flag that enables the TRAINING SAMPLE watermark if true
+        public bool DisplayWatermark { get; set; }
 
         public object[] PrintableEvacuees
         {

@@ -18,7 +18,7 @@ export interface VolunteerSearchQueryParameters extends SearchQueryParameters {
   providedIn: CoreModule
 })
 export class VolunteerService extends RestService {
-  apiRoute = 'api/volunteers';
+  apiRoute = '/api/volunteers';
 
   getVolunteers({ limit, offset, q, sort, org_id, ess_only, admin_only }: VolunteerSearchQueryParameters = {}): Observable<ListResult<Volunteer>> {
     const params = {

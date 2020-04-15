@@ -36,6 +36,16 @@
   text-transform: uppercase;
 }
 
+.yellow-header {
+  background-color: theme-color(bcgold);
+  color: $white;
+  padding: 8px 8px 8px 15px;
+  margin-top: 8px; // should only be padded on bottoms of components.
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
 hr {
   display: block;
   border-top: 4px solid theme-color(bcgold);
@@ -200,4 +210,12 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.uppercase-text {
+  text-transform: uppercase;
 }

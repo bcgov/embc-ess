@@ -1,23 +1,25 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs/operators';
+import { map, mergeMap, filter } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { AppState } from 'src/app/store';
 import { RegistrationService } from 'src/app/core/services/registration.service';
 import {
-  Registration, FamilyMember, isBcAddress, Community, Country, Volunteer, IncidentTask, Address, User
+  Registration, FamilyMember, isBcAddress, Community, Country, Volunteer, IncidentTask, Address, User, VolunteerTask
 } from 'src/app/core/models';
 import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { hasErrors, invalidField, clearFormArray, compareById } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
-import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
+import { GENDER_OPTIONS, INSURANCE_OPTIONS, EVERYONE, VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from 'src/app/constants';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { of } from 'rxjs';
+import { VolunteerTaskService } from 'src/app/core/services/volunteer-task.service';
 
 @Component({
   selector: 'app-registration-maker',
@@ -25,15 +27,23 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
   styleUrls: ['./registration-maker.component.scss']
 })
 export class RegistrationMakerComponent implements OnInit, AfterViewInit {
+
+  @Output()
+  onSummary: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   // state needed by this FORM
   countries$ = this.store.select(s => s.lookups.countries.countries);
   regions$ = this.store.select(s => s.lookups.regions);
   relationshipTypes$ = this.store.select(s => s.lookups.relationshipTypes.relationshipTypes);
-  incidentTasks$ = this.incidentTaskService.getIncidentTasks().pipe(map(x => x.data));
+  incidentTasks$ = this.incidentTaskService.getOpenIncidentTasks().pipe(map(x => x.data));
+
+  // Required by ERA users
+  isVolunteer: boolean;
+  activeTask: IncidentTask;
 
   CANADA: Country; // the object representation of the default country
 
-  pageTitle = 'Add an Evacuee';
+  pageTitle = 'New Registration';
   activeForm: boolean; // not set by default
 
   // The model for the form data collected
@@ -47,7 +57,6 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   editMode = false; // edit mode is the mode where the form is fed data from the api. (Changes text and etc.)
   summaryMode = false; // just show the summary
   submitting = false; // this is what disables buttons on submit
-
   // DECLARATION AND CONSENT MUST BE CHECKED BEFORE SUBMIT
   declarationAndConsent: FormControl = new FormControl(null);
 
@@ -85,6 +94,8 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     private notificationQueueService: NotificationQueueService,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
+    private el: ElementRef,
+    private volTaskServ: VolunteerTaskService
   ) {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
@@ -147,6 +158,21 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       hasPets: {
         required: 'Please make a selection regarding pets.',
       },
+      requiresAccommodation: {
+        required: 'Please make a selection regarding lodging while evacuated.',
+      },
+      requiresClothing: {
+        required: 'Please make a selection regarding clothing while evacuated.',
+      },
+      requiresFood: {
+        required: 'Please make a selection regarding food while evacuated.',
+      },
+      requiresIncidentals: {
+        required: 'Please make a selection regarding incidentals while evacuated.',
+      },
+      requiresTransportation: {
+        required: 'Please make a selection regarding transportation while evacuated.',
+      },
     };
 
     // TODO: Wow. it sure would be nice if we could just instatiate a class instead of using interfaces
@@ -197,7 +223,22 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
     // Know the current user
     this.authService.getCurrentUser().subscribe((user: User) => this.currentUser = user);
-
+    this.authService.role.subscribe((role: string) => {
+      // If the user Everyone or Volunteer (ERA User) then they cannot choose the task number.
+      if (role !== PROVINCIAL_ADMIN && role !== LOCAL_AUTHORITY) {
+        this.isVolunteer = true;
+        this.f.incidentTask.disable();
+        // get that task number
+        // this.volTaskServ.getActiveVolunteerTask().subscribe(result => {
+        //   // Look, I don't know why the compiler wouldn't let me make result a VolunteerTask
+        //   // so I did it this way.
+        //   const task: VolunteerTask = result as VolunteerTask;
+        //   let tControl = this.form.get("incidentTask");
+        //   tControl.patchValue(task);
+        //   tControl.updateValueAndValidity();
+        // });
+      }
+    });
     // // if there are route params we should grab them
     // const id = this.route.snapshot.paramMap.get('id');
 
@@ -212,11 +253,11 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
           // set registration mode to edit and save the previous content in an object
           // NOTE: these flags are reversed! ie, requiresAccomodation means "claims to have accomodation on self reg"
-          registration.requiresAccommodation = !registration.requiresAccommodation;
-          registration.requiresClothing = !registration.requiresClothing;
-          registration.requiresFood = !registration.requiresFood;
-          registration.requiresIncidentals = !registration.requiresIncidentals;
-          registration.requiresTransportation = !registration.requiresTransportation;
+          registration.requiresAccommodation = registration.requiresAccommodation;
+          registration.requiresClothing = registration.requiresClothing;
+          registration.requiresFood = registration.requiresFood;
+          registration.requiresIncidentals = registration.requiresIncidentals;
+          registration.requiresTransportation = registration.requiresTransportation;
 
           // hide/show form accordingly
           this.activeForm = !registration.restrictedAccess;
@@ -242,6 +283,10 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     const elements = document.getElementsByClassName('form-control') as HTMLCollectionOf<HTMLElement>;
     if (elements.length > 0) {
       elements[0].focus();
+      if (this.isVolunteer) {
+        // I'm not sure why we have to do this, but the task isn't being set properly when editing a registration as a volunteer
+        this.form.get("incidentTask").setValue(this.activeTask);
+      }
     } else {
       // wait for elements to display and try again
       setTimeout(() => this.ngAfterViewInit(), 100);
@@ -279,7 +324,6 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
         initials: fmbr.initials,
         gender: fmbr.gender,
         dob: [fmbr.dob, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
-        relationshipToEvacuee: [fmbr.relationshipToEvacuee, Validators.required],
       });
     } else {
       // make a new family member blank and return it.
@@ -290,7 +334,6 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
         initials: '',
         gender: null,
         dob: [null, [Validators.required, CustomValidators.date('YYYY-MM-DD'), CustomValidators.maxDate(moment())]],
-        relationshipToEvacuee: [null, Validators.required],
       });
     }
   }
@@ -320,11 +363,11 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       hasPersonalServicesReferral: null,
       hasPetCareReferral: null,
       hasPets: [null, Validators.required],
-      requiresAccommodation: null,
-      requiresClothing: null,
-      requiresFood: null,
-      requiresIncidentals: null,
-      requiresTransportation: null,
+      requiresAccommodation: [null, Validators.required],
+      requiresClothing: [null, Validators.required],
+      requiresFood: [null, Validators.required],
+      requiresIncidentals: [null, Validators.required],
+      requiresTransportation: [null, Validators.required],
 
       // HOH fields that we decided to put at the parent form level to simplify things
       phoneNumber: '', // only BC phones will be validated so keep validators out of here...
@@ -363,7 +406,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
       familyMembers: this.formBuilder.array([]), // array of formGroups
 
-      incidentTask: [null, Validators.required], // which task is this from
+      incidentTask: [{value: null}, [Validators.required]], // which task is this from
       hostCommunity: [null, Validators.required], // which community is hosting
 
       // UI booleans
@@ -372,11 +415,23 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       mailingAddressInBC: [null, CustomValidators.requiredWhenFalse('mailingAddressSameAsPrimary')],
       mailingAddressSameAsPrimary: [null, Validators.required],
     });
+
+    // set task number
+    this.store.select(state => state.volunterTask.taskNumber)
+      .pipe(filter(n => !!n))
+      .pipe(map(taskNumber => {
+        this.incidentTasks$.subscribe(tasks => {
+          const task = tasks.find(t => t.taskNumber === taskNumber);
+          this.activeTask = task;
+          //this.form.get('incidentTask').patchValue(task);
+          this.form.get('incidentTask').setValue(task);
+        });
+      })).subscribe();
   }
 
   onFormChange(): void {
     // validate the whole form as we capture data
-    this.form.valueChanges.subscribe(() => this.validateForm());
+    this.form.valueChanges.subscribe(() => this.validateForm(false));
 
     // show/hide family members section based on the "family info" radio button
     this.f.registeringFamilyMembers.valueChanges
@@ -415,15 +470,21 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       });
   }
 
-  validateForm(): void {
+  validateForm(focusOnError: boolean = false): void {
     this.validationErrors = this.validationHelper.processMessages(this.form);
+    // if (focusOnError) {
+    //   const invalidControl = this.el.nativeElement.querySelector('[formcontrolname].ng-invalid');
+    //   if (invalidControl) {
+    //     invalidControl.focus();
+    //   }
+    // }
   }
 
   displayRegistration(r?: Registration | null): void {
     // Display the appropriate page title and form state
     if (r == null) {
       // null registration means this is a new registration
-      this.pageTitle = 'Add an Evacuee';
+      this.pageTitle = 'New Registration';
       this.createMode = true;
       this.finalizeMode = false; // turn off these
     } else if (!r.isFinalized) {
@@ -564,13 +625,16 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   next() {
     this.submitting = true; // disables buttons while we process the form
     this.submitted = true; // used for invalid feedback // TODO: possibly get rid of this
-
-    this.validateForm();
+    this.errorSummary = null;
+    this.validateForm(true);
 
     // stop here if form is invalid
     if (this.form.invalid) {
-      this.errorSummary = 'Some required fields have not been completed.';
+      //this.errorSummary = 'Some required fields have not been completed.';
+      this.errorSummary = this.getValidationErrorSummary();
       this.submitting = false; // reenable so they can try again
+      this.form.markAsTouched();
+      this.scrollToFirstInvalidControl();
     } else {
       // success!
       this.errorSummary = null;
@@ -579,22 +643,70 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
       // navigate to the next page. AKA show the summary part of the form.
       this.summaryMode = true;
+      this.onSummary.emit(true);
       this.submitting = false; // reenable when we parse data
       window.scrollTo(0, 0); // scroll to top
     }
   }
 
+  private getValidationErrorSummary(): string {
+    let result: string = "";
+    const errors = this.validationErrors;
+    // loop through each validation error and add it to the string
+    for (let key in errors) {
+      // Most errors are just strings
+      if (typeof errors[key] === "string") {
+        let err = errors[key];
+        // Do not add empty line breaks
+        err = err !== "" && err != null
+          ? `${err}\n`
+          : '';
+        result += err;
+      }
+      // a few errors are nested objects
+      else {
+        let nestedErrors = errors[key];
+        for (let nestedKey in nestedErrors) {
+          let err = nestedErrors[nestedKey];
+          err = err !== "" && err != null
+            ? `${err}\n`
+            : '';
+          result += err;
+        }
+      }
+    }
+    return result;
+  }
+
+
+  private scrollToFirstInvalidControl() {
+    // Reference to the first invalid control
+    const firstInvalidControl: HTMLElement = this.el.nativeElement.querySelector("form .ng-invalid");
+    window.scroll({
+      top: this.getTopOffset(firstInvalidControl),
+      left: 0,
+      behavior: "smooth"
+    });
+  }
+
+  private getTopOffset(controlEl: HTMLElement): number {
+    // Could calculate this with another dom query - we want the height of the closest label element (or <p> for radio groups) + ~5px more for comfort
+    // 25 seems pretty comfortable testing in a desktop browser and it's mobile emulators.
+    const labelOffset = 25;
+    return controlEl.getBoundingClientRect().top + window.scrollY - labelOffset;
+  }
+
+
   submit(addReferrals: boolean = false) {
     this.submitted = true; // send data to the server
     this.submitting = true; // in transmission
 
-    // these are represented opposite in the db. So these are flipped on page load then flipped on submit
     const r = this.registration;
-    r.requiresAccommodation = !r.requiresAccommodation;
-    r.requiresClothing = !r.requiresClothing;
-    r.requiresFood = !r.requiresFood;
-    r.requiresIncidentals = !r.requiresIncidentals;
-    r.requiresTransportation = !r.requiresTransportation;
+    r.requiresAccommodation = r.requiresAccommodation;
+    r.requiresClothing = r.requiresClothing;
+    r.requiresFood = r.requiresFood;
+    r.requiresIncidentals = r.requiresIncidentals;
+    r.requiresTransportation = r.requiresTransportation;
 
     // create or update registration
     // TODO: should this be editmode instead?
@@ -652,6 +764,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
   back() {
     // return to the edit mode so you can change the form data
     this.summaryMode = false;
+    this.onSummary.emit(false);
     window.scrollTo(0, 0); // scroll to top
   }
 
@@ -721,7 +834,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       registrationCompletionDate: new Date().toJSON() as string, // this stamps whenever the registration was completed
 
       // related entities
-      incidentTask: values.incidentTask,
+      incidentTask: values.incidentTask != null ? values.incidentTask : this.activeTask,
       hostCommunity: values.hostCommunity,
     };
 
@@ -843,4 +956,13 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       isFinalized: null
     };
   }
+
+  hasPetsChanged() {
+    // If the value is false, clear out any pet care plans
+    if (!Boolean(this.form.get('hasPets').value)) {
+      this.form.get('petCarePlan').setValue(null);
+    }
+  }
+
+
 }

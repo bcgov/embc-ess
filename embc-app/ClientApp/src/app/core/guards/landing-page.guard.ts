@@ -28,7 +28,7 @@ export class LandingPageGuard implements CanActivate {
       .pipe(
         map(user => {
           if (!user || !navigateByRole) {
-            this.router.navigate(['/404']);
+            window.location.replace('/login');
             return false;
           }
 
@@ -51,7 +51,7 @@ export class LandingPageGuard implements CanActivate {
             return false;
           }
 
-          this.router.navigate(['/404']);
+          this.router.navigate(['/access-denied']);
           return false;
         })
       );

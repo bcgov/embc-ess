@@ -2,22 +2,28 @@ using AutoMapper;
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Seeder;
+using Gov.Jag.Embc.Public.Services;
 using Gov.Jag.Embc.Public.Services.Referrals;
 using Gov.Jag.Embc.Public.Utils;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,11 +33,15 @@ namespace Gov.Jag.Embc.Public
     {
         private readonly ILoggerFactory loggerFactory;
         private readonly IConfiguration configuration;
+        private readonly IHostingEnvironment environment;
+        private readonly ILogger log;
 
-        public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment, ILoggerFactory loggerFactory)
         {
             this.loggerFactory = loggerFactory;
             this.configuration = configuration;
+            this.environment = environment;
+            this.log = loggerFactory.CreateLogger<Startup>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -62,11 +72,9 @@ namespace Gov.Jag.Embc.Public
                 })
                 //XSRF token for Angular - not working yet
                 //.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN")
-                .AddSession()
                 .AddMvc(opts =>
                 {
                     // authorize on all controllers by default
-                    opts.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
                     // anti forgery validation by default - not working yet
                     //opts.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 })
@@ -93,11 +101,113 @@ namespace Gov.Jag.Embc.Public
             );
 
             // setup siteminder authentication
-            services.AddAuthentication(options =>
+            if (configuration.GetAuthenticationMode() == "SM")
             {
-                options.DefaultAuthenticateScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
-                options.DefaultChallengeScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
-            }).AddSiteminderAuth();
+                services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
+                    options.DefaultChallengeScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
+                }).AddSiteminderAuth();
+            }
+            else
+            {
+                //services.AddSingleton<IClaimsTransformation, KeyCloakClaimTransformer>(); //this will cause the transformation to be called for every request by the middleware
+                services.AddScoped<KeyCloakClaimTransformer, KeyCloakClaimTransformer>();   //this is to be able to resolve once in OnTicketReceived event only
+                services.AddAuthentication(options =>
+                {
+                    //Default to cookie auth, challenge with OIDC
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
+                    //JWT bearer to support direct API authentication
+                    .AddJwtBearer(options =>
+                    {
+                        configuration.GetSection("auth:jwt").Bind(options);
+
+                        options.Events = new JwtBearerEvents
+                        {
+                            OnAuthenticationFailed = async c =>
+                            {
+                                var logger = c.HttpContext.RequestServices.GetRequiredService<ILogger<JwtBearerHandler>>();
+                                logger.LogError(c.Exception, $"Error authenticating JWTBearer token");
+                                c.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                                c.Response.ContentType = "text/plain"; if (environment.IsDevelopment())
+                                {
+                                    // Debug only, in production do not share exceptions with the
+                                    // remote host.
+                                    await c.Response.WriteAsync(c.Exception.ToString());
+                                }
+                                await c.Response.WriteAsync("An error occurred processing yourauthentication.");
+                            },
+
+                            OnTokenValidated = async c =>
+                                                        {
+                                                            var claimTransformer = c.HttpContext.RequestServices.GetRequiredService<KeyCloakClaimTransformer>();
+                                                            c.Principal = await claimTransformer.TransformAsync(c.Principal);
+                                                            c.Success();
+                                                        }
+                        };
+                    })
+                    //cookies as default and sign in, principal will be saved as a cookie (no need to session state)
+                    .AddCookie(options =>
+                    {
+                        configuration.GetSection("auth:cookie").Bind(options);
+                        options.Cookie.SameSite = SameSiteMode.Strict;
+                        options.LoginPath = "/login";
+                    })
+                    .AddOpenIdConnect(options => //oidc authentication for challenge authentication request
+                    {
+                        configuration.GetSection("auth:oidc").Bind(options);
+                        options.Events = new OpenIdConnectEvents()
+                        {
+                            OnAuthenticationFailed = async c =>
+                            {
+                                var logger = c.HttpContext.RequestServices.GetRequiredService<ILogger<JwtBearerHandler>>();
+                                logger.LogError(c.Exception, $"Error authenticating OIDC token");
+
+                                c.HandleResponse();
+
+                                c.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                                c.Response.ContentType = "text/plain";
+                                if (environment.IsDevelopment())
+                                {
+                                    // Debug only, in production do not share exceptions with the
+                                    // remote host.
+                                    await c.Response.WriteAsync(c.Exception.ToString());
+                                }
+                                await c.Response.WriteAsync("An error occurred processing your authentication.");
+                            },
+                            OnTicketReceived = async c =>
+                            {
+                                var claimTransformer = c.HttpContext.RequestServices.GetRequiredService<KeyCloakClaimTransformer>();
+                                c.Principal = await claimTransformer.TransformAsync(c.Principal);
+                                c.Success();
+                            }
+                        };
+                    });
+
+                services.AddAuthorization(options =>
+                {
+                    //API authorization policy supports cookie or jwt authentication schemes
+                    options.AddPolicy("API", policy =>
+                    {
+                        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme);
+                        policy.RequireAuthenticatedUser();
+                    });
+
+                    //Set API policy as default for [authorize] controllers
+                    options.DefaultPolicy = options.GetPolicy("API");
+                });
+            }
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.Secure = environment.IsDevelopment()
+                    ? CookieSecurePolicy.SameAsRequest
+                    : CookieSecurePolicy.Always;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -109,8 +219,19 @@ namespace Gov.Jag.Embc.Public
             services.AddHealthChecks(checks =>
             {
                 checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
-                checks.AddSqlCheck(configuration.GetDbName(), DatabaseTools.GetConnectionString(configuration));
             });
+
+            var keyRingPath = configuration.GetKeyRingPath();
+            var dpBuilder = services.AddDataProtection();
+            if (!string.IsNullOrEmpty(keyRingPath))
+            {
+                log.LogInformation($"Setting data protection keys to persist in {keyRingPath}");
+                dpBuilder.PersistKeysToFileSystem(new DirectoryInfo(keyRingPath));
+            }
+            else
+            {
+                log.LogWarning("data protection key folder is not set, check if KEY_RING_DIRECTORY env var is missing");
+            }
 
             services.AddAutoMapper(typeof(Startup));
             services.AddMediatR(typeof(Startup));
@@ -119,6 +240,8 @@ namespace Gov.Jag.Embc.Public
             services.AddTransient<IPdfConverter, PdfConverter>();
             services.AddTransient<IReferralsService, ReferralsService>();
             services.AddTransient<IDataInterface, DataInterface>();
+            // Using AddScoped rather than transient because of state. Might be incorrect.
+            services.AddScoped<ICurrentUser, CurrentUserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -126,8 +249,6 @@ namespace Gov.Jag.Embc.Public
         {
             // DATABASE SETUP
             SetupDatabase(env);
-
-            app.UsePathBase(configuration.GetBasePath());
 
             if (!env.IsProduction())
             {
@@ -156,7 +277,7 @@ namespace Gov.Jag.Embc.Public
                 // X-Robots-Tag header
                 .UseXRobotsTag(opts => opts.NoIndex().NoFollow())
                 .UseXDownloadOptions()
-                // no cache  headers
+                // no cache headers
                 .UseNoCacheHttpHeaders()
                 // CSP header
                 .Use(next => context =>
@@ -195,24 +316,26 @@ namespace Gov.Jag.Embc.Public
 
             if (!env.IsProduction())
             {
-                // Use NSwag for API documentation
-                // Register the Swagger generator and the Swagger UI middlewares
+                // Use NSwag for API documentation Register the Swagger generator and the Swagger UI middlewares
                 app.UseOpenApi();
                 app.UseSwaggerUi3();
             }
 
-            app
-                .UseSession()
-                .UseAuthentication()
-                .UseCookiePolicy(new CookiePolicyOptions
-                {
-                    HttpOnly = HttpOnlyPolicy.Always,
-                    Secure = env.IsDevelopment()
-                        ? CookieSecurePolicy.SameAsRequest
-                        : CookieSecurePolicy.Always,
-                    MinimumSameSitePolicy = SameSiteMode.Strict
-                })
+            var fwdHeadersOpts = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto,
+            };
+            //Add the internal network to known networks, otherwise the headers are rejected
+            var network = configuration.GetInternalNetworkAddress();
+            log.LogInformation($"Adding known network to Fwd headers middleware: {network.Prefix.ToString()}/{network.PrefixLength}");
+            fwdHeadersOpts.KnownNetworks.Add(network);
 
+            app
+                //Pass x-forward-* headers to middlewares so OICD knows to add https in front of return url
+                // (otherwise it breaks OIDC login)
+                .UseForwardedHeaders(fwdHeadersOpts)
+                .UseAuthentication()
+                .UseCookiePolicy()
                 .UseMvc(routes =>
                 {
                     routes.MapRoute(
@@ -223,20 +346,18 @@ namespace Gov.Jag.Embc.Public
                 .UseSpa(spa =>
                 {
                     // To learn more about options for serving an Angular SPA from ASP.NET Core, see https://go.microsoft.com/fwlink/?linkid=864501
-
                     spa.Options.SourcePath = "ClientApp";
-
                     // Only run the angular CLI Server in Development mode (not staging or test.)
                     if (env.IsDevelopment())
                     {
-                        spa.UseAngularCliServer(npmScript: "start");
+                        //spa.UseAngularCliServer(npmScript: "start");
+                        spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                     }
                 });
         }
 
         private void SetupDatabase(IHostingEnvironment env)
         {
-            var log = loggerFactory.CreateLogger<Startup>();
             log.LogInformation("Fetching the application's database context ...");
 
             var adminCtx = new EmbcDbContext(new DbContextOptionsBuilder<EmbcDbContext>()
@@ -259,13 +380,8 @@ namespace Gov.Jag.Embc.Public
                     configuration.GetDbUserPassword());
             }
 
-            //Check if the database exists
-            var databaseExists = adminCtx.Database.CanConnect();
-            if (databaseExists)
-            {
-                log.LogInformation("Syncing migrations prior to migrating...");
-                DatabaseTools.SyncInitialMigration(DatabaseTools.GetSaConnectionString(configuration));
-            }
+            log.LogInformation("Syncing migrations prior to migrating...");
+            DatabaseTools.SyncInitialMigration(DatabaseTools.GetSaConnectionString(configuration));
 
             log.LogInformation("Migrating the database ...");
             adminCtx.Database.Migrate();

@@ -28,5 +28,16 @@ namespace Gov.Jag.Embc.Public.ViewModels.Search
 
         [FromQuery(Name = "registration_completed")]
         public bool? RegistrationCompleted { get; set; }
+
+        [FromQuery(Name = "dob")]
+        public string DateOfBirth { get; set; }
+        [FromQuery(Name = "self_reg_date_from")]
+        public string SelfRegistrationDateStart { get; set; }
+        [FromQuery(Name = "self_reg_date_to")]
+        public string SelfRegistrationDateEnd { get; set; }
+        [FromQuery(Name = "finalization_date_from")]
+        public string FinalizationDateStart { get; set; }
+        [FromQuery(Name = "finalization_date_to")]
+        public string FinalizationDateEnd { get; set; }
     }
 }

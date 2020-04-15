@@ -1,5 +1,7 @@
 using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.DataInterfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,21 +16,18 @@ using System.Threading.Tasks;
 namespace Gov.Jag.Embc.Public.Controllers
 {
     [Route("login")]
-    [Authorize]
     public class LoginController : Controller
     {
         private readonly IConfiguration configuration;
         private readonly IHostingEnvironment env;
-        private readonly IHttpContextAccessor httpCtx;
         private readonly ILogger logger;
         private readonly IDataInterface dataInterface;
 
-        public LoginController(IConfiguration configuration, IHostingEnvironment env, IHttpContextAccessor httpCtx, ILoggerFactory loggerFactory, IDataInterface dataInterface)
+        public LoginController(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory, IDataInterface dataInterface)
         {
             this.dataInterface = dataInterface;
             this.configuration = configuration;
             this.env = env;
-            this.httpCtx = httpCtx;
             logger = loggerFactory.CreateLogger(typeof(LoginController));
         }
 
@@ -36,11 +35,21 @@ namespace Gov.Jag.Embc.Public.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Login(string path = "dashboard")
         {
+            if (configuration.GetAuthenticationMode() == "KC")
+            {
+                //Oidc login
+                return new ChallengeResult(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
+                {
+                    RedirectUri = $"{configuration.GetBasePath()}/{path}",
+                    IsPersistent = true
+                });
+            }
+
             if (!env.IsProduction() && "headers".Equals(path, StringComparison.OrdinalIgnoreCase))
             {
                 return Content(string.Join(Environment.NewLine, Request.Headers.Select(header => $"{header.Key}={string.Join(",", header.Value.ToArray())}")), "text/plain", Encoding.UTF8);
             }
-
+            //SiteMinder login
             if (ControllerContext.HttpContext.User == null || !ControllerContext.HttpContext.User.Identity.IsAuthenticated) return Unauthorized();
 
             return await Task.FromResult(LocalRedirect($"{configuration.GetBasePath()}/{path}"));

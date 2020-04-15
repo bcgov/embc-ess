@@ -44,6 +44,58 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return null;
         }
 
+        public async Task<IPagedResults<IncidentTask>> GetOpenIncidentTasksAsync(int limit = 100, int offset = 0)
+        {
+            // Tasks are considered open if their TaskNumberEndDate is in the future
+            DateTime now = DateTime.UtcNow;
+            var items = await IncidentTasks
+                        .Where(i => i.Active && i.TaskNumberEndDate.HasValue && i.TaskNumberEndDate > now)//.Include("Community")
+                        .ToArrayAsync();
+
+            return new PaginatedList<IncidentTask>(items.Select(i => mapper.Map<IncidentTask>(i)), offset, limit);
+        }
+
+        public async Task<PaginationMetadata> GetOpenIncidentTasksMetadataAsync(int limit = 100, int offset = 0)
+        {
+            DateTime now = DateTime.UtcNow;
+            int count = await IncidentTasks
+                        .Where(i => i.Active && i.TaskNumberEndDate.HasValue && i.TaskNumberEndDate > now)
+                        .CountAsync();
+            // Build the meta data
+            var result = new PaginationMetadata()
+            {
+                CurrentPage = (int)Math.Floor((decimal)offset / limit) + 1,
+                PageSize = limit,
+                TotalCount = count,
+                TotalPages = (int)Math.Ceiling((decimal)count / limit)
+            };
+            return result;
+        }
+
+        public async Task<PaginationMetadata> GetClosedIncidentTasksMetadataAsync(int limit = 100, int offset = 0)
+        {
+            DateTime now = DateTime.UtcNow;
+            int count = await IncidentTasks
+                        .Where(i => i.Active && i.TaskNumberEndDate.HasValue && i.TaskNumberEndDate < now)
+                        .CountAsync();
+            // Build the meta data
+            var result = new PaginationMetadata()
+            {
+                CurrentPage = (int)Math.Floor((decimal)offset / limit) + 1,
+                PageSize = limit,
+                TotalCount = count,
+                TotalPages = (int)Math.Ceiling((decimal)count / limit)
+            };
+            return result;
+        }
+
+        public async Task<IncidentTask> GetIncidentTaskByTaskNumbetAsync(string taskNumber)
+        {
+            var entity = await IncidentTasks
+                .SingleOrDefaultAsync(task => task.TaskNumber == taskNumber);
+            return mapper.Map<IncidentTask>(entity);
+        }
+
         public async Task<string> CreateIncidentTaskAsync(IncidentTask task)
         {
             var newItem = db.IncidentTasks.Add(mapper.Map<Models.Db.IncidentTask>(task));
@@ -69,6 +121,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             await db.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<bool> IsUniqueTaskNumber(string taskNumber)
+        {
+            bool isTaken = await IncidentTasks.AnyAsync(task =>
+                string.Equals(taskNumber, task.TaskNumber, StringComparison.InvariantCultureIgnoreCase));
+            return !isTaken;
         }
     }
 }

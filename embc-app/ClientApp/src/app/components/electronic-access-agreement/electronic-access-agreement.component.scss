@@ -1,0 +1,81 @@
+$scrollBoxWidth: 800px;
+
+.buttons {
+  padding-top: 30px;
+  width: $scrollBoxWidth; 
+  display: flex;
+  & a {
+    flex: 2 1 auto;
+  }
+}
+
+.scroll-box {
+  overflow: auto;
+  width: $scrollBoxWidth;
+  height: 500px;
+  border: 1px solid;
+  padding: 15px;
+  margin-bottom: 30px;
+}
+
+ol.brackets {
+  counter-reset: item;
+  list-style: none;
+}
+
+ol.closing-bracket-a {
+  counter-reset: itemC;
+  list-style: none;
+}
+
+ol.brackets-a {
+  counter-reset: itemA;
+  list-style: none;
+}
+
+ol.brackets-i {
+  counter-reset: itemI;
+  list-style: none;
+}
+
+li {
+  padding-left: 20px;
+  position: relative;
+}
+
+li:before {
+  text-align: right;
+  padding-right: 16px;
+  width: 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+ol.brackets > li:before {
+  counter-increment: item;
+  content: "(" counter(item) ") ";
+}
+
+ol.closing-bracket-a > li:before {
+  counter-increment: itemC;
+  content: counter(itemC, lower-alpha) ") ";
+}
+
+ol.brackets-i > li:before {
+  counter-increment: itemI;
+  content: "(" counter(itemI, lower-roman) ") ";
+}
+
+ol.brackets-a > li:before {
+  counter-increment: itemA;
+  content: "(" counter(itemA, lower-alpha) ") ";
+}
+
+ul li {
+  list-style-type: disc;
+}
+
+.w-flex-40 {
+  flex: 0 0 40px;
+}
