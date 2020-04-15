@@ -73,9 +73,9 @@ export class AdminVolunteerMakerComponent implements OnInit {
       isPrimaryContact: ['']
     });
 
-    // validate isPrimaryContact only if isAdministrator is true
+    // validate isPrimaryContact only if isAdministrator is true and user is admin
     this.form.controls.isAdministrator.valueChanges.subscribe(value => {
-      if (value) {
+      if (value && this.iAmProvincialAdmin) {
         this.f.isPrimaryContact.setValidators([Validators.required]);
       } else {
         this.f.isPrimaryContact.clearValidators();
@@ -101,7 +101,6 @@ export class AdminVolunteerMakerComponent implements OnInit {
           .subscribe((organization: Organization) => {
             this.currentOrganization = organization;
             this.doSelectOrg = false;
-
             // continue
             this.ngOnInit2();
           }, err => {
