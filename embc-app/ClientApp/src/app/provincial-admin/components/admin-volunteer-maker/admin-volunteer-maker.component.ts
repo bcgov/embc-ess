@@ -101,7 +101,6 @@ export class AdminVolunteerMakerComponent implements OnInit {
           .subscribe((organization: Organization) => {
             this.currentOrganization = organization;
             this.doSelectOrg = false;
-            this.form.get("")
             // continue
             this.ngOnInit2();
           }, err => {
