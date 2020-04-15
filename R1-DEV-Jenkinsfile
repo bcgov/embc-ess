@@ -3,6 +3,8 @@
 APP_NAME = "embcess-r1"
 PROJECT_NAMESPACE = "jhnamn"
 DOTNET_SKIP_FIRST_TIME_EXPERIENCE="true"
+IMAGESTREAM_NAME = "${APP_NAME}-develop"
+ARTIFACT_BUILD = "${APP_NAME}-develop"
 
 class AppEnvironment {
   String name
@@ -10,22 +12,9 @@ class AppEnvironment {
   String previousTag
 }
 
-// EDIT LINE BELOW (Edit your environment TAG names)
 environments = [
-  dev:new AppEnvironment(name:"Development",tag:"dev",previousTag:"dev-previous"),
-  test:new AppEnvironment(name:"Test",tag:"test",previousTag:"test-previous"),
-  training:new AppEnvironment(name:"Training",tag:"training",previousTag:"training-previous"),
-  prod:new AppEnvironment(name:"Prod",tag:"Prod",previousTag:"Prod-previous")
+  dev:new AppEnvironment(name:"Development",tag:"dev",previousTag:"dev-previous")
 ]
-
-// You shouldn't have to edit these if you're following the conventions
-ARTIFACT_BUILD = APP_NAME
-RUNTIME_CHAINED_BUILD = "${APP_NAME}"
-
-IMAGESTREAM_NAME = "${APP_NAME}"
-
-PATHFINDER_URL = "pathfinder.gov.bc.ca"
-
 
 // Gets the container hash for the latest image in an image stream
 def getLatestHash(imageStreamName) {
@@ -88,12 +77,12 @@ def tagLatestStable(environment, backupTag, imageStream) {
   }
 }
 
-def deployAndVerify(srcHash, environment, imageStream) {
-  echo "Deploying ${APP_NAME} to ${environment}"
+def deployAndVerify(deploymentConfig, srcHash, environment, imageStream) {
+  echo "Deploying ${deploymentConfig} to ${environment}"
   tagImage(srcHash, environment, imageStream)
   // verify deployment to an environment; e.g. [your-project-name]-dev
   openshiftVerifyDeployment(
-    deploymentConfig: APP_NAME,
+    deploymentConfig: "${deploymentConfig}",
     namespace: "${PROJECT_NAMESPACE}-${environment}",
     waitTime: '1200000'
   )
@@ -138,7 +127,7 @@ node('master') {
 
   stage('Startup') {
     // stop pending builds.
-    sh "oc cancel-build bc/${RUNTIME_CHAINED_BUILD}"
+    sh "oc cancel-build bc/${ARTIFACT_BUILD}"
   }
 
   /*Build a new image*/
@@ -162,7 +151,7 @@ node('master') {
       try {
         // hold on to a copy of the last stable DEV environment (in case the upcoming deployment fails...)
         tagLatestStable(environment, stableTag, IMAGESTREAM_NAME)
-        deployAndVerify(IMAGE_HASH, environment, IMAGESTREAM_NAME)
+        deployAndVerify(APP_NAME, IMAGE_HASH, environment, IMAGESTREAM_NAME)
         // all is good!
         notifyGood(
           "New ${APP_NAME} in ${environment} :)",
@@ -201,7 +190,7 @@ podTemplate(label: 'owasp-zap2', name: 'owasp-zap2', serviceAccount: 'jenkins', 
         checkout scm
 
         dir('/zap') {
-            def retVal = sh returnStatus: true, script: '/zap/zap-baseline.py -r baseline.html -t https://embcess-develop-jhnamn.pathfinder.gov.bc.ca '
+            def retVal = sh returnStatus: true, script: '/zap/zap-baseline.py -r baseline.html -t https://embcess-r1-develop.pathfinder.gov.bc.ca '
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: '/zap/wrk', reportFiles: 'baseline.html', reportName: 'ZAP Baseline Scan', reportTitles: 'ZAP Baseline Scan'])
             echo "Return value is: ${retVal}"
 
