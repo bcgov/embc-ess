@@ -236,7 +236,9 @@ namespace Gov.Jag.Embc.Public
 
             if (!env.IsProduction())
             {
-                app.UseDeveloperExceptionPage();
+                app
+                    .UseDeveloperExceptionPage()
+                    .UseDatabaseErrorPage();
             }
             else
             {
@@ -305,15 +307,6 @@ namespace Gov.Jag.Embc.Public
                 app.UseSwaggerUi3();
             }
 
-            var fwdHeadersOpts = new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto,
-            };
-            //Add the internal network to known networks, otherwise the headers are rejected
-            var network = configuration.GetInternalNetworkAddress();
-            log.LogInformation($"Adding known network to Fwd headers middleware: {network.Prefix.ToString()}/{network.PrefixLength}");
-            fwdHeadersOpts.KnownNetworks.Add(network);
-
             app
                 .UseSerilogRequestLogging(opts =>
                 {
@@ -339,7 +332,25 @@ namespace Gov.Jag.Embc.Public
                         diagCtx.Set("XFwdFor", httpCtx.Request.Headers["x-forwarded-for"].ToString());
                         diagCtx.Set("ContentLength", httpCtx.Response.ContentLength);
                     };
-                })
+                });
+
+            var fwdHeadersOpts = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto,
+            };
+            //Add the internal network to known networks, otherwise the headers are rejected
+            var network = configuration.GetInternalNetworkAddress();
+            if (network == null)
+            {
+                log.LogWarning($"Not adding a known proxy network to Fwd headers middleware, it may break the authentication middleware! " +
+                    $"INTERNAL_NETWORK_ADDRESS env var is missing or not in the correct format. Expected value is an IP network subnet like ::ffff:10.0.0.0/16.");
+            }
+            else
+            {
+                log.LogInformation($"Adding network {network.Prefix}/{network.PrefixLength} to Fwd headers middleware");
+                fwdHeadersOpts.KnownNetworks.Add(network);
+            }
+            app
                 //Pass x-forward-* headers to lower middleware so OICD knows to add https in front of return url (otherwise it breaks OIDC login)
                 .UseForwardedHeaders(fwdHeadersOpts)
                 .UseAuthentication()
