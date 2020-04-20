@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Gov.Jag.Embc.Public
 {
@@ -9,28 +8,20 @@ namespace Gov.Jag.Embc.Public
     {
         public static void Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).Build();
-            host.Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseHealthChecks("/hc")
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    var env = hostingContext.HostingEnvironment;
-
-                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
-                    config.AddEnvironmentVariables();
-                })
-                .ConfigureLogging((hostingContext, logging) =>
-                {
-                    logging.AddConsole(options => options.IncludeScopes = true);
-                    logging.SetMinimumLevel(LogLevel.Debug);
-                    logging.AddDebug();
-                    logging.AddEventSourceLogger();
-                })
+                .UseSerilog((hostingContext, loggerConfiguration) =>
+                        loggerConfiguration
+                        .ReadFrom.Configuration(hostingContext.Configuration)
+                        .Enrich.WithMachineName()
+                        .Enrich.WithProcessId()
+                        .Enrich.WithProcessName()
+                        .Enrich.FromLogContext()
+                        .Enrich.WithProperty("Environment", hostingContext.Configuration["ASPNET_ENVIRONMENT"]))
                 .UseStartup<Startup>();
     }
 }
