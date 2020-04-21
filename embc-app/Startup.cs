@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -19,8 +20,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,12 +34,14 @@ namespace Gov.Jag.Embc.Public
         private readonly ILoggerFactory loggerFactory;
         private readonly IConfiguration configuration;
         private readonly IHostingEnvironment environment;
+        private readonly ILogger log;
 
         public Startup(IConfiguration configuration, IHostingEnvironment environment, ILoggerFactory loggerFactory)
         {
             this.loggerFactory = loggerFactory;
             this.configuration = configuration;
             this.environment = environment;
+            this.log = loggerFactory.CreateLogger<Startup>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -214,8 +219,19 @@ namespace Gov.Jag.Embc.Public
             services.AddHealthChecks(checks =>
             {
                 checks.AddValueTaskCheck("HTTP Endpoint", () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
-                checks.AddSqlCheck(configuration.GetDbName(), DatabaseTools.GetConnectionString(configuration));
             });
+
+            var keyRingPath = configuration.GetKeyRingPath();
+            var dpBuilder = services.AddDataProtection();
+            if (!string.IsNullOrEmpty(keyRingPath))
+            {
+                log.LogInformation($"Setting data protection keys to persist in {keyRingPath}");
+                dpBuilder.PersistKeysToFileSystem(new DirectoryInfo(keyRingPath));
+            }
+            else
+            {
+                log.LogWarning("data protection key folder is not set, check if KEY_RING_DIRECTORY env var is missing");
+            }
 
             services.AddAutoMapper(typeof(Startup));
             services.AddMediatR(typeof(Startup));
@@ -307,14 +323,16 @@ namespace Gov.Jag.Embc.Public
 
             var fwdHeadersOpts = new ForwardedHeadersOptions
             {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto,
             };
-            //Add the reverse proxy to known proxies, otherwise the headers are rejected
-            fwdHeadersOpts.KnownProxies.Add(IPAddress.Parse(configuration.GetReverseProxyAddress()));
+            //Add the internal network to known networks, otherwise the headers are rejected
+            var network = configuration.GetInternalNetworkAddress();
+            log.LogInformation($"Adding known network to Fwd headers middleware: {network.Prefix.ToString()}/{network.PrefixLength}");
+            fwdHeadersOpts.KnownNetworks.Add(network);
 
             app
                 //Pass x-forward-* headers to middlewares so OICD knows to add https in front of return url
-                // (otherwise it breaks Safari oidc login)
+                // (otherwise it breaks OIDC login)
                 .UseForwardedHeaders(fwdHeadersOpts)
                 .UseAuthentication()
                 .UseCookiePolicy()
@@ -340,7 +358,6 @@ namespace Gov.Jag.Embc.Public
 
         private void SetupDatabase(IHostingEnvironment env)
         {
-            var log = loggerFactory.CreateLogger<Startup>();
             log.LogInformation("Fetching the application's database context ...");
 
             var adminCtx = new EmbcDbContext(new DbContextOptionsBuilder<EmbcDbContext>()
@@ -363,13 +380,8 @@ namespace Gov.Jag.Embc.Public
                     configuration.GetDbUserPassword());
             }
 
-            //Check if the database exists
-            var databaseExists = adminCtx.Database.CanConnect();
-            if (databaseExists)
-            {
-                log.LogInformation("Syncing migrations prior to migrating...");
-                DatabaseTools.SyncInitialMigration(DatabaseTools.GetSaConnectionString(configuration));
-            }
+            log.LogInformation("Syncing migrations prior to migrating...");
+            DatabaseTools.SyncInitialMigration(DatabaseTools.GetSaConnectionString(configuration));
 
             log.LogInformation("Migrating the database ...");
             adminCtx.Database.Migrate();
