@@ -19,11 +19,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,7 +34,7 @@ namespace Gov.Jag.Embc.Public
         private readonly ILoggerFactory loggerFactory;
         private readonly IConfiguration configuration;
         private readonly IHostingEnvironment environment;
-        private readonly ILogger log;
+        private readonly Microsoft.Extensions.Logging.ILogger log;
 
         public Startup(IConfiguration configuration, IHostingEnvironment environment, ILoggerFactory loggerFactory)
         {
@@ -74,7 +74,6 @@ namespace Gov.Jag.Embc.Public
                 //.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN")
                 .AddMvc(opts =>
                 {
-                    // authorize on all controllers by default
                     // anti forgery validation by default - not working yet
                     //opts.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 })
@@ -100,106 +99,91 @@ namespace Gov.Jag.Embc.Public
             }
             );
 
-            // setup siteminder authentication
-            if (configuration.GetAuthenticationMode() == "SM")
+            services.AddScoped<KeyCloakClaimTransformer, KeyCloakClaimTransformer>();
+            services.AddAuthentication(options =>
             {
-                services.AddAuthentication(options =>
+                //Default to cookie auth, challenge with OIDC
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+                //JWT bearer to support direct API authentication
+                .AddJwtBearer(options =>
                 {
-                    options.DefaultAuthenticateScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
-                    options.DefaultChallengeScheme = SiteMinderAuthOptions.AuthenticationSchemeName;
-                }).AddSiteminderAuth();
-            }
-            else
-            {
-                //services.AddSingleton<IClaimsTransformation, KeyCloakClaimTransformer>(); //this will cause the transformation to be called for every request by the middleware
-                services.AddScoped<KeyCloakClaimTransformer, KeyCloakClaimTransformer>();   //this is to be able to resolve once in OnTicketReceived event only
-                services.AddAuthentication(options =>
-                {
-                    //Default to cookie auth, challenge with OIDC
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                })
-                    //JWT bearer to support direct API authentication
-                    .AddJwtBearer(options =>
-                    {
-                        configuration.GetSection("auth:jwt").Bind(options);
+                    configuration.GetSection("auth:jwt").Bind(options);
 
-                        options.Events = new JwtBearerEvents
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = async c =>
                         {
-                            OnAuthenticationFailed = async c =>
+                            var logger = c.HttpContext.RequestServices.GetRequiredService<ILogger<JwtBearerHandler>>();
+                            logger.LogError(c.Exception, $"Error authenticating JWTBearer token");
+                            c.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            c.Response.ContentType = "text/plain"; if (environment.IsDevelopment())
                             {
-                                var logger = c.HttpContext.RequestServices.GetRequiredService<ILogger<JwtBearerHandler>>();
-                                logger.LogError(c.Exception, $"Error authenticating JWTBearer token");
-                                c.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                                c.Response.ContentType = "text/plain"; if (environment.IsDevelopment())
-                                {
-                                    // Debug only, in production do not share exceptions with the
-                                    // remote host.
-                                    await c.Response.WriteAsync(c.Exception.ToString());
-                                }
-                                await c.Response.WriteAsync("An error occurred processing yourauthentication.");
-                            },
-
-                            OnTokenValidated = async c =>
-                                                        {
-                                                            var claimTransformer = c.HttpContext.RequestServices.GetRequiredService<KeyCloakClaimTransformer>();
-                                                            c.Principal = await claimTransformer.TransformAsync(c.Principal);
-                                                            c.Success();
-                                                        }
-                        };
-                    })
-                    //cookies as default and sign in, principal will be saved as a cookie (no need to session state)
-                    .AddCookie(options =>
-                    {
-                        configuration.GetSection("auth:cookie").Bind(options);
-                        options.Cookie.SameSite = SameSiteMode.Strict;
-                        options.LoginPath = "/login";
-                    })
-                    .AddOpenIdConnect(options => //oidc authentication for challenge authentication request
-                    {
-                        configuration.GetSection("auth:oidc").Bind(options);
-                        options.Events = new OpenIdConnectEvents()
-                        {
-                            OnAuthenticationFailed = async c =>
-                            {
-                                var logger = c.HttpContext.RequestServices.GetRequiredService<ILogger<JwtBearerHandler>>();
-                                logger.LogError(c.Exception, $"Error authenticating OIDC token");
-
-                                c.HandleResponse();
-
-                                c.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                                c.Response.ContentType = "text/plain";
-                                if (environment.IsDevelopment())
-                                {
-                                    // Debug only, in production do not share exceptions with the
-                                    // remote host.
-                                    await c.Response.WriteAsync(c.Exception.ToString());
-                                }
-                                await c.Response.WriteAsync("An error occurred processing your authentication.");
-                            },
-                            OnTicketReceived = async c =>
-                            {
-                                var claimTransformer = c.HttpContext.RequestServices.GetRequiredService<KeyCloakClaimTransformer>();
-                                c.Principal = await claimTransformer.TransformAsync(c.Principal);
-                                c.Success();
+                                // Debug only, in production do not share exceptions with the remote host.
+                                await c.Response.WriteAsync(c.Exception.ToString());
                             }
-                        };
-                    });
+                            await c.Response.WriteAsync("An error occurred processing yourauthentication.");
+                        },
 
-                services.AddAuthorization(options =>
+                        OnTokenValidated = async c =>
+                                                    {
+                                                        var claimTransformer = c.HttpContext.RequestServices.GetRequiredService<KeyCloakClaimTransformer>();
+                                                        c.Principal = await claimTransformer.TransformAsync(c.Principal);
+                                                        c.Success();
+                                                    }
+                    };
+                })
+                //cookies as default and sign in, principal will be saved as a cookie (no need to session state)
+                .AddCookie(options =>
                 {
-                    //API authorization policy supports cookie or jwt authentication schemes
-                    options.AddPolicy("API", policy =>
+                    configuration.GetSection("auth:cookie").Bind(options);
+                    options.Cookie.SameSite = SameSiteMode.Strict;
+                    options.LoginPath = "/login";
+                })
+                .AddOpenIdConnect(options => //oidc authentication for challenge authentication request
+                {
+                    configuration.GetSection("auth:oidc").Bind(options);
+                    options.Events = new OpenIdConnectEvents()
                     {
-                        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme);
-                        policy.RequireAuthenticatedUser();
-                    });
+                        OnAuthenticationFailed = async c =>
+                        {
+                            var logger = c.HttpContext.RequestServices.GetRequiredService<ILogger<JwtBearerHandler>>();
+                            logger.LogError(c.Exception, $"Error authenticating OIDC token");
 
-                    //Set API policy as default for [authorize] controllers
-                    options.DefaultPolicy = options.GetPolicy("API");
+                            c.HandleResponse();
+
+                            c.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            c.Response.ContentType = "text/plain";
+                            if (environment.IsDevelopment())
+                            {
+                                // Debug only, in production do not share exceptions with the remote host.
+                                await c.Response.WriteAsync(c.Exception.ToString());
+                            }
+                            await c.Response.WriteAsync("An error occurred processing your authentication.");
+                        },
+                        OnTicketReceived = async c =>
+                        {
+                            var claimTransformer = c.HttpContext.RequestServices.GetRequiredService<KeyCloakClaimTransformer>();
+                            c.Principal = await claimTransformer.TransformAsync(c.Principal);
+                            c.Success();
+                        }
+                    };
                 });
-            }
+
+            services.AddAuthorization(options =>
+            {
+                //API authorization policy supports cookie or jwt authentication schemes
+                options.AddPolicy("API", policy =>
+            {
+                policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme);
+                policy.RequireAuthenticatedUser();
+            });
+
+                //Set API policy as default for [authorize] controllers
+                options.DefaultPolicy = options.GetPolicy("API");
+            });
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -252,11 +236,13 @@ namespace Gov.Jag.Embc.Public
 
             if (!env.IsProduction())
             {
-                app.UseDeveloperExceptionPage();
+                app
+                    .UseDeveloperExceptionPage()
+                    .UseDatabaseErrorPage();
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseStatusCodePages();
             }
 
             app
@@ -296,7 +282,7 @@ namespace Gov.Jag.Embc.Public
 
                     return next(context);
                 })
-                // Anty forgery cookie for Angular - not working yet
+                // Anti forgery cookie for Angular - not working yet
                 //.Use(next => context =>
                 //{
                 //    var path = context.Request.Path.Value;
@@ -321,18 +307,51 @@ namespace Gov.Jag.Embc.Public
                 app.UseSwaggerUi3();
             }
 
+            app
+                .UseSerilogRequestLogging(opts =>
+                {
+                    opts.MessageTemplate =
+                    "RequestId: {RequestId}, " +
+                    "RequestMethod: {RequestMethod}, " +
+                    "RequestPath: '{RequestPath}', " +
+                    "StatusCode: {StatusCode}, " +
+                    "Elapsed: {Elapsed}, " +
+                    "ContentLength: {ContentLength}, " +
+                    "User: {User}, " +
+                    "Host: {Host}, " +
+                    "RemoteIP: {RemoteIP}, " +
+                    "XFwdFor: {XFwdFor}, " +
+                    "UserAgent: '{UserAgent}'";
+                    opts.EnrichDiagnosticContext = (diagCtx, httpCtx) =>
+                    {
+                        diagCtx.Set("User", httpCtx.User.FindFirst(ClaimTypes.Upn)?.Value);
+                        diagCtx.Set("Host", httpCtx.Request.Host);
+                        diagCtx.Set("UserAgent", httpCtx.Request.Headers["User-Agent"].ToString());
+                        diagCtx.Set("RemoteIP", httpCtx.Connection.RemoteIpAddress.ToString());
+                        diagCtx.Set("ConnectionId", httpCtx.Connection.Id);
+                        diagCtx.Set("XFwdFor", httpCtx.Request.Headers["x-forwarded-for"].ToString());
+                        diagCtx.Set("ContentLength", httpCtx.Response.ContentLength);
+                    };
+                });
+
             var fwdHeadersOpts = new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto,
             };
             //Add the internal network to known networks, otherwise the headers are rejected
             var network = configuration.GetInternalNetworkAddress();
-            log.LogInformation($"Adding known network to Fwd headers middleware: {network.Prefix.ToString()}/{network.PrefixLength}");
-            fwdHeadersOpts.KnownNetworks.Add(network);
-
+            if (network == null)
+            {
+                log.LogWarning($"Not adding a known proxy network to Fwd headers middleware, it may break the authentication middleware! " +
+                    $"INTERNAL_NETWORK_ADDRESS env var is missing or not in the correct format. Expected value is an IP network subnet like ::ffff:10.0.0.0/16.");
+            }
+            else
+            {
+                log.LogInformation($"Adding network {network.Prefix}/{network.PrefixLength} to Fwd headers middleware");
+                fwdHeadersOpts.KnownNetworks.Add(network);
+            }
             app
-                //Pass x-forward-* headers to middlewares so OICD knows to add https in front of return url
-                // (otherwise it breaks OIDC login)
+                //Pass x-forward-* headers to lower middleware so OICD knows to add https in front of return url (otherwise it breaks OIDC login)
                 .UseForwardedHeaders(fwdHeadersOpts)
                 .UseAuthentication()
                 .UseCookiePolicy()
@@ -342,15 +361,12 @@ namespace Gov.Jag.Embc.Public
                         name: "default",
                         template: "{controller}/{action=Index}/{id?}");
                 })
-
                 .UseSpa(spa =>
                 {
-                    // To learn more about options for serving an Angular SPA from ASP.NET Core, see https://go.microsoft.com/fwlink/?linkid=864501
                     spa.Options.SourcePath = "ClientApp";
                     // Only run the angular CLI Server in Development mode (not staging or test.)
                     if (env.IsDevelopment())
                     {
-                        //spa.UseAngularCliServer(npmScript: "start");
                         spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                     }
                 });
