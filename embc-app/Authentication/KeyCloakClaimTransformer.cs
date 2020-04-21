@@ -36,11 +36,10 @@ namespace Gov.Jag.Embc.Public.Authentication
             transformedClaims.Add(new Claim(ClaimTypes.Sid, userGuid));
             transformedClaims.Add(new Claim(ClaimTypes.Upn, userName));
             transformedClaims.Add(new Claim(ClaimTypes.Name, principal.FindFirstValue("displayName")));
-            transformedClaims.Add(new Claim(SiteMinderClaimTypes.NAME, principal.FindFirstValue("displayName")));
             if (type != null)
             {
-                if (type.Equals("bceid", StringComparison.InvariantCultureIgnoreCase)) transformedClaims.Add(new Claim(SiteMinderClaimTypes.USER_TYPE, "business"));
-                if (type.Equals("idir", StringComparison.InvariantCultureIgnoreCase)) transformedClaims.Add(new Claim(SiteMinderClaimTypes.USER_TYPE, "internal"));
+                if (type.Equals("bceid", StringComparison.InvariantCultureIgnoreCase)) transformedClaims.Add(new Claim(EssClaimTypes.USER_TYPE, "business"));
+                if (type.Equals("idir", StringComparison.InvariantCultureIgnoreCase)) transformedClaims.Add(new Claim(EssClaimTypes.USER_TYPE, "internal"));
             }
 
             if (isAdmin)
@@ -66,5 +65,12 @@ namespace Gov.Jag.Embc.Public.Authentication
 
             return new ClaimsPrincipal(new ClaimsIdentity(transformedClaims, principal.Identity.AuthenticationType));
         }
+    }
+
+    public static class EssClaimTypes
+    {
+        public static string USER_ID = "ess.user_id";
+        public static string ORG_ID = "ess.org_id";
+        public static string USER_TYPE = "ess.user_type";
     }
 }

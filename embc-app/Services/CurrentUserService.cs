@@ -2,18 +2,16 @@ using Gov.Jag.Embc.Public.Authentication;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Services
 {
     public class CurrentUserService : ICurrentUser
     {
         // should probably have this in a constants files
-        private readonly string IDIR_USER_TYPE = "internal"; 
+        private readonly string IDIR_USER_TYPE = "internal";
+
         private string _displayName;
         private bool _isIDIR;
         public User CurrentUser { get; }
@@ -23,23 +21,24 @@ namespace Gov.Jag.Embc.Public.Services
             ClaimsPrincipal principal = context.HttpContext.User;
             CurrentUser = new User()
             {
-                appRoles  = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray(),
-                name      = principal.FindFirstValue(SiteMinderClaimTypes.NAME), //Keycloak displayName field
+                appRoles = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray(),
+                name = principal.FindFirstValue(ClaimTypes.Name),
                 firstname = principal.FindFirstValue(ClaimTypes.GivenName),
-                lastname  = principal.FindFirstValue(ClaimTypes.Surname),
-                UserType  = principal.FindFirstValue(SiteMinderClaimTypes.USER_TYPE),
+                lastname = principal.FindFirstValue(ClaimTypes.Surname),
+                UserType = principal.FindFirstValue(EssClaimTypes.USER_TYPE),
                 contactid = principal.FindFirstValue(EssClaimTypes.USER_ID),
-                id        = principal.FindFirstValue(ClaimTypes.Upn),
+                id = principal.FindFirstValue(ClaimTypes.Upn),
                 accountid = principal.FindFirstValue(EssClaimTypes.ORG_ID)
             };
-            _isIDIR = principal.FindFirstValue(SiteMinderClaimTypes.USER_TYPE) == IDIR_USER_TYPE;
+            _isIDIR = principal.FindFirstValue(EssClaimTypes.USER_TYPE) == IDIR_USER_TYPE;
         }
 
         public string GetDisplayName()
         {
             if (string.IsNullOrEmpty(_displayName))
             {
-                // Because of inconsistent formats of names, we'll try separating names on spaces, then commas.
+                // Because of inconsistent formats of names, we'll try separating names on spaces,
+                // then commas.
                 string[] spaceSplit = CurrentUser.name.Split(' ');
                 string[] commaSplit = CurrentUser.name.Split(',');
 
@@ -60,7 +59,6 @@ namespace Gov.Jag.Embc.Public.Services
             return _displayName;
         }
 
-
         private void GenerateDisplayName(string[] nameArray)
         {
             UserNames names = GetUserNamesFromArray(nameArray);
@@ -72,13 +70,12 @@ namespace Gov.Jag.Embc.Public.Services
             _displayName = $"{names.FirstName} {names.LastName}";
             // clean up any rogue commas
             _displayName = _displayName.Replace(",", string.Empty).Trim();
-
         }
 
         private UserNames GetUserNamesFromArray(string[] nameArray)
         {
-            // IDIR users have their names returned as lastName, firstName
-            // BCeID users have their names returned as firstName, lastName
+            // IDIR users have their names returned as lastName, firstName BCeID users have their
+            // names returned as firstName, lastName
             UserNames result = new UserNames()
             {
                 FirstName = _isIDIR ? nameArray[1] : nameArray[0],

@@ -140,14 +140,24 @@ namespace Gov.Jag.Embc.Public
 
         public static IPNetwork GetInternalNetworkAddress(this IConfiguration conf)
         {
-            var value = conf.GetValue("INTERNAL_NETWORK_ADDRESS", "172.51.0.0/16").Split('/');
-            if (value.Length != 2) throw new InvalidOperationException($"INTERNAL_NETWORK_ADDRESS config value is not in the right format. Expecting a network subnet like 172.51.0.0/16");
+            var value = conf.GetValue("INTERNAL_NETWORK_ADDRESS", string.Empty).Split('/');
+            if (value.Length != 2) return null;
             return new IPNetwork(IPAddress.Parse(value[0]), int.Parse(value[1]));
         }
 
         public static string GetKeyRingPath(this IConfiguration conf)
         {
             return conf.GetValue("KEY_RING_DIRECTORY", string.Empty);
+        }
+
+        public static string GetSplunkUrl(this IConfiguration conf)
+        {
+            return conf.GetValue("SPLUNK_URL", string.Empty);
+        }
+
+        public static string GetSplunkToken(this IConfiguration conf)
+        {
+            return conf.GetValue("SPLUNK_TOKEN", string.Empty);
         }
     }
 }

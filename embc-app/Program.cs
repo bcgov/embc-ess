@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Exceptions;
+using System;
+using System.Net.Http;
 
 namespace Gov.Jag.Embc.Public
 {
@@ -9,27 +11,45 @@ namespace Gov.Jag.Embc.Public
     {
         public static void Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).Build();
-            host.Run();
+            Log.Logger = new LoggerConfiguration().WriteTo.Console().Enrich.FromLogContext().CreateLogger();
+            Serilog.Debugging.SelfLog.Enable(Console.Error);
+            CreateWebHostBuilder(args).Build().Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseHealthChecks("/hc")
-                .ConfigureAppConfiguration((hostingContext, config) =>
+                .UseSerilog((hostingContext, loggerConfiguration) =>
                 {
-                    var env = hostingContext.HostingEnvironment;
+                    loggerConfiguration
+                        .ReadFrom.Configuration(hostingContext.Configuration)
+                        .Enrich.WithMachineName()
+                        .Enrich.WithProcessId()
+                        .Enrich.WithProcessName()
+                        .Enrich.FromLogContext()
+                        .Enrich.WithExceptionDetails()
+                        .Enrich.WithProperty("Environment", hostingContext.Configuration["ASPNET_ENVIRONMENT"])
+                        .WriteTo.Console();
 
-                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
-                    config.AddEnvironmentVariables();
-                })
-                .ConfigureLogging((hostingContext, logging) =>
-                {
-                    logging.AddConsole(options => options.IncludeScopes = true);
-                    logging.SetMinimumLevel(LogLevel.Debug);
-                    logging.AddDebug();
-                    logging.AddEventSourceLogger();
+                    var splunkUrl = hostingContext.Configuration.GetSplunkUrl();
+                    var splunkToken = hostingContext.Configuration.GetSplunkToken();
+                    if (!hostingContext.HostingEnvironment.IsDevelopment())
+                    {
+                        if (string.IsNullOrWhiteSpace(splunkToken) || string.IsNullOrWhiteSpace(splunkUrl))
+                        {
+                            Log.Error($"Splunk logging sink is not configured properly, check SPLUNK_TOKEN and SPLUNK_URL env vars");
+                        }
+                        else
+                        {
+                            loggerConfiguration.WriteTo.EventCollector(
+                                splunkHost: splunkUrl,
+                                eventCollectorToken: splunkToken,
+                                messageHandler: new HttpClientHandler
+                                {
+                                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                                });
+                        }
+                    }
                 })
                 .UseStartup<Startup>();
     }

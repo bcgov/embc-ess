@@ -41,7 +41,7 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         {
             var user = httpContext.HttpContext?.User?.FindFirstValue(ClaimTypes.Sid) ?? "System";
             var userName = httpContext.HttpContext?.User?.FindFirstValue(ClaimTypes.Upn) ?? "System";
-            var userType = httpContext.HttpContext?.User?.FindFirstValue(SiteMinderClaimTypes.USER_TYPE) ?? "System";
+            var userType = httpContext.HttpContext?.User?.FindFirstValue(EssClaimTypes.USER_TYPE) ?? "System";
             await dataInterface.AppendEvacueeRegistrationAuditEntryAsync(notification, user, userName, userType);
         }
 
