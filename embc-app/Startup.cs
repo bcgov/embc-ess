@@ -310,18 +310,6 @@ namespace Gov.Jag.Embc.Public
             app
                 .UseSerilogRequestLogging(opts =>
                 {
-                    opts.MessageTemplate =
-                    "RequestId: {RequestId}, " +
-                    "RequestMethod: {RequestMethod}, " +
-                    "RequestPath: '{RequestPath}', " +
-                    "StatusCode: {StatusCode}, " +
-                    "Elapsed: {Elapsed}, " +
-                    "ContentLength: {ContentLength}, " +
-                    "User: {User}, " +
-                    "Host: {Host}, " +
-                    "RemoteIP: {RemoteIP}, " +
-                    "XFwdFor: {XFwdFor}, " +
-                    "UserAgent: '{UserAgent}'";
                     opts.EnrichDiagnosticContext = (diagCtx, httpCtx) =>
                     {
                         diagCtx.Set("User", httpCtx.User.FindFirst(ClaimTypes.Upn)?.Value);
@@ -330,6 +318,8 @@ namespace Gov.Jag.Embc.Public
                         diagCtx.Set("RemoteIP", httpCtx.Connection.RemoteIpAddress.ToString());
                         diagCtx.Set("ConnectionId", httpCtx.Connection.Id);
                         diagCtx.Set("XFwdFor", httpCtx.Request.Headers["X-Forwarded-For"].ToString());
+                        diagCtx.Set("XFwdProto", httpCtx.Request.Headers["X-Forwarded-Proto"].ToString());
+                        diagCtx.Set("XFwdHost", httpCtx.Request.Headers["X-Forwarded-Host"].ToString());
                         diagCtx.Set("ContentLength", httpCtx.Response.ContentLength);
                     };
                 });
