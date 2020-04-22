@@ -30,7 +30,6 @@ namespace Gov.Jag.Embc.Public
                         .Enrich.FromLogContext()
                         .Enrich.WithExceptionDetails()
                         .Enrich.WithProperty("Environment", hostingContext.HostingEnvironment.EnvironmentName)
-                        //.WriteTo.Console(outputTemplate: "{SourceContext:u3} [{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}");
                         .WriteTo.Console(formatter: new RenderedCompactJsonFormatter());
 
                     var splunkUrl = hostingContext.Configuration.GetSplunkUrl();
