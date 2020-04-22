@@ -2,6 +2,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 using Serilog.Exceptions;
+using Serilog.Formatting.Compact;
 using System;
 using System.Net.Http;
 
@@ -28,8 +29,9 @@ namespace Gov.Jag.Embc.Public
                         .Enrich.WithProcessName()
                         .Enrich.FromLogContext()
                         .Enrich.WithExceptionDetails()
-                        .Enrich.WithProperty("Environment", hostingContext.Configuration["ASPNET_ENVIRONMENT"])
-                        .WriteTo.Console();
+                        .Enrich.WithProperty("Environment", hostingContext.HostingEnvironment.EnvironmentName)
+                        //.WriteTo.Console(outputTemplate: "{SourceContext:u3} [{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}");
+                        .WriteTo.Console(formatter: new RenderedCompactJsonFormatter());
 
                     var splunkUrl = hostingContext.Configuration.GetSplunkUrl();
                     var splunkToken = hostingContext.Configuration.GetSplunkToken();
@@ -47,7 +49,8 @@ namespace Gov.Jag.Embc.Public
                                 messageHandler: new HttpClientHandler
                                 {
                                     ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-                                });
+                                },
+                                renderTemplate: false);
                         }
                     }
                 })

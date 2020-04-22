@@ -300,7 +300,7 @@ namespace Gov.Jag.Embc.Public
                 .UseStaticFiles()
                 .UseSpaStaticFiles();
 
-            if (!env.IsProduction())
+            if (env.IsDevelopment())
             {
                 // Use NSwag for API documentation Register the Swagger generator and the Swagger UI middlewares
                 app.UseOpenApi();
@@ -329,7 +329,7 @@ namespace Gov.Jag.Embc.Public
                         diagCtx.Set("UserAgent", httpCtx.Request.Headers["User-Agent"].ToString());
                         diagCtx.Set("RemoteIP", httpCtx.Connection.RemoteIpAddress.ToString());
                         diagCtx.Set("ConnectionId", httpCtx.Connection.Id);
-                        diagCtx.Set("XFwdFor", httpCtx.Request.Headers["x-forwarded-for"].ToString());
+                        diagCtx.Set("XFwdFor", httpCtx.Request.Headers["X-Forwarded-For"].ToString());
                         diagCtx.Set("ContentLength", httpCtx.Response.ContentLength);
                     };
                 });
