@@ -317,9 +317,7 @@ namespace Gov.Jag.Embc.Public
                         diagCtx.Set("UserAgent", httpCtx.Request.Headers["User-Agent"].ToString());
                         diagCtx.Set("RemoteIP", httpCtx.Connection.RemoteIpAddress.ToString());
                         diagCtx.Set("ConnectionId", httpCtx.Connection.Id);
-                        diagCtx.Set("XFwdFor", httpCtx.Request.Headers["X-Forwarded-For"].ToString());
-                        diagCtx.Set("XFwdProto", httpCtx.Request.Headers["X-Forwarded-Proto"].ToString());
-                        diagCtx.Set("XFwdHost", httpCtx.Request.Headers["X-Forwarded-Host"].ToString());
+                        diagCtx.Set("Forwarded", httpCtx.Request.Headers["Forwarded"].ToString());
                         diagCtx.Set("ContentLength", httpCtx.Response.ContentLength);
                     };
                 });
