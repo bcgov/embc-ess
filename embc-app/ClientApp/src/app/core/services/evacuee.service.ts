@@ -3,9 +3,10 @@ import { CoreModule } from '../core.module';
 import { RestService } from './rest.service';
 import { Observable } from 'rxjs';
 import { ListResult, EvacueeListItem } from '../models';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, map } from 'rxjs/operators';
 
 import { EvacueeSearchQueryParameters } from '../models/search-interfaces';
+import { HttpResponse } from '@angular/common/http';
 
 type StringParams = {
   [P in keyof EvacueeSearchQueryParameters]?: string;
@@ -73,5 +74,33 @@ export class EvacueeService extends RestService {
     }
 
     return params;
+  }
+
+  public getEvacueesCSV(props: EvacueeSearchQueryParameters = {}): Observable<File> {
+    const params = this.toStringParams(props);
+    params.format = 'CSV';
+    const response = this.http.get('/api/evacuees', {
+        observe: 'response',
+        headers: this.headers,
+        params,
+        responseType: 'text'
+      })
+      .pipe(retry(3), catchError(this.handleError));
+
+    return response.pipe(
+      map((r) => this.generateFileFromResponse(r)),
+      catchError(this.handleError)
+    );
+  }
+
+  private generateFileFromResponse(r: HttpResponse<string>): File {
+    const contentDisposition = r.headers.get('Content-Disposition');
+    const filename = contentDisposition
+      .split(';')[1]
+      .trim()
+      .split('=')[1]
+      .replace(/"/g, '');
+    const contentType = r.headers.get('Content-Type');
+    return new File([r.body], filename, { type: contentType });
   }
 }

@@ -1,3 +1,4 @@
+using AutoMapper.QueryableExtensions;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Gov.Jag.Embc.Public.ViewModels.Search;
@@ -11,7 +12,25 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 {
     public partial class DataInterface
     {
-        public async Task<IPagedResults<EvacueeListItem>> GetEvacueesAsync(EvacueeSearchQueryParameters searchQuery)
+        public async Task<IEnumerable<EvacueeListItem>> GetEvacueesAsync(EvacueeSearchQueryParameters searchQuery)
+        {
+            var query = AssembleQuery(searchQuery);
+
+            return await query.Sort(MapSortToFields(searchQuery.SortBy)).Distinct().Select(e => mapper.Map<EvacueeListItem>(e)).ToArrayAsync();
+        }
+
+        public async Task<IPagedResults<EvacueeListItem>> GetEvacueesPaginatedAsync(EvacueeSearchQueryParameters searchQuery)
+        {
+            var query = AssembleQuery(searchQuery);
+
+            var pagedQuery = new PaginatedQuery<Models.Db.ViewEvacuee>(query, searchQuery.Offset, searchQuery.Limit);
+
+            var evacuees = await pagedQuery.Query.Sort(MapSortToFields(searchQuery.SortBy)).Distinct().Select(e => mapper.Map<EvacueeListItem>(e)).ToArrayAsync();
+
+            return new PaginatedList<EvacueeListItem>(evacuees, pagedQuery.Pagination);
+        }
+
+        private IQueryable<Models.Db.ViewEvacuee> AssembleQuery(EvacueeSearchQueryParameters searchQuery)
         {
             if (searchQuery.HasSortBy())
             {
@@ -24,20 +43,21 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 searchQuery.SortBy = "-essFileNumber";
             };
 
-
             var query = db.ViewEvacuees
-                // Inactive evacuees are soft deleted. We do not return them or give the user the option yet.
+                // Inactive evacuees are soft deleted. We do not return them or give the user the
+                // option yet.
                 .Where(e => e.Active == searchQuery.Active)
                 // we sort the larger collection first before letting the subset (paginated ones be sorted)
                 .Sort(MapSortToFields(searchQuery.SortBy));
 
-
             if (searchQuery.HasQuery())
             {
-                // Try to parse the query as a date - if it fails it sets dob to DateTime.MinValue (Midnight @ 0001 AD), which shouldn't match anyone
+                // Try to parse the query as a date - if it fails it sets dob to DateTime.MinValue
+                // (Midnight @ 0001 AD), which shouldn't match anyone
                 DateTime.TryParse(searchQuery.Query, out DateTime dob);
 
-                // Simple search. When a search query is provided search should match multiple things from the record. Query can match multiple things.
+                // Simple search. When a search query is provided search should match multiple
+                // things from the record. Query can match multiple things.
                 query = query.Where(e =>
                     EF.Functions.Like(e.LastName, $"%{searchQuery.Query}%") ||
                     e.IncidentTaskNumber == searchQuery.Query ||
@@ -48,7 +68,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             }
             else
             {
-                // if a search parameter is not null, then add a "where" clause to the query matching the supplied UTF-16 query string
+                // if a search parameter is not null, then add a "where" clause to the query
+                // matching the supplied UTF-16 query string
                 if (!string.IsNullOrWhiteSpace(searchQuery.LastName))
                 {
                     query = query.Where(e => e.LastName.Equals(searchQuery.LastName));
@@ -61,9 +82,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
                 if (!string.IsNullOrWhiteSpace(searchQuery.DateOfBirth))
                 {
-                    // TryParse means that if it fails to parse a Date, the out value will be set to DateTime.MinVal (Midnight @ 0001 AD)
-                    // Otherwise it throws an exception if it fails
-                    // Letting it blow up might be more correct - Should we throw an exception if a bad date string is passed in?
+                    // TryParse means that if it fails to parse a Date, the out value will be set to
+                    // DateTime.MinVal (Midnight @ 0001 AD) Otherwise it throws an exception if it
+                    // fails Letting it blow up might be more correct - Should we throw an exception
+                    // if a bad date string is passed in?
                     DateTime.TryParse(searchQuery.DateOfBirth, out DateTime dob);
                     query = query.Where(e => e.Dob.Equals(dob));
                 }
@@ -89,13 +111,13 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     query = query.Where(e => e.SelfRegisteredDate.HasValue && e.SelfRegisteredDate < end);
                 }
 
-                // Finalization date range  (between start and end)
+                // Finalization date range (between start and end)
                 if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateStart)
                     && !string.IsNullOrWhiteSpace(searchQuery.FinalizationDateEnd))
                 {
                     DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
                     DateTime.TryParse(searchQuery.FinalizationDateEnd, out DateTime end);
-                    
+
                     query = query.Where(e => e.RegistrationCompletionDate.HasValue &&
                                         e.RegistrationCompletionDate.Value > start && e.RegistrationCompletionDate.Value < end);
                 }
@@ -132,10 +154,12 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     query = query.Where(e => e.EvacuatedTo == searchQuery.EvacuatedTo);
                 }
 
-                // if has referrals has a value do some things. Else is omit the where clause so it is omitted
+                // if has referrals has a value do some things. Else is omit the where clause so it
+                // is omitted
                 if (searchQuery.HasReferrals.HasValue)
                 {
-                    // (Why can searchQuery be valueless in the object? It should take memory space whether we intantiate it or not.)
+                    // (Why can searchQuery be valueless in the object? It should take memory space
+                    // whether we intantiate it or not.)
                     if (searchQuery.HasReferrals.Value)
                     {
                         // set the "where" clause for only evacuees with referrals
@@ -153,21 +177,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     query = query.Where(e => e.IsFinalized == searchQuery.RegistrationCompleted.Value);
                 }
             }
-
-            // build the paginated query
-            var pagedQuery = new PaginatedQuery<Models.Db.ViewEvacuee>(query, searchQuery.Offset, searchQuery.Limit);
-
-            // get results back from 
-            var results = await pagedQuery.Query.Sort(MapSortToFields(searchQuery.SortBy)).ToArrayAsync();
-
-            // strip out any duplicates
-            // The view we are querying for evacuees returns duplicate results when dependants are included
-            // This should be fixed in the view
-            var distinct = results.ToList().Distinct<Models.Db.ViewEvacuee>();
-
-            
-            // map the evacueeList
-            return new PaginatedList<EvacueeListItem>(distinct.Select(mapper.Map<EvacueeListItem>), pagedQuery.Pagination);
+            return query;
         }
 
         private string MapSortToFields(string sort)
