@@ -10,6 +10,7 @@ import { FormBuilder } from '@angular/forms';
 import { EVERYONE, VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from 'src/app/constants';
 import * as moment from 'moment';
 import { dateStringIsValid } from 'src/app/shared/utils/date-utils';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-local-authority-evacuee-list',
@@ -79,7 +80,6 @@ export class LocalAuthorityEvacueeListComponent implements OnInit {
       this.isAdmin = role === PROVINCIAL_ADMIN;
     });
   }
-
 
   switchToAdvancedSearch() {
     this.advancedSearchMode = true;
@@ -155,14 +155,13 @@ export class LocalAuthorityEvacueeListComponent implements OnInit {
     if (m.isValid()) {
       // update dob
       this.advancedSearchForm.patchValue(
-        {"dob": dob}
+        { "dob": dob }
       );
     } else {
       // error message
       this.dobString = null;
     }
   }
-
 
   search() {
     // submit and collect search with a query string
@@ -245,10 +244,8 @@ export class LocalAuthorityEvacueeListComponent implements OnInit {
   onExportClick() {
     const query = this.createSearchQuery();
 
-    this.evacueeService.getEvacueesCSV(query).subscribe((data: File) => {
-      const url = window.URL.createObjectURL(data);
-      window.open(url);
+    this.evacueeService.getEvacueesCSV(query).subscribe((data: { blob: Blob, fileName: string }) => {
+      saveAs(data.blob, data.fileName);
     });
   }
-
 }

@@ -4,6 +4,7 @@ using Gov.Jag.Embc.Public.ViewModels.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -26,9 +27,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 var evacuees = await dataInterface.GetEvacueesAsync(query);
 
-                Response.Headers.Add("Content-Disposition", $"inline; filename=\"evacuees_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.csv\"");
-
-                return Content(evacuees.ToCSV(), "text/csv");
+                var fileName = $"Evacuees_Export_{ DateTime.Now:yyyyMMdd_HHmmss}.csv";
+                return File(Encoding.UTF8.GetBytes(evacuees.ToCSV()), "text/csv;charset=utf-8", fileName);
             }
             else
             {
