@@ -16,7 +16,6 @@ type StringParams = {
   providedIn: CoreModule
 })
 export class EvacueeService extends RestService {
-
   // Reference to previous query
   private previousQuery: Observable<ListResult<EvacueeListItem>> = null;
 
@@ -76,15 +75,15 @@ export class EvacueeService extends RestService {
     return params;
   }
 
-  public getEvacueesCSV(props: EvacueeSearchQueryParameters = {}): Observable<File> {
+  public getEvacueesCSV(props: EvacueeSearchQueryParameters = {}): Observable<{ blob: Blob, fileName: string }> {
     const params = this.toStringParams(props);
     params.format = 'CSV';
     const response = this.http.get('/api/evacuees', {
-        observe: 'response',
-        headers: this.headers,
-        params,
-        responseType: 'text'
-      })
+      observe: 'response',
+      headers: this.headers,
+      params,
+      responseType: 'text'
+    })
       .pipe(retry(3), catchError(this.handleError));
 
     return response.pipe(
@@ -93,7 +92,7 @@ export class EvacueeService extends RestService {
     );
   }
 
-  private generateFileFromResponse(r: HttpResponse<string>): File {
+  private generateFileFromResponse(r: HttpResponse<string>): { blob: Blob, fileName: string } {
     const contentDisposition = r.headers.get('Content-Disposition');
     const filename = contentDisposition
       .split(';')[1]
@@ -101,6 +100,10 @@ export class EvacueeService extends RestService {
       .split('=')[1]
       .replace(/"/g, '');
     const contentType = r.headers.get('Content-Type');
-    return new File([r.body], filename, { type: contentType });
+
+    return {
+      blob: new Blob([r.body], { type: contentType }),
+      fileName: filename
+    };
   }
 }
