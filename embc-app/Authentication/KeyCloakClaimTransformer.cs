@@ -60,6 +60,12 @@ namespace Gov.Jag.Embc.Public.Authentication
                 {
                     transformedClaims.Add(new Claim(EssClaimTypes.ORG_ID, user.Organization.Id));
                     transformedClaims.Add(new Claim(EssClaimTypes.USER_ID, user.Id));
+                    if (string.IsNullOrEmpty(user.Externaluseridentifier))
+                    {
+                        //Register BCeID guid to the user
+                        user.Externaluseridentifier = userGuid;
+                        await dataInterface.UpdateVolunteerAsync(user);
+                    }
                 }
             }
 
