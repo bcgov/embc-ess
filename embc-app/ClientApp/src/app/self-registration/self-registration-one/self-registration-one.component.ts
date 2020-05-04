@@ -214,14 +214,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // Can't do this in the above function because at that point
     // the parent property of the controls is undefined.
     const email         = this.form.get("email");
-    const noEmail       = this.form.get("noEmail");
     const phoneNumber   = this.form.get("phoneNumber");
-    const noPhoneNumber = this.form.get("noPhoneNumber");
 
-    email.setValidators(CustomValidators.requiredWhenNull("noEmail"));
-    noEmail.setValidators(CustomValidators.requiredWhenNotNull("email"));
+    email.setValidators([Validators.email, CustomValidators.requiredWhenNull("noEmail")]);
     phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
-    noPhoneNumber.setValidators(CustomValidators.requiredWhenNotNull("phoneNumber"));
   }
 
   onFormChange(): void {
@@ -413,7 +409,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.submitted = true;
     this.validateForm();
-
     // stop here if form is invalid
     if (this.form.invalid) {
       this.errorSummary = 'Some required fields have not been completed.';
@@ -474,8 +469,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   noPhoneNumberToggle() {
     const noPhoneNumber = this.form.get("noPhoneNumber");
     const phoneNumber = this.form.get("phoneNumber");
-    console.log("noPhoneNumber value:", noPhoneNumber.value);
-    console.log("phone number value", phoneNumber.value)
     // If no phone number is going to be provided, disable control and clear value
     if (noPhoneNumber.value) {
       phoneNumber.setValue(null);
@@ -486,15 +479,15 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       phoneNumber.enable();
     }
     // Update validators
+    noPhoneNumber.setValidators(CustomValidators.requiredWhenNull("email"));
     noPhoneNumber.updateValueAndValidity();
     phoneNumber.updateValueAndValidity();
+
   }
 
   noEmailToggle() {
     const noEmail = this.form.get("noEmail");
     const email = this.form.get("email");
-    console.log("noEmail value", noEmail.value)
-    console.log("email value", email.value)
     // If no email will be provided, disable control and clear value
     if (noEmail.value) {
       email.setValue(null);
@@ -505,8 +498,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       email.enable();
     }
     // Update validators
+    noEmail.setValidators(CustomValidators.requiredWhenNull("email"));
     noEmail.updateValueAndValidity();
     email.updateValueAndValidity();
+
   }
 
 }
