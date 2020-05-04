@@ -183,9 +183,11 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       }),
       registeringFamilyMembers: [null, Validators.required],
       familyMembers: this.fb.array([]),
-      phoneNumber: '', // only BC phones will be validated so keep validators out of here...
+      phoneNumber: [null ], // only BC phones will be validated so keep validators out of here...
+      noPhoneNumber: [null],
       phoneNumberAlt: '',
-      email: ['', Validators.email],
+      email: ['', Validators.email], //
+      noEmail: [null],
       primaryResidenceInBC: [null, Validators.required],
       primaryResidence: this.fb.group({
         addressSubtype: '', // address fields are validated by sub-components (bc-address, other-address)
@@ -208,6 +210,18 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         city: '',
       }),
     });
+    // Add custom validation for the 'not provided' inputs
+    // Can't do this in the above function because at that point
+    // the parent property of the controls is undefined.
+    const email         = this.form.get("email");
+    const noEmail       = this.form.get("noEmail");
+    const phoneNumber   = this.form.get("phoneNumber");
+    const noPhoneNumber = this.form.get("noPhoneNumber");
+
+    email.setValidators(CustomValidators.requiredWhenNull("noEmail"));
+    noEmail.setValidators(CustomValidators.requiredWhenNotNull("email"));
+    phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
+    noPhoneNumber.setValidators(CustomValidators.requiredWhenNotNull("phoneNumber"));
   }
 
   onFormChange(): void {
@@ -455,6 +469,44 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   nullMailingAddress() {
     this.f.mailingAddressInBC.setValidators(null);
+  }
+
+  noPhoneNumberToggle() {
+    const noPhoneNumber = this.form.get("noPhoneNumber");
+    const phoneNumber = this.form.get("phoneNumber");
+    console.log("noPhoneNumber value:", noPhoneNumber.value);
+    console.log("phone number value", phoneNumber.value)
+    // If no phone number is going to be provided, disable control and clear value
+    if (noPhoneNumber.value) {
+      phoneNumber.setValue(null);
+      phoneNumber.disable();
+    }
+    // Else enable control
+    else {
+      phoneNumber.enable();
+    }
+    // Update validators
+    noPhoneNumber.updateValueAndValidity();
+    phoneNumber.updateValueAndValidity();
+  }
+
+  noEmailToggle() {
+    const noEmail = this.form.get("noEmail");
+    const email = this.form.get("email");
+    console.log("noEmail value", noEmail.value)
+    console.log("email value", email.value)
+    // If no email will be provided, disable control and clear value
+    if (noEmail.value) {
+      email.setValue(null);
+      email.disable();
+    }
+    // Else enable control
+    else {
+      email.enable();
+    }
+    // Update validators
+    noEmail.updateValueAndValidity();
+    email.updateValueAndValidity();
   }
 
 }

@@ -1,5 +1,5 @@
 
-import { AbstractControl, Validators, ValidatorFn, ValidationErrors, FormGroup, AsyncValidatorFn } from '@angular/forms';
+import { AbstractControl, Validators, ValidatorFn, ValidationErrors, FormGroup, AsyncValidatorFn, FormControl } from '@angular/forms';
 import * as moment from 'moment';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
@@ -225,4 +225,25 @@ export class CustomValidators {
       }
     };
   }
+
+  static requiredWhenNull(otherControlName: string,): ValidatorFn {
+    return (c: AbstractControl): ValidationErrors | null => { 
+      const otherControl = c.parent.get(otherControlName);//c.parent.get(otherControlName);
+      // if the other control is null, we're required
+      return otherControl.value == '' || otherControl.value == null 
+            ? Validators.required(c)
+            : null;
+    }
+  }
+
+  static requiredWhenNotNull(otherControlName: string,): ValidatorFn {
+    return (c: AbstractControl): ValidationErrors | null => { 
+      const otherControl = c.parent.get(otherControlName);
+      // if the other control is null, we're required
+      return otherControl.value != '' || otherControl.value != null 
+            ? Validators.required(c)
+            : null;
+    }
+  }
+
 }

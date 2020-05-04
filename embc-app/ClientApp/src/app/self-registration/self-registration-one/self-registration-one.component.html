@@ -262,7 +262,7 @@
                 [textMask]="{mask: phoneMask, keepCharPositions: true}" placeholder="999-999-9999"
                 formControlName="phoneNumber" id="phoneNumber" autocomplete="off">
               <small>
-                <input type="checkbox" formControlName="noPhoneNumber">
+                <input type="checkbox" formControlName="noPhoneNumber" (change)="noPhoneNumberToggle()">
                 <label for="noPhoneNumber">I am not willing or able to provide a telephone/mobile number.</label>
               </small>
               <small class="info-text">
@@ -285,7 +285,7 @@
               <input type="email" [class.is-invalid]="invalid('email')" class="form-control" spellcheck="false"
                 formControlName="email" id="email" autocomplete="off">
               <small>
-                <input type="checkbox" formControlName="noEmail">
+                <input type="checkbox" formControlName="noEmail" (change)="noEmailToggle()">
                 <label for="noEmail">I am not willing or able to provide an email address.</label>
               </small>
               <small class="info-text">Your email address will be used to follow up on your registration and communicate
