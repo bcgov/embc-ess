@@ -261,7 +261,14 @@
               <input type="text" [class.is-invalid]="invalid('phoneNumber')" class="form-control"
                 [textMask]="{mask: phoneMask, keepCharPositions: true}" placeholder="999-999-9999"
                 formControlName="phoneNumber" id="phoneNumber" autocomplete="off">
-              <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 999-999-9999)</small>
+              <small>
+                <input type="checkbox" formControlName="noPhoneNumber">
+                <label for="noPhoneNumber">I am not willing or able to provide a telephone/mobile number.</label>
+              </small>
+              <small class="info-text">
+                Your phone number will be used to follow up on your registration and communicate emergency information
+                if required.
+              </small>
               <span *ngIf="submitted" class="invalid-feedback">{{validationErrors['phoneNumber']}}</span>
             </app-form-field>
             <app-form-field class="col-md-6">
@@ -269,7 +276,6 @@
               <input type="text" [class.is-invalid]="invalid('phoneNumberAlt')" class="form-control"
                 [textMask]="{mask: phoneMask, keepCharPositions: true}" placeholder="999-999-9999"
                 formControlName="phoneNumberAlt" id="phoneNumberAlt" autocomplete="off">
-              <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 999-999-9999)</small>
               <span *ngIf="submitted" class="invalid-feedback">{{validationErrors['phoneNumberAlt']}}</span>
             </app-form-field>
           </div>
@@ -278,7 +284,12 @@
               <label for="email">Email Address</label>
               <input type="email" [class.is-invalid]="invalid('email')" class="form-control" spellcheck="false"
                 formControlName="email" id="email" autocomplete="off">
-              <small>Your email address will be used to communicate with you about your registration.</small>
+              <small>
+                <input type="checkbox" formControlName="noEmail">
+                <label for="noEmail">I am not willing or able to provide an email address.</label>
+              </small>
+              <small class="info-text">Your email address will be used to follow up on your registration and communicate
+                emergency information if required.</small>
               <span *ngIf="submitted" class="invalid-feedback">{{validationErrors['email']}}</span>
             </app-form-field>
           </div>
