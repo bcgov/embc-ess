@@ -482,7 +482,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     noPhoneNumber.setValidators(CustomValidators.requiredWhenNull("email"));
     noPhoneNumber.updateValueAndValidity();
     phoneNumber.updateValueAndValidity();
-
   }
 
   noEmailToggle() {
@@ -501,7 +500,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     noEmail.setValidators(CustomValidators.requiredWhenNull("email"));
     noEmail.updateValueAndValidity();
     email.updateValueAndValidity();
-
   }
 
 }

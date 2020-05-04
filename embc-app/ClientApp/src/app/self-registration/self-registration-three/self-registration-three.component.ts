@@ -34,13 +34,13 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     private service: RegistrationService,
   ) { }
 
-    get hasEmail(): boolean {
-      return this.registration != null && this.registration.headOfHousehold.email != null;
-    }
+  get hasEmail(): boolean {
+    return this.registration != null && this.registration.headOfHousehold.email != null;
+  }
 
-    get hasPhoneNumber(): boolean {
-      return this.registration != null && this.registration.headOfHousehold.phoneNumber != null;
-    }
+  get hasPhoneNumber(): boolean {
+    return this.registration != null && this.registration.headOfHousehold.phoneNumber != null;
+  }
 
   ngOnInit() {
     // Update form values based on the state
