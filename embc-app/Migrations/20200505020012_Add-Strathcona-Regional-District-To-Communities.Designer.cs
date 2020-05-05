@@ -4,14 +4,16 @@ using Gov.Jag.Embc.Public.DataInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Gov.Jag.Embc.Public.Migrations
 {
     [DbContext(typeof(EmbcDbContext))]
-    partial class EmbcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200505020012_Add-Strathcona-Regional-District-To-Communities")]
+    partial class AddStrathconaRegionalDistrictToCommunities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
