@@ -81,7 +81,8 @@
 
 <p class="mt-3 h6">Primary Address &amp; Contact Details</p>
 <ul class="summary">
-  <ng-container *ngIf="isBcAddress(registration.headOfHousehold?.primaryResidence); then content1 else other_content1"></ng-container>
+  <ng-container *ngIf="isBcAddress(registration.headOfHousehold?.primaryResidence); then content1 else other_content1">
+  </ng-container>
   <ng-template #content1>
     <li>
       <span class="name">Apt/Suite/Building Number &amp; Street Address/PO Box:</span>
@@ -128,7 +129,12 @@
   </ng-template>
   <li>
     <span class="name">Telephone/Mobile:</span>
-    <span class="value">{{registration.headOfHousehold?.phoneNumber}}</span>
+    <span class="value">
+      <span *ngIf="hasPhoneNumber">{{registration?.headOfHousehold?.phoneNumber}}</span>
+      <span *ngIf="!hasPhoneNumber">
+        <i class="far fa-check-square"></i>&nbsp; Evacuee is not willing or able to provide a telephone/mobile number.
+      </span>
+    </span>
   </li>
   <li>
     <span class="name">Alternate Telephone/Mobile:</span>
@@ -136,14 +142,20 @@
   </li>
   <li>
     <span class="name">Email Address:</span>
-    <span class="value">{{registration.headOfHousehold?.email}}</span>
+    <span class="value">
+      <span *ngIf="hasEmail">{{registration?.headOfHousehold?.email}}</span>
+      <span *ngIf="!hasEmail">
+        <i class="far fa-check-square"></i>&nbsp; I am not willing or able to provide an email address.
+      </span>
+    </span>
   </li>
 </ul>
 
 <div *ngIf="registration.headOfHousehold?.mailingAddress">
   <p class="mt-3 h6">Mailing Address</p>
   <ul class="summary">
-    <ng-container *ngIf="isBcAddress(registration.headOfHousehold?.mailingAddress); then content2 else other_content2"></ng-container>
+    <ng-container *ngIf="isBcAddress(registration.headOfHousehold?.mailingAddress); then content2 else other_content2">
+    </ng-container>
     <ng-template #content2>
       <li>
         <span class="name">Apt/Suite/Building Number &amp; Street Address/PO Box:</span>

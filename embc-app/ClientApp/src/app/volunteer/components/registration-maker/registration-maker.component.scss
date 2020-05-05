@@ -1,4 +1,5 @@
 $iconColor: #c9c9c9;
+$infoTextColor: #868686;
 // to make 'invalid-feedback' message visible after custom component
 app-communities-select {
   &.is-invalid {
@@ -40,5 +41,10 @@ app-communities-select {
 
 .validation-error-summary {
   white-space: pre;
+}
+
+.info-text {
+  display: block;
+  color: $infoTextColor;
 }
 

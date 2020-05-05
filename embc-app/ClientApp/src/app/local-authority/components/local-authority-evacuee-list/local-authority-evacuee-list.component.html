@@ -204,10 +204,14 @@
       <option [value]="'evacuatedTo'">Community Evacuated to</option>
       <option [value]="'evacuatedFrom'">Community Evacuated from</option>
     </select>
-  </div>
+  </div>  
 </div>
 <div class="search-results">
   <div *ngIf="resultsAndPagination?.data?.length>0; then searchResultsTable; else notFound"></div>
+  
+  <div *ngIf="resultsAndPagination?.data?.length > 0" class="ml-2 row">
+    <a *ngIf="isAdmin" href="#" (click)="onExportClick()" class="">Export to CSV</a>
+  </div>
 </div>
 
 <ng-template #searchResultsTable>

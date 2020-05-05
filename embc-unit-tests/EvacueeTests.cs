@@ -27,7 +27,7 @@ namespace embc_unit_tests
             var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateCompleted(incidentTaskId, toCommunity.Id));
             var registration = await di.GetEvacueeRegistrationAsync(registrationId);
 
-            var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters());
+            var result = await di.GetEvacueesPaginatedAsync(new EvacueeSearchQueryParameters());
 
             Assert.Equal(registration.HeadOfHousehold.FamilyMembers.Count(), result.Items.Count(e => !e.IsHeadOfHousehold));
             Assert.Equal(1, result.Items.Count(e => e.IsHeadOfHousehold));
@@ -56,7 +56,7 @@ namespace embc_unit_tests
 
             var lastName = registration.HeadOfHousehold.LastName;
 
-            var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters() { Query = lastName });
+            var result = await di.GetEvacueesPaginatedAsync(new EvacueeSearchQueryParameters() { Query = lastName });
 
             Assert.All(result.Items, e => Assert.Equal(lastName, e.LastName));
         }
@@ -73,7 +73,7 @@ namespace embc_unit_tests
 
             var lastName = registration.HeadOfHousehold.LastName.Substring(1, 3);
 
-            var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters() { Query = lastName });
+            var result = await di.GetEvacueesPaginatedAsync(new EvacueeSearchQueryParameters() { Query = lastName });
 
             Assert.All(result.Items, e => Assert.Contains(lastName, e.LastName));
         }
@@ -90,7 +90,7 @@ namespace embc_unit_tests
 
             var lastName = registration.HeadOfHousehold.LastName;
 
-            var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters() { Query = "1234" });
+            var result = await di.GetEvacueesPaginatedAsync(new EvacueeSearchQueryParameters() { Query = "1234" });
 
             Assert.Empty(result.Items);
         }
@@ -107,7 +107,7 @@ namespace embc_unit_tests
 
             var lastName = registration.HeadOfHousehold.FamilyMembers.First().LastName;
 
-            var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters() { Query = lastName.Substring(1, 3) });
+            var result = await di.GetEvacueesPaginatedAsync(new EvacueeSearchQueryParameters() { Query = lastName.Substring(1, 3) });
 
             Assert.All(result.Items, e => Assert.Contains(lastName, e.LastName));
         }
@@ -124,7 +124,7 @@ namespace embc_unit_tests
 
             var hostCommunityName = toCommunity.Name;
 
-            var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters() { Query = hostCommunityName });
+            var result = await di.GetEvacueesPaginatedAsync(new EvacueeSearchQueryParameters() { Query = hostCommunityName });
 
             Assert.All(result.Items, e => Assert.Contains(hostCommunityName, e.EvacuatedTo));
         }
@@ -141,7 +141,7 @@ namespace embc_unit_tests
 
             var incidentCommunityName = fromCommunity.Name;
 
-            var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters() { Query = incidentCommunityName });
+            var result = await di.GetEvacueesPaginatedAsync(new EvacueeSearchQueryParameters() { Query = incidentCommunityName });
 
             Assert.All(result.Items, e => Assert.Contains(incidentCommunityName, e.EvacuatedFrom));
         }
@@ -156,7 +156,7 @@ namespace embc_unit_tests
             var registrationId = await di.CreateEvacueeRegistrationAsync(RegistrationGenerator.GenerateCompleted(incidentTaskId, toCommunity.Id));
             var registration = await di.GetEvacueeRegistrationAsync(registrationId);
 
-            var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters() { Query = incidentTaskId });
+            var result = await di.GetEvacueesPaginatedAsync(new EvacueeSearchQueryParameters() { Query = incidentTaskId });
 
             Assert.All(result.Items, e => Assert.Equal(incidentTaskId, e.IncidentTaskNumber));
         }
@@ -173,7 +173,7 @@ namespace embc_unit_tests
 
             var incidentCommunityName = fromCommunity.Name;
 
-            var result = await di.GetEvacueesAsync(new EvacueeSearchQueryParameters() { Query = registrationId });
+            var result = await di.GetEvacueesPaginatedAsync(new EvacueeSearchQueryParameters() { Query = registrationId });
 
             Assert.All(result.Items, e => Assert.Equal(registrationId, e.RegistrationId));
         }
@@ -191,7 +191,7 @@ namespace embc_unit_tests
 
             var lastName = registration.HeadOfHousehold.FamilyMembers.First().LastName;
 
-            var result = await di.GetEvacueesAsync(search);
+            var result = await di.GetEvacueesPaginatedAsync(search);
 
             Assert.Equal(expectedNumberOfEvacuees, result.Items.Count());
         }

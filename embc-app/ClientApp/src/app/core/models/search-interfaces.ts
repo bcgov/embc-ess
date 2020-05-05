@@ -49,4 +49,5 @@ export interface EvacueeSearchQueryParameters extends SearchQueryParameters {
   self_reg_date_to?: string;
   finalization_date_to?: string;
   finalization_date_from?: string;
+  format?: string;
 }

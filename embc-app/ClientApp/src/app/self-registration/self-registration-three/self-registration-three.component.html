@@ -109,7 +109,12 @@
     </ng-template>
     <li>
       <span class="name">Telephone/Mobile:</span>
-      <span class="value">{{registration?.headOfHousehold?.phoneNumber}}</span>
+      <span class="value">
+        <span *ngIf="hasPhoneNumber">{{registration?.headOfHousehold?.phoneNumber}}</span>
+        <span *ngIf="!hasPhoneNumber">
+          <i class="far fa-check-square"></i>&nbsp; I am not willing or able to provide a telephone/mobile number.
+        </span>
+      </span>
     </li>
     <li>
       <span class="name">Alternate Telephone/Mobile:</span>
@@ -117,7 +122,12 @@
     </li>
     <li>
       <span class="name">Email Address:</span>
-      <span class="value">{{registration?.headOfHousehold?.email}}</span>
+      <span class="value">
+        <span *ngIf="hasEmail">{{registration?.headOfHousehold?.email}}</span>
+        <span *ngIf="!hasEmail">
+          <i class="far fa-check-square"></i>&nbsp; I am not willing or able to provide an email address.
+        </span>
+      </span>
     </li>
   </ul>
 

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 using Serilog.Exceptions;
+using Serilog.Formatting.Compact;
 using System;
 using System.Net.Http;
 
@@ -28,26 +29,32 @@ namespace Gov.Jag.Embc.Public
                         .Enrich.WithProcessName()
                         .Enrich.FromLogContext()
                         .Enrich.WithExceptionDetails()
-                        .Enrich.WithProperty("Environment", hostingContext.Configuration["ASPNET_ENVIRONMENT"])
-                        .WriteTo.Console();
+                        .Enrich.WithProperty("Environment", hostingContext.HostingEnvironment.EnvironmentName);
 
-                    var splunkUrl = hostingContext.Configuration.GetSplunkUrl();
-                    var splunkToken = hostingContext.Configuration.GetSplunkToken();
-                    if (!hostingContext.HostingEnvironment.IsDevelopment())
+                    if (hostingContext.HostingEnvironment.IsDevelopment())
                     {
+                        loggerConfiguration.WriteTo.Console();
+                    }
+                    else
+                    {
+                        loggerConfiguration.WriteTo.Console(formatter: new RenderedCompactJsonFormatter());
+                        var splunkUrl = hostingContext.Configuration.GetSplunkUrl();
+                        var splunkToken = hostingContext.Configuration.GetSplunkToken();
                         if (string.IsNullOrWhiteSpace(splunkToken) || string.IsNullOrWhiteSpace(splunkUrl))
                         {
                             Log.Error($"Splunk logging sink is not configured properly, check SPLUNK_TOKEN and SPLUNK_URL env vars");
                         }
                         else
                         {
-                            loggerConfiguration.WriteTo.EventCollector(
-                                splunkHost: splunkUrl,
-                                eventCollectorToken: splunkToken,
-                                messageHandler: new HttpClientHandler
-                                {
-                                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-                                });
+                            loggerConfiguration
+                                .WriteTo.EventCollector(
+                                    splunkHost: splunkUrl,
+                                    eventCollectorToken: splunkToken,
+                                    messageHandler: new HttpClientHandler
+                                    {
+                                        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                                    },
+                                    renderTemplate: false);
                         }
                     }
                 })
