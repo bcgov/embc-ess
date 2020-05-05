@@ -14,6 +14,14 @@ export class FullRegistrationSummaryBlockComponent implements OnInit {
   ngOnInit() {
   }
 
+  get hasEmail(): boolean {
+    return this.registration != null && this.registration.headOfHousehold.email != null;
+  }
+
+  get hasPhoneNumber(): boolean {
+    return this.registration != null && this.registration.headOfHousehold.phoneNumber != null;
+  }
+
   isBcAddress(address: Address): boolean {
     return isBcAddress(address);
   }
