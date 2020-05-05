@@ -257,7 +257,7 @@
         <section>
           <div class="row">
             <app-form-field class="col-md-6">
-              <label for="phoneNumber">Telephone / Mobile Number</label>
+              <label for="phoneNumber" class="required">Telephone / Mobile Number</label>
               <input type="text" [class.is-invalid]="invalid('phoneNumber')" class="form-control"
                 [textMask]="{mask: phoneMask, keepCharPositions: true}" placeholder="999-999-9999"
                 formControlName="phoneNumber" id="phoneNumber" autocomplete="off">
@@ -281,7 +281,7 @@
           </div>
           <div class="row">
             <app-form-field class="col-md-8">
-              <label for="email">Email Address</label>
+              <label for="email" class="required">Email Address</label>
               <input type="email" [class.is-invalid]="invalid('email')" class="form-control" spellcheck="false"
                 formControlName="email" id="email" autocomplete="off">
               <small>
