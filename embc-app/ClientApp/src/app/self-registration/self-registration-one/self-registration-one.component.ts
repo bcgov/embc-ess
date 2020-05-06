@@ -183,7 +183,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       }),
       registeringFamilyMembers: [null, Validators.required],
       familyMembers: this.fb.array([]),
-      phoneNumber: [null ], // only BC phones will be validated so keep validators out of here...
+      phoneNumber: [null, Validators.required ], // only BC phones will be validated so keep validators out of here...
       noPhoneNumber: [null],
       phoneNumberAlt: '',
       email: ['', Validators.email], //
@@ -217,7 +217,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     const phoneNumber   = this.form.get("phoneNumber");
 
     email.setValidators([Validators.email, CustomValidators.requiredWhenNull("noEmail")]);
-    phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
+    //phoneNumber.setValidators(Validators.required);
   }
 
   onFormChange(): void {
@@ -468,15 +468,17 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   noPhoneNumberToggle() {
     const noPhoneNumber = this.form.get("noPhoneNumber");
-    const phoneNumber = this.form.get("phoneNumber");
+    const phoneNumber = this.form.get("phoneNumber");              
     // If no phone number is going to be provided, disable control and clear value
     if (noPhoneNumber.value) {
       phoneNumber.setValue(null);
       phoneNumber.disable();
+      phoneNumber.clearValidators();
     }
     // Else enable control
     else {
       phoneNumber.enable();
+      phoneNumber.setValidators(Validators.required);
     }
     // Update validators
     noPhoneNumber.setValidators(CustomValidators.requiredWhenNull("email"));

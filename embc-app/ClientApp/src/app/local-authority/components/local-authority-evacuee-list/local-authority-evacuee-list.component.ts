@@ -10,7 +10,7 @@ import { FormBuilder } from '@angular/forms';
 import { EVERYONE, VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from 'src/app/constants';
 import * as moment from 'moment';
 import { dateStringIsValid } from 'src/app/shared/utils/date-utils';
-import { saveAs } from 'file-saver';
+//import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-local-authority-evacuee-list',
@@ -244,8 +244,8 @@ export class LocalAuthorityEvacueeListComponent implements OnInit {
   onExportClick() {
     const query = this.createSearchQuery();
 
-    this.evacueeService.getEvacueesCSV(query).subscribe((data: { blob: Blob, fileName: string }) => {
-      saveAs(data.blob, data.fileName);
-    });
+    // this.evacueeService.getEvacueesCSV(query).subscribe((data: { blob: Blob, fileName: string }) => {
+    //   saveAs(data.blob, data.fileName);
+    // });
   }
 }

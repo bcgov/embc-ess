@@ -257,10 +257,10 @@
         <section>
           <div class="row">
             <app-form-field class="col-md-6">
-              <label for="phoneNumber" class="required">Telephone / Mobile Number</label>
+              <label for="phoneNumber1" class="required">Telephone / Mobile Number</label>
               <input type="text" [class.is-invalid]="invalid('phoneNumber')" class="form-control"
                 [textMask]="{mask: phoneMask, keepCharPositions: true}" placeholder="999-999-9999"
-                formControlName="phoneNumber" id="phoneNumber" autocomplete="off">
+                formControlName="phoneNumber" id="phoneNumber1" autocomplete="off">
               <small>
                 <input type="checkbox" formControlName="noPhoneNumber" (change)="noPhoneNumberToggle()">
                 <label for="noPhoneNumber">I am not willing or able to provide a telephone/mobile number.</label>
