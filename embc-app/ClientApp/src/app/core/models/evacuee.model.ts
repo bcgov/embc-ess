@@ -43,4 +43,5 @@ export interface EvacueeListItem {
   city: string;
   province: string;
   postalCode: string;
+  country: string;
 }
