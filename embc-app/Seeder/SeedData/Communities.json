@@ -10330,5 +10330,12 @@
         "Region": {
             "Name": "Vancouver Island"
         }
+    },
+    {
+        "Name": "Strathcona Regional District",
+        "Active": true,
+        "Region": {
+            "Name": "Vancouver Island"
+        }
     }
 ]

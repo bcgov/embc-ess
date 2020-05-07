@@ -183,9 +183,11 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       }),
       registeringFamilyMembers: [null, Validators.required],
       familyMembers: this.fb.array([]),
-      phoneNumber: '', // only BC phones will be validated so keep validators out of here...
+      phoneNumber: [null, Validators.required ], // only BC phones will be validated so keep validators out of here...
+      noPhoneNumber: [null],
       phoneNumberAlt: '',
-      email: ['', Validators.email],
+      email: ['', Validators.email], //
+      noEmail: [null],
       primaryResidenceInBC: [null, Validators.required],
       primaryResidence: this.fb.group({
         addressSubtype: '', // address fields are validated by sub-components (bc-address, other-address)
@@ -208,6 +210,17 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         city: '',
       }),
     });
+    // Add custom validation for the 'not provided' inputs
+    // Can't do this in the above function because at that point
+    // the parent property of the controls is undefined.
+    const email         = this.form.get("email");
+    const phoneNumber   = this.form.get("phoneNumber");
+
+    email.setValidators([Validators.email, CustomValidators.requiredWhenNull("noEmail")]);
+    email.updateValueAndValidity();
+    phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
+    phoneNumber.updateValueAndValidity();
+    this.form.updateValueAndValidity();
   }
 
   onFormChange(): void {
@@ -220,10 +233,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       .pipe(skipWhile(() => this.f.primaryResidenceInBC.pristine))
       .subscribe((checked: boolean) => {
         if (checked) {
-          this.f.phoneNumber.setValidators([CustomValidators.phone]);
+          this.f.phoneNumber.setValidators([CustomValidators.phone, CustomValidators.requiredWhenNull("noPhoneNumber")]);
           this.f.phoneNumberAlt.setValidators([CustomValidators.phone]);
         } else {
-          this.f.phoneNumber.setValidators(null);
+          this.f.phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
           this.f.phoneNumberAlt.setValidators(null);
         }
         this.f.phoneNumber.updateValueAndValidity();
@@ -315,10 +328,14 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         },
         registeringFamilyMembers: this.registration.registeringFamilyMembers,
         phoneNumber: hoh.phoneNumber,
+        noPhoneNumber: hoh.noPhoneNumber,
         phoneNumberAlt: hoh.phoneNumberAlt,
         email: hoh.email,
+        noEmail: hoh.noEmail
       });
-
+      // Handle no email and no phone number logic
+      this.noEmailToggle();
+      this.noPhoneNumberToggle();
       if (primaryResidence != null) {
         this.form.patchValue({
           primaryResidenceInBC: isBcAddress(primaryResidence),
@@ -399,7 +416,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.submitted = true;
     this.validateForm();
-
     // stop here if form is invalid
     if (this.form.invalid) {
       this.errorSummary = 'Some required fields have not been completed.';
@@ -434,8 +450,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         ...form.headOfHousehold,
         personType: 'HOH',
         phoneNumber: form.phoneNumber,
+        noPhoneNumber: form.noPhoneNumber,
         phoneNumberAlt: form.phoneNumberAlt,
         email: form.email,
+        noEmail: form.noEmail,
         familyMembers,
         primaryResidence: { ...form.primaryResidence },
         mailingAddress: form.mailingAddressSameAsPrimary ? null : { ...form.mailingAddress },
@@ -455,6 +473,49 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   nullMailingAddress() {
     this.f.mailingAddressInBC.setValidators(null);
+  }
+
+  noPhoneNumberToggle() {
+    const noPhoneNumber = this.form.get("noPhoneNumber");
+    const phoneNumber = this.form.get("phoneNumber");              
+    // If no phone number is going to be provided, disable control and clear value
+    if (noPhoneNumber.value) {
+      phoneNumber.setValue(null);
+      phoneNumber.disable();
+      phoneNumber.clearValidators();
+    }
+    // Else enable control
+    else {
+      phoneNumber.enable();
+    }
+    // Update validators - bc phone numbers get an additional validator
+    if (this.f.primaryResidenceInBC.value) {
+      phoneNumber.setValidators([CustomValidators.phone, CustomValidators.requiredWhenNull("noPhoneNumber")])
+    }
+    else {
+      phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
+    }
+    noPhoneNumber.setValidators(CustomValidators.requiredWhenNull("phoneNumber"));
+    noPhoneNumber.updateValueAndValidity();
+    phoneNumber.updateValueAndValidity();
+  }
+
+  noEmailToggle() {
+    const noEmail = this.form.get("noEmail");
+    const email = this.form.get("email");
+    // If no email will be provided, disable control and clear value
+    if (noEmail.value) {
+      email.setValue(null);
+      email.disable();
+    }
+    // Else enable control
+    else {
+      email.enable();
+    }
+    // Update validators
+    noEmail.setValidators(CustomValidators.requiredWhenNull("email"));
+    noEmail.updateValueAndValidity();
+    email.updateValueAndValidity();
   }
 
 }

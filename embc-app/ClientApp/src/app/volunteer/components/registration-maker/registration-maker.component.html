@@ -78,7 +78,7 @@
         <div class="form-row">
           <app-form-field required="true" class="col">
             <label for="incidentTask">Task Number</label>
-            <select [compareWith]="compareById"  [class.is-invalid]="invalid('incidentTask')" class="form-control"
+            <select [compareWith]="compareById" [class.is-invalid]="invalid('incidentTask')" class="form-control"
               formControlName="incidentTask" id="incidentTask">
               <option [ngValue]="null">-- Select task number</option>
               <option [ngValue]="incident" *ngFor="let incident of incidentTasks$ | async">
@@ -290,11 +290,18 @@
             [withinBC]="form.value.primaryResidenceInBC"></app-address-selector>
           <div class="row mt-0">
             <div class="col">
-              <label for="phoneNumber">Telephone / Mobile Number</label>
+              <label for="phoneNumber" class="required">Telephone / Mobile Number</label>
               <input type="text" [class.is-invalid]="invalid('phoneNumber')" class="form-control"
                 [textMask]="{mask: phoneMask, keepCharPositions: true}" placeholder="999-999-9999"
                 formControlName="phoneNumber" id="phoneNumber" autocomplete="off">
-              <small class="d-block" *ngIf="!!form.value.primaryResidenceInBC">(Format: 999-999-9999)</small>
+              <small class="will-not-provide">
+                <input type="checkbox" formControlName="noPhoneNumber" (change)="noPhoneNumberToggle()">
+                <label for="noPhoneNumber">Evacuee is not willing or able to provide a telephone/mobile number.</label>
+              </small>
+              <small class="info-text">
+                The evacuee's phone number will be used to follow up on their registration and communicate emergency
+                information if required.
+              </small>
               <span *ngIf="submitted" class="invalid-feedback">{{e.phoneNumber}}</span>
             </div>
             <div class="col">
@@ -308,11 +315,15 @@
           </div>
           <div class="row mt-4">
             <div class="col">
-              <label for="email">Email Address</label>
+              <label for="email" class="required">Email Address</label>
               <input type="email" [class.is-invalid]="invalid('email')" class="form-control" formControlName="email"
                 id="email" autocomplete="off">
-              <small class="d-block">This email address will be used for communication with the evacuee regarding this
-                registration.</small>
+                <small class="will-not-provide">
+                  <input type="checkbox" formControlName="noEmail" (change)="noEmailToggle()">
+                  <label for="noEmail">Evacuee is not willing or able to provide an email address.</label>
+                </small>
+                <small class="info-text">The evacuee's email address will be used to follow up on their
+                  registration and communicate emergency information if required.</small>
               <span *ngIf="submitted" class="invalid-feedback">{{e.email}}</span>
             </div>
           </div>
@@ -454,9 +465,9 @@
           </div>
           <span [class.d-block]="invalid('requiresFood')" class="invalid-feedback">{{e.requiresFood}}</span>
         </div>
-          <p class="required mt-4">
-            Does the evacuee have any dietary requirements?
-          </p>        
+        <p class="required mt-4">
+          Does the evacuee have any dietary requirements?
+        </p>
         <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
             <input type="radio" [class.is-invalid]="invalid('dietaryNeeds')" class="form-check-input" [value]="true"
@@ -511,13 +522,13 @@
         </p>
         <div class="form-group mb-0" tabindex="0">
           <div class="form-check">
-            <input type="radio" [class.is-invalid]="invalid('requiresClothing')" class="form-check-input" [value]="false"
-              formControlName="requiresClothing" id="requiresClothingTrue">
+            <input type="radio" [class.is-invalid]="invalid('requiresClothing')" class="form-check-input"
+              [value]="false" formControlName="requiresClothing" id="requiresClothingTrue">
             <label class="form-check-label" for="requiresClothingTrue">Yes</label>
           </div>
           <div class="form-check">
-            <input type="radio" [class.is-invalid]="invalid('requiresClothing')" class="form-check-input"
-              [value]="true" formControlName="requiresClothing" id="requiresClothingFalse">
+            <input type="radio" [class.is-invalid]="invalid('requiresClothing')" class="form-check-input" [value]="true"
+              formControlName="requiresClothing" id="requiresClothingFalse">
             <label class="form-check-label" for="requiresClothingFalse">No</label>
           </div>
           <span [class.d-block]="invalid('requiresClothing')" class="invalid-feedback">{{e.requiresClothing}}</span>
@@ -569,7 +580,7 @@
         </div>
       </div>
 
-     <!-- MEDICATION -->
+      <!-- MEDICATION -->
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Medication</h2>
         <div class="form-row mt-4">
@@ -615,11 +626,11 @@
           </div>
         </div>
       </div>
- 
+
       <!-- PETS -->
       <div class="mt-4">
         <h2 class="blue-header font-weight-bold">Pets</h2>
- 
+
         <p class="required mt-4">
           Does the evacuee have any pets with them?
         </p>

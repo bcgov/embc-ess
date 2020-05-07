@@ -372,8 +372,10 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       // HOH fields that we decided to put at the parent form level to simplify things
       phoneNumber: '', // only BC phones will be validated so keep validators out of here...
       phoneNumberAlt: '',
+      noPhoneNumber: '',
 
       email: ['', Validators.email],
+      noEmail: '',
 
       primaryResidence: this.formBuilder.group({
         addressSubtype: null, // address fields are validated by sub-components (bc-address, other-address)
@@ -415,7 +417,14 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       mailingAddressInBC: [null, CustomValidators.requiredWhenFalse('mailingAddressSameAsPrimary')],
       mailingAddressSameAsPrimary: [null, Validators.required],
     });
-
+    // Add custom validation for the 'not provided' inputs
+    // Can't do this in the above function because at that point
+    // the parent property of the controls is undefined.
+    const email       = this.form.get("email");
+    const phoneNumber = this.form.get("phoneNumber");
+    email.setValidators([Validators.email, CustomValidators.requiredWhenNull("noEmail")]);
+    phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
+    
     // set task number
     this.store.select(state => state.volunterTask.taskNumber)
       .pipe(filter(n => !!n))
@@ -459,10 +468,10 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     this.f.primaryResidenceInBC.valueChanges
       .subscribe((checked: boolean) => {
         if (checked) {
-          this.f.phoneNumber.setValidators([CustomValidators.phone]);
+          this.f.phoneNumber.setValidators([CustomValidators.phone, CustomValidators.requiredWhenNull("noPhoneNumber")]);
           this.f.phoneNumberAlt.setValidators([CustomValidators.phone]);
         } else {
-          this.f.phoneNumber.setValidators(null);
+          this.f.phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
           this.f.phoneNumberAlt.setValidators(null);
         }
         this.f.phoneNumber.updateValueAndValidity();
@@ -576,9 +585,11 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
         // these belong to the HOH but we placed them here to simplify the HTML markup...
         phoneNumber: r.headOfHousehold.phoneNumber as string,
+        noPhoneNumber: r.headOfHousehold.noPhoneNumber as boolean,
         phoneNumberAlt: r.headOfHousehold.phoneNumberAlt as string,
 
         email: r.headOfHousehold.email as string,
+        noEmail: r.headOfHousehold.noEmail as boolean,
 
         // primaryResidence: r.headOfHousehold.primaryResidence as Address,
         // mailingAddress: r.headOfHousehold.mailingAddress as Address,
@@ -590,7 +601,9 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
         mailingAddressInBC: mailingAddressInBC as boolean,
         mailingAddressSameAsPrimary: mailingAddressSameAsPrimary as boolean,
       });
-
+      // handle no email/phone
+      this.noEmailToggle();
+      this.noPhoneNumberToggle();
       // add the primary residence back into the form
       if (primaryResidence != null) {
         this.form.patchValue({
@@ -791,8 +804,10 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
         dob: values.headOfHousehold.dob || null,
         personType: 'HOH' || null,
         phoneNumber: values.phoneNumber || null,
+        noPhoneNumber: values.noPhoneNumber || null,
         phoneNumberAlt: values.phoneNumberAlt || null,
         email: values.email || null,
+        noEmail: values.noEmail || null,
         familyMembers, // copy in the already parsed values for familymembers
         primaryResidence: { ...values.primaryResidence },
         mailingAddress: values.mailingAddressSameAsPrimary ? null : { ...values.mailingAddress },
@@ -962,6 +977,49 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     if (!Boolean(this.form.get('hasPets').value)) {
       this.form.get('petCarePlan').setValue(null);
     }
+  }
+
+  noPhoneNumberToggle() {
+    const noPhoneNumber = this.form.get("noPhoneNumber");
+    const phoneNumber = this.form.get("phoneNumber");              
+    // If no phone number is going to be provided, disable control and clear value
+    if (noPhoneNumber.value) {
+      phoneNumber.setValue(null);
+      phoneNumber.disable();
+      phoneNumber.clearValidators();
+    }
+    // Else enable control
+    else {
+      phoneNumber.enable();
+    }
+    // Update validators - bc phone numbers get an additional validator
+    if (this.f.primaryResidenceInBC.value) {
+      phoneNumber.setValidators([CustomValidators.phone, CustomValidators.requiredWhenNull("noPhoneNumber")])
+    }
+    else {
+      phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
+    }
+    noPhoneNumber.setValidators(CustomValidators.requiredWhenNull("phoneNumber"));
+    noPhoneNumber.updateValueAndValidity();
+    phoneNumber.updateValueAndValidity();
+  }
+
+  noEmailToggle() {
+    const noEmail = this.form.get("noEmail");
+    const email = this.form.get("email");
+    // If no email will be provided, disable control and clear value
+    if (noEmail.value) {
+      email.setValue(null);
+      email.disable();
+    }
+    // Else enable control
+    else {
+      email.enable();
+    }
+    // Update validators
+    noEmail.setValidators(CustomValidators.requiredWhenNull("email"));
+    noEmail.updateValueAndValidity();
+    email.updateValueAndValidity();
   }
 
 
