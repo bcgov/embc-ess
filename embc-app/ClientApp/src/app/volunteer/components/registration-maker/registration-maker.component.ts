@@ -585,9 +585,11 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
         // these belong to the HOH but we placed them here to simplify the HTML markup...
         phoneNumber: r.headOfHousehold.phoneNumber as string,
+        noPhoneNumber: r.headOfHousehold.noPhoneNumber as boolean,
         phoneNumberAlt: r.headOfHousehold.phoneNumberAlt as string,
 
         email: r.headOfHousehold.email as string,
+        noEmail: r.headOfHousehold.noEmail as boolean,
 
         // primaryResidence: r.headOfHousehold.primaryResidence as Address,
         // mailingAddress: r.headOfHousehold.mailingAddress as Address,
@@ -599,7 +601,9 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
         mailingAddressInBC: mailingAddressInBC as boolean,
         mailingAddressSameAsPrimary: mailingAddressSameAsPrimary as boolean,
       });
-
+      // handle no email/phone
+      this.noEmailToggle();
+      this.noPhoneNumberToggle();
       // add the primary residence back into the form
       if (primaryResidence != null) {
         this.form.patchValue({

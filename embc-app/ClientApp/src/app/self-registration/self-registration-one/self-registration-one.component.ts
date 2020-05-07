@@ -329,10 +329,14 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         },
         registeringFamilyMembers: this.registration.registeringFamilyMembers,
         phoneNumber: hoh.phoneNumber,
+        noPhoneNumber: hoh.noPhoneNumber,
         phoneNumberAlt: hoh.phoneNumberAlt,
         email: hoh.email,
+        noEmail: hoh.noEmail
       });
-
+      // Handle no email and no phone number logic
+      this.noEmailToggle();
+      this.noPhoneNumberToggle();
       if (primaryResidence != null) {
         this.form.patchValue({
           primaryResidenceInBC: isBcAddress(primaryResidence),
@@ -447,8 +451,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         ...form.headOfHousehold,
         personType: 'HOH',
         phoneNumber: form.phoneNumber,
+        noPhoneNumber: form.noPhoneNumber,
         phoneNumberAlt: form.phoneNumberAlt,
         email: form.email,
+        noEmail: form.noEmail,
         familyMembers,
         primaryResidence: { ...form.primaryResidence },
         mailingAddress: form.mailingAddressSameAsPrimary ? null : { ...form.mailingAddress },
