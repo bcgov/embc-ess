@@ -468,10 +468,10 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     this.f.primaryResidenceInBC.valueChanges
       .subscribe((checked: boolean) => {
         if (checked) {
-          this.f.phoneNumber.setValidators([CustomValidators.phone]);
+          this.f.phoneNumber.setValidators([CustomValidators.phone, CustomValidators.requiredWhenNull("noPhoneNumber")]);
           this.f.phoneNumberAlt.setValidators([CustomValidators.phone]);
         } else {
-          this.f.phoneNumber.setValidators(null);
+          this.f.phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
           this.f.phoneNumberAlt.setValidators(null);
         }
         this.f.phoneNumber.updateValueAndValidity();
@@ -804,8 +804,10 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
         dob: values.headOfHousehold.dob || null,
         personType: 'HOH' || null,
         phoneNumber: values.phoneNumber || null,
+        noPhoneNumber: values.noPhoneNumber || null,
         phoneNumberAlt: values.phoneNumberAlt || null,
         email: values.email || null,
+        noEmail: values.noEmail || null,
         familyMembers, // copy in the already parsed values for familymembers
         primaryResidence: { ...values.primaryResidence },
         mailingAddress: values.mailingAddressSameAsPrimary ? null : { ...values.mailingAddress },
@@ -979,18 +981,25 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
   noPhoneNumberToggle() {
     const noPhoneNumber = this.form.get("noPhoneNumber");
-    const phoneNumber = this.form.get("phoneNumber");
+    const phoneNumber = this.form.get("phoneNumber");              
     // If no phone number is going to be provided, disable control and clear value
     if (noPhoneNumber.value) {
       phoneNumber.setValue(null);
       phoneNumber.disable();
+      phoneNumber.clearValidators();
     }
     // Else enable control
     else {
       phoneNumber.enable();
     }
-    // Update validators
-    noPhoneNumber.setValidators(CustomValidators.requiredWhenNull("email"));
+    // Update validators - bc phone numbers get an additional validator
+    if (this.f.primaryResidenceInBC.value) {
+      phoneNumber.setValidators([CustomValidators.phone, CustomValidators.requiredWhenNull("noPhoneNumber")])
+    }
+    else {
+      phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
+    }
+    noPhoneNumber.setValidators(CustomValidators.requiredWhenNull("phoneNumber"));
     noPhoneNumber.updateValueAndValidity();
     phoneNumber.updateValueAndValidity();
   }

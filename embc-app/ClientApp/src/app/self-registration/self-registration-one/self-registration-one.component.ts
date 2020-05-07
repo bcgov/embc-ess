@@ -217,10 +217,9 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     const phoneNumber   = this.form.get("phoneNumber");
 
     email.setValidators([Validators.email, CustomValidators.requiredWhenNull("noEmail")]);
-    //email.updateValueAndValidity();
-    //phoneNumber.setValidators([Validators.required, CustomValidators.requiredWhenNull("noPhoneNumber")]);
+    email.updateValueAndValidity();
     phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
-    //phoneNumber.updateValueAndValidity();
+    phoneNumber.updateValueAndValidity();
     this.form.updateValueAndValidity();
   }
 
@@ -234,10 +233,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       .pipe(skipWhile(() => this.f.primaryResidenceInBC.pristine))
       .subscribe((checked: boolean) => {
         if (checked) {
-          this.f.phoneNumber.setValidators([CustomValidators.phone]);
+          this.f.phoneNumber.setValidators([CustomValidators.phone, CustomValidators.requiredWhenNull("noPhoneNumber")]);
           this.f.phoneNumberAlt.setValidators([CustomValidators.phone]);
         } else {
-          this.f.phoneNumber.setValidators(null);
+          this.f.phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
           this.f.phoneNumberAlt.setValidators(null);
         }
         this.f.phoneNumber.updateValueAndValidity();
@@ -488,10 +487,15 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // Else enable control
     else {
       phoneNumber.enable();
-      phoneNumber.setValidators(Validators.required);
     }
-    // Update validators
-    noPhoneNumber.setValidators(CustomValidators.requiredWhenNull("email"));
+    // Update validators - bc phone numbers get an additional validator
+    if (this.f.primaryResidenceInBC.value) {
+      phoneNumber.setValidators([CustomValidators.phone, CustomValidators.requiredWhenNull("noPhoneNumber")])
+    }
+    else {
+      phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
+    }
+    noPhoneNumber.setValidators(CustomValidators.requiredWhenNull("phoneNumber"));
     noPhoneNumber.updateValueAndValidity();
     phoneNumber.updateValueAndValidity();
   }
