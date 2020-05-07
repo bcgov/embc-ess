@@ -8,8 +8,10 @@ export interface HeadOfHousehold extends Evacuee {
   // evacuee information (HOH and family members)
   personType: 'HOH';
   phoneNumber: string;
+  noPhoneNumber: boolean | null;
   phoneNumberAlt: string;
   email: string;
+  noEmail: boolean | null;
   // related entities
   primaryResidence: Address;
   mailingAddress: Address | null;
@@ -43,4 +45,5 @@ export interface EvacueeListItem {
   city: string;
   province: string;
   postalCode: string;
+  country: string;
 }
