@@ -48,3 +48,14 @@ app-communities-select {
   color: $infoTextColor;
 }
 
+.will-not-provide {
+  display: flex;
+  & input {
+      align-self: center;
+  }
+  & label {
+      padding-top: 5px;
+      padding-left: 6px;
+  }
+}
+

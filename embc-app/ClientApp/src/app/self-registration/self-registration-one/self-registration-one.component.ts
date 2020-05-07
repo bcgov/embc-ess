@@ -217,7 +217,11 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     const phoneNumber   = this.form.get("phoneNumber");
 
     email.setValidators([Validators.email, CustomValidators.requiredWhenNull("noEmail")]);
-    //phoneNumber.setValidators(Validators.required);
+    //email.updateValueAndValidity();
+    //phoneNumber.setValidators([Validators.required, CustomValidators.requiredWhenNull("noPhoneNumber")]);
+    phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
+    //phoneNumber.updateValueAndValidity();
+    this.form.updateValueAndValidity();
   }
 
   onFormChange(): void {

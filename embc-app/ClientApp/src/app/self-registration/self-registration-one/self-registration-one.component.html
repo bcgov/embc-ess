@@ -234,7 +234,8 @@
       <div class="form-group mb-0" tabindex="0">
         <div class="form-check">
           <input type="radio" [class.is-invalid]="invalid('primaryResidenceInBC')" class="form-check-input"
-            formControlName="primaryResidenceInBC" [value]="true" id="primaryResidenceInBCTrue">
+            formControlName="primaryResidenceInBC" [value]="true" id="primaryResidenceInBCTrue"
+            (click)="noPhoneNumberToggle()">
           <label class="form-check-label" for="primaryResidenceInBCTrue">Yes</label>
         </div>
         <div class="form-check">
@@ -257,11 +258,11 @@
         <section>
           <div class="row">
             <app-form-field class="col-md-6">
-              <label for="phoneNumber1" class="required">Telephone / Mobile Number</label>
+              <label for="phoneNumber" class="required">Telephone / Mobile Number</label>
               <input type="text" [class.is-invalid]="invalid('phoneNumber')" class="form-control"
                 [textMask]="{mask: phoneMask, keepCharPositions: true}" placeholder="999-999-9999"
-                formControlName="phoneNumber" id="phoneNumber1" autocomplete="off">
-              <small>
+                formControlName="phoneNumber" id="phoneNumber" autocomplete="off">
+              <small class="will-not-provide">
                 <input type="checkbox" formControlName="noPhoneNumber" (change)="noPhoneNumberToggle()">
                 <label for="noPhoneNumber">I am not willing or able to provide a telephone/mobile number.</label>
               </small>
@@ -284,7 +285,7 @@
               <label for="email" class="required">Email Address</label>
               <input type="email" [class.is-invalid]="invalid('email')" class="form-control" spellcheck="false"
                 formControlName="email" id="email" autocomplete="off">
-              <small>
+              <small class="will-not-provide">
                 <input type="checkbox" formControlName="noEmail" (change)="noEmailToggle()">
                 <label for="noEmail">I am not willing or able to provide an email address.</label>
               </small>
