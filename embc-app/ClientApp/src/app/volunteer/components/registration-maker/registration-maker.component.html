@@ -290,11 +290,11 @@
             [withinBC]="form.value.primaryResidenceInBC"></app-address-selector>
           <div class="row mt-0">
             <div class="col">
-              <label for="phoneNumber">Telephone / Mobile Number</label>
+              <label for="phoneNumber" class="required">Telephone / Mobile Number</label>
               <input type="text" [class.is-invalid]="invalid('phoneNumber')" class="form-control"
                 [textMask]="{mask: phoneMask, keepCharPositions: true}" placeholder="999-999-9999"
                 formControlName="phoneNumber" id="phoneNumber" autocomplete="off">
-              <small>
+              <small class="will-not-provide">
                 <input type="checkbox" formControlName="noPhoneNumber" (change)="noPhoneNumberToggle()">
                 <label for="noPhoneNumber">Evacuee is not willing or able to provide a telephone/mobile number.</label>
               </small>
@@ -315,10 +315,10 @@
           </div>
           <div class="row mt-4">
             <div class="col">
-              <label for="email">Email Address</label>
+              <label for="email" class="required">Email Address</label>
               <input type="email" [class.is-invalid]="invalid('email')" class="form-control" formControlName="email"
                 id="email" autocomplete="off">
-                <small>
+                <small class="will-not-provide">
                   <input type="checkbox" formControlName="noEmail" (change)="noEmailToggle()">
                   <label for="noEmail">Evacuee is not willing or able to provide an email address.</label>
                 </small>

@@ -14,3 +14,14 @@ $infoTextColor: #868686;
     display: block;
     color: $infoTextColor;
 }
+
+.will-not-provide {
+    display: flex;
+    & input {
+        align-self: center;
+    }
+    & label {
+        margin-top: 2px;
+        padding-left: 5px;
+    }
+}
