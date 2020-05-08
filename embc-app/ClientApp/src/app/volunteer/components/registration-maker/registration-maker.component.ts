@@ -585,11 +585,11 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
 
         // these belong to the HOH but we placed them here to simplify the HTML markup...
         phoneNumber: r.headOfHousehold.phoneNumber as string,
-        noPhoneNumber: r.headOfHousehold.noPhoneNumber as boolean,
+        noPhoneNumber: !r.headOfHousehold.phoneNumber as boolean,//r.headOfHousehold.noPhoneNumber as boolean,
         phoneNumberAlt: r.headOfHousehold.phoneNumberAlt as string,
 
         email: r.headOfHousehold.email as string,
-        noEmail: r.headOfHousehold.noEmail as boolean,
+        noEmail: !r.headOfHousehold.email as boolean, //r.headOfHousehold.noEmail as boolean,
 
         // primaryResidence: r.headOfHousehold.primaryResidence as Address,
         // mailingAddress: r.headOfHousehold.mailingAddress as Address,
