@@ -495,7 +495,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     else {
       phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
     }
-    noPhoneNumber.setValidators(CustomValidators.requiredWhenNull("phoneNumber"));
     noPhoneNumber.updateValueAndValidity();
     phoneNumber.updateValueAndValidity();
   }
@@ -513,7 +512,6 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       email.enable();
     }
     // Update validators
-    noEmail.setValidators(CustomValidators.requiredWhenNull("email"));
     noEmail.updateValueAndValidity();
     email.updateValueAndValidity();
   }
