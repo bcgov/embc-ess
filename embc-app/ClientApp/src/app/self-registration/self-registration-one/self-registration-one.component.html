@@ -235,12 +235,13 @@
         <div class="form-check">
           <input type="radio" [class.is-invalid]="invalid('primaryResidenceInBC')" class="form-check-input"
             formControlName="primaryResidenceInBC" [value]="true" id="primaryResidenceInBCTrue"
-            (click)="noPhoneNumberToggle()">
+            (click)="pimraryAddrInBCToggle()">
           <label class="form-check-label" for="primaryResidenceInBCTrue">Yes</label>
         </div>
         <div class="form-check">
           <input type="radio" [class.is-invalid]="invalid('primaryResidenceInBC')" class="form-check-input"
-            formControlName="primaryResidenceInBC" [value]="false" id="primaryResidenceInBCFalse">
+            formControlName="primaryResidenceInBC" [value]="false" id="primaryResidenceInBCFalse"
+            (click)="pimraryAddrInBCToggle()">
           <label class="form-check-label" for="primaryResidenceInBCFalse">No</label>
         </div>
         <span [class.d-block]="invalid('primaryResidenceInBC')"
