@@ -130,6 +130,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     return this.f.mailingAddress as FormGroup;
   }
 
+  get primaryAddressIsInBC() {
+    return this.form.get("primaryResidenceInBC").value;
+  }
+
   ngOnInit() {
     // Create form controls
     this.initForm();
@@ -428,6 +432,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.submitted = true;
     this.validateForm();
+    console.log(this.form);
     // stop here if form is invalid
     if (this.form.invalid) {
       this.errorSummary = 'Some required fields have not been completed.';
@@ -529,12 +534,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   }
 
   // The pimrary address in BC value affects other controls
-  pimraryAddrInBCToggle() {
-    // Get value
-    const val = this.form.get("primaryResidenceInBC").value;
+  pimraryAddrInBCToggle(value : boolean) {
     // If false, set value of evacuatedFromPrimaryAddress to false 
     // since they can't be evac'd from a non-BC address
-    if (!val) {
+    if (!value) {
       const evacFromPrimeAddr = this.form.get("evacuatedFromPrimaryAddress");
       evacFromPrimeAddr.setValue(false);
       this.form.updateValueAndValidity();
