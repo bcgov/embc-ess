@@ -315,6 +315,13 @@
             </div>
           </div>
         </div>
+        <div class="row" *ngIf="!evacuatedFromPrimaryAddress">
+          <app-form-field class="col-md-6">
+            <label for="evacuatedFrom" class="required">Where are you being evacuated from?</label>
+            <app-communities-select [class.is-invalid]="invalid('evacuatedFrom')"
+              myFormControlName="evacuatedFrom" myId="evacuatedFrom"></app-communities-select>
+          </app-form-field>
+        </div>
       </div>
     </section>
 

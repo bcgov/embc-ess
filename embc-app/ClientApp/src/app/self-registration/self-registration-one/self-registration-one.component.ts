@@ -134,6 +134,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     return this.form.get("primaryResidenceInBC").value;
   }
 
+  get evacuatedFromPrimaryAddress() {
+    return this.form.get("evacuatedFromPrimaryAddress").value;
+  }
+
   ngOnInit() {
     // Create form controls
     this.initForm();
