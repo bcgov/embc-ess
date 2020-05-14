@@ -297,8 +297,8 @@
           </div>
         </section>
       </section>
-      <div class="" *ngIf="primaryAddressIsInBC">
-        <div class="row">
+      <div class="" >
+        <div class="row" *ngIf="primaryAddressIsInBC">
           <p class="required inline-block">
             Is this address where you are being evacuated from?
           </p>
@@ -315,12 +315,12 @@
             </div>
           </div>
         </div>
-        <div class="row" *ngIf="!evacuatedFromPrimaryAddress">
-          <app-form-field class="col-md-6">
+        <div class="row" *ngIf="evacuatedFromPrimaryAddress === false || primaryAddressIsInBC === false">
+          <div class="col-md-6">
             <label for="evacuatedFrom" class="required">What community are you being evacuated from?</label>
-            <app-communities-select [class.is-invalid]="invalid('evacuatedFrom')"
-              myFormControlName="evacuatedFrom" myId="evacuatedFrom"></app-communities-select>
-          </app-form-field>
+            <app-communities-select [class.is-invalid]="invalid('evacuatedFrom')" [myParent]="form"
+              myFormControlName="evacuatedFrom" myId="evacuatedFrom" [myRequired]="true"></app-communities-select>
+          </div>
         </div>
       </div>
     </section>
