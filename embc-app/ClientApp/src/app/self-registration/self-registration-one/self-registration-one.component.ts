@@ -351,7 +351,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         noPhoneNumber: hoh.noPhoneNumber,
         phoneNumberAlt: hoh.phoneNumberAlt,
         email: hoh.email,
-        noEmail: hoh.noEmail
+        noEmail: hoh.noEmail,
+        evacuatedFrom: this.registration.hostCommunity,
       });
       // Handle no email and no phone number logic
       this.noEmailToggle();
@@ -478,7 +479,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         familyMembers,
         primaryResidence: { ...form.primaryResidence },
         mailingAddress: form.mailingAddressSameAsPrimary ? null : { ...form.mailingAddress },
-      }
+      },
+      hostCommunity: form.evacuatedFrom
     };
     // alert(registration.restrictedAccess);
     this.store.dispatch(new UpdateRegistration({ registration }));
