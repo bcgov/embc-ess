@@ -437,7 +437,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.submitted = true;
     this.validateForm();
-    console.log(this.form);
+ 
     // stop here if form is invalid
     if (this.form.invalid) {
       this.errorSummary = 'Some required fields have not been completed.';
