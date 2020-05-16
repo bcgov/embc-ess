@@ -235,12 +235,13 @@
         <div class="form-check">
           <input type="radio" [class.is-invalid]="invalid('primaryResidenceInBC')" class="form-check-input"
             formControlName="primaryResidenceInBC" [value]="true" id="primaryResidenceInBCTrue"
-            (click)="noPhoneNumberToggle()">
+            (click)="pimraryAddrInBCToggle(true)">
           <label class="form-check-label" for="primaryResidenceInBCTrue">Yes</label>
         </div>
         <div class="form-check">
           <input type="radio" [class.is-invalid]="invalid('primaryResidenceInBC')" class="form-check-input"
-            formControlName="primaryResidenceInBC" [value]="false" id="primaryResidenceInBCFalse">
+            formControlName="primaryResidenceInBC" [value]="false" id="primaryResidenceInBCFalse"
+            (click)="pimraryAddrInBCToggle(false)">
           <label class="form-check-label" for="primaryResidenceInBCFalse">No</label>
         </div>
         <span [class.d-block]="invalid('primaryResidenceInBC')"
@@ -296,6 +297,32 @@
           </div>
         </section>
       </section>
+      <div class="row mb-2">
+        <div class="col-md-6" *ngIf="primaryAddressIsInBC">
+          <p class="required inline-block">
+            Is this address where you are being evacuated from?
+          </p>
+          <div class="form-group mb-0" tabindex="0">
+            <div class="form-check">
+              <input type="radio" [class.is-invalid]="invalid('evacuatedFromPrimaryAddress')" class="form-check-input"
+                formControlName="evacuatedFromPrimaryAddress" [value]="true" id="evacuatedFromPrimaryAddressTrue">
+              <label class="form-check-label" for="evacuatedFromPrimaryAddressTrue">Yes</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" [class.is-invalid]="invalid('evacuatedFromPrimaryAddress')" class="form-check-input"
+                formControlName="evacuatedFromPrimaryAddress" [value]="false" id="evacuatedFromPrimaryAddressFalse">
+              <label class="form-check-label" for="evacuatedFromPrimaryAddressFalse">No</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="evacuatedFromPrimaryAddress === false || primaryAddressIsInBC === false">
+        <div class="col-md-6">
+          <label for="evacuatedFrom" class="required">What community are you being evacuated from?</label>
+          <app-communities-select [class.is-invalid]="invalid('evacuatedFrom')" [myParent]="form"
+            myFormControlName="evacuatedFrom" myId="evacuatedFrom" [myRequired]="true"></app-communities-select>
+        </div>
+      </div>
     </section>
 
     <h2 class="blue-header h3">Mailing Address</h2>

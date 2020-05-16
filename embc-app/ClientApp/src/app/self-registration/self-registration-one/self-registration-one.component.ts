@@ -130,6 +130,14 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     return this.f.mailingAddress as FormGroup;
   }
 
+  get primaryAddressIsInBC() {
+    return this.form.get("primaryResidenceInBC").value;
+  }
+
+  get evacuatedFromPrimaryAddress() {
+    return this.form.get("evacuatedFromPrimaryAddress").value;
+  }
+
   ngOnInit() {
     // Create form controls
     this.initForm();
@@ -209,17 +217,29 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         country: '',
         city: '',
       }),
+      evacuatedFromPrimaryAddress: null,
+      evacuatedFrom: null,
     });
     // Add custom validation for the 'not provided' inputs
     // Can't do this in the above function because at that point
     // the parent property of the controls is undefined.
-    const email         = this.form.get("email");
-    const phoneNumber   = this.form.get("phoneNumber");
+    const email             = this.form.get("email");
+    const phoneNumber       = this.form.get("phoneNumber");
+    const evacFrom          = this.form.get("evacuatedFrom");
+    const evacFromPrimeAddr = this.form.get("evacuatedFromPrimaryAddress");
 
     email.setValidators([Validators.email, CustomValidators.requiredWhenNull("noEmail")]);
     email.updateValueAndValidity();
+
     phoneNumber.setValidators(CustomValidators.requiredWhenNull("noPhoneNumber"));
     phoneNumber.updateValueAndValidity();
+
+    evacFrom.setValidators(CustomValidators.requiredWhenFalse("evacuatedFromPrimaryAddress"));
+    evacFrom.updateValueAndValidity();
+
+    evacFromPrimeAddr.setValidators(CustomValidators.requiredWhenTrue("primaryResidenceInBC"));
+    evacFromPrimeAddr.updateValueAndValidity();
+
     this.form.updateValueAndValidity();
   }
 
@@ -331,7 +351,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         noPhoneNumber: hoh.noPhoneNumber,
         phoneNumberAlt: hoh.phoneNumberAlt,
         email: hoh.email,
-        noEmail: hoh.noEmail
+        noEmail: hoh.noEmail,
+        evacuatedFrom: this.registration.hostCommunity,
       });
       // Handle no email and no phone number logic
       this.noEmailToggle();
@@ -416,6 +437,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.submitted = true;
     this.validateForm();
+ 
     // stop here if form is invalid
     if (this.form.invalid) {
       this.errorSummary = 'Some required fields have not been completed.';
@@ -457,7 +479,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         familyMembers,
         primaryResidence: { ...form.primaryResidence },
         mailingAddress: form.mailingAddressSameAsPrimary ? null : { ...form.mailingAddress },
-      }
+      },
+      hostCommunity: form.evacuatedFrom
     };
     // alert(registration.restrictedAccess);
     this.store.dispatch(new UpdateRegistration({ registration }));
@@ -514,6 +537,20 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     // Update validators
     noEmail.updateValueAndValidity();
     email.updateValueAndValidity();
+  }
+
+  // The pimrary address in BC value affects other controls
+  pimraryAddrInBCToggle(value : boolean) {
+    const evacFromPrimeAddr = this.form.get("evacuatedFromPrimaryAddress");
+    // If false, set value of evacuatedFromPrimaryAddress to false 
+    // since they can't be evac'd from a non-BC address
+    if (!value) {
+      evacFromPrimeAddr.setValue(false);
+    }
+    else {
+      evacFromPrimeAddr.setValue(null);
+    }
+    this.form.updateValueAndValidity();
   }
 
 }
