@@ -61,7 +61,7 @@ namespace Gov.Jag.Embc.Public
 
         public static string GetEnvironmentName(this IConfiguration conf)
         {
-            return conf["ASPNETCORE_ENVIRONMENT"];
+            return conf["DEPLOYMENT_ENVIRONMENT"];
         }
 
         public static string GetBuildCommitId(this IConfiguration conf)
