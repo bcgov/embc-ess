@@ -1,5 +1,6 @@
 export interface Config {
   environment: string | null;
+  environmentTitle: string | null;
   fileCreationTime: string | null;
   fileVersion: string | null;
   sourceCommit: string | null;

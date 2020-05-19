@@ -59,6 +59,11 @@ namespace Gov.Jag.Embc.Public
             return conf["APP_ENVIRONMENT_TITLE"];
         }
 
+        public static string GetEnvironmentName(this IConfiguration conf)
+        {
+            return conf["ASPNETCORE_ENVIRONMENT"];
+        }
+
         public static string GetBuildCommitId(this IConfiguration conf)
         {
             return conf["OPENSHIFT_BUILD_COMMIT"];
