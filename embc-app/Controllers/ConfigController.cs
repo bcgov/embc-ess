@@ -27,7 +27,8 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 BaseUri = configuration.GetBaseUri(),
                 BasePath = configuration.GetBasePath(),
-                Environment = configuration.GetEnvironmentTitle(),
+                Environment = configuration.GetEnvironmentName(),
+                EnvironmentTitle = configuration.GetEnvironmentTitle(),
                 SourceCommit = configuration.GetBuildCommitId(),
                 SourceRepository = configuration.GetBuildSource(),
                 SourceReference = configuration.GetBuildVersion(),
