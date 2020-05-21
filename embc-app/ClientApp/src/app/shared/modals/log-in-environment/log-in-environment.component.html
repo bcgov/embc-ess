@@ -1,3 +1,19 @@
-<p>
-  log-in-environment works!
-</p>
+<div class="modal-body" [ngClass]="prod ? 'prod'
+: training ? 'train'
+: testing ? 'test'
+: 'dev'">
+<div style="float: right; cursor: pointer;"><i class="fas fa-times" (click)="close()"></i></div>
+  <div class="" [innerHTML]="envTitle"></div>
+  <div class="btn-row">
+    <button class="btn btn-outline-light" (click)="close()">CLOSE</button>
+    &nbsp;&nbsp;
+    <a class="btn proceed-btn" role="button"
+    [ngClass]="prod ? 'prod'
+    : training ? 'train'
+    : testing ? 'test'
+    : 'dev'"
+    href="login/">
+      PROCEED
+  </a>
+  </div>
+</div>

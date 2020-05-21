@@ -40,7 +40,9 @@ export class HomeComponent implements OnInit {
     if (!this.envModal) {
       this.envModal = this.modals.open(LogInEnvironmentComponent, { size: 'lg', centered: true });
       this.envModal.result.then(
-        () => { this.envModal = null; },
+        () => { 
+            this.envModal = null; 
+        },
         () => { this.envModal = null; }
       );
     }
