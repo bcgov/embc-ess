@@ -1,4 +1,8 @@
 @import "~src/styles/_defaults.scss";
+$prodBg: rgba(34, 147, 89, 1);
+$trainBg: #fc6621;
+$testBg: purple;
+$devBg: grey;
 
 div {
   color: $font-color;
