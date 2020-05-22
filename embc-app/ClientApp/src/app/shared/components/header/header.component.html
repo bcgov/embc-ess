@@ -17,7 +17,7 @@
         <a href="/logout">Sign Out</a>
       </span>
       <span class="navbar-text" *ngIf="!currentUser">
-        <a href="/login" tabindex="1">Log In</a>
+        <a href="#" tabindex="1" (click)="openModal()">Log In</a>
       </span>
     </div>
   </nav>
