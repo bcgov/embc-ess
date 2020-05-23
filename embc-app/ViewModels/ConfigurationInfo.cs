@@ -1,3 +1,5 @@
+using System.Security.Policy;
+
 namespace Gov.Jag.Embc.Public.ViewModels
 {
     public class ConfigurationInfo
@@ -16,6 +18,11 @@ namespace Gov.Jag.Embc.Public.ViewModels
         /// Dotnet Environment (Development, Staging, Production...)
         /// </summary>
         public string Environment { get; set; }
+
+        /// <summary>
+        /// Environment Title (an HTML string)
+        /// </summary>
+        public string EnvironmentTitle { get; set; }
 
         /// <summary>
         /// File creation time for the running assembly

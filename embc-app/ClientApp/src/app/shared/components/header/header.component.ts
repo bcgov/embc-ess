@@ -2,6 +2,8 @@ import { Component, OnInit, Input, SimpleChange, OnChanges, SimpleChanges } from
 import { Router } from '@angular/router';
 import { User } from 'src/app/core/models';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {LogInEnvironmentComponent} from 'src/app/shared/modals/log-in-environment/log-in-environment.component';
 
 @Component({
   selector: 'app-header',
@@ -15,9 +17,13 @@ export class HeaderComponent implements OnInit, OnChanges {
   // This should be in a constants file or something
   private IDIR_USER_TYPE: string = "internal";
   private isIDIR: boolean;
+
+  // Modal for environment confirmation modal
+  private envModal: NgbModalRef = null;
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private modals: NgbModal
   ) {
     // This is a stupid work around that I hate
     // Wanted to put the 'ShowHeaderText' into the data but it's always empty
@@ -93,5 +99,17 @@ export class HeaderComponent implements OnInit, OnChanges {
         this.router.navigate(['dashboard']);
       }
     });
+  }
+
+  openModal() {
+    if (!this.envModal) {
+      this.envModal = this.modals.open(LogInEnvironmentComponent, { size: 'lg', centered: true });
+      this.envModal.result.then(
+        () => { 
+            this.envModal = null; 
+        },
+        () => { this.envModal = null; }
+      );
+    }
   }
 }

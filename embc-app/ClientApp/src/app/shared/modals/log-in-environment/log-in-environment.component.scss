@@ -1,0 +1,60 @@
+@import "~src/styles/_defaults.scss";
+
+.modal-body {
+    color: white;
+    padding: 17px;
+    font-size: 15px;
+    text-align: justify;
+}
+
+.prod {
+    background-color: $prodBg;
+    border-color: $prodBg;
+  }
+  
+  .train {
+    background-color: $trainBg;
+    border-color: $trainBg;
+  }
+  
+  .test {
+    background-color: $testBg;
+    border-color: $testBg;
+  }
+  
+  .dev {
+    background-color: $devBg;
+    border-color: $devBg;
+  }
+
+  .btn-row {
+      padding-top: 10px;
+  }
+
+  .proceed-btn {
+      background-color: white;
+      &.prod {
+        color: $prodBg;
+        &:hover {
+            background-color: lighten($prodBg, 25%) !important;
+        }
+      }
+      &.train {
+          color: $trainBg;
+          &:hover {
+              background-color: lighten($trainBg, 25%) !important;
+          }
+      }
+      &.test {
+          color: $testBg;
+          &:hover {
+            background-color: lighten($testBg, 25%) !important;
+        }
+      }
+      &.dev {
+          color: $devBg;
+          &:hover {
+              background-color: lighten($devBg, 25%) !important;
+        }
+      }
+  }
