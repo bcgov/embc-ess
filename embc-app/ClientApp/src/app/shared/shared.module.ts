@@ -39,6 +39,7 @@ import { UpperCaseDirective } from './directives/upper-case.directive';
 import { ValidationBorderDirective } from './directives/validation-border.directive';
 import { InsuranceInfoComponent } from './modals/insurance-info/insurance-info.component';
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
+import { LogInEnvironmentComponent } from './modals/log-in-environment/log-in-environment.component';
 
 @NgModule({
   declarations: [
@@ -72,11 +73,13 @@ import { AccessDeniedComponent } from './components/access-denied/access-denied.
     // Should this be in app.module.ts? CLI placed it here and it is a shared module, but the other modals are in app.module.ts.
     InsuranceInfoComponent,
     AccessDeniedComponent,
+    LogInEnvironmentComponent,
     // MaskDirective, // I want to declare this in the shared module, but it has a 'Can't bind because x isn't a known property of Input' error
   ],
   entryComponents: [
     // Had to add InsuranceInfoComponent to entryComponents or else would error on open
-    InsuranceInfoComponent
+    InsuranceInfoComponent,
+    LogInEnvironmentComponent
   ],
   imports: [
     CommonModule,

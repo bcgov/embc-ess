@@ -1,19 +1,26 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store';
 import { Config } from 'src/app/core/models';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {PRODUCTION, TEST, TRAINING, DEVELOPMENT} from 'src/app/constants/environments'
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-environment-banner',
-  templateUrl: './environment-banner.component.html',
-  styleUrls: ['./environment-banner.component.scss']
+  selector: 'app-log-in-environment',
+  templateUrl: './log-in-environment.component.html',
+  styleUrls: ['./log-in-environment.component.scss']
 })
-export class EnvironmentBannerComponent implements OnInit {
+export class LogInEnvironmentComponent implements OnInit {
 
-  environment: string = null; // NB: this stays null/empty in Prod
-  envTitle: SafeHtml = null; // The title is expected to be an HTML string
+  environment: string;
+  envTitle: SafeHtml;
+
+  constructor(private activeModal: NgbActiveModal,
+              private store: Store<AppState>,
+              private sanitizer: DomSanitizer,
+              private router: Router) { }
 
   get prod(): boolean {
     return this.environment === PRODUCTION;
@@ -31,16 +38,15 @@ export class EnvironmentBannerComponent implements OnInit {
     return this.environment === DEVELOPMENT;
   }
 
-  constructor(
-    private store: Store<AppState>, // ngrx app state
-    private sanitizer: DomSanitizer
-  ) { }
-
   ngOnInit() {
     this.store.select(s => s.lookups.config.config).subscribe((config: Config) => {
       this.environment = config && config.environment.toLowerCase();
       this.envTitle = this.sanitizer.bypassSecurityTrustHtml(config && config.environmentTitle);
     });
+  }
+
+  close() {
+    this.activeModal.dismiss();
   }
 
 }

@@ -1,11 +1,32 @@
 @import "~src/styles/_defaults.scss";
+$prodBg: rgba(34, 147, 89, 1);
+$trainBg: #fc6621;
+$testBg: purple;
+$devBg: grey;
 
 div {
   color: $font-color;
-  background-color: $bg-banner;
+  //background-color: $bg-banner;
   text-align: center;
   padding: 17px;
-  font-size: x-large;
+  font-size: 19px;
+  color: white;
+}
+
+.prod {
+  background-color: $prodBg;
+}
+
+.train {
+  background-color: $trainBg;
+}
+
+.test {
+  background-color: $testBg;
+}
+
+.dev {
+  background-color: $devBg;
 }
 
 @media (max-width: 480px) {
