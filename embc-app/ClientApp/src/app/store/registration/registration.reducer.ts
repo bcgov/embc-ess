@@ -66,7 +66,8 @@ const newRegistration: Registration = {
     mailingAddress: null,
   },
   incidentTask: null,
-  hostCommunity: null
+  hostCommunity: null,
+  evacuatedFromPrimaryAddress: null,
 };
 
 export function reducer(state = initialState, action: RegistrationActions.Actions): State {
