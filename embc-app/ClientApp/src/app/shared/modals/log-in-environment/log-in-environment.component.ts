@@ -15,7 +15,8 @@ import { Router } from '@angular/router';
 export class LogInEnvironmentComponent implements OnInit {
 
   environment: string;
-  envTitle: SafeHtml;
+  envTitle: string;
+	body: SafeHtml;
 
   constructor(private activeModal: NgbActiveModal,
               private store: Store<AppState>,
@@ -41,9 +42,38 @@ export class LogInEnvironmentComponent implements OnInit {
   ngOnInit() {
     this.store.select(s => s.lookups.config.config).subscribe((config: Config) => {
       this.environment = config && config.environment.toLowerCase();
-      this.envTitle = this.sanitizer.bypassSecurityTrustHtml(config && config.environmentTitle);
+      this.envTitle = config && config.environmentTitle;
+      this.buildHTML();
     });
   }
+
+  private buildHTML() {
+    let html: string = null;
+    if (this.prod) {
+      html = `<strong>Live</strong> Evacuee Registration & Assistance (ERA) Tool
+              <br/><br/>
+              <small>
+              You are entering the <strong>LIVE</strong> version of the <strong>Evacuee Registration & Assitance Tool</strong>.
+              <br/>
+              All information here will be treated as <strong>real</strong> and <strong>accurate</strong>
+              </small>`;
+    }
+    else if (this.training) {
+      html = `<strong>Training</strong> Evacuee Registration & Assistance (ERA) Tool
+      <br/><br/>
+      <small>
+      You are entering the <strong>TRAINING</strong> version of the <strong>Evacuee Registration & Assitance Tool</strong>.
+      <br/>
+      All information here will be treated as <strong>training</strong> data.
+      </small>`;
+    }
+    else {
+      // we only care about prod and training - just reuse the environment text for dev and testing
+      html = this.envTitle;
+    }
+    this.body = this.sanitizer.bypassSecurityTrustHtml(html);
+  }
+
 
   close() {
     this.activeModal.dismiss();
