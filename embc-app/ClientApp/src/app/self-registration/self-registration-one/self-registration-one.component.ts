@@ -12,6 +12,7 @@ import { UpdateRegistration } from 'src/app/store/registration/registration.acti
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { clearFormArray, hasErrors, invalidField } from 'src/app/shared/utils';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-self-registration-one',
@@ -550,6 +551,15 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     else {
       evacFromPrimeAddr.setValue(null);
     }
+    this.form.updateValueAndValidity();
+  }
+
+  evacdFromPrimaryAddress() {
+    const evacuatedFrom = this.form.get("evacuatedFrom");
+    const primaryAddr = this.form.get("primaryResidence").value.community;
+    evacuatedFrom.setValue(primaryAddr);
+    evacuatedFrom.updateValueAndValidity();
+
     this.form.updateValueAndValidity();
   }
 
