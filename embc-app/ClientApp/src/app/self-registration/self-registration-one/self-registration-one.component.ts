@@ -501,6 +501,16 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     this.f.mailingAddressInBC.setValidators(null);
   }
 
+  evacdFromPrimaryResidenceChange(value: boolean) {
+    const evacFrom = this.form.get("evacuatedFrom");
+    if (value) {
+      evacFrom.setValidators(Validators.required);
+    }
+    else {
+      evacFrom.clearValidators();
+    }
+  }
+
   noPhoneNumberToggle() {
     const noPhoneNumber = this.form.get("noPhoneNumber");
     const phoneNumber = this.form.get("phoneNumber");              
