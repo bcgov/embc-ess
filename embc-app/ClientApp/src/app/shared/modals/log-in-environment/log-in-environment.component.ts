@@ -51,16 +51,16 @@ export class LogInEnvironmentComponent implements OnInit {
     let html: string = null;
     if (this.prod) {
       html = `<strong>Live</strong> Evacuee Registration & Assistance (ERA) Tool
-              <br/><br/>
+              <br/>
               <small>
               You are entering the <strong>LIVE</strong> version of the <strong>Evacuee Registration & Assitance Tool</strong>.
               <br/>
-              All information here will be treated as <strong>real</strong> and <strong>accurate</strong>
+              All information here will be treated as <strong>real</strong> and <strong>accurate</strong>.
               </small>`;
     }
     else if (this.training) {
       html = `<strong>Training</strong> Evacuee Registration & Assistance (ERA) Tool
-      <br/><br/>
+      <br/>
       <small>
       You are entering the <strong>TRAINING</strong> version of the <strong>Evacuee Registration & Assitance Tool</strong>.
       <br/>
