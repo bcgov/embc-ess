@@ -843,6 +843,7 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       requiresFood: values.requiresFood as boolean,
       requiresIncidentals: values.requiresIncidentals as boolean,
       requiresTransportation: values.requiresTransportation as boolean,
+      evacuatedFromPrimaryAddress: values.evacuatedFromPrimaryAddress as boolean,
 
       // dates we care about
       selfRegisteredDate: values.selfRegisteredDate as string,
@@ -968,7 +969,8 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
       headOfHousehold: null,
       incidentTask: null,
       hostCommunity: null,
-      isFinalized: null
+      isFinalized: null,
+      evacuatedFromPrimaryAddress: null,
     };
   }
 
