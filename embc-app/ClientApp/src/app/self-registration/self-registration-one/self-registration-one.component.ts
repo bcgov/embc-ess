@@ -12,6 +12,7 @@ import { UpdateRegistration } from 'src/app/store/registration/registration.acti
 import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { clearFormArray, hasErrors, invalidField } from 'src/app/shared/utils';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-self-registration-one',
@@ -353,6 +354,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         email: hoh.email,
         noEmail: hoh.noEmail,
         evacuatedFrom: this.registration.hostCommunity,
+        evacuatedFromPrimaryAddress: this.registration.evacuatedFromPrimaryAddress,
       });
       // Handle no email and no phone number logic
       this.noEmailToggle();
@@ -480,7 +482,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         primaryResidence: { ...form.primaryResidence },
         mailingAddress: form.mailingAddressSameAsPrimary ? null : { ...form.mailingAddress },
       },
-      hostCommunity: form.evacuatedFrom
+      hostCommunity: form.evacuatedFrom,
+      evacuatedFromPrimaryAddress: form.evacuatedFromPrimaryAddress,
     };
     // alert(registration.restrictedAccess);
     this.store.dispatch(new UpdateRegistration({ registration }));
@@ -496,6 +499,16 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
 
   nullMailingAddress() {
     this.f.mailingAddressInBC.setValidators(null);
+  }
+
+  evacdFromPrimaryResidenceChange(value: boolean) {
+    const evacFrom = this.form.get("evacuatedFrom");
+    if (value) {
+      evacFrom.setValidators(Validators.required);
+    }
+    else {
+      evacFrom.clearValidators();
+    }
   }
 
   noPhoneNumberToggle() {
@@ -550,6 +563,15 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     else {
       evacFromPrimeAddr.setValue(null);
     }
+    this.form.updateValueAndValidity();
+  }
+
+  evacdFromPrimaryAddress() {
+    const evacuatedFrom = this.form.get("evacuatedFrom");
+    const primaryAddr = this.form.get("primaryResidence").value.community;
+    evacuatedFrom.setValue(primaryAddr);
+    evacuatedFrom.updateValueAndValidity();
+
     this.form.updateValueAndValidity();
   }
 

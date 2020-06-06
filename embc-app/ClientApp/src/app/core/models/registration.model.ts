@@ -40,6 +40,7 @@ export interface Registration {
   requiresFood: boolean;
   requiresIncidentals: boolean;
   requiresTransportation: boolean;
+  evacuatedFromPrimaryAddress: boolean | null;
 
   // related entities
   headOfHousehold: HeadOfHousehold;
