@@ -1,5 +1,6 @@
 <div role="alert" [innerHTML]="envTitle"
-[ngClass]="prod ? 'prod'
+[ngClass]=" prodSelfReg ? 'prod-self-reg'
+: prod ? 'prod'
 : training ? 'train'
 : testing ? 'test'
 : 'dev'">
