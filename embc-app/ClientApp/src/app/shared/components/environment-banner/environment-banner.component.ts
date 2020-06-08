@@ -4,6 +4,7 @@ import { AppState } from 'src/app/store';
 import { Config } from 'src/app/core/models';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {PRODUCTION, TEST, TRAINING, DEVELOPMENT} from 'src/app/constants/environments'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-environment-banner',
@@ -14,9 +15,14 @@ export class EnvironmentBannerComponent implements OnInit {
 
   environment: string = null; // NB: this stays null/empty in Prod
   envTitle: SafeHtml = null; // The title is expected to be an HTML string
+  inSelfReg: boolean = false; // flag to determine if we're in a self-registration
 
   get prod(): boolean {
     return this.environment === PRODUCTION;
+  }
+
+  get prodSelfReg(): boolean {
+    return this.prod && this.inSelfReg
   }
 
   get training(): boolean {
@@ -33,8 +39,14 @@ export class EnvironmentBannerComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>, // ngrx app state
-    private sanitizer: DomSanitizer
-  ) { }
+    private sanitizer: DomSanitizer,
+    private router: Router
+  ) { 
+    router.events.subscribe((val) => {
+      const url: string = router.url;
+      this.inSelfReg = url.includes("self-registration");
+  });
+  }
 
   ngOnInit() {
     this.store.select(s => s.lookups.config.config).subscribe((config: Config) => {
