@@ -4200,7 +4200,7 @@
         }
     },
     {
-        "Name": "Lake Babine",
+        "Name": "Babine Lake",
         "Active": true,
         "Region": {
             "Name": "North West"
@@ -10348,6 +10348,168 @@
     },
     {
         "Name": "Bulkley-Nechako",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    //We don't have region info for these communities: going to make a best guess for now
+    {
+        "Name": "Clemretta",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Cluculz Lake",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Danskin",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Finmoore",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Forestdale",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Hulatt",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Leo Creek",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Lily Lake",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Marilla",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Morice Lake",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Nakazdli",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Nancut",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Nithi",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Palling",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Priestly",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Rose Lake",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Tahtsa Lake",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Takysie Lake",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Tapley Landing",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Tatalrose",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Tchesinkut Lake",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Tweedsmuir Park",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
+    },
+    {
+        "Name": "Wistaria",
         "Active": true,
         "Region": {
             "Name": "Central"
