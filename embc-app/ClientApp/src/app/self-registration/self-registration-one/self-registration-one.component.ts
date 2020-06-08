@@ -239,6 +239,18 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     evacFrom.updateValueAndValidity();
 
     evacFromPrimeAddr.setValidators(CustomValidators.requiredWhenTrue("primaryResidenceInBC"));
+    evacFromPrimeAddr.valueChanges.subscribe(value => {
+      const evacFrom = this.form.get("evacuatedFrom");
+      const primAddr = this.form.get("primaryResidence").value.community;
+      // Update evacuated on
+      if (value) {
+        evacFrom.setValue(primAddr);
+      }
+      // Clear evacuatedOn
+      else {
+        evacFrom.setValue(null);
+      }
+    });
     evacFromPrimeAddr.updateValueAndValidity();
 
     this.form.updateValueAndValidity();
