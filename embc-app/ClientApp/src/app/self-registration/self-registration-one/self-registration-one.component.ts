@@ -228,6 +228,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     const phoneNumber       = this.form.get("phoneNumber");
     const evacFrom          = this.form.get("evacuatedFrom");
     const evacFromPrimeAddr = this.form.get("evacuatedFromPrimaryAddress");
+    const primaryAddr       = this.form.get("primaryResidence");
 
     email.setValidators([Validators.email, CustomValidators.requiredWhenNull("noEmail")]);
     email.updateValueAndValidity();
@@ -252,6 +253,14 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       }
     });
     evacFromPrimeAddr.updateValueAndValidity();
+
+    primaryAddr.valueChanges.subscribe(value => {
+      const evacFromPrimeAddr = this.form.get("evacuatedFromPrimaryAddress").value;
+      const evacFrom          = this.form.get("evacuatedFrom");
+      if (evacFromPrimeAddr) {
+        evacFrom.setValue(value.community);
+      }
+    });
 
     this.form.updateValueAndValidity();
   }
