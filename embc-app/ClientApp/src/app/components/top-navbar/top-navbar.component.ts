@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { PROVINCIAL_ADMIN, LOCAL_AUTHORITY, VOLUNTEER } from 'src/app/constants';
+import { PROVINCIAL_ADMIN, LOCAL_AUTHORITY, VOLUNTEER, EVERYONE } from 'src/app/constants';
 import { Router } from '@angular/router';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
@@ -20,6 +20,7 @@ export class TopNavbarComponent implements OnInit {
   provincialAdmin = PROVINCIAL_ADMIN;
   localAuthority = LOCAL_AUTHORITY;
   volunteer = VOLUNTEER;
+  everyone = EVERYONE;
 
   constructor(
     private authService: AuthService,

@@ -1,9 +1,15 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-secondary-nav" *ngIf="role && role !== 'role_everyone'">
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary-nav" *ngIf="role"> <!--&& role !== 'role_everyone'-->
   <div class="container">
     <button class="navbar-toggler" type="button" (click)="toggleMenu()" aria-controls="navbarSupportedContent"
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <!-- Everyone navbar -->
+    <div *ngIf="role === everyone" class="everyone-nav-bar">
+      <div class="contact-info">
+        Contact ERA Support toll free at <span>1-844-537-7377</span>
+      </div>
+    </div>
     <!-- Volunteer navbar -->
     <div *ngIf="role===volunteer" class="collapse navbar-collapse" id="navbarSupportedContent" #navbarSupportedContent>
       <ul class="navbar-nav mr-auto" (click)="closeMenu()">

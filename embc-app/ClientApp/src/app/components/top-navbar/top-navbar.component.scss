@@ -7,3 +7,11 @@ $text-color: #fff;
         font-weight: bold;
     }
 }
+
+.everyone-nav-bar {
+    display: flex;
+    & div {
+        flex: 1 1 auto;
+        flex-direction: row-reverse;
+    }
+}
