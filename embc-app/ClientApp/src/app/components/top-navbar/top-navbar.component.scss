@@ -1,0 +1,9 @@
+$text-color: #fff;
+
+.contact-info {
+    color: $text-color;
+    & span {
+        color: #f6b81a;
+        font-weight: bold;
+    }
+}
