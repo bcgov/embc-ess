@@ -1,0 +1,17 @@
+$text-color: #fff;
+
+.contact-info {
+    color: $text-color;
+    & span {
+        color: #f6b81a;
+        font-weight: bold;
+    }
+}
+
+.everyone-nav-bar {
+    width: 100%;
+    display: flex;
+    & div {
+        margin-left: auto;
+    }
+}
