@@ -228,6 +228,7 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     const phoneNumber       = this.form.get("phoneNumber");
     const evacFrom          = this.form.get("evacuatedFrom");
     const evacFromPrimeAddr = this.form.get("evacuatedFromPrimaryAddress");
+    const primaryAddr       = this.form.get("primaryResidence");
 
     email.setValidators([Validators.email, CustomValidators.requiredWhenNull("noEmail")]);
     email.updateValueAndValidity();
@@ -252,6 +253,14 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
       }
     });
     evacFromPrimeAddr.updateValueAndValidity();
+
+    primaryAddr.valueChanges.subscribe(value => {
+      const evacFromPrimeAddr = this.form.get("evacuatedFromPrimaryAddress").value;
+      const evacFrom          = this.form.get("evacuatedFrom");
+      if (evacFromPrimeAddr) {
+        evacFrom.setValue(value.community);
+      }
+    });
 
     this.form.updateValueAndValidity();
   }
@@ -365,9 +374,10 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
         phoneNumberAlt: hoh.phoneNumberAlt,
         email: hoh.email,
         noEmail: hoh.noEmail,
-        evacuatedFrom: this.registration.hostCommunity,
+        evacuatedFrom: this.registration.hostCommunity, // even when host community has a value evacuatedFrom is often null
         evacuatedFromPrimaryAddress: this.registration.evacuatedFromPrimaryAddress,
       });
+
       // Handle no email and no phone number logic
       this.noEmailToggle();
       this.noPhoneNumberToggle();
@@ -403,6 +413,12 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
           },
         });
       }
+      // Patching this value in the form.patchValue function does not always work
+      // Taking it out of that function and doing it before updating the form values as a fix
+      const evacFrom = this.form.get("evacuatedFrom");
+      evacFrom.setValue(this.registration.hostCommunity);
+      evacFrom.updateValueAndValidity();
+      this.form.updateValueAndValidity();
     }
   }
 
