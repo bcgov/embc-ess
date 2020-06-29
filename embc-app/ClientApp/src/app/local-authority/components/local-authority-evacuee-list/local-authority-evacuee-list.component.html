@@ -169,11 +169,16 @@
                 </fieldset>
               </div>
             </div>
-            <div class="d-flex justify-content-end align-items-center">
-              <!-- Basic search. For Release 1, advanced search mode is the only mode-->
-              <app-fa-link class="small" icon="exchange-alt" (click)="switchToBasicSearch()">Switch to Basic Search
-              </app-fa-link>
-              <button type="submit" class="ml-2 btn btn-secondary text-uppercase">Search</button>
+            <div class="d-flex justify-content-start align-items-center">
+              <button type="submit" class="ml-2 btn btn-outline-primary btn-padding text-uppercase">Search</button>
+              <button class="btn btn-outline-primary btn-padding text-uppsercase" (click)="onExportClick()">
+                <i class="fas fa-file-csv"></i>&nbsp;
+                Export Evacuee Report
+              </button>
+              <button class="btn btn-outline-primary btn-padding text-uppsercase">
+                <i class="fas fa-file-csv"></i>&nbsp;
+                Export Referrals Report
+              </button>
             </div>
           </div>
         </form>
@@ -204,14 +209,10 @@
       <option [value]="'evacuatedTo'">Community Evacuated to</option>
       <option [value]="'evacuatedFrom'">Community Evacuated from</option>
     </select>
-  </div>  
+  </div>
 </div>
 <div class="search-results">
   <div *ngIf="resultsAndPagination?.data?.length>0; then searchResultsTable; else notFound"></div>
-  
-  <div *ngIf="resultsAndPagination?.data?.length > 0" class="ml-2 row">
-    <a *ngIf="isAdmin" href="#" (click)="onExportClick()" class="">Export to CSV</a>
-  </div>
 </div>
 
 <ng-template #searchResultsTable>
@@ -238,7 +239,8 @@
         <td>{{rowItem.firstName}}</td>
         <td>{{rowItem.incidentTaskNumber}}</td>
         <td>{{rowItem.registrationId}}</td>
-        <td>{{rowItem.evacuatedTo}}</td> <!--These are coming back reversed from the server, even though the mapping seems correct-->
+        <td>{{rowItem.evacuatedTo}}</td>
+        <!--These are coming back reversed from the server, even though the mapping seems correct-->
         <td>{{rowItem.evacuatedFrom}}</td>
         <td>
           <a href="javascript:void(0)" *ngIf="!rowItem.isFinalized" (click)="edit(rowItem.registrationId)">Finalize</a>

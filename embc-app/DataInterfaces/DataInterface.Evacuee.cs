@@ -1,4 +1,5 @@
 using AutoMapper.QueryableExtensions;
+using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Gov.Jag.Embc.Public.ViewModels.Search;
@@ -178,6 +179,87 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 }
             }
             return query;
+        }
+
+        //Task<IEnumerable<EvacueeReportItem>> GetEvacueeReportAsync(EvacueeSearchQueryParameters query)
+        //{
+        //    return await db.EvacueeReportItems
+        //        .FromSql(@"")
+        //        .ToList();
+        //}
+
+        public async Task<IEnumerable<EvacueeReportItem>> GetEvacueeReport(EvacueeSearchQueryParameters query)
+        {
+            return await db.EvacueeReportItems
+                .FromSql(@"
+                    SELECT
+	                -- File Information
+	                evac.RegistrationId as 'ESS_File_Number',
+	                task.TaskNumber as 'Task_Number',
+	                task.TaskNumberStartDate as 'Task_Number_Start_Date',
+	                task.TaskNumberEndDate as 'Task_Number_End_Date',
+	                'File_Status' = CASE WHEN task.TaskNumber IS NULL THEN 'Not Finalized' ELSE 'Finalized' END,
+	                commTo.Name as 'Evacuated_To', --ISNULL(commTo.Name, task.RegionName) as 'Evacuated To',
+	                commFrom.Name as 'Evacuated_From', --ISNULL(commFrom.Name, task.RegionName) as 'Evacuated From',
+	                er.Facility as 'Facility_Name',
+	                CONVERT(date, er.SelfRegisteredDate) as 'Self_Registration_Date',
+	                CONVERT(time, er.SelfRegisteredDate) as 'Self_Registration_Time',
+	                CONVERT(date, er.RegistrationCompletionDate) as 'Registration_Completed_Date',
+	                CONVERT(time, er.RegistrationCompletionDate) as 'Registration_Completed_Time',
+	                -- Evacuee Information
+	                evac.LastName as 'Last_Name',
+	                evac.FirstName as 'First_Name',
+	                CAST(evac.Dob AS VARCHAR(10)) as 'Date_Of_Birth',
+	                evac.Gender as 'Gender',
+	                'Is_Head_Of_Household' = CASE WHEN evac.EvacueeTypeCode = 'HOH' THEN 'Y' ELSE 'N' END,
+	                -- Evacuee Contact Information
+	                erap.AddressLine1 as 'Address',
+	                commAddr.Name as 'Community',
+	                erap.Province as 'Province',
+	                erap.PostalCode as 'Postal_Code',
+	                countryAddr.Name as 'Country',
+	                er.PhoneNumber as 'Phone_Number',
+	                er.PhoneNumberAlt as 'Alternate_Phone_Number',
+	                er.Email as 'Email_Address',
+	                ISNULL(eram.AddressLine1, erap.AddressLine1) as 'Mailing_Address',
+	                ISNULL(commAddrM.Name, commAddr.Name) as 'Mailing_Community',
+	                ISNULL(eram.Province, erap.Province) as 'Mailing_Province',
+	                ISNULL(eram.PostalCode, erap.PostalCode) as 'Mailing_Postal_Code',
+	                ISNULL(countryAddrM.Name, countryAddr.Name) as 'Mailing_Country',
+	                -- Questions and Services
+	                er.InsuranceCode as 'Insurance',
+	                CASE WHEN er.HasPets = 1 THEN 'Y' ELSE 'N' END as 'Pets',
+	                CASE WHEN er.HasInquiryReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Inquiry',
+	                CASE WHEN er.HasHealthServicesReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Health_Services',
+	                CASE WHEN er.HasFirstAidReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_First_Aid',
+	                CASE WHEN er.HasPersonalServicesReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Personal_Services',
+	                CASE WHEN er.HasChildCareReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Child_Care',
+	                CASE WHEN er.HasPetCareReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Pet_Care'
+                FROM
+                    Evacuees evac
+                INNER JOIN
+                    EvacueeRegistrations er ON evac.RegistrationId = er.EssFileNumber
+                LEFT OUTER JOIN
+                    IncidentTasks task ON er.IncidentTaskId = task.Id
+                LEFT OUTER JOIN
+                    Communities commFrom ON task.CommunityId = commFrom.Id
+                LEFT OUTER JOIN
+                    Communities commTo ON er.HostCommunityId = commTo.Id
+                LEFT OUTER JOIN
+                    EvacueeRegistrationAddresses erap ON evac.RegistrationId = erap.RegistrationId AND erap.AddressTypeCode = 'Primary'
+                LEFT OUTER JOIN
+                    Communities commAddr ON commAddr.Id = erap.CommunityId
+                LEFT OUTER JOIN
+                    Countries countryAddr ON countryAddr.CountryCode = erap.CountryCode
+                LEFT OUTER JOIN
+                    EvacueeRegistrationAddresses eram ON evac.RegistrationId = eram.RegistrationId AND eram.AddressTypeCode = 'Mailing'
+                LEFT OUTER JOIN
+                    Communities commAddrM ON commAddrM.Id = eram.CommunityId
+                LEFT OUTER JOIN
+                    Countries countryAddrM ON countryAddrM.CountryCode = eram.CountryCode
+                order by evac.RegistrationId desc
+                ")
+                .ToListAsync();
         }
 
         private string MapSortToFields(string sort)
