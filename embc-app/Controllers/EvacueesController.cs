@@ -41,8 +41,9 @@ namespace Gov.Jag.Embc.Public.Controllers
         public async Task<IActionResult> EvacueeReport([FromQuery] EvacueeSearchQueryParameters query)
         {
             var evacuees = await dataInterface.GetEvacueeReportAsync(query);
-
-            var fileName = $"Evacuees_Export_{ DateTime.Now:yyyyMMdd_HHmmss}.csv";
+            var today = DateTime.UtcNow;
+            today = today.AddHours(-7); // UTC -7 is PDT
+            var fileName = $"Evacuees_Export_{ today:yyyyMMdd_HHmmss}.csv";
             return File(Encoding.UTF8.GetBytes(evacuees.ToCSV()), "text/csv;charset=utf-8", fileName);
         }
 
@@ -50,8 +51,9 @@ namespace Gov.Jag.Embc.Public.Controllers
         public async Task<IActionResult> EvacueeReferralReport([FromQuery] EvacueeSearchQueryParameters query)
         {
             var evacuees = await dataInterface.GetEvacueeReferralReportAsync(query);
-
-            var fileName = $"Referral_Export_{ DateTime.Now:yyyyMMdd_HHmmss}.csv";
+            var today = DateTime.UtcNow;
+            today = today.AddHours(-7); // UTC -7 is PDT
+            var fileName = $"Referral_Export_{ today:yyyyMMdd_HHmmss}.csv";
             return File(Encoding.UTF8.GetBytes(evacuees.ToCSV()), "text/csv;charset=utf-8", fileName);
         }
     }
