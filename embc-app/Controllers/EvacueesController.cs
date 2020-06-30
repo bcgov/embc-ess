@@ -42,7 +42,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             var evacuees     = await dataInterface.GetEvacueeReportAsync(query);
             TimeZoneInfo pst = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
-            var today        = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, pst);
+            var today = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, GetPSTTimeZone());
             var fileName     = $"Evacuees_Export_{ today:yyyyMMdd_HHmmss}.csv";
             return File(Encoding.UTF8.GetBytes(evacuees.ToCSV()), "text/csv;charset=utf-8", fileName);
         }
@@ -52,9 +52,19 @@ namespace Gov.Jag.Embc.Public.Controllers
         {
             var evacuees     = await dataInterface.GetEvacueeReferralReportAsync(query);
             TimeZoneInfo pst = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
-            var today        = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, pst);
+            var today = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, GetPSTTimeZone());
             var fileName     = $"Referral_Export_{ today:yyyyMMdd_HHmmss}.csv";
             return File(Encoding.UTF8.GetBytes(evacuees.ToCSV()), "text/csv;charset=utf-8", fileName);
+        }
+
+        private string GetPSTTimeZone()
+        {
+            return Environment.OSVersion.Platform switch
+            {
+                PlatformID.Win32NT => "Pacific Standard Time",
+                PlatformID.Unix => "Canada/Pacific",
+                _ => throw new NotSupportedException()
+            };
         }
     }
 }
