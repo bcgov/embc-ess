@@ -241,16 +241,12 @@ export class LocalAuthorityEvacueeListComponent implements OnInit {
     }
   }
 
-  onExportClick() {
-    const query = this.createSearchQuery();
-
-    this.evacueeService.getEvacueesCSV(query).subscribe((data: { blob: Blob, fileName: string }) => {
-      saveAs(data.blob, data.fileName);
-    });
-  }
 
   onExportEvacuee() {
     const query = this.createSearchQuery();
+    this.evacueeService.getEvacueesCSV(query).subscribe((data: { blob: Blob, fileName: string }) => {
+      saveAs(data.blob, data.fileName);
+    });
   }
 
   onExportReferrals() {
