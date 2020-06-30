@@ -94,7 +94,6 @@ namespace Gov.Jag.Embc.Public.Utils
             // Ensure property is not one we ignore (limit, offset, sortby, etc.)
             if (result)
             {
-                
                     switch (propName.ToLower())
                 {
                     case "offset":
