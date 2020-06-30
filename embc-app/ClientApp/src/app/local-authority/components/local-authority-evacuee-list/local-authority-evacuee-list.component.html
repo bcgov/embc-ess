@@ -33,16 +33,16 @@
             <button type="button" class="btn btn-primary text-uppercase" (click)="search()">Search</button>
           </div>
         </div>
-        <a class="small" [routerLink]="" (click)="switchToAdvancedSearch()">advanced search</a>
+        <a class="small" [routerLink]="" (click)="switchToAdvancedSearch()">advanced search and reporting</a>
       </ng-container>
 
       <!--Advanced Search-->
       <ng-container *ngIf="advancedSearchMode">
-        <h1 class="blue-header header-text">Evacuee Details</h1>
+        <h1 class="blue-header header-text">ALL EVACUEES</h1>
         <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="advancedSearch()">
           <div class="feature-block">
             <div class="d-flex justify-content-between">
-              <h2 class="h5">Advanced Search</h2>
+              <h2 class="h5">Advanced Search & Reporting</h2>
               <button type="button" class="close" aria-label="Close" (click)="switchToBasicSearch()">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -62,14 +62,14 @@
                     <input type="text" class="form-control" id="asFirstname" formControlName="first_name">
                   </div>
                 </div>
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                   <label for="asDob" class="col-5 col-form-label">Date of Birth:</label>
                   <div class="col-7">
                     <input type="text" class="form-control" id="asDob" formControlName="dob" placeholder="YYYY-MM-DD"
                       [value]="this.dobString" [textMask]="{mask: dateMask, keepCharPositions: true}"
                       (blur)="this.updateDob()">
                   </div>
-                </div>
+                </div> -->
                 <div class="form-group row">
                   <label for="asTaskNo" class="col-5 col-form-label">Task #:</label>
                   <div class="col-7">
