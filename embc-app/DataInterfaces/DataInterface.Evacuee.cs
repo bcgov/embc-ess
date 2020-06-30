@@ -182,7 +182,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         }
 
 
-        public async Task<IEnumerable<EvacueeReportItem>> GetEvacueeReport(EvacueeSearchQueryParameters searchQuery)
+        public async Task<IEnumerable<EvacueeReportItem>> GetEvacueeReportAsync(EvacueeSearchQueryParameters searchQuery)
         {
             var query = await db.EvacueeReportItems
                 .FromSql(@"

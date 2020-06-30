@@ -95,7 +95,7 @@ export class EvacueeService extends RestService {
   public getEvacueeReferralCSV(props: EvacueeSearchQueryParameters = {}) : Observable<{blob: Blob, fileName: string }> {
     const params = this.toStringParams(props);
     params.format = 'CSV';
-    const response = this.http.get('/api/evacuees', {
+    const response = this.http.get('/api/evacuees/getevacueereferralreport', {
       observe: 'response',
       headers: this.headers,
       params,

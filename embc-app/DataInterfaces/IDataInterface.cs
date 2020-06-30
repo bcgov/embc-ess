@@ -136,8 +136,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<IEnumerable<EvacueeListItem>> GetEvacueesAsync(EvacueeSearchQueryParameters query);
 
         Task<IPagedResults<EvacueeListItem>> GetEvacueesPaginatedAsync(EvacueeSearchQueryParameters query);
-        //Task<IEnumerable<EvacueeReportItem>> GetEvacueeReportAsync(EvacueeSearchQueryParameters query);
-        Task<IEnumerable<Models.Db.EvacueeReportItem>> GetEvacueeReport(EvacueeSearchQueryParameters query);
+
+        Task<IEnumerable<Models.Db.EvacueeReportItem>> GetEvacueeReportAsync(EvacueeSearchQueryParameters query);
 
         #endregion Evacuee
     }
