@@ -78,7 +78,24 @@ export class EvacueeService extends RestService {
   public getEvacueesCSV(props: EvacueeSearchQueryParameters = {}): Observable<{ blob: Blob, fileName: string }> {
     const params = this.toStringParams(props);
     params.format = 'CSV';
-    const response = this.http.get('/api/evacuees', {
+    const response = this.http.get('/api/evacuees/getevacueereport', {
+      observe: 'response',
+      headers: this.headers,
+      params,
+      responseType: 'text'
+    })
+      .pipe(retry(3), catchError(this.handleError));
+
+    return response.pipe(
+      map((r) => this.generateFileFromResponse(r)),
+      catchError(this.handleError)
+    );
+  }
+
+  public getEvacueeReferralCSV(props: EvacueeSearchQueryParameters = {}) : Observable<{blob: Blob, fileName: string }> {
+    const params = this.toStringParams(props);
+    params.format = 'CSV';
+    const response = this.http.get('/api/evacuees/getevacueereferralreport', {
       observe: 'response',
       headers: this.headers,
       params,
