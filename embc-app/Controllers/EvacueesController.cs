@@ -59,12 +59,17 @@ namespace Gov.Jag.Embc.Public.Controllers
 
         private string GetPSTTimeZone()
         {
-            return Environment.OSVersion.Platform switch
+            switch (Environment.OSVersion.Platform)
             {
-                PlatformID.Win32NT => "Pacific Standard Time",
-                PlatformID.Unix => "Canada/Pacific",
-                _ => throw new NotSupportedException()
-            };
+                case PlatformID.Win32NT:
+                    return "Pacific Standard Time";
+                case PlatformID.Unix:
+                    return "Canada/Pacific";
+                default:
+                     throw new NotSupportedException();
+
+
+            }
         }
     }
 }
