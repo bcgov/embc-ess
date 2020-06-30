@@ -356,50 +356,50 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             var query = await db.ReferralReportItems
                 .FromSql(@"
                     select
-                    -- File Information
-                    ref.RegistrationId as 'ESS_File_Number',
-                    task.TaskNumber as 'Task_Number',
-                    task.TaskNumberStartDate as 'Task_Number_Start_Date',
-                    task.TaskNumberEndDate as 'Task_Number_End_Date',
-                    'File_Status' = CASE WHEN task.TaskNumber IS NULL THEN 'Not Finalized' ELSE 'Finalized' END,
-                    commTo.Name as 'Evacuated_To', 
-                    commFrom.Name as 'Evacuated_From',
-                    evareg.Facility as 'Facility_Name',
-                    -- Referral Referenced User
-                    (select FirstName + ' ' + LastName from Evacuees where RegistrationId = ref.RegistrationId and EvacueeTypeCode = 'HOH') as 'Person_responsible_for_purchasing_goods',
-                    -- Referral
-                    ref.Id as 'Referral_Number',
-                    ref.Type as 'Support_Type',
-                    LEFT(ref.Type, CASE WHEN charindex('_', ref.Type) = 0 THEN LEN(ref.Type) ELSE charindex('_', ref.Type) - 1 END) as 'Support_Type2',
-                    CASE WHEN charindex('_', ref.Type) = 0 THEN '' ELSE Substring (ref.Type, Charindex('_', ref.Type)+1, Len(ref.Type)) END as 'Sub_Support_Type',
-                    Substring (ref.Type, Charindex('_', ref.Type)+1, Len(ref.Type)) as 'Sub_Support_Type2',
-                    CONVERT(date, ref.ValidFrom) as 'Valid_From_Date',
-                    CONVERT(time, ref.ValidFrom) as 'Valid_From_Time',
-                    DATEDIFF(DAY, ref.ValidFrom, ref.ValidTo) as 'Number_Of_Days',
-                    CONVERT(date, ref.ValidTo) as 'Valid_To_Date',
-                    CONVERT(time, ref.ValidTo) as 'Valid_To_Time',
-                    (select count(1) from ReferralEvacuees where ReferralId = ref.id) as 'Number_of_Evacuees_for_Referral',
-                    ref.TotalAmount as 'Total_Amount',
-                    ISNULL(ref.NumberOfBreakfasts, 0) as 'Breakfasts_per_person',
-                    ISNULL(ref.NumberOfLunches, 0) as 'Lunches_per_person',
-                    ISNULL(ref.NumberOfDinners, 0) as 'Dinners_per_person',
-                    ISNULL(ref.NumberOfRooms, 0) as 'Number_of_Rooms',
-                    ISNULL(ref.NumberOfNights, 0) as 'Number_of_Nights',
-                    ref.TransportMode as 'Mode_of_Transportation',
-                    -- Referrals Supplier
-                    sup.Name as 'Supplier_Name',
-                    sup.Address as 'Supplier_Address',
-                    sup.City as 'City',
-                    sup.PostalCode as 'Postal_Code',
-                    sup.Telephone as 'Telephone',
-                    sup.Fax as 'Fax'
-                from Referrals ref
-                    INNER JOIN Suppliers sup on ref.SupplierId = sup.Id
-                    INNER JOIN EvacueeRegistrations evareg on ref.RegistrationId = evareg.EssFileNumber
-                    INNER JOIN IncidentTasks task on evareg.IncidentTaskId = task.Id
-                    LEFT OUTER JOIN Communities commFrom ON task.CommunityId = commFrom.Id
-                    LEFT OUTER JOIN Communities commTo ON evareg.HostCommunityId = commTo.Id
-                order by ref.RegistrationId desc
+                        -- File Information
+                        ref.RegistrationId as 'ESS_File_Number',
+                        task.TaskNumber as 'Task_Number',
+                        task.TaskNumberStartDate as 'Task_Number_Start_Date',
+                        task.TaskNumberEndDate as 'Task_Number_End_Date',
+                        'File_Status' = CASE WHEN task.TaskNumber IS NULL THEN 'Not Finalized' ELSE 'Finalized' END,
+                        commTo.Name as 'Evacuated_To', 
+                        commFrom.Name as 'Evacuated_From',
+                        evareg.Facility as 'Facility_Name',
+                        -- Referral Referenced User
+                        ref.Purchaser as 'Person_responsible_for_purchasing_goods',
+                        -- Referral
+                        ref.Id as 'Referral_Number',
+                        LEFT(ref.Type, CASE WHEN charindex('_', ref.Type) = 0 THEN LEN(ref.Type) ELSE charindex('_', ref.Type) - 1 END) as 'Support_Type',
+                        CASE WHEN charindex('_', ref.Type) = 0 THEN '' ELSE Substring (ref.Type, Charindex('_', ref.Type)+1, Len(ref.Type)) END as 'Sub_Support_Type',
+                        CONVERT(date, ref.ValidFrom) as 'Valid_From_Date',
+                        CONVERT(time, ref.ValidFrom) as 'Valid_From_Time',
+                        DATEDIFF(DAY, ref.ValidFrom, ref.ValidTo) as 'Number_Of_Days',
+                        CONVERT(date, ref.ValidTo) as 'Valid_To_Date',
+                        CONVERT(time, ref.ValidTo) as 'Valid_To_Time',
+                        (select count(1) from ReferralEvacuees where ReferralId = ref.id) as 'Number_Of_Evacuees_for_Referral',
+                        ref.TotalAmount as 'Total_Amount',
+                        ISNULL(ref.NumberOfBreakfasts, 0) as 'Breakfasts_per_person',
+                        ISNULL(ref.NumberOfLunches, 0) as 'Lunches_per_person',
+                        ISNULL(ref.NumberOfDinners, 0) as 'Dinners_per_person',
+                        ISNULL(ref.NumberOfRooms, 0) as 'Number_of_Rooms',
+                        CASE WHEN ref.Type = 'Lodging_Hotel' THEN ISNULL(ref.HotelLodgingReferral_NumberOfNights, 0)
+                            ELSE CASE WHEN ref.Type = 'Lodging_Group' THEN ISNULL(ref.GroupLodgingReferral_NumberOfNights, 0) END END as 'Number_of_Nights',
+                        ref.TransportMode as 'Mode_of_Transportation',
+                        -- Referrals Supplier
+                        sup.Name as 'Supplier_Name',
+                        sup.Address as 'Supplier_Address',
+                        sup.City as 'City',
+                        sup.PostalCode as 'Postal_Code',
+                        sup.Telephone as 'Telephone',
+                        sup.Fax as 'Fax'
+                    from Referrals ref
+                        INNER JOIN Suppliers sup on ref.SupplierId = sup.Id
+                        INNER JOIN EvacueeRegistrations evareg on ref.RegistrationId = evareg.EssFileNumber
+                        INNER JOIN IncidentTasks task on evareg.IncidentTaskId = task.Id
+                        LEFT OUTER JOIN Communities commFrom ON task.CommunityId = commFrom.Id
+                        LEFT OUTER JOIN Communities commTo ON evareg.HostCommunityId = commTo.Id
+                    where ref.Active = 1
+                    order by ref.RegistrationId desc
                 ")
                 .ToListAsync();
 
