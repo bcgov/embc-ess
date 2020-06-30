@@ -181,16 +181,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return query;
         }
 
-        //Task<IEnumerable<EvacueeReportItem>> GetEvacueeReportAsync(EvacueeSearchQueryParameters query)
-        //{
-        //    return await db.EvacueeReportItems
-        //        .FromSql(@"")
-        //        .ToList();
-        //}
 
-        public async Task<IEnumerable<EvacueeReportItem>> GetEvacueeReport(EvacueeSearchQueryParameters query)
+        public async Task<IEnumerable<EvacueeReportItem>> GetEvacueeReport(EvacueeSearchQueryParameters searchQuery)
         {
-            return await db.EvacueeReportItems
+            var query = await db.EvacueeReportItems
                 .FromSql(@"
                     SELECT
 	                -- File Information
@@ -260,6 +254,101 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 order by evac.RegistrationId desc
                 ")
                 .ToListAsync();
+            // Apply Where clauses
+            if (!string.IsNullOrWhiteSpace(searchQuery.LastName))
+            {
+                query = query.Where(e => e.Last_Name.Equals(searchQuery.LastName, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.FirstName))
+            {
+                query = query.Where(e => e.First_Name.Equals(searchQuery.FirstName, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.DateOfBirth))
+            {
+                // TryParse means that if it fails to parse a Date, the out value will be set to
+                // DateTime.MinVal (Midnight @ 0001 AD) Otherwise it throws an exception if it
+                // fails Letting it blow up might be more correct - Should we throw an exception
+                // if a bad date string is passed in?
+                DateTime.TryParse(searchQuery.DateOfBirth, out DateTime dob);
+                query = query.Where(e => e.Date_Of_Birth.Equals(dob)).ToList();
+            }
+
+            // Self Registration Date Range (between start and end)
+            if (!string.IsNullOrWhiteSpace(searchQuery.SelfRegistrationDateStart)
+                && !string.IsNullOrWhiteSpace(searchQuery.SelfRegistrationDateEnd))
+            {
+                DateTime.TryParse(searchQuery.SelfRegistrationDateStart, out DateTime start);
+                DateTime.TryParse(searchQuery.SelfRegistrationDateEnd, out DateTime end);
+                query = query.Where(e => e.Self_Registration_Date.HasValue &&
+                                    e.Self_Registration_Date > start && e.Self_Registration_Date < end)
+                    .ToList();
+            }
+            // Only start (all self registrations after start)
+            else if (!string.IsNullOrWhiteSpace(searchQuery.SelfRegistrationDateStart))
+            {
+                DateTime.TryParse(searchQuery.SelfRegistrationDateStart, out DateTime start);
+                query = query.Where(e => e.Self_Registration_Date.HasValue && e.Self_Registration_Date > start)
+                    .ToList();
+            }
+            // Only end (all self registrations before end)
+            else if (!string.IsNullOrWhiteSpace(searchQuery.SelfRegistrationDateEnd))
+            {
+                DateTime.TryParse(searchQuery.SelfRegistrationDateEnd, out DateTime end);
+                query = query.Where(e => e.Self_Registration_Date.HasValue && e.Self_Registration_Date < end)
+                    .ToList();
+            }
+
+            // Finalization date range (between start and end)
+            if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateStart)
+                && !string.IsNullOrWhiteSpace(searchQuery.FinalizationDateEnd))
+            {
+                DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
+                DateTime.TryParse(searchQuery.FinalizationDateEnd, out DateTime end);
+
+                query = query.Where(e => e.Registration_Completed_Date.HasValue &&
+                                    e.Registration_Completed_Date.Value > start && e.Registration_Completed_Date.Value < end)
+                    .ToList();
+            }
+            // Only start (all finalized evacuees after start)
+            else if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateStart))
+            {
+                DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
+                query = query.Where(e => e.Registration_Completed_Date.HasValue && e.Registration_Completed_Date.Value > start)
+                    .ToList();
+            }
+            // Only end (all finalized evacuees before end)
+            else if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateEnd))
+            {
+                DateTime.TryParse(searchQuery.FinalizationDateEnd, out DateTime end);
+                query = query.Where(e => e.Registration_Completed_Date.HasValue && e.Registration_Completed_Date < end)
+                    .ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber))
+            {
+                query = query.Where(e => e.Task_Number == searchQuery.IncidentTaskNumber).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.EssFileNumber))
+            {
+                query = query.Where(e => e.Ess_File_Number.ToString() == searchQuery.EssFileNumber).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom))
+            {
+                query = query.Where(e => e.Evacuated_From == searchQuery.EvacuatedFrom).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedTo))
+            {
+                query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedTo).ToList();
+            }
+        
+
+
+            return query;
         }
 
         private string MapSortToFields(string sort)
