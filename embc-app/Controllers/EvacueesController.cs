@@ -36,5 +36,14 @@ namespace Gov.Jag.Embc.Public.Controllers
                 return Json(evacuees);
             }
         }
+
+        [HttpGet("getevacueereport")]
+        public async Task<IActionResult> EvacueeReport([FromQuery] EvacueeSearchQueryParameters query)
+        {
+            var evacuees = await dataInterface.GetEvacueeReport(query);
+
+            var fileName = $"Evacuees_Export_{ DateTime.Now:yyyyMMdd_HHmmss}.csv";
+            return File(Encoding.UTF8.GetBytes(evacuees.ToCSV()), "text/csv;charset=utf-8", fileName);
+        }
     }
 }
