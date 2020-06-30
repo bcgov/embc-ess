@@ -1,4 +1,5 @@
 using AutoMapper.QueryableExtensions;
+using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
 using Gov.Jag.Embc.Public.ViewModels.Search;
@@ -177,6 +178,253 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     query = query.Where(e => e.IsFinalized == searchQuery.RegistrationCompleted.Value);
                 }
             }
+            return query;
+        }
+
+
+        public async Task<IEnumerable<EvacueeReportItem>> GetEvacueeReportAsync(EvacueeSearchQueryParameters searchQuery)
+        {
+            var query = await db.EvacueeReportItems
+                .FromSql(@"
+                    SELECT
+	                -- File Information
+	                evac.RegistrationId as 'ESS_File_Number',
+	                task.TaskNumber as 'Task_Number',
+	                task.TaskNumberStartDate as 'Task_Number_Start_Date',
+	                task.TaskNumberEndDate as 'Task_Number_End_Date',
+	                'File_Status' = CASE WHEN task.TaskNumber IS NULL THEN 'Not Finalized' ELSE 'Finalized' END,
+	                commTo.Name as 'Evacuated_To', --ISNULL(commTo.Name, task.RegionName) as 'Evacuated To',
+	                commFrom.Name as 'Evacuated_From', --ISNULL(commFrom.Name, task.RegionName) as 'Evacuated From',
+	                er.Facility as 'Facility_Name',
+	                CONVERT(date, er.SelfRegisteredDate) as 'Self_Registration_Date',
+	                CONVERT(time, er.SelfRegisteredDate) as 'Self_Registration_Time',
+	                CONVERT(date, er.RegistrationCompletionDate) as 'Registration_Completed_Date',
+	                CONVERT(time, er.RegistrationCompletionDate) as 'Registration_Completed_Time',
+	                -- Evacuee Information
+	                evac.LastName as 'Last_Name',
+	                evac.FirstName as 'First_Name',
+	                CAST(evac.Dob AS VARCHAR(10)) as 'Date_Of_Birth',
+	                evac.Gender as 'Gender',
+	                'Is_Head_Of_Household' = CASE WHEN evac.EvacueeTypeCode = 'HOH' THEN 'Y' ELSE 'N' END,
+	                -- Evacuee Contact Information
+	                erap.AddressLine1 as 'Address',
+	                commAddr.Name as 'Community',
+	                erap.Province as 'Province',
+	                erap.PostalCode as 'Postal_Code',
+	                countryAddr.Name as 'Country',
+	                er.PhoneNumber as 'Phone_Number',
+	                er.PhoneNumberAlt as 'Alternate_Phone_Number',
+	                er.Email as 'Email_Address',
+	                ISNULL(eram.AddressLine1, erap.AddressLine1) as 'Mailing_Address',
+	                ISNULL(commAddrM.Name, commAddr.Name) as 'Mailing_Community',
+	                ISNULL(eram.Province, erap.Province) as 'Mailing_Province',
+	                ISNULL(eram.PostalCode, erap.PostalCode) as 'Mailing_Postal_Code',
+	                ISNULL(countryAddrM.Name, countryAddr.Name) as 'Mailing_Country',
+	                -- Questions and Services
+	                er.InsuranceCode as 'Insurance',
+	                CASE WHEN er.HasPets = 1 THEN 'Y' ELSE 'N' END as 'Pets',
+	                CASE WHEN er.HasInquiryReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Inquiry',
+	                CASE WHEN er.HasHealthServicesReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Health_Services',
+	                CASE WHEN er.HasFirstAidReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_First_Aid',
+	                CASE WHEN er.HasPersonalServicesReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Personal_Services',
+	                CASE WHEN er.HasChildCareReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Child_Care',
+	                CASE WHEN er.HasPetCareReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Pet_Care'
+                FROM
+                    Evacuees evac
+                INNER JOIN
+                    EvacueeRegistrations er ON evac.RegistrationId = er.EssFileNumber
+                LEFT OUTER JOIN
+                    IncidentTasks task ON er.IncidentTaskId = task.Id
+                LEFT OUTER JOIN
+                    Communities commFrom ON task.CommunityId = commFrom.Id
+                LEFT OUTER JOIN
+                    Communities commTo ON er.HostCommunityId = commTo.Id
+                LEFT OUTER JOIN
+                    EvacueeRegistrationAddresses erap ON evac.RegistrationId = erap.RegistrationId AND erap.AddressTypeCode = 'Primary'
+                LEFT OUTER JOIN
+                    Communities commAddr ON commAddr.Id = erap.CommunityId
+                LEFT OUTER JOIN
+                    Countries countryAddr ON countryAddr.CountryCode = erap.CountryCode
+                LEFT OUTER JOIN
+                    EvacueeRegistrationAddresses eram ON evac.RegistrationId = eram.RegistrationId AND eram.AddressTypeCode = 'Mailing'
+                LEFT OUTER JOIN
+                    Communities commAddrM ON commAddrM.Id = eram.CommunityId
+                LEFT OUTER JOIN
+                    Countries countryAddrM ON countryAddrM.CountryCode = eram.CountryCode
+                order by evac.RegistrationId desc
+                ")
+                .ToListAsync();
+            // Apply Where clauses
+            if (!string.IsNullOrWhiteSpace(searchQuery.LastName))
+            {
+                query = query.Where(e => e.Last_Name.Equals(searchQuery.LastName, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.FirstName))
+            {
+                query = query.Where(e => e.First_Name.Equals(searchQuery.FirstName, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.DateOfBirth))
+            {
+                // TryParse means that if it fails to parse a Date, the out value will be set to
+                // DateTime.MinVal (Midnight @ 0001 AD) Otherwise it throws an exception if it
+                // fails Letting it blow up might be more correct - Should we throw an exception
+                // if a bad date string is passed in?
+                DateTime.TryParse(searchQuery.DateOfBirth, out DateTime dob);
+                query = query.Where(e => e.Date_Of_Birth.Equals(dob)).ToList();
+            }
+
+            // Self Registration Date Range (between start and end)
+            if (!string.IsNullOrWhiteSpace(searchQuery.SelfRegistrationDateStart)
+                && !string.IsNullOrWhiteSpace(searchQuery.SelfRegistrationDateEnd))
+            {
+                DateTime.TryParse(searchQuery.SelfRegistrationDateStart, out DateTime start);
+                DateTime.TryParse(searchQuery.SelfRegistrationDateEnd, out DateTime end);
+                query = query.Where(e => e.Self_Registration_Date.HasValue &&
+                                    e.Self_Registration_Date > start && e.Self_Registration_Date < end)
+                    .ToList();
+            }
+            // Only start (all self registrations after start)
+            else if (!string.IsNullOrWhiteSpace(searchQuery.SelfRegistrationDateStart))
+            {
+                DateTime.TryParse(searchQuery.SelfRegistrationDateStart, out DateTime start);
+                query = query.Where(e => e.Self_Registration_Date.HasValue && e.Self_Registration_Date > start)
+                    .ToList();
+            }
+            // Only end (all self registrations before end)
+            else if (!string.IsNullOrWhiteSpace(searchQuery.SelfRegistrationDateEnd))
+            {
+                DateTime.TryParse(searchQuery.SelfRegistrationDateEnd, out DateTime end);
+                query = query.Where(e => e.Self_Registration_Date.HasValue && e.Self_Registration_Date < end)
+                    .ToList();
+            }
+
+            // Finalization date range (between start and end)
+            if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateStart)
+                && !string.IsNullOrWhiteSpace(searchQuery.FinalizationDateEnd))
+            {
+                DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
+                DateTime.TryParse(searchQuery.FinalizationDateEnd, out DateTime end);
+
+                query = query.Where(e => e.Registration_Completed_Date.HasValue &&
+                                    e.Registration_Completed_Date.Value > start && e.Registration_Completed_Date.Value < end)
+                    .ToList();
+            }
+            // Only start (all finalized evacuees after start)
+            else if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateStart))
+            {
+                DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
+                query = query.Where(e => e.Registration_Completed_Date.HasValue && e.Registration_Completed_Date.Value > start)
+                    .ToList();
+            }
+            // Only end (all finalized evacuees before end)
+            else if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateEnd))
+            {
+                DateTime.TryParse(searchQuery.FinalizationDateEnd, out DateTime end);
+                query = query.Where(e => e.Registration_Completed_Date.HasValue && e.Registration_Completed_Date < end)
+                    .ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber))
+            {
+                query = query.Where(e => e.Task_Number == searchQuery.IncidentTaskNumber).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.EssFileNumber))
+            {
+                query = query.Where(e => e.Ess_File_Number.ToString() == searchQuery.EssFileNumber).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom))
+            {
+                query = query.Where(e => e.Evacuated_From == searchQuery.EvacuatedFrom).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedTo))
+            {
+                query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedTo).ToList();
+            }
+        
+
+
+            return query;
+        }
+
+        public async Task<IEnumerable<Models.Db.ReferralReportItem>> GetEvacueeReferralReportAsync(EvacueeSearchQueryParameters searchQuery)
+        {
+            var query = await db.ReferralReportItems
+                .FromSql(@"
+                    select
+                    -- File Information
+                    ref.RegistrationId as 'ESS_File_Number',
+                    task.TaskNumber as 'Task_Number',
+                    task.TaskNumberStartDate as 'Task_Number_Start_Date',
+                    task.TaskNumberEndDate as 'Task_Number_End_Date',
+                    'File_Status' = CASE WHEN task.TaskNumber IS NULL THEN 'Not Finalized' ELSE 'Finalized' END,
+                    commTo.Name as 'Evacuated_To', 
+                    commFrom.Name as 'Evacuated_From',
+                    evareg.Facility as 'Facility_Name',
+                    -- Referral Referenced User
+                    (select FirstName + ' ' + LastName from Evacuees where RegistrationId = ref.RegistrationId and EvacueeTypeCode = 'HOH') as 'Person_responsible_for_purchasing_goods',
+                    -- Referral
+                    ref.Id as 'Referral_Number',
+                    ref.Type as 'Support_Type',
+                    LEFT(ref.Type, CASE WHEN charindex('_', ref.Type) = 0 THEN LEN(ref.Type) ELSE charindex('_', ref.Type) - 1 END) as 'Support_Type2',
+                    CASE WHEN charindex('_', ref.Type) = 0 THEN '' ELSE Substring (ref.Type, Charindex('_', ref.Type)+1, Len(ref.Type)) END as 'Sub_Support_Type',
+                    Substring (ref.Type, Charindex('_', ref.Type)+1, Len(ref.Type)) as 'Sub_Support_Type2',
+                    CONVERT(date, ref.ValidFrom) as 'Valid_From_Date',
+                    CONVERT(time, ref.ValidFrom) as 'Valid_From_Time',
+                    DATEDIFF(DAY, ref.ValidFrom, ref.ValidTo) as 'Number_Of_Days',
+                    CONVERT(date, ref.ValidTo) as 'Valid_To_Date',
+                    CONVERT(time, ref.ValidTo) as 'Valid_To_Time',
+                    (select count(1) from ReferralEvacuees where ReferralId = ref.id) as 'Number_of_Evacuees_for_Referral',
+                    ref.TotalAmount as 'Total_Amount',
+                    ISNULL(ref.NumberOfBreakfasts, 0) as 'Breakfasts_per_person',
+                    ISNULL(ref.NumberOfLunches, 0) as 'Lunches_per_person',
+                    ISNULL(ref.NumberOfDinners, 0) as 'Dinners_per_person',
+                    ISNULL(ref.NumberOfRooms, 0) as 'Number_of_Rooms',
+                    ISNULL(ref.NumberOfNights, 0) as 'Number_of_Nights',
+                    ref.TransportMode as 'Mode_of_Transportation',
+                    -- Referrals Supplier
+                    sup.Name as 'Supplier_Name',
+                    sup.Address as 'Supplier_Address',
+                    sup.City as 'City',
+                    sup.PostalCode as 'Postal_Code',
+                    sup.Telephone as 'Telephone',
+                    sup.Fax as 'Fax'
+                from Referrals ref
+                    INNER JOIN Suppliers sup on ref.SupplierId = sup.Id
+                    INNER JOIN EvacueeRegistrations evareg on ref.RegistrationId = evareg.EssFileNumber
+                    INNER JOIN IncidentTasks task on evareg.IncidentTaskId = task.Id
+                    LEFT OUTER JOIN Communities commFrom ON task.CommunityId = commFrom.Id
+                    LEFT OUTER JOIN Communities commTo ON evareg.HostCommunityId = commTo.Id
+                order by ref.RegistrationId desc
+                ")
+                .ToListAsync();
+
+            // Apply where clauses
+            if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber))
+            {
+                query = query.Where(e => e.Task_Number == searchQuery.IncidentTaskNumber).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.EssFileNumber))
+            {
+                query = query.Where(e => e.Ess_File_Number.ToString() == searchQuery.EssFileNumber).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom))
+            {
+                query = query.Where(e => e.Evacuated_From == searchQuery.EvacuatedFrom).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedTo))
+            {
+                query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedTo).ToList();
+            }
+
+
             return query;
         }
 

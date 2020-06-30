@@ -1,3 +1,4 @@
+//using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Services.Registrations;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
@@ -135,6 +136,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         Task<IEnumerable<EvacueeListItem>> GetEvacueesAsync(EvacueeSearchQueryParameters query);
 
         Task<IPagedResults<EvacueeListItem>> GetEvacueesPaginatedAsync(EvacueeSearchQueryParameters query);
+
+        Task<IEnumerable<Models.Db.EvacueeReportItem>> GetEvacueeReportAsync(EvacueeSearchQueryParameters query);
+
+        Task<IEnumerable<Models.Db.ReferralReportItem>> GetEvacueeReferralReportAsync(EvacueeSearchQueryParameters query);
 
         #endregion Evacuee
     }
