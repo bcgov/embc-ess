@@ -41,7 +41,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         public async Task<IActionResult> EvacueeReport([FromQuery] EvacueeSearchQueryParameters query)
         {
             var evacuees     = await dataInterface.GetEvacueeReportAsync(query);
-            TimeZoneInfo pst = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
             var today = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, GetPSTTimeZone());
             var fileName     = $"Evacuees_Export_{ today:yyyyMMdd_HHmmss}.csv";
             return File(Encoding.UTF8.GetBytes(evacuees.ToCSV()), "text/csv;charset=utf-8", fileName);
@@ -51,7 +50,6 @@ namespace Gov.Jag.Embc.Public.Controllers
         public async Task<IActionResult> EvacueeReferralReport([FromQuery] EvacueeSearchQueryParameters query)
         {
             var evacuees     = await dataInterface.GetEvacueeReferralReportAsync(query);
-            TimeZoneInfo pst = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
             var today = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, GetPSTTimeZone());
             var fileName     = $"Referral_Export_{ today:yyyyMMdd_HHmmss}.csv";
             return File(Encoding.UTF8.GetBytes(evacuees.ToCSV()), "text/csv;charset=utf-8", fileName);
