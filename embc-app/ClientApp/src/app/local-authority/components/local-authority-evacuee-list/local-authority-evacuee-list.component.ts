@@ -32,6 +32,7 @@ export class LocalAuthorityEvacueeListComponent implements OnInit {
   sort = '-registrationId'; // how do we sort the list query param
   path: string = null; // the base path for routing
   isAdmin = false; // flag that controls whether to display the Superuser or Admin text
+  exportValidationError = false;
   readonly dateMask = [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]; // yyyy-mm-dd
   dobString: string = null;
   // for R1, advanced search mode is the only mode
@@ -243,10 +244,17 @@ export class LocalAuthorityEvacueeListComponent implements OnInit {
 
 
   onExportEvacuee() {
+    this.exportValidationError = false;
     const query = this.createSearchQuery();
-    this.evacueeService.getEvacueesCSV(query).subscribe((data: { blob: Blob, fileName: string }) => {
-      saveAs(data.blob, data.fileName);
-    });
+    // superusers need to enter a task number or evacuated from
+    this.exportValidationError = !this.isAdmin && query.task_no == null && query.evacuated_to == null; // to is from
+    
+    if (!this.exportValidationError) {
+      this.evacueeService.getEvacueesCSV(query).subscribe((data: { blob: Blob, fileName: string }) => {
+        saveAs(data.blob, data.fileName);
+      });
+    }
+
   }
 
   onExportReferrals() {
