@@ -264,7 +264,7 @@ export class LocalAuthorityEvacueeListComponent implements OnInit {
     this.exportValidationError = !this.isAdmin && query.task_no == null && query.evacuated_to == null; // to is from
     
     if (!this.exportValidationError) {
-      this.evacueeService.getEvacueesCSV(query).subscribe((data: { blob: Blob, fileName: string }) => {
+      this.evacueeService.getEvacueeReferralCSV(query).subscribe((data: { blob: Blob, fileName: string }) => {
         saveAs(data.blob, data.fileName);
       });
     }

@@ -139,6 +139,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         Task<IEnumerable<Models.Db.EvacueeReportItem>> GetEvacueeReportAsync(EvacueeSearchQueryParameters query);
 
+        Task<IEnumerable<Models.Db.ReferralReportItem>> GetEvacueeReferralReportAsync(EvacueeSearchQueryParameters query);
+
         #endregion Evacuee
     }
 }

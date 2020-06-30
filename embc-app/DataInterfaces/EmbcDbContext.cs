@@ -96,6 +96,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<ViewEvacuee> ViewEvacuees { get; set; }
         public DbSet<EvacueeReportItem> EvacueeReportItems { get; set;}
+        public DbSet<ReferralReportItem> ReferralReportItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -197,6 +198,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             modelBuilder.Entity<EvacueeReportItem>()
                 .HasKey(e => e.Ess_File_Number);
+
+            modelBuilder.Entity<ReferralReportItem>()
+                .HasKey(e => e.Referral_Number);
 
             modelBuilder.AddShadowProperties();
         }

@@ -49,7 +49,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet("getevacueereferralreport")]
         public async Task<IActionResult> EvacueeReferralReport([FromQuery] EvacueeSearchQueryParameters query)
         {
-            var evacuees = await dataInterface.GetEvacueeReportAsync(query);
+            var evacuees = await dataInterface.GetEvacueeReferralReportAsync(query);
 
             var fileName = $"Referral_Export_{ DateTime.Now:yyyyMMdd_HHmmss}.csv";
             return File(Encoding.UTF8.GetBytes(evacuees.ToCSV()), "text/csv;charset=utf-8", fileName);
