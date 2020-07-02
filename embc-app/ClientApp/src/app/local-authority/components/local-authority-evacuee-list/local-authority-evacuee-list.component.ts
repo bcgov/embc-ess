@@ -247,21 +247,24 @@ export class LocalAuthorityEvacueeListComponent implements OnInit {
     this.exportValidationError = false;
     const query = this.createSearchQuery();
     // superusers need to enter a task number or evacuated from
-    this.exportValidationError = !this.isAdmin && query.task_no == null && query.evacuated_to == null; // to is from
+    this.exportValidationError = !this.isAdmin && this.isNullOrEmpty(query.task_no) && this.isNullOrEmpty(query.evacuated_to); // to is from
     
     if (!this.exportValidationError) {
       this.evacueeService.getEvacueesCSV(query).subscribe((data: { blob: Blob, fileName: string }) => {
         saveAs(data.blob, data.fileName);
       });
     }
+  }
 
+  private isNullOrEmpty(val:string) : boolean {
+    return val == null || val == "";
   }
 
   onExportReferrals() {
     this.exportValidationError = false;
     const query = this.createSearchQuery();
     // superusers need to enter a task number or evacuated from
-    this.exportValidationError = !this.isAdmin && query.task_no == null && query.evacuated_to == null; // to is from
+    this.exportValidationError = !this.isAdmin && this.isNullOrEmpty(query.task_no) && this.isNullOrEmpty(query.evacuated_to); // to is from
     
     if (!this.exportValidationError) {
       this.evacueeService.getEvacueeReferralCSV(query).subscribe((data: { blob: Blob, fileName: string }) => {
