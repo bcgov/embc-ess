@@ -1,3 +1,4 @@
+using Gov.Jag.Embc.Public.ViewModels.Search;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -51,5 +52,68 @@ namespace Gov.Jag.Embc.Public.Utils
                 return sw.ToString();
             }
         }
+
+        public static string ToCSV<T>(this IEnumerable<T> list, EvacueeSearchQueryParameters searchParams)
+        {
+            using (var sw = new StringWriter())
+            {
+                AddSearchParams(sw, searchParams);
+                CreateHeader(list, sw);
+                CreateRows(list, sw);
+                return sw.ToString();
+            }
+        }
+
+        private static void AddSearchParams(StringWriter sw, EvacueeSearchQueryParameters searchParams)
+        {
+            bool addedSearchHeader = false;
+            object prop = null;
+            PropertyInfo[] properties = typeof(EvacueeSearchQueryParameters).GetProperties();
+            for (int i = 0; i < properties.Length - 1; i++)
+            {
+                prop = properties[i].GetValue(searchParams);
+                if (IsValidProp(prop, properties[i].Name))
+                {
+                    if (!addedSearchHeader)
+                    {
+                        sw.Write("Search Parameters");
+                        sw.Write(sw.NewLine);
+                        addedSearchHeader = true;
+                    }
+                    sw.Write(properties[i].Name + ":" + ",");
+                    sw.Write(properties[i].GetValue(searchParams).ToString());
+                    sw.Write(sw.NewLine);
+                }
+            }
+        }
+
+        private static bool IsValidProp(object prop, string propName)
+        {
+            // Ensure property is not null
+            bool result = prop != null && !string.IsNullOrEmpty(prop.ToString());
+            // Ensure property is not one we ignore (limit, offset, sortby, etc.)
+            if (result)
+            {
+                    switch (propName.ToLower())
+                {
+                    case "offset":
+                        result = false;
+                        break;
+                    case "limit":
+                        result = false;
+                        break;
+                    case "sortby":
+                        result = false;
+                        break;
+                    default:
+                        result = true;
+                        break;
+                }
+            }
+            return result;
+        }
+           
     }
 }
+    
+
