@@ -56,6 +56,11 @@ namespace Gov.Jag.Embc.Public
                         .UseLoggerFactory(loggerFactory)
                         .UseSqlServer(DatabaseTools.GetConnectionString(configuration))
                         )
+                .AddDbContext<AdminEmbcDbContext>(
+                    options => options
+                        .UseLoggerFactory(loggerFactory)
+                        .UseSqlServer(DatabaseTools.GetSaConnectionString(configuration))
+                        )
                 // CORS policy
                 .AddCors(opts =>
                 {
@@ -231,9 +236,12 @@ namespace Gov.Jag.Embc.Public
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env/*, IAntiforgery antiForgery*/)
         {
-            // DATABASE SETUP
-            SetupDatabase(env);
-
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                // DATABASE SETUP
+                var db = scope.ServiceProvider.GetRequiredService<AdminEmbcDbContext>();
+                SetupDatabase(env, db);
+            }
             if (!env.IsProduction())
             {
                 app
@@ -360,13 +368,9 @@ namespace Gov.Jag.Embc.Public
                 });
         }
 
-        private void SetupDatabase(IHostingEnvironment env)
+        private void SetupDatabase(IHostingEnvironment env, AdminEmbcDbContext adminCtx)
         {
             log.LogInformation("Fetching the application's database context ...");
-
-            var adminCtx = new EmbcDbContext(new DbContextOptionsBuilder<EmbcDbContext>()
-                .UseLoggerFactory(loggerFactory)
-                .UseSqlServer(DatabaseTools.GetSaConnectionString(configuration)).Options);
 
             if (configuration.DbFullRefresh())
             {
