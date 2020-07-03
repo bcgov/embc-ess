@@ -328,14 +328,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 query = query.Where(e => e.Ess_File_Number.ToString() == searchQuery.EssFileNumber);
             }
 
-            if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom))
-            {
-                query = query.Where(e => e.Evacuated_From == searchQuery.EvacuatedFrom);
-            }
-
             if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedTo))
             {
-                query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedTo);
+                query = query.Where(e => e.Evacuated_From == searchQuery.EvacuatedTo);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom))
+            {
+                query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedFrom);
             }
         
 
@@ -404,14 +404,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 query = query.Where(e => e.Ess_File_Number.ToString() == searchQuery.EssFileNumber);
             }
 
-            if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom))
-            {
-                query = query.Where(e => e.Evacuated_From == searchQuery.EvacuatedFrom);
-            }
-
             if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedTo))
             {
-                query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedTo);
+                query = query.Where(e => e.Evacuated_From == searchQuery.EvacuatedTo);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom))
+            {
+                query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedFrom);
             }
 
 
