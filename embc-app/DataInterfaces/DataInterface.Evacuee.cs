@@ -273,50 +273,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 query = query.Where(e => DateTime.Parse(e.Date_Of_Birth).Equals(dob));
             }
 
-            // Self Registration Date Range (between start and end)
-            if (!string.IsNullOrWhiteSpace(searchQuery.SelfRegistrationDateStart)
-                && !string.IsNullOrWhiteSpace(searchQuery.SelfRegistrationDateEnd))
-            {
-                DateTime.TryParse(searchQuery.SelfRegistrationDateStart, out DateTime start);
-                DateTime.TryParse(searchQuery.SelfRegistrationDateEnd, out DateTime end);
-                query = query.Where(e => e.Self_Registration_Date.HasValue &&
-                                    e.Self_Registration_Date > start && e.Self_Registration_Date < end);
-            }
-            // Only start (all self registrations after start)
-            else if (!string.IsNullOrWhiteSpace(searchQuery.SelfRegistrationDateStart))
-            {
-                DateTime.TryParse(searchQuery.SelfRegistrationDateStart, out DateTime start);
-                query = query.Where(e => e.Self_Registration_Date.HasValue && e.Self_Registration_Date > start);
-            }
-            // Only end (all self registrations before end)
-            else if (!string.IsNullOrWhiteSpace(searchQuery.SelfRegistrationDateEnd))
-            {
-                DateTime.TryParse(searchQuery.SelfRegistrationDateEnd, out DateTime end);
-                query = query.Where(e => e.Self_Registration_Date.HasValue && e.Self_Registration_Date < end);
-            }
-
-            // Finalization date range (between start and end)
-            if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateStart)
-                && !string.IsNullOrWhiteSpace(searchQuery.FinalizationDateEnd))
-            {
-                DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
-                DateTime.TryParse(searchQuery.FinalizationDateEnd, out DateTime end);
-
-                query = query.Where(e => e.Registration_Completed_Date.HasValue &&
-                                    e.Registration_Completed_Date.Value > start && e.Registration_Completed_Date.Value < end);
-            }
-            // Only start (all finalized evacuees after start)
-            else if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateStart))
-            {
-                DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
-                query = query.Where(e => e.Registration_Completed_Date.HasValue && e.Registration_Completed_Date.Value > start);
-            }
-            // Only end (all finalized evacuees before end)
-            else if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateEnd))
-            {
-                DateTime.TryParse(searchQuery.FinalizationDateEnd, out DateTime end);
-                query = query.Where(e => e.Registration_Completed_Date.HasValue && e.Registration_Completed_Date < end);
-            }
 
             if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber))
             {
