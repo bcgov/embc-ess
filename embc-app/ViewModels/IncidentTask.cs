@@ -35,10 +35,15 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public bool? Active { get; set; }
         public int? TotalAssociatedEvacuees { get; set; }
         public Region Region { get; set; }
+
         // Host Community
         public Community Community { get; set; }
+
         public DateTime? StartDate { get; set; }
         public DateTime? TaskNumberStartDate { get; set; }
         public DateTime? TaskNumberEndDate { get; set; }
+
+        //Task is active if there is no end date or end date is in the future
+        public bool TaskActive => !TaskNumberEndDate.HasValue || TaskNumberEndDate.Value > DateTime.UtcNow;
     }
 }

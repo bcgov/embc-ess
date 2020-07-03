@@ -1,5 +1,6 @@
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
+using Gov.Jag.Embc.Public.ViewModels.Search;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -14,21 +15,28 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .Include(t => t.Community)
                     .ThenInclude(d => d.Region);
 
-        public async Task<IPagedResults<IncidentTask>> GetIncidentTasksAsync(SearchQueryParameters searchQuery)
+        public async Task<IPagedResults<IncidentTask>> GetIncidentTasksAsync(IncidentTaskSearchQueryParameters searchQuery)
         {
             var items = await IncidentTasks
                 .GroupJoin(db.EvacueeRegistrations.Select(e => new { e.IncidentTaskId, evacueeCount = e.Evacuees.Count() }),
                     incident => incident.Id,
                     summary => summary.IncidentTaskId,
-                    (incident, summary) => new { incident = incident, evacueeCount = summary.Sum(s => s.evacueeCount) }
+                    (incident, summary) => new
+                    {
+                        incident = incident,
+                        evacueeCount = summary.Sum(s => s.evacueeCount),
+                    }
                 )
                 .Where(t => !searchQuery.HasQuery() || t.incident.Community.Id == Guid.Parse(searchQuery.Query))
                 .Where(t => searchQuery.Active == t.incident.Active)
                 .Sort(searchQuery.SortBy ?? "incident.id")
                 .ToArrayAsync();
 
-            return new PaginatedList<IncidentTask>(items.Select(i => mapper.Map<IncidentTask>(i.incident, opts => opts.Items["EvacueeCount"] = i.evacueeCount)),
-                searchQuery.Offset, searchQuery.Limit);
+            var tasks = items
+                .Select(i => mapper.Map<IncidentTask>(i.incident, opts => opts.Items["EvacueeCount"] = i.evacueeCount))
+                .Where(t => !searchQuery.ActiveTasks.HasValue || t.TaskActive == searchQuery.ActiveTasks.Value);
+
+            return new PaginatedList<IncidentTask>(tasks, searchQuery.Offset, searchQuery.Limit);
         }
 
         public async Task<IncidentTask> GetIncidentTaskAsync(string id)
@@ -53,40 +61,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         .ToArrayAsync();
 
             return new PaginatedList<IncidentTask>(items.Select(i => mapper.Map<IncidentTask>(i)), offset, limit);
-        }
-
-        public async Task<PaginationMetadata> GetOpenIncidentTasksMetadataAsync(int limit = 100, int offset = 0)
-        {
-            DateTime now = DateTime.UtcNow;
-            int count = await IncidentTasks
-                        .Where(i => i.Active && i.TaskNumberEndDate.HasValue && i.TaskNumberEndDate > now)
-                        .CountAsync();
-            // Build the meta data
-            var result = new PaginationMetadata()
-            {
-                CurrentPage = (int)Math.Floor((decimal)offset / limit) + 1,
-                PageSize = limit,
-                TotalCount = count,
-                TotalPages = (int)Math.Ceiling((decimal)count / limit)
-            };
-            return result;
-        }
-
-        public async Task<PaginationMetadata> GetClosedIncidentTasksMetadataAsync(int limit = 100, int offset = 0)
-        {
-            DateTime now = DateTime.UtcNow;
-            int count = await IncidentTasks
-                        .Where(i => i.Active && i.TaskNumberEndDate.HasValue && i.TaskNumberEndDate < now)
-                        .CountAsync();
-            // Build the meta data
-            var result = new PaginationMetadata()
-            {
-                CurrentPage = (int)Math.Floor((decimal)offset / limit) + 1,
-                PageSize = limit,
-                TotalCount = count,
-                TotalPages = (int)Math.Ceiling((decimal)count / limit)
-            };
-            return result;
         }
 
         public async Task<IncidentTask> GetIncidentTaskByTaskNumbetAsync(string taskNumber)

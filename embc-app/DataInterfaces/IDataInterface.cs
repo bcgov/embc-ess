@@ -31,15 +31,11 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         #region Incident task
 
-        Task<IPagedResults<IncidentTask>> GetIncidentTasksAsync(SearchQueryParameters searchQuery);
+        Task<IPagedResults<IncidentTask>> GetIncidentTasksAsync(IncidentTaskSearchQueryParameters searchQuery);
 
         Task<IncidentTask> GetIncidentTaskAsync(string id);
 
         Task<IPagedResults<IncidentTask>> GetOpenIncidentTasksAsync(int limit = 100, int offset = 0);
-
-        Task<PaginationMetadata> GetOpenIncidentTasksMetadataAsync(int limit = 100, int offset = 0);
-
-        Task<PaginationMetadata> GetClosedIncidentTasksMetadataAsync(int limit = 100, int offset = 0);
 
         Task<IncidentTask> GetIncidentTaskByTaskNumbetAsync(string taskNumber);
 
