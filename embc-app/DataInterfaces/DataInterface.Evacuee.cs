@@ -193,8 +193,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 	                task.TaskNumberStartDate as 'Task_Number_Start_Date',
 	                task.TaskNumberEndDate as 'Task_Number_End_Date',
 	                'File_Status' = CASE WHEN task.TaskNumber IS NULL THEN 'Not Finalized' ELSE 'Finalized' END,
-	                commTo.Name as 'Evacuated_To', --ISNULL(commTo.Name, task.RegionName) as 'Evacuated To',
-	                commFrom.Name as 'Evacuated_From', --ISNULL(commFrom.Name, task.RegionName) as 'Evacuated From',
+	                commFrom.Name as 'Evacuated_To', -- THIS IS BACKWARDS FOR NOW TO MATCH CLIENT
+                    commTo.Name as 'Evacuated_From', -- THIS IS BACKWARDS FOR NOW TO MATCH CLIENT
 	                er.Facility as 'Facility_Name',
 	                CONVERT(date, er.SelfRegisteredDate) as 'Self_Registration_Date',
 	                CONVERT(time, er.SelfRegisteredDate) as 'Self_Registration_Time',
@@ -362,8 +362,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         task.TaskNumberStartDate as 'Task_Number_Start_Date',
                         task.TaskNumberEndDate as 'Task_Number_End_Date',
                         'File_Status' = CASE WHEN task.TaskNumber IS NULL THEN 'Not Finalized' ELSE 'Finalized' END,
-                        commTo.Name as 'Evacuated_To', 
-                        commFrom.Name as 'Evacuated_From',
+                        commFrom.Name as 'Evacuated_To', -- THIS IS BACKWARDS FOR NOW TO MATCH CLIENT
+                        commTo.Name as 'Evacuated_From', -- THIS IS BACKWARDS FOR NOW TO MATCH CLIENT
                         evareg.Facility as 'Facility_Name',
                         -- Referral Referenced User
                         ref.Purchaser as 'Person_responsible_for_purchasing_goods',
