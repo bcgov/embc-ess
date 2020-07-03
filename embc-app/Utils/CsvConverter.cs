@@ -80,7 +80,18 @@ namespace Gov.Jag.Embc.Public.Utils
                         sw.Write(sw.NewLine);
                         addedSearchHeader = true;
                     }
-                    sw.Write(properties[i].Name + ":" + ",");
+                    if (properties[i].Name.ToLower() == "evacuatedfrom")
+                    {
+                        sw.Write("Evacuated_To:,");
+                    }
+                    else if (properties[i].Name.ToLower() == "evacuatedto")
+                    {
+                        sw.Write("Evacuated_From:,");
+                    }
+                    else
+                    {
+                        sw.Write(properties[i].Name + ":" + ",");
+                    }
                     sw.Write(properties[i].GetValue(searchParams).ToString());
                     sw.Write(sw.NewLine);
                 }
