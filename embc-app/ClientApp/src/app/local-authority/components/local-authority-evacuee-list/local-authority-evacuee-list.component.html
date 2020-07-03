@@ -247,8 +247,8 @@
         <td>{{rowItem.firstName}}</td>
         <td>{{rowItem.incidentTaskNumber}}</td>
         <td>{{rowItem.registrationId}}</td>
-        <td>{{rowItem.evacuatedTo}}</td>
         <!--These are coming back reversed from the server, even though the mapping seems correct-->
+        <td>{{rowItem.evacuatedTo}}</td>
         <td>{{rowItem.evacuatedFrom}}</td>
         <td>
           <a href="javascript:void(0)" *ngIf="!rowItem.isFinalized" (click)="edit(rowItem.registrationId)">Finalize</a>

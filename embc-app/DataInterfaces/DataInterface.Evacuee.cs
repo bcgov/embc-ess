@@ -184,7 +184,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<IEnumerable<EvacueeReportItem>> GetEvacueeReportAsync(EvacueeSearchQueryParameters searchQuery)
         {
-            var query = await db.EvacueeReportItems
+            var query = db.EvacueeReportItems
                 .FromSql(@"
                     SELECT
 	                -- File Information
@@ -193,8 +193,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 	                task.TaskNumberStartDate as 'Task_Number_Start_Date',
 	                task.TaskNumberEndDate as 'Task_Number_End_Date',
 	                'File_Status' = CASE WHEN task.TaskNumber IS NULL THEN 'Not Finalized' ELSE 'Finalized' END,
-	                commTo.Name as 'Evacuated_To', --ISNULL(commTo.Name, task.RegionName) as 'Evacuated To',
-	                commFrom.Name as 'Evacuated_From', --ISNULL(commFrom.Name, task.RegionName) as 'Evacuated From',
+	                commFrom.Name as 'Evacuated_From', 
+                    commTo.Name as 'Evacuated_To',
 	                er.Facility as 'Facility_Name',
 	                CONVERT(date, er.SelfRegisteredDate) as 'Self_Registration_Date',
 	                CONVERT(time, er.SelfRegisteredDate) as 'Self_Registration_Time',
@@ -236,9 +236,9 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 LEFT OUTER JOIN
                     IncidentTasks task ON er.IncidentTaskId = task.Id
                 LEFT OUTER JOIN
-                    Communities commFrom ON task.CommunityId = commFrom.Id
+                    Communities commFrom ON er.HostCommunityId = commFrom.Id
                 LEFT OUTER JOIN
-                    Communities commTo ON er.HostCommunityId = commTo.Id
+                    Communities commTo ON task.CommunityId = commTo.Id
                 LEFT OUTER JOIN
                     EvacueeRegistrationAddresses erap ON evac.RegistrationId = erap.RegistrationId AND erap.AddressTypeCode = 'Primary'
                 LEFT OUTER JOIN
@@ -251,18 +251,16 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     Communities commAddrM ON commAddrM.Id = eram.CommunityId
                 LEFT OUTER JOIN
                     Countries countryAddrM ON countryAddrM.CountryCode = eram.CountryCode
-                order by evac.RegistrationId desc
-                ")
-                .ToListAsync();
+                ");
             // Apply Where clauses
             if (!string.IsNullOrWhiteSpace(searchQuery.LastName))
             {
-                query = query.Where(e => e.Last_Name.Equals(searchQuery.LastName, StringComparison.OrdinalIgnoreCase)).ToList();
+                query = query.Where(e => e.Last_Name.Equals(searchQuery.LastName, StringComparison.OrdinalIgnoreCase));
             }
 
             if (!string.IsNullOrWhiteSpace(searchQuery.FirstName))
             {
-                query = query.Where(e => e.First_Name.Equals(searchQuery.FirstName, StringComparison.OrdinalIgnoreCase)).ToList();
+                query = query.Where(e => e.First_Name.Equals(searchQuery.FirstName, StringComparison.OrdinalIgnoreCase));
             }
 
             if (!string.IsNullOrWhiteSpace(searchQuery.DateOfBirth))
@@ -272,7 +270,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 // fails Letting it blow up might be more correct - Should we throw an exception
                 // if a bad date string is passed in?
                 DateTime.TryParse(searchQuery.DateOfBirth, out DateTime dob);
-                query = query.Where(e => e.Date_Of_Birth.Equals(dob)).ToList();
+                query = query.Where(e => e.Date_Of_Birth.Equals(dob));
             }
 
             // Self Registration Date Range (between start and end)
@@ -282,22 +280,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 DateTime.TryParse(searchQuery.SelfRegistrationDateStart, out DateTime start);
                 DateTime.TryParse(searchQuery.SelfRegistrationDateEnd, out DateTime end);
                 query = query.Where(e => e.Self_Registration_Date.HasValue &&
-                                    e.Self_Registration_Date > start && e.Self_Registration_Date < end)
-                    .ToList();
+                                    e.Self_Registration_Date > start && e.Self_Registration_Date < end);
             }
             // Only start (all self registrations after start)
             else if (!string.IsNullOrWhiteSpace(searchQuery.SelfRegistrationDateStart))
             {
                 DateTime.TryParse(searchQuery.SelfRegistrationDateStart, out DateTime start);
-                query = query.Where(e => e.Self_Registration_Date.HasValue && e.Self_Registration_Date > start)
-                    .ToList();
+                query = query.Where(e => e.Self_Registration_Date.HasValue && e.Self_Registration_Date > start);
             }
             // Only end (all self registrations before end)
             else if (!string.IsNullOrWhiteSpace(searchQuery.SelfRegistrationDateEnd))
             {
                 DateTime.TryParse(searchQuery.SelfRegistrationDateEnd, out DateTime end);
-                query = query.Where(e => e.Self_Registration_Date.HasValue && e.Self_Registration_Date < end)
-                    .ToList();
+                query = query.Where(e => e.Self_Registration_Date.HasValue && e.Self_Registration_Date < end);
             }
 
             // Finalization date range (between start and end)
@@ -308,52 +303,49 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 DateTime.TryParse(searchQuery.FinalizationDateEnd, out DateTime end);
 
                 query = query.Where(e => e.Registration_Completed_Date.HasValue &&
-                                    e.Registration_Completed_Date.Value > start && e.Registration_Completed_Date.Value < end)
-                    .ToList();
+                                    e.Registration_Completed_Date.Value > start && e.Registration_Completed_Date.Value < end);
             }
             // Only start (all finalized evacuees after start)
             else if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateStart))
             {
                 DateTime.TryParse(searchQuery.FinalizationDateStart, out DateTime start);
-                query = query.Where(e => e.Registration_Completed_Date.HasValue && e.Registration_Completed_Date.Value > start)
-                    .ToList();
+                query = query.Where(e => e.Registration_Completed_Date.HasValue && e.Registration_Completed_Date.Value > start);
             }
             // Only end (all finalized evacuees before end)
             else if (!string.IsNullOrWhiteSpace(searchQuery.FinalizationDateEnd))
             {
                 DateTime.TryParse(searchQuery.FinalizationDateEnd, out DateTime end);
-                query = query.Where(e => e.Registration_Completed_Date.HasValue && e.Registration_Completed_Date < end)
-                    .ToList();
+                query = query.Where(e => e.Registration_Completed_Date.HasValue && e.Registration_Completed_Date < end);
             }
 
             if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber))
             {
-                query = query.Where(e => e.Task_Number == searchQuery.IncidentTaskNumber).ToList();
+                query = query.Where(e => e.Task_Number == searchQuery.IncidentTaskNumber);
             }
 
             if (!string.IsNullOrWhiteSpace(searchQuery.EssFileNumber))
             {
-                query = query.Where(e => e.Ess_File_Number.ToString() == searchQuery.EssFileNumber).ToList();
+                query = query.Where(e => e.Ess_File_Number.ToString() == searchQuery.EssFileNumber);
             }
 
             if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom))
             {
-                query = query.Where(e => e.Evacuated_From == searchQuery.EvacuatedFrom).ToList();
+                query = query.Where(e => e.Evacuated_From == searchQuery.EvacuatedFrom);
             }
 
             if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedTo))
             {
-                query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedTo).ToList();
+                query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedTo);
             }
         
 
 
-            return query;
+            return await query.ToListAsync();
         }
 
         public async Task<IEnumerable<Models.Db.ReferralReportItem>> GetEvacueeReferralReportAsync(EvacueeSearchQueryParameters searchQuery)
         {
-            var query = await db.ReferralReportItems
+            var query = db.ReferralReportItems
                 .FromSql(@"
                     select
                         -- File Information
@@ -362,8 +354,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         task.TaskNumberStartDate as 'Task_Number_Start_Date',
                         task.TaskNumberEndDate as 'Task_Number_End_Date',
                         'File_Status' = CASE WHEN task.TaskNumber IS NULL THEN 'Not Finalized' ELSE 'Finalized' END,
-                        commTo.Name as 'Evacuated_To', 
                         commFrom.Name as 'Evacuated_From',
+                        commTo.Name as 'Evacuated_To', 
                         evareg.Facility as 'Facility_Name',
                         -- Referral Referenced User
                         ref.Purchaser as 'Person_responsible_for_purchasing_goods',
@@ -396,36 +388,34 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         INNER JOIN Suppliers sup on ref.SupplierId = sup.Id
                         INNER JOIN EvacueeRegistrations evareg on ref.RegistrationId = evareg.EssFileNumber
                         INNER JOIN IncidentTasks task on evareg.IncidentTaskId = task.Id
-                        LEFT OUTER JOIN Communities commFrom ON task.CommunityId = commFrom.Id
-                        LEFT OUTER JOIN Communities commTo ON evareg.HostCommunityId = commTo.Id
+                        LEFT OUTER JOIN Communities commFrom ON evareg.HostCommunityId = commFrom.Id
+                        LEFT OUTER JOIN Communities commTo ON task.CommunityId = commTo.Id
                     where ref.Active = 1
-                    order by ref.RegistrationId desc
-                ")
-                .ToListAsync();
+                ");
 
             // Apply where clauses
             if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber))
             {
-                query = query.Where(e => e.Task_Number == searchQuery.IncidentTaskNumber).ToList();
+                query = query.Where(e => e.Task_Number == searchQuery.IncidentTaskNumber);
             }
 
             if (!string.IsNullOrWhiteSpace(searchQuery.EssFileNumber))
             {
-                query = query.Where(e => e.Ess_File_Number.ToString() == searchQuery.EssFileNumber).ToList();
+                query = query.Where(e => e.Ess_File_Number.ToString() == searchQuery.EssFileNumber);
             }
 
             if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom))
             {
-                query = query.Where(e => e.Evacuated_From == searchQuery.EvacuatedFrom).ToList();
+                query = query.Where(e => e.Evacuated_From == searchQuery.EvacuatedFrom);
             }
 
             if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedTo))
             {
-                query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedTo).ToList();
+                query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedTo);
             }
 
 
-            return query;
+            return await query.ToListAsync();
         }
 
         private string MapSortToFields(string sort)
