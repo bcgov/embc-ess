@@ -95,7 +95,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         public DbSet<Referral> Referrals { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<ViewEvacuee> ViewEvacuees { get; set; }
-        public DbSet<EvacueeReportItem> EvacueeReportItems { get; set;}
+        public DbSet<EvacueeReportItem> EvacueeReportItems { get; set; }
         public DbSet<ReferralReportItem> ReferralReportItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -197,7 +197,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .HasForeignKey("EssFileNumber");
 
             modelBuilder.Entity<EvacueeReportItem>()
-                 .HasKey(e => new { e.Ess_File_Number, e.First_Name, e.Last_Name});
+                 .HasKey(e => new { e.Ess_File_Number, e.First_Name, e.Last_Name });
 
             modelBuilder.Entity<ReferralReportItem>()
                 .HasKey(e => e.Referral_Number);
@@ -236,6 +236,27 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     entry.Property("UpdateDateTime").CurrentValue = timestamp;
                     entry.Property("UpdatedByUserId").CurrentValue = userId;
                 }
+            }
+        }
+    }
+
+    public class AdminEmbcDbContext : EmbcDbContext
+    {
+        public AdminEmbcDbContext(DbContextOptions<EmbcDbContext> options) : base(options)
+        {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                   .SetBasePath(Directory.GetCurrentDirectory())
+                   .AddJsonFile("appsettings.json")
+                   .AddEnvironmentVariables()
+                   .Build();
+                string connectionString = DatabaseTools.GetSaConnectionString(configuration);
+                optionsBuilder.UseSqlServer(connectionString);
             }
         }
     }

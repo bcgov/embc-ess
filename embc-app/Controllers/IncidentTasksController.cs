@@ -1,14 +1,13 @@
 using Gov.Jag.Embc.Public.DataInterfaces;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
+using Gov.Jag.Embc.Public.ViewModels.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System;
 using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Controllers
@@ -39,7 +38,7 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] SearchQueryParameters searchQuery)
+        public async Task<IActionResult> Get([FromQuery] IncidentTaskSearchQueryParameters searchQuery)
         {
             var items = await dataInterface.GetIncidentTasksAsync(searchQuery);
 
@@ -60,25 +59,11 @@ namespace Gov.Jag.Embc.Public.Controllers
         [HttpGet("getopenincidenttasks")]
         public async Task<IActionResult> GetOpenIncidentTasks([FromQuery] SearchQueryParameters searchQuery)
         {
-            int limit  = searchQuery.Limit;
+            int limit = searchQuery.Limit;
             int offset = searchQuery.Offset;
-            var items  = await dataInterface.GetOpenIncidentTasksAsync(limit, offset);
-            
+            var items = await dataInterface.GetOpenIncidentTasksAsync(limit, offset);
+
             return Json(items);
-        }
-
-        [HttpGet("getOpenAndClosedIncidentTaskMetadata")]
-        public async Task<IActionResult> GetOpenAndClosedIncidentTaskMetadata([FromQuery] SearchQueryParameters searchQuery)
-        {
-            int limit  = searchQuery.Limit;
-            int offset = searchQuery.Offset;
-            var result = new OpenAndClosedTasksMetadata
-            {
-                OpenTasks   = await dataInterface.GetOpenIncidentTasksMetadataAsync(limit, offset),
-                ClosedTasks = await dataInterface.GetClosedIncidentTasksMetadataAsync(limit, offset)
-            };
-
-            return Json(result);
         }
 
         [HttpGet("getIsUniqueTaskNumber/{taskNum}")]
@@ -138,13 +123,5 @@ namespace Gov.Jag.Embc.Public.Controllers
             var result = await dataInterface.DeactivateIncidentTaskAsync(id);
             return Ok();
         }
-    }
-
-    public class OpenAndClosedTasksMetadata
-    {
-        [JsonProperty("openTasks")]
-        public PaginationMetadata OpenTasks { get; set; }
-        [JsonProperty("closedTasks")]
-        public PaginationMetadata ClosedTasks { get; set; }
     }
 }
