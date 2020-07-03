@@ -74,7 +74,7 @@ export class TaskNumberListComponent implements OnInit {
 
   filter(community: Community) {
     // submit and collect search
-    this.getIncidentTasks({ q: community ? community.id : '' });
+    this.getIncidentTasks({ q: community ? community.id : '', activeTasks: this.showActiveTasks });
   }
 
   modifyTaskNumber(taskId?: string) {
