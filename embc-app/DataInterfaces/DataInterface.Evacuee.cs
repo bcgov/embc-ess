@@ -270,7 +270,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 // fails Letting it blow up might be more correct - Should we throw an exception
                 // if a bad date string is passed in?
                 DateTime.TryParse(searchQuery.DateOfBirth, out DateTime dob);
-                query = query.Where(e => e.Date_Of_Birth.Equals(dob));
+                query = query.Where(e => DateTime.Parse(e.Date_Of_Birth).Equals(dob));
             }
 
             // Self Registration Date Range (between start and end)
