@@ -66,20 +66,19 @@ namespace Gov.Jag.Embc.Public.Utils
 
         private static void AddSearchParams(StringWriter sw, EvacueeSearchQueryParameters searchParams)
         {
-            bool addedSearchHeader = false;
             object prop = null;
             PropertyInfo[] properties = typeof(EvacueeSearchQueryParameters).GetProperties();
+
+            // Add Search header
+            sw.Write("Search Parameters");
+            sw.Write(sw.NewLine);
+
             for (int i = 0; i < properties.Length - 1; i++)
             {
                 prop = properties[i].GetValue(searchParams);
+                ProcessProperty(prop, properties[i].Name, sw);
                 if (IsValidProp(prop, properties[i].Name))
                 {
-                    if (!addedSearchHeader)
-                    {
-                        sw.Write("Search Parameters");
-                        sw.Write(sw.NewLine);
-                        addedSearchHeader = true;
-                    }
                     if (properties[i].Name.ToLower() == "evacuatedfrom")
                     {
                         sw.Write("Evacuated_To:,");
@@ -122,6 +121,31 @@ namespace Gov.Jag.Embc.Public.Utils
                 }
             }
             return result;
+        }
+
+
+        private static void ProcessProperty(object prop, string propName, StringWriter sw)
+        {
+            // Radio button properties that are null need to display 'show all'
+            bool isRadioBtn = false;
+            switch (propName.ToLower())
+            {
+                case "hasreferrals":
+                    isRadioBtn = true;
+                    break;
+                case "registrationcompleted":
+                    isRadioBtn = true;
+                    break;
+                default:
+                    break;
+            }
+
+            if (isRadioBtn && (prop == null || string.IsNullOrEmpty(prop.ToString())))
+            {
+                sw.Write($"{propName}:, Show all");
+                sw.Write(sw.NewLine);
+            }
+
         }
            
     }
