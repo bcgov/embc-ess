@@ -33,16 +33,16 @@
             <button type="button" class="btn btn-primary text-uppercase" (click)="search()">Search</button>
           </div>
         </div>
-        <a class="small" [routerLink]="" (click)="switchToAdvancedSearch()">advanced search</a>
+        <a class="small" [routerLink]="" (click)="switchToAdvancedSearch()">advanced search and reporting</a>
       </ng-container>
 
       <!--Advanced Search-->
       <ng-container *ngIf="advancedSearchMode">
-        <h1 class="blue-header header-text">Evacuee Details</h1>
+        <h1 class="blue-header header-text">ALL EVACUEES</h1>
         <form novalidate [formGroup]="advancedSearchForm" (ngSubmit)="advancedSearch()">
           <div class="feature-block">
             <div class="d-flex justify-content-between">
-              <h2 class="h5">Advanced Search</h2>
+              <h2 class="h5">Advanced Search & Reporting</h2>
               <button type="button" class="close" aria-label="Close" (click)="switchToBasicSearch()">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -169,11 +169,24 @@
                 </fieldset>
               </div>
             </div>
-            <div class="d-flex justify-content-end align-items-center">
-              <!-- Basic search. For Release 1, advanced search mode is the only mode-->
-              <app-fa-link class="small" icon="exchange-alt" (click)="switchToBasicSearch()">Switch to Basic Search
-              </app-fa-link>
-              <button type="submit" class="ml-2 btn btn-secondary text-uppercase">Search</button>
+            <div class="d-flex justify-content-start align-items-center">
+              <button type="submit" class="ml-2 btn btn-outline-primary btn-padding text-uppercase search-btn" >Search</button>
+              <button class="btn btn-outline-primary btn-padding text-uppsercase" (click)="onExportEvacuee()">
+                <i class="fas fa-file-csv"></i>&nbsp;
+                Export Evacuee Report
+              </button>
+              <button class="btn btn-outline-primary btn-padding text-uppsercase" (click)="onExportReferrals()">
+                <i class="fas fa-file-csv"></i>&nbsp;
+                Export Referrals Report
+              </button>
+            </div>
+            <div>
+              <p style="color: red; margin-top: 5px;"><span *ngIf="exportValidationError">
+                Please enter a task number or evacuated from community in order to export a report
+              </span></p>
+              <p>
+                <span *ngIf="isAdmin; then adminExportText; else superuserExportText;"></span>
+              </p>
             </div>
           </div>
         </form>
@@ -204,14 +217,10 @@
       <option [value]="'evacuatedTo'">Community Evacuated to</option>
       <option [value]="'evacuatedFrom'">Community Evacuated from</option>
     </select>
-  </div>  
+  </div>
 </div>
 <div class="search-results">
   <div *ngIf="resultsAndPagination?.data?.length>0; then searchResultsTable; else notFound"></div>
-  
-  <div *ngIf="resultsAndPagination?.data?.length > 0" class="ml-2 row">
-    <a *ngIf="isAdmin" href="#" (click)="onExportClick()" class="">Export to CSV</a>
-  </div>
 </div>
 
 <ng-template #searchResultsTable>
@@ -238,7 +247,8 @@
         <td>{{rowItem.firstName}}</td>
         <td>{{rowItem.incidentTaskNumber}}</td>
         <td>{{rowItem.registrationId}}</td>
-        <td>{{rowItem.evacuatedTo}}</td> <!--These are coming back reversed from the server, even though the mapping seems correct-->
+        <!--These are coming back reversed from the server, even though the mapping seems correct-->
+        <td>{{rowItem.evacuatedTo}}</td>
         <td>{{rowItem.evacuatedFrom}}</td>
         <td>
           <a href="javascript:void(0)" *ngIf="!rowItem.isFinalized" (click)="edit(rowItem.registrationId)">Finalize</a>
@@ -259,6 +269,16 @@
 
 <ng-template #superuser>
   Superuser
+</ng-template>
+
+<ng-template #adminExportText>
+  * When exporting a report, enter any of the fields above to narrow your report results.
+</ng-template>
+
+<ng-template #superuserExportText>
+  * When exporting a report, enter any of the fields above to narrow your report results.
+  <br/>
+  A task number OR Evacuated from community must be entered at a minimum.
 </ng-template>
 <!-- <select class="form-control" [(ngModel)]="maxSize">
     <option *ngFor="let increment of increments" [value]="increment">{{increment}}</option>
