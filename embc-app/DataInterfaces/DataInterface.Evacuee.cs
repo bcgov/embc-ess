@@ -314,7 +314,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         commTo.Name as 'Evacuated_To', 
                         evareg.Facility as 'Facility_Name',
                         -- Referral Referenced User
-                       REPLACE(ref.Purchaser, ',', ' ') as 'Person_responsible_for_purchasing_goods',
+                       '""' + CAST(ref.Purchaser AS nvarchar(250)) + '""' as 'Person_responsible_for_purchasing_goods',
                         -- Referral
                         ref.Id as 'Referral_Number',
                         LEFT(ref.Type, CASE WHEN charindex('_', ref.Type) = 0 THEN LEN(ref.Type) ELSE charindex('_', ref.Type) - 1 END) as 'Support_Type',
