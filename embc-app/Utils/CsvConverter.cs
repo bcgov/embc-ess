@@ -66,7 +66,6 @@ namespace Gov.Jag.Embc.Public.Utils
 
         private static void AddSearchParams(StringWriter sw, EvacueeSearchQueryParameters searchParams)
         {
-            //bool addedSearchHeader = false;
             object prop = null;
             PropertyInfo[] properties = typeof(EvacueeSearchQueryParameters).GetProperties();
 
@@ -80,12 +79,6 @@ namespace Gov.Jag.Embc.Public.Utils
                 ProcessProperty(prop, properties[i].Name, sw);
                 if (IsValidProp(prop, properties[i].Name))
                 {
-                    //if (!addedSearchHeader)
-                    //{
-                    //    sw.Write("Search Parameters");
-                    //    sw.Write(sw.NewLine);
-                    //    addedSearchHeader = true;
-                    //}
                     if (properties[i].Name.ToLower() == "evacuatedfrom")
                     {
                         sw.Write("Evacuated_To:,");
