@@ -200,7 +200,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                  .HasKey(e => new { e.Ess_File_Number, e.First_Name, e.Last_Name });
 
             modelBuilder.Entity<ReferralReportItem>()
-                .HasKey(e => e.Referral_Number);
+                .HasKey(e => new { e.Referral_Number, e.Ess_File_Number, e.Task_Number});
 
             modelBuilder.AddShadowProperties();
         }

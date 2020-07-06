@@ -66,7 +66,6 @@ namespace Gov.Jag.Embc.Public.Utils
 
         private static void AddSearchParams(StringWriter sw, EvacueeSearchQueryParameters searchParams)
         {
-            object prop = null;
             PropertyInfo[] properties = typeof(EvacueeSearchQueryParameters).GetProperties();
 
             // Add Search header
@@ -75,26 +74,19 @@ namespace Gov.Jag.Embc.Public.Utils
 
             for (int i = 0; i < properties.Length - 1; i++)
             {
-                prop = properties[i].GetValue(searchParams);
-                ProcessProperty(prop, properties[i].Name, sw);
-                if (IsValidProp(prop, properties[i].Name))
+                object prop = properties[i].GetValue(searchParams);
+                string propName = GetFriendlySearchParamName(properties[i].Name);
+                ProcessProperty(prop, propName, sw);
+                if (IsValidProp(prop, propName))
                 {
-                    if (properties[i].Name.ToLower() == "evacuatedfrom")
-                    {
-                        sw.Write("Evacuated_To:,");
-                    }
-                    else if (properties[i].Name.ToLower() == "evacuatedto")
-                    {
-                        sw.Write("Evacuated_From:,");
-                    }
-                    else
-                    {
-                        sw.Write(properties[i].Name + ":" + ",");
-                    }
+
+                    sw.Write(propName + ":" + ",");
+                    
                     sw.Write(properties[i].GetValue(searchParams).ToString());
                     sw.Write(sw.NewLine);
                 }
             }
+            sw.Write(sw.NewLine);
         }
 
         private static bool IsValidProp(object prop, string propName)
@@ -128,12 +120,12 @@ namespace Gov.Jag.Embc.Public.Utils
         {
             // Radio button properties that are null need to display 'show all'
             bool isRadioBtn = false;
-            switch (propName.ToLower())
+            switch (propName)
             {
-                case "hasreferrals":
+                case "Referrals Provided":
                     isRadioBtn = true;
                     break;
-                case "registrationcompleted":
+                case "Reg Completed":
                     isRadioBtn = true;
                     break;
                 default:
@@ -146,6 +138,48 @@ namespace Gov.Jag.Embc.Public.Utils
                 sw.Write(sw.NewLine);
             }
 
+        }
+
+        // Returns a user friendly name for the search parameters 
+        private static string GetFriendlySearchParamName(string propName)
+        {
+            string result = string.Empty;
+
+            switch (propName.ToLower())
+            {
+                case "lastname":
+                    result = "Last Name";
+                    break;
+                case "firstname":
+                    result = "First Name";
+                    break;
+                case "incidenttasknumber":
+                    result = "Task #";
+                    break;
+                case "essfilenumber":
+                    result = "ESS File #";
+                    break;
+                case "evacuatedfrom":
+                    result = "Evacuated To";
+                    break;
+                case "evacuatedto":
+                    result = "Evacuated From";
+                    break;
+                case "hasreferrals":
+                    result = "Referrals Provided";
+                    break;
+                case "registrationcomplete":
+                    result = "Reg Completed";
+                    break;
+                case "dateofbirth":
+                    result = "Date of Birth";
+                    break;
+                default: 
+                    result = propName;
+                    break;
+            }
+
+            return result;
         }
            
     }
