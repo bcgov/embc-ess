@@ -33,7 +33,7 @@ namespace Gov.Jag.Embc.Public.Controllers
                 SourceRepository = configuration.GetBuildSource(),
                 SourceReference = configuration.GetBuildVersion(),
                 FileCreationTime = System.IO.File.GetLastWriteTimeUtc(assembly.Location).ToString("O"), // Use the round trip format as it includes the time zone.
-                FileVersion = FileVersionInfo.GetVersionInfo(assembly.Location).FileVersion,
+                FileVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(),//FileVersionInfo.GetVersionInfo(assembly.Location).FileVersion,
                 ClientTimeoutWarningInMinutes = configuration.UserTimeoutWarningInMinutes(),
                 ClientTimeoutWarningDurationInMinutes = configuration.UserTimeoutWarningDurationInMinutes(),
                 DefaultTimeoutWarningInMinutes = configuration.DefaultTimeoutWarningInMinutes(),
