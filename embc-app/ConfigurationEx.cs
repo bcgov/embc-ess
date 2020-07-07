@@ -164,5 +164,10 @@ namespace Gov.Jag.Embc.Public
         {
             return conf.GetValue("SPLUNK_TOKEN", string.Empty);
         }
+
+        public static string GetFileVersion(this IConfiguration conf)
+        {
+            return conf.GetValue("APP_VERSION_NUMBER", "VERSION NUMBER NOT SET!");
+        }
     }
 }
