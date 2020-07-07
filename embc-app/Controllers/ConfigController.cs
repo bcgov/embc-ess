@@ -39,7 +39,7 @@ namespace Gov.Jag.Embc.Public.Controllers
                 DefaultTimeoutWarningInMinutes = configuration.DefaultTimeoutWarningInMinutes(),
                 DefaultWarningDurationInMinutes = configuration.DefaultTimeoutWarningDurationInMinutes(),
             };
-            var foo = Json(avi);
+           
             return Json(avi);
         }
     }
