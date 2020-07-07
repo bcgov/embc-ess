@@ -53,18 +53,26 @@ namespace Gov.Jag.Embc.Public.Utils
             }
         }
 
-        public static string ToCSV<T>(this IEnumerable<T> list, EvacueeSearchQueryParameters searchParams)
+        /// <summary>
+        /// Creates a CSV with a list of search parameters
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="searchParams">The search parameters to include in the CSV</param>
+        /// <param name="isEvacueeExport">Flag to control which report it is</param>
+        /// <returns></returns>
+        public static string ToCSV<T>(this IEnumerable<T> list, EvacueeSearchQueryParameters searchParams, bool isEvacueeExport)
         {
             using (var sw = new StringWriter())
             {
-                AddSearchParams(sw, searchParams);
+                AddSearchParams(sw, searchParams, isEvacueeExport);
                 CreateHeader(list, sw);
                 CreateRows(list, sw);
                 return sw.ToString();
             }
         }
 
-        private static void AddSearchParams(StringWriter sw, EvacueeSearchQueryParameters searchParams)
+        private static void AddSearchParams(StringWriter sw, EvacueeSearchQueryParameters searchParams, bool isEvacueeExport)
         {
             PropertyInfo[] properties = typeof(EvacueeSearchQueryParameters).GetProperties();
 
@@ -76,12 +84,10 @@ namespace Gov.Jag.Embc.Public.Utils
             {
                 object prop = properties[i].GetValue(searchParams);
                 string propName = GetFriendlySearchParamName(properties[i].Name);
-                ProcessProperty(prop, propName, sw);
+                ProcessProperty(prop, propName, sw, isEvacueeExport);
                 if (IsValidProp(prop, propName))
                 {
-
                     sw.Write(propName + ":" + ",");
-                    
                     sw.Write(properties[i].GetValue(searchParams).ToString());
                     sw.Write(sw.NewLine);
                 }
@@ -107,6 +113,12 @@ namespace Gov.Jag.Embc.Public.Utils
                     case "sortby":
                         result = false;
                         break;
+                    case "referrals provided":
+                        result = false;
+                        break;
+                    case "reg completed":
+                        result = false;
+                        break;
                     default:
                         result = true;
                         break;
@@ -116,9 +128,9 @@ namespace Gov.Jag.Embc.Public.Utils
         }
 
 
-        private static void ProcessProperty(object prop, string propName, StringWriter sw)
+        private static void ProcessProperty(object prop, string propName, StringWriter sw, bool isEvacueeExport)
         {
-            // Radio button properties that are null need to display 'show all'
+            // These radio button properties have hard coded values per report
             bool isRadioBtn = false;
             switch (propName)
             {
@@ -132,9 +144,17 @@ namespace Gov.Jag.Embc.Public.Utils
                     break;
             }
 
-            if (isRadioBtn && (prop == null || string.IsNullOrEmpty(prop.ToString())))
+            if (isRadioBtn)
             {
-                sw.Write($"{propName}:, Show all");
+                if (isEvacueeExport)
+                {
+                    sw.Write($"{propName}:, Show all");
+                }
+                else
+                {
+                    sw.Write($"{propName}:, Yes");
+                }
+                
                 sw.Write(sw.NewLine);
             }
 
@@ -168,7 +188,7 @@ namespace Gov.Jag.Embc.Public.Utils
                 case "hasreferrals":
                     result = "Referrals Provided";
                     break;
-                case "registrationcomplete":
+                case "registrationcompleted":
                     result = "Reg Completed";
                     break;
                 case "dateofbirth":
