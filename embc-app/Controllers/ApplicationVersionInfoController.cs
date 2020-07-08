@@ -29,8 +29,26 @@ namespace Gov.Jag.Embc.Public.Controllers
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             string fileVersion = $"{Configuration.GetReleaseVersion()}{fvi.FileVersion}";
             var versionNumbers = fvi.FileVersion.Split('.');
-            string patchNum = versionNumbers[2];
-            string minorNums = versionNumbers[3];
+            string patchNum = "";
+            string minorNums = "";
+            // Now just try to error out on me, Openshift. I'll catch you.
+            try
+            {
+                patchNum = versionNumbers[1];
+            }
+            catch(Exception)
+            {
+                patchNum = "(index 1 out of range)";
+            }
+            try
+            {
+                minorNums = versionNumbers[2];
+            }
+            catch(Exception)
+            {
+                minorNums = "(index 2 out of range)";
+            }
+            
             string fileVersion2 = $"{Configuration.GetReleaseVersion()}{patchNum}";
             string fileVersion3 = $"{Configuration.GetReleaseVersion()}{minorNums}";
             string fileVersion4 = $"{Configuration.GetReleaseVersion()}{patchNum}.{minorNums}";
