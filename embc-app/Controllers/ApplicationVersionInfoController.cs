@@ -27,7 +27,13 @@ namespace Gov.Jag.Embc.Public.Controllers
             Assembly assembly = this.GetType().GetTypeInfo().Assembly;
             DateTime creationTime = System.IO.File.GetLastWriteTimeUtc(assembly.Location);
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            string fileVersion = fvi.FileVersion;
+            string fileVersion = $"{Configuration.GetReleaseVersion()}{fvi.FileVersion}";
+            var versionNumbers = fvi.FileVersion.Split('.');
+            string patchNum = versionNumbers[2];
+            string minorNums = versionNumbers[3];
+            string fileVersion2 = $"{Configuration.GetReleaseVersion()}{patchNum}";
+            string fileVersion3 = $"{Configuration.GetReleaseVersion()}{minorNums}";
+            string fileVersion4 = $"{Configuration.GetReleaseVersion()}{patchNum}.{minorNums}";
             
             ApplicationVersionInfo avi = new ApplicationVersionInfo()
             {
@@ -38,7 +44,10 @@ namespace Gov.Jag.Embc.Public.Controllers
                 SourceRepository = Configuration["OPENSHIFT_BUILD_SOURCE"],
                 SourceReference = Configuration["OPENSHIFT_BUILD_REFERENCE"],
                 FileCreationTime = creationTime.ToString("O"), // Use the round trip format as it includes the time zone.
-                FileVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString()//fileVersion
+                FileVersion = fileVersion,
+                FileVersion2 = fileVersion2,
+                FileVersion3 = fileVersion3,
+                FileVersion4 = fileVersion4,
         };
 
             return Json(avi);

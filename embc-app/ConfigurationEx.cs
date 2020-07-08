@@ -164,5 +164,10 @@ namespace Gov.Jag.Embc.Public
         {
             return conf.GetValue("SPLUNK_TOKEN", string.Empty);
         }
+
+        public static string GetReleaseVersion(this IConfiguration conf)
+        {
+            return conf.GetValue("RELEASE_VERSION", "RELEASE_VERSION variable not set!");
+        }
     }
 }
