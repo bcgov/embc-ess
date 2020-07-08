@@ -41,5 +41,10 @@ namespace Gov.Jag.Embc.Public.ViewModels
         /// Git repository used to build the application
         /// </summary>
         public string SourceRepository { get; set; }
+
+        // !!!TEMP PROPERTIES FOR TESTING!!!
+        public string FileVersion2 { get; set; }
+        public string FileVersion3 { get; set; }
+        public string FileVersion4 { get; set; }
     }
 }
