@@ -38,8 +38,8 @@ namespace Gov.Jag.Embc.Public.Controllers
                 SourceRepository = Configuration["OPENSHIFT_BUILD_SOURCE"],
                 SourceReference = Configuration["OPENSHIFT_BUILD_REFERENCE"],
                 FileCreationTime = creationTime.ToString("O"), // Use the round trip format as it includes the time zone.
-                FileVersion = fileVersion
-            };
+                FileVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString()//fileVersion
+        };
 
             return Json(avi);
         }

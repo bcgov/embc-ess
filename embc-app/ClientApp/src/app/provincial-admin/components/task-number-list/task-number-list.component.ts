@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ListResult, IncidentTask, PaginationSummary, Community, OpenAndClosedTasksMetadata } from 'src/app/core/models';
 import { IncidentTaskService } from 'src/app/core/services/incident-task.service';
-import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
+import { IncidentTaskSearchQueryParameters } from 'src/app/core/models/search-interfaces';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
@@ -19,16 +19,14 @@ export class TaskNumberListComponent implements OnInit {
   resultsAndPagination: ListResult<IncidentTask>;
   notFoundMessage = 'Searching ...';
   path: string = null; // the base path for routing
-  
+
   form: FormGroup;
   // default to showing active tasks
-  showActiveTasks = true; 
+  showActiveTasks = true;
   // private variable holding all tasks so we can filter active/inactive on the client
-  private allTasks: ListResult<IncidentTask>; 
+  private allTasks: ListResult<IncidentTask>;
   private taskArray: IncidentTask[] = [];
-  private openTasksPagination: PaginationSummary;
-  private closedTasksPagination: PaginationSummary;
-  
+
   constructor(
     private incidentTaskService: IncidentTaskService,
     private router: Router,
@@ -42,9 +40,8 @@ export class TaskNumberListComponent implements OnInit {
     return this.taskArray;
   }
 
-  
   get pagination(): PaginationSummary {
-    return this.showActiveTasks ? this.openTasksPagination : this.closedTasksPagination;
+    return this.allTasks.metadata;
   }
 
   ngOnInit() {
@@ -54,39 +51,30 @@ export class TaskNumberListComponent implements OnInit {
     this.initSearchForm();
 
     // collect all incident tasks
-    this.getIncidentTasks();
-    this.getMetaData();
+    this.getIncidentTasks({ activeTasks: this.showActiveTasks });
   }
 
   initSearchForm(): void {
     this.form = this.fb.group({ searchbox: null });
   }
 
-  getIncidentTasks(params: SearchQueryParameters = {}) {
-    this.incidentTaskService.getIncidentTasks(params)
-      .subscribe((listResult: ListResult<IncidentTask>) => {
+  getIncidentTasks(params: IncidentTaskSearchQueryParameters) {
+    this.incidentTaskService.getIncidentTasks(params).subscribe(
+      (listResult: ListResult<IncidentTask>) => {
         this.allTasks = listResult;
         this.resultsAndPagination = this.allTasks;
         this.taskArray = listResult.data;
-        
-        this.filterTasks();
+
         this.notFoundMessage = 'No results found.';
       }, err => {
         console.log('error getting tasks =', err);
-      });
   }
-
-  private getMetaData() {
-    this.incidentTaskService.getOpenAndClosedIncidentTaskMetadata()
-      .subscribe((pageData: OpenAndClosedTasksMetadata) => {
-        this.openTasksPagination = pageData.openTasks;
-        this.closedTasksPagination = pageData.closedTasks;
-      })
+    );
   }
 
   filter(community: Community) {
     // submit and collect search
-    this.getIncidentTasks({ q: community ? community.id : '' });
+    this.getIncidentTasks({ q: community ? community.id : '', activeTasks: this.showActiveTasks });
   }
 
   modifyTaskNumber(taskId?: string) {
@@ -99,19 +87,7 @@ export class TaskNumberListComponent implements OnInit {
 
   toggleDisplayedTasks() {
     this.showActiveTasks = !this.showActiveTasks;
-    this.filterTasks();
-  }
-
-  // Filters out active/inactive tasks
-  private filterTasks() {
-    this.taskArray = [];
-    let now = moment.utc();
-    if (this.showActiveTasks) {
-      this.taskArray = this.allTasks.data.filter(task => now.isBefore(moment.utc(task.taskNumberEndDate)))
-    }
-    else {
-      this.taskArray = this.allTasks.data.filter(task => now.isAfter(moment.utc(task.taskNumberEndDate)))
-    }
+    this.getIncidentTasks({ activeTasks: this.showActiveTasks });
   }
 
 }

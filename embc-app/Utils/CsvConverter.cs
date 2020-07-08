@@ -53,38 +53,46 @@ namespace Gov.Jag.Embc.Public.Utils
             }
         }
 
-        public static string ToCSV<T>(this IEnumerable<T> list, EvacueeSearchQueryParameters searchParams)
+        /// <summary>
+        /// Creates a CSV with a list of search parameters
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="searchParams">The search parameters to include in the CSV</param>
+        /// <param name="isEvacueeExport">Flag to control which report it is</param>
+        /// <returns></returns>
+        public static string ToCSV<T>(this IEnumerable<T> list, EvacueeSearchQueryParameters searchParams, bool isEvacueeExport)
         {
             using (var sw = new StringWriter())
             {
-                AddSearchParams(sw, searchParams);
+                AddSearchParams(sw, searchParams, isEvacueeExport);
                 CreateHeader(list, sw);
                 CreateRows(list, sw);
                 return sw.ToString();
             }
         }
 
-        private static void AddSearchParams(StringWriter sw, EvacueeSearchQueryParameters searchParams)
+        private static void AddSearchParams(StringWriter sw, EvacueeSearchQueryParameters searchParams, bool isEvacueeExport)
         {
-            bool addedSearchHeader = false;
-            object prop = null;
             PropertyInfo[] properties = typeof(EvacueeSearchQueryParameters).GetProperties();
+
+            // Add Search header
+            sw.Write("Search Parameters");
+            sw.Write(sw.NewLine);
+
             for (int i = 0; i < properties.Length - 1; i++)
             {
-                prop = properties[i].GetValue(searchParams);
-                if (IsValidProp(prop, properties[i].Name))
+                object prop = properties[i].GetValue(searchParams);
+                string propName = GetFriendlySearchParamName(properties[i].Name);
+                ProcessProperty(prop, propName, sw, isEvacueeExport);
+                if (IsValidProp(prop, propName))
                 {
-                    if (!addedSearchHeader)
-                    {
-                        sw.Write("Search Parameters");
-                        sw.Write(sw.NewLine);
-                        addedSearchHeader = true;
-                    }
-                    sw.Write(properties[i].Name + ":" + ",");
+                    sw.Write(propName + ":" + ",");
                     sw.Write(properties[i].GetValue(searchParams).ToString());
                     sw.Write(sw.NewLine);
                 }
             }
+            sw.Write(sw.NewLine);
         }
 
         private static bool IsValidProp(object prop, string propName)
@@ -105,11 +113,92 @@ namespace Gov.Jag.Embc.Public.Utils
                     case "sortby":
                         result = false;
                         break;
+                    case "referrals provided":
+                        result = false;
+                        break;
+                    case "reg completed":
+                        result = false;
+                        break;
                     default:
                         result = true;
                         break;
                 }
             }
+            return result;
+        }
+
+
+        private static void ProcessProperty(object prop, string propName, StringWriter sw, bool isEvacueeExport)
+        {
+            // These radio button properties have hard coded values per report
+            bool isRadioBtn = false;
+            switch (propName)
+            {
+                case "Referrals Provided":
+                    isRadioBtn = true;
+                    break;
+                case "Reg Completed":
+                    isRadioBtn = true;
+                    break;
+                default:
+                    break;
+            }
+
+            if (isRadioBtn)
+            {
+                if (isEvacueeExport)
+                {
+                    sw.Write($"{propName}:, Show all");
+                }
+                else
+                {
+                    sw.Write($"{propName}:, Yes");
+                }
+                
+                sw.Write(sw.NewLine);
+            }
+
+        }
+
+        // Returns a user friendly name for the search parameters 
+        private static string GetFriendlySearchParamName(string propName)
+        {
+            string result = string.Empty;
+
+            switch (propName.ToLower())
+            {
+                case "lastname":
+                    result = "Last Name";
+                    break;
+                case "firstname":
+                    result = "First Name";
+                    break;
+                case "incidenttasknumber":
+                    result = "Task #";
+                    break;
+                case "essfilenumber":
+                    result = "ESS File #";
+                    break;
+                case "evacuatedfrom":
+                    result = "Evacuated To";
+                    break;
+                case "evacuatedto":
+                    result = "Evacuated From";
+                    break;
+                case "hasreferrals":
+                    result = "Referrals Provided";
+                    break;
+                case "registrationcompleted":
+                    result = "Reg Completed";
+                    break;
+                case "dateofbirth":
+                    result = "Date of Birth";
+                    break;
+                default: 
+                    result = propName;
+                    break;
+            }
+
             return result;
         }
            

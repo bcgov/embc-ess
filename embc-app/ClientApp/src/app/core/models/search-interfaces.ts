@@ -1,4 +1,5 @@
 import { Registration, Volunteer, Referral } from 'src/app/core/models';
+import { IncidentTask } from './incident-task.model';
 
 /**
  * The search results to be displayed on an "<evacuee-search-results>" component.
@@ -50,4 +51,9 @@ export interface EvacueeSearchQueryParameters extends SearchQueryParameters {
   finalization_date_to?: string;
   finalization_date_from?: string;
   format?: string;
+}
+
+export interface IncidentTaskSearchQueryParameters
+  extends SearchQueryParameters {
+  activeTasks?: boolean;
 }
