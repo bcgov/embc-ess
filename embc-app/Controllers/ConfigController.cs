@@ -22,7 +22,12 @@ namespace Gov.Jag.Embc.Public.Controllers
         public ActionResult GetApplicationVersionInfo()
         {
             var assembly = this.GetType().GetTypeInfo().Assembly;
-            string fileVersion = $"{configuration.GetReleaseVersion()}{FileVersionInfo.GetVersionInfo(assembly.Location).FileVersion}";
+            
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+            var versionNumbers = fvi.FileVersion.Split('.');
+            string minorNums = versionNumbers[2];
+            string fileVersion = $"{configuration.GetReleaseVersion()}{minorNums}";
 
             ConfigurationInfo avi = new ConfigurationInfo()
             {
