@@ -14,15 +14,15 @@
       <td>Last Updated:</td>
       <td>{{version?.fileCreationTime | date:'medium' }}</td>
     </tr>
-    <tr class="mat-list-item">
+    <tr class="mat-list-item" *ngIf="userIsAuthenticated">
       <td>Reference:</td>
       <td>{{version?.sourceReference}}</td>
     </tr>
-    <tr class="mat-list-item">
+    <tr class="mat-list-item" *ngIf="userIsAuthenticated">
       <td>Repository:</td>
       <td>{{version?.sourceRepository}}</td>
     </tr>
-    <tr class="mat-list-item">
+    <tr class="mat-list-item" *ngIf="userIsAuthenticated">
       <td>Commit:</td>
       <td>{{version?.sourceCommit}}</td>
     </tr>
