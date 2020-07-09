@@ -38,7 +38,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 BaseUri = Configuration["BASE_URI"],
                 BasePath = Configuration["BASE_PATH"],
-                Environment = Configuration["ASPNETCORE_ENVIRONMENT"],                
+                Environment = Configuration.GetEnvironmentName(),                
                 SourceCommit = Configuration["OPENSHIFT_BUILD_COMMIT"],
                 SourceRepository = Configuration["OPENSHIFT_BUILD_SOURCE"],
                 SourceReference = Configuration["OPENSHIFT_BUILD_REFERENCE"],
