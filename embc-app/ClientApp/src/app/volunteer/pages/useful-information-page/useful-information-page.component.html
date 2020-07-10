@@ -20,7 +20,15 @@
             </span>
           </span>
         </div>
-        <div class="guide-btn training-guide" *ngIf="isSuperUser" (click)="openTrainingGuide()">
+        <div class="guide-btn training-guide" *ngIf="isAdmin" (click)="openTrainingGuide()">
+          <span>
+            <i class="fas fa-file-pdf big-icon"></i>&nbsp;&nbsp;&nbsp;
+            <span class="btn-text">
+              Admin ERA User Training Guide
+            </span>
+          </span>
+        </div>
+        <div class="guide-btn training-guide" *ngIf="isSuperUser && !isAdmin" (click)="openTrainingGuide()">
           <span>
             <i class="fas fa-file-pdf big-icon"></i>&nbsp;&nbsp;&nbsp;
             <span class="btn-text">
@@ -253,7 +261,7 @@
       <div>
         <i class="fas fa-file-pdf list-icon"></i>&nbsp;
         <a href="https://ess.gov.bc.ca/era/documents/ERA-Updates.pdf" target="_blank">
-          ERA Updates Release 1.x
+          ERA Updates Release {{this.releaseVersion}}
         </a>
       </div>
     </div>
