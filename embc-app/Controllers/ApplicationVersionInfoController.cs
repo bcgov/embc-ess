@@ -38,12 +38,13 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 BaseUri = Configuration["BASE_URI"],
                 BasePath = Configuration["BASE_PATH"],
-                Environment = Configuration.GetEnvironmentName(),                
+                Environment = Configuration.GetEnvironmentName(),
                 SourceCommit = Configuration["OPENSHIFT_BUILD_COMMIT"],
                 SourceRepository = Configuration["OPENSHIFT_BUILD_SOURCE"],
                 SourceReference = Configuration["OPENSHIFT_BUILD_REFERENCE"],
                 FileCreationTime = creationTime.ToString("O"), // Use the round trip format as it includes the time zone.
                 FileVersion = fileVersion,
+                ReleaseVersion = Configuration.GetReleaseVersion(),
         };
 
             return Json(avi);

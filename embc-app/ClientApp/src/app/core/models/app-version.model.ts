@@ -8,4 +8,5 @@ export interface AppVersion {
   sourceCommit: string;
   sourceReference: string;
   sourceRepository: string;
+  releaseVersion: string;
 }

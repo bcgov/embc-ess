@@ -48,6 +48,10 @@ namespace Gov.Jag.Embc.Public.ViewModels
         /// Git repository used to build the application
         /// </summary>
         public string SourceRepository { get; set; }
+        /// <summary>
+        /// Release version of the application (e.g. 1.5)
+        /// </summary>
+        public string ReleaseVersion { get; set; }
 
         public int ClientTimeoutWarningInMinutes { get; internal set; }
         public int DefaultTimeoutWarningInMinutes { get; internal set; }
