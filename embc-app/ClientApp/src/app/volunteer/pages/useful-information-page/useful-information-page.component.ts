@@ -17,13 +17,13 @@ export class UsefulInformationPageComponent implements OnInit {
   get roleName(): string {
     let role: string = "";
     if (this.isERAUser) {
-      role = "User";
+      role = "ERA User";
     }
     else if (this.isSuperUser) {
-      role = "Superuser";
+      role = "ERA Superuser";
     }
     else if (this.isAdmin) {
-      role = "Admin";
+      role = "EMBC Admin ERA User";
     }
     return role;
   }
