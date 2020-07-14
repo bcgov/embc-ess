@@ -22,6 +22,12 @@ namespace Gov.Jag.Embc.Public.Controllers
         public ActionResult GetApplicationVersionInfo()
         {
             var assembly = this.GetType().GetTypeInfo().Assembly;
+            
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+            var versionNumbers = fvi.FileVersion.Split('.');
+            string minorNums = versionNumbers[2];
+            string fileVersion = $"{configuration.GetReleaseVersion()}{minorNums}";
 
             ConfigurationInfo avi = new ConfigurationInfo()
             {
@@ -33,13 +39,14 @@ namespace Gov.Jag.Embc.Public.Controllers
                 SourceRepository = configuration.GetBuildSource(),
                 SourceReference = configuration.GetBuildVersion(),
                 FileCreationTime = System.IO.File.GetLastWriteTimeUtc(assembly.Location).ToString("O"), // Use the round trip format as it includes the time zone.
-                FileVersion = FileVersionInfo.GetVersionInfo(assembly.Location).FileVersion,
+                FileVersion = fileVersion,
                 ClientTimeoutWarningInMinutes = configuration.UserTimeoutWarningInMinutes(),
                 ClientTimeoutWarningDurationInMinutes = configuration.UserTimeoutWarningDurationInMinutes(),
                 DefaultTimeoutWarningInMinutes = configuration.DefaultTimeoutWarningInMinutes(),
                 DefaultWarningDurationInMinutes = configuration.DefaultTimeoutWarningDurationInMinutes(),
+                ReleaseVersion = configuration.GetReleaseVersion(),
             };
-
+           
             return Json(avi);
         }
     }

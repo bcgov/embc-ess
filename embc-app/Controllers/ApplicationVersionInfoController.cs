@@ -27,19 +27,25 @@ namespace Gov.Jag.Embc.Public.Controllers
             Assembly assembly = this.GetType().GetTypeInfo().Assembly;
             DateTime creationTime = System.IO.File.GetLastWriteTimeUtc(assembly.Location);
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            string fileVersion = fvi.FileVersion;
+            
+            var versionNumbers = fvi.FileVersion.Split('.');
+            string minorNums = versionNumbers[2]; 
+            string fileVersion = $"{Configuration.GetReleaseVersion()}{minorNums}";
+            
+
             
             ApplicationVersionInfo avi = new ApplicationVersionInfo()
             {
                 BaseUri = Configuration["BASE_URI"],
                 BasePath = Configuration["BASE_PATH"],
-                Environment = Configuration["ASPNETCORE_ENVIRONMENT"],                
+                Environment = Configuration.GetEnvironmentName(),
                 SourceCommit = Configuration["OPENSHIFT_BUILD_COMMIT"],
                 SourceRepository = Configuration["OPENSHIFT_BUILD_SOURCE"],
                 SourceReference = Configuration["OPENSHIFT_BUILD_REFERENCE"],
                 FileCreationTime = creationTime.ToString("O"), // Use the round trip format as it includes the time zone.
-                FileVersion = fileVersion
-            };
+                FileVersion = fileVersion,
+                ReleaseVersion = Configuration.GetReleaseVersion(),
+        };
 
             return Json(avi);
         }
