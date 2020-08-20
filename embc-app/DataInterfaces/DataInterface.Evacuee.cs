@@ -1,4 +1,3 @@
-using AutoMapper.QueryableExtensions;
 using Gov.Jag.Embc.Public.Models.Db;
 using Gov.Jag.Embc.Public.Utils;
 using Gov.Jag.Embc.Public.ViewModels;
@@ -181,54 +180,51 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             return query;
         }
 
-
         public async Task<IEnumerable<EvacueeReportItem>> GetEvacueeReportAsync(EvacueeSearchQueryParameters searchQuery)
         {
             var query = db.EvacueeReportItems
                 .FromSql(@"
                     SELECT
-	                -- File Information
-	                evac.RegistrationId as 'ESS_File_Number',
-	                task.TaskNumber as 'Task_Number',
-	                task.TaskNumberStartDate as 'Task_Number_Start_Date',
-	                task.TaskNumberEndDate as 'Task_Number_End_Date',
-	                'File_Status' = CASE WHEN task.TaskNumber IS NULL THEN 'Not Finalized' ELSE 'Finalized' END,
-	                commFrom.Name as 'Evacuated_From', 
+                    -- File Information
+                    evac.RegistrationId as 'ESS_File_Number',
+                    task.TaskNumber as 'Task_Number',
+                    CONVERT(datetime, SWITCHOFFSET(task.TaskNumberStartDate, DATEPART(TZOFFSET, task.TaskNumberStartDate AT TIME ZONE 'Pacific Standard Time'))) as 'Task_Number_Start_Date',
+                    CONVERT(datetime, SWITCHOFFSET(task.TaskNumberEndDate, DATEPART(TZOFFSET, task.TaskNumberEndDate AT TIME ZONE 'Pacific Standard Time'))) as 'Task_Number_End_Date',
+                    'File_Status' = CASE WHEN task.TaskNumber IS NULL THEN 'Not Finalized' ELSE 'Finalized' END,
+                    commFrom.Name as 'Evacuated_From',
                     commTo.Name as 'Evacuated_To',
-	                er.Facility as 'Facility_Name',
-	                CONVERT(date, er.SelfRegisteredDate) as 'Self_Registration_Date',
-	                CONVERT(time, er.SelfRegisteredDate) as 'Self_Registration_Time',
-	                CONVERT(date, er.RegistrationCompletionDate) as 'Registration_Completed_Date',
-	                CONVERT(time, er.RegistrationCompletionDate) as 'Registration_Completed_Time',
-	                -- Evacuee Information
-	                evac.LastName as 'Last_Name',
-	                evac.FirstName as 'First_Name',
-	                CAST(evac.Dob AS VARCHAR(10)) as 'Date_Of_Birth',
-	                evac.Gender as 'Gender',
-	                'Is_Head_Of_Household' = CASE WHEN evac.EvacueeTypeCode = 'HOH' THEN 'Y' ELSE 'N' END,
-	                -- Evacuee Contact Information
-	                erap.AddressLine1 as 'Address',
-	                commAddr.Name as 'Community',
-	                erap.Province as 'Province',
-	                erap.PostalCode as 'Postal_Code',
-	                countryAddr.Name as 'Country',
-	                er.PhoneNumber as 'Phone_Number',
-	                er.PhoneNumberAlt as 'Alternate_Phone_Number',
-	                er.Email as 'Email_Address',
-	                ISNULL(eram.AddressLine1, erap.AddressLine1) as 'Mailing_Address',
-	                ISNULL(commAddrM.Name, commAddr.Name) as 'Mailing_Community',
-	                ISNULL(eram.Province, erap.Province) as 'Mailing_Province',
-	                ISNULL(eram.PostalCode, erap.PostalCode) as 'Mailing_Postal_Code',
-	                ISNULL(countryAddrM.Name, countryAddr.Name) as 'Mailing_Country',
-	                -- Questions and Services
-	                er.InsuranceCode as 'Insurance',
-	                CASE WHEN er.HasPets = 1 THEN 'Y' ELSE 'N' END as 'Pets',
-	                CASE WHEN er.HasInquiryReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Inquiry',
-	                CASE WHEN er.HasHealthServicesReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Health_Services',
-	                CASE WHEN er.HasFirstAidReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_First_Aid',
-	                CASE WHEN er.HasPersonalServicesReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Personal_Services',
-	                CASE WHEN er.HasChildCareReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Child_Care',
-	                CASE WHEN er.HasPetCareReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Pet_Care'
+                    er.Facility as 'Facility_Name',
+                    CONVERT(datetime, SWITCHOFFSET(er.SelfRegisteredDate, DATEPART(TZOFFSET, er.SelfRegisteredDate AT TIME ZONE 'Pacific Standard Time'))) as 'Self_Registration_Date',
+                    CONVERT(datetime, SWITCHOFFSET(er.RegistrationCompletionDate, DATEPART(TZOFFSET, er.RegistrationCompletionDate AT TIME ZONE 'Pacific Standard Time'))) as 'Registration_Completed_Date',
+                    -- Evacuee Information
+                    evac.LastName as 'Last_Name',
+                    evac.FirstName as 'First_Name',
+                    CAST(evac.Dob AS VARCHAR(10)) as 'Date_Of_Birth',
+                    evac.Gender as 'Gender',
+                    'Is_Head_Of_Household' = CASE WHEN evac.EvacueeTypeCode = 'HOH' THEN 'Y' ELSE 'N' END,
+                    -- Evacuee Contact Information
+                    erap.AddressLine1 as 'Address',
+                    commAddr.Name as 'Community',
+                    erap.Province as 'Province',
+                    erap.PostalCode as 'Postal_Code',
+                    countryAddr.Name as 'Country',
+                    er.PhoneNumber as 'Phone_Number',
+                    er.PhoneNumberAlt as 'Alternate_Phone_Number',
+                    er.Email as 'Email_Address',
+                    ISNULL(eram.AddressLine1, erap.AddressLine1) as 'Mailing_Address',
+                    ISNULL(commAddrM.Name, commAddr.Name) as 'Mailing_Community',
+                    ISNULL(eram.Province, erap.Province) as 'Mailing_Province',
+                    ISNULL(eram.PostalCode, erap.PostalCode) as 'Mailing_Postal_Code',
+                    ISNULL(countryAddrM.Name, countryAddr.Name) as 'Mailing_Country',
+                    -- Questions and Services
+                    er.InsuranceCode as 'Insurance',
+                    CASE WHEN er.HasPets = 1 THEN 'Y' ELSE 'N' END as 'Pets',
+                    CASE WHEN er.HasInquiryReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Inquiry',
+                    CASE WHEN er.HasHealthServicesReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Health_Services',
+                    CASE WHEN er.HasFirstAidReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_First_Aid',
+                    CASE WHEN er.HasPersonalServicesReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Personal_Services',
+                    CASE WHEN er.HasChildCareReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Child_Care',
+                    CASE WHEN er.HasPetCareReferral = 1 THEN 'Y' ELSE 'N' END as 'Service_Recommendation_Pet_Care'
                 FROM
                     Evacuees evac
                 INNER JOIN
@@ -273,7 +269,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 query = query.Where(e => DateTime.Parse(e.Date_Of_Birth).Equals(dob));
             }
 
-
             if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber))
             {
                 query = query.Where(e => e.Task_Number == searchQuery.IncidentTaskNumber);
@@ -293,8 +288,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedFrom);
             }
-        
-
 
             return await query.ToListAsync();
         }
@@ -311,7 +304,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         task.TaskNumberEndDate as 'Task_Number_End_Date',
                         'File_Status' = CASE WHEN task.TaskNumber IS NULL THEN 'Not Finalized' ELSE 'Finalized' END,
                         commFrom.Name as 'Evacuated_From',
-                        commTo.Name as 'Evacuated_To', 
+                        commTo.Name as 'Evacuated_To',
                         evareg.Facility as 'Facility_Name',
                         -- Referral Referenced User
                        '""' + ref.Purchaser + '""' as 'Person_responsible_for_purchasing_goods',
@@ -369,7 +362,6 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             {
                 query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedFrom);
             }
-
 
             return await query.ToListAsync();
         }
