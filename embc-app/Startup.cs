@@ -56,11 +56,6 @@ namespace Gov.Jag.Embc.Public
                         .UseLoggerFactory(loggerFactory)
                         .UseSqlServer(DatabaseTools.GetConnectionString(configuration))
                         )
-                .AddDbContext<AdminEmbcDbContext>(
-                    options => options
-                        .UseLoggerFactory(loggerFactory)
-                        .UseSqlServer(DatabaseTools.GetSaConnectionString(configuration))
-                        )
                 // CORS policy
                 .AddCors(opts =>
                 {
@@ -239,7 +234,8 @@ namespace Gov.Jag.Embc.Public
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 // DATABASE SETUP
-                var db = scope.ServiceProvider.GetRequiredService<AdminEmbcDbContext>();
+                var db = scope.ServiceProvider.GetRequiredService<EmbcDbContext>();
+                db.Database.GetDbConnection().ConnectionString = configuration.GetAdminDbConnectionString();
                 SetupDatabase(env, db);
             }
             if (!env.IsProduction())
@@ -368,7 +364,7 @@ namespace Gov.Jag.Embc.Public
                 });
         }
 
-        private void SetupDatabase(IHostingEnvironment env, AdminEmbcDbContext adminCtx)
+        private void SetupDatabase(IHostingEnvironment env, EmbcDbContext adminCtx)
         {
             log.LogInformation("Fetching the application's database context ...");
 

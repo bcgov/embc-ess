@@ -7,7 +7,7 @@ namespace Gov.Jag.Embc.Public.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
-              IF NOT EXISTS (SELECT 1 FROM Communities WHERE [Name] = 'Strathcona Regional District')
+              IF NOT EXISTS (SELECT 1 FROM Communities WHERE [Name] = 'Strathcona Regional District') AND EXISTS (SELECT 1 FROM Regions WHERE Name='Vancouver Island')
               BEGIN
                 INSERT INTO Communities (Id, Name, Active, RegionName, CreatedByUserId, CreatedDateTime)
 	            VALUES (NEWID(), 'Strathcona Regional District', 1, 'Vancouver Island' , 'System', GETUTCDATE())
