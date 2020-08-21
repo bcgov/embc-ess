@@ -21,37 +21,27 @@ namespace Gov.Jag.Embc.Public.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] EvacueeSearchQueryParameters query, string format = "json")
+        public async Task<IActionResult> Get([FromQuery] EvacueeSearchQueryParameters query)
         {
-            if (format.Equals("csv", System.StringComparison.OrdinalIgnoreCase))
-            {
-                var evacuees = await dataInterface.GetEvacueeReportAsync(query);
-
-                var fileName = $"Evacuees_Export_{ DateTime.Now:yyyyMMdd_HHmmss}.csv";
-                return File(Encoding.UTF8.GetBytes(evacuees.ToCSV()), "text/csv;charset=utf-8", fileName);
-            }
-            else
-            {
-                var evacuees = await dataInterface.GetEvacueesPaginatedAsync(query);
-                return Json(evacuees);
-            }
+            var evacuees = await dataInterface.GetEvacueesPaginatedAsync(query);
+            return Json(evacuees);
         }
 
         [HttpGet("getevacueereport")]
         public async Task<IActionResult> EvacueeReport([FromQuery] EvacueeSearchQueryParameters query)
         {
-            var evacuees     = await dataInterface.GetEvacueeReportAsync(query);
+            var evacuees = await dataInterface.GetEvacueeReportAsync(query);
             var today = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, GetPSTTimeZone());
-            var fileName     = $"Evacuees_Export_{ today:yyyyMMdd_HHmmss}.csv";
+            var fileName = $"Evacuees_Export_{ today:yyyyMMdd_HHmmss}.csv";
             return File(Encoding.UTF8.GetBytes(evacuees.ToCSV(query, true)), "text/csv;charset=utf-8", fileName);
         }
 
         [HttpGet("getevacueereferralreport")]
         public async Task<IActionResult> EvacueeReferralReport([FromQuery] EvacueeSearchQueryParameters query)
         {
-            var evacuees     = await dataInterface.GetEvacueeReferralReportAsync(query);
+            var evacuees = await dataInterface.GetEvacueeReferralReportAsync(query);
             var today = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, GetPSTTimeZone());
-            var fileName     = $"Referral_Export_{ today:yyyyMMdd_HHmmss}.csv";
+            var fileName = $"Referral_Export_{ today:yyyyMMdd_HHmmss}.csv";
             return File(Encoding.UTF8.GetBytes(evacuees.ToCSV(query, false)), "text/csv;charset=utf-8", fileName);
         }
 
@@ -61,12 +51,12 @@ namespace Gov.Jag.Embc.Public.Controllers
             {
                 case PlatformID.Win32NT:
                     return "Pacific Standard Time";
+
                 case PlatformID.Unix:
                     return "Canada/Pacific";
+
                 default:
-                     throw new NotSupportedException();
-
-
+                    throw new NotSupportedException();
             }
         }
     }
