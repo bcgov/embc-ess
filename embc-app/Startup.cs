@@ -238,7 +238,7 @@ namespace Gov.Jag.Embc.Public
                 db.Database.GetDbConnection().ConnectionString = configuration.GetAdminDbConnectionString();
                 SetupDatabase(env, db);
             }
-            if (!env.IsProduction())
+            if (env.IsDevelopment())
             {
                 app
                     .UseDeveloperExceptionPage()
