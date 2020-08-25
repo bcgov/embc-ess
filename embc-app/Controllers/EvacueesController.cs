@@ -33,7 +33,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             var evacuees = await dataInterface.GetEvacueeReportAsync(query);
             var today = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, GetPSTTimeZone());
             var fileName = $"Evacuees_Export_{ today:yyyyMMdd_HHmmss}.csv";
-            return File(Encoding.UTF8.GetBytes(evacuees.ToCSV(query, true)), "text/csv;charset=utf-8", fileName);
+            return File(Encoding.UTF8.GetBytes(evacuees.ToCSV(query, true, "\"")), "text/csv;charset=utf-8", fileName);
         }
 
         [HttpGet("getevacueereferralreport")]
@@ -42,7 +42,7 @@ namespace Gov.Jag.Embc.Public.Controllers
             var evacuees = await dataInterface.GetEvacueeReferralReportAsync(query);
             var today = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, GetPSTTimeZone());
             var fileName = $"Referral_Export_{ today:yyyyMMdd_HHmmss}.csv";
-            return File(Encoding.UTF8.GetBytes(evacuees.ToCSV(query, false)), "text/csv;charset=utf-8", fileName);
+            return File(Encoding.UTF8.GetBytes(evacuees.ToCSV(query, false, "\"")), "text/csv;charset=utf-8", fileName);
         }
 
         private string GetPSTTimeZone()
