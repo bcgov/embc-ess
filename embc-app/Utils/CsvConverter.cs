@@ -8,18 +8,18 @@ namespace Gov.Jag.Embc.Public.Utils
     //inspired by https://stackoverflow.com/questions/1890093/converting-a-generic-list-to-a-csv-string
     public static class CsvConverter
     {
-        private static void CreateHeader<T>(IEnumerable<T> list, TextWriter sw)
+        private static void CreateHeader<T>(IEnumerable<T> list, TextWriter sw, string quoteIdentifier = "")
         {
             PropertyInfo[] properties = typeof(T).GetProperties();
             for (int i = 0; i < properties.Length - 1; i++)
             {
-                sw.Write(properties[i].Name + ",");
+                sw.Write(Quote(properties[i].Name, quoteIdentifier) + ",");
             }
             var lastProp = properties[properties.Length - 1].Name;
-            sw.Write(lastProp + sw.NewLine);
+            sw.Write(Quote(lastProp, quoteIdentifier) + sw.NewLine);
         }
 
-        private static void CreateRows<T>(IEnumerable<T> list, TextWriter sw)
+        private static void CreateRows<T>(IEnumerable<T> list, TextWriter sw, string quoteIdentifier = "")
         {
             foreach (var item in list)
             {
@@ -27,11 +27,17 @@ namespace Gov.Jag.Embc.Public.Utils
                 for (int i = 0; i < properties.Length - 1; i++)
                 {
                     var prop = properties[i];
-                    sw.Write(prop.GetValue(item) + ",");
+                    sw.Write(Quote(prop.GetValue(item), quoteIdentifier) + ",");
                 }
                 var lastProp = properties[properties.Length - 1];
-                sw.Write(lastProp.GetValue(item) + sw.NewLine);
+                sw.Write(Quote(lastProp.GetValue(item), quoteIdentifier) + sw.NewLine);
             }
+        }
+
+        private static string Quote(object value, string quoteIdentifier)
+        {
+            if (value == null) return "";
+            return quoteIdentifier + value + quoteIdentifier;
         }
 
         public static void CreateCSV<T>(this IEnumerable<T> list, string filePath)
@@ -43,12 +49,12 @@ namespace Gov.Jag.Embc.Public.Utils
             }
         }
 
-        public static string ToCSV<T>(this IEnumerable<T> list)
+        public static string ToCSV<T>(this IEnumerable<T> list, string quoteIdentifier = "")
         {
             using (var sw = new StringWriter())
             {
-                CreateHeader(list, sw);
-                CreateRows(list, sw);
+                CreateHeader(list, sw, quoteIdentifier);
+                CreateRows(list, sw, quoteIdentifier);
                 return sw.ToString();
             }
         }
@@ -61,13 +67,13 @@ namespace Gov.Jag.Embc.Public.Utils
         /// <param name="searchParams">The search parameters to include in the CSV</param>
         /// <param name="isEvacueeExport">Flag to control which report it is</param>
         /// <returns></returns>
-        public static string ToCSV<T>(this IEnumerable<T> list, EvacueeSearchQueryParameters searchParams, bool isEvacueeExport)
+        public static string ToCSV<T>(this IEnumerable<T> list, EvacueeSearchQueryParameters searchParams, bool isEvacueeExport, string quoteIdentifier = "")
         {
             using (var sw = new StringWriter())
             {
                 AddSearchParams(sw, searchParams, isEvacueeExport);
-                CreateHeader(list, sw);
-                CreateRows(list, sw);
+                CreateHeader(list, sw, quoteIdentifier);
+                CreateRows(list, sw, quoteIdentifier);
                 return sw.ToString();
             }
         }
@@ -102,23 +108,28 @@ namespace Gov.Jag.Embc.Public.Utils
             // Ensure property is not one we ignore (limit, offset, sortby, etc.)
             if (result)
             {
-                    switch (propName.ToLower())
+                switch (propName.ToLower())
                 {
                     case "offset":
                         result = false;
                         break;
+
                     case "limit":
                         result = false;
                         break;
+
                     case "sortby":
                         result = false;
                         break;
+
                     case "referrals provided":
                         result = false;
                         break;
+
                     case "reg completed":
                         result = false;
                         break;
+
                     default:
                         result = true;
                         break;
@@ -126,7 +137,6 @@ namespace Gov.Jag.Embc.Public.Utils
             }
             return result;
         }
-
 
         private static void ProcessProperty(object prop, string propName, StringWriter sw, bool isEvacueeExport)
         {
@@ -137,9 +147,11 @@ namespace Gov.Jag.Embc.Public.Utils
                 case "Referrals Provided":
                     isRadioBtn = true;
                     break;
+
                 case "Reg Completed":
                     isRadioBtn = true;
                     break;
+
                 default:
                     break;
             }
@@ -154,13 +166,12 @@ namespace Gov.Jag.Embc.Public.Utils
                 {
                     sw.Write($"{propName}:, Yes");
                 }
-                
+
                 sw.Write(sw.NewLine);
             }
-
         }
 
-        // Returns a user friendly name for the search parameters 
+        // Returns a user friendly name for the search parameters
         private static string GetFriendlySearchParamName(string propName)
         {
             string result = string.Empty;
@@ -170,39 +181,45 @@ namespace Gov.Jag.Embc.Public.Utils
                 case "lastname":
                     result = "Last Name";
                     break;
+
                 case "firstname":
                     result = "First Name";
                     break;
+
                 case "incidenttasknumber":
                     result = "Task #";
                     break;
+
                 case "essfilenumber":
                     result = "ESS File #";
                     break;
+
                 case "evacuatedfrom":
                     result = "Evacuated To";
                     break;
+
                 case "evacuatedto":
                     result = "Evacuated From";
                     break;
+
                 case "hasreferrals":
                     result = "Referrals Provided";
                     break;
+
                 case "registrationcompleted":
                     result = "Reg Completed";
                     break;
+
                 case "dateofbirth":
                     result = "Date of Birth";
                     break;
-                default: 
+
+                default:
                     result = propName;
                     break;
             }
 
             return result;
         }
-           
     }
 }
-    
-
