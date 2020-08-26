@@ -11,7 +11,7 @@
     <div class="col">
       <label class="sr-only" for="searchbox">Associated EMBC Regional District / Community</label>
       <app-communities-select [myParent]="form" myFormControlName="searchbox" myId="searchbox"
-        myPlaceHolder='Start Typing a Host Community ...'></app-communities-select>
+                              myPlaceHolder='Start Typing a Host Community ...'></app-communities-select>
     </div>
     <div class="col-auto">
       <button class="btn btn-primary text-uppercase" (click)="filter(form.value.searchbox)">Filter</button>
@@ -38,10 +38,10 @@
     </div>
     <table class="table table-hover table-sm">
       <thead class="thead-light">
-        <th scope="col text-uppercase">Task Number</th>
-        <th scope="col text-uppercase">Support Community</th>
-        <th scope="col text-uppercase"># Associated Evacuees</th>
-        <th scope="col text-uppercase">Action</th>
+      <th scope="col text-uppercase">Task Number</th>
+      <th scope="col text-uppercase">Support Community</th>
+      <th scope="col text-uppercase"># Associated Evacuees</th>
+      <th scope="col text-uppercase">Action</th>
       </thead>
       <tbody>
         <tr *ngFor="let incidentTask of results">
@@ -54,6 +54,10 @@
         </tr>
       </tbody>
     </table>
+    <!-- Pagination area -->
+    <div class="row" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
+      <app-paginator class="float-right" [metaData]="resultsAndPagination.metadata" (params)="onPaginationEvent($event)"></app-paginator>
+    </div>
     <div class="row">
       <div class="col">
         <button class="btn btn-primary float-right text-uppercase" (click)="modifyTaskNumber()">Add Task Number</button>

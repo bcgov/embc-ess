@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Security.Permissions;
-using System.Threading.Tasks;
 
 namespace Gov.Jag.Embc.Public.Models.Db
 {
@@ -12,16 +8,14 @@ namespace Gov.Jag.Embc.Public.Models.Db
     {
         public long Ess_File_Number { get; set; }
         public string Task_Number { get; set; }
-        public DateTimeOffset? Task_Number_Start_Date { get; set; }
-        public DateTimeOffset? Task_Number_End_Date { get; set; }
+        public DateTime? Task_Number_Start_Date { get; set; }
+        public DateTime? Task_Number_End_Date { get; set; }
         public string File_Status { get; set; }
         public string Evacuated_To { get; set; }
         public string Evacuated_From { get; set; }
         public string Facility_Name { get; set; }
         public DateTime? Self_Registration_Date { get; set; }
-        public TimeSpan? Self_Registration_Time { get; set; }
         public DateTime? Registration_Completed_Date { get; set; }
-        public TimeSpan? Registration_Completed_Time { get; set; }
         public string Last_Name { get; set; }
         public string First_Name { get; set; }
         public string Date_Of_Birth { get; set; }
