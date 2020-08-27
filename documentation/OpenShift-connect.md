@@ -16,7 +16,7 @@ To apply scripts in the /sql-scripts/ directory you need a database access point
 
 ## Configure your MS SQL client
 
-Open your MS SQL client (Azure Data Studio) and add a  new connection. MSSQL takes the port number as `172.0.0.1,1433` with a comma seperating the port number.
+Open your MS SQL client (Azure Data Studio) and add a  new connection. MSSQL takes the port number as `127.0.0.1,1433` with a comma seperating the port number.
 
 | Key | Value |
 |--|--|
