@@ -33,7 +33,6 @@
     * As well, under <u>Server Connections</u>, select **Close existing connections to the database**
     * Click **Ok** and then **Ok** on the the main restore window
     ![smss-backup](./resources/ssms-restore-3.png) 
-
    On ADS
       * Right-Click on Database and select **Restore**
     ![smss-backup](./resources/ads-restore.png) 
