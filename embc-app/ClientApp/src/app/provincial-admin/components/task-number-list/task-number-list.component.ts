@@ -7,8 +7,6 @@ import { IncidentTaskSearchQueryParameters } from 'src/app/core/models/search-in
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 
-import * as moment from 'moment';
-
 @Component({
   selector: 'app-task-number-list',
   templateUrl: './task-number-list.component.html',
@@ -20,12 +18,19 @@ export class TaskNumberListComponent implements OnInit {
   notFoundMessage = 'Searching ...';
   path: string = null; // the base path for routing
 
+  defaultSearchQuery: IncidentTaskSearchQueryParameters = {
+    offset: 0,
+    limit: 20,
+    activeTasks: true
+  };
+  // a place to save the last query parameters
+  previousQuery: IncidentTaskSearchQueryParameters = { ...this.defaultSearchQuery };
+
   form: FormGroup;
-  // default to showing active tasks
-  showActiveTasks = true;
-  // private variable holding all tasks so we can filter active/inactive on the client
-  private allTasks: ListResult<IncidentTask>;
-  private taskArray: IncidentTask[] = [];
+
+  get showActiveTasks(): boolean {
+    return this.previousQuery.activeTasks;
+  }
 
   constructor(
     private incidentTaskService: IncidentTaskService,
@@ -37,11 +42,11 @@ export class TaskNumberListComponent implements OnInit {
 
   // convenience getters
   get results(): IncidentTask[] {
-    return this.taskArray;
+    return this.resultsAndPagination !== undefined ? this.resultsAndPagination.data : [];
   }
 
   get pagination(): PaginationSummary {
-    return this.allTasks.metadata;
+    return this.resultsAndPagination !== undefined ? this.resultsAndPagination.metadata : null;
   }
 
   ngOnInit() {
@@ -51,30 +56,30 @@ export class TaskNumberListComponent implements OnInit {
     this.initSearchForm();
 
     // collect all incident tasks
-    this.getIncidentTasks({ activeTasks: this.showActiveTasks });
+    this.getIncidentTasks();
   }
 
   initSearchForm(): void {
     this.form = this.fb.group({ searchbox: null });
   }
 
-  getIncidentTasks(params: IncidentTaskSearchQueryParameters) {
-    this.incidentTaskService.getIncidentTasks(params).subscribe(
+  getIncidentTasks() {
+    this.incidentTaskService.getIncidentTasks(this.previousQuery).subscribe(
       (listResult: ListResult<IncidentTask>) => {
-        this.allTasks = listResult;
-        this.resultsAndPagination = this.allTasks;
-        this.taskArray = listResult.data;
-
+        this.resultsAndPagination = listResult;
         this.notFoundMessage = 'No results found.';
       }, err => {
         console.log('error getting tasks =', err);
-  }
+      }
     );
   }
 
   filter(community: Community) {
     // submit and collect search
-    this.getIncidentTasks({ q: community ? community.id : '', activeTasks: this.showActiveTasks });
+    this.previousQuery.limit = this.defaultSearchQuery.limit;
+    this.previousQuery.offset = this.defaultSearchQuery.offset;
+    this.previousQuery.q = community ? community.id : '';
+    this.getIncidentTasks();
   }
 
   modifyTaskNumber(taskId?: string) {
@@ -86,8 +91,16 @@ export class TaskNumberListComponent implements OnInit {
   }
 
   toggleDisplayedTasks() {
-    this.showActiveTasks = !this.showActiveTasks;
-    this.getIncidentTasks({ activeTasks: this.showActiveTasks });
+    this.previousQuery.limit = this.defaultSearchQuery.limit;
+    this.previousQuery.offset = this.defaultSearchQuery.offset;
+    this.previousQuery.activeTasks = !this.previousQuery.activeTasks;
+    this.getIncidentTasks();
   }
 
+  onPaginationEvent(event: IncidentTaskSearchQueryParameters) {
+    // submit and collect search
+    this.previousQuery.limit = event.limit;
+    this.previousQuery.offset = event.offset;
+    this.getIncidentTasks();
+  }
 }

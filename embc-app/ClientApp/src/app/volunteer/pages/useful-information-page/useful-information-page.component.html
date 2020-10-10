@@ -7,7 +7,7 @@
       please see 'ERA UPDATES' at the bottom of this page.
     </p>
     <h2 class="blue-header">Training Materials</h2>
-    <p>These training materials are for ERA <span *ngIf="isSuperUser; then superuser; else user;"></span>
+    <p>These training materials are for <span>{{roleName}}s</span>
       and best intended for anyone wanting to complete ERA training
       and require step-by-step instructions on how to navigate the ERA tool.</p>
     <div class="mb-4">
@@ -20,6 +20,14 @@
             </span>
           </span>
         </div>
+        <div class="guide-btn training-guide" *ngIf="isAdmin" (click)="openTrainingGuide()">
+          <span>
+            <i class="fas fa-file-pdf big-icon"></i>&nbsp;&nbsp;&nbsp;
+            <span class="btn-text">
+              Admin ERA User Training Guide
+            </span>
+          </span>
+        </div>
         <div class="guide-btn training-guide" *ngIf="isSuperUser" (click)="openTrainingGuide()">
           <span>
             <i class="fas fa-file-pdf big-icon"></i>&nbsp;&nbsp;&nbsp;
@@ -28,7 +36,7 @@
             </span>
           </span>
         </div>
-        <div class="guide-btn training-guide" *ngIf="!isSuperUser" (click)="openTrainingGuide()">
+        <div class="guide-btn training-guide" *ngIf="isERAUser" (click)="openTrainingGuide()">
           <span>
             <i class="fas fa-file-pdf big-icon"></i>&nbsp;&nbsp;&nbsp;
             <span class="btn-text">
@@ -39,7 +47,7 @@
       </div>
     </div>
     <div>
-      <div class="mb-4" *ngIf="isSuperUser">
+      <div class="mb-4" *ngIf="isSuperUser || isAdmin">
         <h3 class="section-header">ERA Superuser Video Tutorials</h3>
         <div>
           <i class="far fa-file-video list-icon"></i> &nbsp;
@@ -106,7 +114,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="isSuperUser">
+    <div *ngIf="isSuperUser || isAdmin">
       <h3 class="section-header">FACILITATOR PACKAGE - IN PERSON</h3>
       <p>The Facilitator Package is intended for an ERA Superuser who is also an ESS trainer and requires classroom
         material to train other ESS members.</p>
@@ -135,7 +143,7 @@
           </a>
         </div>
     </div>
-    <div *ngIf="isSuperUser">
+    <div *ngIf="isSuperUser || isAdmin">
       <h3 class="section-header">FACILITATOR PACKAGE - ONLINE</h3>
         <div>
           <i class="fas fa-file-pdf list-icon"></i>&nbsp;
@@ -253,7 +261,7 @@
       <div>
         <i class="fas fa-file-pdf list-icon"></i>&nbsp;
         <a href="https://ess.gov.bc.ca/era/documents/ERA-Updates.pdf" target="_blank">
-          ERA Updates Release 1.x
+          ERA Updates Release {{this.releaseVersion}}
         </a>
       </div>
     </div>
@@ -262,11 +270,3 @@
     <app-sidebox-add-registration></app-sidebox-add-registration>
   </div>
 </div>
-
-<ng-template #user>
-  Users
-</ng-template>
-
-<ng-template #superuser>
-  Superusers
-</ng-template>
