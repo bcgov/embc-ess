@@ -309,9 +309,20 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         -- Referral Referenced User
                         ref.Purchaser AS 'Person_responsible_for_purchasing_goods',
                         -- Referral
-                        ref.Id as 'Referral_Number',
+                        ref.Id as 'Referral_Number'
+                    from Referrals ref
+                        INNER JOIN Suppliers sup on ref.SupplierId = sup.Id
+                        INNER JOIN EvacueeRegistrations evareg on ref.RegistrationId = evareg.EssFileNumber
+                        INNER JOIN IncidentTasks task on evareg.IncidentTaskId = task.Id
+                        LEFT OUTER JOIN Communities commFrom ON evareg.HostCommunityId = commFrom.Id
+                        LEFT OUTER JOIN Communities commTo ON task.CommunityId = commTo.Id
+                    where ref.Active = 1
+                ");
+                        /*****************************************************************
+                         * PI columns removed as indicated in Jira ticket EMBCESSMOD-745
+                         *****************************************************************
                         LEFT(ref.Type, CASE WHEN charindex('_', ref.Type) = 0 THEN LEN(ref.Type) ELSE charindex('_', ref.Type) - 1 END) as 'Support_Type',
-                        CASE WHEN charindex('_', ref.Type) = 0 THEN '' ELSE Substring (ref.Type, Charindex('_', ref.Type)+1, Len(ref.Type)) END as 'Sub_Support_Type',
+                        CASE WHEN charindex('_', ref.Type) = 0 THEN '' ELSE Substring(ref.Type, Charindex('_', ref.Type)+1, Len(ref.Type)) END as 'Sub_Support_Type',
                         CONVERT(datetime, SWITCHOFFSET(ref.ValidFrom, DATEPART(TZOFFSET, ref.ValidFrom AT TIME ZONE 'Pacific Standard Time'))) as 'Valid_From_Date',
                         DATEDIFF(DAY, ref.ValidFrom, ref.ValidTo) as 'Number_Of_Days',
                         CONVERT(datetime, SWITCHOFFSET(ref.ValidTo, DATEPART(TZOFFSET, ref.ValidTo AT TIME ZONE 'Pacific Standard Time'))) as 'Valid_To_Date',
@@ -324,21 +335,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         CASE WHEN ref.Type = 'Lodging_Hotel' THEN ISNULL(ref.HotelLodgingReferral_NumberOfNights, 0)
                             ELSE CASE WHEN ref.Type = 'Lodging_Group' THEN ISNULL(ref.GroupLodgingReferral_NumberOfNights, 0) END END as 'Number_of_Nights',
                         ref.TransportMode as 'Mode_of_Transportation',
-                        -- Referrals Supplier
+                        --Referrals Supplier
                         sup.Name as 'Supplier_Name',
                         sup.Address as 'Supplier_Address',
                         sup.City as 'City',
                         sup.PostalCode as 'Postal_Code',
                         sup.Telephone as 'Telephone',
                         sup.Fax as 'Fax'
-                    from Referrals ref
-                        INNER JOIN Suppliers sup on ref.SupplierId = sup.Id
-                        INNER JOIN EvacueeRegistrations evareg on ref.RegistrationId = evareg.EssFileNumber
-                        INNER JOIN IncidentTasks task on evareg.IncidentTaskId = task.Id
-                        LEFT OUTER JOIN Communities commFrom ON evareg.HostCommunityId = commFrom.Id
-                        LEFT OUTER JOIN Communities commTo ON task.CommunityId = commTo.Id
-                    where ref.Active = 1
-                ");
+                        */
 
             // Apply where clauses
             if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber))
