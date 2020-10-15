@@ -10506,5 +10506,12 @@
         "Region": {
             "Name": "North West"
         }
+    },
+    {
+        "Name": "Thompson-Nicola Regional District",
+        "Active": true,
+        "Region": {
+            "Name": "Central"
+        }
     }
 ]
