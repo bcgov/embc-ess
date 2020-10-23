@@ -62,12 +62,13 @@ namespace Gov.Jag.Embc.Public
                     opts.AddDefaultPolicy(builder =>
                     {
                         builder.WithOrigins(
-                              "http://pathfinder.bcgov",
-                              "https://*.pathfinder.gov.bc.ca",
-                              "https://dev.justice.gov.bc.ca",
-                              "https://test.justice.gov.bc.ca",
-                              "https://justice.gov.bc.ca")
-                              .SetIsOriginAllowedToAllowWildcardSubdomains();
+                            "https://*.gov.bc.ca",     // to cover *.pathfinder.gov.bc.ca, *.embc.gov.bc.ca, *.oidc.gov.bc.ca
+                            //"http://localhost",      // for local testing
+                            "http://pathfinder.bcgov") // openshift internal 
+                        .SetIsOriginAllowedToAllowWildcardSubdomains().AllowAnyHeader();
+                        /**** previous origins defined
+                        "http://pathfinder.bcgov", "https://*.pathfinder.gov.bc.ca", "https://dev.justice.gov.bc.ca", "https://test.justice.gov.bc.ca", "https://justice.gov.bc.ca"
+                        *****/
                     });
                 })
                 //XSRF token for Angular - not working yet
@@ -276,7 +277,7 @@ namespace Gov.Jag.Embc.Public
                     ? "Content-Security-Policy"
                     : "Content-Security-Policy-Report-Only";
 
-                    context.Response.Headers.Append(cspHeader, "default-src 'self' https://*.pathfinder.gov.bc.ca;" +   //captcha service
+                    context.Response.Headers.Append(cspHeader, "default-src 'self' https://*.gov.bc.ca;" +   //captcha service
                         "script-src 'self' 'unsafe-inline' " + (env.IsDevelopment() ? "'unsafe-eval'" : "") + ";" +
                         "style-src 'self' 'unsafe-inline';" +
                         "media-src 'self' data:;" +     //captcha audio
