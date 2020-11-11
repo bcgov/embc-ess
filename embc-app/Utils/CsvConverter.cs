@@ -90,6 +90,11 @@ namespace Gov.Jag.Embc.Public.Utils
             {
                 object prop = properties[i].GetValue(searchParams);
                 string propName = GetFriendlySearchParamName(properties[i].Name);
+                // do not show parameters with where condition not applied 
+                if (propName == "Last Name" || propName == "First Name" || propName == "Date of Birth")
+                {
+                    continue;
+                }
                 ProcessProperty(prop, propName, sw, isEvacueeExport);
                 if (IsValidProp(prop, propName))
                 {
