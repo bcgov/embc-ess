@@ -197,7 +197,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                 .HasForeignKey("EssFileNumber");
 
             modelBuilder.Entity<EvacueeReportItem>()
-                 .HasKey(e => new { e.Ess_File_Number, e.First_Name, e.Last_Name });
+                 //.HasKey(e => new { e.Ess_File_Number, e.First_Name, e.Last_Name });
+                .HasKey(e => new { e.Ess_File_Number });
 
             modelBuilder.Entity<ReferralReportItem>()
                 .HasKey(e => new { e.Referral_Number, e.Ess_File_Number, e.Task_Number });
