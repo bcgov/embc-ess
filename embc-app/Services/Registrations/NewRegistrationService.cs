@@ -41,7 +41,7 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
         private EmailMessage CreateEmailMessageForRegistration(ViewModels.Registration registration)
         {
             //var essRegistrationLink = @"<a target='_blank' href='https://justice.gov.bc.ca/embcess/'>Evacuee Self-Registration</a>";
-            //var emergencyInfoBCLink = @"<a target='_blank' href='https://www.emergencyinfobc.gov.bc.ca/'>Emergency Info BC</a>";
+            var emergencyInfoBCLink = @"<a target='_blank' href='https://www.emergencyinfobc.gov.bc.ca/'>Emergency Info BC</a>";
 
             var subject = "Registration completed successfully";
             var body = $@"
@@ -64,7 +64,7 @@ namespace Gov.Jag.Embc.Public.Services.Registrations
                     <li>After a need's assessment interview with a local ESS Responder has been completed, supports are provided to purchase goods and services if eligible.</li>
                     <li>Any goods and services purchased prior to a need's assessment interview are not eligible for retroactive reimbursement.</li>
                     <li>If you are under<strong>EVACUATION ALERT</strong> or<strong> DO NOT</strong> require emergency serves at this time, no further action is required.</li>
-                    <li>If you are under <strong>EVACUATION ORDER</strong>, and require emergency supports, proceed to your nearest Reception Centre. A list of open Reception Centres can be found at Emergency Info BC.</li>
+                    <li>If you are under <strong>EVACUATION ORDER</strong>, and require emergency supports, proceed to your nearest Reception Centre. A list of open Reception Centres can be found at {emergencyInfoBCLink}.</li>
                     <li>If<strong> NO</strong> nearby Reception Centre is open and immediate action is required, please contact your Local Emergency Program for next steps.</li>
                 </ul>
                 ";
