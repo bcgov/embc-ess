@@ -17,8 +17,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string Person_responsible_for_purchasing_goods { get; set; }
         public long Referral_Number { get; set; }
         /*****************************************************************
-         * PI columns removed as indicated in Jira ticket EMBCESSMOD-745
-         *****************************************************************
+         * PI columns 
+         *****************************************************************/
         public string Support_Type { get; set; }
         public string Sub_Support_Type { get; set; }
         public DateTime? Valid_From_Date { get; set; }
@@ -38,6 +38,6 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string Postal_Code { get; set; }
         public string Telephone { get; set; }
         public string Fax { get; set; }
-        */
+        /**************************************************************/
     }
 }

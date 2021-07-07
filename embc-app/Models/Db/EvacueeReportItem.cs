@@ -17,8 +17,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public DateTime? Self_Registration_Date { get; set; }
         public DateTime? Registration_Completed_Date { get; set; }
         /*****************************************************************
-         * PI columns removed as indicated in Jira ticket EMBCESSMOD-745
-         *****************************************************************
+         * PI columns 
+         *****************************************************************/
         public string Last_Name { get; set; }
         public string First_Name { get; set; }
         public string Date_Of_Birth { get; set; }
@@ -37,7 +37,7 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string Mailing_Province { get; set; }
         public string Mailing_Postal_Code { get; set; }
         public string Mailing_Country { get; set; }
-        ***************************************************************/
+        /***************************************************************/
         public string Insurance { get; set; }
         public string Pets { get; set; }
         public string Service_Recommendation_Inquiry { get; set; }

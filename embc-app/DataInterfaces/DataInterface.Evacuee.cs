@@ -196,7 +196,28 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                     er.Facility as 'Facility_Name',
                     CONVERT(datetime, SWITCHOFFSET(er.SelfRegisteredDate, DATEPART(TZOFFSET, er.SelfRegisteredDate AT TIME ZONE 'Pacific Standard Time'))) as 'Self_Registration_Date',
                     CONVERT(datetime, SWITCHOFFSET(er.RegistrationCompletionDate, DATEPART(TZOFFSET, er.RegistrationCompletionDate AT TIME ZONE 'Pacific Standard Time'))) as 'Registration_Completed_Date',
-                    -- **** PI data removed from here *****
+                    -- **************** PI data start ****************
+                    -- Evacuee Information
+                    evac.LastName as 'Last_Name',
+                    evac.FirstName as 'First_Name',
+                    CAST(evac.Dob AS VARCHAR(10)) as 'Date_Of_Birth',
+                    evac.Gender as 'Gender',
+                    'Is_Head_Of_Household' = CASE WHEN evac.EvacueeTypeCode = 'HOH' THEN 'Y' ELSE 'N' END,
+                    -- Evacuee Contact Information
+                    erap.AddressLine1 as 'Address',
+                    commAddr.Name as 'Community',
+                    erap.Province as 'Province',
+                    erap.PostalCode as 'Postal_Code',
+                    countryAddr.Name as 'Country',
+                    er.PhoneNumber as 'Phone_Number',
+                    er.PhoneNumberAlt as 'Alternate_Phone_Number',
+                    er.Email as 'Email_Address',
+                    ISNULL(eram.AddressLine1, erap.AddressLine1) as 'Mailing_Address',
+                    ISNULL(commAddrM.Name, commAddr.Name) as 'Mailing_Community',
+                    ISNULL(eram.Province, erap.Province) as 'Mailing_Province',
+                    ISNULL(eram.PostalCode, erap.PostalCode) as 'Mailing_Postal_Code',
+                    ISNULL(countryAddrM.Name, countryAddr.Name) as 'Mailing_Country',
+                    -- **************** PI data end ****************
                     -- Questions and Services
                     er.InsuranceCode as 'Insurance',
                     CASE WHEN er.HasPets = 1 THEN 'Y' ELSE 'N' END as 'Pets',
@@ -318,7 +339,30 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         -- Referral Referenced User
                         ref.Purchaser AS 'Person_responsible_for_purchasing_goods',
                         -- Referral
-                        ref.Id as 'Referral_Number'
+                        ref.Id as 'Referral_Number',
+                        -- ******************* PI columns start
+                        LEFT(ref.Type, CASE WHEN charindex('_', ref.Type) = 0 THEN LEN(ref.Type) ELSE charindex('_', ref.Type) - 1 END) as 'Support_Type',
+                        CASE WHEN charindex('_', ref.Type) = 0 THEN '' ELSE Substring(ref.Type, Charindex('_', ref.Type)+1, Len(ref.Type)) END as 'Sub_Support_Type',
+                        CONVERT(datetime, SWITCHOFFSET(ref.ValidFrom, DATEPART(TZOFFSET, ref.ValidFrom AT TIME ZONE 'Pacific Standard Time'))) as 'Valid_From_Date',
+                        DATEDIFF(DAY, ref.ValidFrom, ref.ValidTo) as 'Number_Of_Days',
+                        CONVERT(datetime, SWITCHOFFSET(ref.ValidTo, DATEPART(TZOFFSET, ref.ValidTo AT TIME ZONE 'Pacific Standard Time'))) as 'Valid_To_Date',
+                        (select count(1) from ReferralEvacuees where ReferralId = ref.id) as 'Number_Of_Evacuees_for_Referral',
+                        ref.TotalAmount as 'Total_Amount',
+                        ISNULL(ref.NumberOfBreakfasts, 0) as 'Breakfasts_per_person',
+                        ISNULL(ref.NumberOfLunches, 0) as 'Lunches_per_person',
+                        ISNULL(ref.NumberOfDinners, 0) as 'Dinners_per_person',
+                        ISNULL(ref.NumberOfRooms, 0) as 'Number_of_Rooms',
+                        CASE WHEN ref.Type = 'Lodging_Hotel' THEN ISNULL(ref.HotelLodgingReferral_NumberOfNights, 0)
+                            ELSE CASE WHEN ref.Type = 'Lodging_Group' THEN ISNULL(ref.GroupLodgingReferral_NumberOfNights, 0) END END as 'Number_of_Nights',
+                        ref.TransportMode as 'Mode_of_Transportation',
+                        --Referrals Supplier
+                        sup.Name as 'Supplier_Name',
+                        sup.Address as 'Supplier_Address',
+                        sup.City as 'City',
+                        sup.PostalCode as 'Postal_Code',
+                        sup.Telephone as 'Telephone',
+                        sup.Fax as 'Fax'
+                        -- ******************* PI columns end
                     from Referrals ref
                         INNER JOIN Suppliers sup on ref.SupplierId = sup.Id
                         INNER JOIN EvacueeRegistrations evareg on ref.RegistrationId = evareg.EssFileNumber
