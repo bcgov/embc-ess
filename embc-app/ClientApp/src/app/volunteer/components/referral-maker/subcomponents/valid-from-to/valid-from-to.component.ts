@@ -24,7 +24,9 @@ export class ValidFromToComponent implements OnInit {
   readonly dateMask = [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]; // yyyy-mm-dd
   readonly timeMask = [/\d/, /\d/, ':', /\d/, /\d/]; // HH:mm (24h)
 
-  days = range(1, 15); // [1..14]
+  // EMBCESSMOD-2026 change days from 14 to 30
+  //days = range(1, 15); // [1..14]
+  days = range(1, 31); // [1..30]
   defaultDays = 1; // the default duration
 
   validFromDate = true; // begin with the assumption of validity
