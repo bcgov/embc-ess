@@ -14,6 +14,8 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string Evacuated_To { get; set; }
         public string Evacuated_From { get; set; }
         public string Facility_Name { get; set; }
+        public DateTime? Self_Registration_Date { get; set; }
+        public DateTime? Registration_Completed_Date { get; set; }
         public string Person_responsible_for_purchasing_goods { get; set; }
         public long Referral_Number { get; set; }
         /*****************************************************************
