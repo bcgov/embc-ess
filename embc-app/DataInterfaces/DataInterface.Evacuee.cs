@@ -336,6 +336,8 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         commFrom.Name as 'Evacuated_From',
                         commTo.Name as 'Evacuated_To',
                         evareg.Facility as 'Facility_Name',
+                        CONVERT(datetime, SWITCHOFFSET(evareg.SelfRegisteredDate, DATEPART(TZOFFSET, evareg.SelfRegisteredDate AT TIME ZONE 'Pacific Standard Time'))) as 'Self_Registration_Date',
+                        CONVERT(datetime, SWITCHOFFSET(evareg.RegistrationCompletionDate, DATEPART(TZOFFSET, evareg.RegistrationCompletionDate AT TIME ZONE 'Pacific Standard Time'))) as 'Registration_Completed_Date',
                         -- Referral Referenced User
                         ref.Purchaser AS 'Person_responsible_for_purchasing_goods',
                         -- Referral
