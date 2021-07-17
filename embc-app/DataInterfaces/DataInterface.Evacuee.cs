@@ -182,7 +182,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
         public async Task<IEnumerable<EvacueeReportItem>> GetEvacueeReportAsync(EvacueeSearchQueryParameters searchQuery)
         {
-            var query = db.EvacueeReportItems
+            var queryEvacRep = db.EvacueeReportItems
                 .FromSql(@"
                     SELECT
                     -- File Information
@@ -278,16 +278,16 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             // * END - PI columns removed as indicated in Jira ticket EMBCESSMOD-829
             //**********************************************************************
 
-            // Apply Where clauses
-            //if (!string.IsNullOrWhiteSpace(searchQuery.LastName))
-            //{
-            //    query = query.Where(e => e.Last_Name.Equals(searchQuery.LastName, StringComparison.OrdinalIgnoreCase));
-            //}
+            //Apply Where clauses
+            if (!string.IsNullOrWhiteSpace(searchQuery.LastName))
+            {
+                queryEvacRep = queryEvacRep.Where(e => e.Last_Name.Equals(searchQuery.LastName, StringComparison.OrdinalIgnoreCase));
+            }
 
-            //if (!string.IsNullOrWhiteSpace(searchQuery.FirstName))
-            //{
-            //    query = query.Where(e => e.First_Name.Equals(searchQuery.FirstName, StringComparison.OrdinalIgnoreCase));
-            //}
+            if (!string.IsNullOrWhiteSpace(searchQuery.FirstName))
+            {
+                queryEvacRep = queryEvacRep.Where(e => e.First_Name.Equals(searchQuery.FirstName, StringComparison.OrdinalIgnoreCase));
+            }
 
             //if (!string.IsNullOrWhiteSpace(searchQuery.DateOfBirth))
             //{
@@ -301,25 +301,25 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
 
             if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber))
             {
-                query = query.Where(e => e.Task_Number == searchQuery.IncidentTaskNumber);
+                queryEvacRep = queryEvacRep.Where(e => e.Task_Number == searchQuery.IncidentTaskNumber);
             }
 
             if (!string.IsNullOrWhiteSpace(searchQuery.EssFileNumber))
             {
-                query = query.Where(e => e.Ess_File_Number.ToString() == searchQuery.EssFileNumber);
+                queryEvacRep = queryEvacRep.Where(e => e.Ess_File_Number.ToString() == searchQuery.EssFileNumber);
             }
 
             if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedTo))
             {
-                query = query.Where(e => e.Evacuated_From == searchQuery.EvacuatedTo);
+                queryEvacRep = queryEvacRep.Where(e => e.Evacuated_From == searchQuery.EvacuatedTo);
             }
 
             if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom))
             {
-                query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedFrom);
+                queryEvacRep = queryEvacRep.Where(e => e.Evacuated_To == searchQuery.EvacuatedFrom);
             }
 
-            return await query.ToListAsync();
+            return await queryEvacRep.ToListAsync();
         }
 
         public async Task<IEnumerable<Models.Db.ReferralReportItem>> GetEvacueeReferralReportAsync(EvacueeSearchQueryParameters searchQuery)
@@ -357,6 +357,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         CASE WHEN ref.Type = 'Lodging_Hotel' THEN ISNULL(ref.HotelLodgingReferral_NumberOfNights, 0)
                             ELSE CASE WHEN ref.Type = 'Lodging_Group' THEN ISNULL(ref.GroupLodgingReferral_NumberOfNights, 0) END END as 'Number_of_Nights',
                         ref.TransportMode as 'Mode_of_Transportation',
+                        CONVERT(datetime, SWITCHOFFSET(ref.CreatedDateTime, DATEPART(TZOFFSET, ref.CreatedDateTime AT TIME ZONE 'Pacific Standard Time'))) as 'Referral_Created_Date', --****NEW**** EMBCESSMOD-2076
                         --Referrals Supplier
                         sup.Name as 'Supplier_Name',
                         sup.Address as 'Supplier_Address',
