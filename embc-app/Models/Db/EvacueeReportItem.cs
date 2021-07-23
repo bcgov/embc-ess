@@ -24,14 +24,16 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string Date_Of_Birth { get; set; }
         public string Gender { get; set; }
         public string Is_Head_Of_HouseHold { get; set; }
+        public string Preferred_Name { get; set; }
+        public string Initials { get; set; }
         public string Address { get; set; }
         public string Community { get; set; }
         public string Province { get; set; }
         public string Postal_Code { get; set; }
         public string Country { get; set; }
-        public string Phone_Number { get; set; }
-        public string Alternate_Phone_Number { get; set; }
-        public string Email_Address { get; set; }
+        public string Registration_Phone_Number { get; set; }
+        public string Registration_Alternate_Phone_Number { get; set; }
+        public string Registration_Email_Address { get; set; }
         public string Mailing_Address { get; set; }
         public string Mailing_Community { get; set; }
         public string Mailing_Province { get; set; }
@@ -46,5 +48,25 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string Service_Recommendation_Personal_Services { get; set; }
         public string Service_Recommendation_Child_Care { get; set; }
         public string Service_Recommendation_Pet_Care { get; set; }
+        // *** NEW***
+        public string Requires_Accommodation { get; set; }
+        public string Requires_Clothing { get; set; }
+        public string Requires_Food { get; set; }
+        public string Requires_Incidentals { get; set; }
+        public string Requires_Transportation { get; set; }
+        public string Medication_Needs { get; set; }
+        public string Medication_supply_for_3_days { get; set; }
+        public string Dietary_Needs { get; set; }
+        public string Pet_Care_Plan { get; set; }
+        public string Dietary_Needs_Details { get; set; }
+        public string Disaster_Affect_Details { get; set; }
+        public string External_Service_Recommendations { get; set; }
+        public string Family_Recovery_Plan { get; set; }
+        public string Internal_Case_Notes { get; set; }
+
+        
+            
+            
+            
     }
 }

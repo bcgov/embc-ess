@@ -5,6 +5,7 @@ using Gov.Jag.Embc.Public.ViewModels.Search;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -181,6 +182,123 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
         }
 
         public async Task<IEnumerable<EvacueeReportItem>> GetEvacueeReportAsync(EvacueeSearchQueryParameters searchQuery)
+        {
+            var pstTimeZone = GetPSTTimeZone();
+            var query = from evacuee in db.Evacuees
+                        from registration in db.EvacueeRegistrations
+                            .Include(r => r.IncidentTask).ThenInclude(t => t.Community)
+                            .Include(r => r.HostCommunity)
+                        from primaryAddress in db.EvacueeRegistrationAddresses.Include(a => a.Community).Include(a => a.Country)
+                                .Where(a => a.AddressTypeCode == "Primary" && a.RegistrationId == registration.EssFileNumber).DefaultIfEmpty()
+                        from mailingAddress in db.EvacueeRegistrationAddresses.Include(a => a.Community).Include(a => a.Country)
+                            .Where(a => a.AddressTypeCode == "Mailing" && a.RegistrationId == registration.EssFileNumber).DefaultIfEmpty()
+                        where registration.EssFileNumber == evacuee.RegistrationId
+
+                        select new EvacueeReportItem
+                        {
+                            // File Information
+                            Ess_File_Number = registration.EssFileNumber,
+                            Task_Number = registration.IncidentTask.TaskNumber == null ? null : registration.IncidentTask.TaskNumber,
+                            //Task_Number_Start_Date = registration.IncidentTask == null ? null : registration.IncidentTask.TaskNumberStartDate.Value.LocalDateTime, //DateTime
+                            Task_Number_Start_Date = registration.IncidentTask.TaskNumberStartDate.HasValue == true ? TimeZoneInfo.ConvertTimeBySystemTimeZoneId(registration.IncidentTask.TaskNumberStartDate.GetValueOrDefault().UtcDateTime, pstTimeZone) : null, //DateTime
+                            Task_Number_End_Date = registration.IncidentTask.TaskNumberEndDate.HasValue == true ? TimeZoneInfo.ConvertTimeBySystemTimeZoneId(registration.IncidentTask.TaskNumberEndDate.GetValueOrDefault().UtcDateTime, pstTimeZone) : null, //DateTime
+                            Self_Registration_Date = registration.SelfRegisteredDate.HasValue == true ? TimeZoneInfo.ConvertTimeFromUtc(registration.SelfRegisteredDate.Value, TimeZoneInfo.FindSystemTimeZoneById(pstTimeZone)) : null, //DateTime
+                            Registration_Completed_Date = registration.RegistrationCompletionDate.HasValue == true ? TimeZoneInfo.ConvertTimeFromUtc(registration.RegistrationCompletionDate.Value, TimeZoneInfo.FindSystemTimeZoneById(pstTimeZone)) : null, //DateTime
+                            File_Status = registration.IncidentTask == null ? null : registration.IncidentTask.TaskNumber == null ? "Not Finalized" : "Finalized",
+                            Evacuated_From = registration.HostCommunity.Name,
+                            Evacuated_To = registration.IncidentTask == null ? null : registration.IncidentTask.Community.Name,
+                            Facility_Name = registration.Facility,
+                            // ****** PI data start ******
+                            // Evacuee Information
+                            Last_Name = evacuee.LastName,
+                            First_Name = evacuee.FirstName,
+                            Date_Of_Birth = evacuee.Dob.Value.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture), //Date
+                            Gender = evacuee.Gender,
+                            Is_Head_Of_HouseHold = evacuee.EvacueeType == Enumerations.EvacueeType.HeadOfHousehold ? "Y" : "N",
+                            Preferred_Name = evacuee.Nickname, //**** NEW ****
+                            Initials = evacuee.Initials, //**** NEW ****
+                            // Evacuee Contact Information
+                            Address = primaryAddress == null ? null : primaryAddress.AddressLine1,
+                            Community = primaryAddress == null ? null : primaryAddress.Community.Name,
+                            Province = primaryAddress == null ? null : primaryAddress.Province,
+                            Postal_Code = primaryAddress == null ? null : primaryAddress.PostalCode,
+                            Country = primaryAddress == null ? null : primaryAddress.Country.Name,
+                            Registration_Phone_Number = registration.PhoneNumber,
+                            Registration_Alternate_Phone_Number = registration.PhoneNumberAlt,
+                            Registration_Email_Address = registration.Email,
+                            Mailing_Address = mailingAddress.AddressLine1 == null ? primaryAddress.AddressLine1 : mailingAddress.AddressLine1,
+                            Mailing_Community = mailingAddress.Community.Name == null ? primaryAddress.Community.Name : mailingAddress.Community.Name,
+                            Mailing_Province = mailingAddress.Province == null ? primaryAddress.Province : mailingAddress.Province,
+                            Mailing_Postal_Code = mailingAddress.PostalCode == null ? primaryAddress.PostalCode : mailingAddress.PostalCode,
+                            Mailing_Country = mailingAddress.Country.Name == null ? primaryAddress.Country.Name : mailingAddress.Country.Name,
+                            // ****** PI data end ******
+                            // Questions and Services
+                            Insurance = registration.InsuranceCode,
+                            Pets = registration.HasPets == true ? "Y" : "N",
+                            Service_Recommendation_Inquiry = registration.HasInquiryReferral == true ? "Y" : "N",
+                            Service_Recommendation_Health_Services = registration.HasHealthServicesReferral == true ? "Y" : "N",
+                            Service_Recommendation_First_Aid = registration.HasFirstAidReferral == true ? "Y" : "N",
+                            Service_Recommendation_Personal_Services = registration.HasPersonalServicesReferral == true ? "Y" : "N",
+                            Service_Recommendation_Child_Care = registration.HasChildCareReferral == true ? "Y" : "N",
+                            Service_Recommendation_Pet_Care = registration.HasPetCareReferral == true ? "Y" : "N",
+                            // **** NEW ****
+                            Requires_Accommodation = registration.RequiresAccommodation == true ? "Y" : "N",
+                            Requires_Clothing = registration.RequiresClothing == true ? "Y" : "N",
+                            Requires_Food = registration.RequiresFood == true ? "Y" : "N",
+                            Requires_Incidentals = registration.RequiresIncidentals == true ? "Y" : "N",
+                            Requires_Transportation = registration.RequiresTransportation == true ? "Y" : "N",
+                            Medication_Needs = registration.MedicationNeeds == true ? "Y" : "N",
+                            Medication_supply_for_3_days = registration.HasThreeDayMedicationSupply == true ? "Y" : "N",
+                            Dietary_Needs = registration.DietaryNeeds == true ? "Y" : "N",
+                            Pet_Care_Plan = registration.PetCarePlan,
+                            Dietary_Needs_Details = registration.DietaryNeedsDetails,
+                            Disaster_Affect_Details = registration.DisasterAffectDetails,
+                            External_Service_Recommendations = registration.ExternalReferralsDetails,
+                            Family_Recovery_Plan = registration.FamilyRecoveryPlan,
+                            Internal_Case_Notes = registration.FollowUpDetails
+                        };
+
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber))
+            {
+                query = query.Where(e => e.Task_Number == searchQuery.IncidentTaskNumber);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.EssFileNumber))
+            {
+                query = query.Where(e => e.Ess_File_Number.ToString() == searchQuery.EssFileNumber);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedTo))
+            {
+                query = query.Where(e => e.Evacuated_From == searchQuery.EvacuatedTo);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.EvacuatedFrom))
+            {
+                query = query.Where(e => e.Evacuated_To == searchQuery.EvacuatedFrom);
+            }
+
+
+            return await query.ToArrayAsync();
+        }
+
+        private string GetPSTTimeZone()
+        {
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Win32NT:
+                    return "Pacific Standard Time";
+
+                case PlatformID.Unix:
+                    return "Canada/Pacific";
+
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        public async Task<IEnumerable<EvacueeReportItem>> GetEvacueeReportAsync1(EvacueeSearchQueryParameters searchQuery)
         {
             var queryEvacRep = db.EvacueeReportItems
                 .FromSql(@"
@@ -374,31 +492,31 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         LEFT OUTER JOIN Communities commTo ON task.CommunityId = commTo.Id
                     where ref.Active = 1
                 ");
-                        /*****************************************************************
-                         * PI columns removed as indicated in Jira ticket EMBCESSMOD-745
-                         *****************************************************************
-                        LEFT(ref.Type, CASE WHEN charindex('_', ref.Type) = 0 THEN LEN(ref.Type) ELSE charindex('_', ref.Type) - 1 END) as 'Support_Type',
-                        CASE WHEN charindex('_', ref.Type) = 0 THEN '' ELSE Substring(ref.Type, Charindex('_', ref.Type)+1, Len(ref.Type)) END as 'Sub_Support_Type',
-                        CONVERT(datetime, SWITCHOFFSET(ref.ValidFrom, DATEPART(TZOFFSET, ref.ValidFrom AT TIME ZONE 'Pacific Standard Time'))) as 'Valid_From_Date',
-                        DATEDIFF(DAY, ref.ValidFrom, ref.ValidTo) as 'Number_Of_Days',
-                        CONVERT(datetime, SWITCHOFFSET(ref.ValidTo, DATEPART(TZOFFSET, ref.ValidTo AT TIME ZONE 'Pacific Standard Time'))) as 'Valid_To_Date',
-                        (select count(1) from ReferralEvacuees where ReferralId = ref.id) as 'Number_Of_Evacuees_for_Referral',
-                        ref.TotalAmount as 'Total_Amount',
-                        ISNULL(ref.NumberOfBreakfasts, 0) as 'Breakfasts_per_person',
-                        ISNULL(ref.NumberOfLunches, 0) as 'Lunches_per_person',
-                        ISNULL(ref.NumberOfDinners, 0) as 'Dinners_per_person',
-                        ISNULL(ref.NumberOfRooms, 0) as 'Number_of_Rooms',
-                        CASE WHEN ref.Type = 'Lodging_Hotel' THEN ISNULL(ref.HotelLodgingReferral_NumberOfNights, 0)
-                            ELSE CASE WHEN ref.Type = 'Lodging_Group' THEN ISNULL(ref.GroupLodgingReferral_NumberOfNights, 0) END END as 'Number_of_Nights',
-                        ref.TransportMode as 'Mode_of_Transportation',
-                        --Referrals Supplier
-                        sup.Name as 'Supplier_Name',
-                        sup.Address as 'Supplier_Address',
-                        sup.City as 'City',
-                        sup.PostalCode as 'Postal_Code',
-                        sup.Telephone as 'Telephone',
-                        sup.Fax as 'Fax'
-                        */
+            /*****************************************************************
+             * PI columns removed as indicated in Jira ticket EMBCESSMOD-745
+             *****************************************************************
+            LEFT(ref.Type, CASE WHEN charindex('_', ref.Type) = 0 THEN LEN(ref.Type) ELSE charindex('_', ref.Type) - 1 END) as 'Support_Type',
+            CASE WHEN charindex('_', ref.Type) = 0 THEN '' ELSE Substring(ref.Type, Charindex('_', ref.Type)+1, Len(ref.Type)) END as 'Sub_Support_Type',
+            CONVERT(datetime, SWITCHOFFSET(ref.ValidFrom, DATEPART(TZOFFSET, ref.ValidFrom AT TIME ZONE 'Pacific Standard Time'))) as 'Valid_From_Date',
+            DATEDIFF(DAY, ref.ValidFrom, ref.ValidTo) as 'Number_Of_Days',
+            CONVERT(datetime, SWITCHOFFSET(ref.ValidTo, DATEPART(TZOFFSET, ref.ValidTo AT TIME ZONE 'Pacific Standard Time'))) as 'Valid_To_Date',
+            (select count(1) from ReferralEvacuees where ReferralId = ref.id) as 'Number_Of_Evacuees_for_Referral',
+            ref.TotalAmount as 'Total_Amount',
+            ISNULL(ref.NumberOfBreakfasts, 0) as 'Breakfasts_per_person',
+            ISNULL(ref.NumberOfLunches, 0) as 'Lunches_per_person',
+            ISNULL(ref.NumberOfDinners, 0) as 'Dinners_per_person',
+            ISNULL(ref.NumberOfRooms, 0) as 'Number_of_Rooms',
+            CASE WHEN ref.Type = 'Lodging_Hotel' THEN ISNULL(ref.HotelLodgingReferral_NumberOfNights, 0)
+                ELSE CASE WHEN ref.Type = 'Lodging_Group' THEN ISNULL(ref.GroupLodgingReferral_NumberOfNights, 0) END END as 'Number_of_Nights',
+            ref.TransportMode as 'Mode_of_Transportation',
+            --Referrals Supplier
+            sup.Name as 'Supplier_Name',
+            sup.Address as 'Supplier_Address',
+            sup.City as 'City',
+            sup.PostalCode as 'Postal_Code',
+            sup.Telephone as 'Telephone',
+            sup.Fax as 'Fax'
+            */
 
             // Apply where clauses
             if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber))
