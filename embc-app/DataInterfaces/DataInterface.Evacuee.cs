@@ -200,10 +200,10 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                             Ess_File_Number = registration.EssFileNumber,
                             Task_Number = registration.IncidentTask.TaskNumber == null ? null : registration.IncidentTask.TaskNumber,
                             //Task_Number_Start_Date = registration.IncidentTask == null ? null : registration.IncidentTask.TaskNumberStartDate.Value.LocalDateTime, //DateTime
-                            Task_Number_Start_Date = registration.IncidentTask.TaskNumberStartDate.HasValue == true ? TimeZoneInfo.ConvertTimeBySystemTimeZoneId(registration.IncidentTask.TaskNumberStartDate.GetValueOrDefault().UtcDateTime, pstTimeZone) : null, //DateTime
-                            Task_Number_End_Date = registration.IncidentTask.TaskNumberEndDate.HasValue == true ? TimeZoneInfo.ConvertTimeBySystemTimeZoneId(registration.IncidentTask.TaskNumberEndDate.GetValueOrDefault().UtcDateTime, pstTimeZone) : null, //DateTime
-                            Self_Registration_Date = registration.SelfRegisteredDate.HasValue == true ? TimeZoneInfo.ConvertTimeFromUtc(registration.SelfRegisteredDate.Value, TimeZoneInfo.FindSystemTimeZoneById(pstTimeZone)) : null, //DateTime
-                            Registration_Completed_Date = registration.RegistrationCompletionDate.HasValue == true ? TimeZoneInfo.ConvertTimeFromUtc(registration.RegistrationCompletionDate.Value, TimeZoneInfo.FindSystemTimeZoneById(pstTimeZone)) : null, //DateTime
+                            Task_Number_Start_Date = registration.IncidentTask.TaskNumberStartDate.HasValue == true ? TimeZoneInfo.ConvertTimeBySystemTimeZoneId(registration.IncidentTask.TaskNumberStartDate.GetValueOrDefault().UtcDateTime, pstTimeZone) : (DateTime?)null, //DateTime
+                            Task_Number_End_Date = registration.IncidentTask.TaskNumberEndDate.HasValue == true ? TimeZoneInfo.ConvertTimeBySystemTimeZoneId(registration.IncidentTask.TaskNumberEndDate.GetValueOrDefault().UtcDateTime, pstTimeZone) : (DateTime?)null, //DateTime
+                            Self_Registration_Date = registration.SelfRegisteredDate.HasValue == true ? TimeZoneInfo.ConvertTimeFromUtc(registration.SelfRegisteredDate.Value, TimeZoneInfo.FindSystemTimeZoneById(pstTimeZone)) : (DateTime?)null, //DateTime
+                            Registration_Completed_Date = registration.RegistrationCompletionDate.HasValue == true ? TimeZoneInfo.ConvertTimeFromUtc(registration.RegistrationCompletionDate.Value, TimeZoneInfo.FindSystemTimeZoneById(pstTimeZone)) : (DateTime?)null, //DateTime
                             File_Status = registration.IncidentTask == null ? null : registration.IncidentTask.TaskNumber == null ? "Not Finalized" : "Finalized",
                             Evacuated_From = registration.HostCommunity.Name,
                             Evacuated_To = registration.IncidentTask == null ? null : registration.IncidentTask.Community.Name,
