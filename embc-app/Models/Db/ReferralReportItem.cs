@@ -35,12 +35,18 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public int? Number_of_Nights { get; set; }
         public string Mode_of_Transportation { get; set; }
         public DateTime? Referral_Created_Date { get; set; }
+        public string Referral_Comments { get; set; }
+        public string Clothing_Extreme_Winter_Conditions { get; set; }
+        public string Taxi_From_Address { get; set; }
+        public string Taxi_To_Address { get; set; }
+        public int? Groceries_Number_Of_Meals { get; set; }
+        public string Incidentals_Approved_Items { get; set; }
         public string Supplier_Name { get; set; }
         public string Supplier_Address { get; set; }
-        public string City { get; set; }
-        public string Postal_Code { get; set; }
-        public string Telephone { get; set; }
-        public string Fax { get; set; }
+        public string Supplier_City { get; set; }
+        public string Supplier_Postal_Code { get; set; }
+        public string Supplier_Telephone { get; set; }
+        public string Supplier_Fax { get; set; }
         /**************************************************************/
     }
 }

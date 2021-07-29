@@ -476,13 +476,19 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                             ELSE CASE WHEN ref.Type = 'Lodging_Group' THEN ISNULL(ref.GroupLodgingReferral_NumberOfNights, 0) END END as 'Number_of_Nights',
                         ref.TransportMode as 'Mode_of_Transportation',
                         CONVERT(datetime, SWITCHOFFSET(ref.CreatedDateTime, DATEPART(TZOFFSET, ref.CreatedDateTime AT TIME ZONE 'Pacific Standard Time'))) as 'Referral_Created_Date', --****NEW**** EMBCESSMOD-2076
+                        'Referral_Comments' = ref.Comments, --****NEW****
+                        'Clothing_Extreme_Winter_Conditions' = CASE ref.ExtremeWinterConditions WHEN 1 THEN 'Y' WHEN 0 THEN 'N' ELSE null END, --****NEW****
+                        'Taxi_From_Address' = CASE ref.Type WHEN 'Transportation_Taxi' THEN ref.FromAddress END, --****NEW****
+                        'Taxi_To_Address' = CASE ref.Type WHEN 'Transportation_Taxi' THEN ref.ToAddress END, --****NEW****
+                        'Groceries_Number_Of_Meals' = CASE ref.Type WHEN 'Food_Groceries' THEN ref.NumberOfMeals END, --****NEW****
+                        'Incidentals_Approved_Items' = CASE ref.Type WHEN 'Incidentals' THEN ref.ApprovedItems END, --****NEW****
                         --Referrals Supplier
                         sup.Name as 'Supplier_Name',
                         sup.Address as 'Supplier_Address',
-                        sup.City as 'City',
-                        sup.PostalCode as 'Postal_Code',
-                        sup.Telephone as 'Telephone',
-                        sup.Fax as 'Fax'
+                        sup.City as 'Supplier_City',
+                        sup.PostalCode as 'Supplier_Postal_Code',
+                        sup.Telephone as 'Supplier_Telephone',
+                        sup.Fax as 'Supplier_Fax'
                         -- ******************* PI columns end
                     from Referrals ref
                         INNER JOIN Suppliers sup on ref.SupplierId = sup.Id
