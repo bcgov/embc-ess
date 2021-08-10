@@ -57,16 +57,13 @@ namespace Gov.Jag.Embc.Public.Models.Db
         public string Medication_Needs { get; set; }
         public string Medication_supply_for_3_days { get; set; }
         public string Dietary_Needs { get; set; }
-        public string Pet_Care_Plan { get; set; }
-        public string Dietary_Needs_Details { get; set; }
-        public string Disaster_Affect_Details { get; set; }
-        public string External_Service_Recommendations { get; set; }
-        public string Family_Recovery_Plan { get; set; }
-        public string Internal_Case_Notes { get; set; }
-
-        
-            
-            
-            
+        /* Jira EMBCESSMOD-2323 potential fields with characters affecting the csv file output
+        //public string Pet_Care_Plan { get; set; }
+        //public string Dietary_Needs_Details { get; set; }
+        //public string Disaster_Affect_Details { get; set; }
+        //public string External_Service_Recommendations { get; set; }
+        //public string Family_Recovery_Plan { get; set; }
+        //public string Internal_Case_Notes { get; set; }
+        */
     }
 }

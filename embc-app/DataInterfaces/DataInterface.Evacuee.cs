@@ -250,12 +250,14 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                             Medication_Needs = registration.MedicationNeeds == true ? "Y" : "N",
                             Medication_supply_for_3_days = registration.HasThreeDayMedicationSupply == true ? "Y" : "N",
                             Dietary_Needs = registration.DietaryNeeds == true ? "Y" : "N",
+                            /* Jira EMBCESSMOD-2323
                             Pet_Care_Plan = registration.PetCarePlan,
                             Dietary_Needs_Details = registration.DietaryNeedsDetails,
                             Disaster_Affect_Details = registration.DisasterAffectDetails,
                             External_Service_Recommendations = registration.ExternalReferralsDetails,
                             Family_Recovery_Plan = registration.FamilyRecoveryPlan,
                             Internal_Case_Notes = registration.FollowUpDetails
+                            */
                         };
 
 
@@ -474,14 +476,16 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
                         ISNULL(ref.NumberOfRooms, 0) as 'Number_of_Rooms',
                         CASE WHEN ref.Type = 'Lodging_Hotel' THEN ISNULL(ref.HotelLodgingReferral_NumberOfNights, 0)
                             ELSE CASE WHEN ref.Type = 'Lodging_Group' THEN ISNULL(ref.GroupLodgingReferral_NumberOfNights, 0) END END as 'Number_of_Nights',
-                        ref.TransportMode as 'Mode_of_Transportation',
                         CONVERT(datetime, SWITCHOFFSET(ref.CreatedDateTime, DATEPART(TZOFFSET, ref.CreatedDateTime AT TIME ZONE 'Pacific Standard Time'))) as 'Referral_Created_Date', --****NEW**** EMBCESSMOD-2076
-                        'Referral_Comments' = ref.Comments, --****NEW****
                         'Clothing_Extreme_Winter_Conditions' = CASE ref.ExtremeWinterConditions WHEN 1 THEN 'Y' WHEN 0 THEN 'N' ELSE null END, --****NEW****
-                        'Taxi_From_Address' = CASE ref.Type WHEN 'Transportation_Taxi' THEN ref.FromAddress END, --****NEW****
-                        'Taxi_To_Address' = CASE ref.Type WHEN 'Transportation_Taxi' THEN ref.ToAddress END, --****NEW****
+                        -------- Jira EMBCESSMOD-2323 potential fields with characters affecting the csv file output
+                        --'Mode_of_Transportation' = ref.TransportMode,
+                        --'Referral_Comments' = ref.Comments, --****NEW****
+                        --'Taxi_From_Address' = CASE ref.Type WHEN 'Transportation_Taxi' THEN ref.FromAddress END, --****NEW****
+                        --'Taxi_To_Address' = CASE ref.Type WHEN 'Transportation_Taxi' THEN ref.ToAddress END, --****NEW****
+                        --'Incidentals_Approved_Items' = CASE ref.Type WHEN 'Incidentals' THEN ref.ApprovedItems END, --****NEW****
+                        -------- Jira EMBCESSMOD-2323
                         'Groceries_Number_Of_Meals' = CASE ref.Type WHEN 'Food_Groceries' THEN ref.NumberOfMeals END, --****NEW****
-                        'Incidentals_Approved_Items' = CASE ref.Type WHEN 'Incidentals' THEN ref.ApprovedItems END, --****NEW****
                         --Referrals Supplier
                         sup.Name as 'Supplier_Name',
                         sup.Address as 'Supplier_Address',
@@ -524,7 +528,7 @@ namespace Gov.Jag.Embc.Public.DataInterfaces
             sup.Fax as 'Fax'
             */
 
-            // Apply where clauses
+                            // Apply where clauses
             if (!string.IsNullOrWhiteSpace(searchQuery.IncidentTaskNumber))
             {
                 query = query.Where(e => e.Task_Number == searchQuery.IncidentTaskNumber);
