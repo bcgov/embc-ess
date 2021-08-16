@@ -4,6 +4,7 @@ Emergency Management BC - Emergency Support Services Modernization
 
 ERA portal - This repository contains the code base for self registration and emergency response assistants functions
 
+[![img](https://img.shields.io/badge/Lifecycle-Stable-97ca00)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 
 Technology Stack
 -----------------
