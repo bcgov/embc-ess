@@ -10,6 +10,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { ReadOnlyService } from '../../../core/services/read-only.service';
 
 // TODO: Un-comment code below when we are ready to aggregate all communities + regions in a single drop-down
 // interface SearchFilter {
@@ -49,6 +50,7 @@ export class OrganizationListComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   // convenience getters

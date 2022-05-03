@@ -6,6 +6,7 @@ import { IncidentTaskService } from 'src/app/core/services/incident-task.service
 import { IncidentTaskSearchQueryParameters } from 'src/app/core/models/search-interfaces';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { ReadOnlyService } from '../../../core/services/read-only.service';
 
 @Component({
   selector: 'app-task-number-list',
@@ -38,6 +39,7 @@ export class TaskNumberListComponent implements OnInit {
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private fb: FormBuilder,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   // convenience getters

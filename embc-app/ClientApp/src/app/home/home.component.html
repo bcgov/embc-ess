@@ -37,7 +37,7 @@
       </p>
     </div>
     <div class="card-body mx-auto">
-      <button class="btn btn-primary mx-auto" (click)="newRegistration()">EVACUEE SELF-REGISTRATION</button>
+      <button class="btn btn-primary mx-auto" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="newRegistration()">EVACUEE SELF-REGISTRATION</button>
     </div>
     <div class="banner-spacing">
       <span>&nbsp;</span>

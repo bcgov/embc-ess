@@ -9,6 +9,7 @@ import {
   Referral, isLodgingReferral, isClothingReferral,
   isFoodReferral, isIncidentalsReferral, isTransportationReferral
 } from 'src/app/core/models';
+import { ReadOnlyService } from '../../../core/services/read-only.service';
 
 @Component({
   templateUrl: './referral-view.component.html',
@@ -34,6 +35,7 @@ export class ReferralViewComponent implements OnInit, OnDestroy {
     private uniqueKeyService: UniqueKeyService,
     private referralService: ReferralService,
     private notifications: NotificationQueueService,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   ngOnInit() {

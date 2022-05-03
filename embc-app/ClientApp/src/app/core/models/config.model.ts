@@ -10,4 +10,5 @@ export interface Config {
   clientTimeoutWarningDurationInMinutes: number | null;
   defaultTimeoutWarningInMinutes: number | null;
   defaultWarningDurationInMinutes: number | null;
+  readOnlyMode: boolean;
 }

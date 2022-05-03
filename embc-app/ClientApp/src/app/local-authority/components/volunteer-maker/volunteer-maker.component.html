@@ -106,9 +106,9 @@
       <button (click)="back()" class="btn btn-outline-primary text-uppercase">Edit Details</button>
     </section>
     <section>
-      <button *ngIf="!submitting" class="btn btn-primary text-uppercase" (click)="submit()">Save</button>
+      <button *ngIf="!submitting" class="btn btn-primary text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="submit()">Save</button>
       <!-- Save and add another is only enabled when adding new volunteers. Not when editing one. -->
-      <button *ngIf="editMode === 'ADD' && !submitting" class="btn btn-primary text-uppercase ml-2" (click)="submit(true)">Save &amp; Add Another</button>
+      <button *ngIf="editMode === 'ADD' && !submitting" class="btn btn-primary text-uppercase ml-2" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="submit(true)">Save &amp; Add Another</button>
       <button *ngIf="submitting" class="btn btn-primary text-uppercaseS" disabled>Submitting</button>
     </section>
   </div>

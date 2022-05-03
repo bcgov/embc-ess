@@ -4,6 +4,7 @@ import { ReferralSearchResults } from 'src/app/core/models/search-interfaces';
 import { AuthService } from 'src/app/core/services/auth.service';
 import startCase from 'lodash/startCase';
 import toLower from 'lodash/toLower';
+import { ReadOnlyService } from '../../core/services/read-only.service';
 
 interface RowItem {
   registrationId: string;
@@ -41,7 +42,8 @@ export class ReferralSearchResultsComponent implements OnChanges, OnInit {
   }
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   ngOnInit() {

@@ -45,6 +45,7 @@ namespace Gov.Jag.Embc.Public.Controllers
                 DefaultTimeoutWarningInMinutes = configuration.DefaultTimeoutWarningInMinutes(),
                 DefaultWarningDurationInMinutes = configuration.DefaultTimeoutWarningDurationInMinutes(),
                 ReleaseVersion = configuration.GetReleaseVersion(),
+                ReadOnlyMode = configuration.GetReadOnlyMode()
             };
            
             return Json(avi);

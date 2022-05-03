@@ -8,6 +8,7 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
 import { OrganizationService } from 'src/app/core/services/organization.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
+import { ReadOnlyService } from '../../../core/services/read-only.service';
 
 //
 // this is the component used by Provincial Admin users
@@ -59,6 +60,7 @@ export class VolunteerOrganizationListComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private notificationQueueService: NotificationQueueService,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   // convenience getters

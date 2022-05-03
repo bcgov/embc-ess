@@ -127,7 +127,7 @@
             <input type="text" *ngIf="selectedPurchaser === 'other'" class="form-control w-25 ml-3" [(ngModel)]="otherPurchaser" placeholder="Please specify">
           </app-form-field>
 
-          <button type="button" class="btn btn-primary d-block" [disabled]="referralsDisabled" (click)="addReferrals()">
+          <button type="button" class="btn btn-primary d-block" [class.is-disabled]="readOnlyService.getIsReadOnly()" [disabled]="referralsDisabled" (click)="addReferrals()">
             ADD REFERRALS
           </button>
         </div>

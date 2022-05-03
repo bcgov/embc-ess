@@ -11,6 +11,7 @@ import { AppState } from './store';
 import { Config } from './core/models';
 import { WatchdogService } from './core/services/watchdog.service';
 import { VolunteerTaskService } from './core/services/volunteer-task.service';
+import { ReadOnlyService } from './core/services/read-only.service';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     private volunteerTaskService: VolunteerTaskService,
     public uniqueKeyService: UniqueKeyService,
+    private readOnlyService: ReadOnlyService,
     // private router: Router,
     private store: Store<AppState> // ngrx app state
   ) {
@@ -105,7 +107,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.lookups.getAllCommunities(),
       this.lookups.getAllFamilyRelationshipTypes(),
       // ...add more
-    ).subscribe();
+    ).subscribe(() => {
+      this.readOnlyService.calculate();
+    });
   }
 
   ngOnDestroy() {

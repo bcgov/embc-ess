@@ -121,8 +121,8 @@
       <button (click)="back()" class="btn btn-outline-primary text-uppercase">Edit Details</button>
     </section>
     <section>
-      <button *ngIf="!submitting" class="btn btn-primary text-uppercase" (click)="submit()">Save</button>
-      <button *ngIf="!submitting" class="btn btn-primary ml-2 text-uppercase" (click)="submit(true)">Save &amp; Add Users</button>
+      <button *ngIf="!submitting" class="btn btn-primary text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="submit()">Save</button>
+      <button *ngIf="!submitting" class="btn btn-primary ml-2 text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="submit(true)">Save &amp; Add Users</button>
       <button *ngIf="submitting" class="btn btn-primary ml-2 text-uppercase" disabled>Submitting</button>
     </section>
   </div>

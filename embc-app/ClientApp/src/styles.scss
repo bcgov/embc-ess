@@ -219,3 +219,10 @@ input[type=number]::-webkit-outer-spin-button {
 .uppercase-text {
   text-transform: uppercase;
 }
+
+.is-disabled {
+  cursor: default;
+  opacity: 0.5;
+  text-decoration: none;
+  pointer-events: none;
+}

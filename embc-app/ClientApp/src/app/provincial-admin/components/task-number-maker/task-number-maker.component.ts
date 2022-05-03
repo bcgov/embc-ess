@@ -13,6 +13,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { invalidField } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { Subscription } from 'rxjs';
+import { ReadOnlyService } from '../../../core/services/read-only.service';
 
 @Component({
   selector: 'app-task-number-maker',
@@ -65,6 +66,7 @@ export class TaskNumberMakerComponent implements OnInit, AfterViewInit, OnDestro
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private fb: FormBuilder,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   // convenience getter for easy access to form fields

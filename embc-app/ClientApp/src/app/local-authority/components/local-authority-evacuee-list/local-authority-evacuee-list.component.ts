@@ -11,6 +11,7 @@ import { EVERYONE, VOLUNTEER, LOCAL_AUTHORITY, PROVINCIAL_ADMIN } from 'src/app/
 import * as moment from 'moment';
 import { dateStringIsValid } from 'src/app/shared/utils/date-utils';
 import { saveAs } from 'file-saver';
+import { ReadOnlyService } from '../../../core/services/read-only.service';
 
 @Component({
   selector: 'app-local-authority-evacuee-list',
@@ -67,6 +68,7 @@ export class LocalAuthorityEvacueeListComponent implements OnInit {
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private fb: FormBuilder,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   ngOnInit() {
