@@ -1,23 +1,24 @@
-console.log();
-console.log(`** Using angular proxy to remote API server: ${process.env.API_URL} **`);
+const apiUrl = process.env.API_URL || 'http://localhost:49200';
+console.log(`** Using angular proxy to remote API server: ${apiUrl} **`);
 
 const proxyConfig = {
-  '/embcess/api': {
-    'target': process.env.API_URL,
-    'secure': false,
+  '/api': {
+    'target': apiUrl,
+    'secure': true,
     'changeOrigin': true,
-    'pathRewrite': {
-      '^/embcess': ''
-    },
-    'bypass': function (req, res, proxyOptions) {
-      if (!process.env.API_URL) {
-        return false;
-      }
-      // append dev user login tokens (if available)
-      if (process.env.SM_TOKEN) {
-        req.headers.cookie = 'sm.token=' + process.env.SM_TOKEN;
-      }
-    }
+    'logLevel': 'debug',
+  },
+  '/login': {
+    'target': apiUrl,
+    'secure': true,
+    'changeOrigin': true,
+    'logLevel': 'debug',
+  },
+  '/signin-oidc': {
+    'target': apiUrl,
+    'secure': true,
+    'changeOrigin': true,
+    'logLevel': 'debug',
   }
 }
 

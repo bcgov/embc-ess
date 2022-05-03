@@ -8,6 +8,7 @@ import { RegistrationService } from 'src/app/core/services/registration.service'
 import { ListResult, PaginationSummary, Referral, RegistrationSummary } from 'src/app/core/models';
 import { ReferralSearchResults } from 'src/app/core/models/search-interfaces';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
+import { ReadOnlyService } from '../../../core/services/read-only.service';
 
 @Component({
   selector: 'app-referral-table',
@@ -37,6 +38,7 @@ export class ReferralTableComponent implements OnChanges, OnDestroy {
     private registrationService: RegistrationService,
     private modals: NgbModal,
     private notifications: NotificationQueueService,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   ngOnChanges() {

@@ -7,6 +7,7 @@ import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AppState } from '../store';
 import * as RegistrationActions from 'src/app/store/registration/registration.actions';
 import { LogInEnvironmentComponent } from '../shared/modals/log-in-environment/log-in-environment.component';
+import { ReadOnlyService } from '../core/services/read-only.service';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private router: Router,
-    private modals: NgbModal
+    private modals: NgbModal,
+    public readOnlyService: ReadOnlyService
   ) {
     this.browserIE = /msie\s|trident\//i.test(window.navigator.userAgent);
   }

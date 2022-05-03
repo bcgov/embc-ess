@@ -9,6 +9,7 @@ import { INSURANCE_OPTIONS, GENDER_OPTIONS } from 'src/app/constants/lookups';
 import { Registration, isBcAddress, Address } from 'src/app/core/models';
 import { UpdateRegistration } from 'src/app/store/registration/registration.actions';
 import { RegistrationService } from 'src/app/core/services/registration.service';
+import { ReadOnlyService } from '../../core/services/read-only.service';
 
 @Component({
   selector: 'app-self-registration-three',
@@ -32,6 +33,7 @@ export class SelfRegistrationThreeComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private service: RegistrationService,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   get hasEmail(): boolean {

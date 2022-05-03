@@ -20,6 +20,7 @@ import { NotificationQueueService } from 'src/app/core/services/notification-que
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { of } from 'rxjs';
 import { VolunteerTaskService } from 'src/app/core/services/volunteer-task.service';
+import { ReadOnlyService } from '../../../core/services/read-only.service';
 
 @Component({
   selector: 'app-registration-maker',
@@ -95,7 +96,8 @@ export class RegistrationMakerComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private el: ElementRef,
-    private volTaskServ: VolunteerTaskService
+    private volTaskServ: VolunteerTaskService,
+    public readOnlyService: ReadOnlyService
   ) {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.

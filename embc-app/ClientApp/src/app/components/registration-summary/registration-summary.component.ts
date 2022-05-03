@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
 import * as moment from 'moment';
+import { ReadOnlyService } from '../../core/services/read-only.service';
 
 @Component({
   templateUrl: './registration-summary.component.html',
@@ -32,6 +33,7 @@ export class RegistrationSummaryComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private notificationQueueService: NotificationQueueService,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   ngOnInit() {

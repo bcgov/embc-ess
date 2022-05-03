@@ -32,7 +32,7 @@
         </app-pagination-summary>
       </section>
       <section>
-        <button class="btn btn-primary text-uppercase" (click)="modifyOrganization()">Add Organization</button>
+        <button class="btn btn-primary text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="modifyOrganization()">Add Organization</button>
       </section>
     </div>
     <table class="table table-hover table-sm">
@@ -52,14 +52,14 @@
           <td>
             <a href="javascript:void(0)" (click)="modifyOrganizationVolunteers(organization.id)">View/Add ERA Users</a>
             <br>
-            <a href="javascript:void(0)" (click)="modifyOrganization(organization.id)">Edit Details</a>
+            <a href="javascript:void(0)" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="modifyOrganization(organization.id)">Edit Details</a>
           </td>
         </tr>
       </tbody>
     </table>
     <div class="row">
       <div class="col">
-        <button class="btn btn-primary float-right text-uppercase" (click)="modifyOrganization()">Add Organization</button>
+        <button class="btn btn-primary float-right text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="modifyOrganization()">Add Organization</button>
       </div>
     </div>
   </ng-template>
@@ -70,7 +70,7 @@
         {{notFoundMessage}}
       </div>
       <div class="col">
-        <button class="btn btn-primary float-right text-uppercase" (click)="modifyOrganization()">Add Organization</button>
+        <button class="btn btn-primary float-right text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="modifyOrganization()">Add Organization</button>
       </div>
     </div>
   </ng-template>

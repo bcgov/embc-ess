@@ -13,6 +13,7 @@ import { ValidationHelper } from 'src/app/shared/validation/validation.helper';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
 import { clearFormArray, hasErrors, invalidField } from 'src/app/shared/utils';
 import { from } from 'rxjs';
+import { ReadOnlyService } from '../../core/services/read-only.service';
 
 @Component({
   selector: 'app-self-registration-one',
@@ -52,7 +53,8 @@ export class SelfRegistrationOneComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public readOnlyService: ReadOnlyService
   ) {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.

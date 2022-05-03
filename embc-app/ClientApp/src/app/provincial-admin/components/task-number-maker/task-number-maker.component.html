@@ -141,7 +141,7 @@
       <button type="button" *ngIf="submitting" class="btn btn-primary text-uppercase" disabled>
         <span>Submitting</span>
       </button>
-      <button type="button" *ngIf="!submitting" class="btn btn-primary text-uppercase" (click)="submit()">
+      <button type="button" *ngIf="!submitting" class="btn btn-primary text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="submit()">
         <span>Save Task</span>
       </button>
     </section>

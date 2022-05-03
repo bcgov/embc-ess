@@ -8,7 +8,7 @@
       </p>
     </div>
     <div>
-      <button type="submit" class="btn btn-primary ml-4 text-uppercase" (click)="routeTo()">Edit</button>
+      <button type="submit" class="btn btn-primary ml-4 text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="routeTo()">Edit</button>
     </div>
   </section>
 
@@ -22,7 +22,7 @@
       <!-- <button class="btn btn-outline-primary text-uppercase">Deactivate</button> -->
     </div>
     <div>
-      <button type="submit" class="btn btn-primary ml-4 text-uppercase" (click)="routeTo()">Edit</button>
+      <button type="submit" class="btn btn-primary ml-4 text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="routeTo()">Edit</button>
     </div>
   </section>
 </div>

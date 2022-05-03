@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { ReadOnlyService } from '../../../core/services/read-only.service';
 
 @Component({
   selector: 'app-side-box-info',
@@ -18,6 +19,7 @@ export class SideBoxInfoComponent {
     private router: Router,
     private current: ActivatedRoute,
     private uniqueKeyService: UniqueKeyService,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   continue() {

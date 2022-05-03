@@ -18,7 +18,7 @@
       <tr *ngFor="let r of rows" class="light" [ngClass]="{'hasCheckbox': r.data?.active}">
         <ng-container *ngIf="r.data?.active; then editable else deactivated"></ng-container>
         <ng-template #editable>
-          <td class="dark" (click)="onReferralChange(r)"><input type="checkbox" [checked]="r.checked"></td>
+          <td class="dark" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="onReferralChange(r)"><input type="checkbox" [checked]="r.checked"></td>
           <td>{{r.data?.referralId}}</td>
         </ng-template>
         <ng-template #deactivated>

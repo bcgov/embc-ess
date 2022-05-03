@@ -251,7 +251,7 @@
         <td>{{rowItem.evacuatedTo}}</td>
         <td>{{rowItem.evacuatedFrom}}</td>
         <td>
-          <a href="javascript:void(0)" *ngIf="!rowItem.isFinalized" (click)="edit(rowItem.registrationId)">Finalize</a>
+          <a href="javascript:void(0)" [class.is-disabled]="readOnlyService.getIsReadOnly()" *ngIf="!rowItem.isFinalized" (click)="edit(rowItem.registrationId)">Finalize</a>
           <a href="javascript:void(0)" *ngIf="rowItem.isFinalized" (click)="view(rowItem.registrationId)">View</a>
         </td>
       </tr>

@@ -61,7 +61,7 @@
         </app-pagination-summary>
       </section>
       <section>
-        <button class="btn btn-primary float-right text-uppercase" (click)="modifyOrganizationVolunteer()">Add Users</button>
+        <button class="btn btn-primary float-right text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="modifyOrganizationVolunteer()">Add Users</button>
       </section>
     </div>
     <table class="table table-hover table-sm">
@@ -86,7 +86,7 @@
           <td>{{!!volunteer.isAdministrator ? 'ERA Superuser' : 'ERA User'}}</td>
           <td>{{!!volunteer.isAdministrator ? (!!volunteer.isPrimaryContact | yesNo) : 'n/a'}}</td>
           <td>
-            <a href="javascript:void(0)" (click)="modifyOrganizationVolunteer(volunteer.id)">Edit</a>
+            <a href="javascript:void(0)" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="modifyOrganizationVolunteer(volunteer.id)">Edit</a>
           </td>
         </tr>
       </tbody>
@@ -98,7 +98,7 @@
     </div>
 
     <div class="clearfix">
-      <button class="btn btn-primary float-right text-uppercase" (click)="modifyOrganizationVolunteer()">Add Users</button>
+      <button class="btn btn-primary float-right text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="modifyOrganizationVolunteer()">Add Users</button>
     </div>
   </ng-template>
 

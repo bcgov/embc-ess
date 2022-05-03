@@ -169,5 +169,10 @@ namespace Gov.Jag.Embc.Public
         {
             return conf.GetValue("RELEASE_VERSION", "RELEASE_VERSION variable not set!");
         }
+
+        public static bool GetReadOnlyMode(this IConfiguration conf)
+        {
+            return string.Equals(conf.GetValue("READ_ONLY", "false"), "true", StringComparison.InvariantCultureIgnoreCase);
+        }
     }
 }

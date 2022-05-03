@@ -9,6 +9,7 @@ import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { invalidField } from 'src/app/shared/utils';
 import { VolunteerService } from 'src/app/core/services/volunteer.service';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { ReadOnlyService } from '../../../core/services/read-only.service';
 
 @Component({
   selector: 'app-organization-maker',
@@ -40,6 +41,7 @@ export class OrganizationMakerComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private fb: FormBuilder,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   ngOnInit() {

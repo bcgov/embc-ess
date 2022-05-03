@@ -57,5 +57,7 @@ namespace Gov.Jag.Embc.Public.ViewModels
         public int DefaultTimeoutWarningInMinutes { get; internal set; }
         public int ClientTimeoutWarningDurationInMinutes { get; internal set; }
         public int DefaultWarningDurationInMinutes { get; internal set; }
+
+        public bool ReadOnlyMode { get; set; }
     }
 }

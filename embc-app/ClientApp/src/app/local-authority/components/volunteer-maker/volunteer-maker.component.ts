@@ -9,6 +9,7 @@ import { NotificationQueueService } from 'src/app/core/services/notification-que
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { invalidField } from 'src/app/shared/utils';
 import { CustomValidators } from 'src/app/shared/validation/custom.validators';
+import { ReadOnlyService } from '../../../core/services/read-only.service';
 
 @Component({
   selector: 'app-volunteer-maker',
@@ -42,6 +43,7 @@ export class VolunteerMakerComponent implements OnInit {
     private notificationQueueService: NotificationQueueService,
     private uniqueKeyService: UniqueKeyService,
     private fb: FormBuilder,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   ngOnInit() {

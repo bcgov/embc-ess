@@ -6,6 +6,7 @@ import { GENDER_OPTIONS, INSURANCE_OPTIONS } from 'src/app/constants';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { NotificationQueueService } from 'src/app/core/services/notification-queue.service';
+import { ReadOnlyService } from '../../core/services/read-only.service';
 
 @Component({
   templateUrl: './registration-summary-full.component.html',
@@ -24,6 +25,7 @@ export class RegistrationSummaryFullComponent implements OnInit {
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private notificationQueueService: NotificationQueueService,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   ngOnInit() {

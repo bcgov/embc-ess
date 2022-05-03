@@ -212,10 +212,10 @@
               </div>
             </div>
             <div class="card-footer">
-              <app-fa-link icon="times" class="float-left" (click)="removeFamilyMember(i)">
+              <app-fa-link icon="times" class="float-left" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="removeFamilyMember(i)">
                 Remove
               </app-fa-link>
-              <app-fa-link icon="plus-circle" color="#669900" class="float-right" (click)="addFamilyMember()">
+              <app-fa-link icon="plus-circle" color="#669900" class="float-right" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="addFamilyMember()">
                 Add another family member
               </app-fa-link>
             </div>

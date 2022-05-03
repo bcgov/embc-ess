@@ -246,10 +246,10 @@
               </div>
             </div>
             <div class="card-footer">
-              <app-fa-link icon="times" class="float-left" (click)="removeFamilyMember(i)">
+              <app-fa-link icon="times" class="float-left" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="removeFamilyMember(i)">
                 Remove
               </app-fa-link>
-              <app-fa-link icon="plus-circle" color="#669900" class="float-right" (click)="addFamilyMember()">
+              <app-fa-link icon="plus-circle" color="#669900" class="float-right" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="addFamilyMember()">
                 Add another family member
               </app-fa-link>
             </div>
@@ -768,11 +768,11 @@
     </div>
     <!--Col 2-->
     <div class="flex-container flex-btns">
-      <button *ngIf="!submitting" type="button" class="btn btn-primary text-uppercase" [disabled]="submitting"
+      <button *ngIf="!submitting" type="button" class="btn btn-primary text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" [disabled]="submitting"
         (click)="submit(true)">
         <span>Save &amp; Add Referrals</span>
       </button>
-      <button type="button" class="btn btn-primary ml-3 text-uppercase" [disabled]="submitting" (click)="submit(false)">
+      <button type="button" class="btn btn-primary ml-3 text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" [disabled]="submitting" (click)="submit(false)">
         <span *ngIf="submitting">Submitting</span>
         <span *ngIf="!submitting">Save & Submit</span>
       </button>
@@ -785,18 +785,18 @@
 
   <div class="mt-5 space-between">
     <section>
-      <button type="button" class="btn btn-outline-primary text-uppercase" (click)="back()">Edit Registration</button>
+      <button type="button" class="btn btn-outline-primary text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="back()">Edit Registration</button>
     </section>
     <section>
       <!-- <a routerLink="/dashboard">
         <app-font-awesome-icon icon="times"></app-font-awesome-icon>
         <span class="ml-2">Cancel &amp; Close</span>
       </a> -->
-      <button *ngIf="!submitting" type="button" class="btn btn-primary text-uppercase" [disabled]="submitting"
+      <button *ngIf="!submitting" type="button" class="btn btn-primary text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" [disabled]="submitting"
         (click)="submit(true)">
         <span>Save &amp; Add Referrals</span>
       </button>
-      <button type="button" class="btn btn-primary ml-3 text-uppercase" [disabled]="submitting" (click)="submit(false)">
+      <button type="button" class="btn btn-primary ml-3 text-uppercase" [class.is-disabled]="readOnlyService.getIsReadOnly()" [disabled]="submitting" (click)="submit(false)">
         <span *ngIf="submitting">Submitting</span>
         <span *ngIf="!submitting">Save & Submit</span>
       </button>
