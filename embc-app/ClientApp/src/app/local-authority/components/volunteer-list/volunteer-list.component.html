@@ -24,7 +24,7 @@
         </app-pagination-summary>
       </section>
       <section>
-        <button class="btn btn-primary text-uppercase" (click)="modifyVolunteer()">Add Users</button>
+        <button class="btn btn-primary text-uppercase" (click)="modifyVolunteer()" [class.is-disabled]="readOnlyService.getIsReadOnly()">Add Users</button>
       </section>
     </div>
     <table class="table table-hover table-sm">
@@ -43,7 +43,7 @@
           <td>{{volunteer.bceidAccountNumber}}</td>
           <td>{{!!volunteer.isAdministrator ? 'ERA Superuser' : 'ERA User'}}</td>
           <td>
-            <a href="javascript:void(0)" (click)="modifyVolunteer(volunteer.id)">Edit</a>
+            <a href="javascript:void(0)" (click)="modifyVolunteer(volunteer.id)" [class.is-disabled]="readOnlyService.getIsReadOnly()">Edit</a>
           </td>
         </tr>
       </tbody>
@@ -52,7 +52,7 @@
     <div class="row">
       <div class="col">
         <div class="float-right">
-          <button class="btn btn-primary text-uppercase" (click)="modifyVolunteer()">Add Users</button>
+          <button class="btn btn-primary text-uppercase" (click)="modifyVolunteer()" [class.is-disabled]="readOnlyService.getIsReadOnly()">Add Users</button>
         </div>
         <div class="float-right mr-2" *ngIf="resultsAndPagination?.metadata?.totalPages > 1">
           <app-paginator [metaData]="resultsAndPagination.metadata" (params)="onPaginationEvent($event)"></app-paginator>

@@ -18,7 +18,7 @@
             [routerLink]="['/volunteer/registrations']" title="Go to Evacuee Search">Evacuee Search</a>
         </li>
         <li class="nav-item">
-          <a [class.active]="router.url==='/volunteer/registration'" class='nav-link' (click)="clearCachedKey()"
+          <a [class.active]="router.url==='/volunteer/registration'" class='nav-link' [class.is-disabled]="readOnlyService.getIsReadOnly()" (click)="clearCachedKey()"
             [routerLink]="['/volunteer/registration']" title="Go to New Evacuee Reigstration">New Evacuee
             Registration</a>
         </li>
