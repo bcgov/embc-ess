@@ -8,7 +8,7 @@ import { Config } from '../models';
     providedIn: CoreModule
 })
 export class ReadOnlyService {
-    private isReadOnly: boolean = false;
+    private isReadOnly: boolean = true;
 
     constructor(private store: Store<AppState>,) { }
 

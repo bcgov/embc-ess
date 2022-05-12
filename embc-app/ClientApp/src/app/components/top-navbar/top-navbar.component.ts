@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { PROVINCIAL_ADMIN, LOCAL_AUTHORITY, VOLUNTEER, EVERYONE } from 'src/app/constants';
 import { Router } from '@angular/router';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
+import { ReadOnlyService } from '../../core/services/read-only.service';
 
 @Component({
   selector: 'app-top-navbar',
@@ -25,7 +26,8 @@ export class TopNavbarComponent implements OnInit {
   constructor(
     private authService: AuthService,
     public router: Router, // used in HTML
-    private uniqueKeyService: UniqueKeyService
+    private uniqueKeyService: UniqueKeyService,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   ngOnInit() {

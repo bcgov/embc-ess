@@ -8,6 +8,7 @@ import { VolunteerService, VolunteerSearchQueryParameters } from 'src/app/core/s
 import { ListResult, Volunteer, User } from 'src/app/core/models';
 import { UniqueKeyService } from 'src/app/core/services/unique-key.service';
 import { SearchQueryParameters } from 'src/app/core/models/search-interfaces';
+import { ReadOnlyService } from '../../../core/services/read-only.service';
 
 //
 // this is the component used by Local Authority users
@@ -44,6 +45,7 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private uniqueKeyService: UniqueKeyService,
     private modals: NgbModal,
+    public readOnlyService: ReadOnlyService
   ) { }
 
   ngOnInit() {
