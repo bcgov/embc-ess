@@ -5,7 +5,7 @@
     <ProjectGuid>{5436dcef-8b26-4b89-afc9-4f50f474a29d}</ProjectGuid>
   </PropertyGroup>
    <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />    
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.15" />    
   </ItemGroup>
 
 </Project>
